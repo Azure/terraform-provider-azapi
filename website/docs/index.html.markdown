@@ -1,0 +1,87 @@
+---
+layout: "azurerm"
+page_title: "Provider: Azure"
+description: |-
+  The Azure Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
+
+---
+
+# Azure Provider
+
+The Azure Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
+
+To learn the basics of Terraform using this provider, follow the
+hands-on [get started tutorials](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started) on HashiCorp's Learn platform.
+
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/hashicorp/terraform-provider-azurerm/blob/main/CHANGELOG.md) for version information and release notes.
+
+## Authenticating to Azure
+
+Terraform supports a number of different methods for authenticating to Azure:
+
+* [Authenticating to Azure using the Azure CLI](guides/azure_cli.html)
+* [Authenticating to Azure using Managed Service Identity](guides/managed_service_identity.html)
+* [Authenticating to Azure using a Service Principal and a Client Certificate](guides/service_principal_client_certificate.html)
+* [Authenticating to Azure using a Service Principal and a Client Secret](guides/service_principal_client_secret.html)
+
+---
+
+We recommend using either a Service Principal or Managed Service Identity when running Terraform non-interactively (such as when running Terraform in a CI server) - and authenticating using the Azure CLI when running Terraform locally.
+
+## Example Usage
+
+```hcl
+# We strongly recommend using the required_providers block to set the
+# Azure Provider source and version being used
+terraform {
+  required_providers {
+    azurerm = {
+      source = "ms-henglu/azurermg"
+    }
+  }
+}
+
+provider "azurermg" {
+}
+
+```
+
+## Argument Reference
+
+The following arguments are supported:
+
+* `client_id` - (Optional) The Client ID which should be used. This can also be sourced from the `ARM_CLIENT_ID` Environment Variable.
+
+* `environment` - (Optional) The Cloud Environment which should be used. Possible values are `public`, `usgovernment`, `german`, and `china`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.
+
+* `subscription_id` - (Optional) The Subscription ID which should be used. This can also be sourced from the `ARM_SUBSCRIPTION_ID` Environment Variable.
+
+* `tenant_id` - (Optional) The Tenant ID should be used. This can also be sourced from the `ARM_TENANT_ID` Environment Variable.
+
+---
+
+When authenticating as a Service Principal using a Client Certificate, the following fields can be set:
+
+* `client_certificate_password` - (Optional) The password associated with the Client Certificate. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PASSWORD` Environment Variable.
+
+* `client_certificate_path` - (Optional) The path to the Client Certificate associated with the Service Principal which should be used. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PATH` Environment Variable.
+
+More information on [how to configure a Service Principal using a Client Certificate can be found in this guide](guides/service_principal_client_certificate.html).
+
+---
+
+When authenticating as a Service Principal using a Client Secret, the following fields can be set:
+
+* `client_secret` - (Optional) The Client Secret which should be used. This can also be sourced from the `ARM_CLIENT_SECRET` Environment Variable.
+
+More information on [how to configure a Service Principal using a Client Secret can be found in this guide](guides/service_principal_client_secret.html).
+
+---
+
+When authenticating using Managed Service Identity, the following fields can be set:
+
+* `msi_endpoint` - (Optional) The path to a custom endpoint for Managed Service Identity - in most circumstances, this should be detected automatically. This can also, be sourced from the `ARM_MSI_ENDPOINT` Environment Variable.
+
+* `use_msi` - (Optional) Should Managed Service Identity be used for Authentication? This can also be sourced from the `ARM_USE_MSI` Environment Variable. Defaults to `false`.
+
+More information on [how to configure a Service Principal using Managed Service Identity can be found in this guide](guides/managed_service_identity.html).
