@@ -139,7 +139,6 @@ func (t thatWithKeyType) MatchesRegex(r *regexp.Regexp) resource.TestCheckFunc {
 	return resource.TestMatchResourceAttr(t.resourceName, t.key, r)
 }
 
-
 func DoesNotExistInAzure(client *clients.Client, testResource acceptance.TestResource, resourceName string) resource.TestCheckFunc {
 	return existsFunc(false)(client, testResource, resourceName)
 }

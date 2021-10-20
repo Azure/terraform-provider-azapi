@@ -103,7 +103,7 @@ resource "azurermg_resource" "import" {
     }
   BODY
 }
-`,  r.basic(data))
+`, r.basic(data))
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

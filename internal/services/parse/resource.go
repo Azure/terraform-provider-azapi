@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+
+	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 )
 
 type ResourceId struct {
@@ -50,6 +52,19 @@ func ResourceID(input string) (*ResourceId, error) {
 
 	if resourceId.ApiVersion == "" {
 		return nil, fmt.Errorf("ID was missing the 'api-version' element")
+	}
+
+	id, err := resourceids.ParseAzureResourceID(resourceId.Url)
+	if err != nil {
+		return nil, err
+	}
+
+	if id.SubscriptionID == "" {
+		return nil, fmt.Errorf("ID was missing the 'subscriptions' element")
+	}
+
+	if id.ResourceGroup == "" {
+		return nil, fmt.Errorf("ID was missing the 'resourceGroups' element")
 	}
 
 	return &resourceId, nil

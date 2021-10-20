@@ -24,6 +24,42 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
+			// missing SubscriptionId
+			Input: "/",
+			Error: true,
+		},
+
+		{
+			// missing value for SubscriptionId
+			Input: "/subscriptions/",
+			Error: true,
+		},
+
+		{
+			// missing ResourceGroup
+			Input: "/subscriptions/{subscriptionId}/",
+			Error: true,
+		},
+
+		{
+			// missing value for ResourceGroup
+			Input: "/subscriptions/{subscriptionId}/resourceGroups/",
+			Error: true,
+		},
+
+		{
+			// missing Name
+			Input: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/",
+			Error: true,
+		},
+
+		{
+			// missing api-version
+			Input: "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/",
+			Error: true,
+		},
+
+		{
 			// missing api-version
 			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1",
 			Error: true,

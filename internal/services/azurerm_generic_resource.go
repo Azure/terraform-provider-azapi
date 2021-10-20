@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
@@ -49,6 +51,10 @@ func ResourceAzureGenericResource() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
+			"location": azure.SchemaLocation(),
+
+			"identity": azure.SchemaIdentity(),
+
 			"body": {
 				Type:             schema.TypeString,
 				Required:         true,
@@ -81,6 +87,21 @@ func ResourceAzureGenericResource() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+
+			"tags": azure.SchemaTags(),
+		},
+		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, i interface{}) error {
+			if d.HasChange("identity") {
+				d.SetNewComputed("response_body")
+			}
+			old, new := d.GetChange("body")
+			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+				d.SetNewComputed("response_body")
+			}
+			if d.HasChange("tags") {
+				d.SetNewComputed("response_body")
+			}
+			return nil
 		},
 	}
 }
@@ -110,6 +131,24 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		return err
 	}
 
+	if tags, ok := d.GetOk("tags"); ok {
+		bodyWithTags := azure.ExpandTags(tags.(map[string]interface{}))
+		requestBody = utils.GetMergedJson(requestBody, bodyWithTags)
+	}
+	if location, ok := d.GetOk("location"); ok {
+		bodyWithLocation := azure.ExpandLocation(location.(string))
+		requestBody = utils.GetMergedJson(requestBody, bodyWithLocation)
+	}
+	if identity, ok := d.GetOk("identity"); ok {
+		j, _ := json.Marshal(identity)
+		log.Printf("[INFO] identity: %v\n", string(j))
+		bodyWithIdentity, err := azure.ExpandIdentity(identity.([]interface{}))
+		if err != nil {
+			return err
+		}
+		requestBody = utils.GetMergedJson(requestBody, bodyWithIdentity)
+	}
+
 	var method string
 	switch {
 	case d.IsNewResource():
@@ -118,6 +157,8 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		method = d.Get("update_method").(string)
 	}
 
+	j, _ := json.Marshal(requestBody)
+	log.Printf("[INFO] body: %v\n", string(j))
 	_, _, err = client.CreateUpdate(ctx, id.Url, id.ApiVersion, requestBody, method)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
@@ -163,6 +204,9 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 	d.Set("body", string(data))
+	d.Set("tags", azure.FlattenTags(responseBody))
+	d.Set("location", azure.FlattenLocation(responseBody))
+	d.Set("identity", azure.FlattenIdentity(responseBody))
 
 	responseBodyJson, err := json.Marshal(responseBody)
 	d.Set("response_body", string(responseBodyJson))
