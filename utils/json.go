@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func NormalizeJson(jsonString interface{}) string {
@@ -18,6 +19,7 @@ func NormalizeJson(jsonString interface{}) string {
 	return string(b)
 }
 
+// GetMergedJson is used to merge object old and new, if overlaps, use new value
 func GetMergedJson(old interface{}, new interface{}) interface{} {
 	switch old.(type) {
 	case map[string]interface{}:
@@ -47,6 +49,7 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 	}
 }
 
+// GetUpdatedJson is used to get an updated object which has same schema as old, but with new value
 func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 	switch old.(type) {
 	case map[string]interface{}:
@@ -85,6 +88,7 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 	}
 }
 
+// GetRemovedJson is used to get an object which is remove properties defined in new from old
 func GetRemovedJson(old interface{}, new interface{}) interface{} {
 	switch old.(type) {
 	case map[string]interface{}:
@@ -109,6 +113,7 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 	}
 }
 
+// GetIgnoredJson is used to remove properties which is in the list called ignoredProperties
 func GetIgnoredJson(old interface{}, ignoredProperties []string) interface{} {
 	switch old.(type) {
 	case map[string]interface{}:
@@ -137,4 +142,34 @@ func GetIgnoredJson(old interface{}, ignoredProperties []string) interface{} {
 	default:
 		return old
 	}
+}
+
+// ExtractObject is used to extract object from old for a json path
+func ExtractObject(old interface{}, path string) interface{} {
+	if len(path) == 0 {
+		return old
+	}
+	if oldMap, ok := old.(map[string]interface{}); ok {
+		index := strings.Index(path, ".")
+		if index != -1 {
+			key := path[0:index]
+			result := make(map[string]interface{}, 1)
+			value := ExtractObject(oldMap[key], path[index+1:])
+			if value == nil {
+				return nil
+			} else {
+				result[key] = value
+			}
+			return result
+		} else {
+			if oldMap[path] != nil {
+				result := make(map[string]interface{}, 1)
+				result[path] = oldMap[path]
+				return result
+			} else {
+				return nil
+			}
+		}
+	}
+	return nil
 }

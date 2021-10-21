@@ -61,6 +61,41 @@ func SchemaIdentity() *schema.Schema {
 	}
 }
 
+func SchemaIdentityDataSource() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeList,
+		Optional: true,
+		Computed: true,
+		MaxItems: 1,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"type": {
+					Type:     schema.TypeString,
+					Computed: true,
+				},
+
+				"identity_ids": {
+					Type:     schema.TypeList,
+					Computed: true,
+					Elem: &schema.Schema{
+						Type: schema.TypeString,
+					},
+				},
+
+				"principal_id": {
+					Type:     schema.TypeString,
+					Computed: true,
+				},
+
+				"tenant_id": {
+					Type:     schema.TypeString,
+					Computed: true,
+				},
+			},
+		},
+	}
+}
+
 func ExpandIdentity(input []interface{}) (interface{}, error) {
 	body := make(map[string]interface{}, 0)
 	if len(input) == 0 || input[0] == nil {
@@ -81,9 +116,8 @@ func ExpandIdentity(input []interface{}) (interface{}, error) {
 		for _, id := range identityIds {
 			userAssignedIdentities[id.(string)] = make(map[string]interface{})
 		}
+		config["userAssignedIdentities"] = userAssignedIdentities
 	}
-
-	config["userAssignedIdentities"] = userAssignedIdentities
 	body["identity"] = config
 	return body, nil
 }
@@ -93,11 +127,13 @@ func FlattenIdentity(body interface{}) []interface{} {
 		if bodyMap, ok := body.(map[string]interface{}); ok && bodyMap["identity"] != nil {
 			if identityMap, ok := bodyMap["identity"].(map[string]interface{}); ok {
 				identityIds := make([]string, 0)
-				userAssignedIdentities := identityMap["userAssignedIdentities"].(map[string]interface{})
-				for key := range userAssignedIdentities {
-					identityId, err := parse.UserAssignedIdentitiesID(key)
-					if err == nil {
-						identityIds = append(identityIds, identityId.ID())
+				if identityMap["userAssignedIdentities"] != nil {
+					userAssignedIdentities := identityMap["userAssignedIdentities"].(map[string]interface{})
+					for key := range userAssignedIdentities {
+						identityId, err := parse.UserAssignedIdentitiesID(key)
+						if err == nil {
+							identityIds = append(identityIds, identityId.ID())
+						}
 					}
 				}
 
@@ -105,15 +141,20 @@ func FlattenIdentity(body interface{}) []interface{} {
 				switch {
 				case strings.Contains(identityType, ","):
 					identityType = string(SystemAssignedUserAssigned)
+				case strings.EqualFold(identityType, string(UserAssigned)):
+					identityType = string(UserAssigned)
+				case strings.EqualFold(identityType, string(SystemAssigned)):
+					identityType = string(SystemAssigned)
 				default:
+					identityType = string(None)
 				}
 
 				return []interface{}{
 					map[string]interface{}{
 						"type":         identityType,
 						"identity_ids": identityIds,
-						"principal_id": identityMap["principal_id"],
-						"tenant_id":    identityMap["tenant_id"],
+						"principal_id": identityMap["principalId"],
+						"tenant_id":    identityMap["tenantId"],
 					},
 				}
 			}

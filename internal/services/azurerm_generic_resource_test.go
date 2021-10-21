@@ -46,6 +46,57 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_complete(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.complete(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep("body", "create_method", "update_method"),
+	})
+}
+
+func TestAccGenericResource_identity(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.identityNone(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep("body", "create_method", "update_method"),
+		{
+			Config: r.identityUserAssigned(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep("body", "create_method", "update_method"),
+		{
+			Config: r.identitySystemAssigned(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep("body", "create_method", "update_method"),
+		{
+			Config: r.complete(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep("body", "create_method", "update_method"),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	id, err := parse.ResourceID(state.ID)
 	if err != nil {
@@ -68,8 +119,16 @@ func (r GenericResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
+resource "azurerm_container_registry" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  sku                 = "Premium"
+  admin_enabled       = false
+}
+
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_container_registry.test.id}/scopeMaps/acctest%s"
+  url         = "${azurerm_container_registry.test.id}/scopeMaps/acctest%[2]s"
   api_version = "2020-11-01-preview"
   body        = <<BODY
    {
@@ -106,6 +165,125 @@ resource "azurermg_resource" "import" {
 `, r.basic(data))
 }
 
+func (r GenericResource) complete(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+}
+
+resource "azurermg_resource" "test" {
+  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  api_version = "2020-11-01-preview"
+  location    = "%[3]s"
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.test.id]
+  }
+  body = <<BODY
+    {
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      }
+    }
+  BODY
+
+  tags = {
+    "Key" = "Value"
+  }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) identityNone(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurermg_resource" "test" {
+  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  api_version = "2020-11-01-preview"
+  location    = "%[3]s"
+  body        = <<BODY
+    {
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      }
+    }
+  BODY
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurermg_resource" "test" {
+  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  api_version = "2020-11-01-preview"
+  location    = "%[3]s"
+  identity {
+    type = "SystemAssigned"
+  }
+  body = <<BODY
+    {
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      }
+    }
+  BODY
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) identityUserAssigned(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+}
+
+resource "azurermg_resource" "test" {
+  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  api_version = "2020-11-01-preview"
+  location    = "%[3]s"
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.test.id]
+  }
+  body = <<BODY
+    {
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      }
+    }
+  BODY
+
+  tags = {
+    "Key" = "Value"
+  }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
 func (GenericResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
@@ -115,14 +293,6 @@ provider "azurerm" {
 resource "azurerm_resource_group" "test" {
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
-}
-
-resource "azurerm_container_registry" "test" {
-  name                = "acctest%[3]s"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
-  sku                 = "Premium"
-  admin_enabled       = false
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
 }
