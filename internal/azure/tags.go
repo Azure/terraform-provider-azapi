@@ -18,6 +18,16 @@ func SchemaTags() *schema.Schema {
 	}
 }
 
+func SchemaTagsDataSource() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeMap,
+		Computed: true,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+	}
+}
+
 func ValidateTags(v interface{}, _ string) (warnings []string, errors []error) {
 	tagsMap := v.(map[string]interface{})
 

@@ -3,7 +3,6 @@ package acceptance
 import (
 	"fmt"
 	"os"
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -71,6 +70,16 @@ func (td *TestData) RandomStringOfLength(len int) string {
 	return acctest.RandStringFromCharSet(len, charSetAlphaNum)
 }
 
+func (td TestData) DataSourceTest(t *testing.T, steps []resource.TestStep) {
+	// DataSources don't need a check destroy - however since this is a wrapper function
+	// and not matching the ignore pattern `XXX_data_source_test.go`, this needs to be explicitly opted out
+	testCase := resource.TestCase{
+		PreCheck: func() { PreCheck(t) },
+		Steps:    steps,
+	}
+	td.runAcceptanceTest(t, testCase)
+}
+
 func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps []resource.TestStep) {
 	testCase := resource.TestCase{
 		PreCheck: func() { PreCheck(t) },
@@ -108,21 +117,6 @@ func (td TestData) externalProviders() map[string]resource.ExternalProvider {
 			Source: "registry.terraform.io/hashicorp/azurerm",
 		},
 	}
-}
-
-// RequiresImportErrorStep returns a Test Step which expects a Requires Import
-// error to be returned when running this step
-func (td TestData) RequiresImportErrorStep(configBuilder func(data TestData) string) resource.TestStep {
-	config := configBuilder(td)
-	return resource.TestStep{
-		Config:      config,
-		ExpectError: RequiresImportError(td.ResourceType),
-	}
-}
-
-func RequiresImportError(resourceName string) *regexp.Regexp {
-	message := "to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for %q for more information."
-	return regexp.MustCompile(fmt.Sprintf(message, resourceName))
 }
 
 func PreCheck(t *testing.T) {

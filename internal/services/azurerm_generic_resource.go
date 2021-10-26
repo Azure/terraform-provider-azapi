@@ -79,11 +79,19 @@ func ResourceAzureGenericResource() *schema.Resource {
 				ValidateFunc: validation.StringInSlice([]string{
 					http.MethodPost,
 					http.MethodPut,
-					http.MethodPatch,
+					// http.MethodPatch, patch is not supported yet
 				}, false),
 			},
 
-			"response_body": {
+			"paths": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
+
+			"output": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
@@ -91,15 +99,12 @@ func ResourceAzureGenericResource() *schema.Resource {
 			"tags": azure.SchemaTags(),
 		},
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, i interface{}) error {
-			if d.HasChange("identity") {
-				d.SetNewComputed("response_body")
+			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("paths") {
+				d.SetNewComputed("output")
 			}
 			old, new := d.GetChange("body")
 			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
-				d.SetNewComputed("response_body")
-			}
-			if d.HasChange("tags") {
-				d.SetNewComputed("response_body")
+				d.SetNewComputed("output")
 			}
 			return nil
 		},
@@ -140,8 +145,6 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		requestBody = utils.GetMergedJson(requestBody, bodyWithLocation)
 	}
 	if identity, ok := d.GetOk("identity"); ok {
-		j, _ := json.Marshal(identity)
-		log.Printf("[INFO] identity: %v\n", string(j))
 		bodyWithIdentity, err := azure.ExpandIdentity(identity.([]interface{}))
 		if err != nil {
 			return err
@@ -197,7 +200,12 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	var requestBody interface{}
 	err = json.Unmarshal([]byte(bodyJson), &requestBody)
 	if err != nil {
-		return err
+		if len(bodyJson) == 0 {
+			// handle import case, body defaults to response body
+			requestBody = utils.GetIgnoredJson(responseBody, getUnsupportedProperties())
+		} else {
+			return err
+		}
 	}
 	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody))
 	if err != nil {
@@ -208,8 +216,23 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	d.Set("location", azure.FlattenLocation(responseBody))
 	d.Set("identity", azure.FlattenIdentity(responseBody))
 
-	responseBodyJson, err := json.Marshal(responseBody)
-	d.Set("response_body", string(responseBodyJson))
+	paths := d.Get("paths").([]interface{})
+	var output interface{}
+	if len(paths) != 0 {
+		output = make(map[string]interface{}, 0)
+		for _, path := range paths {
+			part := utils.ExtractObject(responseBody, path.(string))
+			if part == nil {
+				continue
+			}
+			output = utils.GetMergedJson(output, part)
+		}
+	}
+	if output == nil {
+		output = make(map[string]interface{}, 0)
+	}
+	outputJson, _ := json.Marshal(output)
+	d.Set("output", string(outputJson))
 	return nil
 }
 

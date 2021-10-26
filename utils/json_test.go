@@ -143,3 +143,51 @@ func Test_GetIgnoredJson(t *testing.T) {
 		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
 	}
 }
+
+func Test_ExtractObject(t *testing.T) {
+	oldJson := `
+{
+  "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "kind": "EventHub",
+  "location": "West Europe",
+  "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
+  "properties": {
+    "compression": "None",
+    "consumerGroup": "acctesteventhubcg-henglu924",
+    "dataFormat": "",
+    "eventHubResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventSystemProperties": [],
+    "managedIdentityResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "mappingRuleName": "",
+    "provisioningState": "Succeeded",
+    "tableName": ""
+  },
+  "type": "Microsoft.Kusto/Clusters/Databases/DataConnections"
+}
+`
+	expectedJson := `
+{
+  "properties": {
+    "consumerGroup": "acctesteventhubcg-henglu924"
+  }
+}
+`
+
+	var old, expected interface{}
+	json.Unmarshal([]byte(oldJson), &old)
+	json.Unmarshal([]byte(expectedJson), &expected)
+
+	result := utils.ExtractObject(old, "properties.consumerGroup")
+	if !reflect.DeepEqual(result, expected) {
+		expectedJson, _ := json.Marshal(expected)
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+	}
+
+	// invalid path
+	result = utils.ExtractObject(old, "properties.consumerGroup1")
+	if result != nil {
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected nil but got %s", resultJson)
+	}
+}

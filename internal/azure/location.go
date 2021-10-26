@@ -17,6 +17,13 @@ func SchemaLocation() *schema.Schema {
 	}
 }
 
+func SchemaLocationDataSource() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeString,
+		Computed: true,
+	}
+}
+
 func LocationDiffSuppressFunc(_, old, new string, _ *schema.ResourceData) bool {
 	return LocationNormalize(old) == LocationNormalize(new)
 }
@@ -38,7 +45,7 @@ func ExpandLocation(location string) interface{} {
 
 func FlattenLocation(body interface{}) interface{} {
 	if body != nil {
-		if bodyMap, ok := body.(map[string]interface{}); ok {
+		if bodyMap, ok := body.(map[string]interface{}); ok && bodyMap["location"] != nil {
 			return bodyMap["location"].(string)
 		}
 	}

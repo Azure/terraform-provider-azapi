@@ -22,6 +22,8 @@ func azureProvider() *schema.Provider {
 	resources["azurermg_resource"] = services.ResourceAzureGenericResource()
 	resources["azurermg_patch_resource"] = services.ResourceAzureGenericPatchResource()
 
+	dataSources["azurermg_resource"] = services.ResourceAzureGenericDataSource()
+
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"subscription_id": {
