@@ -1,19 +1,19 @@
 ---
-layout: "azurerm"
+layout: "azurermg"
 page_title: "Provider: Azure"
 description: |-
-  The Azure Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
+  The Generic Azure Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
 
 ---
 
-# Azure Provider
+# Generic Azure Provider
 
-The Azure Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
+The Generic Azure Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
 
 To learn the basics of Terraform using this provider, follow the
 hands-on [get started tutorials](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started) on HashiCorp's Learn platform.
 
-Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/hashicorp/terraform-provider-azurerm/blob/main/CHANGELOG.md) for version information and release notes.
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/ms-henglu/terraform-provider-azurerm-generic/blob/develop/CHANGELOG.md) for version information and release notes.
 
 ## Authenticating to Azure
 
@@ -85,3 +85,11 @@ When authenticating using Managed Service Identity, the following fields can be 
 * `use_msi` - (Optional) Should Managed Service Identity be used for Authentication? This can also be sourced from the `ARM_USE_MSI` Environment Variable. Defaults to `false`.
 
 More information on [how to configure a Service Principal using Managed Service Identity can be found in this guide](guides/managed_service_identity.html).
+
+---
+
+For some advanced scenarios, such as where more granular permissions are necessary - the following properties can be set:
+
+* `metadata_host` - (Optional) The Hostname of the Azure Metadata Service (for example `management.azure.com`), used to obtain the Cloud Environment when using a Custom Azure Environment. This can also be sourced from the `ARM_METADATA_HOSTNAME` Environment Variable.
+
+~> **Note:** `environment` must be set to the requested environment name in the list of available environments held in the `metadata_host`.
