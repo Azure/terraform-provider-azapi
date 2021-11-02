@@ -90,7 +90,7 @@ func (client ResourceClient) CreateUpdate(ctx context.Context, url string, apiVe
 	var responseBody interface{}
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&responseBody),
 		autorest.ByClosing())
 	body = responseBody
