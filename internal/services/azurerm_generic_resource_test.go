@@ -103,7 +103,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		return nil, err
 	}
 
-	resp, response, err := client.ResourceClient.Get(ctx, id.Url, id.ApiVersion)
+	resp, response, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
 			exist := false
@@ -128,7 +128,7 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_container_registry.test.id}/scopeMaps/acctest%[2]s"
+  resource_id = "${azurerm_container_registry.test.id}/scopeMaps/acctest%[2]s"
   api_version = "2020-11-01-preview"
   body        = <<BODY
    {
@@ -149,7 +149,7 @@ func (r GenericResource) requiresImport(data acceptance.TestData) string {
 %s
 
 resource "azurermg_resource" "import" {
-  url         = azurermg_resource.test.url
+  resource_id = azurermg_resource.test.resource_id
   api_version = azurermg_resource.test.api_version
   body        = <<BODY
    {
@@ -176,7 +176,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   api_version = "2020-11-01-preview"
   location    = "%[3]s"
   identity {
@@ -206,7 +206,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   api_version = "2020-11-01-preview"
   location    = "%[3]s"
   body        = <<BODY
@@ -228,7 +228,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   api_version = "2020-11-01-preview"
   location    = "%[3]s"
   identity {
@@ -259,7 +259,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azurermg_resource" "test" {
-  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   api_version = "2020-11-01-preview"
   location    = "%[3]s"
   identity {

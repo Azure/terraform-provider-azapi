@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
 	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
@@ -35,11 +36,11 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"url": {
+			"resource_id": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.AzureResourceID,
 			},
 
 			"api_version": {
@@ -80,9 +81,9 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("url").(string), d.Get("api_version").(string))
+	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("api_version").(string))
 
-	existing, _, err := client.Get(ctx, id.Url, id.ApiVersion)
+	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 	}
@@ -98,7 +99,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 
 	requestBody = utils.GetMergedJson(existing, requestBody)
 	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
-	_, _, err = client.CreateUpdate(ctx, id.Url, id.ApiVersion, requestBody, d.Get("method").(string))
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, d.Get("method").(string))
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -118,7 +119,7 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.Url, id.ApiVersion)
+	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
 			log.Printf("[INFO] Error reading %q - removing from state", d.Id())
@@ -129,7 +130,7 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
-	d.Set("url", id.Url)
+	d.Set("resource_id", id.AzureResourceId)
 	d.Set("api_version", id.ApiVersion)
 
 	bodyJson := d.Get("body").(string)
@@ -159,7 +160,7 @@ func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interf
 		return err
 	}
 
-	existing, _, err := client.Get(ctx, id.Url, id.ApiVersion)
+	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 	}
@@ -175,7 +176,7 @@ func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interf
 
 	requestBody = utils.GetMergedJson(existing, requestBody)
 	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
-	_, _, err = client.CreateUpdate(ctx, id.Url, id.ApiVersion, requestBody, d.Get("method").(string))
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, d.Get("method").(string))
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
