@@ -42,7 +42,7 @@ type ResourceClient struct {
 	BaseClient
 }
 
-func (client ResourceClient) CreateUpdate(ctx context.Context, resourceId string, apiVersion string, requestBody interface{}, method string) (body interface{}, resp *http.Response, err error) {
+func (client ResourceClient) CreateUpdate(ctx context.Context, azureResourceId string, apiVersion string, requestBody interface{}, method string) (body interface{}, resp *http.Response, err error) {
 	queryParameters := map[string]interface{}{
 		"api-version": apiVersion,
 	}
@@ -62,7 +62,7 @@ func (client ResourceClient) CreateUpdate(ctx context.Context, resourceId string
 		autorest.AsContentType("application/json; charset=utf-8"),
 		methodDecorator,
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(resourceId, nil),
+		autorest.WithPathParameters(azureResourceId, nil),
 		autorest.WithJSON(requestBody),
 		autorest.WithQueryParameters(queryParameters))
 	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -97,7 +97,7 @@ func (client ResourceClient) CreateUpdate(ctx context.Context, resourceId string
 	return
 }
 
-func (client ResourceClient) Get(ctx context.Context, resourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
+func (client ResourceClient) Get(ctx context.Context, azureResourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
 	queryParameters := map[string]interface{}{
 		"api-version": apiVersion,
 	}
@@ -105,7 +105,7 @@ func (client ResourceClient) Get(ctx context.Context, resourceId string, apiVers
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(resourceId, nil),
+		autorest.WithPathParameters(azureResourceId, nil),
 		autorest.WithQueryParameters(queryParameters))
 	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
 	if err != nil {
@@ -128,7 +128,7 @@ func (client ResourceClient) Get(ctx context.Context, resourceId string, apiVers
 	return
 }
 
-func (client ResourceClient) Delete(ctx context.Context, resourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
+func (client ResourceClient) Delete(ctx context.Context, azureResourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
 	queryParameters := map[string]interface{}{
 		"api-version": apiVersion,
 	}
@@ -136,7 +136,7 @@ func (client ResourceClient) Delete(ctx context.Context, resourceId string, apiV
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(resourceId, nil),
+		autorest.WithPathParameters(azureResourceId, nil),
 		autorest.WithQueryParameters(queryParameters))
 	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
 	if err != nil {
