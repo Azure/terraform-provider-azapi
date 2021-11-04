@@ -1,8 +1,12 @@
-package validate
+package validate_test
 
-import "testing"
+import (
+	"testing"
 
-func TestClusterID(t *testing.T) {
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
+)
+
+func TestResourceID(t *testing.T) {
 	cases := []struct {
 		Input string
 		Valid bool
@@ -70,7 +74,7 @@ func TestClusterID(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Logf("[DEBUG] Testing Value %s", tc.Input)
-		_, errors := ResourceID(tc.Input, "test")
+		_, errors := validate.ResourceID(tc.Input, "test")
 		valid := len(errors) == 0
 
 		if tc.Valid != valid {
