@@ -41,7 +41,7 @@ resource "azurerm_user_assigned_identity" "example" {
 
 // manage a container registry resource
 resource "azurermg_resource" "example" {
-  url         = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/registry1"
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/registry1"
   api_version = "2020-11-01-preview"
   location    = azurerm_resource_group.example.location
   identity {
@@ -64,7 +64,7 @@ resource "azurermg_resource" "example" {
     "Key" = "Value"
   }
 
-  paths = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
 }
 
 // it will output "registry1.azurecr.io"
@@ -81,7 +81,7 @@ output "quarantine_policy" {
 ## Arguments Reference
 
 The following arguments are supported:
-* `url` - (Required) The url which should be used to manage this azure resource. It's also same with the ID of an azure source. 
+* `resource_id` - (Required) The ID of an azure source. 
   Here're some examples 
   `Container Registry: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/mygroup1/providers/Microsoft.ContainerRegistry/registries/myregistry1` and 
   `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
@@ -103,7 +103,7 @@ The following arguments are supported:
 
 * `tags` - (Optional) A mapping of tags which should be assigned to the azure resource. 
 
-* `paths` - (Optional) A list of path that needs to be exported from response body. Here's an example. 
+* `response_export_values` - (Optional) A list of path that needs to be exported from response body. Here's an example. 
   If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
 ```
 {
@@ -134,7 +134,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
 
-* `output` - The output json containing the properties specified in `paths`. Here're some examples to decode json and extract the value.
+* `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {

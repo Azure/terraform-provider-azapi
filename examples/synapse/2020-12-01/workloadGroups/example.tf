@@ -50,7 +50,7 @@ resource "azurerm_synapse_sql_pool" "test" {
 
 
 resource "azurermg_resource" "test" {
-  url = "${azurerm_synapse_sql_pool.test.id}/workloadGroups/smallrc"
+  resource_id = "${azurerm_synapse_sql_pool.test.id}/workloadGroups/smallrc"
   api_version = "2020-12-01"
   body = <<BODY
 {

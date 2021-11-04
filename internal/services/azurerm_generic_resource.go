@@ -13,6 +13,7 @@ import (
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
 	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
@@ -37,11 +38,11 @@ func ResourceAzureGenericResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"url": {
+			"resource_id": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.AzureResourceID,
 			},
 
 			"api_version": {
@@ -83,7 +84,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				}, false),
 			},
 
-			"paths": {
+			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -99,12 +100,28 @@ func ResourceAzureGenericResource() *schema.Resource {
 			"tags": azure.SchemaTags(),
 		},
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, i interface{}) error {
-			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("paths") {
+			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("response_export_values") {
 				d.SetNewComputed("output")
 			}
 			old, new := d.GetChange("body")
 			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
 				d.SetNewComputed("output")
+			}
+
+			props := []string{"identity", "location", "tags"}
+			for _, prop := range props {
+				if _, ok := d.GetOk(prop); ok {
+					var body interface{}
+					err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
+					if err != nil {
+						return err
+					}
+					if bodyMap, ok := body.(map[string]interface{}); ok {
+						if bodyMap[prop] != nil {
+							return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+						}
+					}
+				}
 			}
 			return nil
 		},
@@ -116,10 +133,10 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("url").(string), d.Get("api_version").(string))
+	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("api_version").(string))
 
 	if d.IsNewResource() {
-		existing, response, err := client.Get(ctx, id.Url, id.ApiVersion)
+		existing, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err != nil {
 			if response.StatusCode != http.StatusNotFound {
 				return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
@@ -162,7 +179,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.Url, id.ApiVersion, requestBody, method)
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, method)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -182,7 +199,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.Url, id.ApiVersion)
+	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
 			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
@@ -193,7 +210,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
-	d.Set("url", id.Url)
+	d.Set("resource_id", id.AzureResourceId)
 	d.Set("api_version", id.ApiVersion)
 
 	bodyJson := d.Get("body").(string)
@@ -216,7 +233,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	d.Set("location", azure.FlattenLocation(responseBody))
 	d.Set("identity", azure.FlattenIdentity(responseBody))
 
-	paths := d.Get("paths").([]interface{})
+	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
 	if len(paths) != 0 {
 		output = make(map[string]interface{}, 0)
@@ -246,7 +263,7 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	_, _, err = client.Delete(ctx, id.Url, id.ApiVersion)
+	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		return fmt.Errorf("deleting %q: %+v", id, err)
 	}

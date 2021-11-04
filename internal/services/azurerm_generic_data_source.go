@@ -11,6 +11,7 @@ import (
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
 	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
@@ -24,11 +25,11 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"url": {
+			"resource_id": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.AzureResourceID,
 			},
 
 			"api_version": {
@@ -38,7 +39,7 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
-			"paths": {
+			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -65,9 +66,9 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("url").(string), d.Get("api_version").(string))
+	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("api_version").(string))
 
-	responseBody, response, err := client.Get(ctx, id.Url, id.ApiVersion)
+	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if response.StatusCode == http.StatusNotFound {
 			return fmt.Errorf("not found %q: %+v", id, err)
@@ -80,7 +81,7 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	d.Set("location", azure.FlattenLocation(responseBody))
 	d.Set("identity", azure.FlattenIdentity(responseBody))
 
-	paths := d.Get("paths").([]interface{})
+	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
 	if len(paths) != 0 {
 		output = make(map[string]interface{}, 0)
