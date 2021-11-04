@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 	"log"
 	"net/http"
 	"time"
@@ -14,6 +13,7 @@ import (
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
 	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
