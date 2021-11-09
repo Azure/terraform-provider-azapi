@@ -146,6 +146,9 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	d.Set("body", string(data))
 
 	responseBodyJson, err := json.Marshal(responseBody)
+	if err != nil {
+		return err
+	}
 	d.Set("response_body", string(responseBodyJson))
 	return nil
 }

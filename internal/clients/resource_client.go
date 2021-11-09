@@ -95,7 +95,8 @@ func (client ResourceClient) CreateUpdate(ctx context.Context, azureResourceId s
 		autorest.ByUnmarshallingJSON(&responseBody),
 		autorest.ByClosing())
 	body = responseBody
-	return
+
+	return body, resp, err
 }
 
 func (client ResourceClient) Get(ctx context.Context, azureResourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {

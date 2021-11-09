@@ -77,9 +77,8 @@ func (s *Schema) UnmarshalJSON(body []byte) error {
 	for index, v := range types {
 		if v != nil {
 			value := *v
-			switch value.(type) {
+			switch t := value.(type) {
 			case *ObjectType:
-				t := value.(*ObjectType)
 				t.AdditionalProperties.UpdateType(types)
 				for index := range t.Properties {
 					reference := t.Properties[index].Type
@@ -87,21 +86,17 @@ func (s *Schema) UnmarshalJSON(body []byte) error {
 				}
 				types[index] = t.AsTypeBase()
 			case *ArrayType:
-				t := value.(*ArrayType)
 				t.ItemType.UpdateType(types)
 				types[index] = t.AsTypeBase()
 			case *ResourceType:
-				t := value.(*ResourceType)
 				t.Body.UpdateType(types)
 				types[index] = t.AsTypeBase()
 			case *UnionType:
-				t := value.(*UnionType)
 				for index := range t.Elements {
 					t.Elements[index].UpdateType(types)
 				}
 				types[index] = t.AsTypeBase()
 			case *DiscriminatedObjectType:
-				t := value.(*DiscriminatedObjectType)
 				for index := range t.Elements {
 					reference := t.Elements[index]
 					reference.UpdateType(types)

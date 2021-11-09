@@ -119,7 +119,7 @@ func (t *DiscriminatedObjectType) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				elements := make(map[string]*TypeReference, 0)
+				elements := make(map[string]*TypeReference)
 				for key, index := range elementIndexes {
 					elements[key] = &TypeReference{TypeIndex: index}
 				}

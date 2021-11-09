@@ -52,8 +52,7 @@ func (t *UnionType) UnmarshalJSON(body []byte) error {
 		return err
 	}
 	for k, v := range m {
-		switch k {
-		case "Elements":
+		if k == "Elements" {
 			if v != nil {
 				var indexes []int
 				err := json.Unmarshal(*v, &indexes)

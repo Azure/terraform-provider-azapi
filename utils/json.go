@@ -21,12 +21,10 @@ func NormalizeJson(jsonString interface{}) string {
 
 // GetMergedJson is used to merge object old and new, if overlaps, use new value
 func GetMergedJson(old interface{}, new interface{}) interface{} {
-	switch old.(type) {
+	switch oldMap := old.(type) {
 	case map[string]interface{}:
-		switch new.(type) {
+		switch newMap := new.(type) {
 		case map[string]interface{}:
-			oldMap := old.(map[string]interface{})
-			newMap := new.(map[string]interface{})
 			res := make(map[string]interface{})
 			for key, oldValue := range oldMap {
 				if newMap[key] != nil {
@@ -51,14 +49,12 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 
 // GetUpdatedJson is used to get an updated object which has same schema as old, but with new value
 func GetUpdatedJson(old interface{}, new interface{}) interface{} {
-	switch old.(type) {
+	switch oldValue := old.(type) {
 	case map[string]interface{}:
-		switch new.(type) {
+		switch newMap := new.(type) {
 		case map[string]interface{}:
-			oldMap := old.(map[string]interface{})
-			newMap := new.(map[string]interface{})
 			res := make(map[string]interface{})
-			for key, oldValue := range oldMap {
+			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
 					res[key] = GetUpdatedJson(oldValue, newMap[key])
 				}
@@ -68,16 +64,14 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 			return new
 		}
 	case []interface{}:
-		switch new.(type) {
+		switch newArr := new.(type) {
 		case []interface{}:
-			oldArr := old.([]interface{})
-			newArr := new.([]interface{})
-			if len(oldArr) != len(newArr) {
+			if len(oldValue) != len(newArr) {
 				return newArr
 			}
 			res := make([]interface{}, 0)
-			for index := range oldArr {
-				res = append(res, GetUpdatedJson(oldArr[index], newArr[index]))
+			for index := range oldValue {
+				res = append(res, GetUpdatedJson(oldValue[index], newArr[index]))
 			}
 			return res
 		default:
@@ -90,12 +84,10 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 
 // GetRemovedJson is used to get an object which is remove properties defined in new from old
 func GetRemovedJson(old interface{}, new interface{}) interface{} {
-	switch old.(type) {
+	switch oldMap := old.(type) {
 	case map[string]interface{}:
-		switch new.(type) {
+		switch newMap := new.(type) {
 		case map[string]interface{}:
-			oldMap := old.(map[string]interface{})
-			newMap := new.(map[string]interface{})
 			res := make(map[string]interface{})
 			for key, oldValue := range oldMap {
 				if newMap[key] != nil {
@@ -115,11 +107,10 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 
 // GetIgnoredJson is used to remove properties which is in the list called ignoredProperties
 func GetIgnoredJson(old interface{}, ignoredProperties []string) interface{} {
-	switch old.(type) {
+	switch oldValue := old.(type) {
 	case map[string]interface{}:
-		oldMap := old.(map[string]interface{})
 		res := make(map[string]interface{})
-		for key, value := range oldMap {
+		for key, value := range oldValue {
 			found := false
 			for _, prop := range ignoredProperties {
 				if prop == key {
@@ -133,10 +124,9 @@ func GetIgnoredJson(old interface{}, ignoredProperties []string) interface{} {
 		}
 		return res
 	case []interface{}:
-		oldArr := old.([]interface{})
 		res := make([]interface{}, 0)
-		for index := range oldArr {
-			res = append(res, GetIgnoredJson(oldArr[index], ignoredProperties))
+		for index := range oldValue {
+			res = append(res, GetIgnoredJson(oldValue[index], ignoredProperties))
 		}
 		return res
 	default:
