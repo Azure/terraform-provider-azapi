@@ -30,14 +30,12 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 			"resource_id": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ForceNew:     true,
 				ValidateFunc: validate.AzureResourceID,
 			},
 
 			"api_version": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ForceNew:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
@@ -86,7 +84,7 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
 	if len(paths) != 0 {
-		output = make(map[string]interface{}, 0)
+		output = make(map[string]interface{})
 		for _, path := range paths {
 			part := utils.ExtractObject(responseBody, path.(string))
 			if part == nil {
@@ -96,7 +94,7 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		}
 	}
 	if output == nil {
-		output = make(map[string]interface{}, 0)
+		output = make(map[string]interface{})
 	}
 	outputJson, _ := json.Marshal(output)
 	d.Set("output", string(outputJson))

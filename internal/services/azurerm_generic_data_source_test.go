@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance/check"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
 )
 
 type GenericDataSource struct{}
@@ -25,7 +25,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 				check.That(data.ResourceName).Key("identity.0.identity_ids.#").HasValue("1"),
 				check.That(data.ResourceName).Key("identity.0.principal_id").Exists(),
 				check.That(data.ResourceName).Key("identity.0.tenant_id").Exists(),
-				check.That(data.ResourceName).Key("location").HasValue(azure.LocationNormalize(data.LocationPrimary)),
+				check.That(data.ResourceName).Key("location").HasValue(location.LocationNormalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
 			),
 		},

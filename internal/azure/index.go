@@ -36,7 +36,7 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 	if m["Types"] == nil {
 		return nil
 	}
-	o.Resources = make(map[string]*Resource, 0)
+	o.Resources = make(map[string]*Resource)
 	for k, v := range m["Types"] {
 		index := strings.Index(k, "@")
 		if index == -1 {

@@ -25,13 +25,13 @@ type ClientOptions struct {
 }
 
 func (o ClientOptions) ConfigureClient(c *autorest.Client, authorizer autorest.Authorizer) {
-	setUserAgent(c, o.TerraformVersion, o.PartnerId)
+	setUserAgent(c, o.TerraformVersion)
 
 	c.Authorizer = authorizer
 	c.Sender = sender.BuildSender("AzureRMG")
 }
 
-func setUserAgent(client *autorest.Client, tfVersion, partnerID string) {
+func setUserAgent(client *autorest.Client, tfVersion string) {
 	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", tfVersion, meta.SDKVersionString())
 
 	providerUserAgent := fmt.Sprintf("%s terraform-provider-azurermg/%s", tfUserAgent, version.ProviderVersion)

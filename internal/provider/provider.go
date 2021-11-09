@@ -3,12 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services"
 )
 

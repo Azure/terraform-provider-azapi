@@ -50,8 +50,7 @@ func (t *ArrayType) UnmarshalJSON(body []byte) error {
 		return err
 	}
 	for k, v := range m {
-		switch k {
-		case "Type":
+		if k == "Type" {
 			if v != nil {
 				var index int
 				err := json.Unmarshal(*v, &index)

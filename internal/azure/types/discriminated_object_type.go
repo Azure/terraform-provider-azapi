@@ -29,7 +29,7 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 	}
 
 	// check base properties
-	otherProperties := make(map[string]interface{}, 0)
+	otherProperties := make(map[string]interface{})
 	for key, value := range bodyMap {
 		if def, ok := t.BaseProperties[key]; ok {
 			var valueDefType *TypeBase
@@ -119,7 +119,7 @@ func (t *DiscriminatedObjectType) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				elements := make(map[string]*TypeReference, 0)
+				elements := make(map[string]*TypeReference)
 				for key, index := range elementIndexes {
 					elements[key] = &TypeReference{TypeIndex: index}
 				}
