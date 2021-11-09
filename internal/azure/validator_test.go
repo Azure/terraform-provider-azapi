@@ -2,10 +2,10 @@ package azure_test
 
 import (
 	"encoding/json"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 	"testing"
 
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
+	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 func Test_BodyValidation(t *testing.T) {
@@ -61,7 +61,7 @@ func Test_BodyValidation(t *testing.T) {
 		resourceType := utils.GetResourceType(data.Id)
 
 		var body interface{}
-		json.Unmarshal([]byte(data.Body), &body)
+		_ = json.Unmarshal([]byte(data.Body), &body)
 
 		def, err := azure.GetResourceDefinition(resourceType, data.ApiVersion)
 		if err != nil {

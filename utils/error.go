@@ -6,35 +6,20 @@ import (
 )
 
 func ErrorMismatch(key, expected, actual string) error {
-	if strings.HasPrefix(key, ".") {
-		key = key[1:]
-	}
-	return fmt.Errorf("`%s` is invalid, expect `%s` but got `%s`", key, expected, actual)
+	return fmt.Errorf("`%s` is invalid, expect `%s` but got `%s`", strings.TrimPrefix(key, "."), expected, actual)
 }
 
 func ErrorNotMatchAny(key string) error {
-	if strings.HasPrefix(key, ".") {
-		key = key[1:]
-	}
-	return fmt.Errorf("`%s` doesn't match any accepted values", key)
+	return fmt.Errorf("`%s` doesn't match any accepted values", strings.TrimPrefix(key, "."))
 }
 
 func ErrorShouldNotDefine(key string, options []string) error {
-	if strings.HasPrefix(key, ".") {
-		key = key[1:]
-	}
 	suggestion := getSuggestion(key, options)
-	if strings.HasPrefix(suggestion, ".") {
-		suggestion = suggestion[1:]
-	}
-	return fmt.Errorf("`%s` is not expected here. Do you mean `%s`? ", key, suggestion)
+	return fmt.Errorf("`%s` is not expected here. Do you mean `%s`? ", strings.TrimPrefix(key, "."), strings.TrimPrefix(suggestion, "."))
 }
 
 func ErrorShouldDefine(key string) error {
-	if strings.HasPrefix(key, ".") {
-		key = key[1:]
-	}
-	return fmt.Errorf("`%s` is required, but no definition was found", key)
+	return fmt.Errorf("`%s` is required, but no definition was found", strings.TrimPrefix(key, "."))
 }
 
 func getSuggestion(value string, options []string) string {

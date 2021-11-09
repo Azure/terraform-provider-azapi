@@ -97,7 +97,7 @@ func SchemaIdentityDataSource() *schema.Schema {
 }
 
 func ExpandIdentity(input []interface{}) (interface{}, error) {
-	body := make(map[string]interface{}, 0)
+	body := make(map[string]interface{})
 	if len(input) == 0 || input[0] == nil {
 		return body, nil
 	}

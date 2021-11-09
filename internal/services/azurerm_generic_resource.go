@@ -264,7 +264,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
 	if len(paths) != 0 {
-		output = make(map[string]interface{}, 0)
+		output = make(map[string]interface{})
 		for _, path := range paths {
 			part := utils.ExtractObject(responseBody, path.(string))
 			if part == nil {
@@ -274,7 +274,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 	if output == nil {
-		output = make(map[string]interface{}, 0)
+		output = make(map[string]interface{})
 	}
 	outputJson, _ := json.Marshal(output)
 	d.Set("output", string(outputJson))

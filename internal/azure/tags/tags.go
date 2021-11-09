@@ -71,7 +71,7 @@ func ExpandTags(tagsMap map[string]interface{}) interface{} {
 		output[i] = value
 	}
 
-	body := make(map[string]interface{}, 0)
+	body := make(map[string]interface{})
 	body["tags"] = output
 	return body
 }

@@ -37,9 +37,9 @@ func Test_GetMergedJson(t *testing.T) {
 }
 `
 	var new, old, expected interface{}
-	json.Unmarshal([]byte(oldJson), &old)
-	json.Unmarshal([]byte(newJson), &new)
-	json.Unmarshal([]byte(expectedJson), &expected)
+	_ = json.Unmarshal([]byte(oldJson), &old)
+	_ = json.Unmarshal([]byte(newJson), &new)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
 	result := utils.GetMergedJson(old, new)
 	if !reflect.DeepEqual(result, expected) {
@@ -79,9 +79,9 @@ func Test_GetRemovedJson(t *testing.T) {
 }
 `
 	var new, old, expected interface{}
-	json.Unmarshal([]byte(oldJson), &old)
-	json.Unmarshal([]byte(newJson), &new)
-	json.Unmarshal([]byte(expectedJson), &expected)
+	_ = json.Unmarshal([]byte(oldJson), &old)
+	_ = json.Unmarshal([]byte(newJson), &new)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
 	result := utils.GetRemovedJson(old, new)
 	if !reflect.DeepEqual(result, expected) {
@@ -133,8 +133,8 @@ func Test_GetIgnoredJson(t *testing.T) {
 `
 
 	var old, expected interface{}
-	json.Unmarshal([]byte(oldJson), &old)
-	json.Unmarshal([]byte(expectedJson), &expected)
+	_ = json.Unmarshal([]byte(oldJson), &old)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
 	result := utils.GetIgnoredJson(old, []string{"provisioningState"})
 	if !reflect.DeepEqual(result, expected) {
@@ -174,8 +174,8 @@ func Test_ExtractObject(t *testing.T) {
 `
 
 	var old, expected interface{}
-	json.Unmarshal([]byte(oldJson), &old)
-	json.Unmarshal([]byte(expectedJson), &expected)
+	_ = json.Unmarshal([]byte(oldJson), &old)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
 	result := utils.ExtractObject(old, "properties.consumerGroup")
 	if !reflect.DeepEqual(result, expected) {

@@ -29,7 +29,7 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 	}
 
 	// check base properties
-	otherProperties := make(map[string]interface{}, 0)
+	otherProperties := make(map[string]interface{})
 	for key, value := range bodyMap {
 		if def, ok := t.BaseProperties[key]; ok {
 			var valueDefType *TypeBase

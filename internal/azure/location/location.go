@@ -38,7 +38,7 @@ func LocationNormalize(input string) string {
 }
 
 func ExpandLocation(location string) interface{} {
-	body := make(map[string]interface{}, 0)
+	body := make(map[string]interface{})
 	body["location"] = LocationNormalize(location)
 	return body
 }

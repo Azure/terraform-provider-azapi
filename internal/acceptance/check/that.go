@@ -3,9 +3,10 @@ package check
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
+
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"

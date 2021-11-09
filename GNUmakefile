@@ -87,7 +87,6 @@ test-docker:
 	docker run --rm -v $$(pwd):/go/src/github.com/hashicorp/terraform-provider-azurerm -w /go/src/github.com/hashicorp/terraform-provider-azurerm golang:1.13 make test
 
 test: fmtcheck
-	@TEST=$(TEST) ./scripts/run-gradually-deprecated.sh
 	@TEST=$(TEST) ./scripts/run-test.sh
 
 test-compile:

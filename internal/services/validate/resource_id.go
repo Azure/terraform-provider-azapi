@@ -29,7 +29,7 @@ func AzureResourceID(input interface{}, key string) (warnings []string, errors [
 		return
 	}
 
-	r, _ := regexp.Compile("^http[s]?:.*")
+	r := regexp.MustCompile("^http[s]?:.*")
 	if r.MatchString(v) {
 		errors = append(errors, fmt.Errorf("expected %q not to contain protocol", key))
 	}
