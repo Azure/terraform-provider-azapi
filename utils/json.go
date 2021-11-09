@@ -168,6 +168,6 @@ func ExtractObject(old interface{}, path string) interface{} {
 func NormalizeObject(input interface{}) interface{} {
 	jsonString, _ := json.Marshal(input)
 	var output interface{}
-	_ = json.Unmarshal([]byte(jsonString), &output)
+	_ = json.Unmarshal(jsonString, &output)
 	return output
 }

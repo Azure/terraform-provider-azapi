@@ -34,7 +34,9 @@ func (t *ObjectType) Validate(body interface{}, path string) []error {
 				valueDefType = def.Type.Type
 				errors = append(errors, (*valueDefType).Validate(value, path+"."+key)...)
 			}
-		} else if t.AdditionalProperties != nil && t.AdditionalProperties.Type != nil {
+			continue
+		}
+		if t.AdditionalProperties != nil && t.AdditionalProperties.Type != nil {
 			errors = append(errors, (*t.AdditionalProperties.Type).Validate(value, path+"."+key)...)
 		} else {
 			options := make([]string, 0)
