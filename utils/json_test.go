@@ -94,7 +94,7 @@ func Test_GetRemovedJson(t *testing.T) {
 func Test_GetIgnoredJson(t *testing.T) {
 	oldJson := `
 {
-  "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
   "kind": "EventHub",
   "location": "West Europe",
   "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
@@ -102,9 +102,9 @@ func Test_GetIgnoredJson(t *testing.T) {
     "compression": "None",
     "consumerGroup": "acctesteventhubcg-henglu924",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
     "mappingRuleName": "",
     "provisioningState": "Succeeded",
     "tableName": ""
@@ -114,7 +114,7 @@ func Test_GetIgnoredJson(t *testing.T) {
 `
 	expectedJson := `
 {
-  "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
   "kind": "EventHub",
   "location": "West Europe",
   "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
@@ -122,9 +122,9 @@ func Test_GetIgnoredJson(t *testing.T) {
     "compression": "None",
     "consumerGroup": "acctesteventhubcg-henglu924",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
     "mappingRuleName": "",
     "tableName": ""
   },
@@ -147,7 +147,7 @@ func Test_GetIgnoredJson(t *testing.T) {
 func Test_ExtractObject(t *testing.T) {
 	oldJson := `
 {
-  "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
   "kind": "EventHub",
   "location": "West Europe",
   "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
@@ -155,9 +155,9 @@ func Test_ExtractObject(t *testing.T) {
     "compression": "None",
     "consumerGroup": "acctesteventhubcg-henglu924",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
     "mappingRuleName": "",
     "provisioningState": "Succeeded",
     "tableName": ""
