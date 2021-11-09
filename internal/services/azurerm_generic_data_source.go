@@ -8,7 +8,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/identity"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/tags"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
@@ -47,16 +49,16 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 				},
 			},
 
-			"location": azure.SchemaLocationDataSource(),
+			"location": location.SchemaLocationDataSource(),
 
-			"identity": azure.SchemaIdentityDataSource(),
+			"identity": identity.SchemaIdentityDataSource(),
 
 			"output": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
 
-			"tags": azure.SchemaTagsDataSource(),
+			"tags": tags.SchemaTagsDataSource(),
 		},
 	}
 }
@@ -77,9 +79,9 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())
-	d.Set("tags", azure.FlattenTags(responseBody))
-	d.Set("location", azure.FlattenLocation(responseBody))
-	d.Set("identity", azure.FlattenIdentity(responseBody))
+	d.Set("tags", tags.FlattenTags(responseBody))
+	d.Set("location", location.FlattenLocation(responseBody))
+	d.Set("identity", identity.FlattenIdentity(responseBody))
 
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}

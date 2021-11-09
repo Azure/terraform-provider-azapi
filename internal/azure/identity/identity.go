@@ -1,4 +1,4 @@
-package azure
+package identity
 
 import (
 	"fmt"

@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 	"net/http"
 	"testing"
 
@@ -12,7 +13,6 @@ import (
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance/check"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 type GenericResource struct{}

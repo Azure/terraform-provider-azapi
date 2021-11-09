@@ -6,11 +6,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/identity"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/tags"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
@@ -52,9 +56,9 @@ func ResourceAzureGenericResource() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
-			"location": azure.SchemaLocation(),
+			"location": location.SchemaLocation(),
 
-			"identity": azure.SchemaIdentity(),
+			"identity": identity.SchemaIdentity(),
 
 			"body": {
 				Type:             schema.TypeString,
@@ -97,9 +101,10 @@ func ResourceAzureGenericResource() *schema.Resource {
 				Computed: true,
 			},
 
-			"tags": azure.SchemaTags(),
+			"tags": tags.SchemaTags(),
 		},
-		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, i interface{}) error {
+
+		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
 			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("response_export_values") {
 				d.SetNewComputed("output")
 			}
@@ -108,19 +113,25 @@ func ResourceAzureGenericResource() *schema.Resource {
 				d.SetNewComputed("output")
 			}
 
+			var body interface{}
+			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
+			if err != nil {
+				return err
+			}
 			props := []string{"identity", "location", "tags"}
 			for _, prop := range props {
 				if _, ok := d.GetOk(prop); ok {
-					var body interface{}
-					err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
-					if err != nil {
-						return err
-					}
 					if bodyMap, ok := body.(map[string]interface{}); ok {
 						if bodyMap[prop] != nil {
 							return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 						}
 					}
+				}
+			}
+
+			if meta.(*clients.Client).Features.SchemaValidationEnabled {
+				if err := schemaValidation(d.Get("resource_id").(string), d.Get("api_version").(string), body); err != nil {
+					return err
 				}
 			}
 			return nil
@@ -153,20 +164,37 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		return err
 	}
 
-	if tags, ok := d.GetOk("tags"); ok {
-		bodyWithTags := azure.ExpandTags(tags.(map[string]interface{}))
+	props := []string{"identity", "location", "tags"}
+	for _, prop := range props {
+		if _, ok := d.GetOk(prop); ok {
+			if bodyMap, ok := requestBody.(map[string]interface{}); ok {
+				if bodyMap[prop] != nil {
+					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+				}
+			}
+		}
+	}
+
+	if value, ok := d.GetOk("tags"); ok {
+		bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
 		requestBody = utils.GetMergedJson(requestBody, bodyWithTags)
 	}
-	if location, ok := d.GetOk("location"); ok {
-		bodyWithLocation := azure.ExpandLocation(location.(string))
+	if value, ok := d.GetOk("location"); ok {
+		bodyWithLocation := location.ExpandLocation(value.(string))
 		requestBody = utils.GetMergedJson(requestBody, bodyWithLocation)
 	}
-	if identity, ok := d.GetOk("identity"); ok {
-		bodyWithIdentity, err := azure.ExpandIdentity(identity.([]interface{}))
+	if value, ok := d.GetOk("identity"); ok {
+		bodyWithIdentity, err := identity.ExpandIdentity(value.([]interface{}))
 		if err != nil {
 			return err
 		}
 		requestBody = utils.GetMergedJson(requestBody, bodyWithIdentity)
+	}
+
+	if meta.(*clients.Client).Features.SchemaValidationEnabled {
+		if err := schemaValidation(d.Get("resource_id").(string), d.Get("api_version").(string), requestBody); err != nil {
+			return err
+		}
 	}
 
 	var method string
@@ -178,7 +206,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	j, _ := json.Marshal(requestBody)
-	log.Printf("[INFO] body: %v\n", string(j))
+	log.Printf("[INFO] request body: %v\n", string(j))
 	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, method)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
@@ -229,9 +257,9 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 	d.Set("body", string(data))
-	d.Set("tags", azure.FlattenTags(responseBody))
-	d.Set("location", azure.FlattenLocation(responseBody))
-	d.Set("identity", azure.FlattenIdentity(responseBody))
+	d.Set("tags", tags.FlattenTags(responseBody))
+	d.Set("location", location.FlattenLocation(responseBody))
+	d.Set("identity", identity.FlattenIdentity(responseBody))
 
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
@@ -268,5 +296,36 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("deleting %q: %+v", id, err)
 	}
 
+	return nil
+}
+
+func schemaValidation(resourceId, apiVersion string, body interface{}) error {
+	resourceType := utils.GetResourceType(resourceId)
+	log.Printf("[INFO] prepare validation for resource type: %s", resourceType)
+	versions := azure.GetApiVersions(resourceType)
+	isVersionValid := false
+	for _, version := range versions {
+		if version == apiVersion {
+			isVersionValid = true
+			break
+		}
+	}
+	if !isVersionValid {
+		return fmt.Errorf("the `api_version` is invalid. The supported versions are [%s]\n", strings.Join(versions, ", "))
+	}
+
+	resourceDef, err := azure.GetResourceDefinition(resourceType, apiVersion)
+	if err == nil && resourceDef != nil {
+		errors := (*resourceDef).Validate(body, "")
+		if len(errors) != 0 {
+			errorMsg := "the `body` is invalid: \n"
+			for _, err := range errors {
+				errorMsg += fmt.Sprintf("%s\n", err.Error())
+			}
+			return fmt.Errorf(errorMsg)
+		}
+	} else {
+		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+	}
 	return nil
 }

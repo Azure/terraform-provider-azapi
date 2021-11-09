@@ -60,6 +60,12 @@ The following arguments are supported:
 
 ---
 
+It's possible to configure the behaviour of certain resources using the following properties: 
+
+* `schema_validation_enabled` - (Optional) Whether enabled the validation on `api_version` and `body` with embedded schema. Defaults to `true`.
+
+---
+
 When authenticating as a Service Principal using a Client Certificate, the following fields can be set:
 
 * `client_certificate_password` - (Optional) The password associated with the Client Certificate. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PASSWORD` Environment Variable.
