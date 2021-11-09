@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 )
 
 var (
@@ -46,6 +47,7 @@ func BuildTestClient() (*clients.Client, error) {
 			SkipProviderRegistration: true,
 			TerraformVersion:         os.Getenv("TERRAFORM_CORE_VERSION"),
 			StorageUseAzureAD:        false,
+			Features:                 features.Default(),
 		}
 		client, err := clients.Build(context.TODO(), clientBuilder)
 		if err != nil {

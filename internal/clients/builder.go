@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/go-azure-helpers/sender"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/common"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 )
 
 type ClientBuilder struct {
@@ -19,6 +20,7 @@ type ClientBuilder struct {
 	SkipProviderRegistration    bool
 	StorageUseAzureAD           bool
 	TerraformVersion            string
+	Features                    features.UserFeatures
 }
 
 const azureStackEnvironmentError = `
@@ -77,6 +79,7 @@ func Build(ctx context.Context, builder ClientBuilder) (*Client, error) {
 		TerraformVersion:          builder.TerraformVersion,
 		ResourceManagerAuthorizer: auth,
 		ResourceManagerEndpoint:   endpoint,
+		Features:                  builder.Features,
 	}
 
 	if err := client.Build(ctx, o); err != nil {

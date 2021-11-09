@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/hashicorp/go-azure-helpers/sender"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 	"github.com/ms-henglu/terraform-provider-azurermg/version"
 )
 
@@ -19,6 +20,8 @@ type ClientOptions struct {
 
 	ResourceManagerAuthorizer autorest.Authorizer
 	ResourceManagerEndpoint   string
+
+	Features features.UserFeatures
 }
 
 func (o ClientOptions) ConfigureClient(c *autorest.Client, authorizer autorest.Authorizer) {

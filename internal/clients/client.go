@@ -2,14 +2,19 @@ package clients
 
 import (
 	"context"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/common"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 )
 
 type Client struct {
 	// StopContext is used for propagating control from Terraform Core (e.g. Ctrl/Cmd+C)
-	StopContext    context.Context
+	StopContext context.Context
+
+	Features features.UserFeatures
+
 	ResourceClient *ResourceClient
 }
 
@@ -20,6 +25,8 @@ func (client *Client) Build(ctx context.Context, o *common.ClientOptions) error 
 	// Disable the Azure SDK for Go's validation since it's unhelpful for our use-case
 	validation.Disabled = true
 	client.StopContext = ctx
+
+	client.Features = o.Features
 
 	resourceClient := NewResourceClientWithBaseURI(o.ResourceManagerEndpoint, o.SubscriptionId)
 	o.ConfigureClient(&resourceClient.Client, o.ResourceManagerAuthorizer)

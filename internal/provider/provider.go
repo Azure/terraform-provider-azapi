@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -97,6 +98,14 @@ func azureProvider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("ARM_MSI_ENDPOINT", ""),
 				Description: "The path to a custom endpoint for Managed Service Identity - in most circumstances this should be detected automatically. ",
 			},
+
+			// Features
+			"schema_validation_enabled": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     true,
+				Description: "Whether enable the schema validation",
+			},
 		},
 
 		DataSourcesMap: dataSources,
@@ -149,6 +158,9 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		clientBuilder := clients.ClientBuilder{
 			AuthConfig:       config,
 			TerraformVersion: terraformVersion,
+			Features: features.UserFeatures{
+				SchemaValidationEnabled: d.Get("schema_validation_enabled").(bool),
+			},
 		}
 
 		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint
