@@ -130,6 +130,21 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if meta.(*clients.Client).Features.SchemaValidationEnabled {
+				if value, ok := d.GetOk("tags"); ok {
+					bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
+					body = utils.GetMergedJson(body, bodyWithTags)
+				}
+				if value, ok := d.GetOk("location"); ok {
+					bodyWithLocation := location.ExpandLocation(value.(string))
+					body = utils.GetMergedJson(body, bodyWithLocation)
+				}
+				if value, ok := d.GetOk("identity"); ok {
+					bodyWithIdentity, err := identity.ExpandIdentity(value.([]interface{}))
+					if err != nil {
+						return err
+					}
+					body = utils.GetMergedJson(body, bodyWithIdentity)
+				}
 				if err := schemaValidation(d.Get("resource_id").(string), d.Get("api_version").(string), body); err != nil {
 					return err
 				}
@@ -192,7 +207,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	if meta.(*clients.Client).Features.SchemaValidationEnabled {
-		if err := schemaValidation(d.Get("resource_id").(string), d.Get("api_version").(string), requestBody); err != nil {
+		if err := schemaValidation(id.AzureResourceId, id.ApiVersion, requestBody); err != nil {
 			return err
 		}
 	}
@@ -300,6 +315,11 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 }
 
 func schemaValidation(resourceId, apiVersion string, body interface{}) error {
+	if len(resourceId) == 0 {
+		log.Println("[INFO] `resource_id` will be known after apply, skip schema validation on plan phase.")
+		return nil
+	}
+
 	resourceType := utils.GetResourceType(resourceId)
 	log.Printf("[INFO] prepare validation for resource type: %s", resourceType)
 	versions := azure.GetApiVersions(resourceType)
@@ -316,7 +336,7 @@ func schemaValidation(resourceId, apiVersion string, body interface{}) error {
 
 	resourceDef, err := azure.GetResourceDefinition(resourceType, apiVersion)
 	if err == nil && resourceDef != nil {
-		errors := (*resourceDef).Validate(body, "")
+		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
 		if len(errors) != 0 {
 			errorMsg := "the `body` is invalid: \n"
 			for _, err := range errors {

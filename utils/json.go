@@ -163,3 +163,11 @@ func ExtractObject(old interface{}, path string) interface{} {
 	}
 	return nil
 }
+
+// NormalizeObject is used to remove customized type and replaced with builtin type
+func NormalizeObject(input interface{}) interface{} {
+	jsonString, _ := json.Marshal(input)
+	var output interface{}
+	_ = json.Unmarshal(jsonString, &output)
+	return output
+}

@@ -16,6 +16,31 @@ func Test_BodyValidation(t *testing.T) {
 		Error      bool
 	}{
 		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-211109150453866525/providers/Microsoft.ContainerRegistry/registries/acctest61311",
+			ApiVersion: "2020-11-01-preview",
+			Body: `
+{
+  "identity": {
+    "type": "SystemAssigned, UserAssigned",
+    "userAssignedIdentities": {
+      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-211109152718418172/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctestb0i47": {}
+    }
+  },
+  "location": "westeurope",
+  "properties": {
+    "adminUserEnabled": true
+  },
+  "sku": {
+    "name": "Standard"
+  },
+  "tags": {
+    "Key": "Value"
+  }
+}
+`,
+			Error: false,
+		},
+		{
 			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myapp",
 			ApiVersion: "2020-07-01",
 			Body: `
