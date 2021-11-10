@@ -2,6 +2,7 @@ package azure_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
@@ -14,7 +15,68 @@ func Test_BodyValidation(t *testing.T) {
 		ApiVersion string
 		Body       string
 		Error      bool
-	}{
+	}{{
+		Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/compute1",
+		ApiVersion: "2021-07-01",
+		Body: `
+{
+    "location": "eastus",
+    "properties": {
+        "properties": {
+            "state": "Running"
+        }
+    }
+}
+`,
+		Error: true, // properties.computeType is required
+	},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/compute1",
+			ApiVersion: "2021-07-01",
+			Body: `
+{
+    "location": "eastus",
+    "properties": {
+        "computeType": "ComputeInstance1",
+        "properties": {
+            "state": "Running"
+        }
+    }
+}
+`,
+			Error: true, // invalid properties.computeType
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/compute1",
+			ApiVersion: "2021-07-01",
+			Body: `
+{
+    "location": "eastus",
+    "properties": {
+        "computeType": "ComputeInstance",
+        "properties": {
+            "state": "Running"
+        }
+    }
+}
+`,
+			Error: true, // properties.properties.state is read only
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/compute1",
+			ApiVersion: "2021-07-01",
+			Body: `
+{
+    "location": "eastus",
+    "properties": {
+        "computeType": "ComputeInstance",
+        "properties": {
+        }
+    }
+}
+`,
+			Error: false,
+		},
 		{
 			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-211109150453866525/providers/Microsoft.ContainerRegistry/registries/acctest61311",
 			ApiVersion: "2020-11-01-preview",
@@ -82,7 +144,7 @@ func Test_BodyValidation(t *testing.T) {
 		},
 	}
 
-	for _, data := range testData {
+	for index, data := range testData {
 		resourceType := utils.GetResourceType(data.Id)
 
 		var body interface{}
@@ -95,6 +157,8 @@ func Test_BodyValidation(t *testing.T) {
 
 		if def != nil {
 			errors := (*def).Validate(body, "")
+			fmt.Printf("Running test for case %d, resource type: %s, api-version: %s\n", index, resourceType, data.ApiVersion)
+			fmt.Println(errors)
 			if (len(errors) > 0) != data.Error {
 				t.Errorf("expect error: %t, got error: %t for id: %s, api-version: %s", data.Error, len(errors) > 0, data.Id, data.ApiVersion)
 			}

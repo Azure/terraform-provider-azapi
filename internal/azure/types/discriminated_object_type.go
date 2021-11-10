@@ -32,6 +32,10 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 	otherProperties := make(map[string]interface{})
 	for key, value := range bodyMap {
 		if def, ok := t.BaseProperties[key]; ok {
+			if def.IsReadOnly() {
+				errors = append(errors, utils.ErrorShouldNotDefineReadOnly(path+"."+key))
+				continue
+			}
 			var valueDefType *TypeBase
 			if def.Type != nil && def.Type.Type != nil {
 				valueDefType = def.Type.Type
@@ -50,25 +54,26 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 	}
 
 	// check other properties which should be defined in discriminated objects
-	valid := false
-	errs := make([]error, 0)
-	for _, element := range t.Elements {
-		if element.Type == nil {
-			continue
-		}
-		temp := (*element.Type).Validate(otherProperties, path)
-		if len(temp) < len(errs) || len(errs) == 0 {
-			errs = temp
-		}
-		if len(temp) == 0 {
-			valid = true
-			break
-		}
+	if _, ok := otherProperties[t.Discriminator]; !ok {
+		errors = append(errors, utils.ErrorShouldDefine(path+"."+t.Discriminator))
+		return errors
 	}
-	errors = append(errors, errs...)
-	if !valid {
-		errors = append(errors, utils.ErrorNotMatchAny(path))
+
+	if discriminator, ok := otherProperties[t.Discriminator].(string); ok {
+		switch {
+		case t.Elements[discriminator] == nil:
+			options := make([]string, 0)
+			for key := range t.Elements {
+				options = append(options, key)
+			}
+			errors = append(errors, utils.ErrorNotMatchAnyValues(path+"."+t.Discriminator, discriminator, options))
+		case t.Elements[discriminator].Type != nil:
+			errors = append(errors, (*t.Elements[discriminator].Type).Validate(otherProperties, path)...)
+		}
+	} else {
+		errors = append(errors, utils.ErrorMismatch(path+"."+t.Discriminator, "string", fmt.Sprintf("%T", otherProperties[t.Discriminator])))
 	}
+
 	return errors
 }
 
