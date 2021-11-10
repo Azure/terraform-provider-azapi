@@ -17,6 +17,10 @@ import (
 
 type GenericResource struct{}
 
+func ignoredProperties() []string {
+	return []string{"body", "create_method", "update_method"}
+}
+
 func TestAccGenericResource_basic(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
 	r := GenericResource{}
@@ -28,6 +32,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
+		data.ImportStep(ignoredProperties()...),
 	})
 }
 
@@ -57,7 +62,22 @@ func TestAccGenericResource_complete(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("body", "create_method", "update_method"),
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
+func TestAccGenericResource_completeBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.completeBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
 	})
 }
 
@@ -72,28 +92,28 @@ func TestAccGenericResource_identity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("body", "create_method", "update_method"),
+		data.ImportStep(ignoredProperties()...),
 		{
 			Config: r.identityUserAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("body", "create_method", "update_method"),
+		data.ImportStep(ignoredProperties()...),
 		{
 			Config: r.identitySystemAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("body", "create_method", "update_method"),
+		data.ImportStep(ignoredProperties()...),
 		{
 			Config: r.complete(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("body", "create_method", "update_method"),
+		data.ImportStep(ignoredProperties()...),
 	})
 }
 
@@ -197,6 +217,45 @@ resource "azurermg_resource" "test" {
   tags = {
     "Key" = "Value"
   }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) completeBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurermg" {
+  schema_validation_enabled = false
+}
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+}
+
+resource "azurermg_resource" "test" {
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
+  api_version = "2020-11-01-preview"
+
+  body = <<BODY
+    {
+      "location": "${azurerm_resource_group.test.location}",
+      "identity": {
+		"type": "systemAssigned"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      },
+      "tags": {
+        "key":"value"
+      }
+    }
+  BODY
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
