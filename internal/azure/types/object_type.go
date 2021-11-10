@@ -29,6 +29,10 @@ func (t *ObjectType) Validate(body interface{}, path string) []error {
 	// check properties defined in body, but not in schema
 	for key, value := range bodyMap {
 		if def, ok := t.Properties[key]; ok {
+			if def.IsReadOnly() {
+				errors = append(errors, utils.ErrorShouldNotDefineReadOnly(path+"."+key))
+				continue
+			}
 			var valueDefType *TypeBase
 			if def.Type != nil && def.Type.Type != nil {
 				valueDefType = def.Type.Type
@@ -115,6 +119,15 @@ type ObjectProperty struct {
 func (o ObjectProperty) IsRequired() bool {
 	for _, value := range o.Flags {
 		if value == Required {
+			return true
+		}
+	}
+	return false
+}
+
+func (o ObjectProperty) IsReadOnly() bool {
+	for _, value := range o.Flags {
+		if value == ReadOnly {
 			return true
 		}
 	}

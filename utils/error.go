@@ -13,6 +13,19 @@ func ErrorNotMatchAny(key string) error {
 	return fmt.Errorf("`%s` doesn't match any accepted values", strings.TrimPrefix(key, "."))
 }
 
+func ErrorNotMatchAnyValues(key string, value string, options []string) error {
+	suggestion := getSuggestion(value, options)
+	return fmt.Errorf("`%s`'s value `%s` is invalid. The supported versions are [%s]. Do you mean `%s`? ",
+		strings.TrimPrefix(key, "."),
+		value,
+		strings.Join(options, ", "),
+		suggestion)
+}
+
+func ErrorShouldNotDefineReadOnly(key string) error {
+	return fmt.Errorf("`%s` is not expected here, it's read only", strings.TrimPrefix(key, "."))
+}
+
 func ErrorShouldNotDefine(key string, options []string) error {
 	suggestion := getSuggestion(key, options)
 	return fmt.Errorf("`%s` is not expected here. Do you mean `%s`? ", strings.TrimPrefix(key, "."), strings.TrimPrefix(suggestion, "."))
