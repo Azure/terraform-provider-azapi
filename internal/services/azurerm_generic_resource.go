@@ -118,16 +118,19 @@ func ResourceAzureGenericResource() *schema.Resource {
 			if err != nil {
 				return err
 			}
-			props := []string{"identity", "location", "tags"}
-			for _, prop := range props {
-				if _, ok := d.GetOk(prop); ok {
-					if bodyMap, ok := body.(map[string]interface{}); ok {
-						if bodyMap[prop] != nil {
-							return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+			/*
+				disable validation on specify a property both in hcl and in body, because can't detect whether user specified a property in hcl
+				props := []string{"identity", "location", "tags"}
+				for _, prop := range props {
+					if _, ok := d.GetOk(prop); ok {
+						if bodyMap, ok := body.(map[string]interface{}); ok {
+							if bodyMap[prop] != nil {
+								return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+							}
 						}
 					}
 				}
-			}
+			*/
 
 			if meta.(*clients.Client).Features.SchemaValidationEnabled {
 				if value, ok := d.GetOk("tags"); ok {
@@ -179,17 +182,19 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		return err
 	}
 
-	props := []string{"identity", "location", "tags"}
-	for _, prop := range props {
-		if _, ok := d.GetOk(prop); ok {
-			if bodyMap, ok := requestBody.(map[string]interface{}); ok {
-				if bodyMap[prop] != nil {
-					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+	/*
+		disable validation on specify a property both in hcl and in body, because can't detect whether user specified a property in hcl
+		props := []string{"identity", "location", "tags"}
+		for _, prop := range props {
+			if _, ok := d.GetOk(prop); ok {
+				if bodyMap, ok := requestBody.(map[string]interface{}); ok {
+					if bodyMap[prop] != nil {
+						return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+					}
 				}
 			}
 		}
-	}
-
+	*/
 	if value, ok := d.GetOk("tags"); ok {
 		bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
 		requestBody = utils.GetMergedJson(requestBody, bodyWithTags)
