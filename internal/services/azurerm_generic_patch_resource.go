@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -24,8 +25,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 		Delete: resourceAzureGenericPatchResourceDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			_, err := parse.ResourceID(id)
-			return err
+			return fmt.Errorf("`azurermg_patch_resource` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
@@ -46,7 +46,6 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 			"api_version": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ForceNew:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
@@ -57,21 +56,29 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
 
-			"method": {
-				Type:     schema.TypeString,
+			"response_export_values": {
+				Type:     schema.TypeList,
 				Optional: true,
-				Default:  "PUT",
-				ValidateFunc: validation.StringInSlice([]string{
-					http.MethodPost,
-					http.MethodPut,
-					// http.MethodPatch, not supported yet
-				}, false),
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 
-			"response_body": {
+			"output": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+		},
+
+		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
+			if d.HasChange("response_export_values") {
+				d.SetNewComputed("output")
+			}
+			old, new := d.GetChange("body")
+			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+				d.SetNewComputed("output")
+			}
+			return nil
 		},
 	}
 }
@@ -99,7 +106,10 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 
 	requestBody = utils.GetMergedJson(existing, requestBody)
 	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, d.Get("method").(string))
+
+	j, _ := json.Marshal(requestBody)
+	log.Printf("[INFO] request body: %v\n", string(j))
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -145,11 +155,23 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	}
 	d.Set("body", string(data))
 
-	responseBodyJson, err := json.Marshal(responseBody)
-	if err != nil {
-		return err
+	paths := d.Get("response_export_values").([]interface{})
+	var output interface{}
+	if len(paths) != 0 {
+		output = make(map[string]interface{})
+		for _, path := range paths {
+			part := utils.ExtractObject(responseBody, path.(string))
+			if part == nil {
+				continue
+			}
+			output = utils.GetMergedJson(output, part)
+		}
 	}
-	d.Set("response_body", string(responseBodyJson))
+	if output == nil {
+		output = make(map[string]interface{})
+	}
+	outputJson, _ := json.Marshal(output)
+	d.Set("output", string(outputJson))
 	return nil
 }
 
@@ -177,9 +199,11 @@ func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interf
 		return err
 	}
 
-	requestBody = utils.GetMergedJson(existing, requestBody)
+	requestBody = utils.GetRemovedJson(existing, requestBody)
 	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, d.Get("method").(string))
+	j, _ := json.Marshal(requestBody)
+	log.Printf("[INFO] request body: %v\n", string(j))
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}

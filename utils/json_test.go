@@ -49,6 +49,162 @@ func Test_GetMergedJson(t *testing.T) {
 	}
 }
 
+func Test_GetMergedJsonWithArray(t *testing.T) {
+	oldJson := `
+{
+    "name": "henglulb",
+    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb",
+    "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+    "type": "Microsoft.Network/loadBalancers",
+    "location": "westus",
+    "tags": {},
+    "properties": {
+        "provisioningState": "Succeeded",
+        "resourceGuid": "0a6d40b0-4f2e-4582-9bb8-cda0e3f8099a",
+        "frontendIPConfigurations": [
+            {
+                "name": "PublicIPAddress",
+                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress",
+                "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+                "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/publicIPAddresses/hengluIp"
+                    },
+                    "inboundNatRules": [
+                        {
+                            "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess"
+                        }
+                    ]
+                }
+            }
+        ],
+        "backendAddressPools": [],
+        "loadBalancingRules": [],
+        "probes": [],
+        "inboundNatRules": [
+            {
+                "name": "RDPAccess",
+                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess",
+                "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+                "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "frontendIPConfiguration": {
+                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress"
+                    },
+                    "frontendPort": 3389,
+                    "backendPort": 3389,
+                    "enableFloatingIP": false,
+                    "protocol": "Tcp",
+                    "enableDestinationServiceEndpoint": false,
+                    "enableTcpReset": false,
+                    "allowBackendPortConflict": false
+                }
+            }
+        ],
+        "inboundNatPools": []
+    },
+    "sku": {
+        "name": "Basic",
+        "tier": "Regional"
+    }
+}
+`
+
+	newJson := `
+  {
+      "properties": {
+        "inboundNatRules": [
+          {
+            "properties": {
+               "idleTimeoutInMinutes": 15
+            }
+          }
+        ]
+      }
+    }
+`
+
+	expectedJson := `
+{
+    "name": "henglulb",
+    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb",
+    "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+    "type": "Microsoft.Network/loadBalancers",
+    "location": "westus",
+    "tags": {},
+    "properties": {
+        "provisioningState": "Succeeded",
+        "resourceGuid": "0a6d40b0-4f2e-4582-9bb8-cda0e3f8099a",
+        "frontendIPConfigurations": [
+            {
+                "name": "PublicIPAddress",
+                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress",
+                "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+                "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/publicIPAddresses/hengluIp"
+                    },
+                    "inboundNatRules": [
+                        {
+                            "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess"
+                        }
+                    ]
+                }
+            }
+        ],
+        "backendAddressPools": [],
+        "loadBalancingRules": [],
+        "probes": [],
+        "inboundNatRules": [
+            {
+                "name": "RDPAccess",
+                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess",
+                "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
+                "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "frontendIPConfiguration": {
+                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress"
+                    },
+                    "frontendPort": 3389,
+                    "backendPort": 3389,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 15,
+                    "protocol": "Tcp",
+                    "enableDestinationServiceEndpoint": false,
+                    "enableTcpReset": false,
+                    "allowBackendPortConflict": false
+                }
+            }
+        ],
+        "inboundNatPools": []
+    },
+    "sku": {
+        "name": "Basic",
+        "tier": "Regional"
+    }
+}
+`
+	var new, old, expected interface{}
+	_ = json.Unmarshal([]byte(oldJson), &old)
+	_ = json.Unmarshal([]byte(newJson), &new)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
+
+	result := utils.GetMergedJson(old, new)
+	if !reflect.DeepEqual(result, expected) {
+		expectedJson, _ := json.Marshal(expected)
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+	}
+}
+
 func Test_GetRemovedJson(t *testing.T) {
 	oldJson := `
  {

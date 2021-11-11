@@ -52,7 +52,6 @@ func ResourceAzureGenericResource() *schema.Resource {
 			"api_version": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ForceNew:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
