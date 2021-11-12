@@ -10,6 +10,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
@@ -105,8 +106,10 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	}
 
 	requestBody = utils.GetMergedJson(existing, requestBody)
-	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
-
+	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+	if err == nil && resourceDef != nil {
+		requestBody = (*resourceDef).GetWriteOnly(requestBody)
+	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
 	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
@@ -200,7 +203,10 @@ func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interf
 	}
 
 	requestBody = utils.GetRemovedJson(existing, requestBody)
-	requestBody = utils.GetIgnoredJson(requestBody, getUnsupportedProperties())
+	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+	if err == nil && resourceDef != nil {
+		requestBody = (*resourceDef).GetWriteOnly(requestBody)
+	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
 	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
@@ -209,8 +215,4 @@ func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interf
 	}
 
 	return nil
-}
-
-func getUnsupportedProperties() []string {
-	return []string{"provisioningState"}
 }

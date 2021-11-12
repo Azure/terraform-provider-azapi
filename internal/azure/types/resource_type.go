@@ -10,6 +10,16 @@ type ResourceType struct {
 	Body       *TypeReference
 }
 
+func (t *ResourceType) GetWriteOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return nil
+	}
+	if t.Body != nil && t.Body.Type != nil {
+		return (*t.Body.Type).GetWriteOnly(body)
+	}
+	return nil
+}
+
 func (t *ResourceType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}

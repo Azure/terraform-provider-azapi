@@ -43,7 +43,7 @@ resource "azurerm_container_registry" "example" {
 
 data "azurermg_resource" "test" {
   resource_id = azurerm_container_registry.example.id
-  type = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
 
   response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
 }

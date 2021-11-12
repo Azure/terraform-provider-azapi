@@ -45,6 +45,13 @@ type BuiltInType struct {
 	Kind BuiltInTypeKind `json:"Kind"`
 }
 
+func (t *BuiltInType) GetWriteOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return nil
+	}
+	return body
+}
+
 func (t *BuiltInType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}

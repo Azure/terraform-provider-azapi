@@ -16,6 +16,44 @@ type DiscriminatedObjectType struct {
 	Elements       map[string]*TypeReference
 }
 
+func (t *DiscriminatedObjectType) GetWriteOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return []error{}
+	}
+	// check body type
+	bodyMap, ok := body.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	res := make(map[string]interface{})
+	for key, def := range t.BaseProperties {
+		if _, ok := bodyMap[key]; ok {
+			if !def.IsReadOnly() && def.Type != nil && def.Type.Type != nil {
+				res[key] = (*def.Type.Type).GetWriteOnly(bodyMap[key])
+			}
+		}
+	}
+
+	if _, ok := bodyMap[t.Discriminator]; !ok {
+		return nil
+	}
+
+	if discriminator, ok := bodyMap[t.Discriminator].(string); ok {
+		if t.Elements[discriminator].Type != nil {
+			if additionalProps := (*t.Elements[discriminator].Type).GetWriteOnly(body); additionalProps != nil {
+				if additionalMap, ok := additionalProps.(map[string]interface{}); ok {
+					for key, value := range additionalMap {
+						res[key] = value
+					}
+					return res
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}
