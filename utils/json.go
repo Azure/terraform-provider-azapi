@@ -23,8 +23,7 @@ func NormalizeJson(jsonString interface{}) string {
 func GetMergedJson(old interface{}, new interface{}) interface{} {
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
-		switch newMap := new.(type) {
-		case map[string]interface{}:
+		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
@@ -41,8 +40,7 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 			return res
 		}
 	case []interface{}:
-		switch newArr := new.(type) {
-		case []interface{}:
+		if newArr, ok := new.([]interface{}); ok {
 			if len(oldValue) != len(newArr) {
 				return newArr
 			}
@@ -60,8 +58,7 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
-		switch newMap := new.(type) {
-		case map[string]interface{}:
+		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
@@ -71,8 +68,7 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 			return res
 		}
 	case []interface{}:
-		switch newArr := new.(type) {
-		case []interface{}:
+		if newArr, ok := new.([]interface{}); ok {
 			if len(oldValue) != len(newArr) {
 				return newArr
 			}
@@ -90,8 +86,7 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 func GetRemovedJson(old interface{}, new interface{}) interface{} {
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
-		switch newMap := new.(type) {
-		case map[string]interface{}:
+		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
@@ -103,8 +98,7 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 			return res
 		}
 	case []interface{}:
-		switch newArr := new.(type) {
-		case []interface{}:
+		if newArr, ok := new.([]interface{}); ok {
 			if len(oldValue) != len(newArr) {
 				return nil
 			}
