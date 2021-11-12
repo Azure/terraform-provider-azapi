@@ -87,7 +87,7 @@ The following arguments are supported:
   `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
   Changing this forces a new azure resource to be created.
 
-* `api_version` - (Required) The version of the API used to manage this azure resource. Changing this forces a new azure resource to be created.
+* `api_version` - (Required) The version of the API used to manage this azure resource.
 
 * `body` - (Required) A JSON object that contains the request body used to create and update azure resource. 
 
