@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/identity"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/tags"
@@ -33,10 +32,10 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 				ValidateFunc: validate.AzureResourceID,
 			},
 
-			"api_version": {
+			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.ResourceType,
 			},
 
 			"response_export_values": {
@@ -66,7 +65,7 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("api_version").(string))
+	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
 
 	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {

@@ -51,7 +51,7 @@ resource "azurerm_synapse_sql_pool" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_synapse_sql_pool.test.id}/workloadGroups/smallrc"
-  api_version = "2020-12-01"
+  type = "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2020-12-01"
   body = <<BODY
 {
     "properties": {

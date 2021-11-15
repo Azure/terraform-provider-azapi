@@ -62,7 +62,7 @@ The following arguments are supported:
 
 It's possible to configure the behaviour of certain resources using the following properties: 
 
-* `schema_validation_enabled` - (Optional) Whether enabled the validation on `api_version` and `body` with embedded schema. Defaults to `true`.
+* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 
 ---
 

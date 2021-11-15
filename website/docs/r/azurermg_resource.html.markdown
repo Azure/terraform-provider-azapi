@@ -42,7 +42,7 @@ resource "azurerm_user_assigned_identity" "example" {
 // manage a container registry resource
 resource "azurermg_resource" "example" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/registry1"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = azurerm_resource_group.example.location
   identity {
     type         = "SystemAssigned, UserAssigned"
@@ -87,7 +87,8 @@ The following arguments are supported:
   `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
   Changing this forces a new azure resource to be created.
 
-* `api_version` - (Required) The version of the API used to manage this azure resource.
+* `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
+  `<api-version>` is version of the API used to manage this azure resource.
 
 * `body` - (Required) A JSON object that contains the request body used to create and update azure resource. 
 

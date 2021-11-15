@@ -38,7 +38,7 @@ func (r GenericDataSource) basic(data acceptance.TestData) string {
 
 data "azurermg_resource" "test" {
   resource_id = azurermg_resource.test.resource_id
-  api_version = azurermg_resource.test.api_version
+  type        = azurermg_resource.test.type
 }
 `, GenericResource{}.complete(data))
 }
