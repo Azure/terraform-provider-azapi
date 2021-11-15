@@ -2,11 +2,11 @@ package parse
 
 import (
 	"fmt"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 	"net/url"
 	"strings"
 
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
+	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 type ResourceId struct {
