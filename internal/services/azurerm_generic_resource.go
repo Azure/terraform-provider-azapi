@@ -257,25 +257,32 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
-	d.Set("resource_id", id.AzureResourceId)
-	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-
 	bodyJson := d.Get("body").(string)
 	var requestBody interface{}
 	err = json.Unmarshal([]byte(bodyJson), &requestBody)
-	if err != nil {
-		if len(bodyJson) == 0 {
-			// handle import case, body defaults to response body
-			requestBody = utils.GetIgnoredJson(responseBody, getUnsupportedProperties())
-		} else {
-			return err
-		}
-	}
-	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody))
-	if err != nil {
+	if err != nil && len(bodyJson) != 0 {
 		return err
 	}
-	d.Set("body", string(data))
+
+	if len(d.Get("type").(string)) == 0 {
+		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+		if err == nil && resourceDef != nil {
+			data, err := json.Marshal((*resourceDef).GetWriteOnly(responseBody))
+			if err != nil {
+				return err
+			}
+			d.Set("body", string(data))
+		}
+	} else {
+		data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody))
+		if err != nil {
+			return err
+		}
+		d.Set("body", string(data))
+	}
+
+	d.Set("resource_id", id.AzureResourceId)
+	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 	d.Set("tags", tags.FlattenTags(responseBody))
 	d.Set("location", location.FlattenLocation(responseBody))
 	d.Set("identity", identity.FlattenIdentity(responseBody))

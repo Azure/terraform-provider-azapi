@@ -12,6 +12,13 @@ type StringLiteralType struct {
 	Value string `json:"Value"`
 }
 
+func (t *StringLiteralType) GetWriteOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	return i
+}
+
 func (t *StringLiteralType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}

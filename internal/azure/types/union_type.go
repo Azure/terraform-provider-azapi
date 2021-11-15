@@ -12,6 +12,14 @@ type UnionType struct {
 	Elements []*TypeReference
 }
 
+func (t *UnionType) GetWriteOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return nil
+	}
+	// TODO: improve this
+	return body
+}
+
 func (t *UnionType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}

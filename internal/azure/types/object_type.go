@@ -15,6 +15,40 @@ type ObjectType struct {
 	AdditionalProperties *TypeReference
 }
 
+func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return nil
+	}
+	// check body type
+	bodyMap, ok := body.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	res := make(map[string]interface{})
+	for key, def := range t.Properties {
+		if key == "frontendIPConfigurations" {
+			fmt.Println()
+		}
+		if _, ok := bodyMap[key]; ok {
+			if !def.IsReadOnly() && def.Type != nil && def.Type.Type != nil {
+				res[key] = (*def.Type.Type).GetWriteOnly(bodyMap[key])
+			}
+		}
+	}
+
+	if t.AdditionalProperties != nil && t.AdditionalProperties.Type != nil {
+		if additionalProps := (*t.AdditionalProperties.Type).GetWriteOnly(body); additionalProps != nil {
+			if additionalMap, ok := additionalProps.(map[string]interface{}); ok {
+				for key, value := range additionalMap {
+					res[key] = value
+				}
+			}
+		}
+	}
+	return res
+}
+
 func (t *ObjectType) Validate(body interface{}, path string) []error {
 	if t == nil || body == nil {
 		return []error{}
