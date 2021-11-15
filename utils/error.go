@@ -15,7 +15,7 @@ func ErrorNotMatchAny(key string) error {
 
 func ErrorNotMatchAnyValues(key string, value string, options []string) error {
 	suggestion := getSuggestion(value, options)
-	return fmt.Errorf("`%s`'s value `%s` is invalid. The supported versions are [%s]. Do you mean `%s`? ",
+	return fmt.Errorf("`%s`'s value `%s` is invalid. The supported values are [%s]. Do you mean `%s`? ",
 		strings.TrimPrefix(key, "."),
 		value,
 		strings.Join(options, ", "),
