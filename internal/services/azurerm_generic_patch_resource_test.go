@@ -83,7 +83,7 @@ resource "azurerm_lb_nat_rule" "test" {
 
 resource "azurermg_patch_resource" "test" {
   resource_id = azurerm_lb.test.id
-  api_version = "2021-03-01"
+  type        = "Microsoft.Network/loadBalancers@2021-03-01"
   body        = <<BODY
     {
       "properties": {

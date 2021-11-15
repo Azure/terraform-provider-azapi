@@ -2,6 +2,7 @@ package parse
 
 import (
 	"fmt"
+	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 	"net/url"
 	"strings"
 
@@ -9,14 +10,17 @@ import (
 )
 
 type ResourceId struct {
-	AzureResourceId string
-	ApiVersion      string
+	AzureResourceId   string
+	ApiVersion        string
+	AzureResourceType string
 }
 
-func NewResourceID(azureResourceId, apiVersion string) ResourceId {
+func NewResourceID(azureResourceId, resourceType string) ResourceId {
+	parts := strings.Split(resourceType, "@")
 	return ResourceId{
-		AzureResourceId: azureResourceId,
-		ApiVersion:      apiVersion,
+		AzureResourceId:   azureResourceId,
+		ApiVersion:        parts[1],
+		AzureResourceType: parts[0],
 	}
 }
 
@@ -41,9 +45,12 @@ func ResourceID(input string) (*ResourceId, error) {
 		return nil, err
 	}
 
+	azureResourceId := idUrl.Path
+	azureResourceType := utils.GetResourceType(azureResourceId)
 	resourceId := ResourceId{
-		AzureResourceId: idUrl.Path,
-		ApiVersion:      idUrl.Query().Get("api-version"),
+		AzureResourceId:   azureResourceId,
+		AzureResourceType: azureResourceType,
+		ApiVersion:        idUrl.Query().Get("api-version"),
 	}
 
 	if resourceId.AzureResourceId == "" {

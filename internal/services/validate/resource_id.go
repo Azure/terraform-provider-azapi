@@ -3,6 +3,7 @@ package validate
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
@@ -39,4 +40,22 @@ func AzureResourceID(input interface{}, key string) (warnings []string, errors [
 	}
 
 	return
+}
+
+func ResourceType(i interface{}, k string) ([]string, []error) {
+	v, ok := i.(string)
+	if !ok {
+		return nil, []error{fmt.Errorf("expected type of %q to be string", k)}
+	}
+
+	if v == "" {
+		return nil, []error{fmt.Errorf("expected %q to not be an empty string, got %v", k, i)}
+	}
+
+	parts := strings.Split(v, "@")
+	if len(parts) != 2 {
+		return nil, []error{fmt.Errorf("expected %q to be <resource-type>@<api-version>", k)}
+	}
+
+	return nil, nil
 }

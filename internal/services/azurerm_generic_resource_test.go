@@ -149,7 +149,7 @@ resource "azurerm_container_registry" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_container_registry.test.id}/scopeMaps/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
   body        = <<BODY
    {
       "properties": {
@@ -170,7 +170,7 @@ func (r GenericResource) requiresImport(data acceptance.TestData) string {
 
 resource "azurermg_resource" "import" {
   resource_id = azurermg_resource.test.resource_id
-  api_version = azurermg_resource.test.api_version
+  type        = azurermg_resource.test.type
   body        = <<BODY
    {
       "properties": {
@@ -197,7 +197,7 @@ resource "azurerm_user_assigned_identity" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
   identity {
     type         = "SystemAssigned, UserAssigned"
@@ -237,7 +237,7 @@ resource "azurerm_user_assigned_identity" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
 
   body = <<BODY
     {
@@ -266,7 +266,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
   body        = <<BODY
     {
@@ -288,7 +288,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
   identity {
     type = "SystemAssigned"
@@ -319,7 +319,7 @@ resource "azurerm_user_assigned_identity" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
-  api_version = "2020-11-01-preview"
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
   identity {
     type         = "UserAssigned"

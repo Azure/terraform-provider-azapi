@@ -50,7 +50,7 @@ data "azurerm_machine_learning_workspace" "existing" {
 
 resource "azurermg_resource" "example" {
   resource_id = "${data.azurerm_machine_learning_workspace.existing.id}/computes/example"
-  api_version = "2021-07-01"
+  type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
   body = <<BODY
     {
       "location": "eastus",

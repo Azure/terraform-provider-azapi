@@ -59,7 +59,7 @@ resource "azurerm_machine_learning_workspace" "test" {
 
 resource "azurermg_resource" "test" {
   resource_id = "${azurerm_machine_learning_workspace.test.id}/computes/acctest6032"
-  api_version = "2021-07-01"
+  type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
   body = <<BODY
 {
     "location": "eastus",

@@ -43,10 +43,10 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 				ValidateFunc: validate.AzureResourceID,
 			},
 
-			"api_version": {
+			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.ResourceType,
 			},
 
 			"body": {
@@ -88,7 +88,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("api_version").(string))
+	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
 
 	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
@@ -141,7 +141,7 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	}
 
 	d.Set("resource_id", id.AzureResourceId)
-	d.Set("api_version", id.ApiVersion)
+	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	bodyJson := d.Get("body").(string)
 	var requestBody interface{}

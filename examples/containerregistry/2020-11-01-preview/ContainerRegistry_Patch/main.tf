@@ -29,7 +29,7 @@ resource "azurerm_container_registry" "acr" {
 
 resource "azurermg_patch_resource" "test" {
   resource_id = azurerm_container_registry.acr.id
-  api_version = "2020-11-01-preview"
+  type = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   body = <<BODY
 {
   "properties": {
