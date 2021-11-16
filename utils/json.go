@@ -90,10 +90,16 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 			res := make(map[string]interface{})
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
-					res[key] = GetRemovedJson(oldValue, newMap[key])
+					value := GetRemovedJson(oldValue, newMap[key])
+					if value != nil {
+						res[key] = value
+					}
 				} else {
 					res[key] = oldValue
 				}
+			}
+			if len(res) == 0 {
+				return nil
 			}
 			return res
 		}
@@ -105,6 +111,9 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 			res := make([]interface{}, 0)
 			for index := range oldValue {
 				res = append(res, GetRemovedJson(oldValue[index], newArr[index]))
+			}
+			if len(res) == 0 {
+				return nil
 			}
 			return res
 		}
