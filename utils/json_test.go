@@ -207,31 +207,68 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
 
 func Test_GetRemovedJson(t *testing.T) {
 	oldJson := `
- {
-	"a":1,
-    "b": {
-		"b1": "b1",
-		"b2": [],
-		"b3": "b3"
-	}
+{
+    "properties": {
+        "public": false,
+        "provisioningState": "Succeeded",
+        "fqdn": "henglu1116-springcloud.azuremicroservices.io",
+        "httpsOnly": false,
+        "createdTime": "2021-11-16T08:49:54.966Z",
+        "temporaryDisk": {
+            "sizeInGB": 4,
+            "mountPath": "/temp"
+        },
+        "persistentDisk": {
+            "sizeInGB": 0,
+            "mountPath": "/persistent"
+        },
+        "enableEndToEndTLS": false
+    },
+    "type": "Microsoft.AppPlatform/Spring/apps",
+    "identity": {
+        "type": "SystemAssigned",
+        "principalId": "d44e42c2-173f-456b-883a-7433aa870a18",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    },
+    "location": "westeurope",
+    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu1116/providers/Microsoft.AppPlatform/Spring/henglu1116-springcloud/apps/henglu1116-springcloudapp",
+    "name": "henglu1116-springcloudapp"
 }
 `
 
 	newJson := `
-{
-	"b": {
-		"b3": "b3"
-	}
-}
+  {
+    "properties": {
+      "temporaryDisk": {
+        "mountPath": "/temp",
+        "sizeInGB": 4
+      }
+    }
+  }
 `
 	expectedJson := `
- {
-	"a":1,
-    "b": {
-		"b1": "b1",
-		"b2": [],
-		"b3": null
-	}
+{
+    "properties": {
+        "public": false,
+        "provisioningState": "Succeeded",
+        "fqdn": "henglu1116-springcloud.azuremicroservices.io",
+        "httpsOnly": false,
+        "createdTime": "2021-11-16T08:49:54.966Z",
+        "persistentDisk": {
+            "sizeInGB": 0,
+            "mountPath": "/persistent"
+        },
+        "enableEndToEndTLS": false
+    },
+    "type": "Microsoft.AppPlatform/Spring/apps",
+    "identity": {
+        "type": "SystemAssigned",
+        "principalId": "d44e42c2-173f-456b-883a-7433aa870a18",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    },
+    "location": "westeurope",
+    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu1116/providers/Microsoft.AppPlatform/Spring/henglu1116-springcloud/apps/henglu1116-springcloudapp",
+    "name": "henglu1116-springcloudapp"
 }
 `
 	var new, old, expected interface{}
