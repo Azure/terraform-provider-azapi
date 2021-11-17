@@ -17,10 +17,16 @@ type ResourceId struct {
 
 func NewResourceID(azureResourceId, resourceType string) ResourceId {
 	parts := strings.Split(resourceType, "@")
+	apiVersion := ""
+	azureResourceType := ""
+	if len(parts) == 2 {
+		apiVersion = parts[1]
+		azureResourceType = parts[0]
+	}
 	return ResourceId{
 		AzureResourceId:   azureResourceId,
-		ApiVersion:        parts[1],
-		AzureResourceType: parts[0],
+		ApiVersion:        apiVersion,
+		AzureResourceType: azureResourceType,
 	}
 }
 
