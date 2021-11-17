@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
 )
 
 func ResourceID(input interface{}, key string) (warnings []string, errors []error) {

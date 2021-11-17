@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
 )
 
 type IdentityType string

@@ -5,8 +5,8 @@ import (
 
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/common"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/common"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 )
 
 type Client struct {

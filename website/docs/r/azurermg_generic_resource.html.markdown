@@ -1,12 +1,12 @@
 ---
 subcategory: ""
-layout: "azurermg"
-page_title: "Generic Azure Patch Resource: azurermg_patch_resource"
+layout: "azurerm-restapi"
+page_title: "Generic Azure Patch Resource: azurerm-restapi_patch_resource"
 description: |-
   Manages a subset of an existing azure resource's properties
 ---
 
-# azurermg_resource
+# azurerm-restapi_resource
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
 
@@ -15,13 +15,13 @@ This resource can manage a subset of any existing Azure resource manager resourc
 ```hcl
 terraform {
   required_providers {
-    azurermg = {
-      source = "ms-henglu/azurermg"
+    azurerm-restapi = {
+      source = "Azure/azurerm-restapi"
     }
   }
 }
 
-provider "azurermg" {
+provider "azurerm-restapi" {
 }
 
 provider "azurerm" {
@@ -61,7 +61,7 @@ resource "azurerm_lb_nat_rule" "example" {
   frontend_ip_configuration_name = "PublicIPAddress"
 }
 
-resource "azurermg_patch_resource" "example" {
+resource "azurerm-restapi_patch_resource" "example" {
   resource_id = azurerm_lb.example.id
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   body        = <<BODY
@@ -79,7 +79,7 @@ resource "azurermg_patch_resource" "example" {
     BODY
 
   depends_on = [
-    azurerm_lb_nat_rule.test,
+    azurerm_lb_nat_rule.example,
   ]
 }
 
@@ -127,12 +127,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azurermg_resource.test.output).properties.loginServer
+  value = jsondecode(azurerm-restapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azurermg_resource.test.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 

@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance/check"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
 )
 
 type GenericDataSource struct{}
 
 func TestAccGenericDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -36,9 +36,9 @@ func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-data "azurermg_resource" "test" {
-  resource_id = azurermg_resource.test.resource_id
-  type        = azurermg_resource.test.type
+data "azurerm-restapi_resource" "test" {
+  resource_id = azurerm-restapi_resource.test.resource_id
+  type        = azurerm-restapi_resource.test.type
 }
 `, GenericResource{}.complete(data))
 }

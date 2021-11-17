@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/provider"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	if debugMode {
-		err := plugin.Debug(context.Background(), "registry.terraform.io/ms-henglu/azurerm-generic",
+		err := plugin.Debug(context.Background(), "registry.terraform.io/Azure/azurerm-restapi",
 			&plugin.ServeOpts{
 				ProviderFunc: provider.AzureProvider,
 			})

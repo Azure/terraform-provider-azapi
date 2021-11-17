@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    azurermg = {
-      source = "ms-henglu/azurermg"
+    azurerm-restapi = {
+      source = "Azure/azurerm-restapi"
     }
   }
 }
@@ -10,7 +10,7 @@ provider "azurerm" {
   features {}
 }
 
-provider "azurermg" {
+provider "azurerm-restapi" {
 
 }
 data "azurerm_client_config" "test" {}
@@ -57,7 +57,7 @@ resource "azurerm_machine_learning_workspace" "test" {
 }
 
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_machine_learning_workspace.test.id}/computes/acctest6032"
   type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
   body = <<BODY

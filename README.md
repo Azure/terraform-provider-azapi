@@ -1,34 +1,34 @@
-# Generic Terraform Provider for Azure (Resource Manager)
+# Terraform Provider for Azure Resource Manager Rest API
 
 ## How to use?
 This project is used in API test only.
 
 This provider hasn't been formly released, it can only be used by configuring provider override.
 ```
-1. git clone https://github.com/ms-henglu/terraform-provider-azurerm-generic.git
-2. cd terraform-provider-azurerm-generic
+1. git clone https://github.com/Azure/terraform-provider-azurerm-restapi.git
+2. cd terraform-provider-azurerm-restapi
 3. go install
 4. edit terraform.rc and add the following configuration, refs: https://www.terraform.io/docs/cli/config/config-file.html
   
   dev_overrides {
-    "ms-henglu/azurermg" = "C:\Users\henglu\go\bin" #path to provider execute
+    "Azure/azurerm-restapi" = "C:\\Users\\henglu\\go\\bin" #path to provider execute
   }
 ```
 
 ## Usage Example
 
-The following example shows how to use `azurermg_resource` to manage machine learning compute resource.
+The following example shows how to use `azurerm-restapi_resource` to manage machine learning compute resource.
 
 ```hcl
 terraform {
   required_providers {
-    azurermg = {
-      source  = "ms-henglu/azurermg"
+    azurerm-restapi = {
+      source  = "Azure/azurerm-restapi"
     }
   }
 }
 
-provider "azurermg" {
+provider "azurerm-restapi" {
   # More information on the authentication methods supported by
   # the AzureRM Provider can be found here:
   # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
@@ -48,7 +48,7 @@ data "azurerm_machine_learning_workspace" "existing" {
   resource_group_name = "example-resources"
 }
 
-resource "azurermg_resource" "example" {
+resource "azurerm-restapi_resource" "example" {
   resource_id = "${data.azurerm_machine_learning_workspace.existing.id}/computes/example"
   type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
   body = <<BODY

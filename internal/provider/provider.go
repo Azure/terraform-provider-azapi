@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services"
 )
 
 func AzureProvider() *schema.Provider {
@@ -20,10 +20,10 @@ func azureProvider() *schema.Provider {
 	dataSources := make(map[string]*schema.Resource)
 	resources := make(map[string]*schema.Resource)
 
-	resources["azurermg_resource"] = services.ResourceAzureGenericResource()
-	resources["azurermg_patch_resource"] = services.ResourceAzureGenericPatchResource()
+	resources["azurerm-restapi_resource"] = services.ResourceAzureGenericResource()
+	resources["azurerm-restapi_patch_resource"] = services.ResourceAzureGenericPatchResource()
 
-	dataSources["azurermg_resource"] = services.ResourceAzureGenericDataSource()
+	dataSources["azurerm-restapi_resource"] = services.ResourceAzureGenericDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{

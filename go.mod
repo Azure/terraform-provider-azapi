@@ -1,4 +1,4 @@
-module github.com/ms-henglu/terraform-provider-azurermg
+module github.com/Azure/terraform-provider-azurerm-restapi
 
 require (
 	github.com/Azure/azure-sdk-for-go v57.0.0+incompatible // indirect

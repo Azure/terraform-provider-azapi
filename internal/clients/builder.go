@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/common"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/go-azure-helpers/sender"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/common"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 )
 
 type ClientBuilder struct {

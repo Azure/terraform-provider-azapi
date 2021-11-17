@@ -8,14 +8,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/tf"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 func ResourceAzureGenericPatchResource() *schema.Resource {
@@ -26,7 +26,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 		Delete: resourceAzureGenericPatchResourceDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azurermg_patch_resource` doesn't support import")
+			return fmt.Errorf("`azurerm-restapi_patch_resource` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
