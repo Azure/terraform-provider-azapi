@@ -1,7 +1,6 @@
 # Terraform Provider for Azure Resource Manager Rest API
 
 ## How to use?
-This project is used in API test only.
 
 This provider hasn't been formly released, it can only be used by configuring provider override.
 ```
