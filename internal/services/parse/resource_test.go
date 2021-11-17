@@ -3,7 +3,7 @@ package parse
 import "testing"
 
 func TestResourceIDFormatter(t *testing.T) {
-	actual := NewResourceID("/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1", "2020-12-01").ID()
+	actual := NewResourceID("/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1", "Microsoft.EventHub/clusters@2020-12-01").ID()
 	expected := "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1?api-version=2020-12-01"
 	if actual != expected {
 		t.Fatalf("Expected %q but got %q", expected, actual)

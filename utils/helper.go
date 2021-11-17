@@ -31,7 +31,7 @@ func GetResourceType(id string) string {
 	components := strings.Split(path, "/")
 	resourceType := ""
 	provider := ""
-	for current := 0; current < len(components); current += 2 {
+	for current := 0; current <= len(components)-2; current += 2 {
 		key := components[current]
 		value := components[current+1]
 
