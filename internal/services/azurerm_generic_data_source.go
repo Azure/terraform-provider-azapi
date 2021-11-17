@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/tf"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/identity"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/location"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/tags"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/validate"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/tf"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 func ResourceAzureGenericDataSource() *schema.Resource {

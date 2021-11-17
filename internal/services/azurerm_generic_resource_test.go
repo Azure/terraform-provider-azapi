@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance/check"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 type GenericResource struct{}
@@ -22,7 +22,7 @@ func ignoredProperties() []string {
 }
 
 func TestAccGenericResource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -37,7 +37,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 }
 
 func TestAccGenericResource_requiresImport(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -52,7 +52,7 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 }
 
 func TestAccGenericResource_complete(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -67,7 +67,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 }
 
 func TestAccGenericResource_completeBody(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -82,7 +82,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 }
 
 func TestAccGenericResource_identity(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -147,7 +147,7 @@ resource "azurerm_container_registry" "test" {
   admin_enabled       = false
 }
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_container_registry.test.id}/scopeMaps/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
   body        = <<BODY
@@ -168,9 +168,9 @@ func (r GenericResource) requiresImport(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurermg_resource" "import" {
-  resource_id = azurermg_resource.test.resource_id
-  type        = azurermg_resource.test.type
+resource "azurerm-restapi_resource" "import" {
+  resource_id = azurerm-restapi_resource.test.resource_id
+  type        = azurerm-restapi_resource.test.type
   body        = <<BODY
    {
       "properties": {
@@ -195,7 +195,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
@@ -225,7 +225,7 @@ func (r GenericResource) completeBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-provider "azurermg" {
+provider "azurerm-restapi" {
   schema_validation_enabled = false
 }
 
@@ -235,7 +235,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
 
@@ -264,7 +264,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
@@ -286,7 +286,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 	return fmt.Sprintf(`
 %s
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"
@@ -317,7 +317,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurermg_resource" "test" {
+resource "azurerm-restapi_resource" "test" {
   resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.ContainerRegistry/registries/acctest%[2]s"
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   location    = "%[3]s"

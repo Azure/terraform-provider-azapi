@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 )
 
 func Test_GetMergedJson(t *testing.T) {
@@ -52,8 +52,8 @@ func Test_GetMergedJson(t *testing.T) {
 func Test_GetMergedJsonWithArray(t *testing.T) {
 	oldJson := `
 {
-    "name": "henglulb",
-    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb",
+    "name": "mylb",
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb",
     "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
     "type": "Microsoft.Network/loadBalancers",
     "location": "westus",
@@ -64,18 +64,18 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
         "frontendIPConfigurations": [
             {
                 "name": "PublicIPAddress",
-                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/frontendIPConfigurations/PublicIPAddress",
                 "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
                 "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
                 "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAllocationMethod": "Dynamic",
                     "publicIPAddress": {
-                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/publicIPAddresses/hengluIp"
+                        "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/publicIPAddresses/myip"
                     },
                     "inboundNatRules": [
                         {
-                            "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess"
+                            "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/inboundNatRules/RDPAccess"
                         }
                     ]
                 }
@@ -87,13 +87,13 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
         "inboundNatRules": [
             {
                 "name": "RDPAccess",
-                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/inboundNatRules/RDPAccess",
                 "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
                 "type": "Microsoft.Network/loadBalancers/inboundNatRules",
                 "properties": {
                     "provisioningState": "Succeeded",
                     "frontendIPConfiguration": {
-                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress"
+                        "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/frontendIPConfigurations/PublicIPAddress"
                     },
                     "frontendPort": 3389,
                     "backendPort": 3389,
@@ -130,8 +130,8 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
 
 	expectedJson := `
 {
-    "name": "henglulb",
-    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb",
+    "name": "mylb",
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb",
     "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
     "type": "Microsoft.Network/loadBalancers",
     "location": "westus",
@@ -142,18 +142,18 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
         "frontendIPConfigurations": [
             {
                 "name": "PublicIPAddress",
-                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/frontendIPConfigurations/PublicIPAddress",
                 "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
                 "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
                 "properties": {
                     "provisioningState": "Succeeded",
                     "privateIPAllocationMethod": "Dynamic",
                     "publicIPAddress": {
-                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/publicIPAddresses/hengluIp"
+                        "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/publicIPAddresses/myip"
                     },
                     "inboundNatRules": [
                         {
-                            "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess"
+                            "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/inboundNatRules/RDPAccess"
                         }
                     ]
                 }
@@ -165,13 +165,13 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
         "inboundNatRules": [
             {
                 "name": "RDPAccess",
-                "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/inboundNatRules/RDPAccess",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/inboundNatRules/RDPAccess",
                 "etag": "W/\"0074bc84-d75b-4496-96c8-c858e0ef0afe\"",
                 "type": "Microsoft.Network/loadBalancers/inboundNatRules",
                 "properties": {
                     "provisioningState": "Succeeded",
                     "frontendIPConfiguration": {
-                        "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/henglu-rg1111/providers/Microsoft.Network/loadBalancers/henglulb/frontendIPConfigurations/PublicIPAddress"
+                        "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/rg/providers/Microsoft.Network/loadBalancers/mylb/frontendIPConfigurations/PublicIPAddress"
                     },
                     "frontendPort": 3389,
                     "backendPort": 3389,
@@ -211,7 +211,7 @@ func Test_GetRemovedJson(t *testing.T) {
     "properties": {
         "public": false,
         "provisioningState": "Succeeded",
-        "fqdn": "henglu1116-springcloud.azuremicroservices.io",
+        "fqdn": "springcloud.azuremicroservices.io",
         "httpsOnly": false,
         "createdTime": "2021-11-16T08:49:54.966Z",
         "temporaryDisk": {
@@ -231,8 +231,8 @@ func Test_GetRemovedJson(t *testing.T) {
         "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
     },
     "location": "westeurope",
-    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu1116/providers/Microsoft.AppPlatform/Spring/henglu1116-springcloud/apps/henglu1116-springcloudapp",
-    "name": "henglu1116-springcloudapp"
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestRG1116/providers/Microsoft.AppPlatform/Spring/springcloud/apps/springcloudapp",
+    "name": "springcloudapp"
 }
 `
 
@@ -251,7 +251,7 @@ func Test_GetRemovedJson(t *testing.T) {
     "properties": {
         "public": false,
         "provisioningState": "Succeeded",
-        "fqdn": "henglu1116-springcloud.azuremicroservices.io",
+        "fqdn": "springcloud.azuremicroservices.io",
         "httpsOnly": false,
         "createdTime": "2021-11-16T08:49:54.966Z",
         "persistentDisk": {
@@ -267,8 +267,8 @@ func Test_GetRemovedJson(t *testing.T) {
         "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
     },
     "location": "westeurope",
-    "id": "/subscriptions/67a9759d-d099-4aa8-8675-e6cfd669c3f4/resourceGroups/acctestRG-henglu1116/providers/Microsoft.AppPlatform/Spring/henglu1116-springcloud/apps/henglu1116-springcloudapp",
-    "name": "henglu1116-springcloudapp"
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestRG1116/providers/Microsoft.AppPlatform/Spring/springcloud/apps/springcloudapp",
+    "name": "springcloudapp"
 }
 `
 	var new, old, expected interface{}
@@ -287,17 +287,17 @@ func Test_GetRemovedJson(t *testing.T) {
 func Test_GetIgnoredJson(t *testing.T) {
 	oldJson := `
 {
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
   "kind": "EventHub",
   "location": "West Europe",
-  "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
+  "name": "acctestkc924/acctestkd/acctestkedc",
   "properties": {
     "compression": "None",
-    "consumerGroup": "acctesteventhubcg-henglu924",
+    "consumerGroup": "acctesteventhubcg",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
     "mappingRuleName": "",
     "provisioningState": "Succeeded",
     "tableName": ""
@@ -307,17 +307,17 @@ func Test_GetIgnoredJson(t *testing.T) {
 `
 	expectedJson := `
 {
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
   "kind": "EventHub",
   "location": "West Europe",
-  "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
+  "name": "acctestkc924/acctestkd/acctestkedc",
   "properties": {
     "compression": "None",
-    "consumerGroup": "acctesteventhubcg-henglu924",
+    "consumerGroup": "acctesteventhubcg",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
     "mappingRuleName": "",
     "tableName": ""
   },
@@ -340,17 +340,17 @@ func Test_GetIgnoredJson(t *testing.T) {
 func Test_ExtractObject(t *testing.T) {
 	oldJson := `
 {
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.Kusto/Clusters/acctestkchenglu924/Databases/acctestkd-henglu924/DataConnections/acctestkedc-henglu924",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
   "kind": "EventHub",
   "location": "West Europe",
-  "name": "acctestkchenglu924/acctestkd-henglu924/acctestkedc-henglu924",
+  "name": "acctestkc924/acctestkd/acctestkedc",
   "properties": {
     "compression": "None",
-    "consumerGroup": "acctesteventhubcg-henglu924",
+    "consumerGroup": "acctesteventhubcg",
     "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace-henglu924/eventhubs/acctesteventhub-henglu924",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
     "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG-henglu924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctesthenglu924",
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
     "mappingRuleName": "",
     "provisioningState": "Succeeded",
     "tableName": ""
@@ -361,7 +361,7 @@ func Test_ExtractObject(t *testing.T) {
 	expectedJson := `
 {
   "properties": {
-    "consumerGroup": "acctesteventhubcg-henglu924"
+    "consumerGroup": "acctesteventhubcg"
   }
 }
 `

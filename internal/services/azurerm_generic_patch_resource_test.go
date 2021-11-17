@@ -6,19 +6,19 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/acceptance/check"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/services/parse"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 type GenericPatchResource struct{}
 
 func TestAccGenericPatchResource_loadBalancerNatRule(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_patch_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_patch_resource", "test")
 	r := GenericPatchResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -32,7 +32,7 @@ func TestAccGenericPatchResource_loadBalancerNatRule(t *testing.T) {
 }
 
 func TestAccGenericPatchResource_sqlServer(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_patch_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_patch_resource", "test")
 	r := GenericPatchResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -46,7 +46,7 @@ func TestAccGenericPatchResource_sqlServer(t *testing.T) {
 }
 
 func TestAccGenericPatchResource_springCloudApp(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurermg_patch_resource", "test")
+	data := acceptance.BuildTestData(t, "azurerm-restapi_patch_resource", "test")
 	r := GenericPatchResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -109,7 +109,7 @@ resource "azurerm_lb_nat_rule" "test" {
   frontend_ip_configuration_name = "PublicIPAddress"
 }
 
-resource "azurermg_patch_resource" "test" {
+resource "azurerm-restapi_patch_resource" "test" {
   resource_id = azurerm_lb.test.id
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   body        = <<BODY
@@ -146,7 +146,7 @@ resource "azurerm_sql_server" "test" {
   administrator_login_password = "4-v3ry-53cr37-p455w0rd"
 }
 
-resource "azurermg_patch_resource" "test" {
+resource "azurerm-restapi_patch_resource" "test" {
   resource_id = azurerm_sql_server.test.id
   type        = "Microsoft.Sql/servers@2021-02-01-preview"
   body        = <<BODY
@@ -180,7 +180,7 @@ resource "azurerm_spring_cloud_app" "test" {
   }
 }
 
-resource "azurermg_patch_resource" "test" {
+resource "azurerm-restapi_patch_resource" "test" {
   resource_id = azurerm_spring_cloud_app.test.id
   type        = "Microsoft.AppPlatform/Spring/apps@2021-06-01-preview"
   body        = <<BODY

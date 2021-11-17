@@ -7,7 +7,7 @@ import (
 	"log"
 	"sort"
 
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/azure/types"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
 )
 
 var schema *Schema

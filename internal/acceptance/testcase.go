@@ -5,12 +5,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/provider"
 )
 
 const (
@@ -105,7 +105,7 @@ func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 
 func (td TestData) providers() map[string]func() (*schema.Provider, error) {
 	return map[string]func() (*schema.Provider, error){
-		"azurermg": func() (*schema.Provider, error) { //nolint:unparam
+		"azurerm-restapi": func() (*schema.Provider, error) { //nolint:unparam
 			azurerm := provider.AzureProvider()
 			return azurerm, nil
 		},

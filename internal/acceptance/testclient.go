@@ -6,9 +6,9 @@ import (
 	"os"
 	"sync"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/hashicorp/go-azure-helpers/authentication"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/clients"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
 )
 
 var (

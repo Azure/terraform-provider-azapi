@@ -1,19 +1,19 @@
 ---
-layout: "azurermg"
+layout: "azurerm-restapi"
 page_title: "Provider: Azure"
 description: |-
-  The Generic Azure Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
+  The AzureRM Rest API Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
 
 ---
 
-# Generic Azure Provider
+# AzureRM Rest API Provider
 
-The Generic Azure Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
+The AzureRM Rest API Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
 
 To learn the basics of Terraform using this provider, follow the
 hands-on [get started tutorials](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started) on HashiCorp's Learn platform.
 
-Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/ms-henglu/terraform-provider-azurerm-generic/blob/develop/CHANGELOG.md) for version information and release notes.
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azurerm-generic/blob/develop/CHANGELOG.md) for version information and release notes.
 
 ## Authenticating to Azure
 
@@ -35,13 +35,13 @@ We recommend using either a Service Principal or Managed Service Identity when r
 # Azure Provider source and version being used
 terraform {
   required_providers {
-    azurerm = {
-      source = "ms-henglu/azurermg"
+    azurerm-restapi = {
+      source = "Azure/azurerm-restapi"
     }
   }
 }
 
-provider "azurermg" {
+provider "azurerm-restapi" {
 }
 
 ```

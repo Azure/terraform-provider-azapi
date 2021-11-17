@@ -4,8 +4,8 @@ FEATURES:
 
 ENHANCEMENTS:
 
-* `azurermg_resource` - enhanced body validation.
-* `azurermg` - supports default location and tags.
+* `azurerm-restapi_resource` - enhanced body validation.
+* `azurerm-restapi` - supports default location and tags.
 
 BUG FIXES:
 
@@ -13,8 +13,8 @@ BUG FIXES:
 
 FEATURES:
 
-* **New Data Source:** `azurermg_resource`
-* **New Resource:** `azurermg_resource` 
+* **New Data Source:** `azurerm-restapi_resource`
+* **New Resource:** `azurerm-restapi_resource` 
 
 ENHANCEMENTS:
 

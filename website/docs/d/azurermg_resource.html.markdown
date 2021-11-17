@@ -1,12 +1,12 @@
 ---
 subcategory: ""
-layout: "azurermg"
-page_title: "Generic Azure Data Source: azurermg_resource"
+layout: "azurerm-restapi"
+page_title: "Generic Azure Data Source: azurerm-restapi_resource"
 description: |-
   Gets information from an existing azure resource
 ---
 
-# azurermg_resource
+# azurerm-restapi_resource
 
 This resource can access any existing Azure resource manager resource.
 
@@ -15,13 +15,13 @@ This resource can access any existing Azure resource manager resource.
 ```hcl
 terraform {
   required_providers {
-    azurermg = {
-      source = "ms-henglu/azurermg"
+    azurerm-restapi = {
+      source = "Azure/azurerm-restapi"
     }
   }
 }
 
-provider "azurermg" {
+provider "azurerm-restapi" {
 }
 
 provider "azurerm" {
@@ -41,7 +41,7 @@ resource "azurerm_container_registry" "example" {
   admin_enabled       = false
 }
 
-data "azurermg_resource" "test" {
+data "azurerm-restapi_resource" "example" {
   resource_id = azurerm_container_registry.example.id
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
 
@@ -50,12 +50,12 @@ data "azurermg_resource" "test" {
 
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(data.azurermg_resource.test.output).properties.loginServer
+  value = jsondecode(data.azurerm-restapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(data.azurermg_resource.test.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(data.azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 
@@ -102,12 +102,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azurermg_resource.test.output).properties.loginServer
+  value = jsondecode(azurerm-restapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azurermg_resource.test.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 

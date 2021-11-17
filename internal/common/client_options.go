@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
+	"github.com/Azure/terraform-provider-azurerm-restapi/version"
 	"github.com/hashicorp/go-azure-helpers/sender"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
-	"github.com/ms-henglu/terraform-provider-azurermg/internal/features"
-	"github.com/ms-henglu/terraform-provider-azurermg/version"
 )
 
 type ClientOptions struct {
@@ -28,13 +28,13 @@ func (o ClientOptions) ConfigureClient(c *autorest.Client, authorizer autorest.A
 	setUserAgent(c, o.TerraformVersion)
 
 	c.Authorizer = authorizer
-	c.Sender = sender.BuildSender("AzureRMG")
+	c.Sender = sender.BuildSender("azurerm-restapi")
 }
 
 func setUserAgent(client *autorest.Client, tfVersion string) {
 	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", tfVersion, meta.SDKVersionString())
 
-	providerUserAgent := fmt.Sprintf("%s terraform-provider-azurermg/%s", tfUserAgent, version.ProviderVersion)
+	providerUserAgent := fmt.Sprintf("%s terraform-provider-azurerm-restapi/%s", tfUserAgent, version.ProviderVersion)
 	client.UserAgent = strings.TrimSpace(fmt.Sprintf("%s %s", client.UserAgent, providerUserAgent))
 
 	// append the CloudShell version to the user agent if it exists

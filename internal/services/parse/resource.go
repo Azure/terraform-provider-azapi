@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
-	"github.com/ms-henglu/terraform-provider-azurermg/utils"
 )
 
 type ResourceId struct {
