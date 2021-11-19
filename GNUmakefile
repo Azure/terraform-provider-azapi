@@ -57,7 +57,8 @@ goimports:
 	@find . -name '*.go' | grep -v vendor | grep -v generator-resource-id | while read f; do ./scripts/goimport-file.sh "$$f"; done
 
 lint:
-	./scripts/run-lint.sh
+	@echo "==> Checking source code against linters..."
+	@if command -v golangci-lint; then (golangci-lint run ./...); else ($(GOPATH)/bin/golangci-lint run ./...); fi
 
 depscheck:
 	@echo "==> Checking source code with go mod tidy..."
