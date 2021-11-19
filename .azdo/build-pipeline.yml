@@ -3,6 +3,11 @@
 # Add steps that test, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
+parameters:
+  - name: release_version
+    displayName: Release Version
+    type: string
+
 jobs:
 
 - job: Package
@@ -37,7 +42,7 @@ jobs:
       ./scripts/buildPackage.sh
     displayName: "Build Packages"
     env:
-      VERSION: $(RELEASE_VERSION)
+      VERSION: ${{ parameters.release_version }}
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(system.defaultWorkingDirectory)/dist/'
