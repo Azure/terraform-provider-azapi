@@ -112,6 +112,11 @@ func ResourceAzureGenericResource() *schema.Resource {
 				d.SetNewComputed("output")
 			}
 
+			// body refers other resource, can't be verified during plan
+			if len(d.Get("body").(string)) == 0 {
+				return nil
+			}
+
 			var body interface{}
 			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
 			if err != nil {
