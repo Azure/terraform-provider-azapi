@@ -165,7 +165,7 @@ func (client ResourceClient) Delete(ctx context.Context, azureResourceId string,
 	var responseBody interface{}
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&responseBody),
 		autorest.ByClosing())
 	body = responseBody
