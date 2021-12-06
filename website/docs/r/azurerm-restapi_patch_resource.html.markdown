@@ -6,9 +6,13 @@ description: |-
   Manages a subset of an existing azure resource's properties
 ---
 
-# azurerm-restapi_resource
+# azurerm-restapi_patch_resource
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
+
+-> **Note**: This resource is used to add or modify properties on an existing resource.
+When delete `azurerm-restapi_patch_resource`, no operation will be performed, and these properties will stay unchanged.
+If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 
 ## Example Usage
 
