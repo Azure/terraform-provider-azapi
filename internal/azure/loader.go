@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"sort"
+	"strings"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
 )
@@ -37,6 +38,7 @@ func GetApiVersions(resourceType string) []string {
 		return []string{}
 	}
 	res := make([]string, 0)
+	resourceType = strings.ToUpper(resourceType)
 	if azureSchema.Resources[resourceType] != nil {
 		for _, v := range azureSchema.Resources[resourceType].Definitions {
 			res = append(res, v.ApiVersion)
@@ -51,6 +53,7 @@ func GetResourceDefinition(resourceType, apiVersion string) (*types.ResourceType
 	if azureSchema == nil {
 		return nil, fmt.Errorf("failed to load azure schema index")
 	}
+	resourceType = strings.ToUpper(resourceType)
 	if azureSchema.Resources[resourceType] != nil {
 		for _, v := range azureSchema.Resources[resourceType].Definitions {
 			if v.ApiVersion == apiVersion {
