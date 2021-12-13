@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
@@ -176,6 +177,8 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 
 		client.StopContext = stopCtx
 
+		// load schema
+		azure.GetAzureSchema()
 		return client, nil
 	}
 }
