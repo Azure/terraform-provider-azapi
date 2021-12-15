@@ -179,40 +179,5 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 }
 
 func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	id, err := parse.ResourceID(d.Id())
-	if err != nil {
-		return err
-	}
-
-	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
-	if err != nil {
-		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
-	}
-	if len(utils.GetId(existing)) == 0 {
-		return fmt.Errorf("patch target does not exist %s", id)
-	}
-
-	var requestBody interface{}
-	err = json.Unmarshal([]byte(d.Get("body").(string)), &requestBody)
-	if err != nil {
-		return err
-	}
-
-	requestBody = utils.GetRemovedJson(existing, requestBody)
-	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-	if err == nil && resourceDef != nil {
-		requestBody = (*resourceDef).GetWriteOnly(requestBody)
-	}
-	j, _ := json.Marshal(requestBody)
-	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
-	if err != nil {
-		return fmt.Errorf("creating/updating %q: %+v", id, err)
-	}
-
 	return nil
 }

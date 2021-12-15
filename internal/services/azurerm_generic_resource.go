@@ -313,6 +313,20 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}) error {
+	client := meta.(*clients.Client).ResourceClient
+	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
+	defer cancel()
+
+	id, err := parse.ResourceID(d.Id())
+	if err != nil {
+		return err
+	}
+
+	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	if err != nil {
+		return fmt.Errorf("deleting %q: %+v", id, err)
+	}
+
 	return nil
 }
 
