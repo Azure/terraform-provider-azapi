@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/go-azure-helpers/sender"
+	"github.com/manicminer/hamilton/environments"
 )
 
 type ClientBuilder struct {
@@ -18,18 +19,17 @@ type ClientBuilder struct {
 	DisableTerraformPartnerID   bool
 	PartnerId                   string
 	SkipProviderRegistration    bool
-	StorageUseAzureAD           bool
 	TerraformVersion            string
 	Features                    features.UserFeatures
 }
 
 const azureStackEnvironmentError = `
-The AzureRM Provider supports the different Azure Public Clouds - including China, Germany,
-Public and US Government - however it does not support Azure Stack due to differences in
-API and feature availability.
+The AzureRM Provider supports the different Azure Public Clouds - including China, Public
+and US Government - however it does not support Azure Stack due to differences in API and
+feature availability.
 
 Terraform instead offers a separate "azurestack" provider which supports the functionality
-and API's available in Azure Stack via Azure Stack Profiles.
+and APIs available in Azure Stack via Azure Stack Profiles.
 `
 
 func Build(ctx context.Context, builder ClientBuilder) (*Client, error) {
@@ -46,7 +46,14 @@ func Build(ctx context.Context, builder ClientBuilder) (*Client, error) {
 		return nil, fmt.Errorf(azureStackEnvironmentError)
 	}
 
+	// Autorest environment configuration
 	env, err := authentication.AzureEnvironmentByNameFromEndpoint(ctx, builder.AuthConfig.MetadataHost, builder.AuthConfig.Environment)
+	if err != nil {
+		return nil, fmt.Errorf("unable to find environment %q from endpoint %q: %+v", builder.AuthConfig.Environment, builder.AuthConfig.MetadataHost, err)
+	}
+
+	// Hamilton environment configuration
+	environment, err := environments.EnvironmentFromString(builder.AuthConfig.Environment)
 	if err != nil {
 		return nil, fmt.Errorf("unable to find environment %q from endpoint %q: %+v", builder.AuthConfig.Environment, builder.AuthConfig.MetadataHost, err)
 	}
@@ -66,10 +73,9 @@ func Build(ctx context.Context, builder ClientBuilder) (*Client, error) {
 	sender := sender.BuildSender("AzureRM")
 
 	// Resource Manager endpoints
-	endpoint := env.ResourceManagerEndpoint
-	auth, err := builder.AuthConfig.GetAuthorizationToken(sender, oauthConfig, env.TokenAudience)
+	auth, err := builder.AuthConfig.GetMSALToken(ctx, environment.ResourceManager, sender, oauthConfig, string(environment.ResourceManager.Endpoint))
 	if err != nil {
-		return nil, fmt.Errorf("unable to get authorization token for resource manager: %+v", err)
+		return nil, fmt.Errorf("unable to get MSAL authorization token for resource manager API: %+v", err)
 	}
 
 	o := &common.ClientOptions{
@@ -78,7 +84,7 @@ func Build(ctx context.Context, builder ClientBuilder) (*Client, error) {
 		PartnerId:                 builder.PartnerId,
 		TerraformVersion:          builder.TerraformVersion,
 		ResourceManagerAuthorizer: auth,
-		ResourceManagerEndpoint:   endpoint,
+		ResourceManagerEndpoint:   env.ResourceManagerEndpoint,
 		Features:                  builder.Features,
 	}
 

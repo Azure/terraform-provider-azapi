@@ -46,7 +46,6 @@ func BuildTestClient() (*clients.Client, error) {
 			AuthConfig:               config,
 			SkipProviderRegistration: true,
 			TerraformVersion:         os.Getenv("TERRAFORM_CORE_VERSION"),
-			StorageUseAzureAD:        false,
 			Features:                 features.Default(),
 		}
 		client, err := clients.Build(context.TODO(), clientBuilder)
