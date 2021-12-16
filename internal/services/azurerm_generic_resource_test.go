@@ -18,7 +18,7 @@ import (
 type GenericResource struct{}
 
 func ignoredProperties() []string {
-	return []string{"body", "create_method", "update_method"}
+	return []string{"body"}
 }
 
 func TestAccGenericResource_basic(t *testing.T) {

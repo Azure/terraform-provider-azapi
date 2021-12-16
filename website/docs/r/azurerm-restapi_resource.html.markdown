@@ -93,10 +93,6 @@ The following arguments are supported:
 * `body` - (Required) A JSON object that contains the request body used to create and update azure resource. 
 
 ---
-
-* `create_method` - (Optional) The HTTP method used to create this azure resource. Possible values are `PUT` and `POST`. Defaults to `PUT`.
-
-* `update_method` - (Optional) The HTTP method used to create this azure resource. Possible values are `PUT` and `POST`. Defaults to `PUT`.
   
 * `location` - (Optional) The Azure Region where the azure resource should exist. 
   
