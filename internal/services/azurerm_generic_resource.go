@@ -66,27 +66,6 @@ func ResourceAzureGenericResource() *schema.Resource {
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
 
-			"create_method": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  "PUT",
-				ValidateFunc: validation.StringInSlice([]string{
-					http.MethodPost,
-					http.MethodPut,
-				}, false),
-			},
-
-			"update_method": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  "PUT",
-				ValidateFunc: validation.StringInSlice([]string{
-					http.MethodPost,
-					http.MethodPut,
-					// http.MethodPatch, patch is not supported yet
-				}, false),
-			},
-
 			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -221,17 +200,9 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		}
 	}
 
-	var method string
-	switch {
-	case d.IsNewResource():
-		method = d.Get("create_method").(string)
-	default:
-		method = d.Get("update_method").(string)
-	}
-
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, method)
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
