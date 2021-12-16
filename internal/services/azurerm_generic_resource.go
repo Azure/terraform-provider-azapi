@@ -74,6 +74,11 @@ func ResourceAzureGenericResource() *schema.Resource {
 				},
 			},
 
+			"schema_validation_enabled": {
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
+
 			"output": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -115,7 +120,11 @@ func ResourceAzureGenericResource() *schema.Resource {
 				}
 			*/
 
-			if meta.(*clients.Client).Features.SchemaValidationEnabled {
+			schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
+			if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
+				schemaValidationEnabled = enabled.(bool)
+			}
+			if schemaValidationEnabled {
 				if value, ok := d.GetOk("tags"); ok {
 					bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
 					body = utils.GetMergedJson(body, bodyWithTags)
@@ -194,7 +203,11 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		requestBody = utils.GetMergedJson(requestBody, bodyWithIdentity)
 	}
 
-	if meta.(*clients.Client).Features.SchemaValidationEnabled {
+	schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
+	if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
+		schemaValidationEnabled = enabled.(bool)
+	}
+	if schemaValidationEnabled {
 		if err := schemaValidation(id, requestBody); err != nil {
 			return err
 		}
