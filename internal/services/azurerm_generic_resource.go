@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/tf"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
@@ -106,19 +107,18 @@ func ResourceAzureGenericResource() *schema.Resource {
 			if err != nil {
 				return err
 			}
-			/*
-				disable validation on specify a property both in hcl and in body, because can't detect whether user specified a property in hcl
-				props := []string{"identity", "location", "tags"}
-				for _, prop := range props {
-					if _, ok := d.GetOk(prop); ok {
-						if bodyMap, ok := body.(map[string]interface{}); ok {
-							if bodyMap[prop] != nil {
-								return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-							}
+
+			props := []string{"identity", "location", "tags"}
+			config := d.GetRawConfig()
+			for _, prop := range props {
+				if getExist(config, prop) {
+					if bodyMap, ok := body.(map[string]interface{}); ok {
+						if bodyMap[prop] != nil {
+							return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 						}
 					}
 				}
-			*/
+			}
 
 			schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
 			if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
@@ -174,19 +174,18 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		return err
 	}
 
-	/*
-		disable validation on specify a property both in hcl and in body, because can't detect whether user specified a property in hcl
-		props := []string{"identity", "location", "tags"}
-		for _, prop := range props {
-			if _, ok := d.GetOk(prop); ok {
-				if bodyMap, ok := requestBody.(map[string]interface{}); ok {
-					if bodyMap[prop] != nil {
-						return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-					}
+	props := []string{"identity", "location", "tags"}
+	config := d.GetRawConfig()
+	for _, prop := range props {
+		if getExist(config, prop) {
+			if bodyMap, ok := requestBody.(map[string]interface{}); ok {
+				if bodyMap[prop] != nil {
+					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 				}
 			}
 		}
-	*/
+	}
+
 	if value, ok := d.GetOk("tags"); ok {
 		bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
 		requestBody = utils.GetMergedJson(requestBody, bodyWithTags)
@@ -345,4 +344,17 @@ func schemaValidation(id parse.ResourceId, body interface{}) error {
 		log.Printf("[ERROR] load embedded schema: %+v\n", err)
 	}
 	return nil
+}
+
+func getExist(config cty.Value, path string) bool {
+	if config.CanIterateElements() {
+		configMap := config.AsValueMap()
+		if value, ok := configMap[path]; ok {
+			if value.Type().IsListType() {
+				return len(value.AsValueSlice()) != 0
+			}
+			return !value.IsNull()
+		}
+	}
+	return false
 }
