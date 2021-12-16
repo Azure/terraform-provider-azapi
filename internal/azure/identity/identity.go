@@ -97,9 +97,8 @@ func SchemaIdentityDataSource() *schema.Schema {
 }
 
 func ExpandIdentity(input []interface{}) (interface{}, error) {
-	body := make(map[string]interface{})
 	if len(input) == 0 || input[0] == nil {
-		return body, nil
+		return nil, nil
 	}
 
 	v := input[0].(map[string]interface{})
@@ -118,46 +117,44 @@ func ExpandIdentity(input []interface{}) (interface{}, error) {
 		}
 		config["userAssignedIdentities"] = userAssignedIdentities
 	}
-	body["identity"] = config
-	return body, nil
+	return config, nil
 }
 
-func FlattenIdentity(body interface{}) []interface{} {
-	if body != nil {
-		if bodyMap, ok := body.(map[string]interface{}); ok && bodyMap["identity"] != nil {
-			if identityMap, ok := bodyMap["identity"].(map[string]interface{}); ok {
-				identityIds := make([]string, 0)
-				if identityMap["userAssignedIdentities"] != nil {
-					userAssignedIdentities := identityMap["userAssignedIdentities"].(map[string]interface{})
-					for key := range userAssignedIdentities {
-						identityId, err := parse.UserAssignedIdentitiesID(key)
-						if err == nil {
-							identityIds = append(identityIds, identityId.ID())
-						}
-					}
-				}
-
-				identityType := identityMap["type"].(string)
-				switch {
-				case strings.Contains(identityType, ","):
-					identityType = string(SystemAssignedUserAssigned)
-				case strings.EqualFold(identityType, string(UserAssigned)):
-					identityType = string(UserAssigned)
-				case strings.EqualFold(identityType, string(SystemAssigned)):
-					identityType = string(SystemAssigned)
-				default:
-					identityType = string(None)
-				}
-
-				return []interface{}{
-					map[string]interface{}{
-						"type":         identityType,
-						"identity_ids": identityIds,
-						"principal_id": identityMap["principalId"],
-						"tenant_id":    identityMap["tenantId"],
-					},
+func FlattenIdentity(identity interface{}) []interface{} {
+	if identity == nil {
+		return nil
+	}
+	if identityMap, ok := identity.(map[string]interface{}); ok {
+		identityIds := make([]string, 0)
+		if identityMap["userAssignedIdentities"] != nil {
+			userAssignedIdentities := identityMap["userAssignedIdentities"].(map[string]interface{})
+			for key := range userAssignedIdentities {
+				identityId, err := parse.UserAssignedIdentitiesID(key)
+				if err == nil {
+					identityIds = append(identityIds, identityId.ID())
 				}
 			}
+		}
+
+		identityType := identityMap["type"].(string)
+		switch {
+		case strings.Contains(identityType, ","):
+			identityType = string(SystemAssignedUserAssigned)
+		case strings.EqualFold(identityType, string(UserAssigned)):
+			identityType = string(UserAssigned)
+		case strings.EqualFold(identityType, string(SystemAssigned)):
+			identityType = string(SystemAssigned)
+		default:
+			identityType = string(None)
+		}
+
+		return []interface{}{
+			map[string]interface{}{
+				"type":         identityType,
+				"identity_ids": identityIds,
+				"principal_id": identityMap["principalId"],
+				"tenant_id":    identityMap["tenantId"],
+			},
 		}
 	}
 	return nil

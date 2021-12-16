@@ -6,11 +6,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func SchemaTags() *schema.Schema {
+func SchemaTagsOC() *schema.Schema {
 	return &schema.Schema{
 		Type:         schema.TypeMap,
 		Optional:     true,
 		Computed:     true,
+		ValidateFunc: ValidateTags,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+	}
+}
+
+func SchemaTags() *schema.Schema {
+	return &schema.Schema{
+		Type:         schema.TypeMap,
+		Optional:     true,
 		ValidateFunc: ValidateTags,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
@@ -62,7 +73,7 @@ func TagValueToString(v interface{}) (string, error) {
 	}
 }
 
-func ExpandTags(tagsMap map[string]interface{}) interface{} {
+func ExpandTags(tagsMap map[string]interface{}) map[string]string {
 	output := make(map[string]string, len(tagsMap))
 
 	for i, v := range tagsMap {
@@ -71,16 +82,12 @@ func ExpandTags(tagsMap map[string]interface{}) interface{} {
 		output[i] = value
 	}
 
-	body := make(map[string]interface{})
-	body["tags"] = output
-	return body
+	return output
 }
 
-func FlattenTags(body interface{}) map[string]interface{} {
-	if body != nil {
-		if bodyMap, ok := body.(map[string]interface{}); ok && bodyMap["tags"] != nil {
-			return bodyMap["tags"].(map[string]interface{})
-		}
+func FlattenTags(input interface{}) map[string]interface{} {
+	if input != nil {
+		return input.(map[string]interface{})
 	}
 	return nil
 }

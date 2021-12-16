@@ -85,7 +85,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				Computed: true,
 			},
 
-			"tags": tags.SchemaTags(),
+			"tags": tags.SchemaTagsOC(),
 		},
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
@@ -102,7 +102,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				return nil
 			}
 
-			var body interface{}
+			var body map[string]interface{}
 			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
 			if err != nil {
 				return err
@@ -111,12 +111,8 @@ func ResourceAzureGenericResource() *schema.Resource {
 			props := []string{"identity", "location", "tags"}
 			config := d.GetRawConfig()
 			for _, prop := range props {
-				if getExist(config, prop) {
-					if bodyMap, ok := body.(map[string]interface{}); ok {
-						if bodyMap[prop] != nil {
-							return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-						}
-					}
+				if getExist(config, prop) && body[prop] != nil {
+					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 				}
 			}
 
@@ -127,19 +123,22 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 			if schemaValidationEnabled {
 				if value, ok := d.GetOk("tags"); ok {
-					bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
-					body = utils.GetMergedJson(body, bodyWithTags)
+					tagsModel := tags.ExpandTags(value.(map[string]interface{}))
+					if len(tagsModel) != 0 {
+						body["tags"] = tagsModel
+					}
 				}
 				if value, ok := d.GetOk("location"); ok {
-					bodyWithLocation := location.ExpandLocation(value.(string))
-					body = utils.GetMergedJson(body, bodyWithLocation)
+					body["location"] = location.Normalize(value.(string))
 				}
 				if value, ok := d.GetOk("identity"); ok {
-					bodyWithIdentity, err := identity.ExpandIdentity(value.([]interface{}))
+					identityModel, err := identity.ExpandIdentity(value.([]interface{}))
 					if err != nil {
 						return err
 					}
-					body = utils.GetMergedJson(body, bodyWithIdentity)
+					if identityModel != nil {
+						body["identity"] = identityModel
+					}
 				}
 				if err := schemaValidation(parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string)), body); err != nil {
 					return err
@@ -169,8 +168,8 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		}
 	}
 
-	var requestBody interface{}
-	err := json.Unmarshal([]byte(d.Get("body").(string)), &requestBody)
+	var body map[string]interface{}
+	err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
 	if err != nil {
 		return err
 	}
@@ -178,29 +177,28 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	props := []string{"identity", "location", "tags"}
 	config := d.GetRawConfig()
 	for _, prop := range props {
-		if getExist(config, prop) {
-			if bodyMap, ok := requestBody.(map[string]interface{}); ok {
-				if bodyMap[prop] != nil {
-					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-				}
-			}
+		if getExist(config, prop) && body[prop] != nil {
+			return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 		}
 	}
 
 	if value, ok := d.GetOk("tags"); ok {
-		bodyWithTags := tags.ExpandTags(value.(map[string]interface{}))
-		requestBody = utils.GetMergedJson(requestBody, bodyWithTags)
+		tagsModel := tags.ExpandTags(value.(map[string]interface{}))
+		if len(tagsModel) != 0 {
+			body["tags"] = tagsModel
+		}
 	}
 	if value, ok := d.GetOk("location"); ok {
-		bodyWithLocation := location.ExpandLocation(value.(string))
-		requestBody = utils.GetMergedJson(requestBody, bodyWithLocation)
+		body["location"] = location.Normalize(value.(string))
 	}
 	if value, ok := d.GetOk("identity"); ok {
-		bodyWithIdentity, err := identity.ExpandIdentity(value.([]interface{}))
+		identityModel, err := identity.ExpandIdentity(value.([]interface{}))
 		if err != nil {
 			return err
 		}
-		requestBody = utils.GetMergedJson(requestBody, bodyWithIdentity)
+		if identityModel != nil {
+			body["identity"] = identityModel
+		}
 	}
 
 	schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
@@ -209,14 +207,14 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		schemaValidationEnabled = enabled.(bool)
 	}
 	if schemaValidationEnabled {
-		if err := schemaValidation(id, requestBody); err != nil {
+		if err := schemaValidation(id, body); err != nil {
 			return err
 		}
 	}
 
-	j, _ := json.Marshal(requestBody)
+	j, _ := json.Marshal(body)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
+	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, http.MethodPut)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -273,9 +271,12 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 
 	d.Set("resource_id", id.AzureResourceId)
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-	d.Set("tags", tags.FlattenTags(responseBody))
-	d.Set("location", location.FlattenLocation(responseBody))
-	d.Set("identity", identity.FlattenIdentity(responseBody))
+
+	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
+		d.Set("location", bodyMap["location"])
+		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
+	}
 
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}
