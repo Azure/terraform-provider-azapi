@@ -121,6 +121,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
+			// nolint staticcheck
 			if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
 				schemaValidationEnabled = enabled.(bool)
 			}
@@ -203,6 +204,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
+	// nolint staticcheck
 	if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
 		schemaValidationEnabled = enabled.(bool)
 	}
