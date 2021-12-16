@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
@@ -111,8 +112,27 @@ func ResourceAzureGenericResource() *schema.Resource {
 			props := []string{"identity", "location", "tags"}
 			config := d.GetRawConfig()
 			for _, prop := range props {
-				if getExist(config, prop) && body[prop] != nil {
+				if isConfigExist(config, prop) && body[prop] != nil {
 					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
+				}
+			}
+
+			if !isConfigExist(config, "tags") && body["tags"] == nil {
+				id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+				if err == nil && resourceDef != nil {
+					tempBody := make(map[string]interface{})
+					tempBody["tags"] = meta.(*clients.Client).Features.DefaultTags
+					if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
+						if _, ok := tempBody["tags"]; ok {
+							body["tags"] = meta.(*clients.Client).Features.DefaultTags
+							currentTags := d.Get("tags")
+							defaultTags := meta.(*clients.Client).Features.DefaultTags
+							if !reflect.DeepEqual(currentTags, defaultTags) {
+								d.SetNew("tags", defaultTags)
+							}
+						}
+					}
 				}
 			}
 
@@ -122,7 +142,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				schemaValidationEnabled = enabled.(bool)
 			}
 			if schemaValidationEnabled {
-				if value, ok := d.GetOk("tags"); ok {
+				if value, ok := d.GetOk("tags"); ok && isConfigExist(config, "tags") {
 					tagsModel := tags.ExpandTags(value.(map[string]interface{}))
 					if len(tagsModel) != 0 {
 						body["tags"] = tagsModel
@@ -177,12 +197,25 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	props := []string{"identity", "location", "tags"}
 	config := d.GetRawConfig()
 	for _, prop := range props {
-		if getExist(config, prop) && body[prop] != nil {
+		if isConfigExist(config, prop) && body[prop] != nil {
 			return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
 		}
 	}
 
-	if value, ok := d.GetOk("tags"); ok {
+	if !isConfigExist(config, "tags") && body["tags"] == nil {
+		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+		if err == nil && resourceDef != nil {
+			tempBody := make(map[string]interface{})
+			tempBody["tags"] = meta.(*clients.Client).Features.DefaultTags
+			if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
+				if _, ok := tempBody["tags"]; ok {
+					body["tags"] = meta.(*clients.Client).Features.DefaultTags
+				}
+			}
+		}
+	}
+
+	if value, ok := d.GetOk("tags"); ok && isConfigExist(config, "tags") {
 		tagsModel := tags.ExpandTags(value.(map[string]interface{}))
 		if len(tagsModel) != 0 {
 			body["tags"] = tagsModel
@@ -349,7 +382,7 @@ func schemaValidation(id parse.ResourceId, body interface{}) error {
 	return nil
 }
 
-func getExist(config cty.Value, path string) bool {
+func isConfigExist(config cty.Value, path string) bool {
 	if config.CanIterateElements() {
 		configMap := config.AsValueMap()
 		if value, ok := configMap[path]; ok {
