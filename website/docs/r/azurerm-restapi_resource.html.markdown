@@ -114,6 +114,8 @@ The following arguments are supported:
   }
 }
 ```
+
+* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Used to override validation setting on provider.
 ---
 
 A `identity` block supports the following:
