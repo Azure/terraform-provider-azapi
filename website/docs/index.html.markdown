@@ -64,6 +64,8 @@ It's possible to configure the behaviour of certain resources using the followin
 
 * `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 
+* `default_tags` - (Optional) A mapping of tags which should be assigned to the azure resource as default tags. `tags` in each resource block can override the `default_tags`.
+
 ---
 
 When authenticating as a Service Principal using a Client Certificate, the following fields can be set:
