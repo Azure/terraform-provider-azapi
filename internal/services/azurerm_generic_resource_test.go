@@ -117,6 +117,46 @@ func TestAccGenericResource_identity(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_defaultTags(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultTag(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+		{
+			Config: r.defaultTagOverrideInBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+		{
+			Config: r.defaultTag(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+		{
+			Config: r.defaultTagOverrideInHcl(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	id, err := parse.ResourceID(state.ID)
 	if err != nil {
@@ -338,6 +378,101 @@ resource "azurerm-restapi_resource" "test" {
 
   tags = {
     "Key" = "Value"
+  }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) defaultTag(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azurerm-restapi" {
+  default_tags = {
+    key = "default"
+  }
+}
+
+resource "azurerm-restapi_resource" "test" {
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.Automation/automationAccounts/acctest%[2]s"
+  type        = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+
+  location = azurerm_resource_group.test.location
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) defaultTagOverrideInBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azurerm-restapi" {
+  default_tags = {
+    key = "default"
+  }
+}
+
+resource "azurerm-restapi_resource" "test" {
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.Automation/automationAccounts/acctest%[2]s"
+  type        = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+
+  location = azurerm_resource_group.test.location
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+    tags = {
+      key = "override"
+    }
+  })
+
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) defaultTagOverrideInHcl(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azurerm-restapi" {
+  default_tags = {
+    key = "default"
+  }
+}
+
+resource "azurerm-restapi_resource" "test" {
+  resource_id = "${azurerm_resource_group.test.id}/providers/Microsoft.Automation/automationAccounts/acctest%[2]s"
+  type        = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+
+  location = azurerm_resource_group.test.location
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+
+  tags = {
+    key = "override"
   }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)

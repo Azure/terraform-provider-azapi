@@ -25,29 +25,14 @@ func SchemaLocationDataSource() *schema.Schema {
 }
 
 func LocationDiffSuppressFunc(_, old, new string, _ *schema.ResourceData) bool {
-	return LocationNormalize(old) == LocationNormalize(new)
+	return Normalize(old) == Normalize(new)
 }
 
 func LocationStateFunc(location interface{}) string {
 	input := location.(string)
-	return LocationNormalize(input)
+	return Normalize(input)
 }
 
-func LocationNormalize(input string) string {
+func Normalize(input string) string {
 	return strings.ReplaceAll(strings.ToLower(input), " ", "")
-}
-
-func ExpandLocation(location string) interface{} {
-	body := make(map[string]interface{})
-	body["location"] = LocationNormalize(location)
-	return body
-}
-
-func FlattenLocation(body interface{}) interface{} {
-	if body != nil {
-		if bodyMap, ok := body.(map[string]interface{}); ok && bodyMap["location"] != nil {
-			return bodyMap["location"].(string)
-		}
-	}
-	return nil
 }

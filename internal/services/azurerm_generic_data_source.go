@@ -76,9 +76,11 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())
-	d.Set("tags", tags.FlattenTags(responseBody))
-	d.Set("location", location.FlattenLocation(responseBody))
-	d.Set("identity", identity.FlattenIdentity(responseBody))
+	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
+		d.Set("location", bodyMap["location"])
+		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
+	}
 
 	paths := d.Get("response_export_values").([]interface{})
 	var output interface{}

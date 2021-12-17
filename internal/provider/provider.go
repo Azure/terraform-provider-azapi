@@ -3,8 +3,10 @@ package provider
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
@@ -107,6 +109,8 @@ func azureProvider() *schema.Provider {
 				Default:     true,
 				Description: "Whether enable the schema validation",
 			},
+
+			"default_tags": tags.SchemaTags(),
 		},
 
 		DataSourcesMap: dataSources,
@@ -161,6 +165,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			TerraformVersion: terraformVersion,
 			Features: features.UserFeatures{
 				SchemaValidationEnabled: d.Get("schema_validation_enabled").(bool),
+				DefaultTags:             tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
 			},
 		}
 
@@ -178,7 +183,10 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		client.StopContext = stopCtx
 
 		// load schema
+		var mutex sync.Mutex
+		mutex.Lock()
 		azure.GetAzureSchema()
+		mutex.Unlock()
 		return client, nil
 	}
 }

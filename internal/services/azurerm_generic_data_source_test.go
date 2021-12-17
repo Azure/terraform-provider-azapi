@@ -25,7 +25,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 				check.That(data.ResourceName).Key("identity.0.identity_ids.#").HasValue("1"),
 				check.That(data.ResourceName).Key("identity.0.principal_id").Exists(),
 				check.That(data.ResourceName).Key("identity.0.tenant_id").Exists(),
-				check.That(data.ResourceName).Key("location").HasValue(location.LocationNormalize(data.LocationPrimary)),
+				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
 			),
 		},
