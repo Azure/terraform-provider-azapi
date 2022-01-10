@@ -50,7 +50,8 @@ resource "azurerm_synapse_sql_pool" "test" {
 
 
 resource "azurerm-restapi_resource" "test" {
-  resource_id = "${azurerm_synapse_sql_pool.test.id}/workloadGroups/smallrc"
+  name = "smallrc"
+  parent_id = azurerm_synapse_sql_pool.test.id
   type = "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2020-12-01"
   body = <<BODY
 {

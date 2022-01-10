@@ -48,20 +48,20 @@ data "azurerm_machine_learning_workspace" "existing" {
 }
 
 resource "azurerm-restapi_resource" "example" {
-  resource_id = "${data.azurerm_machine_learning_workspace.existing.id}/computes/example"
+  name = "example"
+  parent_id = data.azurerm_machine_learning_workspace.existing.id
   type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
-  body = <<BODY
-    {
-      "location": "eastus",
-      "properties": {
-        "computeType": "ComputeInstance",
-        "disableLocalAuth": true,
-        "properties": {
-          "vmSize": "STANDARD_NC6"
-        }
+  
+  location = "eastus"
+  body = jsondecode({
+    properties = {
+      computeType      = "ComputeInstance"
+      disableLocalAuth = true
+      properties = {
+        vmSize = "STANDARD_NC6"
       }
     }
-  BODY
+  })
 }
 
 ```

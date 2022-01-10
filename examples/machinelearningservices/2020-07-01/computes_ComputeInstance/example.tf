@@ -58,7 +58,8 @@ resource "azurerm_machine_learning_workspace" "test" {
 
 
 resource "azurerm-restapi_resource" "test" {
-  resource_id = "${azurerm_machine_learning_workspace.test.id}/computes/acctest6032"
+  name = "acctest6032"
+  parent_id = azurerm_machine_learning_workspace.test.id
   type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
   body = <<BODY
 {
