@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/tf"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func ResourceAzureGenericDataSource() *schema.Resource {
@@ -26,7 +27,13 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"resource_id": {
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+
+			"parent_id": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ValidateFunc: validate.AzureResourceID,
@@ -55,6 +62,11 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 				Computed: true,
 			},
 
+			"resource_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+
 			"tags": tags.SchemaTagsDataSource(),
 		},
 	}
@@ -65,7 +77,7 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 
 	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
@@ -76,6 +88,9 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())
+	d.Set("name", id.Name)
+	d.Set("parent_id", id.ParentId)
+	d.Set("resource_id", id.AzureResourceId)
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
 		d.Set("location", bodyMap["location"])

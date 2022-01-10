@@ -42,8 +42,9 @@ resource "azurerm_container_registry" "example" {
 }
 
 data "azurerm-restapi_resource" "example" {
-  resource_id = azurerm_container_registry.example.id
-  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  name      = "example"
+  parent_id = azurerm_resource_group.example.id
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
 
   response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
 }
@@ -62,11 +63,11 @@ output "quarantine_policy" {
 ## Arguments Reference
 
 The following arguments are supported:
-* `resource_id` - (Required) The ID of an azure source.
+* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
   Here're some examples
   `Container Registry: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/mygroup1/providers/Microsoft.ContainerRegistry/registries/myregistry1` and
-  `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
-  Changing this forces a new azure resource to be created.
+  `Resource Group: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1`.
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
@@ -92,8 +93,10 @@ The following arguments are supported:
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
-* `id` - The ID of the azure resource.
+* `id` - The ID of the azure resource which contains `api-version`.
 
+* `resource_id` - The ID of the azure resource which can be used as a reference in other azurerm resources.
+  
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
 
 * `location` - The Azure Region where the azure resource should exist.

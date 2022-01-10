@@ -37,8 +37,9 @@ func (r GenericDataSource) basic(data acceptance.TestData) string {
 %s
 
 data "azurerm-restapi_resource" "test" {
-  resource_id = azurerm-restapi_resource.test.resource_id
-  type        = azurerm-restapi_resource.test.type
+  name      = azurerm-restapi_resource.test.name
+  parent_id = azurerm-restapi_resource.test.parent_id
+  type      = azurerm-restapi_resource.test.type
 }
 `, GenericResource{}.complete(data))
 }
