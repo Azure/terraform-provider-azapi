@@ -44,7 +44,14 @@ func ResourceAzureGenericResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"resource_id": {
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				ForceNew:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+
+			"parent_id": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
@@ -86,6 +93,11 @@ func ResourceAzureGenericResource() *schema.Resource {
 				Computed: true,
 			},
 
+			"resource_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+
 			"tags": tags.SchemaTagsOC(),
 		},
 
@@ -118,7 +130,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "tags") && body["tags"] == nil {
-				id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
 				if err == nil && resourceDef != nil {
 					tempBody := make(map[string]interface{})
@@ -160,7 +172,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 						body["identity"] = identityModel
 					}
 				}
-				if err := schemaValidation(parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string)), body); err != nil {
+				if err := schemaValidation(parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string)), body); err != nil {
 					return err
 				}
 			}
@@ -174,7 +186,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 
 	if d.IsNewResource() {
 		existing, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
@@ -302,6 +314,8 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		d.Set("body", string(data))
 	}
 
+	d.Set("name", id.Name)
+	d.Set("parent_id", id.ParentId)
 	d.Set("resource_id", id.AzureResourceId)
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 

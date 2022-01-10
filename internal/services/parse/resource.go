@@ -13,6 +13,39 @@ type ResourceId struct {
 	AzureResourceId   string
 	ApiVersion        string
 	AzureResourceType string
+	Name              string
+	ParentId          string
+}
+
+func BuildResourceID(name, parentId, resourceType string) ResourceId {
+	parts := strings.Split(resourceType, "@")
+	apiVersion := ""
+	azureResourceType := ""
+	if len(parts) == 2 {
+		apiVersion = parts[1]
+		azureResourceType = parts[0]
+	}
+
+	azureResourceId := ""
+	parts = strings.Split(azureResourceType, "/")
+	switch {
+	case len(parts) <= 1:
+		break
+	case len(parts) == 2:
+		azureResourceId = fmt.Sprintf("%s/providers/%s/%s", parentId, azureResourceType, name)
+		break
+	default:
+		lastType := parts[len(parts)-1]
+		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
+	}
+
+	return ResourceId{
+		AzureResourceId:   azureResourceId,
+		ApiVersion:        apiVersion,
+		AzureResourceType: azureResourceType,
+		Name:              name,
+		ParentId:          parentId,
+	}
 }
 
 func NewResourceID(azureResourceId, resourceType string) ResourceId {
@@ -27,6 +60,8 @@ func NewResourceID(azureResourceId, resourceType string) ResourceId {
 		AzureResourceId:   azureResourceId,
 		ApiVersion:        apiVersion,
 		AzureResourceType: azureResourceType,
+		Name:              utils.GetName(azureResourceId),
+		ParentId:          utils.GetParentId(azureResourceId),
 	}
 }
 
@@ -57,6 +92,8 @@ func ResourceID(input string) (*ResourceId, error) {
 		AzureResourceId:   azureResourceId,
 		AzureResourceType: azureResourceType,
 		ApiVersion:        idUrl.Query().Get("api-version"),
+		Name:              utils.GetName(azureResourceId),
+		ParentId:          utils.GetParentId(azureResourceId),
 	}
 
 	if resourceId.AzureResourceId == "" {
