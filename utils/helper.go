@@ -80,7 +80,7 @@ func GetParentId(id string) string {
 		}
 
 		if current == len(components)-4 && key == "providers" {
-			break
+
 		} else {
 			parentId += "/" + key + "/" + value
 		}
