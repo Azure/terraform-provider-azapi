@@ -33,7 +33,6 @@ func BuildResourceID(name, parentId, resourceType string) ResourceId {
 		break
 	case len(parts) == 2:
 		azureResourceId = fmt.Sprintf("%s/providers/%s/%s", parentId, azureResourceType, name)
-		break
 	default:
 		lastType := parts[len(parts)-1]
 		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
