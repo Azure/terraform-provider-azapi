@@ -38,10 +38,11 @@ func GetApiVersions(resourceType string) []string {
 		return []string{}
 	}
 	res := make([]string, 0)
-	resourceType = strings.ToUpper(resourceType)
-	if azureSchema.Resources[resourceType] != nil {
-		for _, v := range azureSchema.Resources[resourceType].Definitions {
-			res = append(res, v.ApiVersion)
+	for key, value := range azureSchema.Resources {
+		if strings.EqualFold(key, resourceType) {
+			for _, v := range value.Definitions {
+				res = append(res, v.ApiVersion)
+			}
 		}
 	}
 	sort.Strings(res)
@@ -53,11 +54,12 @@ func GetResourceDefinition(resourceType, apiVersion string) (*types.ResourceType
 	if azureSchema == nil {
 		return nil, fmt.Errorf("failed to load azure schema index")
 	}
-	resourceType = strings.ToUpper(resourceType)
-	if azureSchema.Resources[resourceType] != nil {
-		for _, v := range azureSchema.Resources[resourceType].Definitions {
-			if v.ApiVersion == apiVersion {
-				return v.GetDefinition()
+	for key, value := range azureSchema.Resources {
+		if strings.EqualFold(key, resourceType) {
+			for _, v := range value.Definitions {
+				if v.ApiVersion == apiVersion {
+					return v.GetDefinition()
+				}
 			}
 		}
 	}
