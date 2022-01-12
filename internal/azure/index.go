@@ -42,7 +42,7 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 		if index == -1 {
 			return fmt.Errorf("api-version is not specified, type: %s", k)
 		}
-		resourceType := strings.ToUpper(k[0:index])
+		resourceType := k[0:index]
 		resource := o.Resources[resourceType]
 		if resource == nil {
 			o.Resources[resourceType] = &Resource{
