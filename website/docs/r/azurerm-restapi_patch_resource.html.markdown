@@ -92,11 +92,17 @@ resource "azurerm-restapi_patch_resource" "example" {
 ## Arguments Reference
 
 The following arguments are supported:
-* `resource_id` - (Required) The ID of an existing azure source. 
+* `name` - (Optional) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+
+* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
+
+* `resource_id` - (Optional) The ID of an existing azure source. 
   Here're some examples 
   `Container Registry: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/mygroup1/providers/Microsoft.ContainerRegistry/registries/myregistry1` and 
   `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
   Changing this forces a new azure resource to be created.
+
+~> **Note:** Configuring `name` and `parent_id` is an alternative way to configure `resource_id`.
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
