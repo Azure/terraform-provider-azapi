@@ -37,11 +37,35 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
+			"name": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				Computed:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
+				RequiredWith:  []string{"parent_id"},
+				ConflictsWith: []string{"resource_id"},
+				AtLeastOneOf:  []string{"name", "resource_id"},
+			},
+
+			"parent_id": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				Computed:      true,
+				ValidateFunc:  validate.AzureResourceID,
+				RequiredWith:  []string{"name"},
+				ConflictsWith: []string{"resource_id"},
+			},
+
 			"resource_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.AzureResourceID,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				Computed:      true,
+				ValidateFunc:  validate.AzureResourceID,
+				ConflictsWith: []string{"name", "parent_id"},
+				AtLeastOneOf:  []string{"name", "resource_id"},
 			},
 
 			"type": {
@@ -89,7 +113,12 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	var id parse.ResourceId
+	if name := d.Get("name").(string); len(name) != 0 {
+		id = parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	} else {
+		id = parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	}
 
 	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
@@ -143,6 +172,8 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
+	d.Set("name", id.Name)
+	d.Set("parent_id", id.ParentId)
 	d.Set("resource_id", id.AzureResourceId)
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
