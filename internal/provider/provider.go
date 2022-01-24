@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
@@ -110,6 +111,8 @@ func azureProvider() *schema.Provider {
 				Description: "Whether enable the schema validation",
 			},
 
+			"default_location": location.SchemaLocation(),
+
 			"default_tags": tags.SchemaTags(),
 		},
 
@@ -166,6 +169,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			Features: features.UserFeatures{
 				SchemaValidationEnabled: d.Get("schema_validation_enabled").(bool),
 				DefaultTags:             tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
+				DefaultLocation:         location.Normalize(d.Get("default_location").(string)),
 			},
 		}
 

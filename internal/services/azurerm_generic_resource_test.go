@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
@@ -163,6 +164,50 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("resource_id").Exists(),
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
+func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultsNotApplicable(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("tags").DoesNotExist(),
+				check.That(data.ResourceName).Key("location").DoesNotExist(),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
+func TestAccGenericResource_defaultLocation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultLocation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+		{
+			Config: r.defaultLocationOverrideInHcl(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
 			),
 		},
 		data.ImportStep(ignoredProperties()...),
@@ -496,6 +541,102 @@ resource "azurerm-restapi_resource" "test" {
   tags = {
     key = "override"
   }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) defaultLocation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azurerm-restapi" {
+  default_location = "%[3]s"
+}
+
+resource "azurerm-restapi_resource" "test" {
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) defaultLocationOverrideInHcl(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azurerm-restapi" {
+  default_location = "%[3]s"
+}
+
+resource "azurerm-restapi_resource" "test" {
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+
+  location = "%[4]s"
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+    tags = {
+      key = "override"
+    }
+  })
+
+}
+`, r.template(data), data.RandomString, data.LocationPrimary, data.LocationSecondary)
+}
+
+func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm-restapi" {
+  default_tags = {
+    key = "default"
+  }
+  default_location = "%[3]s"
+}
+
+resource "azurerm_container_registry" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  sku                 = "Premium"
+  admin_enabled       = false
+}
+
+resource "azurerm-restapi_resource" "test" {
+  name      = "acctest%[2]s"
+  parent_id = azurerm_container_registry.test.id
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
+  body      = <<BODY
+   {
+      "properties": {
+        "description": "Developer Scopes",
+        "actions": [
+          "repositories/testrepo/content/read"
+        ]
+      }
+    }
+  BODY
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
