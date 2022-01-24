@@ -4,9 +4,10 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func SchemaLocation() *schema.Schema {
+func SchemaLocationOC() *schema.Schema {
 	return &schema.Schema{
 		Type:             schema.TypeString,
 		Optional:         true,
@@ -14,6 +15,14 @@ func SchemaLocation() *schema.Schema {
 		Computed:         true,
 		StateFunc:        LocationStateFunc,
 		DiffSuppressFunc: LocationDiffSuppressFunc,
+	}
+}
+
+func SchemaLocation() *schema.Schema {
+	return &schema.Schema{
+		Type:         schema.TypeString,
+		Optional:     true,
+		ValidateFunc: validation.StringIsNotEmpty,
 	}
 }
 

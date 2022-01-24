@@ -64,7 +64,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				ValidateFunc: validate.ResourceType,
 			},
 
-			"location": location.SchemaLocation(),
+			"location": location.SchemaLocationOC(),
 
 			"identity": identity.SchemaIdentity(),
 
@@ -129,7 +129,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				}
 			}
 
-			if !isConfigExist(config, "tags") && body["tags"] == nil {
+			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
 				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
 				if err == nil && resourceDef != nil {
@@ -142,6 +142,25 @@ func ResourceAzureGenericResource() *schema.Resource {
 							defaultTags := meta.(*clients.Client).Features.DefaultTags
 							if !reflect.DeepEqual(currentTags, defaultTags) {
 								d.SetNew("tags", defaultTags)
+							}
+						}
+					}
+				}
+			}
+
+			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
+				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+				if err == nil && resourceDef != nil {
+					tempBody := make(map[string]interface{})
+					tempBody["location"] = meta.(*clients.Client).Features.DefaultLocation
+					if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
+						if _, ok := tempBody["location"]; ok {
+							body["location"] = meta.(*clients.Client).Features.DefaultLocation
+							currentLocation := d.Get("location").(string)
+							defaultLocation := meta.(*clients.Client).Features.DefaultLocation
+							if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
+								d.SetNew("location", defaultLocation)
 							}
 						}
 					}
@@ -214,7 +233,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		}
 	}
 
-	if !isConfigExist(config, "tags") && body["tags"] == nil {
+	if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
 		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
 		if err == nil && resourceDef != nil {
 			tempBody := make(map[string]interface{})
@@ -222,6 +241,19 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 			if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
 				if _, ok := tempBody["tags"]; ok {
 					body["tags"] = meta.(*clients.Client).Features.DefaultTags
+				}
+			}
+		}
+	}
+
+	if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
+		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
+		if err == nil && resourceDef != nil {
+			tempBody := make(map[string]interface{})
+			tempBody["location"] = meta.(*clients.Client).Features.DefaultLocation
+			if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
+				if _, ok := tempBody["location"]; ok {
+					body["location"] = meta.(*clients.Client).Features.DefaultLocation
 				}
 			}
 		}
