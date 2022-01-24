@@ -110,6 +110,14 @@ func ResourceAzureGenericResource() *schema.Resource {
 				d.SetNewComputed("output")
 			}
 
+			id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+			if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
+				parentType := utils.GetParentType(id.AzureResourceType)
+				if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
+					return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
+				}
+			}
+
 			// body refers other resource, can't be verified during plan
 			if len(d.Get("body").(string)) == 0 {
 				return nil
@@ -130,7 +138,6 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
 				if err == nil && resourceDef != nil {
 					tempBody := make(map[string]interface{})
@@ -149,7 +156,6 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
 				if err == nil && resourceDef != nil {
 					tempBody := make(map[string]interface{})
@@ -191,7 +197,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 						body["identity"] = identityModel
 					}
 				}
-				if err := schemaValidation(parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string)), body); err != nil {
+				if err := schemaValidation(id, body); err != nil {
 					return err
 				}
 			}
@@ -206,6 +212,12 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	defer cancel()
 
 	id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
+		parentType := utils.GetParentType(id.AzureResourceType)
+		if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
+			return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
+		}
+	}
 
 	if d.IsNewResource() {
 		existing, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
@@ -392,39 +404,6 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("deleting %q: %+v", id, err)
 	}
 
-	return nil
-}
-
-func schemaValidation(id parse.ResourceId, body interface{}) error {
-	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", id.AzureResourceType, id.ApiVersion)
-	versions := azure.GetApiVersions(id.AzureResourceType)
-	if len(versions) == 0 {
-		return fmt.Errorf("the `type` is invalid, resource type %s can't be found", id.AzureResourceType)
-	}
-	isVersionValid := false
-	for _, version := range versions {
-		if version == id.ApiVersion {
-			isVersionValid = true
-			break
-		}
-	}
-	if !isVersionValid {
-		return fmt.Errorf("the `type`'s api-version is invalid. The supported versions are [%s]\n", strings.Join(versions, ", "))
-	}
-
-	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-	if err == nil && resourceDef != nil {
-		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
-		if len(errors) != 0 {
-			errorMsg := "the `body` is invalid: \n"
-			for _, err := range errors {
-				errorMsg += fmt.Sprintf("%s\n", err.Error())
-			}
-			return fmt.Errorf(errorMsg)
-		}
-	} else {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
-	}
 	return nil
 }
 
