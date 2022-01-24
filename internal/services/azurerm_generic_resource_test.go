@@ -181,7 +181,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("resource_id").Exists(),
 				check.That(data.ResourceName).Key("tags").DoesNotExist(),
-				check.That(data.ResourceName).Key("location").DoesNotExist(),
+				check.That(data.ResourceName).Key("location").IsEmpty(),
 			),
 		},
 		data.ImportStep(ignoredProperties()...),
