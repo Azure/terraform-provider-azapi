@@ -66,6 +66,7 @@ It's possible to configure the behaviour of certain resources using the followin
 
 * `default_tags` - (Optional) A mapping of tags which should be assigned to the azure resource as default tags. `tags` in each resource block can override the `default_tags`.
 
+* `default_location` - (Optional) The default Azure Region where the azure resource should exist. `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.
 ---
 
 When authenticating as a Service Principal using a Client Certificate, the following fields can be set:

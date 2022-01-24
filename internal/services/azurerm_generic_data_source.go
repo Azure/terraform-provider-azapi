@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
@@ -78,6 +79,12 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	defer cancel()
 
 	id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
+		parentType := utils.GetParentType(id.AzureResourceType)
+		if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
+			return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
+		}
+	}
 
 	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
