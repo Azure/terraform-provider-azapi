@@ -72,12 +72,17 @@ func NewResourceID(azureResourceId, resourceType string) ResourceId {
 		apiVersion = parts[1]
 		azureResourceType = parts[0]
 	}
+	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
+	if err != nil {
+		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+	}
 	return ResourceId{
 		AzureResourceId:   azureResourceId,
 		ApiVersion:        apiVersion,
 		AzureResourceType: azureResourceType,
 		Name:              utils.GetName(azureResourceId),
 		ParentId:          utils.GetParentId(azureResourceId),
+		ResourceDef:       resourceDef,
 	}
 }
 
