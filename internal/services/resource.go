@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 )
@@ -27,9 +28,8 @@ func schemaValidation(id parse.ResourceId, body interface{}) error {
 		return fmt.Errorf("the `type`'s api-version is invalid. The supported versions are [%s]\n", strings.Join(versions, ", "))
 	}
 
-	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-	if err == nil && resourceDef != nil {
-		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
+	if id.ResourceDef != nil {
+		errors := (*id.ResourceDef).Validate(utils.NormalizeObject(body), "")
 		if len(errors) != 0 {
 			errorMsg := "the `body` is invalid: \n"
 			for _, err := range errors {
@@ -37,8 +37,22 @@ func schemaValidation(id parse.ResourceId, body interface{}) error {
 			}
 			return fmt.Errorf(errorMsg)
 		}
-	} else {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
 	}
 	return nil
+}
+
+func isResourceHasProperty(resourceDef *types.ResourceType, property string) bool {
+	if resourceDef == nil || resourceDef.Body == nil || resourceDef.Body.Type == nil {
+		return false
+	}
+	objectType, ok := (*resourceDef.Body.Type).(*types.ObjectType)
+	if !ok {
+		return false
+	}
+	if prop, ok := objectType.Properties[property]; ok {
+		if !prop.IsReadOnly() {
+			return true
+		}
+	}
+	return false
 }
