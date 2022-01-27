@@ -66,6 +66,9 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 						scopeTypes = append(scopeTypes, f)
 					}
 				}
+				if scopeType == 0 {
+					scopeTypes = append(scopeTypes, Unknown)
+				}
 				t.ScopeTypes = scopeTypes
 			}
 		case "Body":
