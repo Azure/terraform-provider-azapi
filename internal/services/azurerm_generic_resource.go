@@ -7,10 +7,8 @@ import (
 	"log"
 	"net/http"
 	"reflect"
-	"strings"
 	"time"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
@@ -110,12 +108,9 @@ func ResourceAzureGenericResource() *schema.Resource {
 				d.SetNewComputed("output")
 			}
 
-			id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-			if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
-				parentType := utils.GetParentType(id.AzureResourceType)
-				if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
-					return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
-				}
+			id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+			if err != nil {
+				return err
 			}
 
 			// body refers other resource, can't be verified during plan
@@ -124,7 +119,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			var body map[string]interface{}
-			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
+			err = json.Unmarshal([]byte(d.Get("body").(string)), &body)
 			if err != nil {
 				return err
 			}
@@ -138,37 +133,23 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-				if err == nil && resourceDef != nil {
-					tempBody := make(map[string]interface{})
-					tempBody["tags"] = meta.(*clients.Client).Features.DefaultTags
-					if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
-						if _, ok := tempBody["tags"]; ok {
-							body["tags"] = meta.(*clients.Client).Features.DefaultTags
-							currentTags := d.Get("tags")
-							defaultTags := meta.(*clients.Client).Features.DefaultTags
-							if !reflect.DeepEqual(currentTags, defaultTags) {
-								d.SetNew("tags", defaultTags)
-							}
-						}
+				if isResourceHasProperty(id.ResourceDef, "location") {
+					body["tags"] = meta.(*clients.Client).Features.DefaultTags
+					currentTags := d.Get("tags")
+					defaultTags := meta.(*clients.Client).Features.DefaultTags
+					if !reflect.DeepEqual(currentTags, defaultTags) {
+						d.SetNew("tags", defaultTags)
 					}
 				}
 			}
 
 			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-				resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-				if err == nil && resourceDef != nil {
-					tempBody := make(map[string]interface{})
-					tempBody["location"] = meta.(*clients.Client).Features.DefaultLocation
-					if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
-						if _, ok := tempBody["location"]; ok {
-							body["location"] = meta.(*clients.Client).Features.DefaultLocation
-							currentLocation := d.Get("location").(string)
-							defaultLocation := meta.(*clients.Client).Features.DefaultLocation
-							if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
-								d.SetNew("location", defaultLocation)
-							}
-						}
+				if isResourceHasProperty(id.ResourceDef, "location") {
+					body["location"] = meta.(*clients.Client).Features.DefaultLocation
+					currentLocation := d.Get("location").(string)
+					defaultLocation := meta.(*clients.Client).Features.DefaultLocation
+					if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
+						d.SetNew("location", defaultLocation)
 					}
 				}
 			}
@@ -211,12 +192,9 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-	if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
-		parentType := utils.GetParentType(id.AzureResourceType)
-		if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
-			return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
-		}
+	id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	if err != nil {
+		return err
 	}
 
 	if d.IsNewResource() {
@@ -232,7 +210,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	var body map[string]interface{}
-	err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
+	err = json.Unmarshal([]byte(d.Get("body").(string)), &body)
 	if err != nil {
 		return err
 	}
@@ -246,28 +224,14 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-		if err == nil && resourceDef != nil {
-			tempBody := make(map[string]interface{})
-			tempBody["tags"] = meta.(*clients.Client).Features.DefaultTags
-			if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
-				if _, ok := tempBody["tags"]; ok {
-					body["tags"] = meta.(*clients.Client).Features.DefaultTags
-				}
-			}
+		if isResourceHasProperty(id.ResourceDef, "location") {
+			body["tags"] = meta.(*clients.Client).Features.DefaultTags
 		}
 	}
 
 	if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-		if err == nil && resourceDef != nil {
-			tempBody := make(map[string]interface{})
-			tempBody["location"] = meta.(*clients.Client).Features.DefaultLocation
-			if tempBody, ok := (*resourceDef).GetWriteOnly(tempBody).(map[string]interface{}); ok && tempBody != nil {
-				if _, ok := tempBody["location"]; ok {
-					body["location"] = meta.(*clients.Client).Features.DefaultLocation
-				}
-			}
+		if isResourceHasProperty(id.ResourceDef, "location") {
+			body["location"] = meta.(*clients.Client).Features.DefaultLocation
 		}
 	}
 
@@ -342,9 +306,8 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	}
 
 	if len(d.Get("type").(string)) == 0 {
-		resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-		if err == nil && resourceDef != nil {
-			data, err := json.Marshal((*resourceDef).GetWriteOnly(responseBody))
+		if id.ResourceDef != nil {
+			data, err := json.Marshal((*id.ResourceDef).GetWriteOnly(responseBody))
 			if err != nil {
 				return err
 			}

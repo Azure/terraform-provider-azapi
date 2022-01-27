@@ -6,10 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
@@ -106,12 +104,9 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 			}
 
 			if name := d.Get("name").(string); len(name) != 0 {
-				id := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-				if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
-					parentType := utils.GetParentType(id.AzureResourceType)
-					if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
-						return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
-					}
+				_, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+				if err != nil {
+					return err
 				}
 			}
 
@@ -127,13 +122,11 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 
 	var id parse.ResourceId
 	if name := d.Get("name").(string); len(name) != 0 {
-		id = parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-		if parentId := d.Get("parent_id").(string); len(parentId) != 0 {
-			parentType := utils.GetParentType(id.AzureResourceType)
-			if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
-				return fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
-			}
+		buildId, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+		if err != nil {
+			return err
 		}
+		id = buildId
 	} else {
 		id = parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
 	}
@@ -153,9 +146,8 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	}
 
 	requestBody = utils.GetMergedJson(existing, requestBody)
-	resourceDef, err := azure.GetResourceDefinition(id.AzureResourceType, id.ApiVersion)
-	if err == nil && resourceDef != nil {
-		requestBody = (*resourceDef).GetWriteOnly(requestBody)
+	if id.ResourceDef != nil {
+		requestBody = (*id.ResourceDef).GetWriteOnly(requestBody)
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))

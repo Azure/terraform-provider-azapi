@@ -2,9 +2,12 @@ package parse
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"strings"
 
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 )
@@ -15,9 +18,10 @@ type ResourceId struct {
 	AzureResourceType string
 	Name              string
 	ParentId          string
+	ResourceDef       *types.ResourceType
 }
 
-func BuildResourceID(name, parentId, resourceType string) ResourceId {
+func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	parts := strings.Split(resourceType, "@")
 	apiVersion := ""
 	azureResourceType := ""
@@ -38,13 +42,26 @@ func BuildResourceID(name, parentId, resourceType string) ResourceId {
 		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
 	}
 
+	if len(parentId) != 0 {
+		parentType := utils.GetParentType(azureResourceType)
+		if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
+			return ResourceId{}, fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
+		}
+	}
+
+	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
+	if err != nil {
+		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+	}
+
 	return ResourceId{
 		AzureResourceId:   azureResourceId,
 		ApiVersion:        apiVersion,
 		AzureResourceType: azureResourceType,
 		Name:              name,
 		ParentId:          parentId,
-	}
+		ResourceDef:       resourceDef,
+	}, nil
 }
 
 func NewResourceID(azureResourceId, resourceType string) ResourceId {
@@ -86,13 +103,20 @@ func ResourceID(input string) (*ResourceId, error) {
 	}
 
 	azureResourceId := idUrl.Path
+	apiVersion := idUrl.Query().Get("api-version")
 	azureResourceType := utils.GetResourceType(azureResourceId)
+	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
+	if err != nil {
+		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+	}
+
 	resourceId := ResourceId{
 		AzureResourceId:   azureResourceId,
 		AzureResourceType: azureResourceType,
-		ApiVersion:        idUrl.Query().Get("api-version"),
+		ApiVersion:        apiVersion,
 		Name:              utils.GetName(azureResourceId),
 		ParentId:          utils.GetParentId(azureResourceId),
+		ResourceDef:       resourceDef,
 	}
 
 	if resourceId.AzureResourceId == "" {
