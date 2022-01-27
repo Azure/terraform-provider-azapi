@@ -54,7 +54,6 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		}
 	}
 
-
 	return ResourceId{
 		AzureResourceId:   azureResourceId,
 		ApiVersion:        apiVersion,
