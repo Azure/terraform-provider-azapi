@@ -30,6 +30,11 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		azureResourceType = parts[0]
 	}
 
+	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
+	if err != nil {
+		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+	}
+
 	azureResourceId := ""
 	parts = strings.Split(azureResourceType, "/")
 	switch {
@@ -49,10 +54,6 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		}
 	}
 
-	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
-	if err != nil {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
-	}
 
 	return ResourceId{
 		AzureResourceId:   azureResourceId,

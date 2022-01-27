@@ -133,7 +133,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-				if isResourceHasProperty(id.ResourceDef, "location") {
+				if isResourceHasProperty(id.ResourceDef, "tags") {
 					body["tags"] = meta.(*clients.Client).Features.DefaultTags
 					currentTags := d.Get("tags")
 					defaultTags := meta.(*clients.Client).Features.DefaultTags
@@ -224,7 +224,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-		if isResourceHasProperty(id.ResourceDef, "location") {
+		if isResourceHasProperty(id.ResourceDef, "tags") {
 			body["tags"] = meta.(*clients.Client).Features.DefaultTags
 		}
 	}
