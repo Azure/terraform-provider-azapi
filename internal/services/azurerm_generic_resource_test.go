@@ -685,8 +685,8 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm-restapi_resource" "test" {
-  type = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name     = "acctestRG-%[1]d"
+  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name      = "acctestRG-%[1]d"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 
   location = "%[2]s"
@@ -694,19 +694,20 @@ resource "azurerm-restapi_resource" "test" {
 `, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
 }
 
+// nolint staticcheck
 func (r GenericResource) extensionScope(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
 resource "azurerm-restapi_resource" "locks" {
-  type = "Microsoft.Authorization/locks@2015-01-01"
-  name = "acctest-%[2]d"
+  type      = "Microsoft.Authorization/locks@2015-01-01"
+  name      = "acctest-%[2]d"
   parent_id = azurerm_resource_group.test.id
 
   body = jsonencode({
-   properties = {
-     level = "CanNotDelete"
-   }
+    properties = {
+      level = "CanNotDelete"
+    }
   })
 }
 `, r.template(data), data.RandomInteger)
