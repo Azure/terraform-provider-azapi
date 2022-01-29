@@ -50,10 +50,10 @@ func ResourceAzureGenericResource() *schema.Resource {
 			},
 
 			"parent_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.AzureResourceID,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+				//ValidateFunc: validate.AzureResourceID,
 			},
 
 			"type": {
@@ -68,7 +68,8 @@ func ResourceAzureGenericResource() *schema.Resource {
 
 			"body": {
 				Type:             schema.TypeString,
-				Required:         true,
+				Optional:         true,
+				Default:          "{}",
 				ValidateFunc:     validation.StringIsJSON,
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
@@ -109,7 +110,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			}
 
 			id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-			if err != nil {
+			if err != nil && len(id.ParentId) > 0 {
 				return err
 			}
 

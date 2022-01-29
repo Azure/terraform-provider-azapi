@@ -48,11 +48,11 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 			},
 
 			"parent_id": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ForceNew:      true,
-				Computed:      true,
-				ValidateFunc:  validate.AzureResourceID,
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: true,
+				Computed: true,
+				//ValidateFunc:  validate.AzureResourceID,
 				RequiredWith:  []string{"name"},
 				ConflictsWith: []string{"resource_id"},
 			},
@@ -75,7 +75,8 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 
 			"body": {
 				Type:             schema.TypeString,
-				Required:         true,
+				Optional:         true,
+				Default:          "{}",
 				ValidateFunc:     validation.StringIsJSON,
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
@@ -104,8 +105,8 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 			}
 
 			if name := d.Get("name").(string); len(name) != 0 {
-				_, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-				if err != nil {
+				id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+				if err != nil && len(id.ParentId) > 0 {
 					return err
 				}
 			}
@@ -128,7 +129,11 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 		}
 		id = buildId
 	} else {
-		id = parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+		buildId, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+		if err != nil {
+			return err
+		}
+		id = buildId
 	}
 
 	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)

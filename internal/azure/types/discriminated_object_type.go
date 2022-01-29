@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/utils"
 )
 
 var _ TypeBase = &DiscriminatedObjectType{}

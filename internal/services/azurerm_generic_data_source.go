@@ -34,9 +34,9 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 			},
 
 			"parent_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.AzureResourceID,
+				Type:     schema.TypeString,
+				Required: true,
+				//ValidateFunc: validate.AzureResourceID,
 			},
 
 			"type": {
