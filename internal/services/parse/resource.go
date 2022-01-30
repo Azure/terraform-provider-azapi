@@ -104,6 +104,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	} else {
 		parts := strings.Split(azureResourceType, "/")
 		if len(parts) < 2 {
+			// impossible to reach here
 			return ResourceId{}, fmt.Errorf("`type` and `parent_id` are not matched")
 		}
 		lastType := parts[len(parts)-1]
