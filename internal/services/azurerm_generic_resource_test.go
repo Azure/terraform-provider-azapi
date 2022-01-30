@@ -214,6 +214,41 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_subscriptionScope(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.subscriptionScope(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
+func TestAccGenericResource_extensionScope(t *testing.T) {
+	t.Skip(`The service principle does not have authorization to perform action 'Microsoft.Authorization/locks/write'`)
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.extensionScope(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
+			),
+		},
+		data.ImportStep(ignoredProperties()...),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	id, err := parse.ResourceID(state.ID)
 	if err != nil {
@@ -639,6 +674,43 @@ resource "azurerm-restapi_resource" "test" {
   BODY
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (GenericResource) subscriptionScope(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm-restapi_resource" "test" {
+  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name      = "acctestRG-%[1]d"
+  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+
+  location = "%[2]s"
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
+}
+
+// nolint staticcheck
+func (r GenericResource) extensionScope(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm-restapi_resource" "locks" {
+  type      = "Microsoft.Authorization/locks@2015-01-01"
+  name      = "acctest-%[2]d"
+  parent_id = azurerm_resource_group.test.id
+
+  body = jsonencode({
+    properties = {
+      level = "CanNotDelete"
+    }
+  })
+}
+`, r.template(data), data.RandomInteger)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

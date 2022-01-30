@@ -1,6 +1,8 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 var _ TypeBase = &ResourceType{}
 
@@ -100,6 +102,29 @@ const (
 
 	Extension ScopeType = 1 << 4
 )
+
+func (scope ScopeType) String() string {
+	switch scope {
+	case Unknown:
+		return "Unknown"
+
+	case Tenant:
+		return "Tenant"
+
+	case ManagementGroup:
+		return "ManagementGroup"
+
+	case Subscription:
+		return "Subscription"
+
+	case ResourceGroup:
+		return "ResourceGroup"
+
+	case Extension:
+		return "Extension"
+	}
+	return ""
+}
 
 func PossibleScopeTypeValues() []ScopeType {
 	return []ScopeType{Unknown, Tenant, ManagementGroup, Subscription, ResourceGroup, Extension}

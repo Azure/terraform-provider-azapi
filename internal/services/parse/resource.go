@@ -9,7 +9,6 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
-	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 )
 
 type ResourceId struct {
@@ -35,23 +34,81 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		log.Printf("[ERROR] load embedded schema: %+v\n", err)
 	}
 
-	azureResourceId := ""
-	parts = strings.Split(azureResourceType, "/")
-	switch {
-	case len(parts) <= 1:
-		break
-	case len(parts) == 2:
-		azureResourceId = fmt.Sprintf("%s/providers/%s/%s", parentId, azureResourceType, name)
-	default:
-		lastType := parts[len(parts)-1]
-		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
+	scopeTypes := make([]types.ScopeType, 0)
+	if resourceDef != nil {
+		for _, scope := range resourceDef.ScopeTypes {
+			if scope != types.Unknown {
+				scopeTypes = append(scopeTypes, scope)
+			}
+		}
+	}
+	parentIdScope := utils.GetScopeType(parentId)
+	parentIdExpectedType := utils.GetParentType(azureResourceType)
+	parentIdType := utils.GetResourceType(parentId)
+
+	for _, v := range []string{"Tenant", "Subscription", "Microsoft.Resources/resourceGroups", "Microsoft.Management/managementGroups"} {
+		if v == parentIdType {
+			parentIdType = ""
+		}
 	}
 
-	if len(parentId) != 0 {
-		parentType := utils.GetParentType(azureResourceType)
-		if len(parentType) != 0 && !strings.EqualFold(parentType, utils.GetResourceType(parentId)) {
-			return ResourceId{}, fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentType)
+	azureResourceId := ""
+	isExtension := false
+	// known scope, use `type` to verify `parent_id`
+	if len(scopeTypes) != 0 {
+		// check parent_id's scope
+		matchedScope := types.Unknown
+		err = nil
+		for _, scope := range scopeTypes {
+			if scope == parentIdScope && strings.EqualFold(parentIdExpectedType, parentIdType) {
+				if strings.EqualFold(parentIdExpectedType, parentIdType) {
+					matchedScope = scope
+					break
+				} else {
+					err = fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentIdExpectedType)
+				}
+			}
+			if scope == types.Extension && parentIdScope == types.ResourceGroup {
+				matchedScope = scope
+				break
+			}
 		}
+		if matchedScope == types.Unknown {
+			if err == nil {
+				err = fmt.Errorf("`parent_id` is invalid, expect id of resource whose scope is %v, but got scope %v",
+					scopeTypes, parentIdScope)
+			}
+			return ResourceId{
+				AzureResourceId:   azureResourceId,
+				ApiVersion:        apiVersion,
+				AzureResourceType: azureResourceType,
+				Name:              name,
+				ParentId:          parentId,
+				ResourceDef:       resourceDef,
+			}, err
+		}
+
+		isExtension = matchedScope == types.Extension
+	} else {
+		// scope is unknown
+		isExtension = !strings.EqualFold(parentIdExpectedType, parentIdType)
+	}
+
+	// build azure resource id
+	if isExtension || parentIdExpectedType == "" {
+		if strings.EqualFold(azureResourceType, "Microsoft.Resources/resourceGroups") {
+			azureResourceId = fmt.Sprintf("%s/resourceGroups/%s", parentId, name)
+		} else {
+			azureResourceId = fmt.Sprintf("%s/providers/%s/%s", parentId, azureResourceType, name)
+		}
+	} else {
+		parts := strings.Split(azureResourceType, "/")
+		if len(parts) < 2 {
+			// impossible to reach here
+			return ResourceId{}, fmt.Errorf("`type` and `parent_id` are not matched")
+		}
+		lastType := parts[len(parts)-1]
+		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
 	}
 
 	return ResourceId{
@@ -64,26 +121,10 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	}, nil
 }
 
-func NewResourceID(azureResourceId, resourceType string) ResourceId {
-	parts := strings.Split(resourceType, "@")
-	apiVersion := ""
-	azureResourceType := ""
-	if len(parts) == 2 {
-		apiVersion = parts[1]
-		azureResourceType = parts[0]
-	}
-	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
-	if err != nil {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
-	}
-	return ResourceId{
-		AzureResourceId:   azureResourceId,
-		ApiVersion:        apiVersion,
-		AzureResourceType: azureResourceType,
-		Name:              utils.GetName(azureResourceId),
-		ParentId:          utils.GetParentId(azureResourceId),
-		ResourceDef:       resourceDef,
-	}
+func NewResourceID(azureResourceId, resourceType string) (ResourceId, error) {
+	name := utils.GetName(azureResourceId)
+	parentId := utils.GetParentId(azureResourceId)
+	return BuildResourceID(name, parentId, resourceType)
 }
 
 func (id ResourceId) String() string {
@@ -109,41 +150,19 @@ func ResourceID(input string) (*ResourceId, error) {
 
 	azureResourceId := idUrl.Path
 	apiVersion := idUrl.Query().Get("api-version")
-	azureResourceType := utils.GetResourceType(azureResourceId)
-	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
-	if err != nil {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
-	}
 
-	resourceId := ResourceId{
-		AzureResourceId:   azureResourceId,
-		AzureResourceType: azureResourceType,
-		ApiVersion:        apiVersion,
-		Name:              utils.GetName(azureResourceId),
-		ParentId:          utils.GetParentId(azureResourceId),
-		ResourceDef:       resourceDef,
-	}
-
-	if resourceId.AzureResourceId == "" {
+	if azureResourceId == "" {
 		return nil, fmt.Errorf("ID was missing the 'azure resource id' element")
 	}
 
-	if resourceId.ApiVersion == "" {
+	if apiVersion == "" {
 		return nil, fmt.Errorf("ID was missing the 'api-version' element")
 	}
 
-	id, err := resourceids.ParseAzureResourceID(resourceId.AzureResourceId)
+	azureResourceType := utils.GetResourceType(azureResourceId)
+	id, err := NewResourceID(azureResourceId, fmt.Sprintf("%s@%s", azureResourceType, apiVersion))
 	if err != nil {
 		return nil, err
 	}
-
-	if id.SubscriptionID == "" {
-		return nil, fmt.Errorf("ID was missing the 'subscriptions' element")
-	}
-
-	if id.ResourceGroup == "" {
-		return nil, fmt.Errorf("ID was missing the 'resourceGroups' element")
-	}
-
-	return &resourceId, nil
+	return &id, nil
 }
