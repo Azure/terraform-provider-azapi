@@ -363,8 +363,11 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	_, response, err := client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
+		if response != nil && response.StatusCode == http.StatusNotFound {
+			return nil
+		}
 		return fmt.Errorf("deleting %q: %+v", id, err)
 	}
 
