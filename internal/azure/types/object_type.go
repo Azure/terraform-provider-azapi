@@ -34,6 +34,17 @@ func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 		}
 	}
 
+	// TODO: improve hardcode fix for userAssignedIdentities
+	if bodyMap["userAssignedIdentities"] != nil {
+		if userAssignedIdentitiesMap, ok := bodyMap["userAssignedIdentities"].(map[string]interface{}); ok {
+			uaMap := make(map[string]interface{})
+			for key := range userAssignedIdentitiesMap {
+				uaMap[key] = make(map[string]interface{})
+			}
+			res["userAssignedIdentities"] = uaMap
+		}
+	}
+
 	if t.AdditionalProperties != nil && t.AdditionalProperties.Type != nil {
 		if additionalProps := (*t.AdditionalProperties.Type).GetWriteOnly(body); additionalProps != nil {
 			if additionalMap, ok := additionalProps.(map[string]interface{}); ok {

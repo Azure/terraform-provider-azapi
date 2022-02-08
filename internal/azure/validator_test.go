@@ -375,6 +375,64 @@ func Test_WriteOnly(t *testing.T) {
 }
 `,
 		},
+		{
+			Id:         "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/resourceGroups/hengluservicebus-resources/providers/Microsoft.ServiceBus/namespaces/henglu-sb-namespace",
+			ApiVersion: "2021-06-01-preview",
+			Input: `
+{
+    "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+    },
+    "id": "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/resourceGroups/hengluservicebus-resources/providers/Microsoft.ServiceBus/namespaces/henglu-sb-namespace",
+    "name": "henglu-sb-namespace",
+    "type": "Microsoft.ServiceBus/Namespaces",
+    "location": "West Europe",
+    "tags": {},
+    "identity": {
+        "principalId": "27456b4b-67c4-40e9-b48f-92af8066ee96",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+        "type": "SystemAssigned, UserAssigned",
+        "userAssignedIdentities": {
+            "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/resourceGroups/hengluservicebus-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/henglu-identity": {
+                "clientId": "94d71dbe-168f-46ef-9f36-7661dc29b9dd",
+                "principalId": "9d812190-cc5f-4c92-8e09-b83af29c8568"
+            }
+        }
+    },
+    "properties": {
+        "disableLocalAuth": false,
+        "zoneRedundant": false,
+        "provisioningState": "Succeeded",
+        "metricId": "85b3dbca-5974-4067-9669-67a141095a76:henglu-sb-namespace",
+        "createdAt": "2022-02-08T06:41:12.387Z",
+        "updatedAt": "2022-02-08T06:42:30.59Z",
+        "serviceBusEndpoint": "https://henglu-sb-namespace.servicebus.windows.net:443/",
+        "status": "Active"
+    }
+}`,
+			Output: `
+{
+  "identity": {
+    "type": "SystemAssigned, UserAssigned",
+    "userAssignedIdentities": {
+      "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/resourceGroups/hengluservicebus-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/henglu-identity": {}
+    }
+  },
+  "location": "West Europe",
+  "name": "henglu-sb-namespace",
+  "properties": {
+    "disableLocalAuth": false,
+    "zoneRedundant": false
+  },
+  "sku": {
+    "name": "Standard",
+    "tier": "Standard"
+  },
+  "tags": {}
+}
+`,
+		},
 	}
 
 	for _, data := range testData {
