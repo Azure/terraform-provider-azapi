@@ -10,6 +10,7 @@ const (
 	TypeBaseKindUnionType               TypeBaseKind = "5"
 	TypeBaseKindStringLiteralType       TypeBaseKind = "6"
 	TypeBaseKindDiscriminatedObjectType TypeBaseKind = "7"
+	TypeBaseKindResourceFunctionType    TypeBaseKind = "8"
 )
 
 func PossibleTypeBaseKindValues() []TypeBaseKind {
@@ -20,5 +21,7 @@ func PossibleTypeBaseKindValues() []TypeBaseKind {
 		TypeBaseKindResourceType,
 		TypeBaseKindUnionType,
 		TypeBaseKindStringLiteralType,
-		TypeBaseKindDiscriminatedObjectType}
+		TypeBaseKindDiscriminatedObjectType,
+		TypeBaseKindResourceFunctionType,
+	}
 }

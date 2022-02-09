@@ -68,6 +68,13 @@ func (s *Schema) UnmarshalJSON(body []byte) error {
 						return err
 					}
 					types = append(types, t.AsTypeBase())
+				case TypeBaseKindResourceFunctionType:
+					var t ResourceFunctionType
+					err = json.Unmarshal(*value, &t)
+					if err != nil {
+						return err
+					}
+					types = append(types, t.AsTypeBase())
 				}
 				break
 			}
@@ -105,6 +112,10 @@ func (s *Schema) UnmarshalJSON(body []byte) error {
 					reference := t.BaseProperties[index].Type
 					reference.UpdateType(types)
 				}
+				types[index] = t.AsTypeBase()
+			case *ResourceFunctionType:
+				t.Input.UpdateType(types)
+				t.Output.UpdateType(types)
 				types[index] = t.AsTypeBase()
 			}
 		}
