@@ -33,11 +33,11 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	if m["Types"] == nil {
+	if m["Resources"] == nil {
 		return nil
 	}
 	o.Resources = make(map[string]*Resource)
-	for k, v := range m["Types"] {
+	for k, v := range m["Resources"] {
 		index := strings.Index(k, "@")
 		if index == -1 {
 			return fmt.Errorf("api-version is not specified, type: %s", k)
