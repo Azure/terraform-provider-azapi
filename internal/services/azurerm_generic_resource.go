@@ -92,11 +92,6 @@ func ResourceAzureGenericResource() *schema.Resource {
 				Computed: true,
 			},
 
-			"resource_id": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-
 			"tags": tags.SchemaTagsOC(),
 		},
 
@@ -283,7 +278,13 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.ResourceID(d.Id())
+	var id parse.ResourceId
+	var err error
+	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
+		id, err = parse.NewResourceID(d.Id(), resourceType)
+	} else {
+		id, err = parse.ResourceID(d.Id())
+	}
 	if err != nil {
 		return err
 	}
@@ -324,7 +325,6 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 
 	d.Set("name", id.Name)
 	d.Set("parent_id", id.ParentId)
-	d.Set("resource_id", id.AzureResourceId)
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
@@ -358,7 +358,13 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.ResourceID(d.Id())
+	var id parse.ResourceId
+	var err error
+	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
+		id, err = parse.NewResourceID(d.Id(), resourceType)
+	} else {
+		id, err = parse.ResourceID(d.Id())
+	}
 	if err != nil {
 		return err
 	}

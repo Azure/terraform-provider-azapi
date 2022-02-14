@@ -171,7 +171,13 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.ResourceID(d.Id())
+	var id parse.ResourceId
+	var err error
+	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
+		id, err = parse.NewResourceID(d.Id(), resourceType)
+	} else {
+		id, err = parse.ResourceID(d.Id())
+	}
 	if err != nil {
 		return err
 	}

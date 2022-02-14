@@ -62,11 +62,6 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 				Computed: true,
 			},
 
-			"resource_id": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-
 			"tags": tags.SchemaTagsDataSource(),
 		},
 	}
@@ -93,7 +88,6 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 	d.SetId(id.ID())
 	d.Set("name", id.Name)
 	d.Set("parent_id", id.ParentId)
-	d.Set("resource_id", id.AzureResourceId)
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
 		d.Set("location", bodyMap["location"])

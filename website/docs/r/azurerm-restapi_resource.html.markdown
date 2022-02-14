@@ -130,9 +130,7 @@ A `identity` block supports the following:
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
-* `id` - The ID of the azure resource which contains `api-version`.
-
-* `resource_id` - The ID of the azure resource which can be used as a reference in other azurerm resources.
+* `id` - The ID of the azure resource.
 
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
 
