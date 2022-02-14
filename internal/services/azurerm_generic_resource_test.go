@@ -44,7 +44,7 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.RequiresImportErrorStep(r.requiresImport),
 	})
 }
 
