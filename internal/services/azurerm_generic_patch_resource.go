@@ -81,6 +81,18 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
 
+			"ignore_casing_enabled": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  false,
+			},
+
+			"ignore_missing_property_enabled": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  false,
+			},
+
 			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -204,7 +216,11 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	if err != nil {
 		return err
 	}
-	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody))
+	option := utils.UpdateJsonOption{
+		IgnoreCasing:          d.Get("ignore_casing_enabled").(bool),
+		IgnoreMissingProperty: d.Get("ignore_missing_property_enabled").(bool),
+	}
+	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody, option))
 	if err != nil {
 		return err
 	}

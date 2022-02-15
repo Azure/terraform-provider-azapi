@@ -8,6 +8,84 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 )
 
+func Test_GetUpdatedJson(t *testing.T) {
+	testcases := []struct {
+		OldJson    string
+		NewJson    string
+		ExpectJson string
+		Option     utils.UpdateJsonOption
+	}{
+		{
+			OldJson: `
+{
+  "properties": {
+    "compression": "None",
+    "consumerGroup": "acctesteventhubcg",
+    "dataFormat": "",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
+    "eventSystemProperties": [],
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
+    "mappingRuleName": "",
+    "provisioningState": "Succeeded",
+    "tableName": ""
+  }
+}`,
+			NewJson: `
+{
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
+  "kind": "EventHub",
+  "location": "West Europe",
+  "name": "acctestkc924/acctestkd/acctestkedc",
+  "properties": {
+    "compression": "None",
+    "dataFormat": "",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/RESOURCEGROUPS/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
+    "eventSystemProperties": [],
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
+    "mappingRuleName": "",
+    "provisioningState": "Succeeded",
+    "tableName": ""
+  },
+  "type": "Microsoft.Kusto/Clusters/Databases/DataConnections"
+}
+`,
+			ExpectJson: `
+{
+  "properties": {
+    "compression": "None",
+    "consumerGroup": "acctesteventhubcg",
+    "dataFormat": "",
+    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
+    "eventSystemProperties": [],
+    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
+    "mappingRuleName": "",
+    "provisioningState": "Succeeded",
+    "tableName": ""
+  }
+}
+`,
+			Option: utils.UpdateJsonOption{
+				IgnoreMissingProperty: true,
+				IgnoreCasing:          true,
+			},
+		},
+	}
+
+	for _, testcase := range testcases {
+		var new, old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.NewJson), &new)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.GetUpdatedJson(old, new, testcase.Option)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+		}
+	}
+}
+
 func Test_GetMergedJson(t *testing.T) {
 	oldJson := `
  {

@@ -116,7 +116,12 @@ The following arguments are supported:
 }
 ```
 
-* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Used to override validation setting on provider.
+* `ignore_casing_enabled` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
+
+* `ignore_missing_property_enabled` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `false`.
+
+* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema.
+
 ---
 
 A `identity` block supports the following:

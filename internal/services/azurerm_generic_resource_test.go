@@ -228,6 +228,36 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreMissingProperty(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+	})
+}
+
+func TestAccGenericResource_ignoreCasing(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreCasing(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
@@ -365,7 +395,6 @@ func (r GenericResource) completeBody(data acceptance.TestData) string {
 %s
 
 provider "azurerm-restapi" {
-  schema_validation_enabled = false
 }
 
 resource "azurerm_user_assigned_identity" "test" {
@@ -375,11 +404,11 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azurerm-restapi_resource" "test" {
-  name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-
-  body = <<BODY
+  name                      = "acctest%[2]s"
+  parent_id                 = azurerm_resource_group.test.id
+  type                      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  schema_validation_enabled = false
+  body                      = <<BODY
     {
       "location": "${azurerm_resource_group.test.location}",
       "identity": {
@@ -715,6 +744,78 @@ resource "azurerm-restapi_resource" "locks" {
   })
 }
 `, r.template(data), data.RandomInteger)
+}
+
+func (r GenericResource) ignoreMissingProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[3]s"
+  resource_group_name      = azurerm_resource_group.test.name
+  location                 = azurerm_resource_group.test.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+resource "azurerm_spring_cloud_service" "test" {
+  name                = "acctest-sc-%[2]d"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+}
+
+resource "azurerm-restapi_resource" "test" {
+  type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
+  name      = "acctest-ss-%[2]d"
+  parent_id = azurerm_spring_cloud_service.test.id
+
+  body = jsonencode({
+    properties = {
+      accountKey  = azurerm_storage_account.test.primary_access_key
+      accountName = azurerm_storage_account.test.name
+      storageType = "StorageAccount"
+    }
+  })
+
+  ignore_missing_property_enabled = true
+}
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+}
+
+func (r GenericResource) ignoreCasing(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[3]s"
+  resource_group_name      = azurerm_resource_group.test.name
+  location                 = azurerm_resource_group.test.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+resource "azurerm_spring_cloud_service" "test" {
+  name                = "acctest-sc-%[2]d"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+}
+
+resource "azurerm-restapi_resource" "test" {
+  type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
+  name      = "acctest-ss-%[2]d"
+  parent_id = azurerm_spring_cloud_service.test.id
+
+  body = jsonencode({
+    properties = {
+      accountKey  = azurerm_storage_account.test.primary_access_key
+      accountName = azurerm_storage_account.test.name
+      storageType = "storageaccount"
+    }
+  })
+
+  schema_validation_enabled       = false
+  ignore_casing_enabled           = true
+  ignore_missing_property_enabled = true
+}
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

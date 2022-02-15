@@ -115,14 +115,6 @@ func azureProvider() *schema.Provider {
 				Description: "The path to a custom endpoint for Managed Service Identity - in most circumstances this should be detected automatically. ",
 			},
 
-			// Features
-			"schema_validation_enabled": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     true,
-				Description: "Whether enable the schema validation",
-			},
-
 			"default_location": location.SchemaLocation(),
 
 			"default_tags": tags.SchemaTags(),
@@ -186,9 +178,8 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			AuthConfig:       config,
 			TerraformVersion: terraformVersion,
 			Features: features.UserFeatures{
-				SchemaValidationEnabled: d.Get("schema_validation_enabled").(bool),
-				DefaultTags:             tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
-				DefaultLocation:         location.Normalize(d.Get("default_location").(string)),
+				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
+				DefaultLocation: location.Normalize(d.Get("default_location").(string)),
 			},
 		}
 

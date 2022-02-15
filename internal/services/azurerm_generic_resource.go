@@ -74,6 +74,18 @@ func ResourceAzureGenericResource() *schema.Resource {
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 			},
 
+			"ignore_casing_enabled": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  false,
+			},
+
+			"ignore_missing_property_enabled": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  false,
+			},
+
 			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -85,6 +97,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 			"schema_validation_enabled": {
 				Type:     schema.TypeBool,
 				Optional: true,
+				Default:  true,
 			},
 
 			"output": {
@@ -150,12 +163,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 				}
 			}
 
-			schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
-			// nolint staticcheck
-			if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
-				schemaValidationEnabled = enabled.(bool)
-			}
-			if schemaValidationEnabled {
+			if d.Get("schema_validation_enabled").(bool) {
 				if value, ok := d.GetOk("tags"); ok && isConfigExist(config, "tags") {
 					tagsModel := tags.ExpandTags(value.(map[string]interface{}))
 					if len(tagsModel) != 0 {
@@ -250,12 +258,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		}
 	}
 
-	schemaValidationEnabled := meta.(*clients.Client).Features.SchemaValidationEnabled
-	// nolint staticcheck
-	if enabled, ok := d.GetOkExists("schema_validation_enabled"); ok {
-		schemaValidationEnabled = enabled.(bool)
-	}
-	if schemaValidationEnabled {
+	if d.Get("schema_validation_enabled").(bool) {
 		if err := schemaValidation(id, body); err != nil {
 			return err
 		}
@@ -316,7 +319,11 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 			d.Set("body", string(data))
 		}
 	} else {
-		data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody))
+		option := utils.UpdateJsonOption{
+			IgnoreCasing:          d.Get("ignore_casing_enabled").(bool),
+			IgnoreMissingProperty: d.Get("ignore_missing_property_enabled").(bool),
+		}
+		data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody, option))
 		if err != nil {
 			return err
 		}
