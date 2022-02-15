@@ -68,10 +68,8 @@ func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) i
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
 					res[key] = GetUpdatedJson(oldValue, newMap[key], option)
-				} else {
-					if option.IgnoreMissingProperty {
-						res[key] = oldValue
-					}
+				} else if option.IgnoreMissingProperty {
+					res[key] = oldValue
 				}
 			}
 			return res
