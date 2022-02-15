@@ -64,8 +64,6 @@ The following arguments are supported:
 
 It's possible to configure the behaviour of certain resources using the following properties: 
 
-* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
-
 * `default_tags` - (Optional) A mapping of tags which should be assigned to the azure resource as default tags. `tags` in each resource block can override the `default_tags`.
 
 * `default_location` - (Optional) The default Azure Region where the azure resource should exist. `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.

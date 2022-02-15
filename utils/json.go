@@ -54,15 +54,24 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 	return new
 }
 
+type UpdateJsonOption struct {
+	IgnoreCasing          bool
+	IgnoreMissingProperty bool
+}
+
 // GetUpdatedJson is used to get an updated object which has same schema as old, but with new value
-func GetUpdatedJson(old interface{}, new interface{}) interface{} {
+func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) interface{} {
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, oldValue := range oldValue {
 				if newMap[key] != nil {
-					res[key] = GetUpdatedJson(oldValue, newMap[key])
+					res[key] = GetUpdatedJson(oldValue, newMap[key], option)
+				} else {
+					if option.IgnoreMissingProperty {
+						res[key] = oldValue
+					}
 				}
 			}
 			return res
@@ -74,9 +83,15 @@ func GetUpdatedJson(old interface{}, new interface{}) interface{} {
 			}
 			res := make([]interface{}, 0)
 			for index := range oldValue {
-				res = append(res, GetUpdatedJson(oldValue[index], newArr[index]))
+				res = append(res, GetUpdatedJson(oldValue[index], newArr[index], option))
 			}
 			return res
+		}
+	case string:
+		if newStr, ok := new.(string); ok {
+			if option.IgnoreCasing && strings.EqualFold(oldValue, newStr) {
+				return oldValue
+			}
 		}
 	}
 	return new
