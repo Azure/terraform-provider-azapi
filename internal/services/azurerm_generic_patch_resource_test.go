@@ -52,7 +52,8 @@ func TestAccGenericPatchResource_withNameParentId(t *testing.T) {
 }
 
 func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
-	id, err := parse.ResourceID(state.ID)
+	resourceType := state.Attributes["type"]
+	id, err := parse.NewResourceID(state.ID, resourceType)
 	if err != nil {
 		return nil, err
 	}

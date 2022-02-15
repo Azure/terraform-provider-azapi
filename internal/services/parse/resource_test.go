@@ -8,7 +8,7 @@ func TestResourceIDFormatter(t *testing.T) {
 		t.Fatal(err)
 	}
 	actual := id.ID()
-	expected := "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1?api-version=2020-12-01"
+	expected := "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1"
 	if actual != expected {
 		t.Fatalf("Expected %q but got %q", expected, actual)
 	}

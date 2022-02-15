@@ -137,32 +137,31 @@ func (id ResourceId) String() string {
 }
 
 func (id ResourceId) ID() string {
-	fmtString := "%s?api-version=%s"
-	return fmt.Sprintf(fmtString, id.AzureResourceId, id.ApiVersion)
+	return id.AzureResourceId
 }
 
 // ResourceID parses a Resource ID into an ResourceId struct
-func ResourceID(input string) (*ResourceId, error) {
+func ResourceID(input string) (ResourceId, error) {
 	idUrl, err := url.Parse(input)
 	if err != nil {
-		return nil, err
+		return ResourceId{}, err
 	}
 
 	azureResourceId := idUrl.Path
 	apiVersion := idUrl.Query().Get("api-version")
 
 	if azureResourceId == "" {
-		return nil, fmt.Errorf("ID was missing the 'azure resource id' element")
+		return ResourceId{}, fmt.Errorf("ID was missing the 'azure resource id' element")
 	}
 
 	if apiVersion == "" {
-		return nil, fmt.Errorf("ID was missing the 'api-version' element")
+		return ResourceId{}, fmt.Errorf("ID was missing the 'api-version' element")
 	}
 
 	azureResourceType := utils.GetResourceType(azureResourceId)
 	id, err := NewResourceID(azureResourceId, fmt.Sprintf("%s@%s", azureResourceType, apiVersion))
 	if err != nil {
-		return nil, err
+		return ResourceId{}, err
 	}
-	return &id, nil
+	return id, nil
 }
