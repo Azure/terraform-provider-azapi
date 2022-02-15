@@ -120,7 +120,7 @@ The following arguments are supported:
 
 * `ignore_missing_property_enabled` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `false`.
 
-* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema.
+* `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 
 ---
 
