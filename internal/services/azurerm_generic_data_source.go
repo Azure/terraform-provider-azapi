@@ -2,10 +2,12 @@ package services
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
@@ -68,7 +70,7 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 }
 
 func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -77,12 +79,12 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
 			return fmt.Errorf("not found %q: %+v", id, err)
 		}
-
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())

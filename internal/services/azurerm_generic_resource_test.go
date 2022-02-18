@@ -2,16 +2,17 @@ package services_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -265,16 +266,17 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		return nil, err
 	}
 
-	resp, response, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
-	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
-			exist := false
-			return &exist, nil
-		}
-		return nil, fmt.Errorf("retrieving %s: %+v", id, err)
+	_, _, err = client.NewResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	if err == nil {
+		b := true
+		return &b, nil
 	}
-	exist := len(utils.GetId(resp)) != 0
-	return &exist, nil
+	var responseErr *azcore.ResponseError
+	if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+		b := false
+		return &b, nil
+	}
+	return nil, fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 }
 
 func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {

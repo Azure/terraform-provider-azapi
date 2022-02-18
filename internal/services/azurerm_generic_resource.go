@@ -3,12 +3,14 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"reflect"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
@@ -192,7 +194,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 }
 
 func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -202,14 +204,13 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	if d.IsNewResource() {
-		existing, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
-		if err != nil {
-			if response.StatusCode != http.StatusNotFound {
-				return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
-			}
-		}
-		if len(utils.GetId(existing)) > 0 {
+		_, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		if err == nil {
 			return tf.ImportAsExistsError("azurerm-restapi_resource", id.ID())
+		}
+		var responseErr *azcore.ResponseError
+		if !errors.As(err, &responseErr) || responseErr.StatusCode != http.StatusNotFound {
+			return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 		}
 	}
 
@@ -266,7 +267,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 
 	j, _ := json.Marshal(body)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, http.MethodPut)
+	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -277,7 +278,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 }
 
 func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -292,14 +293,14 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
 			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
 			d.SetId("")
 			return nil
 		}
-
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
@@ -361,7 +362,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -376,9 +377,10 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	_, response, err := client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response != nil && response.StatusCode == http.StatusNotFound {
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
 			return nil
 		}
 		return fmt.Errorf("deleting %q: %+v", id, err)

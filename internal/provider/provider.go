@@ -203,7 +203,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			stopCtx = ctx
 		}
 
-		client := clients.Client{}
+		client := &clients.Client{}
 		if err := client.Build(stopCtx, copt); err != nil {
 			return nil, diag.FromErr(err)
 		}

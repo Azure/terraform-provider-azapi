@@ -3,11 +3,13 @@ package services
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
@@ -129,7 +131,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 }
 
 func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -168,7 +170,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
+	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -179,7 +181,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 }
 
 func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
+	client := meta.(*clients.Client).NewResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -194,9 +196,10 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		var responseErr *azcore.ResponseError
+		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
 			log.Printf("[INFO] Error reading %q - removing from state", d.Id())
 			d.SetId("")
 			return nil

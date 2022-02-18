@@ -37,10 +37,6 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	client.StopContext = ctx
 	client.Features = o.Features
 
-	// resourceClient := NewResourceClientWithBaseURI(o.ResourceManagerEndpoint, o.SubscriptionId)
-	// o.ConfigureClient(&resourceClient.Client, o.ResourceManagerAuthorizer)
-	// client.ResourceClient = &resourceClient
-
 	newResourceClient := NewNewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Telemetry: policy.TelemetryOptions{
