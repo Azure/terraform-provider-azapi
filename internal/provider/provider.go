@@ -7,6 +7,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
@@ -14,9 +16,11 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
 	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
-	"github.com/hashicorp/go-azure-helpers/authentication"
+	"github.com/Azure/terraform-provider-azurerm-restapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
 )
 
 func AzureProvider() *schema.Provider {
@@ -65,18 +69,20 @@ func azureProvider() *schema.Provider {
 			},
 
 			"environment": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
-				Description: "The Cloud Environment which should be used. Possible values are public, usgovernment, german, and china. Defaults to public.",
+				Type:         schema.TypeString,
+				Required:     true,
+				DefaultFunc:  schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
+				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, false),
+				Description:  "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
 			},
 
-			"metadata_host": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_METADATA_HOSTNAME", ""),
-				Description: "The Hostname which should be used for the Azure Metadata Service.",
-			},
+			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
+			// "metadata_host": {
+			// 	Type:        schema.TypeString,
+			// 	Required:    true,
+			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_METADATA_HOSTNAME", ""),
+			// 	Description: "The Hostname which should be used for the Azure Metadata Service.",
+			// },
 
 			// Client Certificate specific fields
 			"client_certificate_path": {
@@ -86,12 +92,13 @@ func azureProvider() *schema.Provider {
 				Description: "The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.",
 			},
 
-			"client_certificate_password": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PASSWORD", ""),
-				Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
-			},
+			// TODO@mgd: this depends on https://github.com/Azure/azure-sdk-for-go/pull/17099
+			// "client_certificate_password": {
+			// 	Type:        schema.TypeString,
+			// 	Optional:    true,
+			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PASSWORD", ""),
+			// 	Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
+			// },
 
 			// Client Secret specific fields
 			"client_secret": {
@@ -101,19 +108,27 @@ func azureProvider() *schema.Provider {
 				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
 			},
 
-			// Managed Service Identity specific fields
-			"use_msi": {
+			"skip_provider_registration": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_MSI", false),
-				Description: "Allowed Managed Service Identity be used for Authentication.",
+				DefaultFunc: schema.EnvDefaultFunc("ARM_SKIP_PROVIDER_REGISTRATION", false),
+				Description: "Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?",
 			},
-			"msi_endpoint": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_MSI_ENDPOINT", ""),
-				Description: "The path to a custom endpoint for Managed Service Identity - in most circumstances this should be detected automatically. ",
-			},
+
+			// TODO@mgd: azidentity doesn't support msi_endpoint
+			// // Managed Service Identity specific fields
+			// "use_msi": {
+			// 	Type:        schema.TypeBool,
+			// 	Optional:    true,
+			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_USE_MSI", false),
+			// 	Description: "Allowed Managed Service Identity be used for Authentication.",
+			// },
+			// "msi_endpoint": {
+			// 	Type:        schema.TypeString,
+			// 	Optional:    true,
+			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_MSI_ENDPOINT", ""),
+			// 	Description: "The path to a custom endpoint for Managed Service Identity - in most circumstances this should be detected automatically. ",
+			// },
 
 			"default_location": location.SchemaLocation(),
 
@@ -138,49 +153,48 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			auxTenants = strings.Split(v, ";")
 		}
 
-		metadataHost := d.Get("metadata_host").(string)
-
-		builder := &authentication.Builder{
-			SubscriptionID:     d.Get("subscription_id").(string),
-			ClientID:           d.Get("client_id").(string),
-			ClientSecret:       d.Get("client_secret").(string),
-			TenantID:           d.Get("tenant_id").(string),
-			AuxiliaryTenantIDs: auxTenants,
-			Environment:        d.Get("environment").(string),
-			MetadataHost:       metadataHost,
-			MsiEndpoint:        d.Get("msi_endpoint").(string),
-			ClientCertPassword: d.Get("client_certificate_password").(string),
-			ClientCertPath:     d.Get("client_certificate_path").(string),
-
-			// Feature Toggles
-			SupportsClientCertAuth:         true,
-			SupportsClientSecretAuth:       true,
-			SupportsManagedServiceIdentity: d.Get("use_msi").(bool),
-			SupportsAzureCliToken:          true,
-
-			// Doc Links
-			ClientSecretDocsLink: "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret",
+		var armEndpoint arm.Endpoint
+		var authEndpoint azidentity.AuthorityHost
+		env := d.Get("environment").(string)
+		switch env {
+		case "public":
+			armEndpoint = arm.AzurePublicCloud
+			authEndpoint = azidentity.AzurePublicCloud
+		case "usgovernment":
+			armEndpoint = arm.AzureGovernment
+			authEndpoint = azidentity.AzureGovernment
+		case "china":
+			armEndpoint = arm.AzureChina
+			authEndpoint = azidentity.AzureChina
+		default:
+			return nil, diag.Errorf("unknwon `environment` specified: %q", env)
 		}
 
-		config, err := builder.Build()
+		// Maps the auth related environment variables used in the provider to what azidentity honors.
+		os.Setenv("AZURE_TENANT_ID", d.Get("tenant_id").(string))
+		os.Setenv("AZURE_CLIENT_ID", d.Get("client_id").(string))
+		os.Setenv("AZURE_CLIENT_SECRET", d.Get("client_secret").(string))
+		os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", d.Get("client_certificate_path").(string))
+
+		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+			AuthorityHost: authEndpoint,
+			TenantID:      d.Get("tenant_id").(string),
+		})
 		if err != nil {
-			return nil, diag.FromErr(fmt.Errorf("building AzureRM Client: %s", err))
+			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
 
-		terraformVersion := p.TerraformVersion
-		if terraformVersion == "" {
-			// Terraform 0.12 introduced this field to the protocol
-			// We can therefore assume that if it's missing it's 0.10 or 0.11
-			terraformVersion = "0.11+compatible"
-		}
-
-		clientBuilder := clients.ClientBuilder{
-			AuthConfig:       config,
-			TerraformVersion: terraformVersion,
+		copt := &clients.Option{
+			SubscriptionId:       d.Get("subscription_id").(string),
+			Cred:                 cred,
+			AuxiliaryTenantIDs:   auxTenants,
+			ApplicationUserAgent: buildUserAgent(p.TerraformVersion),
+			ARMEndpoint:          armEndpoint,
 			Features: features.UserFeatures{
 				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
 				DefaultLocation: location.Normalize(d.Get("default_location").(string)),
 			},
+			SkipProviderRegistration: d.Get("skip_provider_registration").(bool),
 		}
 
 		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint
@@ -189,12 +203,10 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			stopCtx = ctx
 		}
 
-		client, err := clients.Build(stopCtx, clientBuilder)
-		if err != nil {
+		client := clients.Client{}
+		if err := client.Build(stopCtx, copt); err != nil {
 			return nil, diag.FromErr(err)
 		}
-
-		client.StopContext = stopCtx
 
 		// load schema
 		var mutex sync.Mutex
@@ -203,4 +215,22 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		mutex.Unlock()
 		return client, nil
 	}
+}
+
+func buildUserAgent(terraformVersion string) string {
+	if terraformVersion == "" {
+		// Terraform 0.12 introduced this field to the protocol
+		// We can therefore assume that if it's missing it's 0.10 or 0.11
+		terraformVersion = "0.11+compatible"
+	}
+
+	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", terraformVersion, meta.SDKVersionString())
+	providerUserAgent := fmt.Sprintf("%s terraform-provider-azurerm-restapi/%s", tfUserAgent, version.ProviderVersion)
+	tfUserAgent = strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
+
+	// append the CloudShell version to the user agent if it exists
+	if azureAgent := os.Getenv("AZURE_HTTP_USER_AGENT"); azureAgent != "" {
+		tfUserAgent = fmt.Sprintf("%s %s", tfUserAgent, azureAgent)
+	}
+	return tfUserAgent
 }

@@ -3,9 +3,9 @@ package clients
 import (
 	"context"
 
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/common"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 )
 
@@ -15,22 +15,43 @@ type Client struct {
 
 	Features features.UserFeatures
 
-	ResourceClient *ResourceClient
+	ResourceClient    *ResourceClient
+	NewResourceClient *NewResourceClient
+}
+
+type Option struct {
+	SubscriptionId           string
+	Cred                     azcore.TokenCredential
+	ARMEndpoint              arm.Endpoint
+	AuxiliaryTenantIDs       []string
+	ApplicationUserAgent     string
+	Features                 features.UserFeatures
+	SkipProviderRegistration bool
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
 
-func (client *Client) Build(ctx context.Context, o *common.ClientOptions) error {
-	autorest.Count429AsRetry = false
-	// Disable the Azure SDK for Go's validation since it's unhelpful for our use-case
-	validation.Disabled = true
+func (client *Client) Build(ctx context.Context, o *Option) error {
+	// TODO@mgd: whether we need to regard 429 as non-retriable error in this provider?
+	//autorest.Count429AsRetry = false
 	client.StopContext = ctx
-
 	client.Features = o.Features
 
-	resourceClient := NewResourceClientWithBaseURI(o.ResourceManagerEndpoint, o.SubscriptionId)
-	o.ConfigureClient(&resourceClient.Client, o.ResourceManagerAuthorizer)
-	client.ResourceClient = &resourceClient
+	// resourceClient := NewResourceClientWithBaseURI(o.ResourceManagerEndpoint, o.SubscriptionId)
+	// o.ConfigureClient(&resourceClient.Client, o.ResourceManagerAuthorizer)
+	// client.ResourceClient = &resourceClient
+
+	newResourceClient := NewNewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Telemetry: policy.TelemetryOptions{
+				ApplicationID: o.ApplicationUserAgent,
+			},
+		},
+		AuxiliaryTenants:      o.AuxiliaryTenantIDs,
+		DisableRPRegistration: o.SkipProviderRegistration,
+		Endpoint:              o.ARMEndpoint,
+	})
+	client.NewResourceClient = newResourceClient
 
 	return nil
 }
