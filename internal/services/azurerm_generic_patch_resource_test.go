@@ -90,7 +90,7 @@ resource "azurerm-restapi_patch_resource" "test" {
   body        = <<BODY
 {
   "properties": {
-    "publicNetworkAccess": false
+    "publicNetworkAccess": true
   }
 }
   BODY
@@ -116,7 +116,7 @@ resource "azurerm-restapi_patch_resource" "test" {
   body      = <<BODY
 {
   "properties": {
-    "publicNetworkAccess": false
+    "publicNetworkAccess": true
   }
 }
   BODY

@@ -15,7 +15,6 @@ type Client struct {
 
 	Features features.UserFeatures
 
-	ResourceClient    *ResourceClient
 	NewResourceClient *NewResourceClient
 }
 
