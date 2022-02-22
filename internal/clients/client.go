@@ -2,7 +2,6 @@ package clients
 
 import (
 	"context"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -40,6 +39,9 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		ClientOptions: policy.ClientOptions{
 			Telemetry: policy.TelemetryOptions{
 				ApplicationID: o.ApplicationUserAgent,
+			},
+			Logging: policy.LogOptions{
+				IncludeBody: true,
 			},
 		},
 		AuxiliaryTenants:      o.AuxiliaryTenantIDs,
