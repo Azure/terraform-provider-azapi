@@ -170,5 +170,5 @@ func (client ResourceClient) Delete(ctx context.Context, azureResourceId string,
 		autorest.ByUnmarshallingJSON(&responseBody),
 		autorest.ByClosing())
 	body = responseBody
-	return
+	return body, resp, err
 }
