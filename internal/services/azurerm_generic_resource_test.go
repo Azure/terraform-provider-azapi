@@ -258,6 +258,21 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.deleteLROEndsWithNotFoundError(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
@@ -815,6 +830,25 @@ resource "azurerm-restapi_resource" "test" {
   ignore_casing_enabled           = true
   ignore_missing_property_enabled = true
 }
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+}
+
+func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm-restapi_resource" "test" {
+  type      = "Microsoft.ServiceBus/namespaces@2021-06-01-preview"
+  name      = "acctest-sb-%[2]d"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    sku = {
+      name = "Premium"
+    }
+  })
+}
+
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }
 
