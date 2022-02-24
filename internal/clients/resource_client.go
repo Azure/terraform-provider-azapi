@@ -157,6 +157,7 @@ func (client ResourceClient) Delete(ctx context.Context, azureResourceId string,
 	// it's a long running operation
 	if err == nil {
 		if err = azf.WaitForCompletionRef(ctx, client.Client); err != nil {
+			resp = azf.Response()
 			return
 		}
 		resp = azf.Response()
