@@ -27,10 +27,10 @@ func azureProvider() *schema.Provider {
 	dataSources := make(map[string]*schema.Resource)
 	resources := make(map[string]*schema.Resource)
 
-	resources["azurerm-restapi_resource"] = services.ResourceAzureGenericResource()
-	resources["azurerm-restapi_patch_resource"] = services.ResourceAzureGenericPatchResource()
+	resources["azapi_resource"] = services.ResourceAzureGenericResource()
+	resources["azapi_patch_resource"] = services.ResourceAzureGenericPatchResource()
 
-	dataSources["azurerm-restapi_resource"] = services.ResourceAzureGenericDataSource()
+	dataSources["azapi_resource"] = services.ResourceAzureGenericDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{

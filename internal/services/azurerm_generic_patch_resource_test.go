@@ -18,7 +18,7 @@ import (
 type GenericPatchResource struct{}
 
 func TestAccGenericPatchResource_automationAccount(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_patch_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_patch_resource", "test")
 	r := GenericPatchResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -35,7 +35,7 @@ func TestAccGenericPatchResource_automationAccount(t *testing.T) {
 }
 
 func TestAccGenericPatchResource_withNameParentId(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_patch_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_patch_resource", "test")
 	r := GenericPatchResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -81,7 +81,7 @@ resource "azurerm_automation_account" "test" {
   sku_name            = "Basic"
 }
 
-resource "azurerm-restapi_patch_resource" "test" {
+resource "azapi_patch_resource" "test" {
   resource_id = azurerm_automation_account.test.id
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   body        = <<BODY
@@ -106,7 +106,7 @@ resource "azurerm_automation_account" "test" {
   sku_name            = "Basic"
 }
 
-resource "azurerm-restapi_patch_resource" "test" {
+resource "azapi_patch_resource" "test" {
   name      = azurerm_automation_account.test.name
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2021-06-22"

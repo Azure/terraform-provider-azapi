@@ -13,7 +13,7 @@ import (
 type GenericDataSource struct{}
 
 func TestAccGenericDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -36,10 +36,10 @@ func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-data "azurerm-restapi_resource" "test" {
-  name      = azurerm-restapi_resource.test.name
-  parent_id = azurerm-restapi_resource.test.parent_id
-  type      = azurerm-restapi_resource.test.type
+data "azapi_resource" "test" {
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  type      = azapi_resource.test.type
 }
 `, GenericResource{}.complete(data))
 }
