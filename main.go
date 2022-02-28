@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	if debugMode {
-		err := plugin.Debug(context.Background(), "registry.terraform.io/Azure/azurerm-restapi",
+		err := plugin.Debug(context.Background(), "registry.terraform.io/Azure/azapi",
 			&plugin.ServeOpts{
 				ProviderFunc: provider.AzureProvider,
 			})

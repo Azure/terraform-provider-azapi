@@ -209,7 +209,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 			}
 		}
 		if len(utils.GetId(existing)) > 0 {
-			return tf.ImportAsExistsError("azurerm-restapi_resource", id.ID())
+			return tf.ImportAsExistsError("azapi_resource", id.ID())
 		}
 	}
 
