@@ -167,7 +167,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			armEndpoint = arm.AzureChina
 			authEndpoint = azidentity.AzureChina
 		default:
-			return nil, diag.Errorf("unknwon `environment` specified: %q", env)
+			return nil, diag.Errorf("unknown `environment` specified: %q", env)
 		}
 
 		// Maps the auth related environment variables used in the provider to what azidentity honors.
