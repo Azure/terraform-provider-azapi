@@ -72,7 +72,7 @@ func azureProvider() *schema.Provider {
 				Type:         schema.TypeString,
 				Required:     true,
 				DefaultFunc:  schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
-				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, false),
+				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, true),
 				Description:  "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
 			},
 
@@ -156,7 +156,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		var armEndpoint arm.Endpoint
 		var authEndpoint azidentity.AuthorityHost
 		env := d.Get("environment").(string)
-		switch env {
+		switch strings.ToLower(env) {
 		case "public":
 			armEndpoint = arm.AzurePublicCloud
 			authEndpoint = azidentity.AzurePublicCloud

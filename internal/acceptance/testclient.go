@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -25,7 +26,7 @@ func BuildTestClient() (*clients.Client, error) {
 		var armEndpoint arm.Endpoint
 		var authEndpoint azidentity.AuthorityHost
 		env := os.Getenv("ARM_ENVIRONMENT")
-		switch env {
+		switch strings.ToLower(env) {
 		case "public":
 			armEndpoint = arm.AzurePublicCloud
 			authEndpoint = azidentity.AzurePublicCloud
