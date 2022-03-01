@@ -1,4 +1,4 @@
-#Build ResourceId
+# Build ResourceId
 
 ## Definitions
 1. `Root Resource / Top-Level Resource`: A resource with only a single level of nested types (i.e. there's just a single type after the RP namespace). `Microsoft.Network/networkSecurityGroups` is a top-level resource, whereas `Microsoft.Network/networkSecurityGroups/securityRules` is not.

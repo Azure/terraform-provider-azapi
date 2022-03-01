@@ -27,7 +27,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 		Delete: resourceAzureGenericPatchResourceDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azurerm-restapi_patch_resource` doesn't support import")
+			return fmt.Errorf("`azapi_patch_resource` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{

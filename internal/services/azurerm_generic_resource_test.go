@@ -20,7 +20,7 @@ import (
 type GenericResource struct{}
 
 func TestAccGenericResource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -35,7 +35,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 }
 
 func TestAccGenericResource_requiresImport(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -50,7 +50,7 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 }
 
 func TestAccGenericResource_complete(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -65,7 +65,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 }
 
 func TestAccGenericResource_completeBody(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -80,7 +80,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 }
 
 func TestAccGenericResource_identity(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -116,7 +116,7 @@ func TestAccGenericResource_identity(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultTags(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -156,7 +156,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -173,7 +173,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultLocation(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -197,7 +197,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 }
 
 func TestAccGenericResource_subscriptionScope(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -214,7 +214,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 
 func TestAccGenericResource_extensionScope(t *testing.T) {
 	t.Skip(`The service principle does not have authorization to perform action 'Microsoft.Authorization/locks/write'`)
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -230,7 +230,7 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
@@ -245,12 +245,27 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 }
 
 func TestAccGenericResource_ignoreCasing(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azurerm-restapi_resource", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.ignoreCasing(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+	})
+}
+
+func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.deleteLROEndsWithNotFoundError(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -280,7 +295,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 }
 
 func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {
-	state := tfState.RootModule().Resources["azurerm-restapi_resource.test"].Primary
+	state := tfState.RootModule().Resources["azapi_resource.test"].Primary
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
 	if err != nil {
@@ -315,7 +330,7 @@ resource "azurerm_container_registry" "test" {
   admin_enabled       = false
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
   type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
@@ -337,10 +352,10 @@ func (r GenericResource) requiresImport(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm-restapi_resource" "import" {
-  name      = azurerm-restapi_resource.test.name
-  parent_id = azurerm-restapi_resource.test.parent_id
-  type      = azurerm-restapi_resource.test.type
+resource "azapi_resource" "import" {
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  type      = azapi_resource.test.type
   body      = <<BODY
    {
       "properties": {
@@ -365,7 +380,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -396,7 +411,7 @@ func (r GenericResource) completeBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-provider "azurerm-restapi" {
+provider "azapi" {
 }
 
 resource "azurerm_user_assigned_identity" "test" {
@@ -405,7 +420,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_resource_group.test.id
   type                      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -435,7 +450,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -458,7 +473,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -490,7 +505,7 @@ resource "azurerm_user_assigned_identity" "test" {
   location            = azurerm_resource_group.test.location
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -520,13 +535,13 @@ resource "azurerm-restapi_resource" "test" {
 func (r GenericResource) defaultTag(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
-provider "azurerm-restapi" {
+provider "azapi" {
   default_tags = {
     key = "default"
   }
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
@@ -550,13 +565,13 @@ resource "azurerm-restapi_resource" "test" {
 func (r GenericResource) defaultTagOverrideInBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
-provider "azurerm-restapi" {
+provider "azapi" {
   default_tags = {
     key = "default"
   }
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
@@ -584,13 +599,13 @@ resource "azurerm-restapi_resource" "test" {
 func (r GenericResource) defaultTagOverrideInHcl(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
-provider "azurerm-restapi" {
+provider "azapi" {
   default_tags = {
     key = "default"
   }
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
@@ -618,11 +633,11 @@ resource "azurerm-restapi_resource" "test" {
 func (r GenericResource) defaultLocation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
-provider "azurerm-restapi" {
+provider "azapi" {
   default_location = "%[3]s"
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
@@ -645,11 +660,11 @@ resource "azurerm-restapi_resource" "test" {
 func (r GenericResource) defaultLocationOverrideInHcl(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
-provider "azurerm-restapi" {
+provider "azapi" {
   default_location = "%[3]s"
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
@@ -678,7 +693,7 @@ func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string 
 	return fmt.Sprintf(`
 %s
 
-provider "azurerm-restapi" {
+provider "azapi" {
   default_tags = {
     key = "default"
   }
@@ -693,7 +708,7 @@ resource "azurerm_container_registry" "test" {
   admin_enabled       = false
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
   type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
@@ -719,7 +734,7 @@ provider "azurerm" {
 
 data "azurerm_client_config" "current" {}
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2021-04-01"
   name      = "acctestRG-%[1]d"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
@@ -734,7 +749,7 @@ func (r GenericResource) extensionScope(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm-restapi_resource" "locks" {
+resource "azapi_resource" "locks" {
   type      = "Microsoft.Authorization/locks@2015-01-01"
   name      = "acctest-%[2]d"
   parent_id = azurerm_resource_group.test.id
@@ -765,7 +780,7 @@ resource "azurerm_spring_cloud_service" "test" {
   resource_group_name = azurerm_resource_group.test.name
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
@@ -800,7 +815,7 @@ resource "azurerm_spring_cloud_service" "test" {
   resource_group_name = azurerm_resource_group.test.name
 }
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
@@ -817,6 +832,25 @@ resource "azurerm-restapi_resource" "test" {
   ignore_casing_enabled           = true
   ignore_missing_property_enabled = true
 }
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+}
+
+func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.ServiceBus/namespaces@2021-06-01-preview"
+  name      = "acctest-sb-%[2]d"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    sku = {
+      name = "Premium"
+    }
+  })
+}
+
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }
 

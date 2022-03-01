@@ -60,7 +60,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		matchedScope := types.Unknown
 		err = nil
 		for _, scope := range scopeTypes {
-			if scope == parentIdScope && strings.EqualFold(parentIdExpectedType, parentIdType) {
+			if scope == parentIdScope {
 				if strings.EqualFold(parentIdExpectedType, parentIdType) {
 					matchedScope = scope
 					break

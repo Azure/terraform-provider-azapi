@@ -206,7 +206,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	if d.IsNewResource() {
 		_, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err == nil {
-			return tf.ImportAsExistsError("azurerm-restapi_resource", id.ID())
+			return tf.ImportAsExistsError("azapi_resource", id.ID())
 		}
 		var responseErr *azcore.ResponseError
 		if !errors.As(err, &responseErr) || responseErr.StatusCode != http.StatusNotFound {
