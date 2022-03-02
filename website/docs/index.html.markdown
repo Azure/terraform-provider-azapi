@@ -58,8 +58,6 @@ The following arguments are supported:
 
 * `tenant_id` - (Optional) The Tenant ID should be used. This can also be sourced from the `ARM_TENANT_ID` Environment Variable.
 
-* `auxiliary_tenant_ids` - (Optional) List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.
-
 ---
 
 It's possible to configure the behaviour of certain resources using the following properties: 

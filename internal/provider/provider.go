@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/Azure/terraform-provider-azurerm-restapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -59,14 +58,15 @@ func azureProvider() *schema.Provider {
 				Description: "The Tenant ID which should be used.",
 			},
 
-			"auxiliary_tenant_ids": {
-				Type:     schema.TypeList,
-				Optional: true,
-				MaxItems: 3,
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
-				},
-			},
+			// TODO@mgd: this is blocked by https://github.com/Azure/azure-sdk-for-go/issues/17159
+			// "auxiliary_tenant_ids": {
+			// 	Type:     schema.TypeList,
+			// 	Optional: true,
+			// 	MaxItems: 3,
+			// 	Elem: &schema.Schema{
+			// 		Type: schema.TypeString,
+			// 	},
+			// },
 
 			"environment": {
 				Type:         schema.TypeString,
@@ -146,12 +146,12 @@ func azureProvider() *schema.Provider {
 
 func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	return func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		var auxTenants []string
-		if v, ok := d.Get("auxiliary_tenant_ids").([]interface{}); ok && len(v) > 0 {
-			auxTenants = *utils.ExpandStringSlice(v)
-		} else if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
-			auxTenants = strings.Split(v, ";")
-		}
+		// var auxTenants []string
+		// if v, ok := d.Get("auxiliary_tenant_ids").([]interface{}); ok && len(v) > 0 {
+		// 	auxTenants = *utils.ExpandStringSlice(v)
+		// } else if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
+		// 	auxTenants = strings.Split(v, ";")
+		// }
 
 		var armEndpoint arm.Endpoint
 		var authEndpoint azidentity.AuthorityHost
@@ -185,9 +185,9 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		}
 
 		copt := &clients.Option{
-			SubscriptionId:       d.Get("subscription_id").(string),
-			Cred:                 cred,
-			AuxiliaryTenantIDs:   auxTenants,
+			SubscriptionId: d.Get("subscription_id").(string),
+			Cred:           cred,
+			//AuxiliaryTenantIDs:   auxTenants,
 			ApplicationUserAgent: buildUserAgent(p.TerraformVersion),
 			ARMEndpoint:          armEndpoint,
 			Features: features.UserFeatures{
