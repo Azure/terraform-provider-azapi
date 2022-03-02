@@ -26,9 +26,9 @@ Plan: 0 to add, 1 to change, 0 to destroy.
 
 This happens when a property contains sensitive credential like a storage account's access key, the value won't be returned by design. 
 
-Please add `ignore_missing_property_enabled = true` to the resource block and apply it.
+Please add `ignore_missing_property = true` to the resource block and apply it.
 
-Similarly, values in incorrect casing might be returned and cause a diff. Please use `ignore_casing_enabled = true` to suppress it.
+Similarly, values in incorrect casing might be returned and cause a diff. Please use `ignore_casing = true` to suppress it.
 
 ### Q2 How to manage resources which can be managed by both parent resource API and its own API like `Microsoft.Network/virtualNetworks/subnets`?
 

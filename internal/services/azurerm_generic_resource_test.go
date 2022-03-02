@@ -791,7 +791,7 @@ resource "azapi_resource" "test" {
     }
   })
 
-  ignore_missing_property_enabled = true
+  ignore_missing_property = true
 }
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }
@@ -826,9 +826,9 @@ resource "azapi_resource" "test" {
     }
   })
 
-  schema_validation_enabled       = false
-  ignore_casing_enabled           = true
-  ignore_missing_property_enabled = true
+  schema_validation_enabled = false
+  ignore_casing             = true
+  ignore_missing_property   = true
 }
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }

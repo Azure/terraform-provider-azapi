@@ -126,9 +126,9 @@ The following arguments are supported:
 }
 ```
 
-* `ignore_casing_enabled` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
+* `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
 
-* `ignore_missing_property_enabled` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `false`.
+* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `false`.
 
 ## Attributes Reference
 
