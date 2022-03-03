@@ -96,7 +96,12 @@ func (client *NewResourceClient) Get(ctx context.Context, resourceID string, api
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, nil, runtime.NewResponseError(resp)
 	}
-	return client.getHandleResponse(resp)
+
+	var responseBody interface{}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, nil, err
+	}
+	return responseBody, resp, nil
 }
 
 func (client *NewResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
@@ -111,14 +116,6 @@ func (client *NewResourceClient) getCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-func (client *NewResourceClient) getHandleResponse(resp *http.Response) (interface{}, *http.Response, error) {
-	var responseBody interface{}
-	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, nil, err
-	}
-	return responseBody, resp, nil
 }
 
 func (client *NewResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
