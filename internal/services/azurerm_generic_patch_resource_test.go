@@ -60,7 +60,7 @@ func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client
 		return nil, err
 	}
 
-	resp, _, err := client.NewResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	resp, _, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		var responseErr *azcore.ResponseError
 		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {

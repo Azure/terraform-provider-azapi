@@ -18,7 +18,7 @@ type Client struct {
 
 	Features features.UserFeatures
 
-	NewResourceClient *NewResourceClient
+	ResourceClient *ResourceClient
 }
 
 type Option struct {
@@ -40,7 +40,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	azlog.SetListener(func(cls azlog.Event, msg string) {
 		log.Printf("[DEBUG] %s %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
 	})
-	newResourceClient := NewNewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
+	resourceClient := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Telemetry: policy.TelemetryOptions{
 				ApplicationID: o.ApplicationUserAgent,
@@ -53,7 +53,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		DisableRPRegistration: o.SkipProviderRegistration,
 		Endpoint:              o.ARMEndpoint,
 	})
-	client.NewResourceClient = newResourceClient
+	client.ResourceClient = resourceClient
 
 	return nil
 }

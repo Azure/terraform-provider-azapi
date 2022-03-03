@@ -18,27 +18,27 @@ const (
 	moduleVersion = "v0.1.0"
 )
 
-type NewResourceClient struct {
+type ResourceClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-func NewNewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) *NewResourceClient {
+func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) *ResourceClient {
 	if opt == nil {
 		opt = &arm.ClientOptions{}
 	}
 	if opt.Endpoint == "" {
 		opt.Endpoint = arm.AzurePublicCloud
 	}
-	return &NewResourceClient{
+	return &ResourceClient{
 		subscriptionID: subscriptionID,
 		host:           string(opt.Endpoint),
 		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, opt),
 	}
 }
 
-func (client *NewResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, *http.Response, error) {
+func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, *http.Response, error) {
 	resp, err := client.createOrUpdate(ctx, resourceID, apiVersion, body)
 	if err != nil {
 		return nil, nil, err
@@ -55,7 +55,7 @@ func (client *NewResourceClient) CreateOrUpdate(ctx context.Context, resourceID 
 	return responseBody, resp, nil
 }
 
-func (client *NewResourceClient) createOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*http.Response, error) {
+func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceID, apiVersion, body)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (client *NewResourceClient) createOrUpdate(ctx context.Context, resourceID 
 	return resp, nil
 }
 
-func (client *NewResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*policy.Request, error) {
+func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
@@ -84,7 +84,7 @@ func (client *NewResourceClient) createOrUpdateCreateRequest(ctx context.Context
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-func (client *NewResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, apiVersion)
 	if err != nil {
 		return nil, nil, err
@@ -104,7 +104,7 @@ func (client *NewResourceClient) Get(ctx context.Context, resourceID string, api
 	return responseBody, resp, nil
 }
 
-func (client *NewResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
+func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
@@ -118,7 +118,7 @@ func (client *NewResourceClient) getCreateRequest(ctx context.Context, resourceI
 	return req, nil
 }
 
-func (client *NewResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
 	resp, err := client.delete(ctx, resourceID, apiVersion)
 	if err != nil {
 		return nil, nil, err
@@ -135,7 +135,7 @@ func (client *NewResourceClient) Delete(ctx context.Context, resourceID string, 
 	return responseBody, resp, nil
 }
 
-func (client *NewResourceClient) delete(ctx context.Context, resourceID string, apiVersion string) (*http.Response, error) {
+func (client *ResourceClient) delete(ctx context.Context, resourceID string, apiVersion string) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceID, apiVersion)
 	if err != nil {
 		return nil, err
@@ -150,7 +150,7 @@ func (client *NewResourceClient) delete(ctx context.Context, resourceID string, 
 	return resp, nil
 }
 
-func (client *NewResourceClient) deleteCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
+func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))

@@ -131,7 +131,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 }
 
 func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).NewResourceClient
+	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
@@ -181,7 +181,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 }
 
 func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).NewResourceClient
+	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
