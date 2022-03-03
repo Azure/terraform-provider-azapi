@@ -38,7 +38,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	client.Features = o.Features
 
 	azlog.SetListener(func(cls azlog.Event, msg string) {
-		log.Printf("[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
+		log.Printf("[DEBUG] %s %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
 	})
 	newResourceClient := NewNewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
