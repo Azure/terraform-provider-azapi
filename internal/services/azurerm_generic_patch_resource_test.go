@@ -2,12 +2,9 @@ package services_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
@@ -62,8 +59,7 @@ func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client
 
 	resp, _, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		var responseErr *azcore.ResponseError
-		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			exist := false
 			return &exist, nil
 		}

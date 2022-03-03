@@ -3,13 +3,10 @@ package services
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
@@ -198,8 +195,7 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 
 	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		var responseErr *azcore.ResponseError
-		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", d.Id())
 			d.SetId("")
 			return nil

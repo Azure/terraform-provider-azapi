@@ -3,14 +3,11 @@ package services
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
-	"net/http"
 	"reflect"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
@@ -208,8 +205,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 		if err == nil {
 			return tf.ImportAsExistsError("azapi_resource", id.ID())
 		}
-		var responseErr *azcore.ResponseError
-		if !errors.As(err, &responseErr) || responseErr.StatusCode != http.StatusNotFound {
+		if !utils.ResponseErrorWasNotFound(err) {
 			return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 		}
 	}
@@ -295,8 +291,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 
 	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		var responseErr *azcore.ResponseError
-		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
 			d.SetId("")
 			return nil
@@ -379,8 +374,7 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 
 	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		var responseErr *azcore.ResponseError
-		if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			return nil
 		}
 		return fmt.Errorf("deleting %q: %+v", id, err)

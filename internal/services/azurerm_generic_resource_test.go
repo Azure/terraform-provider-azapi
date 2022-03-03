@@ -2,12 +2,10 @@ package services_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
@@ -286,8 +284,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		b := true
 		return &b, nil
 	}
-	var responseErr *azcore.ResponseError
-	if errors.As(err, &responseErr) && responseErr.StatusCode == http.StatusNotFound {
+	if utils.ResponseErrorWasNotFound(err) {
 		b := false
 		return &b, nil
 	}
