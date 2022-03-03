@@ -3,7 +3,6 @@ package services_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
@@ -11,6 +10,7 @@ import (
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
