@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
@@ -168,7 +167,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, http.MethodPut)
+	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -194,9 +193,9 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", d.Id())
 			d.SetId("")
 			return nil

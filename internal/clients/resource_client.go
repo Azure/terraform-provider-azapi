@@ -3,172 +3,163 @@ package clients
 import (
 	"context"
 	"net/http"
+	"strings"
+	"time"
 
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Synapse
-	DefaultBaseURI = "https://management.azure.com"
+	moduleName    = "resource"
+	moduleVersion = "v0.1.0"
 )
 
-// BaseClient is the base client for Synapse.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
-}
-
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
-// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(""),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-	}
-}
-
-func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) ResourceClient {
-	return ResourceClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
 type ResourceClient struct {
-	BaseClient
+	host           string
+	subscriptionID string
+	pl             runtime.Pipeline
 }
 
-func (client ResourceClient) CreateUpdate(ctx context.Context, azureResourceId string, apiVersion string, requestBody interface{}, method string) (body interface{}, resp *http.Response, err error) {
-	queryParameters := map[string]interface{}{
-		"api-version": apiVersion,
+func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) *ResourceClient {
+	if opt == nil {
+		opt = &arm.ClientOptions{}
 	}
+	if opt.Endpoint == "" {
+		opt.Endpoint = arm.AzurePublicCloud
+	}
+	return &ResourceClient{
+		subscriptionID: subscriptionID,
+		host:           string(opt.Endpoint),
+		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, opt),
+	}
+}
 
-	var methodDecorator autorest.PrepareDecorator
-	switch method {
-	case http.MethodPut:
-		methodDecorator = autorest.AsPut()
-	case http.MethodPost:
-		methodDecorator = autorest.AsPost()
-	case http.MethodPatch:
-		methodDecorator = autorest.AsPatch()
-	default:
-		methodDecorator = autorest.AsPut()
-	}
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		methodDecorator,
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(azureResourceId, nil),
-		autorest.WithJSON(requestBody),
-		autorest.WithQueryParameters(queryParameters))
-	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
+func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, *http.Response, error) {
+	resp, err := client.createOrUpdate(ctx, resourceID, apiVersion, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resource", method, nil, "Failure preparing request")
-		return
+		return nil, nil, err
 	}
-
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-
-	// it's a long running operation
+	var responseBody interface{}
+	pt, err := armruntime.NewPoller("Client.CreateOrUpdate", "", resp, client.pl)
 	if err == nil {
-		if err = azf.WaitForCompletionRef(ctx, client.Client); err != nil {
-			return
-		}
-		resp = azf.Response()
+		resp, err := pt.PollUntilDone(ctx, 10*time.Second, &responseBody)
+		return responseBody, resp, err
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, nil, err
+	}
+	return responseBody, resp, nil
+}
+
+func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceID, apiVersion, body)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, body)
+}
+
+func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+	req, err := client.getCreateRequest(ctx, resourceID, apiVersion)
+	if err != nil {
+		return nil, nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return nil, nil, runtime.NewResponseError(resp)
 	}
 
 	var responseBody interface{}
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&responseBody),
-		autorest.ByClosing())
-	body = responseBody
-
-	return body, resp, err
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, nil, err
+	}
+	return responseBody, resp, nil
 }
 
-func (client ResourceClient) Get(ctx context.Context, azureResourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
-	queryParameters := map[string]interface{}{
-		"api-version": apiVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(azureResourceId, nil),
-		autorest.WithQueryParameters(queryParameters))
-	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
+func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resource", "GET", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
 
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+	resp, err := client.delete(ctx, resourceID, apiVersion)
 	if err != nil {
-		return
+		return nil, nil, err
 	}
-
 	var responseBody interface{}
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&responseBody),
-		autorest.ByClosing())
-	body = responseBody
-	return
-}
-
-func (client ResourceClient) Delete(ctx context.Context, azureResourceId string, apiVersion string) (body interface{}, resp *http.Response, err error) {
-	queryParameters := map[string]interface{}{
-		"api-version": apiVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters(azureResourceId, nil),
-		autorest.WithQueryParameters(queryParameters))
-	req, err := preparer.Prepare((&http.Request{}).WithContext(ctx))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "resource", "Delete", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-
-	// it's a long running operation
+	pt, err := armruntime.NewPoller("Client.Delete", "", resp, client.pl)
 	if err == nil {
-		if err = azf.WaitForCompletionRef(ctx, client.Client); err != nil {
-			resp = azf.Response()
-			return
-		}
-		resp = azf.Response()
+		resp, err := pt.PollUntilDone(ctx, 10*time.Second, &responseBody)
+		return responseBody, resp, err
 	}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, nil, err
+	}
+	return responseBody, resp, nil
+}
 
-	var responseBody interface{}
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&responseBody),
-		autorest.ByClosing())
-	body = responseBody
-	return body, resp, err
+func (client *ResourceClient) delete(ctx context.Context, resourceID string, apiVersion string) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceID, apiVersion)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
+	urlPath := "/{resourceId}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
 }

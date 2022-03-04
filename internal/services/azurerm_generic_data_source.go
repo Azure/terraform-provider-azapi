@@ -3,7 +3,6 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/identity"
@@ -77,12 +76,11 @@ func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			return fmt.Errorf("not found %q: %+v", id, err)
 		}
-
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())

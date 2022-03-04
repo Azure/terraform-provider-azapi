@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"reflect"
 	"time"
 
@@ -202,14 +201,12 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 	}
 
 	if d.IsNewResource() {
-		existing, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
-		if err != nil {
-			if response.StatusCode != http.StatusNotFound {
-				return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
-			}
-		}
-		if len(utils.GetId(existing)) > 0 {
+		_, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		if err == nil {
 			return tf.ImportAsExistsError("azapi_resource", id.ID())
+		}
+		if !utils.ResponseErrorWasNotFound(err) {
+			return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 		}
 	}
 
@@ -266,7 +263,7 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 
 	j, _ := json.Marshal(body)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, http.MethodPut)
+	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -292,14 +289,13 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	responseBody, response, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
 			d.SetId("")
 			return nil
 		}
-
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
@@ -376,9 +372,9 @@ func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	_, response, err := client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response != nil && response.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			return nil
 		}
 		return fmt.Errorf("deleting %q: %+v", id, err)

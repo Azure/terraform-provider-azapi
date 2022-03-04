@@ -2,10 +2,13 @@ package clients
 
 import (
 	"context"
+	"log"
+	"time"
 
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/common"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
 )
 
@@ -18,19 +21,39 @@ type Client struct {
 	ResourceClient *ResourceClient
 }
 
+type Option struct {
+	SubscriptionId           string
+	Cred                     azcore.TokenCredential
+	ARMEndpoint              arm.Endpoint
+	AuxiliaryTenantIDs       []string
+	ApplicationUserAgent     string
+	Features                 features.UserFeatures
+	SkipProviderRegistration bool
+}
+
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
 
-func (client *Client) Build(ctx context.Context, o *common.ClientOptions) error {
-	autorest.Count429AsRetry = false
-	// Disable the Azure SDK for Go's validation since it's unhelpful for our use-case
-	validation.Disabled = true
+func (client *Client) Build(ctx context.Context, o *Option) error {
 	client.StopContext = ctx
-
 	client.Features = o.Features
 
-	resourceClient := NewResourceClientWithBaseURI(o.ResourceManagerEndpoint, o.SubscriptionId)
-	o.ConfigureClient(&resourceClient.Client, o.ResourceManagerAuthorizer)
-	client.ResourceClient = &resourceClient
+	azlog.SetListener(func(cls azlog.Event, msg string) {
+		log.Printf("[DEBUG] %s %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
+	})
+	resourceClient := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Telemetry: policy.TelemetryOptions{
+				ApplicationID: o.ApplicationUserAgent,
+			},
+			Logging: policy.LogOptions{
+				IncludeBody: true,
+			},
+		},
+		AuxiliaryTenants:      o.AuxiliaryTenantIDs,
+		DisableRPRegistration: o.SkipProviderRegistration,
+		Endpoint:              o.ARMEndpoint,
+	})
+	client.ResourceClient = resourceClient
 
 	return nil
 }

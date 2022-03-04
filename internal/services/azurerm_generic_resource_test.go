@@ -3,7 +3,6 @@ package services_test
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
@@ -280,16 +279,16 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		return nil, err
 	}
 
-	resp, response, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
-	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
-			exist := false
-			return &exist, nil
-		}
-		return nil, fmt.Errorf("retrieving %s: %+v", id, err)
+	_, _, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	if err == nil {
+		b := true
+		return &b, nil
 	}
-	exist := len(utils.GetId(resp)) != 0
-	return &exist, nil
+	if utils.ResponseErrorWasNotFound(err) {
+		b := false
+		return &b, nil
+	}
+	return nil, fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 }
 
 func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {

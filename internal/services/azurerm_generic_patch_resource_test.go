@@ -3,7 +3,6 @@ package services_test
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
@@ -58,9 +57,9 @@ func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client
 		return nil, err
 	}
 
-	resp, response, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	resp, _, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
-		if response.StatusCode == http.StatusNotFound {
+		if utils.ResponseErrorWasNotFound(err) {
 			exist := false
 			return &exist, nil
 		}
@@ -87,7 +86,7 @@ resource "azapi_patch_resource" "test" {
   body        = <<BODY
 {
   "properties": {
-    "publicNetworkAccess": false
+    "publicNetworkAccess": true
   }
 }
   BODY
@@ -113,7 +112,7 @@ resource "azapi_patch_resource" "test" {
   body      = <<BODY
 {
   "properties": {
-    "publicNetworkAccess": false
+    "publicNetworkAccess": true
   }
 }
   BODY
