@@ -1,4 +1,4 @@
-module github.com/Azure/terraform-provider-azurerm-restapi
+module github.com/Azure/terraform-provider-azapi
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.21.1

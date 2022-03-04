@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/provider"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"

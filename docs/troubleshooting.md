@@ -9,8 +9,8 @@ Terraform used the selected providers to generate the following execution plan. 
 
 Terraform will perform the following actions:
 
-  # azurerm-restapi_resource.test will be updated in-place
-  ~ resource "azurerm-restapi_resource" "test" {
+  # azapi_resource.test will be updated in-place
+  ~ resource "azapi_resource" "test" {
       ~ body                            = jsonencode(
           ~ {
               ~ properties = {

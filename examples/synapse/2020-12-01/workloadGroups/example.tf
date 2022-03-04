@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
@@ -10,7 +10,7 @@ provider "azurerm" {
   features {}
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
 }
 
 resource "azurerm_resource_group" "test" {
@@ -49,7 +49,7 @@ resource "azurerm_synapse_sql_pool" "test" {
 }
 
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name = "smallrc"
   parent_id = azurerm_synapse_sql_pool.test.id
   type = "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2020-12-01"

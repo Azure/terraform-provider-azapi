@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
 var _ TypeBase = &ObjectType{}

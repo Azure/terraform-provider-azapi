@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
 func Test_BodyValidation(t *testing.T) {

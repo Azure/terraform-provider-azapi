@@ -3,7 +3,7 @@ package acceptance
 import (
 	"context"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 

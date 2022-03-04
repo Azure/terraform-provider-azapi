@@ -3,8 +3,8 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
+	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
 func Test_GetParentId(t *testing.T) {

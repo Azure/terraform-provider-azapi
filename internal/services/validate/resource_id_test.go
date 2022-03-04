@@ -3,7 +3,7 @@ package validate_test
 import (
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
+	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 )
 
 func TestResourceID(t *testing.T) {

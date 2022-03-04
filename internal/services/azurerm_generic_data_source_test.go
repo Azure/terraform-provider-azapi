@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 

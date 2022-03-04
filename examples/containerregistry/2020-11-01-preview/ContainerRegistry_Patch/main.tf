@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
@@ -10,7 +10,7 @@ provider "azurerm" {
   features {}
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
   schema_validation_enabled = false
 }
 
@@ -27,7 +27,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = false
 }
 
-resource "azurerm-restapi_patch_resource" "test" {
+resource "azapi_patch_resource" "test" {
   resource_id = azurerm_container_registry.acr.id
   type = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   body = <<BODY

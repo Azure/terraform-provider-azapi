@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
 
 func GetId(resource interface{}) string {
