@@ -3,7 +3,7 @@ package validate
 import (
 	"fmt"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 )
 
 func UserAssignedIdentityID(input interface{}, key string) (warnings []string, errors []error) {

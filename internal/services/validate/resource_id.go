@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 )
 

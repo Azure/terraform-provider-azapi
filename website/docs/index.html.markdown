@@ -1,5 +1,5 @@
 ---
-layout: "azurerm-restapi"
+layout: "azapi"
 page_title: "Provider: Azure"
 description: |-
   The AzureRM Rest API Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
@@ -13,7 +13,7 @@ The AzureRM Rest API Provider can be used to configure infrastructure in [Micros
 To learn the basics of Terraform using this provider, follow the
 hands-on [get started tutorials](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started) on HashiCorp's Learn platform.
 
-Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azurerm-generic/blob/develop/CHANGELOG.md) for version information and release notes.
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/develop/CHANGELOG.md) for version information and release notes.
 
 ## Authenticating to Azure
 
@@ -35,13 +35,13 @@ We recommend using either a Service Principal or Managed Service Identity when r
 # Azure Provider source and version being used
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
 }
 
 ```

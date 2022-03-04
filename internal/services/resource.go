@@ -5,10 +5,10 @@ import (
 	"log"
 	"strings"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
 func schemaValidation(id parse.ResourceId, body interface{}) error {

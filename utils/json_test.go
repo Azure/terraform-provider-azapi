@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
 func Test_GetUpdatedJson(t *testing.T) {

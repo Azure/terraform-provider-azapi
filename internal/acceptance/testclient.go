@@ -9,8 +9,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/features"
 )
 
 var (

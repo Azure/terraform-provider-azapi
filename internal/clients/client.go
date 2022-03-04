@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
+	"github.com/Azure/terraform-provider-azapi/internal/features"
 )
 
 type Client struct {

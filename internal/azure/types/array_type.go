@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
 var _ TypeBase = &ArrayType{}

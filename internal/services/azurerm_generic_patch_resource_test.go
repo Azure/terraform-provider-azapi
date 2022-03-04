@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/acceptance/check"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )

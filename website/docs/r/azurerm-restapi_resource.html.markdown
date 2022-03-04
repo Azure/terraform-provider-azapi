@@ -1,12 +1,12 @@
 ---
 subcategory: ""
-layout: "azurerm-restapi"
-page_title: "Generic Azure Resource: azurerm-restapi_resource"
+layout: "azapi"
+page_title: "Generic Azure Resource: azapi_resource"
 description: |-
   Manages a Azure resource
 ---
 
-# azurerm-restapi_resource
+# azapi_resource
 
 This resource can manage any Azure resource manager resource.
 
@@ -15,13 +15,13 @@ This resource can manage any Azure resource manager resource.
 ```hcl
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
 }
 
 provider "azurerm" {
@@ -40,7 +40,7 @@ resource "azurerm_user_assigned_identity" "example" {
 }
 
 // manage a container registry resource
-resource "azurerm-restapi_resource" "example" {
+resource "azapi_resource" "example" {
   name      = "registry1"
   parent_id = azurerm_resource_group.example.id
   type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
@@ -70,12 +70,12 @@ resource "azurerm-restapi_resource" "example" {
 
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.loginServer
+  value = jsondecode(azapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 
@@ -143,12 +143,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.loginServer
+  value = jsondecode(azapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 
@@ -174,5 +174,5 @@ The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/d
 Azure resource can be imported using the `resource id`, e.g.
 
 ```shell
-terraform import azurerm-restapi_resource.example /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/cluster1?api-version=2021-07-01
+terraform import azapi_resource.example /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/cluster1?api-version=2021-07-01
 ```

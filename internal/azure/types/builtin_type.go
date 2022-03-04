@@ -3,7 +3,7 @@ package types
 import (
 	"fmt"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
 type BuiltInTypeKind int

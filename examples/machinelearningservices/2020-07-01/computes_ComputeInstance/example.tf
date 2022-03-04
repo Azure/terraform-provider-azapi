@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
@@ -10,7 +10,7 @@ provider "azurerm" {
   features {}
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
 
 }
 data "azurerm_client_config" "test" {}
@@ -57,7 +57,7 @@ resource "azurerm_machine_learning_workspace" "test" {
 }
 
 
-resource "azurerm-restapi_resource" "test" {
+resource "azapi_resource" "test" {
   name = "acctest6032"
   parent_id = azurerm_machine_learning_workspace.test.id
   type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"

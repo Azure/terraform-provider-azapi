@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/provider"
+	"github.com/Azure/terraform-provider-azapi/internal/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 

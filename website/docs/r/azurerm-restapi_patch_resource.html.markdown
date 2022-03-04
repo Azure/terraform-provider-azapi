@@ -1,17 +1,17 @@
 ---
 subcategory: ""
-layout: "azurerm-restapi"
-page_title: "Generic Azure Patch Resource: azurerm-restapi_patch_resource"
+layout: "azapi"
+page_title: "Generic Azure Patch Resource: azapi_patch_resource"
 description: |-
   Manages a subset of an existing azure resource's properties
 ---
 
-# azurerm-restapi_patch_resource
+# azapi_patch_resource
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
 
 -> **Note**: This resource is used to add or modify properties on an existing resource.
-When delete `azurerm-restapi_patch_resource`, no operation will be performed, and these properties will stay unchanged.
+When delete `azapi_patch_resource`, no operation will be performed, and these properties will stay unchanged.
 If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 
 ## Example Usage
@@ -19,13 +19,13 @@ If you want to restore the modified properties to some values, you must apply th
 ```hcl
 terraform {
   required_providers {
-    azurerm-restapi = {
-      source = "Azure/azurerm-restapi"
+    azapi = {
+      source = "Azure/azapi"
     }
   }
 }
 
-provider "azurerm-restapi" {
+provider "azapi" {
 }
 
 provider "azurerm" {
@@ -65,7 +65,7 @@ resource "azurerm_lb_nat_rule" "example" {
   frontend_ip_configuration_name = "PublicIPAddress"
 }
 
-resource "azurerm-restapi_patch_resource" "example" {
+resource "azapi_patch_resource" "example" {
   resource_id = azurerm_lb.example.id
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   body        = <<BODY
@@ -140,12 +140,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.loginServer
+  value = jsondecode(azapi_resource.example.output).properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azurerm-restapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 

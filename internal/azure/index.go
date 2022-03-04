@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/types"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
 
 type Schema struct {

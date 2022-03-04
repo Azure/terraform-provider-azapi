@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPTS_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPTS_DIR}/../dist/"
 SOURCE_DIR="${SCRIPTS_DIR}/../"
-NAME="azurerm-restapi"
+NAME="azapi"
 BUILD_ARTIFACT="terraform-provider-${NAME}_v${VERSION}"
 ARCHIVE_ARTIFACT="terraform-provider-${NAME}_${VERSION}"
 
@@ -44,7 +44,7 @@ function release() {
     ARCH=${os_arch#*:}
     info "GOOS: ${OS}, GOARCH: ${ARCH}"
     (
-      env GOOS="${OS}" GOARCH="${ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X 'github.com/Azure/terraform-provider-azurerm-restapi/version.ProviderVersion=v${VERSION}'" -o "${BUILD_ARTIFACT}"
+      env GOOS="${OS}" GOARCH="${ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X 'github.com/Azure/terraform-provider-azapi/version.ProviderVersion=v${VERSION}'" -o "${BUILD_ARTIFACT}"
       zip "${ARCHIVE_ARTIFACT}_${OS}_${ARCH}.zip" "${BUILD_ARTIFACT}"
       rm -rf "${BUILD_ARTIFACT}"
     )

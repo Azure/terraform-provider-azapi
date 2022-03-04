@@ -9,13 +9,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/location"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/tags"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/features"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services"
-	"github.com/Azure/terraform-provider-azurerm-restapi/version"
+	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/features"
+	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
@@ -225,7 +225,7 @@ func buildUserAgent(terraformVersion string) string {
 	}
 
 	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", terraformVersion, meta.SDKVersionString())
-	providerUserAgent := fmt.Sprintf("%s terraform-provider-azurerm-restapi/%s", tfUserAgent, version.ProviderVersion)
+	providerUserAgent := fmt.Sprintf("%s terraform-provider-azapi/%s", tfUserAgent, version.ProviderVersion)
 	tfUserAgent = strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
 
 	// append the CloudShell version to the user agent if it exists

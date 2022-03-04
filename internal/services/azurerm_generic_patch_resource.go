@@ -7,11 +7,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/clients"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/tf"
-	"github.com/Azure/terraform-provider-azurerm-restapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
+	"github.com/Azure/terraform-provider-azapi/internal/tf"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )

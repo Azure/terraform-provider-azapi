@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
 var _ TypeBase = &UnionType{}

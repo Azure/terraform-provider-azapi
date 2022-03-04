@@ -3,7 +3,7 @@ package azure_test
 import (
 	"testing"
 
-	"github.com/Azure/terraform-provider-azurerm-restapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure"
 )
 
 func Test_GetAzureSchema(t *testing.T) {
