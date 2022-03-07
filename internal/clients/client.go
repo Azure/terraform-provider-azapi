@@ -48,6 +48,9 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 			Logging: policy.LogOptions{
 				IncludeBody: true,
 			},
+			PerCallPolicies: []policy.Policy{
+				withCorrelationRequestID(correlationRequestID()),
+			},
 		},
 		AuxiliaryTenants:      o.AuxiliaryTenantIDs,
 		DisableRPRegistration: o.SkipProviderRegistration,
