@@ -53,7 +53,7 @@ func (t *BuiltInType) GetWriteOnly(body interface{}) interface{} {
 }
 
 func (t *BuiltInType) Validate(body interface{}, path string) []error {
-	if t == nil || body == nil {
+	if t == nil || body == nil || t.Kind == Any {
 		return []error{}
 	}
 	errors := make([]error, 0)
