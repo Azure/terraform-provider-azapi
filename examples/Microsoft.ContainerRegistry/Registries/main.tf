@@ -11,7 +11,6 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  schema_validation_enabled = false
 }
 
 resource "azurerm_resource_group" "test" {
@@ -28,14 +27,12 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "azapi_patch_resource" "test" {
+  type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   resource_id = azurerm_container_registry.acr.id
-  type = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  body = <<BODY
-{
-  "properties": {
-    "anonymousPullEnabled": true
-  }
-}
-  BODY
 
+  body = jsonencode({
+    properties = {
+      anonymousPullEnabled = true
+    }
+  })
 }

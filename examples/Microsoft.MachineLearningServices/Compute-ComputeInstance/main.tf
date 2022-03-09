@@ -11,8 +11,8 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-
 }
+
 data "azurerm_client_config" "test" {}
 
 resource "azurerm_resource_group" "test" {
@@ -58,18 +58,17 @@ resource "azurerm_machine_learning_workspace" "test" {
 
 
 resource "azapi_resource" "test" {
-  name = "acctest6032"
+  type      = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
+  name      = "acctest6032"
   parent_id = azurerm_machine_learning_workspace.test.id
-  type = "Microsoft.MachineLearningServices/workspaces/computes@2021-07-01"
-  body = <<BODY
-{
-    "location": "eastus",
-    "properties": {
-        "computeType": "ComputeInstance",
-        "properties": {
-            "vmSize": "STANDARD_NC6"
-        }
+
+  location = "eastus"
+  body = jsonencode({
+    properties = {
+      computeType = "ComputeInstance"
+      properties = {
+        vmSize = "STANDARD_NC6"
+      }
     }
-}
-BODY
+  })
 }
