@@ -106,8 +106,8 @@ func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 func (td TestData) providers() map[string]func() (*schema.Provider, error) {
 	return map[string]func() (*schema.Provider, error){
 		"azapi": func() (*schema.Provider, error) { //nolint:unparam
-			azurerm := provider.AzureProvider()
-			return azurerm, nil
+			azapi := provider.AzureProvider()
+			return azapi, nil
 		},
 	}
 }

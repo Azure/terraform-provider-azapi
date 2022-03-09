@@ -19,7 +19,7 @@ if ${error}; then
   echo "$ make terrafmt"
   echo ""
   echo "format only acceptance test config blocks:"
-  echo "$ find azurerm | egrep \"_test.go\" | sort | while read f; do terrafmt fmt -f \$f; done"
+  echo "$ find azapi | egrep \"_test.go\" | sort | while read f; do terrafmt fmt -f \$f; done"
   echo ""
   echo "format a single test file:"
   echo "$ terrafmt fmt -f ./internal/services/service/tests/resource_test.go"
