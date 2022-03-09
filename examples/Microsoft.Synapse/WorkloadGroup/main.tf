@@ -50,19 +50,18 @@ resource "azurerm_synapse_sql_pool" "test" {
 
 
 resource "azapi_resource" "test" {
-  name = "smallrc"
+  type      = "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2020-12-01"
+  name      = "smallrc"
   parent_id = azurerm_synapse_sql_pool.test.id
-  type = "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2020-12-01"
-  body = <<BODY
-{
-    "properties": {
-        "importance": "normal",
-        "maxResourcePercent": 100,
-        "maxResourcePercentPerRequest": 3,
-        "minResourcePercent": 0,
-        "minResourcePercentPerRequest": 3,
-        "queryExecutionTimeout": 0
+  
+  body = jsonencode({
+    properties = {
+      importance                   = "normal"
+      maxResourcePercent           = 100
+      maxResourcePercentPerRequest = 3
+      minResourcePercent           = 0
+      minResourcePercentPerRequest = 3
+      queryExecutionTimeout        = 0
     }
-}
-BODY
+  })
 }
