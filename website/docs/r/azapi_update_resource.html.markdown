@@ -1,17 +1,17 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Patch Resource: azapi_patch_resource"
+page_title: "Generic Azure Update Resource: azapi_update_resource"
 description: |-
   Manages a subset of an existing azure resource's properties
 ---
 
-# azapi_patch_resource
+# azapi_update_resource
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
 
 -> **Note**: This resource is used to add or modify properties on an existing resource.
-When delete `azapi_patch_resource`, no operation will be performed, and these properties will stay unchanged.
+When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged.
 If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 
 ## Example Usage
@@ -65,7 +65,7 @@ resource "azurerm_lb_nat_rule" "example" {
   frontend_ip_configuration_name = "PublicIPAddress"
 }
 
-resource "azapi_patch_resource" "example" {
+resource "azapi_update_resource" "example" {
   resource_id = azurerm_lb.example.id
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   body        = <<BODY

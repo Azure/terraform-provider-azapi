@@ -96,7 +96,7 @@ resource "azurerm_key_vault_key" "test" {
 }
 
 // patch resource used to enable CMK on servicebus namespace
-resource "azapi_patch_resource" "test" {
+resource "azapi_update_resource" "test" {
   resource_id = azapi_resource.test.resource_id
   type        = "Microsoft.ServiceBus/namespaces@2021-06-01-preview"
 

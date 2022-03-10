@@ -14,11 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-type GenericPatchResource struct{}
+type GenericUpdateResource struct{}
 
-func TestAccGenericPatchResource_automationAccount(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_patch_resource", "test")
-	r := GenericPatchResource{}
+func TestAccGenericUpdateResource_automationAccount(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
@@ -33,9 +33,9 @@ func TestAccGenericPatchResource_automationAccount(t *testing.T) {
 	})
 }
 
-func TestAccGenericPatchResource_withNameParentId(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_patch_resource", "test")
-	r := GenericPatchResource{}
+func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
@@ -50,7 +50,7 @@ func TestAccGenericPatchResource_withNameParentId(t *testing.T) {
 	})
 }
 
-func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
+func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
 	if err != nil {
@@ -69,7 +69,7 @@ func (r GenericPatchResource) Exists(ctx context.Context, client *clients.Client
 	return &exist, nil
 }
 
-func (r GenericPatchResource) automationAccount(data acceptance.TestData) string {
+func (r GenericUpdateResource) automationAccount(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
@@ -80,7 +80,7 @@ resource "azurerm_automation_account" "test" {
   sku_name            = "Basic"
 }
 
-resource "azapi_patch_resource" "test" {
+resource "azapi_update_resource" "test" {
   resource_id = azurerm_automation_account.test.id
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   body        = <<BODY
@@ -94,7 +94,7 @@ resource "azapi_patch_resource" "test" {
 `, r.template(data), data.RandomStringOfLength(5))
 }
 
-func (r GenericPatchResource) automationAccountWithNameParentId(data acceptance.TestData) string {
+func (r GenericUpdateResource) automationAccountWithNameParentId(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
@@ -105,7 +105,7 @@ resource "azurerm_automation_account" "test" {
   sku_name            = "Basic"
 }
 
-resource "azapi_patch_resource" "test" {
+resource "azapi_update_resource" "test" {
   name      = azurerm_automation_account.test.name
   parent_id = azurerm_resource_group.test.id
   type      = "Microsoft.Automation/automationAccounts@2021-06-22"
@@ -120,7 +120,7 @@ resource "azapi_patch_resource" "test" {
 `, r.template(data), data.RandomStringOfLength(5))
 }
 
-func (GenericPatchResource) template(data acceptance.TestData) string {
+func (GenericUpdateResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 terraform {
   required_providers {

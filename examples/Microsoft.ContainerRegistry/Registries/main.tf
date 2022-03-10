@@ -26,7 +26,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = false
 }
 
-resource "azapi_patch_resource" "test" {
+resource "azapi_update_resource" "test" {
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   resource_id = azurerm_container_registry.acr.id
 
