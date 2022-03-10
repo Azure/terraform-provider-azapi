@@ -21,12 +21,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzureGenericResource() *schema.Resource {
+func ResourceAzApiResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAzureGenericResourceCreateUpdate,
-		Read:   resourceAzureGenericResourceRead,
-		Update: resourceAzureGenericResourceCreateUpdate,
-		Delete: resourceAzureGenericResourceDelete,
+		Create: resourceAzApiResourceCreateUpdate,
+		Read:   resourceAzApiResourceRead,
+		Update: resourceAzApiResourceCreateUpdate,
+		Delete: resourceAzApiResourceDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
 			_, err := parse.ResourceID(id)
@@ -190,7 +190,7 @@ func ResourceAzureGenericResource() *schema.Resource {
 	}
 }
 
-func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -270,10 +270,10 @@ func resourceAzureGenericResourceCreateUpdate(d *schema.ResourceData, meta inter
 
 	d.SetId(id.ID())
 
-	return resourceAzureGenericResourceRead(d, meta)
+	return resourceAzApiResourceRead(d, meta)
 }
 
-func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -356,7 +356,7 @@ func resourceAzureGenericResourceRead(d *schema.ResourceData, meta interface{}) 
 	return nil
 }
 
-func resourceAzureGenericResourceDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()

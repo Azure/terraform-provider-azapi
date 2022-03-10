@@ -30,10 +30,10 @@ func azureProvider() *schema.Provider {
 	dataSources := make(map[string]*schema.Resource)
 	resources := make(map[string]*schema.Resource)
 
-	resources["azapi_resource"] = services.ResourceAzureGenericResource()
-	resources["azapi_patch_resource"] = services.ResourceAzureGenericPatchResource()
+	resources["azapi_resource"] = services.ResourceAzApiResource()
+	resources["azapi_update_resource"] = services.ResourceAzApiUpdateResource()
 
-	dataSources["azapi_resource"] = services.ResourceAzureGenericDataSource()
+	dataSources["azapi_resource"] = services.ResourceAzApiDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{

@@ -17,9 +17,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzureGenericDataSource() *schema.Resource {
+func ResourceAzApiDataSource() *schema.Resource {
 	return &schema.Resource{
-		Read: resourceAzureGenericDataSourceRead,
+		Read: resourceAzApiDataSourceRead,
 
 		Timeouts: &schema.ResourceTimeout{
 			Read: schema.DefaultTimeout(5 * time.Minute),
@@ -66,7 +66,7 @@ func ResourceAzureGenericDataSource() *schema.Resource {
 	}
 }
 
-func resourceAzureGenericDataSourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()

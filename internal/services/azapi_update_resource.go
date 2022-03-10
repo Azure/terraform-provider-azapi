@@ -16,15 +16,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzureGenericPatchResource() *schema.Resource {
+func ResourceAzApiUpdateResource() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAzureGenericPatchResourceCreateUpdate,
-		Read:   resourceAzureGenericPatchResourceRead,
-		Update: resourceAzureGenericPatchResourceCreateUpdate,
-		Delete: resourceAzureGenericPatchResourceDelete,
+		Create: resourceAzApiUpdateResourceCreateUpdate,
+		Read:   resourceAzApiUpdateResourceRead,
+		Update: resourceAzApiUpdateResourceCreateUpdate,
+		Delete: resourceAzApiUpdateResourceDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_patch_resource` doesn't support import")
+			return fmt.Errorf("`azapi_update_resource` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
@@ -127,7 +127,7 @@ func ResourceAzureGenericPatchResource() *schema.Resource {
 	}
 }
 
-func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -152,7 +152,7 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 	}
 	if len(utils.GetId(existing)) == 0 {
-		return fmt.Errorf("patch target does not exist %s", id)
+		return fmt.Errorf("update target does not exist %s", id)
 	}
 
 	var requestBody interface{}
@@ -174,10 +174,10 @@ func resourceAzureGenericPatchResourceCreateUpdate(d *schema.ResourceData, meta 
 
 	d.SetId(id.ID())
 
-	return resourceAzureGenericPatchResourceRead(d, meta)
+	return resourceAzApiUpdateResourceRead(d, meta)
 }
 
-func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -245,6 +245,6 @@ func resourceAzureGenericPatchResourceRead(d *schema.ResourceData, meta interfac
 	return nil
 }
 
-func resourceAzureGenericPatchResourceDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceAzApiUpdateResourceDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }

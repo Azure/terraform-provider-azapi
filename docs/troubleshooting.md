@@ -48,4 +48,4 @@ Please add `schema_validation_enabled = false` to the resource block.
 
 More context: Properties like `CMK` can't be set when create this resource. Because `CMK` depends on key vault key which depends on this resource's identity.
 
-It can be solved by using `azapi_patch_resource` to perform a multi-steps deployment, here's an [example](https://github.com/Azure/terraform-provider-azapi/tree/main/examples/Microsoft.ServiceBus/ServiceBusNamespace-CMK/main.tf).
+It can be solved by using `azapi_update_resource` to perform a multi-steps deployment, here's an [example](https://github.com/Azure/terraform-provider-azapi/tree/main/examples/Microsoft.ServiceBus/ServiceBusNamespace-CMK/main.tf).
