@@ -328,19 +328,18 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
-  body      = <<BODY
-   {
-      "properties": {
-        "description": "Developer Scopes",
-        "actions": [
-          "repositories/testrepo/content/read"
-        ]
-      }
+
+  body = jsonencode({
+    properties = {
+      description = "Developer Scopes"
+      actions = [
+        "repositories/testrepo/content/read"
+      ]
     }
-  BODY
+  })
 }
 `, r.template(data), data.RandomString)
 }
@@ -350,19 +349,17 @@ func (r GenericResource) requiresImport(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "import" {
+  type      = azapi_resource.test.type
   name      = azapi_resource.test.name
   parent_id = azapi_resource.test.parent_id
-  type      = azapi_resource.test.type
-  body      = <<BODY
-   {
-      "properties": {
-        "description": "Developer Scopes",
-        "actions": [
-          "repositories/testrepo/content/read"
-        ]
-      }
+  body = jsonencode({
+    properties = {
+      description = "Developer Scopes"
+      actions = [
+        "repositories/testrepo/content/read"
+      ]
     }
-  BODY
+  })
 }
 `, r.basic(data))
 }
@@ -378,24 +375,24 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  location  = "%[3]s"
+
+  location = "%[3]s"
   identity {
     type         = "SystemAssigned, UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
-  body = <<BODY
-    {
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "adminUserEnabled": true
-      }
+
+  body = jsonencode({
+    sku = {
+      name = "Standard"
     }
-  BODY
+    properties = {
+      adminUserEnabled = true
+    }
+  })
 
   tags = {
     "Key" = "Value"
@@ -448,20 +445,20 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  location  = "%[3]s"
-  body      = <<BODY
-    {
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "adminUserEnabled": true
-      }
+
+  location = "%[3]s"
+
+  body = jsonencode({
+    sku = {
+      name = "Standard"
     }
-  BODY
+    properties = {
+      adminUserEnabled = true
+    }
+  })
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -471,23 +468,23 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  location  = "%[3]s"
+
+  location = "%[3]s"
   identity {
     type = "SystemAssigned"
   }
-  body = <<BODY
-    {
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "adminUserEnabled": true
-      }
+  body = jsonencode({
+    sku = {
+      name = "Standard"
     }
-  BODY
+    properties = {
+      adminUserEnabled = true
+    }
+  })
+
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -503,24 +500,25 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  location  = "%[3]s"
+
+  location = "%[3]s"
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
-  body = <<BODY
-    {
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "adminUserEnabled": true
-      }
+
+  body = jsonencode({
+    sku = {
+      name = "Standard"
     }
-  BODY
+    properties = {
+      adminUserEnabled = true
+    }
+  })
+
 
   tags = {
     "Key" = "Value"
@@ -539,9 +537,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
 
   location = azurerm_resource_group.test.location
   identity {
@@ -549,12 +547,11 @@ resource "azapi_resource" "test" {
   }
 
   body = jsonencode({
-    properties = {
-      sku = {
-        name = "Basic"
-      }
+    sku = {
+      name = "Basic"
     }
   })
+
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -569,9 +566,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
 
   location = azurerm_resource_group.test.location
   identity {
@@ -603,9 +600,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
 
   location = azurerm_resource_group.test.location
   identity {
@@ -635,9 +632,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
 
   identity {
     type = "SystemAssigned"
@@ -662,9 +659,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
 
   location = "%[4]s"
   identity {
@@ -706,19 +703,18 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
-  body      = <<BODY
-   {
-      "properties": {
-        "description": "Developer Scopes",
-        "actions": [
-          "repositories/testrepo/content/read"
-        ]
-      }
+
+  body = jsonencode({
+    properties = {
+      description = "Developer Scopes"
+      actions = [
+        "repositories/testrepo/content/read"
+      ]
     }
-  BODY
+  })
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }

@@ -41,25 +41,24 @@ resource "azurerm_user_assigned_identity" "example" {
 
 // manage a container registry resource
 resource "azapi_resource" "example" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   name      = "registry1"
   parent_id = azurerm_resource_group.example.id
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
-  location  = azurerm_resource_group.example.location
+
+  location = azurerm_resource_group.example.location
   identity {
     type         = "SystemAssigned, UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.example.id]
   }
 
-  body = <<BODY
-    {
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "adminUserEnabled": true
-      }
+  body = jsonencode({
+    sku = {
+      name = "Standard"
     }
-  BODY
+    properties = {
+      adminUserEnabled = true
+    }
+  })
 
   tags = {
     "Key" = "Value"
