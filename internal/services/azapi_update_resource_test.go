@@ -81,15 +81,13 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_update_resource" "test" {
-  resource_id = azurerm_automation_account.test.id
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
-  body        = <<BODY
-{
-  "properties": {
-    "publicNetworkAccess": true
-  }
-}
-  BODY
+  resource_id = azurerm_automation_account.test.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }
@@ -106,16 +104,14 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_update_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = azurerm_automation_account.test.name
   parent_id = azurerm_resource_group.test.id
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
-  body      = <<BODY
-{
-  "properties": {
-    "publicNetworkAccess": true
-  }
-}
-  BODY
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }

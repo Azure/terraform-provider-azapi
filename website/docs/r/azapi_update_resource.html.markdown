@@ -66,21 +66,20 @@ resource "azurerm_lb_nat_rule" "example" {
 }
 
 resource "azapi_update_resource" "example" {
-  resource_id = azurerm_lb.example.id
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
-  body        = <<BODY
-    {
-      "properties": {
-        "inboundNatRules": [
-          {
-            "properties": {
-               "idleTimeoutInMinutes": 15
-            }
+  resource_id = azurerm_lb.example.id
+
+  body = jsonencode({
+    properties = {
+      inboundNatRules = [
+        {
+          properties = {
+            idleTimeoutInMinutes = 15
           }
-        ]
-      }
+        }
+      ]
     }
-    BODY
+  })
 
   depends_on = [
     azurerm_lb_nat_rule.example,
