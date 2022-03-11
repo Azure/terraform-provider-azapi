@@ -547,8 +547,10 @@ resource "azapi_resource" "test" {
   }
 
   body = jsonencode({
-    sku = {
-      name = "Basic"
+    properties = {
+      sku = {
+        name = "Basic"
+      }
     }
   })
 
