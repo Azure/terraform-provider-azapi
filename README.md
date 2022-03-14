@@ -66,7 +66,7 @@ Further [usage documentation is available on the Terraform website](https://regi
 
 ## Troubleshooting
 
-Please check the [troubleshooting doc](https://github.com/Azure/terraform-provider-azapi/blob/main/docs/troubleshooting.md).
+Please check the [troubleshooting doc](https://github.com/Azure/terraform-provider-azapi/blob/main/documents/troubleshooting.md).
 
 
 ## Developer Requirements
@@ -177,4 +177,4 @@ provider_installation {
 ```
 
 ## Other docs
-1. How is the resource's id built? Please check [this](https://github.com/Azure/terraform-provider-azapi/blob/main/docs/resource_id.md).
+1. How is the resource's id built? Please check [this](https://github.com/Azure/terraform-provider-azapi/blob/main/documents/resource_id.md).
