@@ -21,14 +21,10 @@ type ResourceId struct {
 }
 
 func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
-	parts := strings.Split(resourceType, "@")
-	apiVersion := ""
-	azureResourceType := ""
-	if len(parts) == 2 {
-		apiVersion = parts[1]
-		azureResourceType = parts[0]
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
+	if err != nil {
+		return ResourceId{}, err
 	}
-
 	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
 	if err != nil {
 		log.Printf("[ERROR] load embedded schema: %+v\n", err)
@@ -122,6 +118,13 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 }
 
 func NewResourceID(azureResourceId, resourceType string) (ResourceId, error) {
+	azureResourceType, _, err := utils.GetAzureResourceTypeApiVersion(resourceType)
+	if err != nil {
+		return ResourceId{}, err
+	}
+	if azureResourceType != utils.GetResourceType(azureResourceId) {
+		return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched")
+	}
 	name := utils.GetName(azureResourceId)
 	parentId := utils.GetParentId(azureResourceId)
 	return BuildResourceID(name, parentId, resourceType)

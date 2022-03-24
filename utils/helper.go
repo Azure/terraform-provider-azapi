@@ -181,6 +181,19 @@ func GetScopeType(id string) types.ScopeType {
 	return types.Unknown
 }
 
+func GetAzureResourceTypeApiVersion(resourceType string) (string, string, error) {
+	parts := strings.Split(resourceType, "@")
+	apiVersion := ""
+	azureResourceType := ""
+	if len(parts) == 2 {
+		apiVersion = parts[1]
+		azureResourceType = parts[0]
+	} else {
+		return "", "", fmt.Errorf("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`")
+	}
+	return azureResourceType, apiVersion, nil
+}
+
 func ExpandStringSlice(input []interface{}) *[]string {
 	result := make([]string, 0)
 	for _, item := range input {

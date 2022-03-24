@@ -2,15 +2,195 @@ package parse
 
 import "testing"
 
-func TestResourceIDFormatter(t *testing.T) {
-	id, err := NewResourceID("/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1", "Microsoft.EventHub/clusters@2020-12-01")
-	if err != nil {
-		t.Fatal(err)
+func Test_NewResourceID(t *testing.T) {
+	testData := []struct {
+		ResourceId       string
+		ResourceType     string
+		Error            bool
+		ResourceDefExist bool
+		Expected         *ResourceId
+	}{
+
+		{
+			ResourceType:     "Microsoft.Management/managementGroups@2021-04-01",
+			ResourceId:       "/providers/Microsoft.Management/managementGroups/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Management/managementGroups",
+				AzureResourceId:   "/providers/Microsoft.Management/managementGroups/test",
+				Name:              "test",
+				ParentId:          "",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.Resources/resourceGroups@2021-04-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/resourceGroups",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012",
+			},
+		},
+
+		{
+
+			ResourceType:     "Microsoft.Authorization/policyDefinitions@2021-06-01",
+			ResourceId:       "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-06-01",
+				AzureResourceType: "Microsoft.Authorization/policyDefinitions",
+				AzureResourceId:   "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
+				Name:              "test",
+				ParentId:          "/providers/Microsoft.Management/managementGroups/myMgmtGroup",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-11-01-preview",
+				AzureResourceType: "Microsoft.ContainerRegistry/registries",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-11-01-preview",
+				AzureResourceType: "Microsoft.ContainerRegistry/registries/scopeMaps",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.CostManagement/reports@2018-08-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.CostManagement/reports/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2018-08-01-preview",
+				AzureResourceType: "Microsoft.CostManagement/reports",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.CostManagement/reports/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.CostManagement/reports@2018-08-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.CostManagement/reports/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2018-08-01-preview",
+				AzureResourceType: "Microsoft.CostManagement/reports",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.CostManagement/reports/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.Insights/diagnosticSettings@2016-09-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.Insights/diagnosticSettings/test",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2016-09-01",
+				AzureResourceType: "Microsoft.Insights/diagnosticSettings",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.Insights/diagnosticSettings/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.Foo/Bar@2016-09-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.Foo/Bar/test",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2016-09-01",
+				AzureResourceType: "Microsoft.Foo/Bar",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/providers/Microsoft.Foo/Bar/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries/foo@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/foo/test",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-11-01-preview",
+				AzureResourceType: "Microsoft.ContainerRegistry/registries/foo",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry/foo/test",
+				Name:              "test",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries/foo@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.ContainerRegistry/registries/myRegistry",
+			ResourceDefExist: false,
+			Error:            true,
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries/foo@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
+			ResourceDefExist: false,
+			Error:            true,
+		},
+
+		{
+			ResourceType:     "Microsoft.ContainerRegistry/registries/foo@2020-11-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012",
+			ResourceDefExist: false,
+			Error:            true,
+		},
 	}
-	actual := id.ID()
-	expected := "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1"
-	if actual != expected {
-		t.Fatalf("Expected %q but got %q", expected, actual)
+
+	for _, v := range testData {
+		t.Logf("[DEBUG] Testing %q %q", v.ResourceId, v.ResourceType)
+
+		actual, err := NewResourceID(v.ResourceId, v.ResourceType)
+		if err != nil {
+			if v.Error {
+				continue
+			}
+
+			t.Fatalf("Expect a value but got an error: %s", err)
+		}
+		if v.Error {
+			t.Fatal("Expect an error but didn't get one")
+		}
+
+		if actual.AzureResourceId != v.Expected.AzureResourceId {
+			t.Fatalf("Expected %q but got %q for AzureResourceId", v.Expected.AzureResourceId, actual.AzureResourceId)
+		}
+		if actual.ApiVersion != v.Expected.ApiVersion {
+			t.Fatalf("Expected %q but got %q for ApiVersion", v.Expected.ApiVersion, actual.ApiVersion)
+		}
+		if actual.AzureResourceType != v.Expected.AzureResourceType {
+			t.Fatalf("Expected %q but got %q for AzureResourceType", v.Expected.AzureResourceType, actual.AzureResourceType)
+		}
+		if v.ResourceDefExist && actual.ResourceDef == nil {
+			t.Fatal("Expected a resource def but got nil")
+		}
 	}
 }
 
