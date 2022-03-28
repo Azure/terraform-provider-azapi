@@ -36,8 +36,6 @@ resource "azapi_resource" "example" {
   identity {
     type = "SystemAssigned"
   }
-
-  response_export_values = ["identity.principalId"]
 }
 
 data "azurerm_role_definition" "contributor" {
@@ -48,7 +46,7 @@ resource "azurerm_role_assignment" "example" {
   name               = azapi_resource.example.name
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_role_definition.contributor.id}"
-  principal_id       = jsondecode(azapi_resource.example.output).identity.principalId
+  principal_id       = azapi_resource.example.identity.principal_id
 }
 ```
 
