@@ -1,17 +1,16 @@
 ---
 layout: "azapi"
-page_title: "Provider: Azure"
+page_title: "Provider: Azure API"
 description: |-
-  The AzureRM Rest API Provider is used to interact with the many resources supported by Azure Resource Manager (also known as AzureRM) through its APIs.
+  The AzAPI Provider is used to interact with the many resources supported by Azure Resource Manager through its APIs.
 
 ---
 
-# AzureRM Rest API Provider
+# AzAPI Provider
 
-The AzureRM Rest API Provider can be used to configure infrastructure in [Microsoft Azure](https://azure.microsoft.com/en-us/) using the Azure Resource Manager API's. Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the Azure Provider can be found in the navigation to the left.
+The AzAPI provider is a very thin layer on top of the Azure ARM REST APIs. This provider compliments the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features. 
 
-To learn the basics of Terraform using this provider, follow the
-hands-on [get started tutorials](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started) on HashiCorp's Learn platform.
+Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
 
 Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/develop/CHANGELOG.md) for version information and release notes.
 
@@ -36,7 +35,7 @@ We recommend using either a Service Principal or Managed Service Identity when r
 terraform {
   required_providers {
     azapi = {
-      source = "Azure/azapi"
+      source = "azure/azapi"
     }
   }
 }
