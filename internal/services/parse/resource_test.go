@@ -1,6 +1,8 @@
 package parse
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_NewResourceID(t *testing.T) {
 	testData := []struct {
@@ -20,7 +22,7 @@ func Test_NewResourceID(t *testing.T) {
 				AzureResourceType: "Microsoft.Management/managementGroups",
 				AzureResourceId:   "/providers/Microsoft.Management/managementGroups/test",
 				Name:              "test",
-				ParentId:          "",
+				ParentId:          "/",
 			},
 		},
 
@@ -188,6 +190,9 @@ func Test_NewResourceID(t *testing.T) {
 		if actual.AzureResourceType != v.Expected.AzureResourceType {
 			t.Fatalf("Expected %q but got %q for AzureResourceType", v.Expected.AzureResourceType, actual.AzureResourceType)
 		}
+		if actual.ParentId != v.Expected.ParentId {
+			t.Fatalf("Expected %q but got %q for ParentId", v.Expected.ParentId, actual.ParentId)
+		}
 		if v.ResourceDefExist && actual.ResourceDef == nil {
 			t.Fatal("Expected a resource def but got nil")
 		}
@@ -211,7 +216,7 @@ func Test_ResourceID(t *testing.T) {
 				AzureResourceType: "Microsoft.Management/managementGroups",
 				AzureResourceId:   "/providers/Microsoft.Management/managementGroups/test",
 				Name:              "test",
-				ParentId:          "",
+				ParentId:          "/",
 			},
 		},
 
@@ -370,6 +375,9 @@ func Test_ResourceID(t *testing.T) {
 		if actual.AzureResourceType != v.Expected.AzureResourceType {
 			t.Fatalf("Expected %q but got %q for AzureResourceType", v.Expected.AzureResourceType, actual.AzureResourceType)
 		}
+		if actual.ParentId != v.Expected.ParentId {
+			t.Fatalf("Expected %q but got %q for ParentId", v.Expected.ParentId, actual.ParentId)
+		}
 		if v.ResourceDefExist && actual.ResourceDef == nil {
 			t.Fatal("Expected a resource def but got nil")
 		}
@@ -387,8 +395,34 @@ func Test_BuildResourceID(t *testing.T) {
 	}{
 		{
 			// tenant scope
+			Name:             "myDeployment",
+			ParentId:         "/",
+			ResourceType:     "Microsoft.Resources/deployments@2021-04-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/deployments",
+				AzureResourceId:   "/providers/Microsoft.Resources/deployments/myDeployment",
+			},
+		},
+
+		{
+			// tenant scope, but child resource
+			Name:             "default",
+			ParentId:         "/providers/Microsoft.Management/managementGroups/myGroup",
+			ResourceType:     "Microsoft.Management/managementGroups/settings@2021-04-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Management/managementGroups/settings",
+				AzureResourceId:   "/providers/Microsoft.Management/managementGroups/myGroup/settings/default",
+			},
+		},
+
+		{
+			// tenant scope
 			Name:             "test",
-			ParentId:         "",
+			ParentId:         "/",
 			ResourceType:     "Microsoft.Management/managementGroups@2021-04-01",
 			ResourceDefExist: true,
 			Expected: &ResourceId{
