@@ -14,11 +14,11 @@ func Test_GetParentId(t *testing.T) {
 	}{
 		{
 			Input:  "",
-			Output: "/",
+			Output: "",
 		},
 		{
 			Input:  "/",
-			Output: "/",
+			Output: "",
 		},
 		{
 			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount",

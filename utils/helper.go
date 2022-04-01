@@ -78,7 +78,7 @@ func GetName(id string) string {
 
 func GetParentId(id string) string {
 	if len(id) == 0 || id == "/" {
-		return "/"
+		return ""
 	}
 	idURL, err := url.ParseRequestURI(id)
 	if err != nil {

@@ -30,6 +30,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		log.Printf("[ERROR] load embedded schema: %+v\n", err)
 	}
 
+	// case 1: child resource, verify parent_id's type matches with resource type's parent type
 	if !utils.IsTopLevelResourceType(azureResourceType) {
 		parentIdExpectedType := utils.GetParentType(azureResourceType)
 		parentIdType := utils.GetResourceType(parentId)
@@ -53,6 +54,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		}, nil
 	}
 
+	// case 2: top level resource, verify parent_id providers correct scope
 	scopeTypes := make([]types.ScopeType, 0)
 	if resourceDef != nil {
 		for _, scope := range resourceDef.ScopeTypes {
@@ -74,6 +76,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 					matchedScope = scope
 				}
 			case types.Extension:
+				// only supports extension on a resource group scope resource
 				if parentIdScope == types.ResourceGroup {
 					matchedScope = scope
 				}
@@ -89,6 +92,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	if strings.EqualFold(azureResourceType, "Microsoft.Resources/resourceGroups") {
 		azureResourceId = fmt.Sprintf("%s/resourceGroups/%s", parentId, name)
 	} else {
+		// avoid duplicated `/` if parent_id is tenant scope
 		scopeId := parentId
 		if parentId == "/" {
 			scopeId = ""
