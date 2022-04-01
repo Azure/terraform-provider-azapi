@@ -47,11 +47,11 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 			},
 
 			"parent_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Computed: true,
-				//ValidateFunc:  validate.AzureResourceID,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				Computed:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
 				RequiredWith:  []string{"name"},
 				ConflictsWith: []string{"resource_id"},
 			},
@@ -116,9 +116,15 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 			}
 
 			if name := d.Get("name").(string); len(name) != 0 {
-				id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-				if err != nil && len(id.ParentId) > 0 {
-					return err
+				parentId := d.Get("parent_id").(string)
+				resourceType := d.Get("type").(string)
+
+				// verify parent_id when it's known
+				if len(parentId) > 0 {
+					_, err := parse.BuildResourceID(name, parentId, resourceType)
+					if err != nil {
+						return err
+					}
 				}
 			}
 

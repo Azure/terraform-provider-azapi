@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
@@ -49,10 +50,10 @@ func ResourceAzApiResource() *schema.Resource {
 			},
 
 			"parent_id": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-				//ValidateFunc: validate.AzureResourceID,
+				Type:         schema.TypeString,
+				Required:     true,
+				ForceNew:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
 			"type": {
@@ -116,9 +117,15 @@ func ResourceAzApiResource() *schema.Resource {
 				d.SetNewComputed("output")
 			}
 
-			id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-			if err != nil && len(id.ParentId) > 0 {
-				return err
+			parentId := d.Get("parent_id").(string)
+			resourceType := d.Get("type").(string)
+
+			// verify parent_id when it's known
+			if len(parentId) > 0 {
+				_, err := parse.BuildResourceID(d.Get("name").(string), parentId, resourceType)
+				if err != nil {
+					return err
+				}
 			}
 
 			// body refers other resource, can't be verified during plan
@@ -127,7 +134,7 @@ func ResourceAzApiResource() *schema.Resource {
 			}
 
 			var body map[string]interface{}
-			err = json.Unmarshal([]byte(d.Get("body").(string)), &body)
+			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
 			if err != nil {
 				return err
 			}
@@ -140,8 +147,13 @@ func ResourceAzApiResource() *schema.Resource {
 				}
 			}
 
+			azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(d.Get("type").(string))
+			if err != nil {
+				return err
+			}
+			resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
 			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-				if isResourceHasProperty(id.ResourceDef, "tags") {
+				if isResourceHasProperty(resourceDef, "tags") {
 					body["tags"] = meta.(*clients.Client).Features.DefaultTags
 					currentTags := d.Get("tags")
 					defaultTags := meta.(*clients.Client).Features.DefaultTags
@@ -152,7 +164,7 @@ func ResourceAzApiResource() *schema.Resource {
 			}
 
 			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-				if isResourceHasProperty(id.ResourceDef, "location") {
+				if isResourceHasProperty(resourceDef, "location") {
 					body["location"] = meta.(*clients.Client).Features.DefaultLocation
 					currentLocation := d.Get("location").(string)
 					defaultLocation := meta.(*clients.Client).Features.DefaultLocation
@@ -181,7 +193,7 @@ func ResourceAzApiResource() *schema.Resource {
 						body["identity"] = identityModel
 					}
 				}
-				if err := schemaValidation(id, body); err != nil {
+				if err := schemaValidation(azureResourceType, apiVersion, resourceDef, body); err != nil {
 					return err
 				}
 			}
@@ -256,7 +268,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	if d.Get("schema_validation_enabled").(bool) {
-		if err := schemaValidation(id, body); err != nil {
+		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, body); err != nil {
 			return err
 		}
 	}

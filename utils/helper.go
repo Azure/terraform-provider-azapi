@@ -91,13 +91,13 @@ func GetParentId(id string) string {
 
 	components := strings.Split(path, "/")
 	if len(components) == 2 && strings.EqualFold(components[0], "subscriptions") {
-		return ""
+		return "/"
 	}
 	if len(components) == 4 &&
 		strings.EqualFold(components[0], "providers") &&
 		strings.EqualFold(components[1], "Microsoft.Management") &&
 		strings.EqualFold(components[2], "managementGroups") {
-		return ""
+		return "/"
 	}
 	if len(components) == 4 &&
 		strings.EqualFold(components[0], "subscriptions") &&
@@ -126,6 +126,9 @@ func GetParentId(id string) string {
 		} else {
 			parentId += "/" + key + "/" + value
 		}
+	}
+	if parentId == "" {
+		return "/"
 	}
 	return parentId
 }
@@ -192,6 +195,10 @@ func GetAzureResourceTypeApiVersion(resourceType string) (string, string, error)
 		return "", "", fmt.Errorf("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`")
 	}
 	return azureResourceType, apiVersion, nil
+}
+
+func IsTopLevelResourceType(resourceType string) bool {
+	return len(strings.Split(resourceType, "/")) == 2
 }
 
 func ExpandStringSlice(input []interface{}) *[]string {

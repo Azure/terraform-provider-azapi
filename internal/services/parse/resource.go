@@ -30,6 +30,31 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		log.Printf("[ERROR] load embedded schema: %+v\n", err)
 	}
 
+	// case 1: child resource, verify parent_id's type matches with resource type's parent type
+	if !utils.IsTopLevelResourceType(azureResourceType) {
+		parentIdExpectedType := utils.GetParentType(azureResourceType)
+		parentIdType := utils.GetResourceType(parentId)
+		if !strings.EqualFold(parentIdExpectedType, parentIdType) {
+			return ResourceId{}, fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentIdExpectedType)
+		}
+		parts := strings.Split(azureResourceType, "/")
+		if len(parts) < 2 {
+			// impossible to reach here
+			return ResourceId{}, fmt.Errorf("`type` and `parent_id` are not matched")
+		}
+		lastType := parts[len(parts)-1]
+		azureResourceId := fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
+		return ResourceId{
+			AzureResourceId:   azureResourceId,
+			ApiVersion:        apiVersion,
+			AzureResourceType: azureResourceType,
+			Name:              name,
+			ParentId:          parentId,
+			ResourceDef:       resourceDef,
+		}, nil
+	}
+
+	// case 2: top level resource, verify parent_id providers correct scope
 	scopeTypes := make([]types.ScopeType, 0)
 	if resourceDef != nil {
 		for _, scope := range resourceDef.ScopeTypes {
@@ -39,72 +64,40 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		}
 	}
 	parentIdScope := utils.GetScopeType(parentId)
-	parentIdExpectedType := utils.GetParentType(azureResourceType)
-	parentIdType := utils.GetResourceType(parentId)
-
-	for _, v := range []string{"Tenant", "Subscription", "Microsoft.Resources/resourceGroups", "Microsoft.Management/managementGroups"} {
-		if v == parentIdType {
-			parentIdType = ""
-		}
-	}
-
 	azureResourceId := ""
-	isExtension := false
 	// known scope, use `type` to verify `parent_id`
 	if len(scopeTypes) != 0 {
 		// check parent_id's scope
 		matchedScope := types.Unknown
-		err = nil
 		for _, scope := range scopeTypes {
-			if scope == parentIdScope {
-				if strings.EqualFold(parentIdExpectedType, parentIdType) {
+			switch scope {
+			case types.Tenant, types.ManagementGroup, types.Subscription, types.ResourceGroup:
+				if parentIdScope == scope {
 					matchedScope = scope
-					break
-				} else {
-					err = fmt.Errorf("`parent_id` is invalid, expect id of `%s`", parentIdExpectedType)
 				}
-			}
-			if scope == types.Extension && parentIdScope == types.ResourceGroup {
-				matchedScope = scope
-				break
+			case types.Extension:
+				// only supports extension on a resource group scope resource
+				if parentIdScope == types.ResourceGroup {
+					matchedScope = scope
+				}
+			case types.Unknown:
 			}
 		}
 		if matchedScope == types.Unknown {
-			if err == nil {
-				err = fmt.Errorf("`parent_id` is invalid, expect id of resource whose scope is %v, but got scope %v",
-					scopeTypes, parentIdScope)
-			}
-			return ResourceId{
-				AzureResourceId:   azureResourceId,
-				ApiVersion:        apiVersion,
-				AzureResourceType: azureResourceType,
-				Name:              name,
-				ParentId:          parentId,
-				ResourceDef:       resourceDef,
-			}, err
+			return ResourceId{}, fmt.Errorf("`parent_id` is invalid, expect id of resource whose scope is %v, but got scope %v", scopeTypes, parentIdScope)
 		}
-
-		isExtension = matchedScope == types.Extension
-	} else {
-		// scope is unknown
-		isExtension = !strings.EqualFold(parentIdExpectedType, parentIdType)
 	}
 
 	// build azure resource id
-	if isExtension || parentIdExpectedType == "" {
-		if strings.EqualFold(azureResourceType, "Microsoft.Resources/resourceGroups") {
-			azureResourceId = fmt.Sprintf("%s/resourceGroups/%s", parentId, name)
-		} else {
-			azureResourceId = fmt.Sprintf("%s/providers/%s/%s", parentId, azureResourceType, name)
-		}
+	if strings.EqualFold(azureResourceType, "Microsoft.Resources/resourceGroups") {
+		azureResourceId = fmt.Sprintf("%s/resourceGroups/%s", parentId, name)
 	} else {
-		parts := strings.Split(azureResourceType, "/")
-		if len(parts) < 2 {
-			// impossible to reach here
-			return ResourceId{}, fmt.Errorf("`type` and `parent_id` are not matched")
+		// avoid duplicated `/` if parent_id is tenant scope
+		scopeId := parentId
+		if parentId == "/" {
+			scopeId = ""
 		}
-		lastType := parts[len(parts)-1]
-		azureResourceId = fmt.Sprintf("%s/%s/%s", parentId, lastType, name)
+		azureResourceId = fmt.Sprintf("%s/providers/%s/%s", scopeId, azureResourceType, name)
 	}
 
 	return ResourceId{

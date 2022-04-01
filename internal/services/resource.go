@@ -7,19 +7,18 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
-	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
-func schemaValidation(id parse.ResourceId, body interface{}) error {
-	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", id.AzureResourceType, id.ApiVersion)
-	versions := azure.GetApiVersions(id.AzureResourceType)
+func schemaValidation(azureResourceType, apiVersion string, resourceDef *types.ResourceType, body interface{}) error {
+	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", azureResourceType, apiVersion)
+	versions := azure.GetApiVersions(azureResourceType)
 	if len(versions) == 0 {
-		return fmt.Errorf("the `type` is invalid, resource type %s can't be found", id.AzureResourceType)
+		return fmt.Errorf("the `type` is invalid, resource type %s can't be found", azureResourceType)
 	}
 	isVersionValid := false
 	for _, version := range versions {
-		if version == id.ApiVersion {
+		if version == apiVersion {
 			isVersionValid = true
 			break
 		}
@@ -28,8 +27,8 @@ func schemaValidation(id parse.ResourceId, body interface{}) error {
 		return fmt.Errorf("the `type`'s api-version is invalid. The supported versions are [%s]\n", strings.Join(versions, ", "))
 	}
 
-	if id.ResourceDef != nil {
-		errors := (*id.ResourceDef).Validate(utils.NormalizeObject(body), "")
+	if resourceDef != nil {
+		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
 		if len(errors) != 0 {
 			errorMsg := "the `body` is invalid: \n"
 			for _, err := range errors {
