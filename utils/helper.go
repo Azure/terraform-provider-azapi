@@ -127,6 +127,9 @@ func GetParentId(id string) string {
 			parentId += "/" + key + "/" + value
 		}
 	}
+	if parentId == "" {
+		return "/"
+	}
 	return parentId
 }
 

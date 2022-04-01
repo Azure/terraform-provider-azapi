@@ -14,15 +14,15 @@ func Test_GetParentId(t *testing.T) {
 	}{
 		{
 			Input:  "",
-			Output: "",
+			Output: "/",
 		},
 		{
 			Input:  "/",
-			Output: "",
+			Output: "/",
 		},
 		{
 			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount",
-			Output: "",
+			Output: "/",
 		},
 		{
 			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount/billingProfiles/myProfile",
@@ -30,7 +30,7 @@ func Test_GetParentId(t *testing.T) {
 		},
 		{
 			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012",
-			Output: "",
+			Output: "/",
 		},
 		{
 			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Authorization/policydefinitions/myDef",
@@ -42,7 +42,7 @@ func Test_GetParentId(t *testing.T) {
 		},
 		{
 			Input:  "/providers/Microsoft.Management/managementGroups/myMgmtGroup",
-			Output: "",
+			Output: "/",
 		},
 		{
 			Input:  "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.CostManagement/externalSubscriptions/mySub",
