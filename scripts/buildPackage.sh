@@ -9,7 +9,6 @@ BUILD_DIR="${SCRIPTS_DIR}/../dist/"
 SOURCE_DIR="${SCRIPTS_DIR}/../"
 NAME="azapi"
 BUILD_ARTIFACT="terraform-provider-${NAME}_v${VERSION}"
-ARCHIVE_ARTIFACT="terraform-provider-${NAME}_${VERSION}"
 
 OS_ARCH=("freebsd:amd64"
   "freebsd:386"
@@ -42,18 +41,14 @@ function release() {
   for os_arch in "${OS_ARCH[@]}" ; do
     OS=${os_arch%%:*}
     ARCH=${os_arch#*:}
+    EXT=$([ "$OS" == "windows" ] && echo ".exe" || echo "")
     info "GOOS: ${OS}, GOARCH: ${ARCH}"
     (
-      env GOOS="${OS}" GOARCH="${ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X 'github.com/Azure/terraform-provider-azapi/version.ProviderVersion=v${VERSION}'" -o "${BUILD_ARTIFACT}"
-      zip "${ARCHIVE_ARTIFACT}_${OS}_${ARCH}.zip" "${BUILD_ARTIFACT}"
-      rm -rf "${BUILD_ARTIFACT}"
+      env GOOS="${OS}" GOARCH="${ARCH}" CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X 'github.com/Azure/terraform-provider-azapi/version.ProviderVersion=v${VERSION}'" -o "${BUILD_ARTIFACT}_${OS}_${ARCH}${EXT}"
+      mv "${BUILD_ARTIFACT}_${OS}_${ARCH}${EXT}" "${BUILD_DIR}"
     )
   done
-  mv *.zip "${BUILD_DIR}"
   cd "${BUILD_DIR}"
-  shasum -a 256 *.zip > "${ARCHIVE_ARTIFACT}_SHA256SUMS"
-  cp "${ARCHIVE_ARTIFACT}_SHA256SUMS" "${ARCHIVE_ARTIFACT}_SHA256SUMS.sig"
-  cat "${ARCHIVE_ARTIFACT}_SHA256SUMS"
   cp ../scripts/dearmor.sh ./
 }
 
