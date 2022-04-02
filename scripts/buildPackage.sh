@@ -7,8 +7,7 @@ set -euo pipefail
 SCRIPTS_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPTS_DIR}/../dist/"
 SOURCE_DIR="${SCRIPTS_DIR}/../"
-NAME="azapi"
-BUILD_ARTIFACT="terraform-provider-${NAME}_v${VERSION}"
+BUILD_ARTIFACT="terraform-provider-azapi"
 
 OS_ARCH=("freebsd:amd64"
   "freebsd:386"
