@@ -181,10 +181,10 @@ func ResourceAzApiResource() *schema.Resource {
 						body["tags"] = tagsModel
 					}
 				}
-				if value, ok := d.GetOk("location"); ok {
+				if value, ok := d.GetOk("location"); ok && isConfigExist(config, "location") {
 					body["location"] = location.Normalize(value.(string))
 				}
-				if value, ok := d.GetOk("identity"); ok {
+				if value, ok := d.GetOk("identity"); ok && isConfigExist(config, "identity") {
 					identityModel, err := identity.ExpandIdentity(value.([]interface{}))
 					if err != nil {
 						return err
@@ -254,10 +254,10 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 			body["tags"] = tagsModel
 		}
 	}
-	if value, ok := d.GetOk("location"); ok {
+	if value, ok := d.GetOk("location"); ok && isConfigExist(config, "location") {
 		body["location"] = location.Normalize(value.(string))
 	}
-	if value, ok := d.GetOk("identity"); ok {
+	if value, ok := d.GetOk("identity"); ok && isConfigExist(config, "identity") {
 		identityModel, err := identity.ExpandIdentity(value.([]interface{}))
 		if err != nil {
 			return err
