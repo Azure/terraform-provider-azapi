@@ -12,7 +12,9 @@ The AzAPI provider is a very thin layer on top of the Azure ARM REST APIs. This 
 
 Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
 
-Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/develop/CHANGELOG.md) for version information and release notes.
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/main/CHANGELOG.md) for version information and release notes.
+
+Strongly recommended to install [AzApi VSCode Extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi), it provides a rich authoring experience to help you use the AzApi provider.
 
 ## Authenticating to Azure
 
