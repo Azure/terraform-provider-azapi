@@ -4,9 +4,17 @@ The AzAPI provider is a very thin layer on top of the Azure ARM REST APIs. Use t
 
 This provider compliments the AzureRM provider by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features. 
 
-* [Terraform Website](https://www.terraform.io)
-* [AzApi Provider Documentation](https://registry.terraform.io/providers/Azure/azapi/latest/docs)
-* [AzApi Provider Usage Examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples)
+## Get started with AzApi
+
+* [AzApi Provider Overview](https://docs.microsoft.com/en-us/azure/developer/terraform/overview-azapi-provider)
+
+* [Learn how to use azapi_resource](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-azapi-resource)
+
+* [Learn how to use azapi_update_resource](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-azapi-update-resource)
+
+* [AzApi VSCode Extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi) provides a rich authoring experience to help you use the AzApi provider.
+
+Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
 
 ## Usage Example
 
@@ -63,10 +71,7 @@ resource "azapi_resource" "automationAccount" {
 
 ```
 
-
 Further [usage documentation is available on the Terraform website](https://registry.terraform.io/providers/Azure/azapi/latest/docs).
-
-
 
 ## Troubleshooting
 
