@@ -58,7 +58,7 @@ Terraform can be configured to use managed identity for authentication in one of
 
 ### Configuring with environment variables
 
-Setting the`ARM_USE_MSI` environment variable (equivalent to provider block argument [`use_msi`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#use_msi)) to `true` tells Terraform to use a managed identity.
+Using managed identity for Azure resources as authentication is enabled in `azapi` provider by default.
 
 By default, Terraform will use the system assigned identity for authentication. To use a user assigned identity instead, you will need to specify the `ARM_CLIENT_ID` environment variable (equivalent to provider block argument [`client_id`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#client_id)) to the [client id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity#client_id) of the identity.
 
@@ -69,7 +69,6 @@ By default, Terraform will use a well-known MSI endpoint to get the authenticati
 In addition to a properly-configured management identity, Terraform needs to know the subscription ID and tenant ID to identify the full context for the Azure provider.
 
 ```shell
-$ export ARM_USE_MSI=true
 $ export ARM_SUBSCRIPTION_ID=159f2485-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 $ export ARM_TENANT_ID=72f988bf-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 $ export ARM_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx # only necessary for user assigned identity
@@ -107,13 +106,11 @@ terraform {
 }
 
 provider "azapi" {
-
-  use_msi = true
   #...
 }
 ```
 
-If you intend to configure a remote backend in the provider block, put `use_msi` outside of the backend block:
+If you intend to configure a remote backend in the provider block:
 
 ```hcl
 terraform {
@@ -126,9 +123,6 @@ terraform {
 }
 
 provider "azapi" {
-
-  use_msi = true
-
   backend "azurerm" {
     storage_account_name = "abcd1234"
     container_name       = "tfstate"
