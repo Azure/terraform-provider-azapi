@@ -1,5 +1,7 @@
 ## v0.5.0 (Unreleased)
 FEATURES:
+- **New Data Source**: azapi_operation
+- **New Resource**: azapi_operation
 
 ENHANCEMENTS:
 - Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/08fe00486aec8ee0e35a7776f81da090c32476de

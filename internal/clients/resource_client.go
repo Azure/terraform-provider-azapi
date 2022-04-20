@@ -2,6 +2,7 @@ package clients
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -172,4 +173,57 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
+}
+
+func (client *ResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+	resp, err := client.action(ctx, resourceID, action, apiVersion, method, body)
+	if err != nil {
+		return nil, err
+	}
+	var responseBody interface{}
+	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
+	if err == nil {
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, err
+	}
+	return responseBody, nil
+}
+
+func (client *ResourceClient) action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (*http.Response, error) {
+	req, err := client.actionCreateRequest(ctx, resourceID, action, apiVersion, method, body)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (*policy.Request, error) {
+	urlPath := fmt.Sprintf("/%s", resourceID)
+	if len(action) != 0 {
+		urlPath = fmt.Sprintf("/%s/%s", resourceID, action)
+	}
+	req, err := runtime.NewRequest(ctx, method, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	if method != "GET" && body != nil {
+		err = runtime.MarshalAsJSON(req, body)
+	}
+	return req, err
 }
