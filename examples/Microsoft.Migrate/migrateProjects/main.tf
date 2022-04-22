@@ -7,13 +7,10 @@ terraform {
 }
 
 provider "azapi" {
-  # Configuration options
 }
 
 provider "azurerm" {
-  features {
-
-  }
+  features {}
 }
 
 resource "azurerm_resource_group" "test" {
