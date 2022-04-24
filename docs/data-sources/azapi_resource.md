@@ -64,10 +64,14 @@ output "quarantine_policy" {
 
 The following arguments are supported:
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
-* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
-  Here're some examples
-  `Container Registry: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/mygroup1/providers/Microsoft.ContainerRegistry/registries/myregistry1` and
-  `Resource Group: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1`.
+* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
+    - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by `azurerm_resource_group`.
+    - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by `azurerm_management_group`.
+    - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
+    - subscription scope: `parent_id` should be like `/subscriptions/00000000-0000-0000-0000-000000000000`
+    - tenant scope: `parent_id` should be `/`
+
+  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.

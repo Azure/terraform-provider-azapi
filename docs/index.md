@@ -16,6 +16,8 @@ Interested in the provider's latest features, or want to make sure you're up to 
 
 Strongly recommended to install [AzApi VSCode Extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi), it provides a rich authoring experience to help you use the AzApi provider.
 
+Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
+
 ## Authenticating to Azure
 
 Terraform supports a number of different methods for authenticating to Azure:
@@ -90,7 +92,3 @@ For some advanced scenarios, such as where more granular permissions are necessa
 * `skip_provider_registration` - (Optional) Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.
 
 -> By default, Terraform will attempt to register the Resource Providers that the provisioning resources belong to. If you're running in an environment with restricted permissions, or wish to manage Resource Provider Registration outside of Terraform you may wish to disable this flag; however, please note that the error messages returned from Azure may be confusing as a result (example: `API version 2019-01-01 was not found for Microsoft.Foo`).
-
-## Credits
-
-We wish to thank HashiCorp for the use of some MPLv2-licensed code from their open source project [terraform-provider-azurerm](https://github.com/hashicorp/terraform-provider-azurerm).
