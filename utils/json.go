@@ -25,11 +25,11 @@ func GetMergedJson(old interface{}, new interface{}) interface{} {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
-			for key, oldValue := range oldValue {
+			for key, value := range oldValue {
 				if newMap[key] != nil {
-					res[key] = GetMergedJson(oldValue, newMap[key])
+					res[key] = GetMergedJson(value, newMap[key])
 				} else {
-					res[key] = oldValue
+					res[key] = value
 				}
 			}
 			for key, newValue := range newMap {
@@ -65,11 +65,13 @@ func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) i
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
-			for key, oldValue := range oldValue {
+			for key, value := range oldValue {
 				if newMap[key] != nil {
-					res[key] = GetUpdatedJson(oldValue, newMap[key], option)
+					res[key] = GetUpdatedJson(value, newMap[key], option)
 				} else if option.IgnoreMissingProperty {
-					res[key] = oldValue
+					res[key] = value
+				} else if isZeroValue(value) {
+					res[key] = value
 				}
 			}
 			return res
@@ -101,14 +103,14 @@ func GetRemovedJson(old interface{}, new interface{}) interface{} {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
-			for key, oldValue := range oldValue {
+			for key, value := range oldValue {
 				if newMap[key] != nil {
-					value := GetRemovedJson(oldValue, newMap[key])
+					value := GetRemovedJson(value, newMap[key])
 					if value != nil {
 						res[key] = value
 					}
 				} else {
-					res[key] = oldValue
+					res[key] = value
 				}
 			}
 			if len(res) == 0 {
@@ -199,4 +201,20 @@ func NormalizeObject(input interface{}) interface{} {
 	var output interface{}
 	_ = json.Unmarshal(jsonString, &output)
 	return output
+}
+
+func isZeroValue(value interface{}) bool {
+	switch v := value.(type) {
+	case map[string]interface{}:
+		return len(v) == 0
+	case []interface{}:
+		return len(v) == 0
+	case string:
+		return len(v) == 0
+	case int, int32, int64, float32, float64:
+		return v == 0
+	case bool:
+		return v == false
+	}
+	return false
 }
