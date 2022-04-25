@@ -10,7 +10,7 @@ description: |-
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
 
--> **Note**: This resource is used to add or modify properties on an existing resource.
+-> **Note** This resource is used to add or modify properties on an existing resource.
 When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged.
 If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 
@@ -93,13 +93,16 @@ resource "azapi_update_resource" "example" {
 The following arguments are supported:
 * `name` - (Optional) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
-* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
+* `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
+    - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
+    - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
+    - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
+    - subscription scope: `parent_id` should be like `/subscriptions/00000000-0000-0000-0000-000000000000`
+    - tenant scope: `parent_id` should be `/`
 
-* `resource_id` - (Optional) The ID of an existing azure source. 
-  Here're some examples 
-  `Container Registry: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/mygroup1/providers/Microsoft.ContainerRegistry/registries/myregistry1` and 
-  `Virtual Machine: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Compute/virtualMachines/machine1`.
-  Changing this forces a new azure resource to be created.
+  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+
+* `resource_id` - (Optional) The ID of an existing azure source. Changing this forces a new azure resource to be created.
 
 ~> **Note:** Configuring `name` and `parent_id` is an alternative way to configure `resource_id`.
 

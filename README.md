@@ -73,11 +73,6 @@ resource "azapi_resource" "automationAccount" {
 
 Further [usage documentation is available on the Terraform website](https://registry.terraform.io/providers/Azure/azapi/latest/docs).
 
-## Troubleshooting
-
-Please check the [troubleshooting doc](https://github.com/Azure/terraform-provider-azapi/blob/main/documents/troubleshooting.md).
-
-
 ## Developer Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html) version 0.12.x + (but 1.x is recommended)
@@ -185,5 +180,6 @@ provider_installation {
 }
 ```
 
-## Other docs
-1. How is the resource's id built? Please check [this](https://github.com/Azure/terraform-provider-azapi/blob/main/documents/resource_id.md).
+## Credits
+
+We wish to thank HashiCorp for the use of some MPLv2-licensed code from their open source project [terraform-provider-azurerm](https://github.com/hashicorp/terraform-provider-azurerm).
