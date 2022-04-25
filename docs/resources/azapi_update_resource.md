@@ -94,8 +94,8 @@ The following arguments are supported:
 * `name` - (Optional) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
 * `parent_id` - (Optional) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
-    - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by `azurerm_resource_group`.
-    - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by `azurerm_management_group`.
+    - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
+    - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
     - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
     - subscription scope: `parent_id` should be like `/subscriptions/00000000-0000-0000-0000-000000000000`
     - tenant scope: `parent_id` should be `/`

@@ -41,7 +41,8 @@ For example, `Microsoft.Network/virtualNetworks/subnets` has its own API and it 
 
 It's recommendded to manage `Microsoft.Network/virtualNetworks/subnets` in `Microsoft.Network/virtualNetworks` instead of using its own API.
 
-The reason is, when update the vnet, its request body won't contain any subnets definitions, so existing subnets will be removed.
+The reason is, if subnets are defined separately, when update the vnet which has no definition of its subnets, 
+its request body won't contain any subnets definitions, so existing subnets will be removed.
 
 
 ## How to use API/properties which is not in embeded schema?
