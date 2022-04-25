@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -54,4 +55,25 @@ func isResourceHasProperty(resourceDef *types.ResourceType, property string) boo
 		}
 	}
 	return false
+}
+
+func flattenOutput(responseBody interface{}, paths []interface{}) string {
+	for _, path := range paths {
+		if path == "*" {
+			outputJson, _ := json.Marshal(responseBody)
+			return string(outputJson)
+		}
+	}
+
+	var output interface{}
+	output = make(map[string]interface{})
+	for _, path := range paths {
+		part := utils.ExtractObject(responseBody, path.(string))
+		if part == nil {
+			continue
+		}
+		output = utils.GetMergedJson(output, part)
+	}
+	outputJson, _ := json.Marshal(output)
+	return string(outputJson)
 }

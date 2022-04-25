@@ -1,3 +1,12 @@
+## Unreleased
+
+FEATURES:
+
+ENHANCEMENTS:
+- Setting `response_export_values = ["*"]` will export the full response body.
+
+BUG FIXES:
+
 ## v0.1.1
 
 FEATURES:

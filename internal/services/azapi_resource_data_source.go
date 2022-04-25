@@ -1,7 +1,6 @@
 package services
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -48,7 +47,8 @@ func ResourceAzApiDataSource() *schema.Resource {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
-					Type: schema.TypeString,
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
 				},
 			},
 
@@ -91,23 +91,6 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		d.Set("location", bodyMap["location"])
 		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
 	}
-
-	paths := d.Get("response_export_values").([]interface{})
-	var output interface{}
-	if len(paths) != 0 {
-		output = make(map[string]interface{})
-		for _, path := range paths {
-			part := utils.ExtractObject(responseBody, path.(string))
-			if part == nil {
-				continue
-			}
-			output = utils.GetMergedJson(output, part)
-		}
-	}
-	if output == nil {
-		output = make(map[string]interface{})
-	}
-	outputJson, _ := json.Marshal(output)
-	d.Set("output", string(outputJson))
+	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 	return nil
 }

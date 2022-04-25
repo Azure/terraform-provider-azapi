@@ -104,8 +104,9 @@ The following arguments are supported:
 
 * `tags` - (Optional) A mapping of tags which should be assigned to the azure resource. 
 
-* `response_export_values` - (Optional) A list of path that needs to be exported from response body. Here's an example. 
-  If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
+* `response_export_values` - (Optional) A list of path that needs to be exported from response body.
+  Setting it to `["*"]` will export the full response body.
+  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
 ```
 {
   "properties" : {
