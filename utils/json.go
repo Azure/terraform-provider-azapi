@@ -66,11 +66,10 @@ func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) i
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, value := range oldValue {
-				if newMap[key] != nil {
+				switch {
+				case newMap[key] != nil:
 					res[key] = GetUpdatedJson(value, newMap[key], option)
-				} else if option.IgnoreMissingProperty {
-					res[key] = value
-				} else if isZeroValue(value) {
+				case option.IgnoreMissingProperty || isZeroValue(value):
 					res[key] = value
 				}
 			}
@@ -204,6 +203,9 @@ func NormalizeObject(input interface{}) interface{} {
 }
 
 func isZeroValue(value interface{}) bool {
+	if value == nil {
+		return true
+	}
 	switch v := value.(type) {
 	case map[string]interface{}:
 		return len(v) == 0
@@ -214,7 +216,7 @@ func isZeroValue(value interface{}) bool {
 	case int, int32, int64, float32, float64:
 		return v == 0
 	case bool:
-		return v == false
+		return !v
 	}
 	return false
 }
