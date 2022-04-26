@@ -42,14 +42,16 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	})
 	resourceClient := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
+			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
-				ApplicationID: o.ApplicationUserAgent,
+				Disabled: true,
 			},
 			Logging: policy.LogOptions{
 				IncludeBody: true,
 			},
 			PerCallPolicies: []policy.Policy{
 				withCorrelationRequestID(correlationRequestID()),
+				withUserAgent(o.ApplicationUserAgent),
 			},
 		},
 		AuxiliaryTenants:      o.AuxiliaryTenantIDs,

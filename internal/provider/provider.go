@@ -15,9 +15,11 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
 )
 
 func AzureProvider() *schema.Provider {
@@ -186,7 +188,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			SubscriptionId: d.Get("subscription_id").(string),
 			Cred:           cred,
 			//AuxiliaryTenantIDs:   auxTenants,
-			ApplicationUserAgent: buildUserAgent(),
+			ApplicationUserAgent: buildUserAgent(p.TerraformVersion),
 			ARMEndpoint:          armEndpoint,
 			Features: features.UserFeatures{
 				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
@@ -215,13 +217,20 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	}
 }
 
-func buildUserAgent() string {
-	// TODO: add more information to User Agent when length limitation is increased
-	userAgent := "Terraform/azapi"
+func buildUserAgent(terraformVersion string) string {
+	if terraformVersion == "" {
+		// Terraform 0.12 introduced this field to the protocol
+		// We can therefore assume that if it's missing it's 0.10 or 0.11
+		terraformVersion = "0.11+compatible"
+	}
+
+	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", terraformVersion, meta.SDKVersionString())
+	providerUserAgent := fmt.Sprintf("%s terraform-provider-azapi/%s", tfUserAgent, version.ProviderVersion)
+	tfUserAgent = strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
 
 	// append the CloudShell version to the user agent if it exists
 	if azureAgent := os.Getenv("AZURE_HTTP_USER_AGENT"); azureAgent != "" {
-		userAgent = fmt.Sprintf("%s/%s", userAgent, azureAgent)
+		tfUserAgent = fmt.Sprintf("%s %s", tfUserAgent, azureAgent)
 	}
-	return userAgent
+	return tfUserAgent
 }
