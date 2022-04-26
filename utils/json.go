@@ -203,6 +203,9 @@ func NormalizeObject(input interface{}) interface{} {
 }
 
 func isZeroValue(value interface{}) bool {
+	if value == nil {
+		return true
+	}
 	switch v := value.(type) {
 	case map[string]interface{}:
 		return len(v) == 0
