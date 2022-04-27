@@ -28,7 +28,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -58,7 +58,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -73,7 +73,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -88,28 +88,28 @@ func TestAccGenericResource_identity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.identityUserAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.identitySystemAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.complete(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -125,7 +125,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.defaultTagOverrideInBody(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -133,7 +133,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.defaultTag(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -141,7 +141,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.defaultTagOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -149,7 +149,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -166,7 +166,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 				check.That(data.ResourceName).Key("location").IsEmpty(),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -182,7 +182,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 		{
 			Config: r.defaultLocationOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -190,7 +190,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -206,7 +206,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -223,7 +223,7 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -238,7 +238,7 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -253,7 +253,7 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -268,7 +268,7 @@ func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, r.importStateCheckFunc),
+		data.ImportStep(r.ImportIdFunc),
 	})
 }
 
@@ -299,20 +299,6 @@ func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {
 		return "", err
 	}
 	return fmt.Sprintf("%s?api-version=%s", id.AzureResourceId, id.ApiVersion), nil
-}
-
-func (GenericResource) importStateCheckFunc(states []*terraform.InstanceState) error {
-	if len(states) != 1 {
-		return fmt.Errorf("expect states length is 1, but got %d", len(states))
-	}
-	state := states[0]
-	props := []string{"name", "parent_id", "type", "id", "body"}
-	for _, prop := range props {
-		if len(state.Attributes[prop]) == 0 {
-			return fmt.Errorf("expect `%s` is not empty", prop)
-		}
-	}
-	return nil
 }
 
 func (r GenericResource) basic(data acceptance.TestData) string {

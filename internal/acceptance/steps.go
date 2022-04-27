@@ -26,14 +26,14 @@ func RequiresImportError(resourceName string) *regexp.Regexp {
 // ImportStep returns a Test Step which Imports the Resource, optionally
 // ignoring any fields which may not be imported (for example, as they're
 // not returned from the API)
-func (td TestData) ImportStep(importStateIdFunc resource.ImportStateIdFunc, importStateCheckFunc resource.ImportStateCheckFunc, ignore ...string) resource.TestStep {
-	return td.ImportStepFor(td.ResourceName, importStateIdFunc, importStateCheckFunc, ignore...)
+func (td TestData) ImportStep(importStateIdFunc resource.ImportStateIdFunc, ignore ...string) resource.TestStep {
+	return td.ImportStepFor(td.ResourceName, importStateIdFunc, ignore...)
 }
 
 // ImportStepFor returns a Test Step which Imports a given resource by name,
 // optionally ignoring any fields which may not be imported (for example, as they're
 // not returned from the API)
-func (td TestData) ImportStepFor(resourceName string, importStateIdFunc resource.ImportStateIdFunc, importStateCheckFunc resource.ImportStateCheckFunc, ignore ...string) resource.TestStep {
+func (td TestData) ImportStepFor(resourceName string, importStateIdFunc resource.ImportStateIdFunc, ignore ...string) resource.TestStep {
 	if strings.HasPrefix(resourceName, "data.") {
 		return resource.TestStep{
 			ResourceName: resourceName,
@@ -48,7 +48,6 @@ func (td TestData) ImportStepFor(resourceName string, importStateIdFunc resource
 		ImportState:       true,
 		ImportStateVerify: false,
 		ImportStateIdFunc: importStateIdFunc,
-		ImportStateCheck:  importStateCheckFunc,
 	}
 
 	if len(ignore) > 0 {
