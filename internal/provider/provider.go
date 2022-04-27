@@ -225,12 +225,12 @@ func buildUserAgent(terraformVersion string) string {
 	}
 
 	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", terraformVersion, meta.SDKVersionString())
-	providerUserAgent := fmt.Sprintf("%s terraform-provider-azapi/%s", tfUserAgent, version.ProviderVersion)
-	tfUserAgent = strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
+	providerUserAgent := fmt.Sprintf("terraform-provider-azapi/%s", version.ProviderVersion)
+	userAgent := strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
 
 	// append the CloudShell version to the user agent if it exists
 	if azureAgent := os.Getenv("AZURE_HTTP_USER_AGENT"); azureAgent != "" {
-		tfUserAgent = fmt.Sprintf("%s %s", tfUserAgent, azureAgent)
+		userAgent = fmt.Sprintf("%s %s", userAgent, azureAgent)
 	}
-	return tfUserAgent
+	return userAgent
 }
