@@ -297,6 +297,8 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		id, err = parse.NewResourceID(d.Id(), resourceType)
 	} else {
 		id, err = parse.ResourceID(d.Id())
+		// override the id if it's imported, to remove the api-version
+		d.SetId(id.ID())
 	}
 	if err != nil {
 		return err
