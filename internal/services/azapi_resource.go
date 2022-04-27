@@ -29,10 +29,20 @@ func ResourceAzApiResource() *schema.Resource {
 		Update: resourceAzApiResourceCreateUpdate,
 		Delete: resourceAzApiResourceDelete,
 
-		Importer: tf.DefaultImporter(func(id string) error {
-			_, err := parse.ResourceID(id)
-			return err
-		}),
+		Importer: &schema.ResourceImporter{
+			StateContext: func(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+				log.Printf("[DEBUG] Importing Resource - parsing %q", d.Id())
+
+				id, err := parse.ResourceID(d.Id())
+				if err != nil {
+					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", d.Id(), err)
+				}
+				// override the id to remove the api-version
+				d.SetId(id.ID())
+				d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+				return []*schema.ResourceData{d}, nil
+			},
+		},
 
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(30 * time.Minute),
@@ -291,15 +301,7 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	var id parse.ResourceId
-	var err error
-	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
-		id, err = parse.NewResourceID(d.Id(), resourceType)
-	} else {
-		id, err = parse.ResourceID(d.Id())
-		// override the id if it's imported, to remove the api-version
-		d.SetId(id.ID())
-	}
+	id, err := parse.NewResourceID(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -360,13 +362,7 @@ func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	var id parse.ResourceId
-	var err error
-	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
-		id, err = parse.NewResourceID(d.Id(), resourceType)
-	} else {
-		id, err = parse.ResourceID(d.Id())
-	}
+	id, err := parse.NewResourceID(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
