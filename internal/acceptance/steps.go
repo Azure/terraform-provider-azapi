@@ -46,7 +46,7 @@ func (td TestData) ImportStepFor(resourceName string, importStateIdFunc resource
 	step := resource.TestStep{
 		ResourceName:      resourceName,
 		ImportState:       true,
-		ImportStateVerify: false,
+		ImportStateVerify: true,
 		ImportStateIdFunc: importStateIdFunc,
 	}
 

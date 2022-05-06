@@ -323,14 +323,26 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	if len(d.Get("type").(string)) == 0 {
+	// if it's imported
+	if len(d.Get("name").(string)) == 0 {
 		if id.ResourceDef != nil {
-			data, err := json.Marshal((*id.ResourceDef).GetWriteOnly(responseBody))
+			writeOnlyBody := (*id.ResourceDef).GetWriteOnly(responseBody)
+			if bodyMap, ok := writeOnlyBody.(map[string]interface{}); ok {
+				delete(bodyMap, "location")
+				delete(bodyMap, "tags")
+				delete(bodyMap, "name")
+				delete(bodyMap, "identity")
+				writeOnlyBody = bodyMap
+			}
+			data, err := json.Marshal(writeOnlyBody)
 			if err != nil {
 				return err
 			}
 			d.Set("body", string(data))
 		}
+		d.Set("ignore_casing", false)
+		d.Set("ignore_missing_property", false)
+		d.Set("schema_validation_enabled", true)
 	} else {
 		option := utils.UpdateJsonOption{
 			IgnoreCasing:          d.Get("ignore_casing").(bool),

@@ -7,6 +7,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix incorrect ID format in the imported `azapi_resource` resource. 
+- Fix incorrect `body` content in the imported `azapi_resource` resource.
 
 ## v0.1.1
 
