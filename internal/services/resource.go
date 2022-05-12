@@ -15,7 +15,7 @@ func schemaValidation(azureResourceType, apiVersion string, resourceDef *types.R
 	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", azureResourceType, apiVersion)
 	versions := azure.GetApiVersions(azureResourceType)
 	if len(versions) == 0 {
-		return fmt.Errorf("the `type` is invalid, resource type %s can't be found", azureResourceType)
+		return schemaValidationError(fmt.Sprintf("the `type` is invalid.\n resource type %s can't be found.\n", azureResourceType))
 	}
 	isVersionValid := false
 	for _, version := range versions {
@@ -25,20 +25,26 @@ func schemaValidation(azureResourceType, apiVersion string, resourceDef *types.R
 		}
 	}
 	if !isVersionValid {
-		return fmt.Errorf("the `type`'s api-version is invalid. The supported versions are [%s]\n", strings.Join(versions, ", "))
+		return schemaValidationError(fmt.Sprintf("the `type`'s api-version is invalid.\n The supported versions are [%s].\n", strings.Join(versions, ", ")))
 	}
 
 	if resourceDef != nil {
 		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
 		if len(errors) != 0 {
-			errorMsg := "the `body` is invalid: \n"
+			errorMsg := "the `body` is invalid:\n"
 			for _, err := range errors {
 				errorMsg += fmt.Sprintf("%s\n", err.Error())
 			}
-			return fmt.Errorf(errorMsg)
+			return schemaValidationError(errorMsg)
 		}
 	}
 	return nil
+}
+
+func schemaValidationError(detail string) error {
+	return fmt.Errorf("embedded schama validation failed: %s You can try to update `azapi` provider to "+
+		"the latest version or disable the validation using the feature flag `schema_validation_enabled = false` "+
+		"within the resource block", detail)
 }
 
 func isResourceHasProperty(resourceDef *types.ResourceType, property string) bool {

@@ -1,5 +1,12 @@
 ## Unreleased
+FEATURES:
 
+ENHANCEMENTS:
+
+BUG FIXES:
+- Improve error message for schema validation failure.
+
+## v0.2.0
 FEATURES:
 
 ENHANCEMENTS:
