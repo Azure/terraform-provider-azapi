@@ -34,20 +34,24 @@ resource "azurerm_container_registry" "test" {
   admin_enabled       = true
 }
 
-resource "null_resource" "acr_image" {
-
-  provisioner "local-exec" {
-    command = "az acr login --name ${azurerm_container_registry.test.name}"
-  }
-  provisioner "local-exec" {
-    command = "docker pull mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine"
-  }
-  provisioner "local-exec" {
-    command = "docker tag mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine ${azurerm_container_registry.test.login_server}/samples/nginx"
-  }
-  provisioner "local-exec" {
-    command = "docker push ${azurerm_container_registry.test.login_server}/samples/nginx"
-  }
+resource "azapi_resource" "run_acr_task" {
+  type      = "Microsoft.ContainerRegistry/registries/taskRuns@2019-06-01-preview"
+  name      = "example"
+  parent_id = azurerm_container_registry.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    properties = {
+      runRequest = {
+        type           = "DockerBuildRequest"
+        sourceLocation = "https://github.com/Azure-Samples/aci-helloworld.git#master"
+        dockerFilePath = "Dockerfile"
+        platform = {
+          os = "Linux"
+        }
+        imageNames = ["helloworld:{{.Run.ID}}", "helloworld:latest"]
+      }
+    }
+  })
 }
 
 resource "azapi_resource" "container_app_environment" {
@@ -106,8 +110,8 @@ resource "azapi_resource" "container_app" {
       template = {
         containers = [
           {
-            image = "${azurerm_container_registry.test.login_server}/samples/nginx:latest",
-            name  = "nginx"
+            image = "${azurerm_container_registry.test.login_server}/helloworld:latest",
+            name  = "helloworld"
           }
         ]
       }
@@ -118,6 +122,6 @@ resource "azapi_resource" "container_app" {
   // using this property to suppress plan-diff
   ignore_missing_property = true
   depends_on = [
-    null_resource.acr_image
+    azapi_resource.run_acr_task
   ]
 }
