@@ -24,7 +24,7 @@ build: fmtcheck generate
 
 build-docker:
 	mkdir -p bin
-	docker run --rm -v $$(pwd)/bin:/go/bin -v $$(pwd):/go/src/github.com/Azure/terraform-provider-azapi -w /go/src/github.com/Azure/terraform-provider-azapi -e GOOS golang:1.17 make build
+	docker run --rm -v $$(pwd)/bin:/go/bin -v $$(pwd):/go/src/github.com/Azure/terraform-provider-azapi -w /go/src/github.com/Azure/terraform-provider-azapi -e GOOS golang:1.18 make build
 
 fmt:
 	@echo "==> Fixing source code with gofmt..."
