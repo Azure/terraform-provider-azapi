@@ -21,12 +21,15 @@ func NormalizeJson(jsonString interface{}) string {
 
 // GetMergedJson is used to merge object old and new, if overlaps, use new value
 func GetMergedJson(old interface{}, new interface{}) interface{} {
+	if new == nil {
+		return new
+	}
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, value := range oldValue {
-				if newMap[key] != nil {
+				if _, ok := newMap[key]; ok {
 					res[key] = GetMergedJson(value, newMap[key])
 				} else {
 					res[key] = value
