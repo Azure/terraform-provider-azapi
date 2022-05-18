@@ -57,7 +57,7 @@ func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Clien
 		return nil, err
 	}
 
-	resp, _, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	resp, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			exist := false

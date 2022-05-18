@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -31,9 +34,6 @@ type ClientCertificateCredentialOptions struct {
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
 	SendCertificateChain bool
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
@@ -41,12 +41,7 @@ type ClientCertificateCredential struct {
 	client confidentialClient
 }
 
-// NewClientCertificateCredential constructs a ClientCertificateCredential.
-// tenantID: The application's Azure Active Directory tenant or directory ID.
-// clientID: The application's client ID.
-// certs: one or more certificates, for example as returned by ParseCertificates()
-// key: the signing certificate's private key, for example as returned by ParseCertificates()
-// options: Optional configuration.
+// NewClientCertificateCredential constructs a ClientCertificateCredential. Pass nil for options to accept defaults.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")
@@ -61,9 +56,8 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(options.Cloud)
 	if err != nil {
-		logCredentialError(credNameCert, err)
 		return nil, err
 	}
 	cert, err := newCertContents(certs, pk, options.SendCertificateChain)
@@ -88,28 +82,27 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	return &ClientCertificateCredential{client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context controlling the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
-func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
+func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return azcore.AccessToken{}, errors.New(credNameCert + ": GetToken() requires at least one scope")
+	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
 		logGetTokenSuccess(c, opts)
-		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs(credNameCert, err, true)
-		return nil, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}
 	logGetTokenSuccess(c, opts)
-	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
-// ParseCertificates loads certificates and a private key for use with NewClientCertificateCredential.
-// certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key.
-// password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This function can't decrypt keys in PEM format.
+// ParseCertificates loads certificates and a private key, in PEM or PKCS12 format, for use with NewClientCertificateCredential.
+// Pass nil for password if the private key isn't encrypted. This function can't decrypt keys in PEM format.
 func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
 	var blocks []*pem.Block
 	var err error

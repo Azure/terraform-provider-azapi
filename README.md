@@ -76,7 +76,7 @@ Further [usage documentation is available on the Terraform website](https://regi
 ## Developer Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html) version 0.12.x + (but 1.x is recommended)
-* [Go](https://golang.org/doc/install) version 1.17.x (to build the provider plugin)
+* [Go](https://golang.org/doc/install) version 1.18.x (to build the provider plugin)
 
 ### On Windows
 
@@ -99,7 +99,7 @@ You must run `Developing the Provider` commands in `bash` because `sh` scrips ar
 
 ## Developing the Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.17+ is **required**). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.18+ is **required**). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
 First clone the repository to: `$GOPATH/src/github.com/Azure/terraform-provider-azapi`
 

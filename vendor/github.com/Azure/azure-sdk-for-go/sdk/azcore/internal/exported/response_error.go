@@ -1,10 +1,10 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package exported
 
 import (
 	"bytes"
@@ -15,6 +15,7 @@ import (
 )
 
 // NewResponseError creates a new *ResponseError from the provided HTTP response.
+// Exported as runtime.NewResponseError().
 func NewResponseError(resp *http.Response) error {
 	respErr := &ResponseError{
 		StatusCode:  resp.StatusCode,
@@ -59,6 +60,13 @@ func extractErrorCodeJSON(body []byte) string {
 			return ""
 		}
 		rawObj = unwrapped
+	} else if wrapped, ok := rawObj["odata.error"]; ok {
+		// check if this a wrapped odata error, i.e. { "odata.error": { ... } }
+		unwrapped, ok := wrapped.(map[string]any)
+		if !ok {
+			return ""
+		}
+		rawObj = unwrapped
 	}
 
 	// now check for the error code
@@ -75,7 +83,7 @@ func extractErrorCodeJSON(body []byte) string {
 
 func extractErrorCodeXML(body []byte) string {
 	// regular expression is much easier than dealing with the XML parser
-	rx := regexp.MustCompile(`<[c|C]ode>\s*(\w+)\s*<\/[c|C]ode>`)
+	rx := regexp.MustCompile(`<(?:\w+:)?[c|C]ode>\s*(\w+)\s*<\/(?:\w+:)?[c|C]ode>`)
 	res := rx.FindStringSubmatch(string(body))
 	if len(res) != 2 {
 		return ""
@@ -87,6 +95,7 @@ func extractErrorCodeXML(body []byte) string {
 // ResponseError is returned when a request is made to a service and
 // the service returns a non-success HTTP status code.
 // Use errors.As() to access this type in the error chain.
+// Exported as azcore.ResponseError.
 type ResponseError struct {
 	// ErrorCode is the error code returned by the resource provider if available.
 	ErrorCode string

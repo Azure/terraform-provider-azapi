@@ -76,7 +76,7 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			return fmt.Errorf("not found %q: %+v", id, err)

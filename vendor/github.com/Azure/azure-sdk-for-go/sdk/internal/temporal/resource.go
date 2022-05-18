@@ -1,21 +1,21 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package temporal
 
 import (
 	"sync"
 	"time"
 )
 
-// AcquireResource abstracts a method for refreshing an expiring resource.
-type AcquireResource func(state interface{}) (newResource interface{}, newExpiration time.Time, err error)
+// AcquireResource abstracts a method for refreshing a temporal resource.
+type AcquireResource[TResource, TState any] func(state TState) (newResource TResource, newExpiration time.Time, err error)
 
-// ExpiringResource is a temporal resource (usually a credential) that requires periodic refreshing.
-type ExpiringResource struct {
+// Resource is a temporal resource (usually a credential) that requires periodic refreshing.
+type Resource[TResource, TState any] struct {
 	// cond is used to synchronize access to the shared resource embodied by the remaining fields
 	cond *sync.Cond
 
@@ -23,7 +23,7 @@ type ExpiringResource struct {
 	acquiring bool
 
 	// resource contains the value of the shared resource
-	resource interface{}
+	resource TResource
 
 	// expiration indicates when the shared resource expires; it is 0 if the resource was never acquired
 	expiration time.Time
@@ -32,17 +32,17 @@ type ExpiringResource struct {
 	lastAttempt time.Time
 
 	// acquireResource is the callback function that actually acquires the resource
-	acquireResource AcquireResource
+	acquireResource AcquireResource[TResource, TState]
 }
 
-// NewExpiringResource creates a new ExpiringResource that uses the specified AcquireResource for refreshing.
-func NewExpiringResource(ar AcquireResource) *ExpiringResource {
-	return &ExpiringResource{cond: sync.NewCond(&sync.Mutex{}), acquireResource: ar}
+// NewResource creates a new Resource that uses the specified AcquireResource for refreshing.
+func NewResource[TResource, TState any](ar AcquireResource[TResource, TState]) *Resource[TResource, TState] {
+	return &Resource[TResource, TState]{cond: sync.NewCond(&sync.Mutex{}), acquireResource: ar}
 }
 
-// GetResource returns the underlying resource.
+// Get returns the underlying resource.
 // If the resource is fresh, no refresh is performed.
-func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) {
+func (er *Resource[TResource, TState]) Get(state TState) (TResource, error) {
 	// If the resource is expiring within this time window, update it eagerly.
 	// This allows other threads/goroutines to keep running by using the not-yet-expired
 	// resource value while one thread/goroutine updates the resource.
@@ -87,7 +87,7 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 	if acquire {
 		// This thread/goroutine has been selected to acquire/update the resource
 		var expiration time.Time
-		var newValue interface{}
+		var newValue TResource
 		er.lastAttempt = now
 		newValue, expiration, err = er.acquireResource(state)
 
@@ -108,4 +108,13 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 		er.cond.Broadcast()
 	}
 	return resource, err // Return the resource this thread/goroutine can use
+}
+
+// Expire marks the resource as expired, ensuring it's refreshed on the next call to Get().
+func (er *Resource[TResource, TState]) Expire() {
+	er.cond.L.Lock()
+	defer er.cond.L.Unlock()
+
+	// Reset the expiration as if we never got this resource to begin with
+	er.expiration = time.Time{}
 }

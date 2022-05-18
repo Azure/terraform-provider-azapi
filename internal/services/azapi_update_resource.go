@@ -154,7 +154,7 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 		id = buildId
 	}
 
-	existing, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 	}
@@ -174,7 +174,7 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -200,7 +200,7 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", d.Id())
