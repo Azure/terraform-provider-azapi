@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -24,35 +25,42 @@ type ResourceClient struct {
 	pl             runtime.Pipeline
 }
 
-func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) *ResourceClient {
+func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
 	if opt == nil {
 		opt = &arm.ClientOptions{}
 	}
-	if opt.Endpoint == "" {
-		opt.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := opt.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, opt)
+	if err != nil {
+		return nil, err
 	}
 	return &ResourceClient{
 		subscriptionID: subscriptionID,
-		host:           string(opt.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, opt),
-	}
+		host:           ep,
+		pl:             pl,
+	}, nil
 }
 
-func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, *http.Response, error) {
+func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
 	resp, err := client.createOrUpdate(ctx, resourceID, apiVersion, body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	var responseBody interface{}
-	pt, err := armruntime.NewPoller("Client.CreateOrUpdate", "", resp, client.pl)
+	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
 	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, 10*time.Second, &responseBody)
-		return responseBody, resp, err
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return responseBody, resp, nil
+	return responseBody, nil
 }
 
 func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*http.Response, error) {
@@ -84,24 +92,24 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, apiVersion)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, nil, runtime.NewResponseError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 
 	var responseBody interface{}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return responseBody, resp, nil
+	return responseBody, nil
 }
 
 func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
@@ -118,21 +126,23 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID s
 	return req, nil
 }
 
-func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, *http.Response, error) {
+func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
 	resp, err := client.delete(ctx, resourceID, apiVersion)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	var responseBody interface{}
-	pt, err := armruntime.NewPoller("Client.Delete", "", resp, client.pl)
+	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
 	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, 10*time.Second, &responseBody)
-		return responseBody, resp, err
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return responseBody, resp, nil
+	return responseBody, nil
 }
 
 func (client *ResourceClient) delete(ctx context.Context, resourceID string, apiVersion string) (*http.Response, error) {

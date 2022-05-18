@@ -24,8 +24,6 @@ type Client struct {
 type Option struct {
 	SubscriptionId           string
 	Cred                     azcore.TokenCredential
-	ARMEndpoint              arm.Endpoint
-	AuxiliaryTenantIDs       []string
 	ApplicationUserAgent     string
 	Features                 features.UserFeatures
 	SkipProviderRegistration bool
@@ -40,7 +38,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	azlog.SetListener(func(cls azlog.Event, msg string) {
 		log.Printf("[DEBUG] %s %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
 	})
-	resourceClient := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
+	resourceClient, err := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
@@ -54,10 +52,11 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				withUserAgent(o.ApplicationUserAgent),
 			},
 		},
-		AuxiliaryTenants:      o.AuxiliaryTenantIDs,
 		DisableRPRegistration: o.SkipProviderRegistration,
-		Endpoint:              o.ARMEndpoint,
 	})
+	if err != nil {
+		return err
+	}
 	client.ResourceClient = resourceClient
 
 	return nil

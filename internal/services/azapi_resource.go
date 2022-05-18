@@ -224,7 +224,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	if d.IsNewResource() {
-		_, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		_, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err == nil {
 			return tf.ImportAsExistsError("azapi_resource", id.ID())
 		}
@@ -286,7 +286,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 
 	j, _ := json.Marshal(body)
 	log.Printf("[INFO] request body: %v\n", string(j))
-	_, _, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
@@ -306,7 +306,7 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	responseBody, _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
@@ -379,7 +379,7 @@ func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	_, _, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			return nil

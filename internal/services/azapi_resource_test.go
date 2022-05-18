@@ -283,7 +283,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		return nil, err
 	}
 
-	_, _, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	_, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err == nil {
 		b := true
 		return &b, nil

@@ -7,7 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -153,19 +154,15 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		// 	auxTenants = strings.Split(v, ";")
 		// }
 
-		var armEndpoint arm.Endpoint
-		var authEndpoint azidentity.AuthorityHost
+		var cloudConfig cloud.Configuration
 		env := d.Get("environment").(string)
 		switch strings.ToLower(env) {
 		case "public":
-			armEndpoint = arm.AzurePublicCloud
-			authEndpoint = azidentity.AzurePublicCloud
+			cloudConfig = cloud.AzurePublic
 		case "usgovernment":
-			armEndpoint = arm.AzureGovernment
-			authEndpoint = azidentity.AzureGovernment
+			cloudConfig = cloud.AzureGovernment
 		case "china":
-			armEndpoint = arm.AzureChina
-			authEndpoint = azidentity.AzureChina
+			cloudConfig = cloud.AzureChina
 		default:
 			return nil, diag.Errorf("unknown `environment` specified: %q", env)
 		}
@@ -177,19 +174,19 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", d.Get("client_certificate_path").(string))
 
 		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			AuthorityHost: authEndpoint,
-			TenantID:      d.Get("tenant_id").(string),
+			ClientOptions: azcore.ClientOptions{
+				Cloud: cloudConfig,
+			},
+			TenantID: d.Get("tenant_id").(string),
 		})
 		if err != nil {
 			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
 
 		copt := &clients.Option{
-			SubscriptionId: d.Get("subscription_id").(string),
-			Cred:           cred,
-			//AuxiliaryTenantIDs:   auxTenants,
+			SubscriptionId:       d.Get("subscription_id").(string),
+			Cred:                 cred,
 			ApplicationUserAgent: buildUserAgent(p.TerraformVersion),
-			ARMEndpoint:          armEndpoint,
 			Features: features.UserFeatures{
 				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
 				DefaultLocation: location.Normalize(d.Get("default_location").(string)),
