@@ -40,7 +40,7 @@ func (t *DiscriminatedObjectType) GetWriteOnly(body interface{}) interface{} {
 	}
 
 	if discriminator, ok := bodyMap[t.Discriminator].(string); ok {
-		if t.Elements[discriminator].Type != nil {
+		if t.Elements[discriminator] != nil && t.Elements[discriminator].Type != nil {
 			if additionalProps := (*t.Elements[discriminator].Type).GetWriteOnly(body); additionalProps != nil {
 				if additionalMap, ok := additionalProps.(map[string]interface{}); ok {
 					for key, value := range additionalMap {

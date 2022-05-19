@@ -158,7 +158,7 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	if err != nil {
 		return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 	}
-	if len(utils.GetId(existing)) == 0 {
+	if utils.GetId(existing) == nil {
 		return fmt.Errorf("update target does not exist %s", id)
 	}
 

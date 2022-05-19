@@ -7,6 +7,8 @@ BUG FIXES:
 - Improve error message for schema validation failure.
 - DefaultAzureCredential reads the client ID of a user-assigned managed identity.
 - Fix the modification is not working, when use `azapi_update_resource` to modify additional properties.
+- Fix crash when use `azapi_update_resource` on a resource whose id is null
+- Fix crash when the discriminated type is not in the embedded schema
 
 ## v0.2.0
 FEATURES:
