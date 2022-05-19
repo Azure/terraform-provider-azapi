@@ -8,16 +8,20 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
 
-func GetId(resource interface{}) string {
+func GetId(resource interface{}) *string {
 	if resource == nil {
-		return ""
+		return nil
 	}
 	if resourceMap, ok := resource.(map[string]interface{}); ok {
 		if id, ok := resourceMap["id"]; ok {
-			return id.(string)
+			idStr := ""
+			if id != nil {
+				idStr = id.(string)
+			}
+			return &idStr
 		}
 	}
-	return ""
+	return nil
 }
 
 func GetResourceType(id string) string {

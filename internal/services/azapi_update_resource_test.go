@@ -65,7 +65,7 @@ func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Clien
 		}
 		return nil, fmt.Errorf("retrieving %s: %+v", id, err)
 	}
-	exist := len(utils.GetId(resp)) != 0
+	exist := utils.GetId(resp) != nil
 	return &exist, nil
 }
 
