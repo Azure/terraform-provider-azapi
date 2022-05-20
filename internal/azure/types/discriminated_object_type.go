@@ -51,7 +51,15 @@ func (t *DiscriminatedObjectType) GetWriteOnly(body interface{}) interface{} {
 			}
 		}
 	}
-	return nil
+
+	// if the discriminator's type is not in the embedded schema, add unchecked properties to res
+	for key, value := range bodyMap {
+		if _, ok := t.BaseProperties[key]; ok {
+			continue
+		}
+		res[key] = value
+	}
+	return res
 }
 
 func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []error {
