@@ -50,6 +50,23 @@ func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_siteConfigSlotConfigNames(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.siteConfigSlotConfigNames(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("parent_id").Exists(),
+				check.That(data.ResourceName).Key("name").Exists(),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
@@ -110,6 +127,58 @@ resource "azapi_update_resource" "test" {
   body = jsonencode({
     properties = {
       publicNetworkAccess = true
+    }
+  })
+}
+`, r.template(data), data.RandomStringOfLength(5))
+}
+
+func (r GenericUpdateResource) siteConfigSlotConfigNames(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_app_service_plan" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+
+  sku {
+    tier = "Standard"
+    size = "S1"
+  }
+}
+
+resource "azurerm_app_service" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  app_service_plan_id = azurerm_app_service_plan.test.id
+
+  site_config {
+    dotnet_framework_version = "v4.0"
+    scm_type                 = "LocalGit"
+  }
+
+  app_settings = {
+    "SOME_KEY" = "some-value"
+  }
+
+  connection_string {
+    name  = "Database"
+    type  = "SQLServer"
+    value = "Server=some-server.mydomain.com;Integrated Security=SSPI"
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type      = "Microsoft.Web/sites/config@2021-03-01"
+  name      = "slotConfigNames"
+  parent_id = azurerm_app_service.test.id
+  body = jsonencode({
+    properties = {
+      connectionStringNames   = ["test1", "test2"]
+      appSettingNames         = ["test3"]
+      azureStorageConfigNames = ["test4"]
     }
   })
 }
