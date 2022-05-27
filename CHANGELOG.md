@@ -2,8 +2,9 @@
 FEATURES:
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/Azure/bicep-types-az/commit/644ff521c92ce8d493f6da977af12377f32abffc
 
-BUG FIXES:
+- BUG FIXES:
 - Improve error message for schema validation failure.
 - DefaultAzureCredential reads the client ID of a user-assigned managed identity.
 - Fix the modification is not working, when use `azapi_update_resource` to modify additional properties.
@@ -15,6 +16,7 @@ FEATURES:
 
 ENHANCEMENTS:
 - Setting `response_export_values = ["*"]` will export the full response body.
+- Update bicep types to https://github.com/Azure/bicep-types-az/commit/57f3ecc750648562cf170ef456ef39533872b101
 
 BUG FIXES:
 - Fix incorrect ID format in the imported `azapi_resource` resource. 
