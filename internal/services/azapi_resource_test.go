@@ -879,7 +879,6 @@ resource "azapi_resource" "test" {
   locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
 }
 
-
 resource "azapi_resource" "test2" {
   type      = "Microsoft.Network/routeTables/routes@2021-08-01"
   name      = "second%[2]d"

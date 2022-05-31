@@ -73,7 +73,7 @@ func TestAccGenericUpdateResource_locks(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.automationAccount(data),
+			Config: r.locks(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("resource_id").Exists(),
