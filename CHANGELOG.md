@@ -1,3 +1,12 @@
+## Unreleased
+FEATURES:
+
+ENHANCEMENTS:
+- `azapi_resource`: Supports `locks` which used to prevent creating/modifying resources at the same time.
+- `azapi_update_resource`: Supports `locks` which used to prevent creating/modifying resources at the same time.
+
+BUG FIXES:
+
 ## v0.3.0
 FEATURES:
 

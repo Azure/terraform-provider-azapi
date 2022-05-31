@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"log"
 	"reflect"
 	"time"
@@ -97,6 +98,15 @@ func ResourceAzApiResource() *schema.Resource {
 			},
 
 			"response_export_values": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
+			"locks": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -286,6 +296,12 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 
 	j, _ := json.Marshal(body)
 	log.Printf("[INFO] request body: %v\n", string(j))
+
+	for _, id := range d.Get("locks").([]interface{}) {
+		locks.ByID(id.(string))
+		defer locks.UnlockByID(id.(string))
+	}
+
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
@@ -377,6 +393,11 @@ func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error
 	id, err := parse.NewResourceID(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
+	}
+
+	for _, id := range d.Get("locks").([]interface{}) {
+		locks.ByID(id.(string))
+		defer locks.UnlockByID(id.(string))
 	}
 
 	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)

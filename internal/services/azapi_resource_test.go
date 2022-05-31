@@ -18,7 +18,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks.#", "locks.0", "locks.1"}
 }
 
 func TestAccGenericResource_basic(t *testing.T) {
@@ -268,6 +268,21 @@ func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.deleteLROEndsWithNotFoundError(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_locks(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.locks(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -836,6 +851,48 @@ resource "azapi_resource" "test" {
   })
 }
 
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+}
+
+func (r GenericResource) locks(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+
+resource "azurerm_route_table" "test" {
+  name                = "acctestrt%[2]d"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/routeTables/routes@2021-08-01"
+  name      = "first%[2]d"
+  parent_id = azurerm_route_table.test.id
+  body = jsonencode({
+    properties = {
+      nextHopType   = "VnetLocal"
+      addressPrefix = "10.1.0.0/16"
+    }
+  })
+
+  locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
+}
+
+
+resource "azapi_resource" "test2" {
+  type      = "Microsoft.Network/routeTables/routes@2021-08-01"
+  name      = "second%[2]d"
+  parent_id = azurerm_route_table.test.id
+  body = jsonencode({
+    properties = {
+      nextHopType   = "VnetLocal"
+      addressPrefix = "10.3.0.0/16"
+    }
+  })
+
+  locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
+}
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
 }
 
