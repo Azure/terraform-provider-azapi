@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/url"
 	"reflect"
 	"time"
 
@@ -33,7 +34,21 @@ func ResourceAzApiResource() *schema.Resource {
 			StateContext: func(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 				log.Printf("[DEBUG] Importing Resource - parsing %q", d.Id())
 
-				id, err := parse.ResourceID(d.Id())
+				input := d.Id()
+				idUrl, err := url.Parse(input)
+				if err != nil {
+					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", input, err)
+				}
+				apiVersion := idUrl.Query().Get("api-version")
+				if len(apiVersion) == 0 {
+					resourceType := utils.GetResourceType(input)
+					apiVersions := azure.GetApiVersions(resourceType)
+					if len(apiVersions) != 0 {
+						input = fmt.Sprintf("%s?api-version=%s", input, apiVersions[len(apiVersions)-1])
+					}
+				}
+
+				id, err := parse.ResourceID(input)
 				if err != nil {
 					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", d.Id(), err)
 				}
