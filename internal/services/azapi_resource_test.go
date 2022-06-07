@@ -308,7 +308,7 @@ func TestAccGenericResource_locks(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
