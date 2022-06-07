@@ -32,7 +32,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -51,6 +51,27 @@ func TestAccGenericResource_requiresImport(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_importWithApiVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.importWithApiVersion(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			ResourceName:            data.ResourceName,
+			ImportState:             true,
+			ImportStateVerify:       true,
+			ImportStateIdFunc:       r.ImportIdFunc,
+			ImportStateVerifyIgnore: defaultIgnores(),
+		},
+	})
+}
+
 func TestAccGenericResource_complete(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -62,7 +83,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -77,7 +98,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -92,28 +113,28 @@ func TestAccGenericResource_identity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.identityUserAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.identitySystemAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.complete(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -129,7 +150,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInBody(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -137,7 +158,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.defaultTag(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -145,7 +166,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -153,7 +174,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -170,7 +191,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 				check.That(data.ResourceName).Key("location").IsEmpty(),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -186,7 +207,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 		{
 			Config: r.defaultLocationOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -194,7 +215,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -210,7 +231,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -227,7 +248,7 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -242,7 +263,7 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -257,7 +278,7 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -272,7 +293,7 @@ func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(r.ImportIdFunc, defaultIgnores()...),
+		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -333,7 +354,7 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
 
@@ -369,6 +390,35 @@ resource "azapi_resource" "import" {
 `, r.basic(data))
 }
 
+func (r GenericResource) importWithApiVersion(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_container_registry" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  sku                 = "Premium"
+  admin_enabled       = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_container_registry.test.id
+
+  body = jsonencode({
+    properties = {
+      description = "Developer Scopes"
+      actions = [
+        "repositories/testrepo/content/read"
+      ]
+    }
+  })
+}
+`, r.template(data), data.RandomString)
+}
+
 func (r GenericResource) complete(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -380,7 +430,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -422,7 +472,7 @@ resource "azurerm_user_assigned_identity" "test" {
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_resource_group.test.id
-  type                      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type                      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
   schema_validation_enabled = false
   body                      = <<BODY
     {
@@ -450,7 +500,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -473,7 +523,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -505,7 +555,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -542,7 +592,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -573,7 +623,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -607,7 +657,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -639,7 +689,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -666,7 +716,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2020-01-13-preview"
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -710,7 +760,7 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-12-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
 
@@ -781,7 +831,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-03-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -816,7 +866,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2021-09-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-03-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -840,7 +890,7 @@ func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData
 %[1]s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ServiceBus/namespaces@2021-06-01-preview"
+  type      = "Microsoft.ServiceBus/namespaces@2021-11-01"
   name      = "acctest-sb-%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
