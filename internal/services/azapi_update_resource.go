@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
@@ -101,6 +102,15 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 				},
 			},
 
+			"locks": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
 			"output": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -174,6 +184,10 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
+	for _, id := range d.Get("locks").([]interface{}) {
+		locks.ByID(id.(string))
+		defer locks.UnlockByID(id.(string))
+	}
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
 	if err != nil {
 		return fmt.Errorf("creating/updating %q: %+v", id, err)

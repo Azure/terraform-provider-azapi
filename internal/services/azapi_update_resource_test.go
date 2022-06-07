@@ -67,6 +67,23 @@ func TestAccGenericUpdateResource_siteConfigSlotConfigNames(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_locks(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.locks(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("parent_id").Exists(),
+				check.That(data.ResourceName).Key("name").Exists(),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.NewResourceID(state.ID, resourceType)
@@ -181,6 +198,41 @@ resource "azapi_update_resource" "test" {
       azureStorageConfigNames = ["test4"]
     }
   })
+}
+`, r.template(data), data.RandomStringOfLength(5))
+}
+
+func (r GenericUpdateResource) locks(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_update_resource" "test1" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azurerm_automation_account.test.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
+  locks = [azurerm_automation_account.test.id]
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azurerm_automation_account.test.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
+  locks = [azurerm_automation_account.test.id]
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }
