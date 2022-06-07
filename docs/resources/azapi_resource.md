@@ -120,7 +120,7 @@ The following arguments are supported:
 }
 ```
 
-* `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify azapi resources at the same time.
+* `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
 
