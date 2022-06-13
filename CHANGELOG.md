@@ -5,6 +5,7 @@ ENHANCEMENTS:
 - `azapi_resource`: Supports default api-version when importing existing resource into terraform state.
 - `azapi_resource`: Supports `locks` which used to prevent creating/modifying/deleting resources at the same time.
 - `azapi_update_resource`: Supports `locks` which used to prevent creating/modifying/deleting resources at the same time.
+- `azapi_resource` data source: Supports configuring `resource_id` as an alternative way to configure `name` and `parent_id`.
 
 BUG FIXES:
 

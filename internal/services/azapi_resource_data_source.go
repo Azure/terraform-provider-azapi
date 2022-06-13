@@ -26,15 +26,28 @@ func ResourceAzApiDataSource() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
+				RequiredWith:  []string{"parent_id"},
+				ConflictsWith: []string{"resource_id"},
+				AtLeastOneOf:  []string{"name", "resource_id"},
 			},
 
 			"parent_id": {
-				Type:     schema.TypeString,
-				Required: true,
-				//ValidateFunc: validate.AzureResourceID,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
+				RequiredWith:  []string{"name"},
+				ConflictsWith: []string{"resource_id"},
+			},
+
+			"resource_id": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				ValidateFunc:  validate.AzureResourceID,
+				ConflictsWith: []string{"name", "parent_id"},
+				AtLeastOneOf:  []string{"name", "resource_id"},
 			},
 
 			"type": {
@@ -71,9 +84,19 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
-	if err != nil {
-		return err
+	var id parse.ResourceId
+	if name := d.Get("name").(string); len(name) != 0 {
+		buildId, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+		if err != nil {
+			return err
+		}
+		id = buildId
+	} else {
+		buildId, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+		if err != nil {
+			return err
+		}
+		id = buildId
 	}
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
