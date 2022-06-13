@@ -37,34 +37,31 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ForceNew:      true,
-				Computed:      true,
-				ValidateFunc:  validation.StringIsNotEmpty,
-				RequiredWith:  []string{"parent_id"},
-				ConflictsWith: []string{"resource_id"},
-				ExactlyOneOf:  []string{"name", "resource_id"},
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Computed:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
+				RequiredWith: []string{"parent_id"},
+				ExactlyOneOf: []string{"name", "resource_id"},
 			},
 
 			"parent_id": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ForceNew:      true,
-				Computed:      true,
-				ValidateFunc:  validation.StringIsNotEmpty,
-				RequiredWith:  []string{"name"},
-				ConflictsWith: []string{"resource_id"},
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Computed:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
+				RequiredWith: []string{"name"},
 			},
 
 			"resource_id": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ForceNew:      true,
-				Computed:      true,
-				ValidateFunc:  validate.AzureResourceID,
-				ConflictsWith: []string{"name", "parent_id"},
-				ExactlyOneOf:  []string{"name", "resource_id"},
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Computed:     true,
+				ValidateFunc: validate.AzureResourceID,
+				ExactlyOneOf: []string{"name", "resource_id"},
 			},
 
 			"type": {
