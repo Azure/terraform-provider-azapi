@@ -69,7 +69,7 @@ func (r GenericDataSource) withResourceId(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  type      = azapi_resource.test.type
+  type        = azapi_resource.test.type
   resource_id = azapi_resource.test.id
 }
 `, GenericResource{}.complete(data))
