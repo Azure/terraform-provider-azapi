@@ -31,7 +31,7 @@ func ResourceAzApiDataSource() *schema.Resource {
 				ValidateFunc:  validation.StringIsNotEmpty,
 				RequiredWith:  []string{"parent_id"},
 				ConflictsWith: []string{"resource_id"},
-				AtLeastOneOf:  []string{"name", "resource_id"},
+				ExactlyOneOf:  []string{"name", "resource_id"},
 			},
 
 			"parent_id": {
@@ -47,7 +47,7 @@ func ResourceAzApiDataSource() *schema.Resource {
 				Optional:      true,
 				ValidateFunc:  validate.AzureResourceID,
 				ConflictsWith: []string{"name", "parent_id"},
-				AtLeastOneOf:  []string{"name", "resource_id"},
+				ExactlyOneOf:  []string{"name", "resource_id"},
 			},
 
 			"type": {
