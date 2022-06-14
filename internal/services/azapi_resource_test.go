@@ -354,7 +354,7 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
 
@@ -430,7 +430,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -472,7 +472,7 @@ resource "azurerm_user_assigned_identity" "test" {
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_resource_group.test.id
-  type                      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
+  type                      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
   schema_validation_enabled = false
   body                      = <<BODY
     {
@@ -500,7 +500,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -523,7 +523,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -555,7 +555,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -760,7 +760,7 @@ resource "azurerm_container_registry" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-12-01-preview"
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2022-02-01-preview"
   name      = "acctest%[2]s"
   parent_id = azurerm_container_registry.test.id
 
@@ -831,7 +831,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-03-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-05-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -866,7 +866,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-03-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-05-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -890,7 +890,7 @@ func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData
 %[1]s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ServiceBus/namespaces@2021-11-01"
+  type      = "Microsoft.ServiceBus/namespaces@2022-01-01-preview"
   name      = "acctest-sb-%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
