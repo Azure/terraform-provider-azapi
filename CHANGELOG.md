@@ -6,7 +6,7 @@ ENHANCEMENTS:
 - `azapi_resource`: Supports `locks` which used to prevent creating/modifying/deleting resources at the same time.
 - `azapi_update_resource`: Supports `locks` which used to prevent creating/modifying/deleting resources at the same time.
 - `azapi_resource` data source: Supports configuring `resource_id` as an alternative way to configure `name` and `parent_id`.
-- Update bicep types to https://github.com/Azure/bicep-types-az/commit/6bc73cdafff6e71eebb75994f5683a9dfba096df
+- Update bicep types to https://github.com/Azure/bicep-types-az/commit/7121acc12c7d558960cb9a2e333cb3c8469ae8cb
 
 BUG FIXES:
 
