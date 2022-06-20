@@ -42,7 +42,7 @@ func schemaValidation(azureResourceType, apiVersion string, resourceDef *types.R
 }
 
 func schemaValidationError(detail string) error {
-	return fmt.Errorf("embedded schama validation failed: %s You can try to update `azapi` provider to "+
+	return fmt.Errorf("embedded schema validation failed: %s You can try to update `azapi` provider to "+
 		"the latest version or disable the validation using the feature flag `schema_validation_enabled = false` "+
 		"within the resource block", detail)
 }
