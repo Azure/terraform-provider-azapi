@@ -89,6 +89,12 @@ More information on [how to configure a Service Principal using a Client Secret 
 
 For some advanced scenarios, such as where more granular permissions are necessary - the following properties can be set:
 
+* `disable_correlation_request_id` - (Optional) Disable sending the `x-ms-correlation-request-id` header. This can also be sourced from the `ARM_DISABLE_CORRELATION_REQUEST_ID` environment variable. Defaults to `false`.
+
+* `disable_terraform_partner_id` - (Optional) Disable sending the Terraform Partner ID if a custom `partner_id` isn't specified, which allows Microsoft to better understand the usage of Terraform. The Partner ID does not give HashiCorp any direct access to usage information. This can also be sourced from the `ARM_DISABLE_TERRAFORM_PARTNER_ID` environment variable. Defaults to `false`.
+
+* `partner_id` - (Optional) A GUID/UUID that is [registered](https://docs.microsoft.com/azure/marketplace/azure-partner-customer-usage-attribution#register-guids-and-offers) with Microsoft to facilitate partner resource usage attribution. This can also be sourced from the `ARM_PARTNER_ID` Environment Variable.
+
 * `skip_provider_registration` - (Optional) Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.
 
 -> By default, Terraform will attempt to register the Resource Providers that the provisioning resources belong to. If you're running in an environment with restricted permissions, or wish to manage Resource Provider Registration outside of Terraform you may wish to disable this flag; however, please note that the error messages returned from Azure may be confusing as a result (example: `API version 2019-01-01 was not found for Microsoft.Foo`).

@@ -131,6 +131,29 @@ func azureProvider() *schema.Provider {
 			// 	Description: "The path to a custom endpoint for Managed Service Identity - in most circumstances this should be detected automatically. ",
 			// },
 
+			// Managed Tracking GUID for User-agent
+			"partner_id": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validation.Any(validation.IsUUID, validation.StringIsEmpty),
+				DefaultFunc:  schema.EnvDefaultFunc("ARM_PARTNER_ID", ""),
+				Description:  "A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.",
+			},
+
+			"disable_correlation_request_id": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_DISABLE_CORRELATION_REQUEST_ID", false),
+				Description: "This will disable the x-ms-correlation-request-id header.",
+			},
+
+			"disable_terraform_partner_id": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_DISABLE_TERRAFORM_PARTNER_ID", false),
+				Description: "This will disable the Terraform Partner ID which is used if a custom `partner_id` isn't specified.",
+			},
+
 			"default_location": location.SchemaLocation(),
 
 			"default_tags": tags.SchemaTags(),
@@ -186,12 +209,13 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		copt := &clients.Option{
 			SubscriptionId:       d.Get("subscription_id").(string),
 			Cred:                 cred,
-			ApplicationUserAgent: buildUserAgent(p.TerraformVersion),
+			ApplicationUserAgent: buildUserAgent(p.TerraformVersion, d.Get("partner_id").(string), d.Get("disable_terraform_partner_id").(bool)),
 			Features: features.UserFeatures{
 				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
 				DefaultLocation: location.Normalize(d.Get("default_location").(string)),
 			},
-			SkipProviderRegistration: d.Get("skip_provider_registration").(bool),
+			SkipProviderRegistration:    d.Get("skip_provider_registration").(bool),
+			DisableCorrelationRequestID: d.Get("disable_correlation_request_id").(bool),
 		}
 
 		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint
@@ -214,7 +238,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	}
 }
 
-func buildUserAgent(terraformVersion string) string {
+func buildUserAgent(terraformVersion string, partnerID string, disableTerraformPartnerID bool) string {
 	if terraformVersion == "" {
 		// Terraform 0.12 introduced this field to the protocol
 		// We can therefore assume that if it's missing it's 0.10 or 0.11
@@ -228,6 +252,18 @@ func buildUserAgent(terraformVersion string) string {
 	// append the CloudShell version to the user agent if it exists
 	if azureAgent := os.Getenv("AZURE_HTTP_USER_AGENT"); azureAgent != "" {
 		userAgent = fmt.Sprintf("%s %s", userAgent, azureAgent)
+	}
+
+	// only one pid can be interpreted currently
+	// hence, send partner ID if present, otherwise send Terraform GUID
+	// unless users have opted out
+	if partnerID == "" && !disableTerraformPartnerID {
+		// Microsoft’s Terraform Partner ID is this specific GUID
+		partnerID = "222c6c49-1b0a-5959-a213-6608f9eb8820"
+	}
+
+	if partnerID != "" {
+		userAgent = fmt.Sprintf("%s pid-%s", userAgent, partnerID)
 	}
 	return userAgent
 }
