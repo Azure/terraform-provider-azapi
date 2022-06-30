@@ -176,6 +176,8 @@ func (t *DiscriminatedObjectType) UnmarshalJSON(body []byte) error {
 				}
 				t.Elements = elements
 			}
+		default:
+			return fmt.Errorf("unmarshalling discriminated object type, unrecognized key: %s", k)
 		}
 	}
 	return nil

@@ -72,7 +72,8 @@ func (t *ArrayType) UnmarshalJSON(body []byte) error {
 		return err
 	}
 	for k, v := range m {
-		if k == "ItemType" {
+		switch k {
+		case "ItemType":
 			if v != nil {
 				var index int
 				err := json.Unmarshal(*v, &index)
@@ -81,6 +82,8 @@ func (t *ArrayType) UnmarshalJSON(body []byte) error {
 				}
 				t.ItemType = &TypeReference{TypeIndex: index}
 			}
+		default:
+			return fmt.Errorf("unmarshalling array type, unrecognized key: %s", k)
 		}
 	}
 	return nil

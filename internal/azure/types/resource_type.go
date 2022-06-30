@@ -2,14 +2,17 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 var _ TypeBase = &ResourceType{}
 
 type ResourceType struct {
-	Name       string
-	ScopeTypes []ScopeType
-	Body       *TypeReference
+	Name               string
+	ScopeTypes         []ScopeType
+	ReadOnlyScopeTypes []ScopeType
+	Body               *TypeReference
+	Flags              []ResourceTypeFlag
 }
 
 func (t *ResourceType) GetWriteOnly(body interface{}) interface{} {
@@ -36,6 +39,15 @@ func (t *ResourceType) Validate(body interface{}, path string) []error {
 func (t *ResourceType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase
+}
+
+func (t *ResourceType) IsReadOnly() bool {
+	for _, value := range t.Flags {
+		if value == ResourceTypeFlagReadOnly {
+			return true
+		}
+	}
+	return false
 }
 
 func (t *ResourceType) UnmarshalJSON(body []byte) error {
@@ -73,6 +85,24 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 				}
 				t.ScopeTypes = scopeTypes
 			}
+		case "ReadOnlyScopes":
+			if v != nil {
+				var scopeType int
+				err := json.Unmarshal(*v, &scopeType)
+				if err != nil {
+					return err
+				}
+				scopeTypes := make([]ScopeType, 0)
+				for _, f := range PossibleScopeTypeValues() {
+					if scopeType&int(f) != 0 {
+						scopeTypes = append(scopeTypes, f)
+					}
+				}
+				if scopeType == 0 {
+					scopeTypes = append(scopeTypes, Unknown)
+				}
+				t.ReadOnlyScopeTypes = scopeTypes
+			}
 		case "Body":
 			if v != nil {
 				var index int
@@ -82,6 +112,23 @@ func (t *ResourceType) UnmarshalJSON(body []byte) error {
 				}
 				t.Body = &TypeReference{TypeIndex: index}
 			}
+		case "Flags":
+			if v != nil {
+				var flag int
+				err := json.Unmarshal(*v, &flag)
+				if err != nil {
+					return err
+				}
+				flags := make([]ResourceTypeFlag, 0)
+				for _, f := range PossibleResourceTypeFlagValues() {
+					if flag&int(f) != 0 {
+						flags = append(flags, f)
+					}
+				}
+				t.Flags = flags
+			}
+		default:
+			return fmt.Errorf("unmarshalling resource type, unrecognized key: %s", k)
 		}
 	}
 	return nil
@@ -128,4 +175,16 @@ func (scope ScopeType) String() string {
 
 func PossibleScopeTypeValues() []ScopeType {
 	return []ScopeType{Unknown, Tenant, ManagementGroup, Subscription, ResourceGroup, Extension}
+}
+
+type ResourceTypeFlag int
+
+const (
+	ResourceTypeFlagNone ResourceTypeFlag = 0
+
+	ResourceTypeFlagReadOnly ResourceTypeFlag = 1 << 0
+)
+
+func PossibleResourceTypeFlagValues() []ResourceTypeFlag {
+	return []ResourceTypeFlag{ResourceTypeFlagNone, ResourceTypeFlagReadOnly}
 }

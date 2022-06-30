@@ -584,7 +584,7 @@ func Test_BuildResourceID(t *testing.T) {
 		{
 			// invalid parent_id
 			Name:         "test",
-			ParentId:     "/providers/Microsoft.Management",
+			ParentId:     "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
 			ResourceType: "Microsoft.Authorization/policyDefinitions@2021-06-01",
 			Error:        true,
 		},

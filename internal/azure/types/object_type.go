@@ -134,6 +134,8 @@ func (t *ObjectType) UnmarshalJSON(body []byte) error {
 				}
 				t.AdditionalProperties = &TypeReference{TypeIndex: index}
 			}
+		default:
+			return fmt.Errorf("unmarshalling object type, unrecognized key: %s", k)
 		}
 	}
 
@@ -205,6 +207,8 @@ func (o *ObjectProperty) UnmarshalJSON(body []byte) error {
 				}
 				o.Type = &TypeReference{TypeIndex: index}
 			}
+		default:
+			return fmt.Errorf("unmarshalling object property, unrecognized key: %s", k)
 		}
 	}
 	return nil

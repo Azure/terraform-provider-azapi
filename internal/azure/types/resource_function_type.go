@@ -1,6 +1,9 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 var _ TypeBase = &ResourceFunctionType{}
 
@@ -78,6 +81,8 @@ func (t *ResourceFunctionType) UnmarshalJSON(body []byte) error {
 				}
 				t.Output = &TypeReference{TypeIndex: index}
 			}
+		default:
+			return fmt.Errorf("unmarshalling resource function type, unrecognized key: %s", k)
 		}
 	}
 
