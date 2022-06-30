@@ -7,7 +7,7 @@ ENHANCEMENTS:
 - `azapi_update_resource`: Supports `locks` which used to prevent creating/modifying/deleting resources at the same time.
 - `azapi_resource` data source: Supports configuring `resource_id` as an alternative way to configure `name` and `parent_id`.
 - `azapi` provider: Supports `partner_id`, `disable_terraform_partner_id` and `disable_terraform_partner_id`.
-- Update bicep types to https://github.com/Azure/bicep-types-az/commit/7121acc12c7d558960cb9a2e333cb3c8469ae8cb
+- Update bicep types to https://github.com/Azure/bicep-types-az/commit/ea703e2aba0d1c024f33124ee2cd34bc0c6084b5
 
 BUG FIXES:
 

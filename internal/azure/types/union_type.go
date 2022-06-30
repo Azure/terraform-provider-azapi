@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
@@ -70,7 +71,8 @@ func (t *UnionType) UnmarshalJSON(body []byte) error {
 		return err
 	}
 	for k, v := range m {
-		if k == "Elements" {
+		switch k {
+		case "Elements":
 			if v != nil {
 				var indexes []int
 				err := json.Unmarshal(*v, &indexes)
@@ -83,6 +85,8 @@ func (t *UnionType) UnmarshalJSON(body []byte) error {
 				}
 				t.Elements = elements
 			}
+		default:
+			return fmt.Errorf("unmarshalling union type, unrecognized key: %s", k)
 		}
 	}
 	return nil
