@@ -327,6 +327,9 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		append := flattenOutput(responseBody, values)
 		var appendData map[string]interface{}
 		err = json.Unmarshal([]byte(append), &appendData)
+		if err != nil {
+			return err
+		}
 		body = utils.GetMergedJson(appendData, body).(map[string]interface{})
 	}
 
