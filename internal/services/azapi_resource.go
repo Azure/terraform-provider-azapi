@@ -121,6 +121,15 @@ func ResourceAzApiResource() *schema.Resource {
 				},
 			},
 
+			"append_existing_values": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
 			"locks": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -307,6 +316,18 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, body); err != nil {
 			return err
 		}
+	}
+
+	if values, ok := d.GetOk("append_existing_values"); ok && !d.IsNewResource() {
+		values := values.([]interface{})
+		responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		if err != nil {
+			return err
+		}
+		append := flattenOutput(responseBody, values)
+		var appendData map[string]interface{}
+		err = json.Unmarshal([]byte(append), &appendData)
+		body = utils.GetMergedJson(appendData, body).(map[string]interface{})
 	}
 
 	j, _ := json.Marshal(body)
