@@ -209,6 +209,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		copt := &clients.Option{
 			SubscriptionId:       d.Get("subscription_id").(string),
 			Cred:                 cred,
+			CloudCfg:             cloudConfig,
 			ApplicationUserAgent: buildUserAgent(p.TerraformVersion, d.Get("partner_id").(string), d.Get("disable_terraform_partner_id").(bool)),
 			Features: features.UserFeatures{
 				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
