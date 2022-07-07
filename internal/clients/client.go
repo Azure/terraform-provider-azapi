@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
@@ -28,6 +29,7 @@ type Option struct {
 	Features                    features.UserFeatures
 	SkipProviderRegistration    bool
 	DisableCorrelationRequestID bool
+	CloudCfg                    cloud.Configuration
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -48,6 +50,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 
 	resourceClient, err := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
+			Cloud: o.CloudCfg,
 			// Disable the default telemetry policy, because it has a length limitation for user agent
 			Telemetry: policy.TelemetryOptions{
 				Disabled: true,
