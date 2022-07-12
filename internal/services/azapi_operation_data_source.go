@@ -92,7 +92,7 @@ func resourceAzApiOperationDataSourceRead(d *schema.ResourceData, meta interface
 	if len(body) != 0 {
 		err = json.Unmarshal([]byte(body), &requestBody)
 		if err != nil {
-			fmt.Errorf("unmarshalling `body`: %+v", err)
+			return fmt.Errorf("unmarshalling `body`: %+v", err)
 		}
 	}
 
