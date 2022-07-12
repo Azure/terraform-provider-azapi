@@ -191,10 +191,18 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		}
 
 		// Maps the auth related environment variables used in the provider to what azidentity honors.
-		os.Setenv("AZURE_TENANT_ID", d.Get("tenant_id").(string))
-		os.Setenv("AZURE_CLIENT_ID", d.Get("client_id").(string))
-		os.Setenv("AZURE_CLIENT_SECRET", d.Get("client_secret").(string))
-		os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", d.Get("client_certificate_path").(string))
+		if v := d.Get("tenant_id").(string); len(v) != 0 {
+			os.Setenv("AZURE_TENANT_ID", v)
+		}
+		if v := d.Get("client_id").(string); len(v) != 0 {
+			os.Setenv("AZURE_CLIENT_ID", v)
+		}
+		if v := d.Get("client_secret").(string); len(v) != 0 {
+			os.Setenv("AZURE_CLIENT_SECRET", v)
+		}
+		if v := d.Get("client_certificate_path").(string); len(v) != 0 {
+			os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
+		}
 
 		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
