@@ -37,18 +37,24 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
+				ForceNew:     true,
 				ValidateFunc: validate.ResourceType,
 			},
 
 			"operation": {
 				Type:     schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 			},
 
 			"method": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Default:  "POST",
+				ValidateFunc: validation.StringInSlice([]string{
+					"POST",
+					"GET",
+				}, false),
 			},
 
 			"body": {
@@ -62,7 +68,8 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
-					Type: schema.TypeString,
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
 				},
 			},
 

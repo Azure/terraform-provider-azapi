@@ -3,12 +3,14 @@ subcategory: ""
 layout: "azapi"
 page_title: "Generic Azure Resource Operation: azapi_operation"
 description: |-
-  Perform resource function of an existing azure resource
+  Perform resource operation which changes an existing resource's state
 ---
 
 # azapi_operation
 
-This resource can manage any Azure resource manager resource operation.
+This resource can perform any Azure resource manager resource operation. 
+It's recommended to use `azapi_operation` resource to perform operations which change a resource's state, please use `azapi_operation` data source,
+if user wants to perform readonly operation.
 
 -> **Note** When delete `azapi_operation`, no operation will be performed.
 
@@ -82,7 +84,7 @@ The following arguments are supported:
 
 * `body` - (Optional) A JSON object that contains the request body.
 
-* `method` - (Optional) Specifies the Http method of the azure resource operation. Allowed values are `POST`, `PATCH`, `GET`, `PUT`, `DELETE`, `CONNECT`, `HEAD`, `OPTIONS` and `TRACE`. Defaults to `POST`.
+* `method` - (Optional) Specifies the Http method of the azure resource operation. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.

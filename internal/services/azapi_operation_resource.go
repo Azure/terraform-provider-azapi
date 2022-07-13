@@ -38,6 +38,7 @@ func ResourceAzApiOperation() *schema.Resource {
 			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
+				ForceNew:     true,
 				ValidateFunc: validate.ResourceType,
 			},
 
@@ -51,6 +52,7 @@ func ResourceAzApiOperation() *schema.Resource {
 			"operation": {
 				Type:     schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 			},
 
 			"method": {
@@ -60,16 +62,9 @@ func ResourceAzApiOperation() *schema.Resource {
 				ValidateFunc: validation.StringInSlice([]string{
 					"POST",
 					"PATCH",
-					"GET",
 					"PUT",
 					"DELETE",
-					"CONNECT",
-					"HEAD",
-					"OPTIONS",
-					"TRACE",
-				},
-					false,
-				),
+				}, false),
 			},
 
 			"body": {
@@ -77,13 +72,15 @@ func ResourceAzApiOperation() *schema.Resource {
 				Optional:         true,
 				ValidateFunc:     validation.StringIsJSON,
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
+				StateFunc:        utils.NormalizeJson,
 			},
 
 			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
-					Type: schema.TypeString,
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
 				},
 			},
 
@@ -94,11 +91,7 @@ func ResourceAzApiOperation() *schema.Resource {
 		},
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			if d.HasChange("response_export_values") {
-				d.SetNewComputed("output")
-			}
-			old, new := d.GetChange("body")
-			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+			if d.HasChange("response_export_values") || d.HasChange("operation") {
 				d.SetNewComputed("output")
 			}
 			return nil
