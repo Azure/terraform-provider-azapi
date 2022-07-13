@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -80,8 +79,7 @@ func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceID str
 }
 
 func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*policy.Request, error) {
-	urlPath := "{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -114,8 +112,7 @@ func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVer
 }
 
 func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
-	urlPath := "{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -162,8 +159,7 @@ func (client *ResourceClient) delete(ctx context.Context, resourceID string, api
 }
 
 func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
-	urlPath := "{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -210,7 +206,7 @@ func (client *ResourceClient) action(ctx context.Context, resourceID string, act
 }
 
 func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (*policy.Request, error) {
-	urlPath := fmt.Sprintf("%s", resourceID)
+	urlPath := resourceID
 	if action != "" {
 		urlPath = fmt.Sprintf("%s/%s", resourceID, action)
 	}
