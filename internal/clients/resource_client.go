@@ -2,8 +2,8 @@ package clients
 
 import (
 	"context"
+	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -79,8 +79,7 @@ func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceID str
 }
 
 func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceID string, apiVersion string, body interface{}) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -113,8 +112,7 @@ func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVer
 }
 
 func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -161,8 +159,7 @@ func (client *ResourceClient) delete(ctx context.Context, resourceID string, api
 }
 
 func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceID string, apiVersion string) (*policy.Request, error) {
-	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -172,4 +169,57 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
+}
+
+func (client *ResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+	resp, err := client.action(ctx, resourceID, action, apiVersion, method, body)
+	if err != nil {
+		return nil, err
+	}
+	var responseBody interface{}
+	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
+	if err == nil {
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		return resp, err
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+		return nil, err
+	}
+	return responseBody, nil
+}
+
+func (client *ResourceClient) action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (*http.Response, error) {
+	req, err := client.actionCreateRequest(ctx, resourceID, action, apiVersion, method, body)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (*policy.Request, error) {
+	urlPath := resourceID
+	if action != "" {
+		urlPath = fmt.Sprintf("%s/%s", resourceID, action)
+	}
+	req, err := runtime.NewRequest(ctx, method, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	if method != "GET" && body != nil {
+		err = runtime.MarshalAsJSON(req, body)
+	}
+	return req, err
 }

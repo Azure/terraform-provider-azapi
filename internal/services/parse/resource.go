@@ -27,7 +27,7 @@ func BuildResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	}
 	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
 	if err != nil {
-		log.Printf("[ERROR] load embedded schema: %+v\n", err)
+		log.Printf("[WARN] load embedded schema: %+v\n", err)
 	}
 
 	// case 1: child resource, verify parent_id's type matches with resource type's parent type
