@@ -49,8 +49,7 @@ data "azurerm_virtual_machine_scale_set" "test" {
 resource "azapi_operation" "test" {
   type        = "Microsoft.Compute/virtualMachineScaleSets@2022-03-01"
   resource_id = data.azurerm_virtual_machine_scale_set.test.id
-  // leave operation empty or omit this field, to make request towards the resource
-  operation = ""
+  // omit `operation` field or set it to empty string like `operation = ""`, to make request towards the resource
   method    = "PATCH"
   body = jsonencode({
     identity = {
