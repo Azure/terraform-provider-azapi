@@ -13,7 +13,6 @@ provider "azurerm" {
 provider "azapi" {
 }
 
-
 resource "azurerm_resource_group" "test" {
   name     = "myResourceGroup"
   location = "West Europe"

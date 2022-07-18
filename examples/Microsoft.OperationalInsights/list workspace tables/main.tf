@@ -32,7 +32,6 @@ data "azapi_operation" "test" {
   operation              = "tables"
   method                 = "GET"
   response_export_values = ["*"]
-
 }
 
 output "first_table_name" {
