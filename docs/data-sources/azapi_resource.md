@@ -1,7 +1,7 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Data Source: azapi_resource"
+page_title: "Azure Data Source: azapi_resource"
 description: |-
   Gets information from an existing azure resource
 ---

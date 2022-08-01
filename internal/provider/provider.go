@@ -33,10 +33,10 @@ func azureProvider() *schema.Provider {
 
 	resources["azapi_resource"] = services.ResourceAzApiResource()
 	resources["azapi_update_resource"] = services.ResourceAzApiUpdateResource()
-	resources["azapi_operation"] = services.ResourceAzApiOperation()
+	resources["azapi_action"] = services.ResourceAzapiAction()
 
 	dataSources["azapi_resource"] = services.ResourceAzApiDataSource()
-	dataSources["azapi_operation"] = services.ResourceAzApiOperationDataSource()
+	dataSources["azapi_action"] = services.ResourceAzapiActionDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{

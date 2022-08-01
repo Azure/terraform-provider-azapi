@@ -45,7 +45,7 @@ resource "azurerm_linux_function_app" "test" {
   site_config {}
 
   lifecycle {
-    // appsettings is already supported in azurerm, this example demostrates how to use azapi_operation to update the settings
+    // appsettings is already supported in azurerm, this example demostrates how to use azapi_action to update the settings
     ignore_changes = [app_settings]
   }
 }
@@ -62,20 +62,20 @@ output "o1" {
   value = jsondecode(data.azapi_resource.appsettings.output)
 }
 
-data "azapi_operation" "list" {
+data "azapi_action" "list" {
   type                   = "Microsoft.Web/sites/config@2022-03-01"
   resource_id            = data.azapi_resource.appsettings.id
-  operation              = "list"
+  action                 = "list"
   method                 = "POST"
   response_export_values = ["*"]
 }
 
 output "o2" {
-  // appsettings can only be fetched with list operation
-  value = jsondecode(data.azapi_operation.list.output)
+  // appsettings can only be fetched with list action
+  value = jsondecode(data.azapi_action.list.output)
 }
 
-resource "azapi_operation" "update" {
+resource "azapi_action" "update" {
   type        = "Microsoft.Web/sites/config@2022-03-01"
   resource_id = data.azapi_resource.appsettings.id
   method      = "PUT"
@@ -83,7 +83,7 @@ resource "azapi_operation" "update" {
     name = "appsettings"
     // use merge function to combine new settings with existing ones
     properties = merge(
-      jsondecode(data.azapi_operation.list.output).properties,
+      jsondecode(data.azapi_action.list.output).properties,
       {
         WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
       }
@@ -93,5 +93,5 @@ resource "azapi_operation" "update" {
 }
 
 output "o3" {
-  value = jsondecode(azapi_operation.update.output)
+  value = jsondecode(azapi_action.update.output)
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,30 +11,30 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzApiOperationDataSource() *schema.Resource {
+func ResourceAzapiAction() *schema.Resource {
 	return &schema.Resource{
-		Read: resourceAzApiOperationDataSourceRead,
+		Create: resourceAzapiActionCreateUpdate,
+		Read:   resourceAzapiActionRead,
+		Update: resourceAzapiActionCreateUpdate,
+		Delete: resourceAzapiActionDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_operation` doesn't support import")
+			return fmt.Errorf("`azapi_action` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
-			Read: schema.DefaultTimeout(30 * time.Minute),
+			Create: schema.DefaultTimeout(30 * time.Minute),
+			Read:   schema.DefaultTimeout(5 * time.Minute),
+			Update: schema.DefaultTimeout(30 * time.Minute),
+			Delete: schema.DefaultTimeout(30 * time.Minute),
 		},
 
 		Schema: map[string]*schema.Schema{
-			"resource_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.AzureResourceID,
-			},
-
 			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -41,7 +42,14 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 				ValidateFunc: validate.ResourceType,
 			},
 
-			"operation": {
+			"resource_id": {
+				Type:         schema.TypeString,
+				Required:     true,
+				ForceNew:     true,
+				ValidateFunc: validate.AzureResourceID,
+			},
+
+			"action": {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
@@ -53,7 +61,9 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 				Default:  "POST",
 				ValidateFunc: validation.StringInSlice([]string{
 					"POST",
-					"GET",
+					"PATCH",
+					"PUT",
+					"DELETE",
 				}, false),
 			},
 
@@ -62,6 +72,7 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 				Optional:         true,
 				ValidateFunc:     validation.StringIsJSON,
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
+				StateFunc:        utils.NormalizeJson,
 			},
 
 			"response_export_values": {
@@ -78,10 +89,17 @@ func ResourceAzApiOperationDataSource() *schema.Resource {
 				Computed: true,
 			},
 		},
+
+		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
+			if d.HasChange("response_export_values") || d.HasChange("action") {
+				d.SetNewComputed("output")
+			}
+			return nil
+		},
 	}
 }
 
-func resourceAzApiOperationDataSourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceAzapiActionCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -91,10 +109,9 @@ func resourceAzApiOperationDataSourceRead(d *schema.ResourceData, meta interface
 		return err
 	}
 
-	operationName := d.Get("operation").(string)
+	actionName := d.Get("action").(string)
 	method := d.Get("method").(string)
 	body := d.Get("body").(string)
-
 	var requestBody interface{}
 	if len(body) != 0 {
 		err = json.Unmarshal([]byte(body), &requestBody)
@@ -104,13 +121,21 @@ func resourceAzApiOperationDataSourceRead(d *schema.ResourceData, meta interface
 	}
 
 	log.Printf("[INFO] request body: %v\n", body)
-	responseBody, err := client.Action(ctx, id.AzureResourceId, operationName, id.ApiVersion, method, requestBody)
+	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
 	if err != nil {
-		return fmt.Errorf("performing action %s of %q: %+v", operationName, id, err)
+		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
 	}
 
 	d.SetId(id.ID())
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
-	return resourceAzApiOperationRead(d, meta)
+	return resourceAzapiActionRead(d, meta)
+}
+
+func resourceAzapiActionRead(d *schema.ResourceData, meta interface{}) error {
+	return nil
+}
+
+func resourceAzapiActionDelete(d *schema.ResourceData, meta interface{}) error {
+	return nil
 }

@@ -1,7 +1,7 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Resource: azapi_resource"
+page_title: "Azure Resource: azapi_resource"
 description: |-
   Manages a Azure resource
 ---

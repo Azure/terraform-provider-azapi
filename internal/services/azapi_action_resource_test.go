@@ -8,11 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-type GenericOperationResource struct{}
+type ActionResource struct{}
 
-func TestAccGenericOperationResource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_operation", "test")
-	r := GenericOperationResource{}
+func TestAccActionResource_basic(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_action", "test")
+	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
@@ -22,27 +22,27 @@ func TestAccGenericOperationResource_basic(t *testing.T) {
 	})
 }
 
-func (r GenericOperationResource) basic(data acceptance.TestData) string {
+func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
 
-data "azapi_operation" "list" {
+data "azapi_action" "list" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azapi_resource.test.id
-  operation              = "listKeys"
+  action                 = "listKeys"
   response_export_values = ["*"]
 }
 
-resource "azapi_operation" "test" {
+resource "azapi_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
-  operation   = "agentRegistrationInformation/regenerateKey"
+  action      = "agentRegistrationInformation/regenerateKey"
   body = jsonencode({
     keyName = "primary"
   })
   depends_on = [
-    data.azapi_operation.list
+    data.azapi_action.list
   ]
 }
 `, GenericResource{}.defaultTag(data))
