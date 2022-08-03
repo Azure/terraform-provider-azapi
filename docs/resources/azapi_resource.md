@@ -81,8 +81,8 @@ output "quarantine_policy" {
 ## Arguments Reference
 
 The following arguments are supported:
-* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created. 
-* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
+* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources:
     - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
     - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
     - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
@@ -94,15 +94,15 @@ The following arguments are supported:
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `body` - (Required) A JSON object that contains the request body used to create and update azure resource. 
+* `body` - (Required) A JSON object that contains the request body used to create and update azure resource.
 
 ---
-  
-* `location` - (Optional) The Azure Region where the azure resource should exist. 
-  
-* `identity` - (Optional) A `identity` block as defined below. 
 
-* `tags` - (Optional) A mapping of tags which should be assigned to the azure resource. 
+* `location` - (Optional) The Azure Region where the azure resource should exist.
+
+* `identity` - (Optional) A `identity` block as defined below.
+
+* `tags` - (Optional) A mapping of tags which should be assigned to the azure resource.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
@@ -120,6 +120,10 @@ The following arguments are supported:
 }
 ```
 
+* `append_existing_values` - (Optional) A list of paths that should be fetched from the Azure resource and appended to the resource body. The data specified in the `body` property will be used in the event of a conflict.
+
+This is useful when dealing with the network resource provider, where you can fetch the subnet configuration from the virtual network to avoid deleting subnets. In this case set the value to be `["properties.subnets"]`.
+
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
@@ -132,9 +136,9 @@ The following arguments are supported:
 
 A `identity` block supports the following:
 
-* `type` - (Required) The Type of Identity which should be used for this azure resource. Possible values are `SystemAssigned`, `UserAssigned` and `SystemAssigned,UserAssigned`. 
+* `type` - (Required) The Type of Identity which should be used for this azure resource. Possible values are `SystemAssigned`, `UserAssigned` and `SystemAssigned,UserAssigned`.
 
-* `identity_ids` - (Optional) A list of User Managed Identity ID's which should be assigned to the azure resource. 
+* `identity_ids` - (Optional) A list of User Managed Identity ID's which should be assigned to the azure resource.
 
 
 ## Attributes Reference
