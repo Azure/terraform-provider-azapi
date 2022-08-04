@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_NewResourceID(t *testing.T) {
+func Test_ResourceIDWithResourceType(t *testing.T) {
 	testData := []struct {
 		ResourceId       string
 		ResourceType     string
@@ -169,7 +169,7 @@ func Test_NewResourceID(t *testing.T) {
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q %q", v.ResourceId, v.ResourceType)
 
-		actual, err := NewResourceID(v.ResourceId, v.ResourceType)
+		actual, err := ResourceIDWithResourceType(v.ResourceId, v.ResourceType)
 		if err != nil {
 			if v.Error {
 				continue
@@ -199,7 +199,7 @@ func Test_NewResourceID(t *testing.T) {
 	}
 }
 
-func Test_ResourceID(t *testing.T) {
+func Test_ResourceIDWithApiVersion(t *testing.T) {
 	testData := []struct {
 		Input            string
 		Error            bool
@@ -354,7 +354,7 @@ func Test_ResourceID(t *testing.T) {
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q", v.Input)
 
-		actual, err := ResourceID(v.Input)
+		actual, err := ResourceIDWithApiVersion(v.Input)
 		if err != nil {
 			if v.Error {
 				continue
@@ -384,7 +384,7 @@ func Test_ResourceID(t *testing.T) {
 	}
 }
 
-func Test_BuildResourceID(t *testing.T) {
+func Test_NewResourceID(t *testing.T) {
 	testData := []struct {
 		Name             string
 		ParentId         string
@@ -593,7 +593,7 @@ func Test_BuildResourceID(t *testing.T) {
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q %q %q", v.Name, v.ParentId, v.ResourceType)
 
-		actual, err := BuildResourceID(v.Name, v.ParentId, v.ResourceType)
+		actual, err := NewResourceID(v.Name, v.ParentId, v.ResourceType)
 		if err != nil {
 			if v.Error {
 				continue

@@ -49,7 +49,7 @@ func ResourceAzApiResource() *schema.Resource {
 					}
 				}
 
-				id, err := parse.ResourceID(input)
+				id, err := parse.ResourceIDWithApiVersion(input)
 				if err != nil {
 					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", d.Id(), err)
 				}
@@ -79,7 +79,7 @@ func ResourceAzApiResource() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.ResourceID,
 			},
 
 			"type": {
@@ -158,7 +158,7 @@ func ResourceAzApiResource() *schema.Resource {
 
 			// verify parent_id when it's known
 			if len(parentId) > 0 {
-				_, err := parse.BuildResourceID(d.Get("name").(string), parentId, resourceType)
+				_, err := parse.NewResourceID(d.Get("name").(string), parentId, resourceType)
 				if err != nil {
 					return err
 				}
@@ -243,7 +243,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	id, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -332,7 +332,7 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Id(), d.Get("type").(string))
+	id, err := parse.ResourceIDWithResourceType(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -405,7 +405,7 @@ func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Id(), d.Get("type").(string))
+	id, err := parse.ResourceIDWithResourceType(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
 	}

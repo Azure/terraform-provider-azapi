@@ -86,7 +86,7 @@ func TestAccGenericUpdateResource_locks(t *testing.T) {
 
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
-	id, err := parse.NewResourceID(state.ID, resourceType)
+	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
 	if err != nil {
 		return nil, err
 	}

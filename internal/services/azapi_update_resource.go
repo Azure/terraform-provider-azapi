@@ -51,7 +51,7 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 				Optional:     true,
 				ForceNew:     true,
 				Computed:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.ResourceID,
 				RequiredWith: []string{"name"},
 			},
 
@@ -60,7 +60,7 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 				Optional:     true,
 				ForceNew:     true,
 				Computed:     true,
-				ValidateFunc: validate.AzureResourceID,
+				ValidateFunc: validate.ResourceID,
 				ExactlyOneOf: []string{"name", "resource_id"},
 			},
 
@@ -129,7 +129,7 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 
 				// verify parent_id when it's known
 				if len(parentId) > 0 {
-					_, err := parse.BuildResourceID(name, parentId, resourceType)
+					_, err := parse.NewResourceID(name, parentId, resourceType)
 					if err != nil {
 						return err
 					}
@@ -148,13 +148,13 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 
 	var id parse.ResourceId
 	if name := d.Get("name").(string); len(name) != 0 {
-		buildId, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+		buildId, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 		if err != nil {
 			return err
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+		buildId, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
 		if err != nil {
 			return err
 		}
@@ -203,9 +203,9 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 	var id parse.ResourceId
 	var err error
 	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
-		id, err = parse.NewResourceID(d.Id(), resourceType)
+		id, err = parse.ResourceIDWithResourceType(d.Id(), resourceType)
 	} else {
-		id, err = parse.ResourceID(d.Id())
+		id, err = parse.ResourceIDWithApiVersion(d.Id())
 	}
 	if err != nil {
 		return err

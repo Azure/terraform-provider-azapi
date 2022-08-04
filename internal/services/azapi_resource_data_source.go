@@ -36,14 +36,14 @@ func ResourceAzApiDataSource() *schema.Resource {
 			"parent_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validate.ResourceID,
 				RequiredWith: []string{"name"},
 			},
 
 			"resource_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validate.AzureResourceID,
+				ValidateFunc: validate.ResourceID,
 				ExactlyOneOf: []string{"name", "resource_id"},
 			},
 
@@ -83,13 +83,13 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 
 	var id parse.ResourceId
 	if name := d.Get("name").(string); len(name) != 0 {
-		buildId, err := parse.BuildResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+		buildId, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
 		if err != nil {
 			return err
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+		buildId, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
 		if err != nil {
 			return err
 		}

@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
 
@@ -25,116 +26,33 @@ func GetId(resource interface{}) *string {
 }
 
 func GetResourceType(id string) string {
-	if len(id) == 0 || id == "/" {
-		return "Tenant"
+	if id == "/" {
+		return arm.TenantResourceType.String()
 	}
-	idURL, err := url.ParseRequestURI(id)
+	resourceType, err := arm.ParseResourceType(id)
 	if err != nil {
 		return ""
 	}
-	path := idURL.Path
-
-	path = strings.TrimPrefix(path, "/")
-	path = strings.TrimSuffix(path, "/")
-
-	components := strings.Split(path, "/")
-	if len(components) == 2 && strings.EqualFold(components[0], "subscriptions") {
-		return "Subscription"
-	}
-	if len(components) == 4 &&
-		strings.EqualFold(components[0], "providers") &&
-		strings.EqualFold(components[1], "Microsoft.Management") &&
-		strings.EqualFold(components[2], "managementGroups") {
-		return "Microsoft.Management/managementGroups"
-	}
-	if len(components) == 4 &&
-		strings.EqualFold(components[0], "subscriptions") &&
-		strings.EqualFold(components[2], "resourceGroups") {
-		return "Microsoft.Resources/resourceGroups"
-	}
-	resourceType := ""
-	provider := ""
-	for current := 0; current <= len(components)-2; current += 2 {
-		key := components[current]
-		value := components[current+1]
-
-		// Check key/value for empty strings.
-		if key == "" || value == "" {
-			return ""
-		}
-
-		if key == "providers" {
-			provider = value
-			resourceType = provider
-		} else if len(provider) > 0 {
-			resourceType += "/" + key
-		}
-	}
-	return resourceType
+	return resourceType.String()
 }
 
 func GetName(id string) string {
-	if index := strings.LastIndex(id, "/"); index != -1 {
-		return id[index+1:]
-	}
-	return ""
-}
-
-func GetParentId(id string) string {
-	if len(id) == 0 || id == "/" {
-		return ""
-	}
-	idURL, err := url.ParseRequestURI(id)
+	resourceId, err := arm.ParseResourceID(id)
 	if err != nil {
 		return ""
 	}
-	path := idURL.Path
+	return resourceId.Name
+}
 
-	path = strings.TrimPrefix(path, "/")
-	path = strings.TrimSuffix(path, "/")
-
-	components := strings.Split(path, "/")
-	if len(components) == 2 && strings.EqualFold(components[0], "subscriptions") {
+func GetParentId(id string) string {
+	resourceId, err := arm.ParseResourceID(id)
+	if err != nil {
+		return ""
+	}
+	if resourceId.Parent.ResourceType.String() == arm.TenantResourceType.String() {
 		return "/"
 	}
-	if len(components) == 4 &&
-		strings.EqualFold(components[0], "providers") &&
-		strings.EqualFold(components[1], "Microsoft.Management") &&
-		strings.EqualFold(components[2], "managementGroups") {
-		return "/"
-	}
-	if len(components) == 4 &&
-		strings.EqualFold(components[0], "subscriptions") &&
-		strings.EqualFold(components[2], "resourceGroups") {
-		return fmt.Sprintf("/%s/%s", components[0], components[1])
-	}
-	if firstIndex := strings.Index(path, "providers"); firstIndex > 0 {
-		if lastIndex := strings.LastIndex(path, "providers"); lastIndex != -1 {
-			if firstIndex != lastIndex {
-				return "/" + path[0:lastIndex-1]
-			}
-		}
-	}
-	parentId := ""
-	for current := 0; current <= len(components)-4; current += 2 {
-		key := components[current]
-		value := components[current+1]
-
-		// Check key/value for empty strings.
-		if key == "" || value == "" {
-			return ""
-		}
-
-		if current == len(components)-4 && key == "providers" {
-
-		} else {
-			parentId += "/" + key + "/" + value
-		}
-	}
-	if parentId == "" {
-		return "/"
-	}
-	return parentId
+	return resourceId.Parent.String()
 }
 
 func GetParentType(resourceType string) string {
