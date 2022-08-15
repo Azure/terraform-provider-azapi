@@ -1,18 +1,18 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Azure Resource Action: azapi_action"
+page_title: "Azure Resource Action: azapi_resource_action"
 description: |-
   Perform resource action which changes an existing resource's state
 ---
 
-# azapi_action
+# azapi_resource_action
 
 This resource can perform any Azure resource manager resource action. 
-It's recommended to use `azapi_action` resource to perform actions which change a resource's state, please use `azapi_action` data source,
+It's recommended to use `azapi_resource_action` resource to perform actions which change a resource's state, please use `azapi_resource_action` data source,
 if user wants to perform readonly action.
 
--> **Note** When delete `azapi_action`, no operation will be performed.
+-> **Note** When delete `azapi_resource_action`, no operation will be performed.
 
 ## Example Usage
 
@@ -50,7 +50,7 @@ resource "azurerm_spring_cloud_service" "test" {
   sku_name            = "S0"
 }
 
-resource "azapi_action" "start" {
+resource "azapi_resource_action" "start" {
   type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
   resource_id = azurerm_spring_cloud_service.test.id
   action = "start"
@@ -59,7 +59,7 @@ resource "azapi_action" "start" {
   count = var.enabled ? 1 : 0
 }
 
-resource "azapi_action" "stop" {
+resource "azapi_resource_action" "stop" {
   type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
   resource_id = azurerm_spring_cloud_service.test.id
   action = "stop"
@@ -117,12 +117,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = jsondecode(azapi_action.test.output).keys.0.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = jsondecode(azapi_action.test.output).keys.1.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.1.Value
 }
 ```
 

@@ -16,15 +16,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzapiAction() *schema.Resource {
+func ResourceResourceAction() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAzapiActionCreateUpdate,
-		Read:   resourceAzapiActionRead,
-		Update: resourceAzapiActionCreateUpdate,
-		Delete: resourceAzapiActionDelete,
+		Create: resourceResourceActionCreateUpdate,
+		Read:   resourceResourceActionRead,
+		Update: resourceResourceActionCreateUpdate,
+		Delete: resourceResourceActionDelete,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_action` doesn't support import")
+			return fmt.Errorf("`azapi_resource_action` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
@@ -99,7 +99,7 @@ func ResourceAzapiAction() *schema.Resource {
 	}
 }
 
-func resourceAzapiActionCreateUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -129,13 +129,13 @@ func resourceAzapiActionCreateUpdate(d *schema.ResourceData, meta interface{}) e
 	d.SetId(id.ID())
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
-	return resourceAzapiActionRead(d, meta)
+	return resourceResourceActionRead(d, meta)
 }
 
-func resourceAzapiActionRead(d *schema.ResourceData, meta interface{}) error {
+func resourceResourceActionRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceAzapiActionDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceResourceActionDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }

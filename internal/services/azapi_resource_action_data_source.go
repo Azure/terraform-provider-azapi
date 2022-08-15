@@ -14,12 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzapiActionDataSource() *schema.Resource {
+func ResourceResourceActionDataSource() *schema.Resource {
 	return &schema.Resource{
-		Read: resourceAzapiActionDataSourceRead,
+		Read: resourceResourceActionDataSourceRead,
 
 		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_action` doesn't support import")
+			return fmt.Errorf("`azapi_resource_action` doesn't support import")
 		}),
 
 		Timeouts: &schema.ResourceTimeout{
@@ -81,7 +81,7 @@ func ResourceAzapiActionDataSource() *schema.Resource {
 	}
 }
 
-func resourceAzapiActionDataSourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceResourceActionDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
@@ -112,5 +112,5 @@ func resourceAzapiActionDataSourceRead(d *schema.ResourceData, meta interface{})
 	d.SetId(id.ID())
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
-	return resourceAzapiActionRead(d, meta)
+	return resourceResourceActionRead(d, meta)
 }

@@ -11,7 +11,7 @@ import (
 type ActionResource struct{}
 
 func TestAccActionResource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_action", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -27,14 +27,14 @@ func (r ActionResource) basic(data acceptance.TestData) string {
 %[1]s
 
 
-data "azapi_action" "list" {
+data "azapi_resource_action" "list" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
-resource "azapi_action" "test" {
+resource "azapi_resource_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
@@ -42,7 +42,7 @@ resource "azapi_action" "test" {
     keyName = "primary"
   })
   depends_on = [
-    data.azapi_action.list
+    data.azapi_resource_action.list
   ]
 }
 `, GenericResource{}.defaultTag(data))

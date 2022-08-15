@@ -46,7 +46,7 @@ data "azurerm_virtual_machine_scale_set" "test" {
   resource_group_name = "MC_${azurerm_kubernetes_cluster.test.name}_${azurerm_kubernetes_cluster.test.name}_${azurerm_resource_group.test.location}"
 }
 
-resource "azapi_action" "test" {
+resource "azapi_resource_action" "test" {
   type        = "Microsoft.Compute/virtualMachineScaleSets@2022-03-01"
   resource_id = data.azurerm_virtual_machine_scale_set.test.id
   // omit `action` field or set it to empty string like `action = ""`, to make request towards the resource

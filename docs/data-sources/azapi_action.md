@@ -1,15 +1,15 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Azure Resource Action Data Source: azapi_action"
+page_title: "Azure Resource Action Data Source: azapi_resource_action"
 description: |-
   Perform resource action which gets information from an existing resource.
 ---
 
-# azapi_action
+# azapi_resource_action
 
 This resource can perform resource action which gets information from an existing resource.
-It's recommended to use `azapi_action` data source to perform readonly action, please use `azapi_action` resource,
+It's recommended to use `azapi_resource_action` data source to perform readonly action, please use `azapi_resource_action` resource,
 if user wants to perform actions which change a resource's state.
 
 ## Example Usage
@@ -42,7 +42,7 @@ resource "azurerm_automation_account" "example" {
   sku_name            = "Basic"
 }
 
-data "azapi_action" "example" {
+data "azapi_resource_action" "example" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azurerm_automation_account.example.id
   action              = "listKeys"
@@ -96,12 +96,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = jsondecode(azapi_action.test.output).keys.0.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = jsondecode(azapi_action.test.output).keys.1.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.1.Value
 }
 ```
 
