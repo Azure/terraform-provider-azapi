@@ -45,7 +45,7 @@ resource "azurerm_automation_account" "example" {
 data "azapi_resource_action" "example" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azurerm_automation_account.example.id
-  action              = "listKeys"
+  action                 = "listKeys"
   response_export_values = ["*"]
 }
 ```

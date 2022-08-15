@@ -33,8 +33,8 @@ provider "azurerm" {
 }
 
 variable "enabled" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "whether start the spring service"
 }
 
@@ -51,18 +51,18 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource_action" "start" {
-  type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
-  resource_id = azurerm_spring_cloud_service.test.id
-  action = "start"
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "start"
   response_export_values = ["*"]
 
   count = var.enabled ? 1 : 0
 }
 
 resource "azapi_resource_action" "stop" {
-  type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
-  resource_id = azurerm_spring_cloud_service.test.id
-  action = "stop"
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "stop"
   response_export_values = ["*"]
 
   count = var.enabled ? 0 : 1

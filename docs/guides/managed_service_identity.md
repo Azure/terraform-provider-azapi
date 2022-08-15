@@ -30,7 +30,7 @@ The (simplified) Terraform configuration below provisions a virtual machine with
 data "azurerm_subscription" "current" {}
 
 resource "azapi_resource" "example" {
-  type      = "Microsoft.Compute/virtualMachines@2021-11-01"
+  type = "Microsoft.Compute/virtualMachines@2021-11-01"
   # ...
 
   identity {
