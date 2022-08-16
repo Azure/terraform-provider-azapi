@@ -111,7 +111,7 @@ func resourceResourceActionDataSourceRead(d *schema.ResourceData, meta interface
 
 	resourceId := id.ID()
 	if actionName != "" {
-		resourceId = fmt.Sprintf("%s/%s", id.ID(), resourceId)
+		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	d.SetId(resourceId)
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
