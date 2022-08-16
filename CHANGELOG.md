@@ -1,13 +1,13 @@
-## v0.5.0 (Unreleased)
+## v0.5.0
 FEATURES:
 - **New Data Source**: azapi_resource_action
 - **New Resource**: azapi_resource_action
 
 ENHANCEMENTS:
-- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/08fe00486aec8ee0e35a7776f81da090c32476de
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/813d8bbc9ecf432a2a0ff2769627592fae34369f
 
 BUG FIXES:
-
+- DefaultAzureCredential authentication failed because empty clientId is set
 
 ## v0.4.0
 FEATURES:
