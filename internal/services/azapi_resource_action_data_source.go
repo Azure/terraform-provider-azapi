@@ -109,7 +109,11 @@ func resourceResourceActionDataSourceRead(d *schema.ResourceData, meta interface
 		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
 	}
 
-	d.SetId(id.ID())
+	resourceId := id.ID()
+	if actionName != "" {
+		resourceId = fmt.Sprintf("%s/%s", id.ID(), resourceId)
+	}
+	d.SetId(resourceId)
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
 	return resourceResourceActionRead(d, meta)
