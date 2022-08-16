@@ -1,16 +1,16 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Resource Operation Data Source: azapi_operation"
+page_title: "Azure Resource Action Data Source: azapi_resource_action"
 description: |-
-  Perform resource operation which gets information from an existing resource.
+  Perform resource action which gets information from an existing resource.
 ---
 
-# azapi_operation
+# azapi_resource_action
 
-This resource can perform resource operation which gets information from an existing resource.
-It's recommended to use `azapi_operation` data source to perform readonly operation, please use `azapi_operation` resource,
-if user wants to perform operations which change a resource's state.
+This resource can perform resource action which gets information from an existing resource.
+It's recommended to use `azapi_resource_action` data source to perform readonly action, please use `azapi_resource_action` resource,
+if user wants to perform actions which change a resource's state.
 
 ## Example Usage
 
@@ -42,10 +42,10 @@ resource "azurerm_automation_account" "example" {
   sku_name            = "Basic"
 }
 
-data "azapi_operation" "example" {
+data "azapi_resource_action" "example" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azurerm_automation_account.example.id
-  operation              = "listKeys"
+  action                 = "listKeys"
   response_export_values = ["*"]
 }
 ```
@@ -59,12 +59,12 @@ The following arguments are supported:
 
 * `resource_id` - (Required) The ID of an existing azure source.
 
-* `operation` - (Optional) The name of the resource operation. It's also possible to make Http requests towards the resource ID if leave this field empty.
+* `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
 ---
 * `body` - (Optional) A JSON object that contains the request body.
 
-* `method` - (Optional) Specifies the Http method of the azure resource operation. Allowed values are `POST` and `GET`. Defaults to `POST`.
+* `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST` and `GET`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
@@ -90,18 +90,18 @@ The following arguments are supported:
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
-* `id` - The ID of the azure resource operation.
+* `id` - The ID of the azure resource action.
 
 * `output` - The output json containing the properties specified in `response_export_values`. Here are some examples to decode json and extract the value.
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = jsondecode(azapi_operation.test.output).keys.0.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = jsondecode(azapi_operation.test.output).keys.1.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.1.Value
 }
 ```
 

@@ -8,11 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-type OperationDataSource struct{}
+type ActionDataSource struct{}
 
-func TestAccOperationDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_operation", "test")
-	r := OperationDataSource{}
+func TestAccActionDataSource_basic(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
@@ -22,14 +22,14 @@ func TestAccOperationDataSource_basic(t *testing.T) {
 	})
 }
 
-func (r OperationDataSource) basic(data acceptance.TestData) string {
+func (r ActionDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-data "azapi_operation" "test" {
+data "azapi_resource_action" "test" {
   type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id            = azapi_resource.test.id
-  operation              = "listKeys"
+  action                 = "listKeys"
   response_export_values = ["*"]
 }
 `, GenericResource{}.defaultTag(data))

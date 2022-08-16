@@ -1,18 +1,18 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Resource Operation: azapi_operation"
+page_title: "Azure Resource Action: azapi_resource_action"
 description: |-
-  Perform resource operation which changes an existing resource's state
+  Perform resource action which changes an existing resource's state
 ---
 
-# azapi_operation
+# azapi_resource_action
 
-This resource can perform any Azure resource manager resource operation. 
-It's recommended to use `azapi_operation` resource to perform operations which change a resource's state, please use `azapi_operation` data source,
-if user wants to perform readonly operation.
+This resource can perform any Azure resource manager resource action. 
+It's recommended to use `azapi_resource_action` resource to perform actions which change a resource's state, please use `azapi_resource_action` data source,
+if user wants to perform readonly action.
 
--> **Note** When delete `azapi_operation`, no operation will be performed.
+-> **Note** When delete `azapi_resource_action`, no operation will be performed.
 
 ## Example Usage
 
@@ -33,8 +33,8 @@ provider "azurerm" {
 }
 
 variable "enabled" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "whether start the spring service"
 }
 
@@ -50,19 +50,19 @@ resource "azurerm_spring_cloud_service" "test" {
   sku_name            = "S0"
 }
 
-resource "azapi_operation" "start" {
-  type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
-  resource_id = azurerm_spring_cloud_service.test.id
-  operation = "start"
+resource "azapi_resource_action" "start" {
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "start"
   response_export_values = ["*"]
 
   count = var.enabled ? 1 : 0
 }
 
-resource "azapi_operation" "stop" {
-  type = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
-  resource_id = azurerm_spring_cloud_service.test.id
-  operation = "stop"
+resource "azapi_resource_action" "stop" {
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "stop"
   response_export_values = ["*"]
 
   count = var.enabled ? 0 : 1
@@ -78,13 +78,13 @@ The following arguments are supported:
 
 * `resource_id` - (Required) The ID of an existing azure source. 
 
-* `operation` - (Optional) The name of the resource operation. It's also possible to make Http requests towards the resource ID if leave this field empty.
+* `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
 ---
 
 * `body` - (Optional) A JSON object that contains the request body.
 
-* `method` - (Optional) Specifies the Http method of the azure resource operation. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
+* `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
@@ -110,19 +110,19 @@ The following arguments are supported:
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
-* `id` - The ID of the azure resource operation.
+* `id` - The ID of the azure resource action.
 
 * `output` - The output json containing the properties specified in `response_export_values`. Here are some examples to decode json and extract the value.
 
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = jsondecode(azapi_operation.test.output).keys.0.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = jsondecode(azapi_operation.test.output).keys.1.Value
+  value = jsondecode(azapi_resource_action.test.output).keys.1.Value
 }
 ```
 
