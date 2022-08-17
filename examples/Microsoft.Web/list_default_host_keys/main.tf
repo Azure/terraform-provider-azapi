@@ -52,13 +52,13 @@ resource "azurerm_linux_function_app_slot" "test" {
   site_config {}
 }
 
-data "azapi_operation" "test" {
+data "azapi_resource_action" "test" {
   type                   = "Microsoft.Web/sites/slots@2022-03-01"
   resource_id            = azurerm_linux_function_app_slot.test.id
-  operation              = "host/default/listkeys"
+  action                 = "host/default/listkeys"
   response_export_values = ["*"]
 }
 
 output "output1" {
-  value = jsondecode(data.azapi_operation.test.output)
+  value = jsondecode(data.azapi_resource_action.test.output)
 }

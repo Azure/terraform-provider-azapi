@@ -1,7 +1,7 @@
 ---
 subcategory: ""
 layout: "azapi"
-page_title: "Generic Azure Update Resource: azapi_update_resource"
+page_title: "Azure Update Resource: azapi_update_resource"
 description: |-
   Manages a subset of an existing azure resource's properties
 ---

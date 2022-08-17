@@ -162,7 +162,7 @@ When using Terraform 0.14 and later, after successfully compiling the Azure Prov
 
 For example, add the following to `~/.terraformrc` for a provider binary located in `/home/developer/go/bin`:
 
-```hcl
+```
 provider_installation {
 
   # Use /home/developer/go/bin as an overridden package directory

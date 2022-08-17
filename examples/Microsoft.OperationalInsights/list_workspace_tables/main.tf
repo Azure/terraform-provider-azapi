@@ -26,18 +26,18 @@ resource "azurerm_log_analytics_workspace" "test" {
   retention_in_days   = 30
 }
 
-data "azapi_operation" "test" {
+data "azapi_resource_action" "test" {
   type                   = "Microsoft.OperationalInsights/workspaces@2021-12-01-preview"
   resource_id            = azurerm_log_analytics_workspace.test.id
-  operation              = "tables"
+  action                 = "tables"
   method                 = "GET"
   response_export_values = ["*"]
 }
 
 output "first_table_name" {
-  value = jsondecode(data.azapi_operation.test.output).value.0.name
+  value = jsondecode(data.azapi_resource_action.test.output).value.0.name
 }
 
 output "count" {
-  value = length(jsondecode(data.azapi_operation.test.output).value)
+  value = length(jsondecode(data.azapi_resource_action.test.output).value)
 }
