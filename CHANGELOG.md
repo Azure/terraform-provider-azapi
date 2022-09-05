@@ -1,3 +1,14 @@
+## v1.0.0
+FEATURES:
+
+ENHANCEMENTS:
+
+BUG FIXES:
+
+BREAKING CHANGES:
+- `azapi_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+- `azapi_update_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+
 ## v0.5.0
 FEATURES:
 - **New Data Source**: azapi_resource_action

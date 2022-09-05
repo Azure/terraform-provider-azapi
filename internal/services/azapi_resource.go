@@ -109,7 +109,7 @@ func ResourceAzApiResource() *schema.Resource {
 			"ignore_missing_property": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  false,
+				Default:  true,
 			},
 
 			"response_export_values": {
