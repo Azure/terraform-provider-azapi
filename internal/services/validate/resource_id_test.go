@@ -37,6 +37,18 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
+			// missing name for management group name
+			Input: "/providers/Microsoft.Management/managementGroups",
+			Valid: false,
+		},
+
+		{
+			// a valid management group Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup",
+			Valid: true,
+		},
+
+		{
 			// missing value for ResourceGroup
 			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/",
 			Valid: false,
@@ -73,9 +85,21 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
-			// upper-cased
-			Input: "/SUBSCRIPTIONS/12345678-1234-9876-4563-123456789012/RESOURCEGROUPS/GROUP1/PROVIDERS/MICROSOFT.EVENTHUB/CLUSTERS/CLUSTER1",
+			// missing name for a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions",
 			Valid: false,
+		},
+
+		{
+			// a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
+			Valid: true,
+		},
+
+		{
+			// a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test/assignments/test",
+			Valid: true,
 		},
 	}
 	for _, tc := range cases {

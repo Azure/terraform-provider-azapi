@@ -40,6 +40,19 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		},
 
 		{
+			ResourceType:     "Microsoft.Resources/subscriptions@2021-04-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/subscriptions",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012",
+				Name:              "12345678-1234-9876-4563-123456789012",
+				ParentId:          "/",
+			},
+		},
+
+		{
 
 			ResourceType:     "Microsoft.Authorization/policyDefinitions@2021-06-01",
 			ResourceId:       "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
@@ -206,6 +219,18 @@ func Test_ResourceIDWithApiVersion(t *testing.T) {
 		ResourceDefExist bool
 		Expected         *ResourceId
 	}{
+		{
+			// tenant scope
+			Input:            "/subscriptions/12345678-1234-9876-4563-123456789012?api-version=2021-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/subscriptions",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012",
+				Name:              "12345678-1234-9876-4563-123456789012",
+				ParentId:          "/",
+			},
+		},
 
 		{
 			// tenant scope
@@ -393,6 +418,19 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
+		{
+			// tenant scope
+			Name:             "12345678-1234-9876-4563-123456789012",
+			ParentId:         "/",
+			ResourceType:     "Microsoft.Resources/subscriptions@2021-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/subscriptions",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012",
+			},
+		},
+
 		{
 			// tenant scope
 			Name:             "myDeployment",

@@ -39,9 +39,12 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		}
 
 		// build azure resource id
-		if strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+		switch azureResourceType {
+		case arm.ResourceGroupResourceType.String():
 			azureResourceId = fmt.Sprintf("%s/resourceGroups/%s", parentId, name)
-		} else {
+		case arm.SubscriptionResourceType.String():
+			azureResourceId = fmt.Sprintf("/subscriptions/%s", name)
+		default:
 			// avoid duplicated `/` if parent_id is tenant scope
 			scopeId := parentId
 			if parentId == "/" {
@@ -76,8 +79,8 @@ func ResourceIDWithResourceType(azureResourceId, resourceType string) (ResourceI
 	if err != nil {
 		return ResourceId{}, err
 	}
-	if azureResourceType != utils.GetResourceType(azureResourceId) {
-		return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched")
+	if resourceTypeFromId := utils.GetResourceType(azureResourceId); azureResourceType != resourceTypeFromId {
+		return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched, expect `type` to be %s, but got %s", resourceTypeFromId, azureResourceType)
 	}
 	name := utils.GetName(azureResourceId)
 	parentId := utils.GetParentId(azureResourceId)
@@ -162,7 +165,7 @@ func validateParentIdScope(resourceDef *types.ResourceType, parentId string) err
 func validateParentIdType(azureResourceType string, parentId string) error {
 	parentIdExpectedType := utils.GetParentType(azureResourceType)
 	parentIdType := utils.GetResourceType(parentId)
-	if !strings.EqualFold(parentIdExpectedType, parentIdType) {
+	if parentIdExpectedType != parentIdType {
 		return fmt.Errorf("expect id of `%s`", parentIdExpectedType)
 	}
 	return nil

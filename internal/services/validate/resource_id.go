@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
 )
 
 func ResourceID(input interface{}, key string) (warnings []string, errors []error) {
@@ -27,10 +26,6 @@ func ResourceID(input interface{}, key string) (warnings []string, errors []erro
 	r = regexp.MustCompile(".*api-version=.*")
 	if r.MatchString(v) {
 		errors = append(errors, fmt.Errorf("expected %q not to contain api-version", key))
-	}
-
-	if _, err := resourceids.ParseAzureResourceID(v); err != nil {
-		errors = append(errors, err)
 	}
 
 	if _, err := arm.ParseResourceID(v); err != nil {
