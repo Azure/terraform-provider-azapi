@@ -84,6 +84,8 @@ The following arguments are supported:
 
 * `body` - (Optional) A JSON object that contains the request body.
 
+* `locks` - (Optional) A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
+
 * `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
