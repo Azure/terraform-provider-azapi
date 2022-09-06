@@ -79,7 +79,7 @@ func ResourceIDWithResourceType(azureResourceId, resourceType string) (ResourceI
 	if err != nil {
 		return ResourceId{}, err
 	}
-	if resourceTypeFromId := utils.GetResourceType(azureResourceId); azureResourceType != resourceTypeFromId {
+	if resourceTypeFromId := utils.GetResourceType(azureResourceId); !strings.EqualFold(azureResourceType, resourceTypeFromId) {
 		return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched, expect `type` to be %s, but got %s", resourceTypeFromId, azureResourceType)
 	}
 	name := utils.GetName(azureResourceId)
@@ -155,7 +155,7 @@ func validateParentIdScope(resourceDef *types.ResourceType, parentId string) err
 				}
 			}
 			if matchedScope == types.Unknown {
-				return fmt.Errorf("expect id of resource whose scope is %v, but got scope %v", scopeTypes, parentIdScope)
+				return fmt.Errorf("expect ID of resource whose scope is %v, but got scope %v", scopeTypes, parentIdScope)
 			}
 		}
 	}
@@ -165,8 +165,8 @@ func validateParentIdScope(resourceDef *types.ResourceType, parentId string) err
 func validateParentIdType(azureResourceType string, parentId string) error {
 	parentIdExpectedType := utils.GetParentType(azureResourceType)
 	parentIdType := utils.GetResourceType(parentId)
-	if parentIdExpectedType != parentIdType {
-		return fmt.Errorf("expect id of `%s`", parentIdExpectedType)
+	if !strings.EqualFold(parentIdExpectedType, parentIdType) {
+		return fmt.Errorf("expect ID of `%s`", parentIdExpectedType)
 	}
 	return nil
 }
