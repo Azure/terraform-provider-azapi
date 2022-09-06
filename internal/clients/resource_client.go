@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -184,8 +185,20 @@ func (client *ResourceClient) Action(ctx context.Context, resourceID string, act
 		})
 		return resp, err
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
-		return nil, err
+
+	contentType := resp.Header.Get("Content-Type")
+	switch {
+	case strings.Contains(contentType, "text/plain"):
+		payload, err := runtime.Payload(resp)
+		if err != nil {
+			return nil, err
+		}
+		responseBody = string(payload)
+	case strings.Contains(contentType, "application/json"):
+		if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+			return nil, err
+		}
+	default:
 	}
 	return responseBody, nil
 }

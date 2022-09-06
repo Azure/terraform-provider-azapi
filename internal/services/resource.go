@@ -66,6 +66,9 @@ func isResourceHasProperty(resourceDef *types.ResourceType, property string) boo
 func flattenOutput(responseBody interface{}, paths []interface{}) string {
 	for _, path := range paths {
 		if path == "*" {
+			if v, ok := responseBody.(string); ok {
+				return v
+			}
 			outputJson, _ := json.Marshal(responseBody)
 			return string(outputJson)
 		}
