@@ -200,13 +200,7 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	var id parse.ResourceId
-	var err error
-	if resourceType := d.Get("type").(string); len(resourceType) != 0 {
-		id, err = parse.ResourceIDWithResourceType(d.Id(), resourceType)
-	} else {
-		id, err = parse.ResourceIDWithApiVersion(d.Id())
-	}
+	id, err := parse.ResourceIDWithResourceType(d.Id(), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
