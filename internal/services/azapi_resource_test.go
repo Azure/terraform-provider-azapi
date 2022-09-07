@@ -314,7 +314,7 @@ func TestAccGenericResource_locks(t *testing.T) {
 
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
-	id, err := parse.NewResourceID(state.ID, resourceType)
+	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {
 	state := tfState.RootModule().Resources["azapi_resource.test"].Primary
 	resourceType := state.Attributes["type"]
-	id, err := parse.NewResourceID(state.ID, resourceType)
+	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
 	if err != nil {
 		return "", err
 	}

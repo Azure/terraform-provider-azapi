@@ -46,7 +46,7 @@ func ResourceResourceAction() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validate.AzureResourceID,
+				ValidateFunc: validate.ResourceID,
 			},
 
 			"action": {
@@ -104,7 +104,7 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
