@@ -1,3 +1,11 @@
+## Unreleased
+FEATURES:
+
+ENHANCEMENTS:
+- `azapi_resource_action`: Supports `locks` which used to prevent modifying resources at the same time.
+
+BUG FIXES:
+
 ## v0.5.0
 FEATURES:
 - **New Data Source**: azapi_resource_action

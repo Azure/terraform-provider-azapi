@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
@@ -75,6 +76,15 @@ func ResourceResourceAction() *schema.Resource {
 				StateFunc:        utils.NormalizeJson,
 			},
 
+			"locks": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
 			"response_export_values": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -121,6 +131,12 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	}
 
 	log.Printf("[INFO] request body: %v\n", body)
+
+	for _, id := range d.Get("locks").([]interface{}) {
+		locks.ByID(id.(string))
+		defer locks.UnlockByID(id.(string))
+	}
+
 	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
 	if err != nil {
 		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
