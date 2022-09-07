@@ -1,4 +1,4 @@
-## v1.0.0
+## v1.0.0 (Unreleased)
 FEATURES:
 
 ENHANCEMENTS:
@@ -8,6 +8,14 @@ BUG FIXES:
 BREAKING CHANGES:
 - `azapi_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
 - `azapi_update_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+
+## Unreleased
+FEATURES:
+
+ENHANCEMENTS:
+- `azapi_resource_action`: Supports `locks` which used to prevent modifying resources at the same time.
+
+BUG FIXES:
 
 ## v0.5.0
 FEATURES:

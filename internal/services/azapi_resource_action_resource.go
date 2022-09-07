@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
@@ -46,7 +47,7 @@ func ResourceResourceAction() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validate.AzureResourceID,
+				ValidateFunc: validate.ResourceID,
 			},
 
 			"action": {
@@ -73,6 +74,15 @@ func ResourceResourceAction() *schema.Resource {
 				ValidateFunc:     validation.StringIsJSON,
 				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
 				StateFunc:        utils.NormalizeJson,
+			},
+
+			"locks": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
 			},
 
 			"response_export_values": {
@@ -104,7 +114,7 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Get("resource_id").(string), d.Get("type").(string))
+	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -121,6 +131,12 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	}
 
 	log.Printf("[INFO] request body: %v\n", body)
+
+	for _, id := range d.Get("locks").([]interface{}) {
+		locks.ByID(id.(string))
+		defer locks.UnlockByID(id.(string))
+	}
+
 	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
 	if err != nil {
 		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)

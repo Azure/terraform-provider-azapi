@@ -71,6 +71,77 @@ func Test_GetParentId(t *testing.T) {
 	}
 }
 
+func Test_GetName(t *testing.T) {
+	cases := []struct {
+		Input  string
+		Output string
+	}{
+		{
+			// invalid resource ID
+			Input:  "",
+			Output: "",
+		},
+		{
+			// tenant ID doesn't have name
+			Input:  "/",
+			Output: "",
+		},
+		{
+			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount",
+			Output: "myAccount",
+		},
+		{
+			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount/billingProfiles/myAccount",
+			Output: "myAccount",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012",
+			Output: "12345678-1234-9876-4563-123456789012",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Authorization/policydefinitions/myDef",
+			Output: "myDef",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Features/featureProviders/myProvider/subscriptionFeatureRegistrations/myFeature",
+			Output: "myFeature",
+		},
+		{
+			Input:  "/providers/Microsoft.Management/managementGroups/myMgmtGroup",
+			Output: "myMgmtGroup",
+		},
+		{
+			Input:  "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.CostManagement/externalSubscriptions/mySub",
+			Output: "mySub",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/rg1",
+			Output: "rg1",
+		},
+		{
+			// Invalid resource Id
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/rg1/providers/Microsoft.Network",
+			Output: "",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/sg1",
+			Output: "sg1",
+		},
+		{
+			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/sg1/providers/Microsoft.Insights/metrics/m1",
+			Output: "m1",
+		},
+	}
+	for _, tc := range cases {
+		t.Logf("[DEBUG] Testing Value %s", tc.Input)
+		output := utils.GetName(tc.Input)
+
+		if tc.Output != output {
+			t.Fatalf("Expected %s but got %s", tc.Output, output)
+		}
+	}
+}
+
 func Test_GetResourceType(t *testing.T) {
 	cases := []struct {
 		Input  string
@@ -78,11 +149,11 @@ func Test_GetResourceType(t *testing.T) {
 	}{
 		{
 			Input:  "",
-			Output: "Tenant",
+			Output: "",
 		},
 		{
 			Input:  "/",
-			Output: "Tenant",
+			Output: "Microsoft.Resources/tenants",
 		},
 		{
 			Input:  "/providers/Microsoft.Billing/billingAccounts/myAccount",
@@ -94,7 +165,7 @@ func Test_GetResourceType(t *testing.T) {
 		},
 		{
 			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012",
-			Output: "Subscription",
+			Output: "Microsoft.Resources/subscriptions",
 		},
 		{
 			Input:  "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Authorization/policydefinitions/myDef",

@@ -19,9 +19,9 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
-			// missing SubscriptionId
+			// a valid tenant Id
 			Input: "/",
-			Valid: false,
+			Valid: true,
 		},
 
 		{
@@ -31,9 +31,21 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
-			// missing ResourceGroup
-			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/",
+			// a valid subscription Id
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012",
+			Valid: true,
+		},
+
+		{
+			// missing name for management group name
+			Input: "/providers/Microsoft.Management/managementGroups",
 			Valid: false,
+		},
+
+		{
+			// a valid management group Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup",
+			Valid: true,
 		},
 
 		{
@@ -43,33 +55,51 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
-			// missing Name
+			// a valid ResourceGroup Id
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
+			Valid: true,
+		},
+
+		{
+			// missing resource type
 			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/",
 			Valid: false,
 		},
 
 		{
-			// missing value for Name
+			// missing value for resource type
 			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/",
 			Valid: false,
 		},
 
 		{
-			// missing value for api version
-			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1",
-			Valid: false,
-		},
-
-		{
 			// valid
-			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1?api-version=2020-12-01",
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1",
 			Valid: true,
 		},
 
 		{
-			// upper-cased
-			Input: "/SUBSCRIPTIONS/12345678-1234-9876-4563-123456789012/RESOURCEGROUPS/GROUP1/PROVIDERS/MICROSOFT.EVENTHUB/CLUSTERS/CLUSTER1",
+			// should not contain api-version
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1?api-version=2020-12-01",
 			Valid: false,
+		},
+
+		{
+			// missing name for a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions",
+			Valid: false,
+		},
+
+		{
+			// a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
+			Valid: true,
+		},
+
+		{
+			// a valid extension resource Id
+			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test/assignments/test",
+			Valid: true,
 		},
 	}
 	for _, tc := range cases {
