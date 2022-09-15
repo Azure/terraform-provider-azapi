@@ -831,7 +831,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-05-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-09-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -866,7 +866,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-05-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-09-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 

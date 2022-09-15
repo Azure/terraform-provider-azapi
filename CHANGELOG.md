@@ -1,10 +1,11 @@
-## Unreleased
+## v0.6.0
 FEATURES:
 
 ENHANCEMENTS:
 - `azapi_resource_action`: Supports `locks` which used to prevent modifying resources at the same time.
 - `azapi_resource_action`: Supports parse response which `Content-Type` is `text/plain`.
 - Improve validation on `type`, `parent_id` and `resource_id`.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/5451fcd5e1bf4d8313d475d8e3dc28efc7a77e2a
 
 BUG FIXES:
 
