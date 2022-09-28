@@ -1,3 +1,14 @@
+## v1.0.0 (Unreleased)
+FEATURES:
+
+ENHANCEMENTS:
+
+BUG FIXES:
+
+BREAKING CHANGES:
+- `azapi_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+- `azapi_update_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+
 ## v0.6.0
 FEATURES:
 
