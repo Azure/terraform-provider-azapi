@@ -28,14 +28,14 @@ func (r ActionResource) basic(data acceptance.TestData) string {
 
 
 data "azapi_resource_action" "list" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type                   = "Microsoft.Automation/automationAccounts@2022-08-08"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Automation/automationAccounts@2022-08-08"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
   body = jsonencode({

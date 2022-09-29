@@ -592,7 +592,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -623,7 +623,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -657,7 +657,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -689,7 +689,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -716,7 +716,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -916,7 +916,7 @@ resource "azurerm_route_table" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/routeTables/routes@2022-01-01"
+  type      = "Microsoft.Network/routeTables/routes@2022-05-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -930,7 +930,7 @@ resource "azapi_resource" "test" {
 }
 
 resource "azapi_resource" "test2" {
-  type      = "Microsoft.Network/routeTables/routes@2022-01-01"
+  type      = "Microsoft.Network/routeTables/routes@2022-05-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
