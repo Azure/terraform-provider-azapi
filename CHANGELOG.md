@@ -1,4 +1,4 @@
-## v1.0.0 (Unreleased)
+## v1.0.0
 FEATURES:
 
 ENHANCEMENTS:
@@ -8,6 +8,7 @@ BUG FIXES:
 BREAKING CHANGES:
 - `azapi_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
 - `azapi_update_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a6dabb0cd645c17a1accf3ec1be4d7930e982b23
 
 ## v0.6.0
 FEATURES:
