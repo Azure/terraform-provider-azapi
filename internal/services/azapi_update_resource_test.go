@@ -115,7 +115,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Automation/automationAccounts@2022-08-08"
   resource_id = azurerm_automation_account.test.id
   body = jsonencode({
     properties = {
@@ -138,7 +138,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_update_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = azurerm_automation_account.test.name
   parent_id = azurerm_resource_group.test.id
   body = jsonencode({
@@ -214,7 +214,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_update_resource" "test1" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Automation/automationAccounts@2022-08-08"
   resource_id = azurerm_automation_account.test.id
   body = jsonencode({
     properties = {
@@ -225,7 +225,7 @@ resource "azapi_update_resource" "test1" {
 }
 
 resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  type        = "Microsoft.Automation/automationAccounts@2022-08-08"
   resource_id = azurerm_automation_account.test.id
   body = jsonencode({
     properties = {
