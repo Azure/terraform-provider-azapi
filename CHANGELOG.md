@@ -1,3 +1,11 @@
+## v1.1.0 (unreleased)
+FEATURES:
+
+ENHANCEMENTS:
+
+BUG FIXES:
+- `azapi_resource_action`: The `output` is not refreshed when `body` is changed.
+
 ## v1.0.0
 FEATURES:
 

@@ -101,7 +101,7 @@ func ResourceResourceAction() *schema.Resource {
 		},
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			if d.HasChange("response_export_values") || d.HasChange("action") {
+			if d.HasChange("response_export_values") || d.HasChange("action") || d.HasChange("body") {
 				d.SetNewComputed("output")
 			}
 			return nil
