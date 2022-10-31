@@ -121,6 +121,7 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 			}
 			old, new := d.GetChange("body")
 			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 
