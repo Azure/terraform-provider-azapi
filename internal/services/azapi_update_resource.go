@@ -116,10 +116,12 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
 			if d.HasChange("response_export_values") {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 			old, new := d.GetChange("body")
 			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 
@@ -216,9 +218,13 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 
+	// #nosec G104
 	d.Set("name", id.Name)
+	// #nosec G104
 	d.Set("parent_id", id.ParentId)
+	// #nosec G104
 	d.Set("resource_id", id.AzureResourceId)
+	// #nosec G104
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	bodyJson := d.Get("body").(string)
@@ -235,7 +241,9 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 	if err != nil {
 		return err
 	}
+	// #nosec G104
 	d.Set("body", string(data))
+	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 	return nil
 }

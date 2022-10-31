@@ -102,6 +102,7 @@ func ResourceResourceAction() *schema.Resource {
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
 			if d.HasChange("response_export_values") || d.HasChange("action") || d.HasChange("body") {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 			return nil
@@ -147,6 +148,7 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	d.SetId(resourceId)
+	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
 	return resourceResourceActionRead(d, meta)

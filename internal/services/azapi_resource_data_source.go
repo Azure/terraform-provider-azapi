@@ -104,13 +104,19 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
 	d.SetId(id.ID())
+	// #nosec G104
 	d.Set("name", id.Name)
+	// #nosec G104
 	d.Set("parent_id", id.ParentId)
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		// #nosec G104
 		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
+		// #nosec G104
 		d.Set("location", bodyMap["location"])
+		// #nosec G104
 		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
 	}
+	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 	return nil
 }

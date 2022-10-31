@@ -55,6 +55,7 @@ func ResourceAzApiResource() *schema.Resource {
 				}
 				// override the id to remove the api-version
 				d.SetId(id.ID())
+				// #nosec G104
 				d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 				return []*schema.ResourceData{d}, nil
 			},
@@ -146,10 +147,12 @@ func ResourceAzApiResource() *schema.Resource {
 
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
 			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("response_export_values") {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 			old, new := d.GetChange("body")
 			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
+				// #nosec G104
 				d.SetNewComputed("output")
 			}
 
@@ -194,6 +197,7 @@ func ResourceAzApiResource() *schema.Resource {
 					currentTags := d.Get("tags")
 					defaultTags := meta.(*clients.Client).Features.DefaultTags
 					if !reflect.DeepEqual(currentTags, defaultTags) {
+						// #nosec G104
 						d.SetNew("tags", defaultTags)
 					}
 				}
@@ -205,6 +209,7 @@ func ResourceAzApiResource() *schema.Resource {
 					currentLocation := d.Get("location").(string)
 					defaultLocation := meta.(*clients.Client).Features.DefaultLocation
 					if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
+						// #nosec G104
 						d.SetNew("location", defaultLocation)
 					}
 				}
@@ -369,10 +374,14 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 			if err != nil {
 				return err
 			}
+			// #nosec G104
 			d.Set("body", string(data))
 		}
+		// #nosec G104
 		d.Set("ignore_casing", false)
+		// #nosec G104
 		d.Set("ignore_missing_property", false)
+		// #nosec G104
 		d.Set("schema_validation_enabled", true)
 	} else {
 		option := utils.UpdateJsonOption{
@@ -383,19 +392,27 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		if err != nil {
 			return err
 		}
+		// #nosec G104
 		d.Set("body", string(data))
 	}
 
+	// #nosec G104
 	d.Set("name", id.Name)
+	// #nosec G104
 	d.Set("parent_id", id.ParentId)
+	// #nosec G104
 	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		// #nosec G104
 		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
+		// #nosec G104
 		d.Set("location", bodyMap["location"])
+		// #nosec G104
 		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
 	}
 
+	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 	return nil
 }
