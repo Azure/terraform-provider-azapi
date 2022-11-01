@@ -23,7 +23,7 @@ jobs:
               goVersion: ${{ goVersion.value }}
 
     pool:
-      vmImage: $(vmImage)
+      name: pool-windows-2019
 
     steps:
       - task: GoTool@0
@@ -60,6 +60,9 @@ jobs:
               cd "$BUILD_SOURCESDIRECTORY"
               make test
             displayName: "Run Unit Tests"
+      - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+        inputs:
+          toolMajorVersion: 'V2'
       - ${{ if eq(parameters.accTest, true) }}:
           - bash: |
               #!/usr/bin/env bash
