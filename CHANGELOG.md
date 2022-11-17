@@ -2,6 +2,7 @@
 FEATURES:
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/e641570bedc5004498d3e374adb60fdfd3521b09
 
 BUG FIXES:
 - `azapi_resource_action`: The `output` is not refreshed when `body` is changed.
@@ -10,13 +11,13 @@ BUG FIXES:
 FEATURES:
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a6dabb0cd645c17a1accf3ec1be4d7930e982b23
 
 BUG FIXES:
 
 BREAKING CHANGES:
 - `azapi_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
 - `azapi_update_resource`: `ignore_missing_property`'s default value changed from `false` to `true`.
-- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a6dabb0cd645c17a1accf3ec1be4d7930e982b23
 
 ## v0.6.0
 FEATURES:
