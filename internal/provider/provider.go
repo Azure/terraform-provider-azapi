@@ -2,7 +2,11 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -118,6 +122,27 @@ func azureProvider() *schema.Provider {
 				Description: "Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?",
 			},
 
+			"oidc_request_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
+				Description: "The bearer token for the request to the OIDC provider. For use when authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"oidc_request_url": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_URL"}, ""),
+				Description: "The URL for the OIDC provider from which to request an ID token. For use when authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"use_oidc": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_OIDC", false),
+				Description: "Allow OIDC Federated Identity to be used for Authentication.",
+			},
+
 			// TODO@mgd: azidentity doesn't support msi_endpoint
 			// // Managed Service Identity specific fields
 			// "use_msi": {
@@ -170,6 +195,56 @@ func azureProvider() *schema.Provider {
 	return p
 }
 
+type OidcCredential struct {
+	assertion, oidcTokenRequestUrl, oidcTokenRequestToken string
+}
+
+func (o *OidcCredential) getAssertion(c context.Context) (string, error) {
+	// based on
+	req, err := http.NewRequestWithContext(c, http.MethodGet, o.oidcTokenRequestUrl, http.NoBody)
+	if err != nil {
+		return "", fmt.Errorf("OidcCredential: failed to create new request")
+	}
+
+	query, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		return "", fmt.Errorf("OidcCredential: failed to parse query string")
+	}
+
+	query.Set("audience", "api://AzureADTokenExchange")
+	req.URL.RawQuery = query.Encode()
+
+	req.Header = http.Header{
+		"Accept":        {"application/json"},
+		"Authorization": {fmt.Sprintf("Bearer %s", o.oidcTokenRequestToken)},
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("OidcCredential: failed to request token: %v", err)
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("OidcCredential: failed to parse response: %v", err)
+	}
+
+	if c := resp.StatusCode; c < 200 || c > 299 {
+		return "", fmt.Errorf("OidcCredential: failure... received HTTP status %d with response: %s", resp.StatusCode, body)
+	}
+
+	var tokenRes struct {
+		Value *string `json:"value"`
+	}
+	if err := json.Unmarshal(body, &tokenRes); err != nil {
+		return "", fmt.Errorf("OidcCredential: failed to unmarshal response: %v", err)
+	}
+	o.assertion = *tokenRes.Value
+
+	return o.assertion, nil
+}
+
 func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	return func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 		// var auxTenants []string
@@ -210,12 +285,27 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
 		}
 
-		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: azcore.ClientOptions{
-				Cloud: cloudConfig,
-			},
-			TenantID: d.Get("tenant_id").(string),
-		})
+		var cred azcore.TokenCredential
+		var err error
+		if v := d.Get("use_oidc").(bool); v {
+			o := OidcCredential{
+				oidcTokenRequestUrl:   d.Get("oidc_request_url").(string),
+				oidcTokenRequestToken: d.Get("oidc_request_token").(string),
+			}
+			cred, err = azidentity.NewClientAssertionCredential(d.Get("tenant_id").(string), d.Get("client_id").(string), o.getAssertion, &azidentity.ClientAssertionCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					Cloud: cloudConfig,
+				},
+			})
+		} else {
+			cred, err = azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+				ClientOptions: azcore.ClientOptions{
+					Cloud: cloudConfig,
+				},
+				TenantID: d.Get("tenant_id").(string),
+			})
+		}
+
 		if err != nil {
 			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
