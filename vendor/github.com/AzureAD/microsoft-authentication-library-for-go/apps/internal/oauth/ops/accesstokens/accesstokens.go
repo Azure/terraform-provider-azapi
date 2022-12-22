@@ -19,17 +19,18 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/exported"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/authority"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/internal/grant"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/internal/oauth/ops/wstrust"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
 
@@ -87,40 +88,37 @@ type Credential struct {
 	// Secret contains the credential secret if we are doing auth by secret.
 	Secret string
 
-	// Cert is the public x509 certificate if we are doing any auth other than secret.
+	// Cert is the public certificate, if we're authenticating by certificate.
 	Cert *x509.Certificate
-	// Key is the private key for signing if we are doing any auth other than secret.
+	// Key is the private key for signing, if we're authenticating by certificate.
 	Key crypto.PrivateKey
+	// X5c is the JWT assertion's x5c header value, required for SN/I authentication.
+	X5c []string
 
-	// mu protects everything below.
-	mu sync.Mutex
-	// Assertion is the signed JWT assertion if we have retrieved it or if it was passed.
-	Assertion string
-	// Expires is when the Assertion expires. Public to allow faking in tests.
-	// Any use outside msal is not supported by a compatibility promise.
-	Expires time.Time
+	// AssertionCallback is a function provided by the application, if we're authenticating by assertion.
+	AssertionCallback func(context.Context, exported.AssertionRequestOptions) (string, error)
+
+	// TokenProvider is a function provided by the application that implements custom authentication
+	// logic for a confidential client
+	TokenProvider func(context.Context, exported.TokenProviderParameters) (exported.TokenProviderResult, error)
 }
 
 // JWT gets the jwt assertion when the credential is not using a secret.
-func (c *Credential) JWT(authParams authority.AuthParams) (string, error) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	if c.Expires.Before(time.Now()) && c.Assertion != "" {
-		return c.Assertion, nil
+func (c *Credential) JWT(ctx context.Context, authParams authority.AuthParams) (string, error) {
+	if c.AssertionCallback != nil {
+		options := exported.AssertionRequestOptions{
+			ClientID:      authParams.ClientID,
+			TokenEndpoint: authParams.Endpoints.TokenEndpoint,
+		}
+		return c.AssertionCallback(ctx, options)
 	}
-	// There is no hard requirement on what the expiry time should be.
-	// https://tools.ietf.org/html/rfc7519#section-4.1.4
-	// This just sets a default of 10 mins which means a cached JWT assertion
-	// can be used if it is less that 10 mins old after which we regenerate the assertion.
-	expires := time.Now().Add(10 * time.Minute)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"aud": authParams.Endpoints.TokenEndpoint,
-		"exp": strconv.FormatInt(expires.Unix(), 10),
+		"exp": json.Number(strconv.FormatInt(time.Now().Add(10*time.Minute).Unix(), 10)),
 		"iss": authParams.ClientID,
 		"jti": uuid.New().String(),
-		"nbf": strconv.FormatInt(time.Now().Unix(), 10),
+		"nbf": json.Number(strconv.FormatInt(time.Now().Unix(), 10)),
 		"sub": authParams.ClientID,
 	})
 	token.Header = map[string]interface{}{
@@ -130,16 +128,14 @@ func (c *Credential) JWT(authParams authority.AuthParams) (string, error) {
 	}
 
 	if authParams.SendX5C {
-		token.Header["x5c"] = []string{base64.StdEncoding.EncodeToString(c.Cert.Raw)}
+		token.Header["x5c"] = c.X5c
 	}
-	var err error
-	c.Assertion, err = token.SignedString(c.Key)
+
+	assertion, err := token.SignedString(c.Key)
 	if err != nil {
 		return "", fmt.Errorf("unable to sign a JWT token using private key: %w", err)
 	}
-
-	c.Expires = expires
-	return c.Assertion, nil
+	return assertion, nil
 }
 
 // thumbprint runs the asn1.Der bytes through sha1 for use in the x5t parameter of JWT.
@@ -206,7 +202,7 @@ func (c Client) FromAuthCode(ctx context.Context, req AuthCodeRequest) (TokenRes
 		if req.Credential == nil {
 			return TokenResponse{}, fmt.Errorf("AuthCodeRequest had nil Credential for Confidential app")
 		}
-		qv, err = prepURLVals(req.Credential, req.AuthParams)
+		qv, err = prepURLVals(ctx, req.Credential, req.AuthParams)
 		if err != nil {
 			return TokenResponse{}, err
 		}
@@ -232,7 +228,7 @@ func (c Client) FromRefreshToken(ctx context.Context, appType AppType, authParam
 	qv := url.Values{}
 	if appType == ATConfidential {
 		var err error
-		qv, err = prepURLVals(cc, authParams)
+		qv, err = prepURLVals(ctx, cc, authParams)
 		if err != nil {
 			return TokenResponse{}, err
 		}
@@ -367,14 +363,14 @@ func (c Client) doTokenResp(ctx context.Context, authParams authority.AuthParams
 
 // prepURLVals returns an url.Values that sets various key/values if we are doing secrets
 // or JWT assertions.
-func prepURLVals(cc *Credential, authParams authority.AuthParams) (url.Values, error) {
+func prepURLVals(ctx context.Context, cc *Credential, authParams authority.AuthParams) (url.Values, error) {
 	params := url.Values{}
 	if cc.Secret != "" {
 		params.Set("client_secret", cc.Secret)
 		return params, nil
 	}
 
-	jwt, err := cc.JWT(authParams)
+	jwt, err := cc.JWT(ctx, authParams)
 	if err != nil {
 		return nil, err
 	}
@@ -394,7 +390,7 @@ var detectDefaultScopes = map[string]bool{
 
 var defaultScopes = []string{"openid", "offline_access", "profile"}
 
-func addScopeQueryParam(queryParams url.Values, authParameters authority.AuthParams) {
+func AppendDefaultScopes(authParameters authority.AuthParams) []string {
 	scopes := make([]string, 0, len(authParameters.Scopes)+len(defaultScopes))
 	for _, scope := range authParameters.Scopes {
 		s := strings.TrimSpace(scope)
@@ -407,6 +403,10 @@ func addScopeQueryParam(queryParams url.Values, authParameters authority.AuthPar
 		scopes = append(scopes, scope)
 	}
 	scopes = append(scopes, defaultScopes...)
+	return scopes
+}
 
+func addScopeQueryParam(queryParams url.Values, authParameters authority.AuthParams) {
+	scopes := AppendDefaultScopes(authParameters)
 	queryParams.Set("scope", strings.Join(scopes, " "))
 }

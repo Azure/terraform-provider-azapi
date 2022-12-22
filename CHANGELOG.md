@@ -1,3 +1,11 @@
+## v1.2.0 (Unreleased)
+FEATURES:
+- `azapi`: Support `client_certificate_password` option.
+
+ENHANCEMENTS:
+
+BUG FIXES:
+
 ## v1.1.0
 FEATURES:
 
