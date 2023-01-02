@@ -1,8 +1,8 @@
 module github.com/Azure/terraform-provider-azapi
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.0.0
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.0
 	github.com/hashicorp/go-azure-helpers v0.19.0
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-uuid v1.0.2
@@ -21,7 +21,6 @@ require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.12.0 // indirect
-	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

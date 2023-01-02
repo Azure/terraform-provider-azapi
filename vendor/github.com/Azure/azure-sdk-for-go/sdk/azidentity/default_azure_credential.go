@@ -30,15 +30,11 @@ type DefaultAzureCredentialOptions struct {
 
 // DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.
 // It combines credentials suitable for deployment with credentials suitable for local development.
-// It attempts to authenticate with each of these credential types, in the following order, stopping
-// when one provides a token:
+// It attempts to authenticate with each of these credential types, in the following order, stopping when one provides a token:
 //
-//   - [EnvironmentCredential]
-//   - [WorkloadIdentityCredential], if environment variable configuration is set by the Azure workload
-//     identity webhook. Use [WorkloadIdentityCredential] directly when not using the webhook or needing
-//     more control over its configuration.
-//   - [ManagedIdentityCredential]
-//   - [AzureCLICredential]
+//	EnvironmentCredential
+//	ManagedIdentityCredential
+//	AzureCLICredential
 //
 // Consult the documentation for these credential types for more information on how they authenticate.
 // Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for

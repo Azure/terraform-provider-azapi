@@ -785,7 +785,7 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
+  type      = "Microsoft.Resources/resourceGroups@2022-09-01"
   name      = "acctestRG-%[1]d"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 
@@ -831,7 +831,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-09-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -866,7 +866,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-09-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -916,7 +916,7 @@ resource "azurerm_route_table" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/routeTables/routes@2022-05-01"
+  type      = "Microsoft.Network/routeTables/routes@2022-07-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -930,7 +930,7 @@ resource "azapi_resource" "test" {
 }
 
 resource "azapi_resource" "test2" {
-  type      = "Microsoft.Network/routeTables/routes@2022-05-01"
+  type      = "Microsoft.Network/routeTables/routes@2022-07-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({

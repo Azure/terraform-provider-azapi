@@ -95,13 +95,12 @@ func azureProvider() *schema.Provider {
 				Description: "The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.",
 			},
 
-			// TODO@mgd: this depends on https://github.com/Azure/azure-sdk-for-go/pull/17099
-			// "client_certificate_password": {
-			// 	Type:        schema.TypeString,
-			// 	Optional:    true,
-			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PASSWORD", ""),
-			// 	Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
-			// },
+			"client_certificate_password": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PASSWORD", ""),
+				Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
+			},
 
 			// Client Secret specific fields
 			"client_secret": {
@@ -241,6 +240,11 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			}
 			azureAuthorityHost, _ := os.LookupEnv("AZURE_AUTHORITY_HOST")
 			os.Setenv("AZURE_AUTHORITY_HOST", azureAuthorityHost)
+		}
+
+		if v := d.Get("client_certificate_password").(string); len(v) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
 		}
 
 		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
