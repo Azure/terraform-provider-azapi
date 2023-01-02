@@ -111,6 +111,27 @@ func azureProvider() *schema.Provider {
 				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
 			},
 
+			// OIDC specifc fields
+			"oidc_token_file_path": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN_FILE_PATH", ""),
+				Description: "The file where the token for OIDC login. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+			"oidc_authority_host": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_AUTHORITY_HOST", ""),
+				Description: "The authority host for OIDC login. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"use_oidc": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_OIDC", false),
+				Description: "Allow OpenID Connect to be used for authentication",
+			},
+
 			"skip_provider_registration": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -208,6 +229,18 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		if v := d.Get("client_certificate_path").(string); len(v) != 0 {
 			// #nosec G104
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
+		}
+		if d.Get("use_oidc").(bool) {
+			if v := d.Get("oidc_token_file_path").(string); len(v) != 0 {
+				// #nosec G104
+				os.Setenv("AZURE_FEDERATED_TOKEN_FILE", v)
+			}
+			if v := d.Get("oidc_authority_host").(string); len(v) != 0 {
+				// #nosec G104
+				os.Setenv("AZURE_AUTHORITY_HOST", v)
+			}
+			azureAuthorityHost, _ := os.LookupEnv("AZURE_AUTHORITY_HOST")
+			os.Setenv("AZURE_AUTHORITY_HOST", azureAuthorityHost)
 		}
 
 		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
