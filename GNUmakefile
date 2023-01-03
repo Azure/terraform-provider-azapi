@@ -20,6 +20,7 @@ tools:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH || $$GOPATH)/bin v1.45.2
 
 build: fmtcheck generate
+	@echo "Passed"
 	go install
 
 build-docker:

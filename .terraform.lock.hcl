@@ -2,9 +2,9 @@
 # Manual edits may be lost in future updates.
 
 provider "***REMOVED***/azure/azapi" {
-  version     = "1.0.2"
-  constraints = "~> 1.0.2"
+  version     = "1.0.3"
+  constraints = "1.0.3"
   hashes = [
-    "h1:lL3FP8h7S5/FR6kunR16sOYaqoKgVxvEUeCUQpE+OJc=",
+    "h1:/AjfUt/8+HnKKpSDJpELtD5eu179yXkX4LZJ0zS88gw=",
   ]
 }
