@@ -4,14 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/url"
-	"reflect"
-	"time"
-
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
@@ -22,6 +18,11 @@ import (
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"log"
+	"net/url"
+	"reflect"
+	"regexp"
+	"time"
 )
 
 func ResourceAzApiResource() *schema.Resource {
@@ -69,12 +70,9 @@ func ResourceAzApiResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
+			"name": resourceName.SchemaResourceNameOC(),
+
+			"removing_special_chars": resourceName.SchemaResourceNameRemovingSpecialCharacters(),
 
 			"parent_id": {
 				Type:         schema.TypeString,
@@ -203,6 +201,31 @@ func ResourceAzApiResource() *schema.Resource {
 				}
 			}
 
+			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) != 0 {
+				currentName := d.Get("name").(string)
+				defaultName := meta.(*clients.Client).Features.DefaultNaming
+				if currentName != defaultName {
+					d.SetNew("name", defaultName)
+				}
+			}
+
+			if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
+				currentName := d.Get("name").(string)
+				resourceName := value.(string)
+				if len(meta.(*clients.Client).Features.DefaultNamingPrefix) != 0 {
+					resourceName = meta.(*clients.Client).Features.DefaultNamingPrefix + resourceName
+				}
+				if len(meta.(*clients.Client).Features.DefaultNamingSuffix) != 0 {
+					resourceName = resourceName + meta.(*clients.Client).Features.DefaultNamingSuffix
+				}
+				if _, ok := d.GetOk("removing_special_chars"); ok && isConfigExist(config, "removing_special_chars") {
+					resourceName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(resourceName, "")
+				}
+				if currentName != resourceName {
+					d.SetNew("name", resourceName)
+				}
+			}
+
 			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
 				if isResourceHasProperty(resourceDef, "location") {
 					body["location"] = meta.(*clients.Client).Features.DefaultLocation
@@ -248,7 +271,21 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	config := d.GetRawConfig()
+	var resourceName string
+
+	if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
+		return fmt.Errorf("either a default name or a user assigned name in config file needs to be assigned")
+	}
+
+	// if user specifies a name in config, then it will override the default name.
+	if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
+		resourceName = value.(string)
+	} else {
+		resourceName = meta.(*clients.Client).Features.DefaultNaming
+	}
+
+	id, err := parse.NewResourceID(resourceName, d.Get("parent_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -270,7 +307,6 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	props := []string{"identity", "location", "tags"}
-	config := d.GetRawConfig()
 	for _, prop := range props {
 		if isConfigExist(config, prop) && body[prop] != nil {
 			return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
