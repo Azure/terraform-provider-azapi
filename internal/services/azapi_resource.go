@@ -206,6 +206,7 @@ func ResourceAzApiResource() *schema.Resource {
 				currentName := d.Get("name").(string)
 				defaultName := meta.(*clients.Client).Features.DefaultNaming
 				if currentName != defaultName {
+					// #nosec G104
 					d.SetNew("name", defaultName)
 				}
 			}
@@ -223,6 +224,7 @@ func ResourceAzApiResource() *schema.Resource {
 					resourceName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(resourceName, "")
 				}
 				if currentName != resourceName {
+					// #nosec G104
 					d.SetNew("name", resourceName)
 				}
 			}

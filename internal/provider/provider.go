@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"os"
 	"strings"
 	"sync"
@@ -13,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
