@@ -234,12 +234,9 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 				// #nosec G104
 				os.Setenv("AZURE_FEDERATED_TOKEN_FILE", v)
 			}
-			if v := d.Get("oidc_authority_host").(string); len(v) != 0 {
-				// #nosec G104
-				os.Setenv("AZURE_AUTHORITY_HOST", v)
-			}
-			azureAuthorityHost, _ := os.LookupEnv("AZURE_AUTHORITY_HOST")
-			os.Setenv("AZURE_AUTHORITY_HOST", azureAuthorityHost)
+			v := d.Get("oidc_authority_host").(string)
+			// #nosec G104
+			os.Setenv("AZURE_AUTHORITY_HOST", v)
 		}
 
 		if v := d.Get("client_certificate_password").(string); len(v) != 0 {
