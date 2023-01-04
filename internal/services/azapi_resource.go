@@ -4,6 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/url"
+	"reflect"
+	"regexp"
+	"time"
+
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -18,11 +24,6 @@ import (
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"log"
-	"net/url"
-	"reflect"
-	"regexp"
-	"time"
 )
 
 func ResourceAzApiResource() *schema.Resource {
@@ -216,7 +217,7 @@ func ResourceAzApiResource() *schema.Resource {
 					resourceName = meta.(*clients.Client).Features.DefaultNamingPrefix + resourceName
 				}
 				if len(meta.(*clients.Client).Features.DefaultNamingSuffix) != 0 {
-					resourceName = resourceName + meta.(*clients.Client).Features.DefaultNamingSuffix
+					resourceName += meta.(*clients.Client).Features.DefaultNamingSuffix
 				}
 				if _, ok := d.GetOk("removing_special_chars"); ok && isConfigExist(config, "removing_special_chars") {
 					resourceName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(resourceName, "")
