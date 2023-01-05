@@ -2,7 +2,10 @@ package services_test
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -20,6 +23,10 @@ type GenericResource struct{}
 func defaultIgnores() []string {
 	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks.#", "locks.0", "locks.1"}
 }
+
+var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
+
+var testCertBase64 = base64.StdEncoding.EncodeToString(testCertRaw)
 
 func TestAccGenericResource_basic(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
@@ -225,7 +232,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.subscriptionScope(data),
+			Config: r.subscriptionScope(data, os.Getenv("ARM_SUBSCRIPTION_ID")),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
@@ -345,29 +352,25 @@ func (r GenericResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_container_registry" "test" {
+resource "azurerm_automation_account" "test" {
   name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
-  sku                 = "Premium"
-  admin_enabled       = false
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2022-08-08"
   name      = "acctest%[2]s"
-  parent_id = azurerm_container_registry.test.id
+  parent_id = azurerm_automation_account.test.id
 
   body = jsonencode({
     properties = {
-      description = "Developer Scopes"
-      actions = [
-        "repositories/testrepo/content/read"
-      ]
+      base64Value = "%[3]s"
     }
   })
 }
-`, r.template(data), data.RandomString)
+`, r.template(data), data.RandomString, testCertBase64)
 }
 
 func (r GenericResource) requiresImport(data acceptance.TestData) string {
@@ -380,43 +383,36 @@ resource "azapi_resource" "import" {
   parent_id = azapi_resource.test.parent_id
   body = jsonencode({
     properties = {
-      description = "Developer Scopes"
-      actions = [
-        "repositories/testrepo/content/read"
-      ]
+      base64Value = "%s"
     }
   })
 }
-`, r.basic(data))
+`, r.basic(data), testCertBase64)
 }
 
 func (r GenericResource) importWithApiVersion(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_container_registry" "test" {
+resource "azurerm_automation_account" "test" {
   name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
-  sku                 = "Premium"
-  admin_enabled       = false
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2020-11-01-preview"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2020-01-13-preview"
   name      = "acctest%[2]s"
-  parent_id = azurerm_container_registry.test.id
+  parent_id = azurerm_automation_account.test.id
 
   body = jsonencode({
     properties = {
-      description = "Developer Scopes"
-      actions = [
-        "repositories/testrepo/content/read"
-      ]
+      base64Value = "%[3]s"
     }
   })
 }
-`, r.template(data), data.RandomString)
+`, r.template(data), data.RandomString, testCertBase64)
 }
 
 func (r GenericResource) complete(data acceptance.TestData) string {
@@ -430,7 +426,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -441,11 +437,10 @@ resource "azapi_resource" "test" {
   }
 
   body = jsonencode({
-    sku = {
-      name = "Standard"
-    }
     properties = {
-      adminUserEnabled = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
 
@@ -472,19 +467,21 @@ resource "azurerm_user_assigned_identity" "test" {
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_resource_group.test.id
-  type                      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
+  type                      = "Microsoft.Automation/automationAccounts@2022-08-08"
   schema_validation_enabled = false
   body                      = <<BODY
     {
       "location": "${azurerm_resource_group.test.location}",
       "identity": {
-		"type": "systemAssigned"
-      },
-      "sku": {
-        "name": "Standard"
+		"type": "SystemAssigned, UserAssigned",
+        "userAssignedIdentities": {
+          "${azurerm_user_assigned_identity.test.id}": {}
+        }
       },
       "properties": {
-        "adminUserEnabled": true
+        "sku": {
+          "name": "Basic"
+        }
       },
       "tags": {
         "key":"value"
@@ -500,18 +497,17 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
   location = "%[3]s"
 
   body = jsonencode({
-    sku = {
-      name = "Standard"
-    }
     properties = {
-      adminUserEnabled = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
 }
@@ -523,7 +519,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -532,14 +528,12 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
   body = jsonencode({
-    sku = {
-      name = "Standard"
-    }
     properties = {
-      adminUserEnabled = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
-
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -555,7 +549,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -566,14 +560,12 @@ resource "azapi_resource" "test" {
   }
 
   body = jsonencode({
-    sku = {
-      name = "Standard"
-    }
     properties = {
-      adminUserEnabled = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
-
 
   tags = {
     "Key" = "Value"
@@ -751,47 +743,41 @@ provider "azapi" {
   default_location = "%[3]s"
 }
 
-resource "azurerm_container_registry" "test" {
+resource "azurerm_automation_account" "test" {
   name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
-  sku                 = "Premium"
-  admin_enabled       = false
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2022-02-01-preview"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2022-08-08"
   name      = "acctest%[2]s"
-  parent_id = azurerm_container_registry.test.id
+  parent_id = azurerm_automation_account.test.id
 
   body = jsonencode({
     properties = {
-      description = "Developer Scopes"
-      actions = [
-        "repositories/testrepo/content/read"
-      ]
+      base64Value = "%[4]s"
     }
   })
 }
-`, r.template(data), data.RandomString, data.LocationPrimary)
+`, r.template(data), data.RandomString, data.LocationPrimary, testCertBase64)
 }
 
-func (GenericResource) subscriptionScope(data acceptance.TestData) string {
+func (GenericResource) subscriptionScope(data acceptance.TestData, subscriptionId string) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
 }
 
-data "azurerm_client_config" "current" {}
-
 resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2022-09-01"
   name      = "acctestRG-%[1]d"
-  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  parent_id = "/subscriptions/%[2]s"
 
-  location = "%[2]s"
+  location = "%[3]s"
 }
-`, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
+`, data.RandomInteger, subscriptionId, data.LocationPrimary)
 }
 
 // nolint staticcheck
@@ -831,7 +817,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -866,7 +852,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -890,7 +876,7 @@ func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData
 %[1]s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ServiceBus/namespaces@2022-01-01-preview"
+  type      = "Microsoft.ServiceBus/namespaces@2022-10-01-preview"
   name      = "acctest-sb-%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
