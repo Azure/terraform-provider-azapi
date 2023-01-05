@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -225,7 +226,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.subscriptionScope(data),
+			Config: r.subscriptionScope(data, os.Getenv("ARM_SUBSCRIPTION_ID")),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
@@ -776,22 +777,20 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
 
-func (GenericResource) subscriptionScope(data acceptance.TestData) string {
+func (GenericResource) subscriptionScope(data acceptance.TestData, subscriptionId string) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
 }
 
-data "azurerm_client_config" "current" {}
-
 resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2022-09-01"
   name      = "acctestRG-%[1]d"
-  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  parent_id = "/subscriptions/%[2]s"
 
-  location = "%[2]s"
+  location = "%[3]s"
 }
-`, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
+`, data.RandomInteger, subscriptionId, data.LocationPrimary)
 }
 
 // nolint staticcheck
@@ -831,7 +830,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -866,7 +865,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-11-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -890,7 +889,7 @@ func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData
 %[1]s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.ServiceBus/namespaces@2022-01-01-preview"
+  type      = "Microsoft.ServiceBus/namespaces@2022-10-01-preview"
   name      = "acctest-sb-%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
