@@ -20,7 +20,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
-
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
