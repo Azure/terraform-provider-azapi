@@ -1,8 +1,9 @@
-## v1.2.0 (Unreleased)
+## v1.2.0
 FEATURES:
 - `azapi`: Support `client_certificate_password` option.
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/019b2d62fe84508582b8c54ce3d91c2b4840e624
 
 BUG FIXES:
 
