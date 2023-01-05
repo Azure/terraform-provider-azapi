@@ -2,13 +2,17 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -16,6 +20,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -115,13 +120,31 @@ func azureProvider() *schema.Provider {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN_FILE_PATH", ""),
-				Description: "The file where the token for OIDC login. For use When authenticating as a Service Principal using OpenID Connect.",
+				Description: "The file where the token from the OIDC provider is. For use When authenticating as a Service Principal using OpenID Connect.",
 			},
 			"oidc_authority_host": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_AUTHORITY_HOST", ""),
 				Description: "The authority host for OIDC login. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+			"oidc_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
+				Description: "The token from the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+			"oidc_request_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
+				Description: "The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+			"oidc_request_url": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_URL"}, ""),
+				Description: "The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.",
 			},
 
 			"use_oidc": {
@@ -229,6 +252,63 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			// #nosec G104
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
 		}
+		if v := d.Get("client_certificate_password").(string); len(v) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
+		}
+
+		getAssertion := func(ctx context.Context) (string, error) {
+			if v := d.Get("oidc_token").(string); len(v) != 0 {
+				return v, nil
+			}
+			if v := d.Get("oidc_request_url").(string); len(v) != 0 {
+				req, err := http.NewRequestWithContext(ctx, http.MethodGet, v, http.NoBody)
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: failed to build request")
+				}
+				req.Header.Set("Accept", "application/json")
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", d.Get("oidc_request_token").(string)))
+				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+				resp, err := http.DefaultClient.Do(req)
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot request token: %v", err)
+				}
+				defer resp.Body.Close()
+				body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot parse response: %v", err)
+				}
+
+				if c := resp.StatusCode; c < 200 || c > 299 {
+					return "", fmt.Errorf("githubAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
+				}
+
+				var tokenRes struct {
+					Count *int    `json:"count"`
+					Value *string `json:"value"`
+				}
+				if err := json.Unmarshal(body, &tokenRes); err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot unmarshal response: %v", err)
+				}
+
+				return *tokenRes.Value, nil
+			}
+			return "", fmt.Errorf("OIDC: failed getting token")
+		}
+
+		oidcCredentialConstructorErrorHandler := func(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
+			errorMessage := strings.Join(errorMessages, "\n\t")
+
+			if numberOfSuccessfulCredentials == 0 {
+				return fmt.Errorf(errorMessage)
+			}
+
+			return nil
+		}
+
+		var creds []azcore.TokenCredential
+		var errorMessages []string
+
 		if d.Get("use_oidc").(bool) {
 			if v := d.Get("oidc_token_file_path").(string); len(v) != 0 {
 				// #nosec G104
@@ -237,22 +317,47 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			v := d.Get("oidc_authority_host").(string)
 			// #nosec G104
 			os.Setenv("AZURE_AUTHORITY_HOST", v)
+
+			if v := d.Get("tenant_id").(string); len(v) != 0 {
+				if v := d.Get("client_id").(string); len(v) != 0 {
+					w := d.Get("oidc_request_url").(string)
+					if v := d.Get("oidc_token").(string); len(v) != 0 || len(w) != 0 {
+						oidcCred, err := azidentity.NewClientAssertionCredential(d.Get("tenant_id").(string), d.Get("client_id").(string), getAssertion, &azidentity.ClientAssertionCredentialOptions{
+							ClientOptions: azcore.ClientOptions{},
+						})
+						if err == nil {
+							creds = append(creds, oidcCred)
+						} else {
+							errorMessages = append(errorMessages, "oidcCredential: "+err.Error())
+						}
+					}
+				}
+			}
 		}
 
-		if v := d.Get("client_certificate_password").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
-		}
-
-		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+		defaultCred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
 				Cloud: cloudConfig,
 			},
 			TenantID: d.Get("tenant_id").(string),
 		})
+		if err == nil {
+			creds = append(creds, defaultCred)
+		} else {
+			errorMessages = append(errorMessages, "defaultCredential: "+err.Error())
+		}
+
+		err = oidcCredentialConstructorErrorHandler(len(creds), errorMessages)
 		if err != nil {
 			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
+
+		chain, err := azidentity.NewChainedTokenCredential(creds, nil)
+		if err != nil {
+			return nil, diag.Errorf("%v", err)
+		}
+
+		cred := &chainTokenCredential{chain: chain}
 
 		copt := &clients.Option{
 			SubscriptionId:       d.Get("subscription_id").(string),
@@ -315,4 +420,12 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 		userAgent = fmt.Sprintf("%s pid-%s", userAgent, partnerID)
 	}
 	return userAgent
+}
+
+type chainTokenCredential struct {
+	chain *azidentity.ChainedTokenCredential
+}
+
+func (c chainTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return c.chain.GetToken(ctx, opts)
 }
