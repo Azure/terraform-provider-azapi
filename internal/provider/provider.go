@@ -117,6 +117,41 @@ func azureProvider() *schema.Provider {
 				Description: "Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?",
 			},
 
+			// OIDC specific fields
+			"oidc_request_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
+				Description: "The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+			"oidc_request_url": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_URL"}, ""),
+				Description: "The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"oidc_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN", ""),
+				Description: "The OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"oidc_token_file_path": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN_FILE_PATH", ""),
+				Description: "The path to a file containing an OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
+			},
+
+			"use_oidc": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_OIDC", false),
+				Description: "Allow OpenID Connect to be used for authentication",
+			},
+
 			// TODO@mgd: azidentity doesn't support msi_endpoint
 			// // Managed Service Identity specific fields
 			// "use_msi": {
@@ -213,12 +248,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
 		}
 
-		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: azcore.ClientOptions{
-				Cloud: cloudConfig,
-			},
-			TenantID: d.Get("tenant_id").(string),
-		})
+		cred, err := getCredential(d, cloudConfig)
 		if err != nil {
 			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
@@ -284,4 +314,27 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 		userAgent = fmt.Sprintf("%s pid-%s", userAgent, partnerID)
 	}
 	return userAgent
+}
+
+func getCredential(d *schema.ResourceData, cloudConfig cloud.Configuration) (azcore.TokenCredential, error) {
+	if d.Get("use_oidc").(bool) {
+		return NewOidcCredential(&OidcCredentialOptions{
+			ClientOptions: azcore.ClientOptions{
+				Cloud: cloudConfig,
+			},
+			TenantID:      d.Get("tenant_id").(string),
+			ClientID:      d.Get("client_id").(string),
+			RequestToken:  d.Get("oidc_request_token").(string),
+			RequestUrl:    d.Get("oidc_request_url").(string),
+			Token:         d.Get("oidc_token").(string),
+			TokenFilePath: d.Get("oidc_token_file_path").(string),
+		})
+	}
+
+	return azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Cloud: cloudConfig,
+		},
+		TenantID: d.Get("tenant_id").(string),
+	})
 }
