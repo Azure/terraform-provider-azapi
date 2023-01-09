@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -119,38 +121,32 @@ func azureProvider() *schema.Provider {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN_FILE_PATH", ""),
-				Description: "The file where the token from the OIDC provider is. For use When authenticating as a Service Principal using OpenID Connect.",
-			},
-			"oidc_authority_host": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_AUTHORITY_HOST", ""),
-				Description: "The authority host for OIDC login. For use When authenticating as a Service Principal using OpenID Connect.",
+				Description: "The path to a file containing an OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
 			},
 			"oidc_token": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
-				Description: "The token from the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN", ""),
+				Description: "The OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
 			},
 			"oidc_request_token": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
-				Description: "The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+				Description: "The bearer token for the request to the OIDC provider. For use when authenticating as a Service Principal using OpenID Connect.",
 			},
 			"oidc_request_url": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_URL"}, ""),
-				Description: "The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.",
+				Description: "The URL for the OIDC provider from which to request an ID token. For use when authenticating as a Service Principal using OpenID Connect.",
 			},
 
 			"use_oidc": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_OIDC", false),
-				Description: "Allow OpenID Connect to be used for authentication",
+				Description: "Allow OpenID Connect to be used for authentication.",
 			},
 
 			"skip_provider_registration": {
@@ -256,45 +252,6 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
 		}
 
-		getAssertion := func(ctx context.Context) (string, error) {
-			if v := d.Get("oidc_token").(string); len(v) != 0 {
-				return v, nil
-			}
-			if v := d.Get("oidc_request_url").(string); len(v) != 0 {
-				req, err := http.NewRequestWithContext(ctx, http.MethodGet, v, http.NoBody)
-				if err != nil {
-					return "", fmt.Errorf("githubAssertion: failed to build request")
-				}
-				req.Header.Set("Accept", "application/json")
-				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", d.Get("oidc_request_token").(string)))
-				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-				resp, err := http.DefaultClient.Do(req)
-				if err != nil {
-					return "", fmt.Errorf("githubAssertion: cannot request token: %v", err)
-				}
-				defer resp.Body.Close()
-				body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
-				if err != nil {
-					return "", fmt.Errorf("githubAssertion: cannot parse response: %v", err)
-				}
-
-				if c := resp.StatusCode; c < 200 || c > 299 {
-					return "", fmt.Errorf("githubAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
-				}
-
-				var tokenRes struct {
-					Count *int    `json:"count"`
-					Value *string `json:"value"`
-				}
-				if err := json.Unmarshal(body, &tokenRes); err != nil {
-					return "", fmt.Errorf("githubAssertion: cannot unmarshal response: %v", err)
-				}
-
-				return *tokenRes.Value, nil
-			}
-			return "", fmt.Errorf("OIDC: failed getting token")
-		}
-
 		oidcCredentialConstructorErrorHandler := func(numberOfSuccessfulCredentials int, errorMessages []string) (err error) {
 			errorMessage := strings.Join(errorMessages, "\n\t")
 
@@ -309,26 +266,21 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		var errorMessages []string
 
 		if d.Get("use_oidc").(bool) {
-			if v := d.Get("oidc_token_file_path").(string); len(v) != 0 {
-				// #nosec G104
-				os.Setenv("AZURE_FEDERATED_TOKEN_FILE", v)
-			}
-			v := d.Get("oidc_authority_host").(string)
-			// #nosec G104
-			os.Setenv("AZURE_AUTHORITY_HOST", v)
-
 			if v := d.Get("tenant_id").(string); len(v) != 0 {
 				if v := d.Get("client_id").(string); len(v) != 0 {
-					w := d.Get("oidc_request_url").(string)
-					if v := d.Get("oidc_token").(string); len(v) != 0 || len(w) != 0 {
-						oidcCred, err := azidentity.NewClientAssertionCredential(d.Get("tenant_id").(string), d.Get("client_id").(string), getAssertion, &azidentity.ClientAssertionCredentialOptions{
-							ClientOptions: azcore.ClientOptions{},
-						})
-						if err == nil {
-							creds = append(creds, oidcCred)
-						} else {
-							errorMessages = append(errorMessages, "oidcCredential: "+err.Error())
-						}
+					o := &OidcCredentialOptions{
+						TenantID:     d.Get("tenant_id").(string),
+						ClientID:     d.Get("client_id").(string),
+						FilePath:     d.Get("oidc_token_file_path").(string),
+						Token:        d.Get("oidc_token").(string),
+						RequestToken: d.Get("oidc_request_token").(string),
+						RequestUrl:   d.Get("oidc_request_url").(string),
+					}
+					oidcCred, err := NewOidcCredential(o)
+					if err == nil {
+						creds = append(creds, oidcCred)
+					} else {
+						errorMessages = append(errorMessages, "OidcCredential: "+err.Error())
 					}
 				}
 			}
@@ -343,7 +295,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		if err == nil {
 			creds = append(creds, defaultCred)
 		} else {
-			errorMessages = append(errorMessages, "defaultCredential: "+err.Error())
+			errorMessages = append(errorMessages, "DefaultCredential: "+err.Error())
 		}
 
 		err = oidcCredentialConstructorErrorHandler(len(creds), errorMessages)
@@ -427,4 +379,121 @@ type chainTokenCredential struct {
 
 func (c chainTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.chain.GetToken(ctx, opts)
+}
+
+// OidcCredential support
+const credNameOidc = "OidcCredential"
+
+type OidcCredential struct {
+	assertion                                 string
+	filePath, token, requestToken, requestUrl string
+	cred                                      *azidentity.ClientAssertionCredential
+	expires                                   time.Time
+	mtx                                       *sync.RWMutex
+}
+
+// OidcCredentialOptions contains optional parameters for OidcCredential.
+type OidcCredentialOptions struct {
+	azcore.ClientOptions
+
+	FilePath, Token, RequestToken, RequestUrl string
+	TenantID, ClientID                        string
+}
+
+// NewOidcCredential constructs a OidcCredential. tenantID and clientID specify the identity the credential authenticates.
+// file is a path to a file containing a Kubernetes service account token that authenticates the identity.
+func NewOidcCredential(options *OidcCredentialOptions) (*OidcCredential, error) {
+	if options == nil {
+		options = &OidcCredentialOptions{}
+	}
+	w := OidcCredential{filePath: options.FilePath, token: options.Token, requestUrl: options.RequestUrl, requestToken: options.RequestToken, mtx: &sync.RWMutex{}}
+	cred, err := azidentity.NewClientAssertionCredential(options.TenantID, options.ClientID, w.getAssertion, &azidentity.ClientAssertionCredentialOptions{ClientOptions: options.ClientOptions})
+	if err != nil {
+		return nil, err
+	}
+	w.cred = cred
+	return &w, nil
+}
+
+// GetToken requests an access token from Azure Active Directory. Azure SDK clients call this method automatically.
+func (w *OidcCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return w.cred.GetToken(ctx, opts)
+}
+
+// getAssertion returns the specified file's content, which is expected to be an OpenID Connect ID token.
+func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
+	if len(w.filePath) != 0 {
+		// Authenticate using plaintext token from file
+		w.mtx.RLock()
+		if w.expires.Before(time.Now()) {
+			// ensure only one goroutine at a time updates the assertion
+			w.mtx.RUnlock()
+			w.mtx.Lock()
+			defer w.mtx.Unlock()
+			// double check because another goroutine may have acquired the write lock first and done the update
+			if now := time.Now(); w.expires.Before(now) {
+				content, err := os.ReadFile(w.filePath)
+				if err != nil {
+					return "", err
+				}
+				w.assertion = string(content)
+				// Kubernetes rotates service account tokens when they reach 80% of their total TTL. The shortest TTL
+				// is 1 hour. That implies the token we just read is valid for at least 12 minutes (20% of 1 hour),
+				// but we add some margin for safety.
+				w.expires = now.Add(10 * time.Minute)
+			}
+		} else {
+			defer w.mtx.RUnlock()
+		}
+	} else if len(w.token) != 0 {
+		// Authenticate using plaintext token
+		w.assertion = w.token
+	} else if len(w.requestUrl) != 0 {
+		// Authenticate using token from OIDC server
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, w.requestUrl, http.NoBody)
+		if err != nil {
+			return "", fmt.Errorf("githubAssertion: failed to build request")
+		}
+
+		query, err := url.ParseQuery(req.URL.RawQuery)
+		if err != nil {
+			return "", fmt.Errorf("OidcCredential: failed to parse query string")
+		}
+
+		query.Set("audience", "api://AzureADTokenExchange")
+		req.URL.RawQuery = query.Encode()
+
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", w.requestToken))
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return "", fmt.Errorf("githubAssertion: cannot request token: %v", err)
+		}
+
+		defer resp.Body.Close()
+		body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		if err != nil {
+			return "", fmt.Errorf("githubAssertion: cannot parse response: %v", err)
+		}
+
+		if c := resp.StatusCode; c < 200 || c > 299 {
+			return "", fmt.Errorf("githubAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
+		}
+
+		var tokenRes struct {
+			Count *int    `json:"count"`
+			Value *string `json:"value"`
+		}
+		if err := json.Unmarshal(body, &tokenRes); err != nil {
+			return "", fmt.Errorf("githubAssertion: cannot unmarshal response: %v", err)
+		}
+
+		w.assertion = *tokenRes.Value
+	} else {
+		return "", fmt.Errorf("OidcCredential: failed getting token. Please specify oidc_token_file_path, oidc_token or oidc_request_url.")
+	}
+
+	return w.assertion, nil
 }
