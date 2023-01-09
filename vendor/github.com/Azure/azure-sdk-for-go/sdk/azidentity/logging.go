@@ -21,13 +21,10 @@ import (
 const EventAuthentication log.Event = "Authentication"
 
 func logGetTokenSuccess(cred azcore.TokenCredential, opts policy.TokenRequestOptions) {
-	logGetTokenSuccessImpl(fmt.Sprintf("%T", cred), opts)
-}
-
-func logGetTokenSuccessImpl(credName string, opts policy.TokenRequestOptions) {
-	if log.Should(EventAuthentication) {
-		scope := strings.Join(opts.Scopes, ", ")
-		msg := fmt.Sprintf(`%s.GetToken() acquired a token for scope "%s"\n`, credName, scope)
-		log.Write(EventAuthentication, msg)
+	if !log.Should(EventAuthentication) {
+		return
 	}
+	scope := strings.Join(opts.Scopes, ", ")
+	msg := fmt.Sprintf("%T.GetToken() acquired a token for scope %s\n", cred, scope)
+	log.Write(EventAuthentication, msg)
 }
