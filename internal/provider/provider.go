@@ -382,8 +382,6 @@ func (c chainTokenCredential) GetToken(ctx context.Context, opts policy.TokenReq
 }
 
 // OidcCredential support
-const credNameOidc = "OidcCredential"
-
 type OidcCredential struct {
 	assertion                                 string
 	filePath, token, requestToken, requestUrl string
@@ -492,7 +490,7 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 
 		w.assertion = *tokenRes.Value
 	} else {
-		return "", fmt.Errorf("OidcCredential: failed getting token. Please specify oidc_token_file_path, oidc_token or oidc_request_url.")
+		return "", fmt.Errorf("OidcCredential: failed getting token. Please specify oidc_token_file_path, oidc_token or oidc_request_url")
 	}
 
 	return w.assertion, nil
