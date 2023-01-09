@@ -418,18 +418,19 @@ func (w *OidcCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 	return w.cred.GetToken(ctx, opts)
 }
 
-// getAssertion returns the specified file's content, which is expected to be an OpenID Connect ID token.
+// getAssertion returns an OpenID Connect ID token.
 func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
-	if len(w.filePath) != 0 {
-		// Authenticate using plaintext token from file
-		w.mtx.RLock()
-		if w.expires.Before(time.Now()) {
-			// ensure only one goroutine at a time updates the assertion
-			w.mtx.RUnlock()
-			w.mtx.Lock()
-			defer w.mtx.Unlock()
-			// double check because another goroutine may have acquired the write lock first and done the update
-			if now := time.Now(); w.expires.Before(now) {
+	w.mtx.RLock()
+	if w.expires.Before(time.Now()) {
+		// ensure only one goroutine at a time updates the assertion
+		w.mtx.RUnlock()
+		w.mtx.Lock()
+		defer w.mtx.Unlock()
+		// double check because another goroutine may have acquired the write lock first and done the update
+		if now := time.Now(); w.expires.Before(now) {
+
+			if len(w.filePath) != 0 {
+				// Authenticate using plaintext token from file
 				content, err := os.ReadFile(w.filePath)
 				if err != nil {
 					return "", err
@@ -439,58 +440,64 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 				// is 1 hour. That implies the token we just read is valid for at least 12 minutes (20% of 1 hour),
 				// but we add some margin for safety.
 				w.expires = now.Add(10 * time.Minute)
+
+			} else if len(w.token) != 0 {
+				// Authenticate using plaintext token
+				w.assertion = w.token
+				// Static tokens are not renewed during runtime so the expiration is basically never.
+				w.expires = now.Add(9999 * time.Minute)
+
+			} else if len(w.requestUrl) != 0 {
+				// Authenticate using token from OIDC server
+				req, err := http.NewRequestWithContext(ctx, http.MethodGet, w.requestUrl, http.NoBody)
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: failed to build request")
+				}
+
+				query, err := url.ParseQuery(req.URL.RawQuery)
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: failed to parse query string")
+				}
+
+				query.Set("audience", "api://AzureADTokenExchange")
+				req.URL.RawQuery = query.Encode()
+
+				req.Header.Set("Accept", "application/json")
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", w.requestToken))
+				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+				resp, err := http.DefaultClient.Do(req)
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot request token: %v", err)
+				}
+
+				defer resp.Body.Close()
+				body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+				if err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot parse response: %v", err)
+				}
+
+				if c := resp.StatusCode; c < 200 || c > 299 {
+					return "", fmt.Errorf("githubAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
+				}
+
+				var tokenRes struct {
+					Count *int    `json:"count"`
+					Value *string `json:"value"`
+				}
+				if err := json.Unmarshal(body, &tokenRes); err != nil {
+					return "", fmt.Errorf("githubAssertion: cannot unmarshal response: %v", err)
+				}
+
+				w.assertion = *tokenRes.Value
+				// GitHub OIDC tokens expire in a day or just after the Action is completed. 23 is used for having some margin
+				w.expires = now.Add(23 * time.Hour)
+			} else {
+				return "", fmt.Errorf("OidcCredential: failed getting token. Please specify oidc_token_file_path, oidc_token or oidc_request_url")
 			}
-		} else {
-			defer w.mtx.RUnlock()
 		}
-	} else if len(w.token) != 0 {
-		// Authenticate using plaintext token
-		w.assertion = w.token
-	} else if len(w.requestUrl) != 0 {
-		// Authenticate using token from OIDC server
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, w.requestUrl, http.NoBody)
-		if err != nil {
-			return "", fmt.Errorf("githubAssertion: failed to build request")
-		}
-
-		query, err := url.ParseQuery(req.URL.RawQuery)
-		if err != nil {
-			return "", fmt.Errorf("OidcCredential: failed to parse query string")
-		}
-
-		query.Set("audience", "api://AzureADTokenExchange")
-		req.URL.RawQuery = query.Encode()
-
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", w.requestToken))
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-		resp, err := http.DefaultClient.Do(req)
-		if err != nil {
-			return "", fmt.Errorf("githubAssertion: cannot request token: %v", err)
-		}
-
-		defer resp.Body.Close()
-		body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
-		if err != nil {
-			return "", fmt.Errorf("githubAssertion: cannot parse response: %v", err)
-		}
-
-		if c := resp.StatusCode; c < 200 || c > 299 {
-			return "", fmt.Errorf("githubAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
-		}
-
-		var tokenRes struct {
-			Count *int    `json:"count"`
-			Value *string `json:"value"`
-		}
-		if err := json.Unmarshal(body, &tokenRes); err != nil {
-			return "", fmt.Errorf("githubAssertion: cannot unmarshal response: %v", err)
-		}
-
-		w.assertion = *tokenRes.Value
 	} else {
-		return "", fmt.Errorf("OidcCredential: failed getting token. Please specify oidc_token_file_path, oidc_token or oidc_request_url")
+		defer w.mtx.RUnlock()
 	}
 
 	return w.assertion, nil
