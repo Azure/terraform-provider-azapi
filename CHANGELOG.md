@@ -1,3 +1,11 @@
+## v1.3.0 (Unreleased)
+FEATURES:
+- `azapi`: Support OIDC authentication.
+
+ENHANCEMENTS:
+
+BUG FIXES:
+
 ## v1.2.0
 FEATURES:
 - `azapi`: Support `client_certificate_password` option.
