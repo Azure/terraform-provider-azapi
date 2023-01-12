@@ -1,0 +1,42 @@
+name: Acc Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      ARM_USE_OIDC:
+        type: boolean
+        description: ARM_USE_OIDC
+        required: true
+        default: false
+      TESTARGS:
+        description: TESTARGS
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18.2'
+      - run: chmod -R +x ./scripts
+      - run: bash scripts/gogetcookie.sh
+      - run: make acctests
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TEST_LOCATION: ${{ secrets.ARM_TEST_LOCATION }}
+          ARM_TEST_LOCATION_ALT: ${{ secrets.ARM_TEST_LOCATION_ALT }}
+          ARM_TEST_LOCATION_ALT2: ${{ secrets.ARM_TEST_LOCATION_ALT2 }}
+          ARM_USE_OIDC: ${{ inputs.ARM_USE_OIDC }}
+          TESTARGS: ${{ inputs.TESTARGS }}

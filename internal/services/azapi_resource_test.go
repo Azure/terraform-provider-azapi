@@ -319,6 +319,25 @@ func TestAccGenericResource_locks(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_oidc(t *testing.T) {
+	if ok := os.Getenv("ARM_USE_OIDC"); ok == "" {
+		t.Skip("Skipping as `ARM_USE_OIDC` is not specified")
+	}
+
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.basic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
