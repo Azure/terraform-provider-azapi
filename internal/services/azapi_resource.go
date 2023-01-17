@@ -157,13 +157,11 @@ func ResourceAzApiResource() *schema.Resource {
 
 			parentId := d.Get("parent_id").(string)
 			resourceType := d.Get("type").(string)
+			var assignedName string
 
-			// verify parent_id when it's known
-			if len(parentId) > 0 {
-				_, err := parse.NewResourceID(d.Get("name").(string), parentId, resourceType)
-				if err != nil {
-					return err
-				}
+			config := d.GetRawConfig()
+			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
+				return fmt.Errorf("resource name can't be empty, either specifying a default name or a resource name")
 			}
 
 			// body refers other resource, can't be verified during plan
@@ -178,7 +176,6 @@ func ResourceAzApiResource() *schema.Resource {
 			}
 
 			props := []string{"identity", "location", "tags"}
-			config := d.GetRawConfig()
 			for _, prop := range props {
 				if isConfigExist(config, prop) && body[prop] != nil {
 					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
@@ -205,27 +202,37 @@ func ResourceAzApiResource() *schema.Resource {
 			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) != 0 {
 				currentName := d.Get("name").(string)
 				defaultName := meta.(*clients.Client).Features.DefaultNaming
+				assignedName = defaultName
 				if currentName != defaultName {
 					// #nosec G104
-					d.SetNew("name", defaultName)
+					d.SetNew("name", assignedName)
 				}
 			}
 
 			if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
 				currentName := d.Get("name").(string)
-				resourceName := value.(string)
+				assignedName = value.(string)
+
 				if len(meta.(*clients.Client).Features.DefaultNamingPrefix) != 0 {
-					resourceName = meta.(*clients.Client).Features.DefaultNamingPrefix + resourceName
+					assignedName = meta.(*clients.Client).Features.DefaultNamingPrefix + assignedName
 				}
 				if len(meta.(*clients.Client).Features.DefaultNamingSuffix) != 0 {
-					resourceName += meta.(*clients.Client).Features.DefaultNamingSuffix
+					assignedName += meta.(*clients.Client).Features.DefaultNamingSuffix
 				}
 				if _, ok := d.GetOk("removing_special_chars"); ok && isConfigExist(config, "removing_special_chars") {
-					resourceName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(resourceName, "")
+					assignedName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(assignedName, "")
 				}
-				if currentName != resourceName {
+				if currentName != assignedName {
 					// #nosec G104
-					d.SetNew("name", resourceName)
+					d.SetNew("name", assignedName)
+				}
+			}
+
+			// verify parent_id when it's known
+			if len(parentId) > 0 {
+				_, err := parse.NewResourceID(assignedName, parentId, resourceType)
+				if err != nil {
+					return err
 				}
 			}
 

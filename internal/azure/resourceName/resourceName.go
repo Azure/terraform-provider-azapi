@@ -13,25 +13,25 @@ func SchemaResourceNameOC() *schema.Schema {
 
 func SchemaResourceName() *schema.Schema {
 	return &schema.Schema{
-		Type:     schema.TypeString,
-		Optional: true,
-		//ConflictsWith: []string{"default_naming_prefix", "default_naming_suffix"},
+		Type:          schema.TypeString,
+		Optional:      true,
+		ConflictsWith: []string{"default_naming_prefix", "default_naming_suffix"},
 	}
 }
 
 func SchemaResourceNamePrefix() *schema.Schema {
 	return &schema.Schema{
-		Type:     schema.TypeString,
-		Optional: true,
-		//ConflictsWith: []string{"default_name"},
+		Type:          schema.TypeString,
+		Optional:      true,
+		ConflictsWith: []string{"default_name"},
 	}
 }
 
 func SchemaResourceNameSuffix() *schema.Schema {
 	return &schema.Schema{
-		Type:     schema.TypeString,
-		Optional: true,
-		//ConflictsWith: []string{"default_name"},
+		Type:          schema.TypeString,
+		Optional:      true,
+		ConflictsWith: []string{"default_name"},
 	}
 }
 
@@ -49,12 +49,5 @@ func SchemaResourceNameCafEnabled() *schema.Schema {
 		Type:     schema.TypeBool,
 		Optional: true,
 		Default:  false,
-	}
-}
-
-func SchemaResourceNameDataSource() *schema.Schema {
-	return &schema.Schema{
-		Type:     schema.TypeString,
-		Computed: true,
 	}
 }
