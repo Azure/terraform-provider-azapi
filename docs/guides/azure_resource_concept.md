@@ -9,7 +9,7 @@ description: |-
 ## Resource Terminology
 1. `Root Resource / Top-Level Resource`: A resource with only a single level of nested types (i.e. there's just a single type after the RP namespace). `Microsoft.Network/networkSecurityGroups` is a top-level resource, whereas `Microsoft.Network/networkSecurityGroups/securityRules` is not.
 2. `Child Resource / Nested Resource`: A resource with two or more levels of nested types.
-3. `Parent Resource`: The parent to a child resource, identified by removing a level of nesting from the resource type. `Microsoft.Network/networkSecurityGroups` is the parent to `Microsoft.Network/networkSecuriyGroups/securityRules`.
+3. `Parent Resource`: The parent to a child resource, identified by removing a level of nesting from the resource type. `Microsoft.Network/networkSecurityGroups` is the parent to `Microsoft.Network/networkSecurityGroups/securityRules`.
 
 ## Scopes:
 Every resource ID begins with a root scope. There are a few different types of root scopes:
