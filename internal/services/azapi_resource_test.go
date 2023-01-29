@@ -844,6 +844,7 @@ resource "azurerm_storage_account" "test" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
 }
+
 resource "azurerm_spring_cloud_service" "test" {
   name                = "acctest-sc-%[2]d"
   location            = azurerm_resource_group.test.location
@@ -851,7 +852,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
+  type      = "Microsoft.AppPlatform/spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -887,7 +888,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
+  type      = "Microsoft.AppPlatform/spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
