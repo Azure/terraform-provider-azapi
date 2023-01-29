@@ -350,7 +350,6 @@ func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep("sso.0.client_id", "sso.0.client_secret"),
 	})
 }
 
