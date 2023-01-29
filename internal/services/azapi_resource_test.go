@@ -879,6 +879,7 @@ resource "azurerm_storage_account" "test" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
 }
+
 resource "azurerm_spring_cloud_service" "test" {
   name                = "acctest-sc-%[2]d"
   location            = azurerm_resource_group.test.location
