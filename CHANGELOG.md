@@ -3,6 +3,7 @@ FEATURES:
 - `azapi`: Support OIDC authentication.
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/78ec1b99699a4bf44869bd13f1b0ed7d92a99c27
 
 BUG FIXES:
 
