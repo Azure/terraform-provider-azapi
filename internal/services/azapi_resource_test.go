@@ -21,7 +21,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks.#", "locks.0", "locks.1"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks.#", "locks.0", "locks.1", "removing_special_chars"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
@@ -220,6 +220,45 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_defaultsNaming(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultNaming(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("name").HasValue("acctestdefaultNaming"),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+		{
+			Config: r.defaultNamingOverrideInHcl(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("name").HasValue("hclNaming"),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_defaultsNamingPrefixAndSuffix(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultNamingWithPrefixAndSuffix(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
 		data.ImportStep(defaultIgnores()...),
@@ -764,6 +803,84 @@ resource "azapi_resource" "test" {
 
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, data.LocationSecondary)
+}
+
+func (r GenericResource) defaultNaming(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azapi" {
+  default_name = "acctestdefaultNaming"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  parent_id = azurerm_resource_group.test.id
+
+  location = azurerm_resource_group.test.location
+  body = jsonencode({
+    sku = {
+      name = "Standard"
+      tier = "Standard"
+    }
+    properties = {
+      disableLocalAuth = true
+    }
+  })
+}
+`, r.template(data))
+}
+
+func (r GenericResource) defaultNamingOverrideInHcl(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azapi" {
+  default_name = "acctestdefaultNaming"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  name      = "hclNaming"
+  parent_id = azurerm_resource_group.test.id
+
+  location = azurerm_resource_group.test.location
+  body = jsonencode({
+    sku = {
+      name = "Standard"
+      tier = "Standard"
+    }
+    properties = {
+      disableLocalAuth = true
+    }
+  })
+}
+`, r.template(data))
+}
+
+func (r GenericResource) defaultNamingWithPrefixAndSuffix(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+provider "azapi" {
+  default_naming_prefix = "p%[2]s-"
+  default_naming_suffix = "-s%[2]s"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  name      = "acc"
+  parent_id = azurerm_resource_group.test.id
+
+  location = azurerm_resource_group.test.location
+  body = jsonencode({
+    sku = {
+      name = "Standard"
+      tier = "Standard"
+    }
+    properties = {
+      disableLocalAuth = true
+    }
+  })
+}
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {

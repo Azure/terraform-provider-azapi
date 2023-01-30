@@ -288,7 +288,6 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		return fmt.Errorf("either a default name or a user assigned name in config file needs to be assigned")
 	}
 
-	// if user specifies a name in config, then it will override the default name.
 	if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
 		resourceName = value.(string)
 	} else {
@@ -426,9 +425,11 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		// #nosec G104
 		d.Set("ignore_casing", false)
 		// #nosec G104
-		d.Set("ignore_missing_property", false)
+		d.Set("ignore_missing_property", true)
 		// #nosec G104
 		d.Set("schema_validation_enabled", true)
+		// #nosec G104
+		d.Set("removing_special_chars", false)
 	} else {
 		option := utils.UpdateJsonOption{
 			IgnoreCasing:          d.Get("ignore_casing").(bool),
