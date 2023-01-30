@@ -242,7 +242,7 @@ func (GenericUpdateResource) template(data acceptance.TestData) string {
 terraform {
   required_providers {
     azurerm = {
-      version = "= 2.75.0"
+      version = "= 3.41.0"
       source  = "hashicorp/azurerm"
     }
   }

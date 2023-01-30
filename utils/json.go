@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -92,6 +93,9 @@ func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) i
 	case string:
 		if newStr, ok := new.(string); ok {
 			if option.IgnoreCasing && strings.EqualFold(oldValue, newStr) {
+				return oldValue
+			}
+			if option.IgnoreMissingProperty && regexp.MustCompile(`^\*+$`).MatchString(newStr) {
 				return oldValue
 			}
 		}

@@ -1,3 +1,23 @@
+## v1.3.0
+FEATURES:
+- `azapi`: Support OIDC authentication.
+
+ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/78ec1b99699a4bf44869bd13f1b0ed7d92a99c27
+- `azapi_resource`: `ignore_missing_property` will also ignore the sensitive properties returned in asterisks.
+
+BUG FIXES:
+- Fix a document typo.
+
+## v1.2.0
+FEATURES:
+- `azapi`: Support `client_certificate_password` option.
+
+ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/019b2d62fe84508582b8c54ce3d91c2b4840e624
+
+BUG FIXES:
+
 ## v1.1.0
 FEATURES:
 
