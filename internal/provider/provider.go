@@ -163,8 +163,6 @@ func azureProvider() *schema.Provider {
 
 			"default_naming_suffix": resourceName.SchemaResourceNameSuffix(),
 
-			"naming_caf_enabled": resourceName.SchemaResourceNameCafEnabled(),
-
 			"default_location": location.SchemaLocation(),
 
 			"default_tags": tags.SchemaTags(),

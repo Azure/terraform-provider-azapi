@@ -42,12 +42,3 @@ func SchemaResourceNameRemovingSpecialCharacters() *schema.Schema {
 		Default:  false,
 	}
 }
-
-// todo: add the resoure type in the name
-func SchemaResourceNameCafEnabled() *schema.Schema {
-	return &schema.Schema{
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
-	}
-}
