@@ -338,6 +338,21 @@ func TestAccGenericResource_oidc(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	clientId := os.Getenv("ARM_CLIENT_ID")
+	clientSecret := os.Getenv("ARM_CLIENT_SECRET")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.secretsInAsterisks(data, clientId, clientSecret),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -829,6 +844,7 @@ resource "azurerm_storage_account" "test" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
 }
+
 resource "azurerm_spring_cloud_service" "test" {
   name                = "acctest-sc-%[2]d"
   location            = azurerm_resource_group.test.location
@@ -836,7 +852,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
+  type      = "Microsoft.AppPlatform/spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -864,6 +880,7 @@ resource "azurerm_storage_account" "test" {
   account_tier             = "Standard"
   account_replication_type = "GRS"
 }
+
 resource "azurerm_spring_cloud_service" "test" {
   name                = "acctest-sc-%[2]d"
   location            = azurerm_resource_group.test.location
@@ -871,7 +888,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/Spring/storages@2022-12-01"
+  type      = "Microsoft.AppPlatform/spring/storages@2022-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -948,6 +965,47 @@ resource "azapi_resource" "test2" {
   locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
 }
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+}
+
+func (r GenericResource) secretsInAsterisks(data acceptance.TestData, clientId, clientSecret string) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {
+}
+
+resource "azurerm_spring_cloud_service" "test" {
+  name                = "acctest-sc-%[2]d"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "E0"
+}
+
+resource "azurerm_spring_cloud_gateway" "test" {
+  name                    = "default"
+  spring_cloud_service_id = azurerm_spring_cloud_service.test.id
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.AppPlatform/Spring/apiPortals@2022-12-01"
+  parent_id = azurerm_spring_cloud_service.test.id
+  name      = "default"
+  body = jsonencode({
+    properties = {
+      gatewayIds = [azurerm_spring_cloud_gateway.test.id]
+      httpsOnly  = false
+      public     = false
+      ssoProperties = {
+        clientId     = "%[4]s"
+        clientSecret = "%[5]s"
+        issuerUri    = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+        scope        = ["read"]
+      }
+    }
+  })
+  ignore_casing = true
+}
+`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10), clientId, clientSecret)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {
