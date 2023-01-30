@@ -2,7 +2,7 @@
 layout: "azapi"
 page_title: "AzAPI Provider: Authenticating via a Service Principal and OpenID Connect"
 description: |-
-This guide will cover how to use a Service Principal (Shared Account) with OpenID Connect as authentication for the AzAPI Provider.
+  This guide will cover how to use a Service Principal (Shared Account) with OpenID Connect as authentication for the AzAPI Provider.
 
 ---
 
