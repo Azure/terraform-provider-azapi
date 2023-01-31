@@ -96,10 +96,12 @@ The following arguments are supported:
 
 * `body` - (Required) A JSON object that contains the request body used to create and update azure resource. 
 
+* `removing_special_chars` - (Optional) Whether to remove special characters in resource name. Defaults to `false`.
+
 ---
   
 * `location` - (Optional) The Azure Region where the azure resource should exist. 
-  
+ 
 * `identity` - (Optional) A `identity` block as defined below. 
 
 * `tags` - (Optional) A mapping of tags which should be assigned to the azure resource. 

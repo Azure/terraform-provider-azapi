@@ -7,11 +7,13 @@ import (
 	"log"
 	"net/url"
 	"reflect"
+	"regexp"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
@@ -69,12 +71,9 @@ func ResourceAzApiResource() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"name": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
+			"name": resourceName.SchemaResourceNameOC(),
+
+			"removing_special_chars": resourceName.SchemaResourceNameRemovingSpecialCharacters(),
 
 			"parent_id": {
 				Type:         schema.TypeString,
@@ -158,13 +157,11 @@ func ResourceAzApiResource() *schema.Resource {
 
 			parentId := d.Get("parent_id").(string)
 			resourceType := d.Get("type").(string)
+			var assignedName string
 
-			// verify parent_id when it's known
-			if len(parentId) > 0 {
-				_, err := parse.NewResourceID(d.Get("name").(string), parentId, resourceType)
-				if err != nil {
-					return err
-				}
+			config := d.GetRawConfig()
+			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
+				return fmt.Errorf("resource name can't be empty, either specifying a default name or a resource name")
 			}
 
 			// body refers other resource, can't be verified during plan
@@ -179,7 +176,6 @@ func ResourceAzApiResource() *schema.Resource {
 			}
 
 			props := []string{"identity", "location", "tags"}
-			config := d.GetRawConfig()
 			for _, prop := range props {
 				if isConfigExist(config, prop) && body[prop] != nil {
 					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
@@ -200,6 +196,43 @@ func ResourceAzApiResource() *schema.Resource {
 						// #nosec G104
 						d.SetNew("tags", defaultTags)
 					}
+				}
+			}
+
+			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) != 0 {
+				currentName := d.Get("name").(string)
+				defaultName := meta.(*clients.Client).Features.DefaultNaming
+				assignedName = defaultName
+				if currentName != defaultName {
+					// #nosec G104
+					d.SetNew("name", assignedName)
+				}
+			}
+
+			if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
+				currentName := d.Get("name").(string)
+				assignedName = value.(string)
+
+				if len(meta.(*clients.Client).Features.DefaultNamingPrefix) != 0 {
+					assignedName = meta.(*clients.Client).Features.DefaultNamingPrefix + assignedName
+				}
+				if len(meta.(*clients.Client).Features.DefaultNamingSuffix) != 0 {
+					assignedName += meta.(*clients.Client).Features.DefaultNamingSuffix
+				}
+				if _, ok := d.GetOk("removing_special_chars"); ok && isConfigExist(config, "removing_special_chars") {
+					assignedName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(assignedName, "")
+				}
+				if currentName != assignedName {
+					// #nosec G104
+					d.SetNew("name", assignedName)
+				}
+			}
+
+			// verify parent_id when it's known
+			if len(parentId) > 0 {
+				_, err := parse.NewResourceID(assignedName, parentId, resourceType)
+				if err != nil {
+					return err
 				}
 			}
 
@@ -248,7 +281,20 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	config := d.GetRawConfig()
+	var resourceName string
+
+	if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
+		return fmt.Errorf("either a default name or a user assigned name in config file needs to be assigned")
+	}
+
+	if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
+		resourceName = value.(string)
+	} else {
+		resourceName = meta.(*clients.Client).Features.DefaultNaming
+	}
+
+	id, err := parse.NewResourceID(resourceName, d.Get("parent_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
 	}
@@ -270,7 +316,6 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	props := []string{"identity", "location", "tags"}
-	config := d.GetRawConfig()
 	for _, prop := range props {
 		if isConfigExist(config, prop) && body[prop] != nil {
 			return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
@@ -380,9 +425,11 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 		// #nosec G104
 		d.Set("ignore_casing", false)
 		// #nosec G104
-		d.Set("ignore_missing_property", false)
+		d.Set("ignore_missing_property", true)
 		// #nosec G104
 		d.Set("schema_validation_enabled", true)
+		// #nosec G104
+		d.Set("removing_special_chars", false)
 	} else {
 		option := utils.UpdateJsonOption{
 			IgnoreCasing:          d.Get("ignore_casing").(bool),

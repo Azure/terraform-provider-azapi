@@ -70,6 +70,12 @@ It's possible to configure the behaviour of certain resources using the followin
 
 * `default_location` - (Optional) The default Azure Region where the azure resource should exist. `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.
 
+* `default_name` - (Optional) The default name to create the azure resource. `name` in each resource block can override the `default_name`. Conflicts with `default_name_prefix`, `default_naming_suffix`. Changing this forces new resources to be created.
+
+* `default_naming_prefix` - (Optional) The default name prefix to create the azure resource. Used together with `name` in each resource block. Conflicts with `default_name`. Changing this forces new resources to be created.
+
+* `default_naming_suffix` - (Optional) The default name suffix to create the azure resource. Used together with `name` in each resource block. Conflicts with `default_name`. Changing this forces new resources to be created.
+
 ---
 
 When authenticating as a Service Principal using a Client Certificate, the following fields can be set:

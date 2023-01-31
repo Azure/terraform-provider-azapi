@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
@@ -190,6 +191,12 @@ func azureProvider() *schema.Provider {
 				Description: "This will disable the Terraform Partner ID which is used if a custom `partner_id` isn't specified.",
 			},
 
+			"default_name": resourceName.SchemaResourceName(),
+
+			"default_naming_prefix": resourceName.SchemaResourceNamePrefix(),
+
+			"default_naming_suffix": resourceName.SchemaResourceNameSuffix(),
+
 			"default_location": location.SchemaLocation(),
 
 			"default_tags": tags.SchemaTags(),
@@ -259,8 +266,11 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			CloudCfg:             cloudConfig,
 			ApplicationUserAgent: buildUserAgent(p.TerraformVersion, d.Get("partner_id").(string), d.Get("disable_terraform_partner_id").(bool)),
 			Features: features.UserFeatures{
-				DefaultTags:     tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
-				DefaultLocation: location.Normalize(d.Get("default_location").(string)),
+				DefaultTags:         tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
+				DefaultLocation:     location.Normalize(d.Get("default_location").(string)),
+				DefaultNaming:       d.Get("default_name").(string),
+				DefaultNamingPrefix: d.Get("default_naming_prefix").(string),
+				DefaultNamingSuffix: d.Get("default_naming_suffix").(string),
 			},
 			SkipProviderRegistration:    d.Get("skip_provider_registration").(bool),
 			DisableCorrelationRequestID: d.Get("disable_correlation_request_id").(bool),
