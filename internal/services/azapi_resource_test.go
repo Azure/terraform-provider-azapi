@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -40,6 +41,28 @@ func TestAccGenericResource_basic(t *testing.T) {
 			),
 		},
 		data.ImportStep(defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.basic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+		{
+			Config:      r.basicInvalidVersion(data),
+			ExpectError: regexp.MustCompile("400 Bad Request"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("type").HasValue("Microsoft.Automation/automationAccounts/certificates@2022-08-08"),
+			),
+		},
 	})
 }
 
@@ -437,6 +460,31 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
+  body = jsonencode({
+    properties = {
+      base64Value = "%[3]s"
+    }
+  })
+}
+`, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) basicInvalidVersion(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_resource" "test" {
+  type                      = "Microsoft.Automation/automationAccounts/certificates@1999-01-01"
+  name                      = "acctest%[2]s"
+  parent_id                 = azurerm_automation_account.test.id
+  schema_validation_enabled = false
   body = jsonencode({
     properties = {
       base64Value = "%[3]s"

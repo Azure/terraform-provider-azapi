@@ -307,6 +307,8 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		if !utils.ResponseErrorWasNotFound(err) {
 			return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
 		}
+	} else {
+		d.Partial(true)
 	}
 
 	var body map[string]interface{}
@@ -373,6 +375,10 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	d.SetId(id.ID())
+
+	if !d.IsNewResource() {
+		d.Partial(false)
+	}
 
 	return resourceAzApiResourceRead(d, meta)
 }
