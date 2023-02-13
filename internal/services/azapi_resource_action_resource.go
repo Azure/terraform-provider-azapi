@@ -115,6 +115,10 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
+	if !d.IsNewResource() {
+		d.Partial(true)
+	}
+
 	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
 	if err != nil {
 		return err
@@ -150,6 +154,10 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 	d.SetId(resourceId)
 	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
+
+	if !d.IsNewResource() {
+		d.Partial(false)
+	}
 
 	return resourceResourceActionRead(d, meta)
 }

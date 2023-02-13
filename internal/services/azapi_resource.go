@@ -281,6 +281,10 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
+	if !d.IsNewResource() {
+		d.Partial(true)
+	}
+
 	config := d.GetRawConfig()
 	var resourceName string
 
@@ -373,6 +377,10 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	d.SetId(id.ID())
+
+	if !d.IsNewResource() {
+		d.Partial(false)
+	}
 
 	return resourceAzApiResourceRead(d, meta)
 }
