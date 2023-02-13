@@ -1,3 +1,12 @@
+## v1.4.0 (unreleased)
+FEATURES:
+- `azapi`: Support `default_name`, `default_naming_prefix` and `defualt_naming_suffix` features.
+
+ENHANCEMENTS:
+
+BUG FIXES:
+- Fix a bug that when apply failed there still are some attributes stored in the state.
+
 ## v1.3.0
 FEATURES:
 - `azapi`: Support OIDC authentication.
