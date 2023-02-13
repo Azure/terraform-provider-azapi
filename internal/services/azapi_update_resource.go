@@ -148,6 +148,10 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
+	if !d.IsNewResource() {
+		d.Partial(true)
+	}
+
 	var id parse.ResourceId
 	if name := d.Get("name").(string); len(name) != 0 {
 		buildId, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
@@ -193,6 +197,10 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	}
 
 	d.SetId(id.ID())
+
+	if !d.IsNewResource() {
+		d.Partial(false)
+	}
 
 	return resourceAzApiUpdateResourceRead(d, meta)
 }

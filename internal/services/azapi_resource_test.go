@@ -59,9 +59,11 @@ func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 		{
 			Config:      r.basicInvalidVersion(data),
 			ExpectError: regexp.MustCompile("400 Bad Request"),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).Key("type").HasValue("Microsoft.Automation/automationAccounts/certificates@2022-08-08"),
-			),
+		},
+		data.ImportStep(defaultIgnores()...),
+		{
+			Config:   r.basic(data),
+			PlanOnly: true,
 		},
 	})
 }
