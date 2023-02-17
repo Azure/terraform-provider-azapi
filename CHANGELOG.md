@@ -6,6 +6,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix a bug that when apply failed there still are some attributes stored in the state.
+- Fix a bug that schema validation requires redundant `name` fields both in resource and in body.
 
 ## v1.3.0
 FEATURES:
