@@ -267,6 +267,7 @@ func ResourceAzApiResource() *schema.Resource {
 						body["identity"] = identityModel
 					}
 				}
+				body["name"] = assignedName
 				if err := schemaValidation(azureResourceType, apiVersion, resourceDef, body); err != nil {
 					return err
 				}
@@ -357,6 +358,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		}
 	}
 
+	body["name"] = id.Name
 	if d.Get("schema_validation_enabled").(bool) {
 		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, body); err != nil {
 			return err
