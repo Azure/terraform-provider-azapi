@@ -1,6 +1,7 @@
-## v1.4.0 (unreleased)
+## v1.4.0
 FEATURES:
 - `azapi`: Support `default_name`, `default_naming_prefix` and `defualt_naming_suffix` features.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a915acab5788d890aed774ec818535b44311d16d
 
 ENHANCEMENTS:
 
