@@ -24,6 +24,7 @@ resource "azurerm_data_factory" "example_adf" {
     resource_group_name = azurerm_resource_group.example_rg.name
 }
 
+# This feature is in public preview at time of writing, hence the `schema_validation_enabled = false`
 resource "azapi_resource" "example_ir" {
     type = "Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01"
     name = "example"
