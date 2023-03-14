@@ -34,16 +34,20 @@ resource "azapi_resource" "example_ir" {
   body = jsonencode({
     properties = {
       type = "Airflow"
+      description = "Airflow integration runtime"
       typeProperties = {
         computeProperties = {
           location    = "West Europe"
-          computeSize = "Small"
+          computeSize = "Large"
           extraNodes  = 0
         }
         airflowProperties = {
-          version                  = "2.2.2"
-          enableAADIntegration     = true
-          airflowRequiredArguments = ["airflow.providers.microsoft.azure"]
+          airflowVersion            = "2.4.3"
+          enableAADIntegration      = true
+          airflowRequiredArguments  = ["airflow.providers.microsoft.azure"]
+          airflowEntityReferences   = []
+          encryptedSecrets          = []
+          secrets                   = []
         }
       }
     }
