@@ -38,13 +38,16 @@ resource "azapi_resource" "example_ir" {
       typeProperties = {
         computeProperties = {
           location    = "West Europe"
-          computeSize = "Large"
+          computeSize = "Small"
           extraNodes  = 0
         }
         airflowProperties = {
           airflowVersion            = "2.4.3"
           enableAADIntegration      = true
           airflowRequiredArguments  = ["airflow.providers.microsoft.azure"]
+          environmentVariables = {
+            foo = "bar"
+          }
           airflowEntityReferences   = []
           encryptedSecrets          = []
           secrets                   = []
