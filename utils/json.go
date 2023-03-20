@@ -95,7 +95,7 @@ func GetUpdatedJson(old interface{}, new interface{}, option UpdateJsonOption) i
 			if option.IgnoreCasing && strings.EqualFold(oldValue, newStr) {
 				return oldValue
 			}
-			if option.IgnoreMissingProperty && regexp.MustCompile(`^\*+$`).MatchString(newStr) {
+			if option.IgnoreMissingProperty && (regexp.MustCompile(`^\*+$`).MatchString(newStr) || regexp.MustCompile(`^<redacted>$`).MatchString(newStr)) {
 				return oldValue
 			}
 		}
