@@ -69,6 +69,32 @@ func Test_GetUpdatedJson(t *testing.T) {
 				IgnoreCasing:          true,
 			},
 		},
+		{
+			OldJson: `
+{
+  "properties": {
+    "sshPrivateKey": "asdf"
+  }
+}`,
+			NewJson: `
+{
+  "properties": {
+    "sshPrivateKey": "<redacted>"
+  }
+}
+`,
+			ExpectJson: `
+{
+  "properties": {
+    "sshPrivateKey": "asdf"
+  }
+}
+`,
+			Option: utils.UpdateJsonOption{
+				IgnoreMissingProperty: true,
+				IgnoreCasing:          true,
+			},
+		},
 	}
 
 	for _, testcase := range testcases {
