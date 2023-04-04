@@ -1,9 +1,17 @@
+## v1.5.0
+FEATURES:
+
+ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/b8626aecc5f47b70086580956adfcd1e267a49e6
+
+BUG FIXES:
+
 ## v1.4.0
 FEATURES:
 - `azapi`: Support `default_name`, `default_naming_prefix` and `defualt_naming_suffix` features.
-- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a915acab5788d890aed774ec818535b44311d16d
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a915acab5788d890aed774ec818535b44311d16d
 
 BUG FIXES:
 - Fix a bug that when apply failed there still are some attributes stored in the state.
