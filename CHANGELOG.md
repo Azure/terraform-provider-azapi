@@ -1,3 +1,9 @@
+## v1.6.0(Unreleased)
+FEATURES:
+ENHANCEMENTS:
+BUG FIXES:
+- Fix the bug that the headers are not stored in the log.
+
 ## v1.5.0
 FEATURES:
 
