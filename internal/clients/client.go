@@ -74,6 +74,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 					"X-Ms-Failure-Cause",
 					"X-Ms-Ratelimit-Remaining-Subscription-Reads",
 					"X-Ms-Ratelimit-Remaining-Subscription-Writes",
+					"X-Ms-Ratelimit-Remaining-Tenant-Reads",
+					"X-Ms-Ratelimit-Remaining-Tenant-Writes",
 					"X-Ms-Request-Id",
 					"X-Ms-Routing-Request-Id",
 					"X-Xss-Protection",
