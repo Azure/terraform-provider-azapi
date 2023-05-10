@@ -1,6 +1,9 @@
-## v1.6.0(Unreleased)
+## v1.6.0
 FEATURES:
+
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/da15d0376faa02a6e891dee315910535cef2a13f
+
 BUG FIXES:
 - Fix the bug that the headers are not stored in the log.
 
