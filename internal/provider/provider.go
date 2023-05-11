@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"sync"
@@ -153,14 +154,23 @@ func azureProvider() *schema.Provider {
 				Description: "Allow OpenID Connect to be used for authentication",
 			},
 
+			// Azure CLI specific fields
+			"use_cli": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_CLI", true),
+				Description: "Allow Azure CLI to be used for Authentication.",
+			},
+
+			// Managed Service Identity specific fields
+			"use_msi": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_MSI", true),
+				Description: "Allow Managed Service Identity to be used for Authentication.",
+			},
+
 			// TODO@mgd: azidentity doesn't support msi_endpoint
-			// // Managed Service Identity specific fields
-			// "use_msi": {
-			// 	Type:        schema.TypeBool,
-			// 	Optional:    true,
-			// 	DefaultFunc: schema.EnvDefaultFunc("ARM_USE_MSI", false),
-			// 	Description: "Allowed Managed Service Identity be used for Authentication.",
-			// },
 			// "msi_endpoint": {
 			// 	Type:        schema.TypeString,
 			// 	Optional:    true,
@@ -326,11 +336,17 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 	return userAgent
 }
 
-func getCredential(d *schema.ResourceData, cloudConfig cloud.Configuration) (azcore.TokenCredential, error) {
+func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.DefaultAzureCredentialOptions) (*azidentity.ChainedTokenCredential, error) {
+	var creds []azcore.TokenCredential
+
+	if options == nil {
+		options = &azidentity.DefaultAzureCredentialOptions{}
+	}
+
 	if d.Get("use_oidc").(bool) {
-		return NewOidcCredential(&OidcCredentialOptions{
+		oidcCred, err := NewOidcCredential(&OidcCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
-				Cloud: cloudConfig,
+				Cloud: options.Cloud,
 			},
 			TenantID:      d.Get("tenant_id").(string),
 			ClientID:      d.Get("client_id").(string),
@@ -339,9 +355,60 @@ func getCredential(d *schema.ResourceData, cloudConfig cloud.Configuration) (azc
 			Token:         d.Get("oidc_token").(string),
 			TokenFilePath: d.Get("oidc_token_file_path").(string),
 		})
+
+		if err == nil {
+			creds = append(creds, oidcCred)
+		} else {
+			log.Printf("newDefaultAzureCredential failed to initialize oidc credential:\n\t%s", err.Error())
+		}
 	}
 
-	return azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+	envCred, err := azidentity.NewEnvironmentCredential(&azidentity.EnvironmentCredentialOptions{
+		ClientOptions:            options.ClientOptions,
+		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
+	})
+	if err == nil {
+		creds = append(creds, envCred)
+	} else {
+		log.Printf("newDefaultAzureCredential failed to initialize environment credential:\n\t%s", err.Error())
+	}
+
+	if d.Get("use_msi").(bool) {
+		o := &azidentity.ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
+		if ID, ok := os.LookupEnv("AZURE_CLIENT_ID"); ok {
+			o.ID = azidentity.ClientID(ID)
+		}
+		miCred, err := NewManagedIdentityCredential(o)
+		if err == nil {
+			creds = append(creds, miCred)
+		} else {
+			log.Printf("newDefaultAzureCredential failed to initialize msi credential:\n\t%s", err.Error())
+		}
+	}
+
+	if d.Get("use_cli").(bool) {
+		cliCred, err := azidentity.NewAzureCLICredential(&azidentity.AzureCLICredentialOptions{TenantID: options.TenantID})
+		if err == nil {
+			creds = append(creds, cliCred)
+		} else {
+			log.Printf("newDefaultAzureCredential failed to initialize cli credential:\n\t%s", err.Error())
+		}
+	}
+
+	if len(creds) == 0 {
+		return nil, fmt.Errorf("no credentials were successfully initialized")
+	}
+
+	chain, err := azidentity.NewChainedTokenCredential(creds, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return chain, nil
+}
+
+func getCredential(d *schema.ResourceData, cloudConfig cloud.Configuration) (azcore.TokenCredential, error) {
+	return newDefaultAzureCredential(d, &azidentity.DefaultAzureCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: cloudConfig,
 		},

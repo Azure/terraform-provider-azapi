@@ -112,6 +112,22 @@ More information on [how to configure a Service Principal using OpenID Connect c
 
 ---
 
+When authenticating using Managed Identity, the following fields can be set:
+
+* `use_msi` - (Optional) Should Managed Identity be used for Authentication? This can also be sourced from the `ARM_USE_MSI` Environment Variable. Defaults to `true`.
+
+More information on [how to authenticate to Azure using Managed Identity can be found in this guide](guides/managed_service_identity.html).
+
+---
+
+For Azure CLI authentication, the following fields can be set:
+
+* `use_cli` - (Optional) Should Azure CLI be used for authentication? This can also be sourced from the `ARM_USE_CLI` environment variable. Defaults to `true`.
+
+More information on [how to authenticate to Azure using Azure CLI can be found in this guide](guides/azure_cli.html).
+
+---
+
 For some advanced scenarios, such as where more granular permissions are necessary - the following properties can be set:
 
 * `disable_correlation_request_id` - (Optional) Disable sending the `x-ms-correlation-request-id` header. This can also be sourced from the `ARM_DISABLE_CORRELATION_REQUEST_ID` environment variable. Defaults to `false`.
