@@ -1,3 +1,11 @@
+## v1.7.0 (Unreleased)
+FEATURES:
+- `azapi`: Support `use_msi` and `use_cli` features.
+
+ENHANCEMENTS:
+
+BUG FIXES:
+
 ## v1.6.0
 FEATURES:
 
