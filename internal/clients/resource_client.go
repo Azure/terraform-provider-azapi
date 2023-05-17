@@ -21,12 +21,11 @@ const (
 )
 
 type ResourceClient struct {
-	host           string
-	subscriptionID string
-	pl             runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
-func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
+func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
 	if opt == nil {
 		opt = &arm.ClientOptions{}
 	}
@@ -39,9 +38,8 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 		return nil, err
 	}
 	return &ResourceClient{
-		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		host: ep,
+		pl:   pl,
 	}, nil
 }
 
