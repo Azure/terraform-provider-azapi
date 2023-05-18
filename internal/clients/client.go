@@ -23,7 +23,6 @@ type Client struct {
 }
 
 type Option struct {
-	SubscriptionId              string
 	Cred                        azcore.TokenCredential
 	ApplicationUserAgent        string
 	Features                    features.UserFeatures
@@ -48,7 +47,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(correlationRequestID()))
 	}
 
-	resourceClient, err := NewResourceClient(o.SubscriptionId, o.Cred, &arm.ClientOptions{
+	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Cloud: o.CloudCfg,
 			// Disable the default telemetry policy, because it has a length limitation for user agent

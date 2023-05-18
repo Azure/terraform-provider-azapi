@@ -49,7 +49,6 @@ func BuildTestClient() (*clients.Client, error) {
 		}
 
 		copt := &clients.Option{
-			SubscriptionId:           os.Getenv("ARM_SUBSCRIPTION_ID"),
 			Cred:                     cred,
 			Features:                 features.Default(),
 			SkipProviderRegistration: true,

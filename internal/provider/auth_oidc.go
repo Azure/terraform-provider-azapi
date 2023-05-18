@@ -25,12 +25,13 @@ type OidcCredential struct {
 
 type OidcCredentialOptions struct {
 	azcore.ClientOptions
-	TenantID      string
-	ClientID      string
-	RequestToken  string
-	RequestUrl    string
-	Token         string
-	TokenFilePath string
+	TenantID                   string
+	ClientID                   string
+	RequestToken               string
+	RequestUrl                 string
+	Token                      string
+	TokenFilePath              string
+	AdditionallyAllowedTenants []string
 }
 
 func NewOidcCredential(options *OidcCredentialOptions) (*OidcCredential, error) {
@@ -41,7 +42,11 @@ func NewOidcCredential(options *OidcCredentialOptions) (*OidcCredential, error) 
 		tokenFilePath: options.TokenFilePath,
 	}
 
-	cred, err := azidentity.NewClientAssertionCredential(options.TenantID, options.ClientID, w.getAssertion, &azidentity.ClientAssertionCredentialOptions{ClientOptions: options.ClientOptions})
+	cred, err := azidentity.NewClientAssertionCredential(options.TenantID, options.ClientID, w.getAssertion,
+		&azidentity.ClientAssertionCredentialOptions{
+			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+			ClientOptions:              options.ClientOptions,
+		})
 	if err != nil {
 		return nil, err
 	}

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -63,15 +64,14 @@ func azureProvider() *schema.Provider {
 				Description: "The Tenant ID which should be used.",
 			},
 
-			// TODO@mgd: this is blocked by https://github.com/Azure/azure-sdk-for-go/issues/17159
-			// "auxiliary_tenant_ids": {
-			// 	Type:     schema.TypeList,
-			// 	Optional: true,
-			// 	MaxItems: 3,
-			// 	Elem: &schema.Schema{
-			// 		Type: schema.TypeString,
-			// 	},
-			// },
+			"auxiliary_tenant_ids": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 3,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 
 			"environment": {
 				Type:         schema.TypeString,
@@ -223,12 +223,12 @@ func azureProvider() *schema.Provider {
 
 func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 	return func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		// var auxTenants []string
-		// if v, ok := d.Get("auxiliary_tenant_ids").([]interface{}); ok && len(v) > 0 {
-		// 	auxTenants = *utils.ExpandStringSlice(v)
-		// } else if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
-		// 	auxTenants = strings.Split(v, ";")
-		// }
+		var auxTenants []string
+		if v, ok := d.Get("auxiliary_tenant_ids").([]interface{}); ok && len(v) > 0 {
+			auxTenants = *utils.ExpandStringSlice(v)
+		} else if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
+			auxTenants = strings.Split(v, ";")
+		}
 
 		var cloudConfig cloud.Configuration
 		env := d.Get("environment").(string)
@@ -264,14 +264,24 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			// #nosec G104
 			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
 		}
+		if len(auxTenants) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_ADDITIONALLY_ALLOWED_TENANTS", strings.Join(auxTenants, ";"))
+		}
 
-		cred, err := getCredential(d, cloudConfig)
+		option := &azidentity.DefaultAzureCredentialOptions{
+			AdditionallyAllowedTenants: auxTenants,
+			ClientOptions: azcore.ClientOptions{
+				Cloud: cloudConfig,
+			},
+			TenantID: d.Get("tenant_id").(string),
+		}
+		cred, err := newDefaultAzureCredential(d, option)
 		if err != nil {
 			return nil, diag.Errorf("failed to obtain a credential: %v", err)
 		}
 
 		copt := &clients.Option{
-			SubscriptionId:       d.Get("subscription_id").(string),
 			Cred:                 cred,
 			CloudCfg:             cloudConfig,
 			ApplicationUserAgent: buildUserAgent(p.TerraformVersion, d.Get("partner_id").(string), d.Get("disable_terraform_partner_id").(bool)),
@@ -348,12 +358,13 @@ func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.Defau
 			ClientOptions: azcore.ClientOptions{
 				Cloud: options.Cloud,
 			},
-			TenantID:      d.Get("tenant_id").(string),
-			ClientID:      d.Get("client_id").(string),
-			RequestToken:  d.Get("oidc_request_token").(string),
-			RequestUrl:    d.Get("oidc_request_url").(string),
-			Token:         d.Get("oidc_token").(string),
-			TokenFilePath: d.Get("oidc_token_file_path").(string),
+			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+			TenantID:                   d.Get("tenant_id").(string),
+			ClientID:                   d.Get("client_id").(string),
+			RequestToken:               d.Get("oidc_request_token").(string),
+			RequestUrl:                 d.Get("oidc_request_url").(string),
+			Token:                      d.Get("oidc_token").(string),
+			TokenFilePath:              d.Get("oidc_token_file_path").(string),
 		})
 
 		if err == nil {
@@ -387,7 +398,9 @@ func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.Defau
 	}
 
 	if d.Get("use_cli").(bool) {
-		cliCred, err := azidentity.NewAzureCLICredential(&azidentity.AzureCLICredentialOptions{TenantID: options.TenantID})
+		cliCred, err := azidentity.NewAzureCLICredential(&azidentity.AzureCLICredentialOptions{
+			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+			TenantID:                   options.TenantID})
 		if err == nil {
 			creds = append(creds, cliCred)
 		} else {
@@ -405,13 +418,4 @@ func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.Defau
 	}
 
 	return chain, nil
-}
-
-func getCredential(d *schema.ResourceData, cloudConfig cloud.Configuration) (azcore.TokenCredential, error) {
-	return newDefaultAzureCredential(d, &azidentity.DefaultAzureCredentialOptions{
-		ClientOptions: azcore.ClientOptions{
-			Cloud: cloudConfig,
-		},
-		TenantID: d.Get("tenant_id").(string),
-	})
 }
