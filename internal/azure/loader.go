@@ -7,6 +7,7 @@ import (
 	"log"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
@@ -16,7 +17,11 @@ var schema *Schema
 //go:embed generated
 var StaticFiles embed.FS
 
+var mutex = &sync.Mutex{}
+
 func GetAzureSchema() *Schema {
+	mutex.Lock()
+	defer mutex.Unlock()
 	if schema == nil {
 		data, err := StaticFiles.ReadFile("generated/index.json")
 		if err != nil {

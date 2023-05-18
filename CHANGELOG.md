@@ -6,6 +6,7 @@ FEATURES:
 ENHANCEMENTS:
 
 BUG FIXES:
+- Fix a bug that provider crashes when loading azure schema.
 
 ## v1.6.0
 FEATURES:
