@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -308,10 +307,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 		}
 
 		// load schema
-		var mutex sync.Mutex
-		mutex.Lock()
 		azure.GetAzureSchema()
-		mutex.Unlock()
 		return client, nil
 	}
 }
