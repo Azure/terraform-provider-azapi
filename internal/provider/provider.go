@@ -186,6 +186,13 @@ func azureProvider() *schema.Provider {
 				Description:  "A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.",
 			},
 
+			"custom_correlation_request_id": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     schema.EnvDefaultFunc("ARM_CORRELATION_REQUEST_ID", ""),
+				Description: "The value of the x-ms-correlation-request-id header (otherwise an auto-generated UUID will be used).",
+			},
+
 			"disable_correlation_request_id": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -293,6 +300,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			},
 			SkipProviderRegistration:    d.Get("skip_provider_registration").(bool),
 			DisableCorrelationRequestID: d.Get("disable_correlation_request_id").(bool),
+			CustomCorrelationRequestID:  d.Get("custom_correlation_request_id").(string),
 		}
 
 		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint

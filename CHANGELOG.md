@@ -2,6 +2,7 @@
 FEATURES:
 - `azapi`: Support `use_msi` and `use_cli` features.
 - `azapi`: Support `auxiliary_tenant_ids` field, which is required for multi-tenancy and cross-tenant scenarios.
+- `azapi`: Support `custom_correlation_request_id` field, which is used to specify the correlation request id.
 
 ENHANCEMENTS:
 

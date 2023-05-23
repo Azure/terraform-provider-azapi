@@ -29,6 +29,7 @@ type Option struct {
 	SkipProviderRegistration    bool
 	DisableCorrelationRequestID bool
 	CloudCfg                    cloud.Configuration
+	CustomCorrelationRequestID  string
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -44,7 +45,11 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	perCallPolicies := make([]policy.Policy, 0)
 	perCallPolicies = append(perCallPolicies, withUserAgent(o.ApplicationUserAgent))
 	if !o.DisableCorrelationRequestID {
-		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(correlationRequestID()))
+		id := o.CustomCorrelationRequestID
+		if id == "" {
+			id = correlationRequestID()
+		}
+		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(id))
 	}
 
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
