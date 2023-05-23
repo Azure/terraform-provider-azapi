@@ -189,7 +189,7 @@ func azureProvider() *schema.Provider {
 			"custom_correlation_request_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Default:     schema.EnvDefaultFunc("ARM_CORRELATION_REQUEST_ID", ""),
+				DefaultFunc: schema.EnvDefaultFunc("ARM_CORRELATION_REQUEST_ID", ""),
 				Description: "The value of the x-ms-correlation-request-id header (otherwise an auto-generated UUID will be used).",
 			},
 
