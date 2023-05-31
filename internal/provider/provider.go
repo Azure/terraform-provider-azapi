@@ -36,6 +36,7 @@ func azureProvider() *schema.Provider {
 	resources["azapi_resource"] = services.ResourceAzApiResource()
 	resources["azapi_update_resource"] = services.ResourceAzApiUpdateResource()
 	resources["azapi_resource_action"] = services.ResourceResourceAction()
+	resources["azapi_data_plane_resource"] = services.ResourceAzApiDataPlaneResource()
 
 	dataSources["azapi_resource"] = services.ResourceAzApiDataSource()
 	dataSources["azapi_resource_action"] = services.ResourceResourceActionDataSource()

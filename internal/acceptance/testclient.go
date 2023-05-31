@@ -50,6 +50,7 @@ func BuildTestClient() (*clients.Client, error) {
 
 		copt := &clients.Option{
 			Cred:                     cred,
+			CloudCfg:                 cloudConfig,
 			Features:                 features.Default(),
 			SkipProviderRegistration: true,
 		}

@@ -19,7 +19,8 @@ type Client struct {
 
 	Features features.UserFeatures
 
-	ResourceClient *ResourceClient
+	ResourceClient  *ResourceClient
+	DataPlaneClient *DataPlaneClient
 }
 
 type Option struct {
@@ -52,6 +53,30 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(id))
 	}
 
+	allowedheaders := []string{
+		"Access-Control-Allow-Methods",
+		"Access-Control-Allow-Origin",
+		"Elapsed-Time",
+		"Location",
+		"Metadata",
+		"Ocp-Automation-Accountid",
+		"P3p",
+		"Strict-Transport-Security",
+		"Vary",
+		"X-Content-Type-Options",
+		"X-Frame-Options",
+		"X-Ms-Correlation-Request-Id",
+		"X-Ms-Ests-Server",
+		"X-Ms-Failure-Cause",
+		"X-Ms-Ratelimit-Remaining-Subscription-Reads",
+		"X-Ms-Ratelimit-Remaining-Subscription-Writes",
+		"X-Ms-Ratelimit-Remaining-Tenant-Reads",
+		"X-Ms-Ratelimit-Remaining-Tenant-Writes",
+		"X-Ms-Request-Id",
+		"X-Ms-Routing-Request-Id",
+		"X-Xss-Protection",
+	}
+
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Cloud: o.CloudCfg,
@@ -60,30 +85,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				Disabled: true,
 			},
 			Logging: policy.LogOptions{
-				IncludeBody: true,
-				AllowedHeaders: []string{
-					"Access-Control-Allow-Methods",
-					"Access-Control-Allow-Origin",
-					"Elapsed-Time",
-					"Location",
-					"Metadata",
-					"Ocp-Automation-Accountid",
-					"P3p",
-					"Strict-Transport-Security",
-					"Vary",
-					"X-Content-Type-Options",
-					"X-Frame-Options",
-					"X-Ms-Correlation-Request-Id",
-					"X-Ms-Ests-Server",
-					"X-Ms-Failure-Cause",
-					"X-Ms-Ratelimit-Remaining-Subscription-Reads",
-					"X-Ms-Ratelimit-Remaining-Subscription-Writes",
-					"X-Ms-Ratelimit-Remaining-Tenant-Reads",
-					"X-Ms-Ratelimit-Remaining-Tenant-Writes",
-					"X-Ms-Request-Id",
-					"X-Ms-Routing-Request-Id",
-					"X-Xss-Protection",
-				},
+				IncludeBody:    true,
+				AllowedHeaders: allowedheaders,
 			},
 			PerCallPolicies: perCallPolicies,
 		},
@@ -93,6 +96,26 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		return err
 	}
 	client.ResourceClient = resourceClient
+
+	dataPlaneClient, err := NewDataPlaneClient(o.Cred, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: o.CloudCfg,
+			// Disable the default telemetry policy, because it has a length limitation for user agent
+			Telemetry: policy.TelemetryOptions{
+				Disabled: true,
+			},
+			Logging: policy.LogOptions{
+				IncludeBody:    true,
+				AllowedHeaders: allowedheaders,
+			},
+			PerCallPolicies: perCallPolicies,
+		},
+		DisableRPRegistration: o.SkipProviderRegistration,
+	})
+	if err != nil {
+		return err
+	}
+	client.DataPlaneClient = dataPlaneClient
 
 	return nil
 }
