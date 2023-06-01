@@ -28,79 +28,14 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "example" {
-  name     = "example-rg"
-  location = "West Europe"
-}
-
-resource "azurerm_storage_account" "example" {
-  name                     = "example"
-  resource_group_name      = azurerm_resource_group.example.name
-  location                 = azurerm_resource_group.example.location
-  account_kind             = "BlobStorage"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-resource "azurerm_storage_data_lake_gen2_filesystem" "example" {
-  name               = "example-filesystem"
-  storage_account_id = azurerm_storage_account.example.id
-}
-
-resource "azurerm_synapse_workspace" "example" {
+data "azurerm_synapse_workspace" "example" {
   name                                 = "example-workspace"
   resource_group_name                  = azurerm_resource_group.example.name
-  location                             = azurerm_resource_group.example.location
-  storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.example.id
-  sql_administrator_login              = "sqladminuser"
-  sql_administrator_login_password     = "H@Sh1CoR3!"
-  managed_virtual_network_enabled      = true
-
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
-resource "azurerm_synapse_firewall_rule" "example" {
-  name                 = "allowAll"
-  synapse_workspace_id = azurerm_synapse_workspace.example.id
-  start_ip_address     = "0.0.0.0"
-  end_ip_address       = "255.255.255.255"
-}
-
-resource "azurerm_synapse_integration_runtime_azure" "example" {
-  name                 = "example-runtime"
-  synapse_workspace_id = azurerm_synapse_workspace.example.id
-  location             = azurerm_resource_group.example.location
-}
-
-resource "azurerm_synapse_linked_service" "example" {
-  name                 = "example-linked-service"
-  synapse_workspace_id = azurerm_synapse_workspace.example.id
-  type                 = "AzureBlobStorage"
-  type_properties_json = jsonencode(
-    {
-      connectionString = azurerm_storage_account.example.primary_connection_string
-    }
-  )
-  integration_runtime {
-    name = azurerm_synapse_integration_runtime_azure.example.name
-  }
-
-  depends_on = [
-    azurerm_synapse_firewall_rule.example,
-  ]
-}
-
-resource "azurerm_storage_container" "example" {
-  name                  = "content"
-  storage_account_name  = azurerm_storage_account.example.name
-  container_access_type = "private"
 }
 
 resource "azapi_data_plane_resource" "dataset" {
   type      = "Microsoft.Synapse/workspaces/datasets@2020-12-01"
-  parent_id = replace(azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://", "")
+  parent_id = trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://")
   name      = "example-dataset"
   body = jsonencode({
     properties = {
@@ -117,10 +52,6 @@ resource "azapi_data_plane_resource" "dataset" {
         format = {
           type = "TextFormat"
         }
-      }
-      linkedServiceName = {
-        referenceName = azurerm_synapse_linked_service.example.name
-        type          = "LinkedServiceReference"
       }
       parameters = {
         MyFolderPath = {
