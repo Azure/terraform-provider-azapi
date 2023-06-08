@@ -192,7 +192,7 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 
 	resourceIdplusApi := id.ID()
 	if actionName != "" {
-		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
+		resourceIdplusApi = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	d.SetId(resourceIdplusApi)
 	// #nosec G104
