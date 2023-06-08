@@ -37,23 +37,45 @@ func ResourceResourceAction() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.ResourceType,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				ValidateFunc:  validate.ResourceType,
+				RequiredWith:  []string{"resource_id", "action"},
+				ConflictsWith: []string{"uri"},
 			},
 
 			"resource_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.ResourceID,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				ValidateFunc:  validate.ResourceID,
+				RequiredWith:  []string{"type", "action"},
+				ConflictsWith: []string{"uri"},
 			},
 
 			"action": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				RequiredWith:  []string{"type", "resource_id"},
+				ConflictsWith: []string{"uri"},
+			},
+
+			"uri": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				ConflictsWith: []string{"type", "resource_id", "action"},
+				RequiredWith:  []string{"api_version"},
+			},
+
+			"api_version": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				ForceNew:      true,
+				ConflictsWith: []string{"type", "resource_id", "action"},
+				RequiredWith:  []string{"uri"},
 			},
 
 			"method": {
@@ -119,16 +141,37 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 		d.Partial(true)
 	}
 
-	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
-	if err != nil {
-		return err
+	actionName, actionOk := d.GetOk("action")
+	uri, uriOk := d.GetOk("uri")
+	apiVersion, apiVersionOk := d.GetOk("api_version")
+	resourceId, resourceIdOk := d.GetOk("resource_id")
+	typeName, typeOk := d.GetOk("type")
+
+	if !actionOk {
+		actionName = ""
 	}
 
-	actionName := d.Get("action").(string)
+	var id parse.ResourceId
+	if actionOk && resourceIdOk && typeOk {
+		var err error
+		id, err = parse.ResourceIDWithResourceType(resourceId.(string), typeName.(string))
+		if err != nil {
+			return err
+		}
+	}
+
+	if uriOk && apiVersionOk {
+		id = parse.ResourceId{
+			AzureResourceId: uri.(string),
+			ApiVersion:      apiVersion.(string),
+		}
+	}
+
 	method := d.Get("method").(string)
 	body := d.Get("body").(string)
 	var requestBody interface{}
 	if len(body) != 0 {
+		var err error
 		err = json.Unmarshal([]byte(body), &requestBody)
 		if err != nil {
 			return fmt.Errorf("unmarshalling `body`: %+v", err)
@@ -142,16 +185,16 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 		defer locks.UnlockByID(id.(string))
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
+	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName.(string), id.ApiVersion, method, requestBody)
 	if err != nil {
 		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
 	}
 
-	resourceId := id.ID()
+	resourceIdplusApi := id.ID()
 	if actionName != "" {
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
-	d.SetId(resourceId)
+	d.SetId(resourceIdplusApi)
 	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
