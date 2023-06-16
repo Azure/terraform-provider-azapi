@@ -1,5 +1,6 @@
 ## v1.7.0
 FEATURES:
+- **New Resource**: azapi_data_plane_resource
 - `azapi`: Support `use_msi` and `use_cli` features.
 - `azapi`: Support `auxiliary_tenant_ids` field, which is required for multi-tenancy and cross-tenant scenarios.
 - `azapi`: Support `custom_correlation_request_id` field, which is used to specify the correlation request id.
