@@ -1,10 +1,11 @@
-## v1.7.0 (Unreleased)
+## v1.7.0
 FEATURES:
 - `azapi`: Support `use_msi` and `use_cli` features.
 - `azapi`: Support `auxiliary_tenant_ids` field, which is required for multi-tenancy and cross-tenant scenarios.
 - `azapi`: Support `custom_correlation_request_id` field, which is used to specify the correlation request id.
 
 ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/0536b68e779fba100b9fbe32737c38d75396e2cf
 
 BUG FIXES:
 - Fix a bug that provider crashes when loading azure schema.
