@@ -1,3 +1,11 @@
+## v1.8.0
+FEATURES:
+
+ENHANCEMENTS:
+
+BUG FIXES:
+- Fix a bug that resource id for type `Microsoft.Resources/tenants` is not parsed correctly.
+
 ## v1.7.0
 FEATURES:
 - **New Resource**: azapi_data_plane_resource
