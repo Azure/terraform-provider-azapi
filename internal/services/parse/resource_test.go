@@ -12,6 +12,18 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		ResourceDefExist bool
 		Expected         *ResourceId
 	}{
+		{
+			ResourceType:     "Microsoft.Resources/tenants@2021-04-01",
+			ResourceId:       "/",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/tenants",
+				AzureResourceId:   "/",
+				Name:              "",
+				ParentId:          "",
+			},
+		},
 
 		{
 			ResourceType:     "Microsoft.Management/managementGroups@2021-04-01",
