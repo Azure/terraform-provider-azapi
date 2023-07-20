@@ -28,7 +28,7 @@ func TestAccActionResource_providerAction(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.basic(data),
+			Config: r.providerAction(),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -59,8 +59,12 @@ resource "azapi_resource_action" "test" {
 `, GenericResource{}.defaultTag(data))
 }
 
-func (r ActionResource) providerAction(data acceptance.TestData) string {
+func (r ActionResource) providerAction() string {
 	return `
+provider "azurerm" {
+  features {}
+}
+
 data "azurerm_client_config" "current" {}
 
 resource "azapi_resource_action" "test" {
