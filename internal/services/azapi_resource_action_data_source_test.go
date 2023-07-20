@@ -52,7 +52,7 @@ func (r ActionDataSource) providerAction() string {
 
 
 data "azapi_resource_action" "test" {
-  type        = "Microsoft.Resources/providers@2020-04-01-preview"
+  type        = "Microsoft.ResourceGraph@2020-04-01-preview"
   resource_id = "/providers/Microsoft.ResourceGraph"
   action      = "resources"
   body = jsonencode({

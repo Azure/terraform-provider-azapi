@@ -13,12 +13,25 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		Expected         *ResourceId
 	}{
 		{
-			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Network",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Network",
+				Name:              "Microsoft.Network",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.ResourceGraph@2020-04-01-preview",
 			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
 			ResourceDefExist: false,
 			Expected: &ResourceId{
 				ApiVersion:        "2020-04-01-preview",
-				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceType: "Microsoft.ResourceGraph",
 				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
 				Name:              "Microsoft.ResourceGraph",
 				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012",
@@ -26,12 +39,12 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		},
 
 		{
-			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceType:     "Microsoft.ResourceGraph@2020-04-01-preview",
 			ResourceId:       "/providers/Microsoft.ResourceGraph",
 			ResourceDefExist: false,
 			Expected: &ResourceId{
 				ApiVersion:        "2020-04-01-preview",
-				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceType: "Microsoft.ResourceGraph",
 				AzureResourceId:   "/providers/Microsoft.ResourceGraph",
 				Name:              "Microsoft.ResourceGraph",
 				ParentId:          "/",
@@ -457,13 +470,25 @@ func Test_NewResourceID(t *testing.T) {
 		Expected         *ResourceId
 	}{
 		{
+			Name:             "Microsoft.Network",
+			ParentId:         "/subscriptions/12345678-1234-9876-4563-123456789012",
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Network",
+			},
+		},
+
+		{
 			Name:             "Microsoft.ResourceGraph",
 			ParentId:         "/subscriptions/12345678-1234-9876-4563-123456789012",
-			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceType:     "Microsoft.ResourceGraph@2020-04-01-preview",
 			ResourceDefExist: false,
 			Expected: &ResourceId{
 				ApiVersion:        "2020-04-01-preview",
-				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceType: "Microsoft.ResourceGraph",
 				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
 			},
 		},
@@ -471,11 +496,11 @@ func Test_NewResourceID(t *testing.T) {
 		{
 			Name:             "Microsoft.ResourceGraph",
 			ParentId:         "/",
-			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceType:     "Microsoft.ResourceGraph@2020-04-01-preview",
 			ResourceDefExist: false,
 			Expected: &ResourceId{
 				ApiVersion:        "2020-04-01-preview",
-				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceType: "Microsoft.ResourceGraph",
 				AzureResourceId:   "/providers/Microsoft.ResourceGraph",
 			},
 		},

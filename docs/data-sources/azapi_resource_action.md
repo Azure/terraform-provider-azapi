@@ -67,6 +67,16 @@ resource "azapi_resource_action" "test" {
   action      = "register"
   method      = "POST"
 }
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Databox@2022-10-01"
+  resource_id = "/subscriptions/{subscription_id}/providers/Microsoft.Databox"
+  action      = "validateAddress"
+  method      = "POST"
+  body = jsonencode({
+    // ...
+  })
+}
 ```
 
 ## Arguments Reference
