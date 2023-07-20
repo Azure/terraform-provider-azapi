@@ -13,6 +13,32 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		Expected         *ResourceId
 	}{
 		{
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01-preview",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
+				Name:              "Microsoft.ResourceGraph",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012",
+			},
+		},
+
+		{
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceId:       "/providers/Microsoft.ResourceGraph",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01-preview",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/providers/Microsoft.ResourceGraph",
+				Name:              "Microsoft.ResourceGraph",
+				ParentId:          "/",
+			},
+		},
+
+		{
 			ResourceType:     "Microsoft.Resources/tenants@2021-04-01",
 			ResourceId:       "/",
 			ResourceDefExist: false,
@@ -430,6 +456,42 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
+		{
+			Name:             "Microsoft.ResourceGraph",
+			ParentId:         "/subscriptions/12345678-1234-9876-4563-123456789012",
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01-preview",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.ResourceGraph",
+			},
+		},
+
+		{
+			Name:             "Microsoft.ResourceGraph",
+			ParentId:         "/",
+			ResourceType:     "Microsoft.Resources/providers@2020-04-01-preview",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-04-01-preview",
+				AzureResourceType: "Microsoft.Resources/providers",
+				AzureResourceId:   "/providers/Microsoft.ResourceGraph",
+			},
+		},
+
+		{
+			Name:             "",
+			ParentId:         "",
+			ResourceType:     "Microsoft.Resources/tenants@2021-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/tenants",
+				AzureResourceId:   "/",
+			},
+		},
+
 		{
 			// tenant scope
 			Name:             "12345678-1234-9876-4563-123456789012",

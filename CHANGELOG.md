@@ -1,7 +1,8 @@
-## v1.8.0
+## v1.8.0 (unreleased)
 FEATURES:
 
 ENHANCEMENTS:
+- `azapi_resource_action`: Support provider action.
 
 BUG FIXES:
 - Fix a bug that resource id for type `Microsoft.Resources/tenants` is not parsed correctly.

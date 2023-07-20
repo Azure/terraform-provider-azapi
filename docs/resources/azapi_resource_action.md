@@ -69,6 +69,28 @@ resource "azapi_resource_action" "stop" {
 }
 ```
 
+Here's an example to use `azapi_resource_action` resource to perform a provider action.
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2020-04-01-preview"
+  resource_id = "/providers/Microsoft.ResourceGraph"
+  action      = "resources"
+  body = jsonencode({
+    query = "resources| where name contains \"test\""
+  })
+  response_export_values = ["*"]
+}
+```
+
 ## Arguments Reference
 
 The following arguments are supported:

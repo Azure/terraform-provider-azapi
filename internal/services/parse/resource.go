@@ -46,6 +46,13 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 			azureResourceId = fmt.Sprintf("/subscriptions/%s", name)
 		case arm.TenantResourceType.String():
 			azureResourceId = "/"
+		case arm.ProviderResourceType.String():
+			// avoid duplicated `/` if parent_id is tenant scope
+			scopeId := parentId
+			if parentId == "/" {
+				scopeId = ""
+			}
+			azureResourceId = fmt.Sprintf("%s/providers/%s", scopeId, name)
 		default:
 			// avoid duplicated `/` if parent_id is tenant scope
 			scopeId := parentId

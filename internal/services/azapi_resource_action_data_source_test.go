@@ -22,6 +22,18 @@ func TestAccActionDataSource_basic(t *testing.T) {
 	})
 }
 
+func TestAccActionDataSource_providerAction(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.providerAction(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -33,4 +45,20 @@ data "azapi_resource_action" "test" {
   response_export_values = ["*"]
 }
 `, GenericResource{}.defaultTag(data))
+}
+
+func (r ActionDataSource) providerAction() string {
+	return `
+
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2020-04-01-preview"
+  resource_id = "/providers/Microsoft.ResourceGraph"
+  action      = "resources"
+  body = jsonencode({
+    query = "resources| limit 1"
+  })
+  response_export_values = ["*"]
+}
+`
 }

@@ -50,6 +50,25 @@ data "azapi_resource_action" "example" {
 }
 ```
 
+Here's an example to use `azapi_resource_action` resource to perform a provider action.
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2021-04-01"
+  resource_id = "/subscriptions/{subscription_id}/providers/Microsoft.Compute"
+  action      = "register"
+  method      = "POST"
+}
+```
+
 ## Arguments Reference
 
 The following arguments are supported:
