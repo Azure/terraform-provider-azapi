@@ -49,8 +49,6 @@ data "azapi_resource_action" "test" {
 
 func (r ActionDataSource) providerAction() string {
 	return `
-
-
 data "azapi_resource_action" "test" {
   type        = "Microsoft.ResourceGraph@2020-04-01-preview"
   resource_id = "/providers/Microsoft.ResourceGraph"
