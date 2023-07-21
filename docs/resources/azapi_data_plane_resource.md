@@ -29,8 +29,8 @@ provider "azurerm" {
 }
 
 data "azurerm_synapse_workspace" "example" {
-  name                                 = "example-workspace"
-  resource_group_name                  = azurerm_resource_group.example.name
+  name                = "example-workspace"
+  resource_group_name = azurerm_resource_group.example.name
 }
 
 resource "azapi_data_plane_resource" "dataset" {

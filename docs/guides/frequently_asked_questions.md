@@ -55,3 +55,14 @@ its request body won't contain any subnets definitions, so existing subnets will
 More context: Properties like CMK(customer managed key) can't be set when create this resource. Because CMK depends on key vault key which depends on this resource's identity.
 
 It can be solved by using `azapi_update_resource` to perform a multi-steps deployment, here's an [example](https://github.com/Azure/terraform-provider-azapi/tree/main/examples/Microsoft.ServiceBus/ServiceBusNamespace-CMK/main.tf).
+
+## What are the types for the resource group, subscription and tenant?
+
+| Resource Type | Type | Example | Comment |
+| --- | --- | --- | --- |
+| resource group | `Microsoft.Resources/resourceGroups` | `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg` | |
+| subscription | `Microsoft.Resources/subscriptions` | `/subscriptions/00000000-0000-0000-0000-000000000000` | |
+| tenant | `Microsoft.Resources/tenants` | `/tenants/00000000-0000-0000-0000-000000000000` | |
+| management group | `Microsoft.Management/managementGroups` | `/providers/Microsoft.Management/managementGroups/00000000-0000-0000-0000-000000000000` | |
+| generic provider | `Microsoft.Resources/providers` | `<scope>/providers/<RP>` | This is the generic provider resource type whose operations are defined by ARM, and is supported by all of Azure RPs (e.g. actions like `register`, `providerPermissions`, etc.) |
+| concrete provider | `Microsoft.Resources/providers` | `<scope>/providers/Microsoft.Storage` | This is the concrete provider whose operations are only defined for this provider itself |

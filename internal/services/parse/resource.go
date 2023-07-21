@@ -32,7 +32,16 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	}
 
 	azureResourceId := ""
-	if utils.IsTopLevelResourceType(azureResourceType) {
+	switch {
+	case !strings.Contains(azureResourceType, "/"):
+		// case 0: resource type is a provider type
+		// avoid duplicated `/` if parent_id is tenant scope
+		scopeId := parentId
+		if parentId == "/" {
+			scopeId = ""
+		}
+		azureResourceId = fmt.Sprintf("%s/providers/%s", scopeId, name)
+	case utils.IsTopLevelResourceType(azureResourceType):
 		// case 1: top level resource, verify parent_id providers correct scope
 		if err = validateParentIdScope(resourceDef, parentId); err != nil {
 			return ResourceId{}, fmt.Errorf("`parent_id is invalid`: %+v", err)
@@ -46,6 +55,13 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 			azureResourceId = fmt.Sprintf("/subscriptions/%s", name)
 		case arm.TenantResourceType.String():
 			azureResourceId = "/"
+		case arm.ProviderResourceType.String():
+			// avoid duplicated `/` if parent_id is tenant scope
+			scopeId := parentId
+			if parentId == "/" {
+				scopeId = ""
+			}
+			azureResourceId = fmt.Sprintf("%s/providers/%s", scopeId, name)
 		default:
 			// avoid duplicated `/` if parent_id is tenant scope
 			scopeId := parentId
@@ -54,7 +70,7 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 			}
 			azureResourceId = fmt.Sprintf("%s/providers/%s/%s", scopeId, azureResourceType, name)
 		}
-	} else {
+	default:
 		// case 2: child resource, verify parent_id's type matches with resource type's parent type
 		if err = validateParentIdType(azureResourceType, parentId); err != nil {
 			return ResourceId{}, fmt.Errorf("`parent_id is invalid`: %+v", err)
@@ -81,9 +97,18 @@ func ResourceIDWithResourceType(azureResourceId, resourceType string) (ResourceI
 	if err != nil {
 		return ResourceId{}, err
 	}
-	if resourceTypeFromId := utils.GetResourceType(azureResourceId); !strings.EqualFold(azureResourceType, resourceTypeFromId) {
-		return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched, expect `type` to be %s, but got %s", resourceTypeFromId, azureResourceType)
+	resourceTypeFromId := utils.GetResourceType(azureResourceId)
+	// if resource type is a provider type, then `type` should be either `Microsoft.Foo` or `Microsoft.Resources/providers`
+	if strings.EqualFold(arm.ProviderResourceType.String(), resourceTypeFromId) {
+		if strings.Contains(azureResourceType, "/") && !strings.EqualFold(azureResourceType, arm.ProviderResourceType.String()) {
+			return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched, expect `type` to be a provider type, but got %s", azureResourceType)
+		}
+	} else {
+		if !strings.EqualFold(azureResourceType, resourceTypeFromId) {
+			return ResourceId{}, fmt.Errorf("`resource_id` and `type` are not matched, expect `type` to be %s, but got %s", resourceTypeFromId, azureResourceType)
+		}
 	}
+
 	name := utils.GetName(azureResourceId)
 	parentId := utils.GetParentId(azureResourceId)
 	return NewResourceID(name, parentId, resourceType)

@@ -69,6 +69,45 @@ resource "azapi_resource_action" "stop" {
 }
 ```
 
+Here's an example to use the `azapi_resource_action` resource to register a provider.
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2021-04-01"
+  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
+  action      = "register"
+  method      = "POST"
+}
+```
+
+Here's an example to use the `azapi_resource_action` resource to perform a provider action.
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.ResourceGraph@2020-04-01-preview"
+  resource_id = "/providers/Microsoft.ResourceGraph"
+  action      = "resources"
+  body = jsonencode({
+    query = "resources| where name contains \"test\""
+  })
+  response_export_values = ["*"]
+}
+```
+
 ## Arguments Reference
 
 The following arguments are supported:
