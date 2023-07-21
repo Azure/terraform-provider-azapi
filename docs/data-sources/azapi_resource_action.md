@@ -50,7 +50,24 @@ data "azapi_resource_action" "example" {
 }
 ```
 
-Here's an example to use `azapi_resource_action` resource to perform a provider action.
+Here's an example to use the `azapi_resource_action` data source to get a provider's permissions.
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2021-04-01"
+  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Network"
+  action      = "providerPermissions"
+  method      = "GET"
+}
+```
+
+Here's an example to use the `azapi_resource_action` data source to perform a provider action.
 
 ```hcl
 terraform {
@@ -62,19 +79,12 @@ terraform {
 }
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Resources/providers@2021-04-01"
-  resource_id = "/subscriptions/{subscription_id}/providers/Microsoft.Compute"
-  action      = "register"
-  method      = "POST"
-}
-
-resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Databox@2022-10-01"
-  resource_id = "/subscriptions/{subscription_id}/providers/Microsoft.Databox"
-  action      = "validateAddress"
-  method      = "POST"
+  type        = "Microsoft.Cache@2023-04-01"
+  resource_id = "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
   body = jsonencode({
-    // ...
+    type = "Microsoft.Cache/Redis"
+    name = "cacheName"
   })
 }
 ```

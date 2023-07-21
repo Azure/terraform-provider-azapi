@@ -69,7 +69,24 @@ resource "azapi_resource_action" "stop" {
 }
 ```
 
-Here's an example to use `azapi_resource_action` resource to perform a provider action.
+Here's an example to use the `azapi_resource_action` resource to register a provider.
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Resources/providers@2021-04-01"
+  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
+  action      = "register"
+  method      = "POST"
+}
+```
+
+Here's an example to use the `azapi_resource_action` resource to perform a provider action.
 
 ```hcl
 terraform {
@@ -88,12 +105,6 @@ data "azapi_resource_action" "test" {
     query = "resources| where name contains \"test\""
   })
   response_export_values = ["*"]
-}
-
-data "azapi_resource_action" "rp" {
-  type        = "Microsoft.Resources/providers@2021-04-01"
-  resource_id = "/subscriptions/{subscription_id}/providers/Microsoft.Compute"
-  method      = "GET"
 }
 ```
 
