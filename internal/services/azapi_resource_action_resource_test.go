@@ -28,7 +28,7 @@ func TestAccActionResource_registerResourceProvider(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.providerAction(),
+			Config: r.registerResourceProvider(),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
