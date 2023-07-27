@@ -80,7 +80,7 @@ terraform {
 
 resource "azapi_resource_action" "test" {
   type        = "Microsoft.Cache@2023-04-01"
-  resource_id = "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/providers/Microsoft.Cache"
+  resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache"
   action      = "CheckNameAvailability"
   body = jsonencode({
     type = "Microsoft.Cache/Redis"
