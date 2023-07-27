@@ -1,8 +1,9 @@
-## v1.8.0 (unreleased)
+## v1.8.0
 FEATURES:
 
 ENHANCEMENTS:
 - `azapi_resource_action`: Support provider action.
+- Update bicep types to https://ms-henglu/bicep-types-az/commit/c616eb1ad4980f63c0d6b436a63701e175a62224
 
 BUG FIXES:
 - Fix a bug that resource id for type `Microsoft.Resources/providers` is not parsed correctly.
