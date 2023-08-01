@@ -1,3 +1,7 @@
+## v1.9.0 (unreleased)
+FEATURES:
+- **New Data Source**: azapi_resource_list
+
 ## v1.8.0
 FEATURES:
 

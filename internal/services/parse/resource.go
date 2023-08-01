@@ -22,6 +22,14 @@ type ResourceId struct {
 }
 
 func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
+	return newResourceID(name, parentId, resourceType, false)
+}
+
+func NewResourceIDSkipScopeValidation(name, parentId, resourceType string) (ResourceId, error) {
+	return newResourceID(name, parentId, resourceType, true)
+}
+
+func newResourceID(name, parentId, resourceType string, skipScopeValidation bool) (ResourceId, error) {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return ResourceId{}, err
@@ -43,8 +51,10 @@ func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 		azureResourceId = fmt.Sprintf("%s/providers/%s", scopeId, name)
 	case utils.IsTopLevelResourceType(azureResourceType):
 		// case 1: top level resource, verify parent_id providers correct scope
-		if err = validateParentIdScope(resourceDef, parentId); err != nil {
-			return ResourceId{}, fmt.Errorf("`parent_id is invalid`: %+v", err)
+		if !skipScopeValidation {
+			if err = validateParentIdScope(resourceDef, parentId); err != nil {
+				return ResourceId{}, fmt.Errorf("`parent_id is invalid`: %+v", err)
+			}
 		}
 
 		// build azure resource id
