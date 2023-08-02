@@ -53,7 +53,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(id))
 	}
 
-	allowedheaders := []string{
+	allowedHeaders := []string{
 		"Access-Control-Allow-Methods",
 		"Access-Control-Allow-Origin",
 		"Elapsed-Time",
@@ -76,6 +76,10 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		"X-Ms-Routing-Request-Id",
 		"X-Xss-Protection",
 	}
+	allowedQueryParams := []string{
+		"api-version",
+		"$skipToken",
+	}
 
 	resourceClient, err := NewResourceClient(o.Cred, &arm.ClientOptions{
 		ClientOptions: policy.ClientOptions{
@@ -85,8 +89,9 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				Disabled: true,
 			},
 			Logging: policy.LogOptions{
-				IncludeBody:    true,
-				AllowedHeaders: allowedheaders,
+				IncludeBody:        true,
+				AllowedHeaders:     allowedHeaders,
+				AllowedQueryParams: allowedQueryParams,
 			},
 			PerCallPolicies: perCallPolicies,
 		},
@@ -105,8 +110,9 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				Disabled: true,
 			},
 			Logging: policy.LogOptions{
-				IncludeBody:    true,
-				AllowedHeaders: allowedheaders,
+				IncludeBody:        true,
+				AllowedHeaders:     allowedHeaders,
+				AllowedQueryParams: allowedQueryParams,
 			},
 			PerCallPolicies: perCallPolicies,
 		},

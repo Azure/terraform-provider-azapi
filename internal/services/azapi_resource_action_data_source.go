@@ -18,10 +18,6 @@ func ResourceResourceActionDataSource() *schema.Resource {
 	return &schema.Resource{
 		Read: resourceResourceActionDataSourceRead,
 
-		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_resource_action` doesn't support import")
-		}),
-
 		Timeouts: &schema.ResourceTimeout{
 			Read: schema.DefaultTimeout(30 * time.Minute),
 		},
@@ -30,21 +26,18 @@ func ResourceResourceActionDataSource() *schema.Resource {
 			"resource_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ForceNew:     true,
 				ValidateFunc: validate.ResourceID,
 			},
 
 			"type": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ForceNew:     true,
 				ValidateFunc: validate.ResourceType,
 			},
 
 			"action": {
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
 			},
 
 			"method": {
@@ -117,5 +110,5 @@ func resourceResourceActionDataSourceRead(d *schema.ResourceData, meta interface
 	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
-	return resourceResourceActionRead(d, meta)
+	return nil
 }

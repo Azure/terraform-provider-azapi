@@ -234,3 +234,83 @@ func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceI
 	}
 	return req, err
 }
+
+func (client *ResourceClient) List(ctx context.Context, url string, apiVersion string) (interface{}, error) {
+	pager := runtime.NewPager[interface{}](runtime.PagingHandler[interface{}]{
+		More: func(current interface{}) bool {
+			if current == nil {
+				return false
+			}
+			currentMap, ok := current.(map[string]interface{})
+			if !ok {
+				return false
+			}
+			if currentMap["nextLink"] == nil {
+				return false
+			}
+			if nextLink := currentMap["nextLink"].(string); nextLink == "" {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, current *interface{}) (interface{}, error) {
+			var request *policy.Request
+			if current == nil {
+				req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, url))
+				if err != nil {
+					return nil, err
+				}
+				reqQP := req.Raw().URL.Query()
+				reqQP.Set("api-version", apiVersion)
+				req.Raw().URL.RawQuery = reqQP.Encode()
+				request = req
+			} else {
+				nextLink := ""
+				if currentMap, ok := (*current).(map[string]interface{}); ok && currentMap["nextLink"] != nil {
+					nextLink = currentMap["nextLink"].(string)
+				}
+				req, err := runtime.NewRequest(ctx, http.MethodGet, nextLink)
+				if err != nil {
+					return nil, err
+				}
+				request = req
+			}
+			request.Raw().Header.Set("Accept", "application/json")
+			resp, err := client.pl.Do(request)
+			if err != nil {
+				return nil, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return nil, runtime.NewResponseError(resp)
+			}
+			var responseBody interface{}
+			if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
+				return nil, err
+			}
+			return responseBody, nil
+		},
+	})
+
+	value := make([]interface{}, 0)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		if pageMap, ok := page.(map[string]interface{}); ok {
+			if pageMap["value"] != nil {
+				if pageValue, ok := pageMap["value"].([]interface{}); ok {
+					value = append(value, pageValue...)
+					continue
+				}
+			}
+		}
+
+		// if response doesn't follow the ARM paging guideline, return the response as is
+		return page, nil
+	}
+	return map[string]interface{}{
+		"value": value,
+	}, nil
+}

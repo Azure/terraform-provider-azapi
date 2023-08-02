@@ -40,6 +40,7 @@ func azureProvider() *schema.Provider {
 
 	dataSources["azapi_resource"] = services.ResourceAzApiDataSource()
 	dataSources["azapi_resource_action"] = services.ResourceResourceActionDataSource()
+	dataSources["azapi_resource_list"] = services.ResourceResourceListDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{
