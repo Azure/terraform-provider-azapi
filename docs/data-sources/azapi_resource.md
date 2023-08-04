@@ -73,6 +73,8 @@ The following arguments are supported:
 
   For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
+  For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription(You could check the default subscription by azure cli command: `az account show`).
+
 * `resource_id` - (Optional) The ID of an existing azure source.
 
 ~> **Note:** Configuring `name` and `parent_id` is an alternative way to configure `resource_id`.

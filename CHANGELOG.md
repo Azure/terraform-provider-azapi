@@ -2,6 +2,9 @@
 FEATURES:
 - **New Data Source**: azapi_resource_list
 
+ENHANCEMENTS:
+- `azapi_resource` resource/data source: When creating `Microsoft.Resources/resourceGroups`, `parent_id` is optional and defaults to the ID of the default subscription.
+
 ## v1.8.0
 FEATURES:
 

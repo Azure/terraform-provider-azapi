@@ -8,8 +8,10 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
@@ -77,8 +79,9 @@ func ResourceAzApiResource() *schema.Resource {
 
 			"parent_id": {
 				Type:         schema.TypeString,
-				Required:     true,
+				Optional:     true,
 				ForceNew:     true,
+				Computed:     true,
 				ValidateFunc: validate.ResourceID,
 			},
 
@@ -299,7 +302,13 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		resourceName = meta.(*clients.Client).Features.DefaultNaming
 	}
 
-	id, err := parse.NewResourceID(resourceName, d.Get("parent_id").(string), d.Get("type").(string))
+	parentId := d.Get("parent_id").(string)
+	resourceType := d.Get("type").(string)
+	if parentId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.ResourceGroupResourceType.String())) {
+		parentId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+	}
+
+	id, err := parse.NewResourceID(resourceName, parentId, resourceType)
 	if err != nil {
 		return err
 	}
