@@ -303,6 +303,7 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			SkipProviderRegistration:    d.Get("skip_provider_registration").(bool),
 			DisableCorrelationRequestID: d.Get("disable_correlation_request_id").(bool),
 			CustomCorrelationRequestID:  d.Get("custom_correlation_request_id").(string),
+			SubscriptionId:              d.Get("subscription_id").(string),
 		}
 
 		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint

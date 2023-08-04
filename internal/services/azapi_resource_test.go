@@ -251,6 +251,23 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_defaultParentId(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultParentId(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("parent_id").HasValue(fmt.Sprintf("/subscriptions/%s", subscriptionId)),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
 func TestAccGenericResource_defaultsNaming(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -853,6 +870,19 @@ resource "azapi_resource" "test" {
 
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, data.LocationSecondary)
+}
+
+func (r GenericResource) defaultParentId(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+}
+
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2022-09-01"
+  name     = "acctest-%[2]d"
+  location = "%[1]s"
+}
+`, data.LocationPrimary, data.RandomInteger)
 }
 
 func (r GenericResource) defaultNaming(data acceptance.TestData) string {

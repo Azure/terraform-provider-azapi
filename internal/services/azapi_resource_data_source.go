@@ -2,8 +2,10 @@ package services
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
@@ -29,15 +31,14 @@ func ResourceAzApiDataSource() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validation.StringIsNotEmpty,
-				RequiredWith: []string{"parent_id"},
 				ExactlyOneOf: []string{"name", "resource_id"},
 			},
 
 			"parent_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
+				Computed:     true,
 				ValidateFunc: validate.ResourceID,
-				RequiredWith: []string{"name"},
 			},
 
 			"resource_id": {
@@ -83,7 +84,13 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 
 	var id parse.ResourceId
 	if name := d.Get("name").(string); len(name) != 0 {
-		buildId, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+		parentId := d.Get("parent_id").(string)
+		resourceType := d.Get("type").(string)
+		if parentId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.ResourceGroupResourceType.String())) {
+			parentId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+		}
+
+		buildId, err := parse.NewResourceID(name, parentId, resourceType)
 		if err != nil {
 			return err
 		}

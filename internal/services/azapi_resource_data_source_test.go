@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -52,6 +53,21 @@ func TestAccGenericDataSource_withResourceId(t *testing.T) {
 	})
 }
 
+func TestAccGenericDataSource_defaultParentId(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericDataSource{}
+
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.defaultParentId(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("parent_id").HasValue(fmt.Sprintf("/subscriptions/%s", subscriptionId)),
+			),
+		},
+	})
+}
+
 func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -62,6 +78,17 @@ data "azapi_resource" "test" {
   type      = azapi_resource.test.type
 }
 `, GenericResource{}.complete(data))
+}
+
+func (r GenericDataSource) defaultParentId(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource" "test" {
+  type = "Microsoft.Resources/resourceGroups@2022-09-01"
+  name = azapi_resource.test.name
+}
+`, GenericResource{}.defaultParentId(data))
 }
 
 func (r GenericDataSource) withResourceId(data acceptance.TestData) string {

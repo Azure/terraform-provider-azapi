@@ -21,6 +21,8 @@ type Client struct {
 
 	ResourceClient  *ResourceClient
 	DataPlaneClient *DataPlaneClient
+
+	Account ResourceManagerAccount
 }
 
 type Option struct {
@@ -31,6 +33,7 @@ type Option struct {
 	DisableCorrelationRequestID bool
 	CloudCfg                    cloud.Configuration
 	CustomCorrelationRequestID  string
+	SubscriptionId              string
 }
 
 // NOTE: it should be possible for this method to become Private once the top level Client's removed
@@ -122,6 +125,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		return err
 	}
 	client.DataPlaneClient = dataPlaneClient
+
+	client.Account = NewResourceManagerAccount(o.SubscriptionId)
 
 	return nil
 }
