@@ -12,15 +12,18 @@ import (
 
 type ResourceManagerAccount struct {
 	subscriptionId *string
-	mutex          sync.Mutex
+	mutex          *sync.Mutex
 }
 
 func NewResourceManagerAccount(subscriptionId string) ResourceManagerAccount {
 	if subscriptionId == "" {
-		return ResourceManagerAccount{}
+		return ResourceManagerAccount{
+			mutex: &sync.Mutex{},
+		}
 	}
 	return ResourceManagerAccount{
 		subscriptionId: &subscriptionId,
+		mutex:          &sync.Mutex{},
 	}
 }
 
