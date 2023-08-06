@@ -34,8 +34,8 @@ provider "azapi" {
 #####################
 
 resource "azurerm_resource_group" "azrg" {
-  name        = var.rg-name
-  location    = var.rg-location
+  name        = "GrafanaRG"
+  location    = "West Europe"
 }
 
 ##############################
@@ -43,7 +43,7 @@ resource "azurerm_resource_group" "azrg" {
 ##############################
 resource "azapi_resource" "azgrafana" {
   type        = "Microsoft.Dashboard/grafana@2022-08-01" 
-  name        = var.az-grafana-name
+  name        = "AMGrafanaTest"
   parent_id   = azurerm_resource_group.azrg.id
   location    = azurerm_resource_group.azrg.location
   
