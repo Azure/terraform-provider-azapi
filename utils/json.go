@@ -155,7 +155,7 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 		}
 	case []interface{}:
 		// Does not support override specific item in list
-		for v, _ := range pathSet {
+		for v := range pathSet {
 			if strings.HasPrefix(v, path+".") {
 				return nil, fmt.Errorf("ignoring specific item in list is not supported")
 			}
