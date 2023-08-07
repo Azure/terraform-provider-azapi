@@ -109,6 +109,15 @@ func ResourceAzApiResource() *schema.Resource {
 				Default:  false,
 			},
 
+			"ignore_changes": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
 			"ignore_missing_property": {
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -313,8 +322,8 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		return err
 	}
 
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if d.IsNewResource() {
-		_, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err == nil {
 			return tf.ImportAsExistsError("azapi_resource", id.ID())
 		}
@@ -368,6 +377,21 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	body["name"] = id.Name
+
+	ignoreChanges := d.Get("ignore_changes").([]interface{})
+	if !d.IsNewResource() && len(ignoreChanges) != 0 {
+		merged, err := overrideWithPaths(body, existing, ignoreChanges)
+		if err != nil {
+			return err
+		}
+
+		if id.ResourceDef != nil {
+			merged = (*id.ResourceDef).GetWriteOnly(merged.(map[string]interface{}))
+		}
+
+		body = merged.(map[string]interface{})
+	}
+
 	if d.Get("schema_validation_enabled").(bool) {
 		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, body); err != nil {
 			return err
@@ -454,7 +478,13 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 			IgnoreCasing:          d.Get("ignore_casing").(bool),
 			IgnoreMissingProperty: d.Get("ignore_missing_property").(bool),
 		}
-		data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody, option))
+		if out, err := overrideWithPaths(responseBody, requestBody, d.Get("ignore_changes").([]interface{})); err == nil {
+			responseBody = out
+		} else {
+			return err
+		}
+		body := utils.UpdateObject(requestBody, responseBody, option)
+		data, err := json.Marshal(body)
 		if err != nil {
 			return err
 		}

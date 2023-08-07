@@ -4,6 +4,8 @@ FEATURES:
 
 ENHANCEMENTS:
 - `azapi_resource` resource/data source: When creating `Microsoft.Resources/resourceGroups`, `parent_id` is optional and defaults to the ID of the default subscription.
+- `azapi_resource` resource: Support `ignore_changes` field, which is used to ignore some properties when comparing the resource with its current state.
+- `azapi_update_resource` resource: Support `ignore_changes` field, which is used to ignore some properties when comparing the resource with its current state.
 
 ## v1.8.0
 FEATURES:

@@ -63,6 +63,19 @@ func isResourceHasProperty(resourceDef *types.ResourceType, property string) boo
 	return false
 }
 
+func overrideWithPaths(base interface{}, changed interface{}, paths []interface{}) (interface{}, error) {
+	if len(paths) == 0 {
+		return base, nil
+	}
+
+	pathSet := make(map[string]bool)
+	for _, path := range paths {
+		pathSet[path.(string)] = true
+	}
+
+	return utils.OverrideWithPaths(base, changed, "", pathSet)
+}
+
 func flattenOutput(responseBody interface{}, paths []interface{}) string {
 	for _, path := range paths {
 		if path == "*" {
@@ -81,7 +94,7 @@ func flattenOutput(responseBody interface{}, paths []interface{}) string {
 		if part == nil {
 			continue
 		}
-		output = utils.GetMergedJson(output, part)
+		output = utils.MergeObject(output, part)
 	}
 	outputJson, _ := json.Marshal(output)
 	return string(outputJson)

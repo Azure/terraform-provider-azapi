@@ -196,7 +196,7 @@ func resourceAzApiDataPlaneResourceRead(d *schema.ResourceData, meta interface{}
 		IgnoreCasing:          d.Get("ignore_casing").(bool),
 		IgnoreMissingProperty: d.Get("ignore_missing_property").(bool),
 	}
-	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody, option))
+	data, err := json.Marshal(utils.UpdateObject(requestBody, responseBody, option))
 	if err != nil {
 		return err
 	}

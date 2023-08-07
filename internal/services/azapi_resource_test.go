@@ -434,6 +434,32 @@ func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_ignoreChanges(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreChanges(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_ignoreChangesArray(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreChangesArray(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1203,6 +1229,72 @@ resource "azapi_resource" "test" {
   ignore_casing = true
 }
 `, r.template(data), data.RandomInteger, data.RandomStringOfLength(10), clientId, clientSecret)
+}
+
+func (r GenericResource) ignoreChanges(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  name      = "acctest%[2]d"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Free"
+      }
+    }
+  })
+
+  ignore_changes = ["properties.sku.name"]
+}
+
+
+`, r.template(data), data.RandomInt())
+}
+
+func (r GenericResource) ignoreChangesArray(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_virtual_network" "test" {
+  name                = "acctest%[2]d"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+}
+
+resource "azurerm_subnet" "test" {
+  name                 = "default"
+  resource_group_name  = azurerm_resource_group.test.name
+  virtual_network_name = azurerm_virtual_network.test.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
+  resource_id = azurerm_virtual_network.test.id
+  body = jsonencode({
+    properties = {
+      subnets = [
+        {
+          name = "second"
+          properties = {
+            addressPrefix = "10.0.2.0/24"
+          }
+        }
+      ]
+    }
+  })
+
+  ignore_changes = ["properties.subnets"]
+  depends_on     = [azurerm_subnet.test]
+}
+
+
+`, r.template(data), data.RandomInt())
 }
 
 func (GenericResource) template(data acceptance.TestData) string {
