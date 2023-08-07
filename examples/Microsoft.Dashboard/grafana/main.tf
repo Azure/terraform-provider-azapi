@@ -1,24 +1,14 @@
 terraform {
-
   required_version = ">= 1.3.3"
-  
-  backend "azurerm" {
-    resource_group_name  = "tfpipeline-rg"
-    storage_account_name = "tfpipelinesa"
-    container_name       = "terraform"
-    key                  = "AMG/Grafana.tfstate"
-  }
-
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 3.27"
     }
     azapi = {
-      source = "Azure/azapi"
+      source  = "Azure/azapi"
       version = "1.0.0"
     }
-    
   }
 }
 provider "azurerm" {
@@ -34,21 +24,21 @@ provider "azapi" {
 #####################
 
 resource "azurerm_resource_group" "azrg" {
-  name        = "GrafanaRG"
-  location    = "West Europe"
+  name     = "GrafanaRG"
+  location = "West Europe"
 }
 
 ##############################
 ## Azure Managed Grafana:-
 ##############################
 resource "azapi_resource" "azgrafana" {
-  type        = "Microsoft.Dashboard/grafana@2022-08-01" 
-  name        = "AMGrafanaTest"
-  parent_id   = azurerm_resource_group.azrg.id
-  location    = azurerm_resource_group.azrg.location
-  
+  type      = "Microsoft.Dashboard/grafana@2022-08-01"
+  name      = "AMGrafanaTest"
+  parent_id = azurerm_resource_group.azrg.id
+  location  = azurerm_resource_group.azrg.location
+
   identity {
-    type      = "SystemAssigned"
+    type = "SystemAssigned"
   }
 
   body = jsonencode({
@@ -56,12 +46,10 @@ resource "azapi_resource" "azgrafana" {
       name = "Standard"
     }
     properties = {
-      publicNetworkAccess = "Enabled",
-      zoneRedundancy = "Enabled",
-      apiKey = "Enabled",
+      publicNetworkAccess     = "Enabled",
+      zoneRedundancy          = "Enabled",
+      apiKey                  = "Enabled",
       deterministicOutboundIP = "Enabled"
     }
   })
-
 }
-
