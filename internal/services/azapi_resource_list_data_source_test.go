@@ -10,7 +10,7 @@ import (
 type ListDataSource struct{}
 
 func TestAccListDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_list", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
 	r := ListDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -22,7 +22,7 @@ func TestAccListDataSource_basic(t *testing.T) {
 }
 
 func TestAccListDataSource_paging(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_list", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
 	r := ListDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{

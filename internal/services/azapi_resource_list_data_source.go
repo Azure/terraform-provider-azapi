@@ -13,9 +13,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceResourceListDataSource() *schema.Resource {
+func ResourceListDataSource() *schema.Resource {
 	return &schema.Resource{
-		Read: resourceResourceListDataSourceRead,
+		Read: resourceListDataSourceRead,
 
 		Timeouts: &schema.ResourceTimeout{
 			Read: schema.DefaultTimeout(30 * time.Minute),
@@ -51,7 +51,7 @@ func ResourceResourceListDataSource() *schema.Resource {
 	}
 }
 
-func resourceResourceListDataSourceRead(d *schema.ResourceData, meta interface{}) error {
+func resourceListDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*clients.Client).ResourceClient
 	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
 	defer cancel()
