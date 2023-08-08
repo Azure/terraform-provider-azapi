@@ -17,7 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceResourceAction() *schema.Resource {
+func ResourceAction() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceResourceActionCreateUpdate,
 		Read:   resourceResourceActionRead,

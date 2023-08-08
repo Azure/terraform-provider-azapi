@@ -33,14 +33,15 @@ func azureProvider() *schema.Provider {
 	dataSources := make(map[string]*schema.Resource)
 	resources := make(map[string]*schema.Resource)
 
-	resources["azapi_resource"] = services.ResourceAzApiResource()
-	resources["azapi_update_resource"] = services.ResourceAzApiUpdateResource()
-	resources["azapi_resource_action"] = services.ResourceResourceAction()
-	resources["azapi_data_plane_resource"] = services.ResourceAzApiDataPlaneResource()
+	resources["azapi_resource"] = services.AzApiResource()
+	resources["azapi_update_resource"] = services.AzApiUpdateResource()
+	resources["azapi_resource_action"] = services.ResourceAction()
+	resources["azapi_data_plane_resource"] = services.AzApiDataPlaneResource()
 
-	dataSources["azapi_resource"] = services.ResourceAzApiDataSource()
-	dataSources["azapi_resource_action"] = services.ResourceResourceActionDataSource()
-	dataSources["azapi_resource_list"] = services.ResourceResourceListDataSource()
+	dataSources["azapi_resource"] = services.AzApiDataSource()
+	dataSources["azapi_resource_action"] = services.ResourceActionDataSource()
+	dataSources["azapi_resource_list"] = services.ResourceListDataSource()
+	dataSources["azapi_resource_id"] = services.ResourceIdDataSource()
 
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{

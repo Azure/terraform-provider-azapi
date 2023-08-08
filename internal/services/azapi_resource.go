@@ -28,7 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzApiResource() *schema.Resource {
+func AzApiResource() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceAzApiResourceCreateUpdate,
 		Read:   resourceAzApiResourceRead,

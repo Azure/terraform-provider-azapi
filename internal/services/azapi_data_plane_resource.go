@@ -17,7 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func ResourceAzApiDataPlaneResource() *schema.Resource {
+func AzApiDataPlaneResource() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceAzApiDataPlaneResourceCreateUpdate,
 		Read:   resourceAzApiDataPlaneResourceRead,

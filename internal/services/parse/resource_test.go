@@ -13,6 +13,19 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 		Expected         *ResourceId
 	}{
 		{
+			ResourceType:     "Microsoft.Resources/tenants@2021-04-01",
+			ResourceId:       "/",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/tenants",
+				AzureResourceId:   "/",
+				Name:              "",
+				ParentId:          "",
+			},
+		},
+
+		{
 			ResourceType:     "Microsoft.Resources/providers@2020-04-01",
 			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/providers/Microsoft.Network",
 			ResourceDefExist: false,
@@ -271,6 +284,19 @@ func Test_ResourceIDWithApiVersion(t *testing.T) {
 		Expected         *ResourceId
 	}{
 		{
+			// tenant
+			Input:            "/?api-version=2021-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/tenants",
+				AzureResourceId:   "/",
+				Name:              "",
+				ParentId:          "",
+			},
+		},
+
+		{
 			// tenant scope
 			Input:            "/subscriptions/12345678-1234-9876-4563-123456789012?api-version=2021-04-01",
 			ResourceDefExist: false,
@@ -469,6 +495,18 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
+		{
+			Name:             "",
+			ParentId:         "",
+			ResourceType:     "Microsoft.Resources/tenants@2021-04-01",
+			ResourceDefExist: false,
+			Expected: &ResourceId{
+				ApiVersion:        "2021-04-01",
+				AzureResourceType: "Microsoft.Resources/tenants",
+				AzureResourceId:   "/",
+			},
+		},
+
 		{
 			Name:             "Microsoft.Network",
 			ParentId:         "/subscriptions/12345678-1234-9876-4563-123456789012",

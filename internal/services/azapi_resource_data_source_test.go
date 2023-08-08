@@ -14,7 +14,7 @@ import (
 type GenericDataSource struct{}
 
 func TestAccGenericDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -34,7 +34,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 }
 
 func TestAccGenericDataSource_withResourceId(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -54,7 +54,7 @@ func TestAccGenericDataSource_withResourceId(t *testing.T) {
 }
 
 func TestAccGenericDataSource_defaultParentId(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
 	r := GenericDataSource{}
 
 	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
