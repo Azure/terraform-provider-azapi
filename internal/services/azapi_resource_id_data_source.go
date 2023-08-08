@@ -98,8 +98,11 @@ func resourceIdDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	d.SetId(id.ID())
+	// #nosec G104
 	d.Set("name", id.Name)
+	// #nosec G104
 	d.Set("parent_id", id.ParentId)
+	// #nosec G104
 	d.Set("resource_id", id.AzureResourceId)
 
 	armId, err := arm.ParseResourceID(id.AzureResourceId)
@@ -112,8 +115,11 @@ func resourceIdDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
+	// #nosec G104
 	d.Set("resource_group_name", armId.ResourceGroupName)
+	// #nosec G104
 	d.Set("subscription_id", armId.SubscriptionID)
+	// #nosec G104
 	d.Set("provider_namespace", armId.ResourceType.Namespace)
 
 	path := id.AzureResourceId
@@ -124,6 +130,7 @@ func resourceIdDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	for i := 0; i < len(components)-1; i += 2 {
 		parts[components[i]] = components[i+1]
 	}
+	// #nosec G104
 	d.Set("parts", parts)
 
 	return nil
