@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
-func Test_GetUpdatedJson(t *testing.T) {
+func Test_UpdateObject(t *testing.T) {
 	testcases := []struct {
 		OldJson    string
 		NewJson    string
@@ -103,7 +103,7 @@ func Test_GetUpdatedJson(t *testing.T) {
 		_ = json.Unmarshal([]byte(testcase.NewJson), &new)
 		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
 
-		result := utils.GetUpdatedJson(old, new, testcase.Option)
+		result := utils.UpdateObject(old, new, testcase.Option)
 		if !reflect.DeepEqual(result, expected) {
 			expectedJson, _ := json.Marshal(expected)
 			resultJson, _ := json.Marshal(result)
@@ -112,7 +112,7 @@ func Test_GetUpdatedJson(t *testing.T) {
 	}
 }
 
-func Test_GetMergedJson(t *testing.T) {
+func Test_MergeObject(t *testing.T) {
 	oldJson := `
  {
 	"a":1,
@@ -145,7 +145,7 @@ func Test_GetMergedJson(t *testing.T) {
 	_ = json.Unmarshal([]byte(newJson), &new)
 	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
-	result := utils.GetMergedJson(old, new)
+	result := utils.MergeObject(old, new)
 	if !reflect.DeepEqual(result, expected) {
 		expectedJson, _ := json.Marshal(expected)
 		resultJson, _ := json.Marshal(result)
@@ -153,7 +153,7 @@ func Test_GetMergedJson(t *testing.T) {
 	}
 }
 
-func Test_GetMergedJsonWithArray(t *testing.T) {
+func Test_MergeObjectWithArray(t *testing.T) {
 	oldJson := `
 {
     "name": "mylb",
@@ -301,139 +301,7 @@ func Test_GetMergedJsonWithArray(t *testing.T) {
 	_ = json.Unmarshal([]byte(newJson), &new)
 	_ = json.Unmarshal([]byte(expectedJson), &expected)
 
-	result := utils.GetMergedJson(old, new)
-	if !reflect.DeepEqual(result, expected) {
-		expectedJson, _ := json.Marshal(expected)
-		resultJson, _ := json.Marshal(result)
-		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
-	}
-}
-
-func Test_GetRemovedJson(t *testing.T) {
-	oldJson := `
-{
-    "properties": {
-        "public": false,
-        "provisioningState": "Succeeded",
-        "fqdn": "springcloud.azuremicroservices.io",
-        "httpsOnly": false,
-        "createdTime": "2021-11-16T08:49:54.966Z",
-        "temporaryDisk": {
-            "sizeInGB": 4,
-            "mountPath": "/temp"
-        },
-        "persistentDisk": {
-            "sizeInGB": 0,
-            "mountPath": "/persistent"
-        },
-        "enableEndToEndTLS": false
-    },
-    "type": "Microsoft.AppPlatform/Spring/apps",
-    "identity": {
-        "type": "SystemAssigned",
-        "principalId": "d44e42c2-173f-456b-883a-7433aa870a18",
-        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-    },
-    "location": "westeurope",
-    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestRG1116/providers/Microsoft.AppPlatform/Spring/springcloud/apps/springcloudapp",
-    "name": "springcloudapp"
-}
-`
-
-	newJson := `
-  {
-    "properties": {
-      "temporaryDisk": {
-        "mountPath": "/temp",
-        "sizeInGB": 4
-      }
-    }
-  }
-`
-	expectedJson := `
-{
-    "properties": {
-        "public": false,
-        "provisioningState": "Succeeded",
-        "fqdn": "springcloud.azuremicroservices.io",
-        "httpsOnly": false,
-        "createdTime": "2021-11-16T08:49:54.966Z",
-        "persistentDisk": {
-            "sizeInGB": 0,
-            "mountPath": "/persistent"
-        },
-        "enableEndToEndTLS": false
-    },
-    "type": "Microsoft.AppPlatform/Spring/apps",
-    "identity": {
-        "type": "SystemAssigned",
-        "principalId": "d44e42c2-173f-456b-883a-7433aa870a18",
-        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-    },
-    "location": "westeurope",
-    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestRG1116/providers/Microsoft.AppPlatform/Spring/springcloud/apps/springcloudapp",
-    "name": "springcloudapp"
-}
-`
-	var new, old, expected interface{}
-	_ = json.Unmarshal([]byte(oldJson), &old)
-	_ = json.Unmarshal([]byte(newJson), &new)
-	_ = json.Unmarshal([]byte(expectedJson), &expected)
-
-	result := utils.GetRemovedJson(old, new)
-	if !reflect.DeepEqual(result, expected) {
-		expectedJson, _ := json.Marshal(expected)
-		resultJson, _ := json.Marshal(result)
-		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
-	}
-}
-
-func Test_GetIgnoredJson(t *testing.T) {
-	oldJson := `
-{
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
-  "kind": "EventHub",
-  "location": "West Europe",
-  "name": "acctestkc924/acctestkd/acctestkedc",
-  "properties": {
-    "compression": "None",
-    "consumerGroup": "acctesteventhubcg",
-    "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
-    "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
-    "mappingRuleName": "",
-    "provisioningState": "Succeeded",
-    "tableName": ""
-  },
-  "type": "Microsoft.Kusto/Clusters/Databases/DataConnections"
-}
-`
-	expectedJson := `
-{
-  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.Kusto/Clusters/acctestkc924/Databases/acctestkd/DataConnections/acctestkedc",
-  "kind": "EventHub",
-  "location": "West Europe",
-  "name": "acctestkc924/acctestkd/acctestkedc",
-  "properties": {
-    "compression": "None",
-    "consumerGroup": "acctesteventhubcg",
-    "dataFormat": "",
-    "eventHubResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.EventHub/namespaces/acctesteventhubnamespace/eventhubs/acctesteventhub",
-    "eventSystemProperties": [],
-    "managedIdentityResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/acctestRG924/providers/Microsoft.ManagedIdentity/userAssignedIdentities/acctest924",
-    "mappingRuleName": "",
-    "tableName": ""
-  },
-  "type": "Microsoft.Kusto/Clusters/Databases/DataConnections"
-}
-`
-
-	var old, expected interface{}
-	_ = json.Unmarshal([]byte(oldJson), &old)
-	_ = json.Unmarshal([]byte(expectedJson), &expected)
-
-	result := utils.GetIgnoredJson(old, []string{"provisioningState"})
+	result := utils.MergeObject(old, new)
 	if !reflect.DeepEqual(result, expected) {
 		expectedJson, _ := json.Marshal(expected)
 		resultJson, _ := json.Marshal(result)
@@ -486,5 +354,104 @@ func Test_ExtractObject(t *testing.T) {
 	if result != nil {
 		resultJson, _ := json.Marshal(result)
 		t.Fatalf("Expected nil but got %s", resultJson)
+	}
+}
+
+func Test_OverrideWithPaths(t *testing.T) {
+	testcases := []struct {
+		OldJson       string
+		NewJson       string
+		ExpectJson    string
+		IgnoreChanges []string
+	}{
+		{
+			OldJson: `
+{
+    "properties": {
+        "provisioningState": "Foo",
+        "subnets": [
+            {
+                "name": "default",
+                "value": "foo"
+            }
+        ]
+    }
+}`,
+			NewJson: `
+{
+    "properties": {
+        "provisioningState": "Bar",
+        "subnets": [
+            {
+                "name": "default",
+                "value": "foo"
+            },
+            {
+                "name": "spin-app-subnet",
+                "id": "bar"
+            }
+        ]
+    }
+}`,
+			ExpectJson: `
+{
+    "properties": {
+        "provisioningState": "Foo",
+        "subnets": [
+            {
+                "name": "default",
+                "value": "foo"
+            },
+            {
+                "name": "spin-app-subnet",
+                "id": "bar"
+            }
+        ]
+    }
+}`,
+			IgnoreChanges: []string{"properties.subnets"},
+		},
+		{
+			OldJson: `
+{
+    "properties": {
+        "provisioningState": "Foo"
+    }
+}`,
+			NewJson: `
+{
+    "properties": {
+        "provisioningState": "Bar"
+    }
+}`,
+			ExpectJson: `
+{
+    "properties": {
+        "provisioningState": "Bar"
+    }
+}`,
+			IgnoreChanges: []string{"properties.provisioningState"},
+		},
+	}
+
+	for _, testcase := range testcases {
+		var new, old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.NewJson), &new)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		pathSet := make(map[string]bool)
+		for _, path := range testcase.IgnoreChanges {
+			pathSet[path] = true
+		}
+		result, err := utils.OverrideWithPaths(old, new, "", pathSet)
+		if err != nil {
+			t.Fatalf("Expected no error but got %s", err)
+		}
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+		}
 	}
 }

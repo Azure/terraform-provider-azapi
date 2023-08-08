@@ -84,6 +84,15 @@ func ResourceAzApiUpdateResource() *schema.Resource {
 				Default:  false,
 			},
 
+			"ignore_changes": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type:         schema.TypeString,
+					ValidateFunc: validation.StringIsNotEmpty,
+				},
+			},
+
 			"ignore_missing_property": {
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -181,7 +190,15 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 		return err
 	}
 
-	requestBody = utils.GetMergedJson(existing, requestBody)
+	requestBody = utils.MergeObject(existing, requestBody)
+	if ignoreChanges := d.Get("ignore_changes").([]interface{}); len(ignoreChanges) != 0 {
+		out, err := overrideWithPaths(requestBody, existing, ignoreChanges)
+		if err != nil {
+			return err
+		}
+		requestBody = out
+	}
+
 	if id.ResourceDef != nil {
 		requestBody = (*id.ResourceDef).GetWriteOnly(requestBody)
 	}
@@ -245,7 +262,13 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 		IgnoreCasing:          d.Get("ignore_casing").(bool),
 		IgnoreMissingProperty: d.Get("ignore_missing_property").(bool),
 	}
-	data, err := json.Marshal(utils.GetUpdatedJson(requestBody, responseBody, option))
+	if out, err := overrideWithPaths(responseBody, requestBody, d.Get("ignore_changes").([]interface{})); err == nil {
+		responseBody = out
+	} else {
+		return err
+	}
+	body := utils.UpdateObject(requestBody, responseBody, option)
+	data, err := json.Marshal(body)
 	if err != nil {
 		return err
 	}
