@@ -8,6 +8,9 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Support `ignore_changes` field, which is used to ignore some properties when comparing the resource with its current state.
 - `azapi_update_resource` resource: Support `ignore_changes` field, which is used to ignore some properties when comparing the resource with its current state.
 
+BUG FIXES:
+- Fix a bug that `azapi_resource` resource doesn't store the `id` in the state when error happens during the creation.
+
 ## v1.8.0
 FEATURES:
 

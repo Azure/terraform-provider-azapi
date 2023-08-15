@@ -408,6 +408,11 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
+		if d.IsNewResource() {
+			if _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion); err == nil {
+				d.SetId(id.ID())
+			}
+		}
 		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
 
