@@ -10,6 +10,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix a bug that `azapi_resource` resource doesn't store the `id` in the state when error happens during the creation.
+- Fix a bug that errors from the polling API which don't follow the ARM LRO guidelines are not handled properly.
 
 ## v1.8.0
 FEATURES:

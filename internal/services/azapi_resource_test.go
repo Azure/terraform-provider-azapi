@@ -460,6 +460,19 @@ func TestAccGenericResource_ignoreChangesArray(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_nonstandardLRO(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.nonstandardLRO(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1297,6 +1310,56 @@ resource "azapi_update_resource" "test" {
 
 
 `, r.template(data), data.RandomInt())
+}
+
+func (r GenericResource) nonstandardLRO(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[2]s"
+  resource_group_name      = azurerm_resource_group.test.name
+  location                 = azurerm_resource_group.test.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "test" {
+  name                 = "acctestsc%[2]s"
+  storage_account_name = azurerm_storage_account.test.name
+}
+
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CostManagement/exports@2022-10-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  body = jsonencode({
+    properties = {
+      schedule = {
+        recurrence = "Monthly"
+        recurrencePeriod = {
+          from = "2030-12-29T00:00:00Z"
+          to   = "2030-12-30T00:00:00Z"
+        }
+        status = "Inactive"
+      }
+      definition = {
+        timeframe = "TheLastMonth"
+        type      = "Usage"
+
+      }
+      format = "Csv"
+      deliveryInfo = {
+        destination = {
+          container  = azurerm_storage_container.test.name
+          resourceId = azurerm_storage_account.test.id
+        }
+      }
+    }
+  })
+}
+`, r.template(data), data.RandomStringOfLength(10))
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

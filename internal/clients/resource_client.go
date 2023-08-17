@@ -54,7 +54,12 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
 		})
-		return resp, err
+		if err == nil {
+			return resp, nil
+		}
+		if !client.shouldIgnorePollingError(err) {
+			return nil, err
+		}
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
@@ -134,7 +139,12 @@ func (client *ResourceClient) Delete(ctx context.Context, resourceID string, api
 		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
 		})
-		return resp, err
+		if err == nil {
+			return resp, nil
+		}
+		if !client.shouldIgnorePollingError(err) {
+			return nil, err
+		}
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
@@ -181,7 +191,12 @@ func (client *ResourceClient) Action(ctx context.Context, resourceID string, act
 		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
 		})
-		return resp, err
+		if err == nil {
+			return resp, nil
+		}
+		if !client.shouldIgnorePollingError(err) {
+			return nil, err
+		}
 	}
 
 	contentType := resp.Header.Get("Content-Type")
@@ -313,4 +328,28 @@ func (client *ResourceClient) List(ctx context.Context, url string, apiVersion s
 	return map[string]interface{}{
 		"value": value,
 	}, nil
+}
+
+func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
+	if err == nil {
+		return true
+	}
+	// there are some APIs that don't follow the ARM LRO guideline, return the response as is
+	if responseErr, ok := err.(*azcore.ResponseError); ok {
+		if responseErr.RawResponse != nil && responseErr.RawResponse.Request != nil {
+			// all control plane APIs must flow through ARM, ignore the polling error if it's not ARM
+			// issue: https://github.com/Azure/azure-rest-api-specs/issues/25356, in this case, the polling url is not exposed by ARM
+			pollRequest := responseErr.RawResponse.Request
+			if pollRequest.Host != strings.TrimPrefix(client.host, "https://") {
+				return true
+			}
+
+			// ignore the polling error if the polling url doesn't support GET method
+			// issue:https://github.com/Azure/azure-rest-api-specs/issues/25362, in this case, the polling url doesn't support GET method
+			if responseErr.StatusCode == http.StatusMethodNotAllowed {
+				return true
+			}
+		}
+	}
+	return false
 }

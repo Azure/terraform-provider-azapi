@@ -11,7 +11,7 @@ import (
 type ActionDataSource struct{}
 
 func TestAccActionDataSource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -23,7 +23,7 @@ func TestAccActionDataSource_basic(t *testing.T) {
 }
 
 func TestAccActionDataSource_providerPermissions(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -35,7 +35,7 @@ func TestAccActionDataSource_providerPermissions(t *testing.T) {
 }
 
 func TestAccActionDataSource_providerAction(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
 	r := ActionDataSource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
