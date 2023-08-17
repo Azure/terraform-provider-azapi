@@ -1248,7 +1248,7 @@ resource "azapi_resource" "test" {
     }
   })
 
-  ignore_changes = ["properties.sku.name"]
+  ignore_body_changes = ["properties.sku.name"]
 }
 
 
@@ -1289,7 +1289,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 
-  ignore_changes = ["properties.subnets"]
+  ignore_body_changes = ["properties.subnets"]
   depends_on     = [azurerm_subnet.test]
 }
 

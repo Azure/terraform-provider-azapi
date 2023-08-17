@@ -70,7 +70,7 @@ resource "azapi_update_resource" "configuration" {
       value = "on"
     }
   })
-  ignore_changes         = ["properties.value"]
+  ignore_body_changes         = ["properties.value"]
   response_export_values = ["*"]
 }
 

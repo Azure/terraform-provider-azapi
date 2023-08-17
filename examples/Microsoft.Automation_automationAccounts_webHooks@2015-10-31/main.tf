@@ -90,7 +90,7 @@ resource "azapi_resource" "webHook" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.expiryTime"]
+  ignore_body_changes            = ["properties.expiryTime"]
   depends_on                = [azapi_resource_action.publish_runbook]
 }
 

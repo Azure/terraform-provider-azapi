@@ -98,7 +98,7 @@ resource "azapi_resource" "cache" {
     }
   })
   schema_validation_enabled = false
-  ignore_changes            = ["properties.connectionString"]
+  ignore_body_changes            = ["properties.connectionString"]
   response_export_values    = ["*"]
 }
 

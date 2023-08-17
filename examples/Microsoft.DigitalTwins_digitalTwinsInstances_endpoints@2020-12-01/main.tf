@@ -120,7 +120,7 @@ resource "azapi_resource" "endpoint" {
     }
   })
   schema_validation_enabled = false
-  ignore_changes            = ["properties.primaryConnectionString", "properties.secondaryConnectionString"]
+  ignore_body_changes            = ["properties.primaryConnectionString", "properties.secondaryConnectionString"]
   response_export_values    = ["*"]
 }
 

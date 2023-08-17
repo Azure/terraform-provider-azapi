@@ -55,7 +55,7 @@ resource "azapi_resource" "vault" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.accessPolicies"]
+  ignore_body_changes            = ["properties.accessPolicies"]
 }
 
 data "azapi_resource_id" "secret" {

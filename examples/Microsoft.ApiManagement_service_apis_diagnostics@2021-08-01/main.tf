@@ -116,7 +116,7 @@ resource "azapi_resource" "logger" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.credentials.instrumentationKey"]
+  ignore_body_changes            = ["properties.credentials.instrumentationKey"]
 }
 
 resource "azapi_resource" "diagnostic" {

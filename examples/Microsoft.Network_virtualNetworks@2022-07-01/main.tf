@@ -48,6 +48,6 @@ resource "azapi_resource" "virtualNetwork" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.subnets"]
+  ignore_body_changes            = ["properties.subnets"]
 }
 

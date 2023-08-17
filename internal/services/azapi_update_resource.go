@@ -84,7 +84,7 @@ func AzApiUpdateResource() *schema.Resource {
 				Default:  false,
 			},
 
-			"ignore_changes": {
+			"ignore_body_changes": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -191,7 +191,7 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	}
 
 	requestBody = utils.MergeObject(existing, requestBody)
-	if ignoreChanges := d.Get("ignore_changes").([]interface{}); len(ignoreChanges) != 0 {
+	if ignoreChanges := d.Get("ignore_body_changes").([]interface{}); len(ignoreChanges) != 0 {
 		out, err := overrideWithPaths(requestBody, existing, ignoreChanges)
 		if err != nil {
 			return err
@@ -262,7 +262,7 @@ func resourceAzApiUpdateResourceRead(d *schema.ResourceData, meta interface{}) e
 		IgnoreCasing:          d.Get("ignore_casing").(bool),
 		IgnoreMissingProperty: d.Get("ignore_missing_property").(bool),
 	}
-	if out, err := overrideWithPaths(responseBody, requestBody, d.Get("ignore_changes").([]interface{})); err == nil {
+	if out, err := overrideWithPaths(responseBody, requestBody, d.Get("ignore_body_changes").([]interface{})); err == nil {
 		responseBody = out
 	} else {
 		return err
