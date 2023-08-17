@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
@@ -103,6 +104,7 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		id = buildId
 	}
 
+	var responseBody interface{}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -110,6 +112,26 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		}
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
+
+	// we retry only if retry if responseBody is nil
+	// this helps to retry for few attributes of an Azure resource to be updated by Azure policies etc.,
+	// outside the scope of Terraform
+	if responseBody == nil {
+		err = resource.RetryContext(ctx, d.Timeout(schema.TimeoutRead), func() *resource.RetryError {
+			responseBody, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+			if err != nil {
+				return resource.NonRetryableError(err)
+			}
+			if responseBody != nil {
+				return nil
+			}
+			return resource.RetryableError(fmt.Errorf("data provider %s doesn't exist yet, retrying", id.AzureResourceId))
+		})
+		if err != nil {
+			return fmt.Errorf("error fetching the data provider inside retry function: %s", err)
+		}
+	}
+
 	d.SetId(id.ID())
 	// #nosec G104
 	d.Set("name", id.Name)
