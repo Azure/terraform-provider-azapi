@@ -1290,8 +1290,10 @@ resource "azapi_update_resource" "test" {
   })
 
   ignore_body_changes = ["properties.subnets"]
-  depends_on     = [azurerm_subnet.test]
+  depends_on          = [azurerm_subnet.test]
 }
+
+
 
 
 `, r.template(data), data.RandomInt())
