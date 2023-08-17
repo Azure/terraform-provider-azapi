@@ -46,6 +46,18 @@ func TestAccActionResource_providerAction(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_nonstandardLRO(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.nonstandardLRO(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -106,4 +118,72 @@ resource "azapi_resource_action" "test" {
   })
 }
 `
+}
+
+func (r ActionResource) nonstandardLRO(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "test" {
+  name     = "acctestrg-%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[2]s"
+  resource_group_name      = azurerm_resource_group.test.name
+  location                 = azurerm_resource_group.test.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_service_plan" "test" {
+  name                = "acctestsp%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  os_type             = "Windows"
+  sku_name            = "Y1"
+}
+
+resource "azurerm_windows_function_app" "test" {
+  name                = "acctestfa%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+
+  storage_account_name       = azurerm_storage_account.test.name
+  storage_account_access_key = azurerm_storage_account.test.primary_access_key
+  service_plan_id            = azurerm_service_plan.test.id
+
+  site_config {}
+}
+
+data "azapi_resource_id" "host" {
+  type      = "Microsoft.Web/sites/host@2022-03-01"
+  parent_id = azurerm_windows_function_app.test.id
+  name      = "default"
+}
+
+data "azapi_resource_id" "functionKey" {
+  type      = "Microsoft.Web/sites/host/functionKeys@2022-03-01"
+  parent_id = data.azapi_resource_id.host.id
+  name      = "tf_key"
+}
+
+resource "azapi_resource_action" "test" {
+  type                   = "Microsoft.Web/sites/host/functionKeys@2022-03-01"
+  resource_id            = data.azapi_resource_id.functionKey.id
+  method                 = "PUT"
+  response_export_values = ["*"]
+  body = jsonencode({
+    properties = {
+      name  = "test_key"
+      value = "test_value"
+    }
+  })
+}
+
+
+`, data.LocationPrimary, data.RandomStringOfLength(10))
 }
