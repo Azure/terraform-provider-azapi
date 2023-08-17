@@ -338,12 +338,14 @@ func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
 	if responseErr, ok := err.(*azcore.ResponseError); ok {
 		if responseErr.RawResponse != nil && responseErr.RawResponse.Request != nil {
 			// all control plane APIs must flow through ARM, ignore the polling error if it's not ARM
+			// issue: https://github.com/Azure/azure-rest-api-specs/issues/25356, in this case, the polling url is not exposed by ARM
 			pollRequest := responseErr.RawResponse.Request
 			if pollRequest.Host != strings.TrimPrefix(client.host, "https://") {
 				return true
 			}
 
 			// ignore the polling error if the polling url doesn't support GET method
+			// issue:https://github.com/Azure/azure-rest-api-specs/issues/25362, in this case, the polling url doesn't support GET method
 			if responseErr.StatusCode == http.StatusMethodNotAllowed {
 				return true
 			}
