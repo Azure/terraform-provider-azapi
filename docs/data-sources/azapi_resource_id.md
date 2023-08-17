@@ -97,7 +97,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `parent_id` - The ID of the azure resource in which this resource is created.
 
-* `provider_namespace` - The provider namespace of the azure resource.
+* `provider_namespace` - The azure resource provider namespace of the azure resource.
 
 * `resource_group_name` - The resource group name of the azure resource.
 
