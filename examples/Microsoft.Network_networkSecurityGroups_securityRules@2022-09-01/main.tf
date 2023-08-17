@@ -38,7 +38,7 @@ resource "azapi_resource" "networkSecurityGroup" {
     }
   })
   schema_validation_enabled = false
-  ignore_changes            = ["properties.securityRules"]
+  ignore_body_changes            = ["properties.securityRules"]
   response_export_values    = ["*"]
 }
 

@@ -50,7 +50,7 @@ resource "azapi_resource" "managedCluster" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.agentPoolProfiles"]
+  ignore_body_changes            = ["properties.agentPoolProfiles"]
 }
 
 resource "azapi_resource" "agentPool" {

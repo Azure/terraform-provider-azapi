@@ -133,7 +133,7 @@ The following arguments are supported:
 
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
 
-* `ignore_changes` - (Optional) A list of properties that should be ignored when comparing the resource with its current state.
+* `ignore_body_changes` - (Optional) A list of properties that should be ignored when comparing the `body` with its current state.
 
 * `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
 

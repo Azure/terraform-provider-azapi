@@ -106,6 +106,6 @@ EOT
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_changes            = ["properties.value"]
+  ignore_body_changes            = ["properties.value"]
 }
 

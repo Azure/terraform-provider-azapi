@@ -37,7 +37,7 @@ resource "azapi_resource" "routeTable" {
     }
   })
   schema_validation_enabled = false
-  ignore_changes            = ["properties.routes"]
+  ignore_body_changes            = ["properties.routes"]
   response_export_values    = ["*"]
 }
 

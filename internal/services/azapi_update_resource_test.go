@@ -287,7 +287,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 
-  ignore_changes = ["properties.sku.name"]
+  ignore_body_changes = ["properties.sku.name"]
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }
@@ -314,7 +314,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 
-  ignore_changes = ["properties.sku.name"]
+  ignore_body_changes = ["properties.sku.name"]
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }

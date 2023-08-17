@@ -97,7 +97,7 @@ resource "azapi_resource" "logger" {
     }
   })
   schema_validation_enabled = false
-  ignore_changes            = ["properties.credentials.instrumentationKey"]
+  ignore_body_changes            = ["properties.credentials.instrumentationKey"]
   response_export_values    = ["*"]
 }
 
