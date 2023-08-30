@@ -7,6 +7,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource/data source: When creating `Microsoft.Resources/resourceGroups`, `parent_id` is optional and defaults to the ID of the default subscription.
 - `azapi_resource` resource: Support `ignore_body_changes` field, which is used to ignore some properties when comparing the resource with its current state.
 - `azapi_update_resource` resource: Support `ignore_body_changes` field, which is used to ignore some properties when comparing the resource with its current state.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/1d8fec8184258cdf967b1288b156e01f7cbc8ca9
 
 BUG FIXES:
 - Fix a bug that `azapi_resource` resource doesn't store the `id` in the state when error happens during the creation.

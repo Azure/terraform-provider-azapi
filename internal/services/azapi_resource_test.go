@@ -917,7 +917,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type     = "Microsoft.Resources/resourceGroups@2022-09-01"
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
   name     = "acctest-%[2]d"
   location = "%[1]s"
 }
@@ -932,7 +932,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
@@ -957,7 +957,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
   name      = "hclNaming"
   parent_id = azurerm_resource_group.test.id
 
@@ -984,7 +984,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2022-10-01-preview"
+  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
   name      = "acc"
   parent_id = azurerm_resource_group.test.id
 
@@ -1041,7 +1041,7 @@ provider "azurerm" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Resources/resourceGroups@2022-09-01"
+  type      = "Microsoft.Resources/resourceGroups@2023-07-01"
   name      = "acctestRG-%[1]d"
   parent_id = "/subscriptions/%[2]s"
 
@@ -1088,7 +1088,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2023-05-01-preview"
+  type      = "Microsoft.AppPlatform/spring/storages@2023-07-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -1124,7 +1124,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2023-05-01-preview"
+  type      = "Microsoft.AppPlatform/spring/storages@2023-07-01-preview"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -1174,7 +1174,7 @@ resource "azurerm_route_table" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/routeTables/routes@2023-04-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-05-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1188,7 +1188,7 @@ resource "azapi_resource" "test" {
 }
 
 resource "azapi_resource" "test2" {
-  type      = "Microsoft.Network/routeTables/routes@2023-04-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-05-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1272,43 +1272,45 @@ func (r GenericResource) ignoreChangesArray(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_virtual_network" "test" {
-  name                = "acctest%[2]d"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-}
-
-resource "azurerm_subnet" "test" {
-  name                 = "default"
-  resource_group_name  = azurerm_resource_group.test.name
-  virtual_network_name = azurerm_virtual_network.test.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
-  resource_id = azurerm_virtual_network.test.id
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks@2022-07-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctest%[2]d"
+  location  = azurerm_resource_group.test.location
   body = jsonencode({
     properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16",
+        ]
+      }
       subnets = [
         {
-          name = "second"
+          name = "first"
           properties = {
-            addressPrefix = "10.0.2.0/24"
+            addressPrefix = "10.0.1.0/24"
           }
         }
       ]
     }
   })
-
-  ignore_body_changes = ["properties.subnets"]
-  depends_on          = [azurerm_subnet.test]
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+  ignore_body_changes       = ["properties.subnets"]
 }
 
-
-
-
+resource "azapi_resource" "subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
+  parent_id = azapi_resource.test.id
+  name      = "second"
+  body = jsonencode({
+    properties = {
+      addressPrefix = "10.0.2.0/24"
+    }
+  })
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
 `, r.template(data), data.RandomInt())
 }
 
@@ -1352,8 +1354,9 @@ resource "azapi_resource" "test" {
       format = "Csv"
       deliveryInfo = {
         destination = {
-          container  = azurerm_storage_container.test.name
-          resourceId = azurerm_storage_account.test.id
+          rootFolderPath = "test"
+          container      = azurerm_storage_container.test.name
+          resourceId     = azurerm_storage_account.test.id
         }
       }
     }

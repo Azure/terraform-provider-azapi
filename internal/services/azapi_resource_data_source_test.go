@@ -85,7 +85,7 @@ func (r GenericDataSource) defaultParentId(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  type = "Microsoft.Resources/resourceGroups@2022-09-01"
+  type = "Microsoft.Resources/resourceGroups@2023-07-01"
   name = azapi_resource.test.name
 }
 `, GenericResource{}.defaultParentId(data))
