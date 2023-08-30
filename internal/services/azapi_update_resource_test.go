@@ -296,27 +296,40 @@ func (r GenericUpdateResource) ignoreChangesArray(data acceptance.TestData) stri
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
+resource "azurerm_virtual_network" "test" {
+  name                = "acctest%[2]d"
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.test.location
   resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+}
+
+resource "azurerm_subnet" "test" {
+  name                 = "default"
+  resource_group_name  = azurerm_resource_group.test.name
+  virtual_network_name = azurerm_virtual_network.test.name
+  address_prefixes     = ["10.0.1.0/24"]
 }
 
 resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2022-08-08"
-  resource_id = azurerm_automation_account.test.id
+  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
+  resource_id = azurerm_virtual_network.test.id
   body = jsonencode({
     properties = {
-      sku = {
-        name = "Free"
-      }
+      subnets = [
+        {
+          name = "second"
+          properties = {
+            addressPrefix = "10.0.2.0/24"
+          }
+        }
+      ]
     }
   })
 
-  ignore_body_changes = ["properties.sku.name"]
+  ignore_body_changes = ["properties.subnets"]
+  depends_on          = [azurerm_subnet.test]
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomInt())
 }
 
 func (GenericUpdateResource) template(data acceptance.TestData) string {

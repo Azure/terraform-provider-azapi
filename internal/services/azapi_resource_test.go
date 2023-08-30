@@ -1272,43 +1272,45 @@ func (r GenericResource) ignoreChangesArray(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_virtual_network" "test" {
-  name                = "acctest%[2]d"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-}
-
-resource "azurerm_subnet" "test" {
-  name                 = "default"
-  resource_group_name  = azurerm_resource_group.test.name
-  virtual_network_name = azurerm_virtual_network.test.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
-  resource_id = azurerm_virtual_network.test.id
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks@2022-07-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctest%[2]d"
+  location  = azurerm_resource_group.test.location
   body = jsonencode({
     properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16",
+        ]
+      }
       subnets = [
         {
-          name = "second"
+          name = "first"
           properties = {
-            addressPrefix = "10.0.2.0/24"
+            addressPrefix = "10.0.1.0/24"
           }
         }
       ]
     }
   })
-
-  ignore_body_changes = ["properties.subnets"]
-  depends_on          = [azurerm_subnet.test]
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+  ignore_body_changes       = ["properties.subnets"]
 }
 
-
-
-
+resource "azapi_resource" "subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
+  parent_id = azapi_resource.test.id
+  name      = "second"
+  body = jsonencode({
+    properties = {
+      addressPrefix = "10.0.2.0/24"
+    }
+  })
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
 `, r.template(data), data.RandomInt())
 }
 
