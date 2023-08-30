@@ -94,11 +94,14 @@ func GetScopeType(id string) types.ScopeType {
 		}
 	}
 
+	// #nosec G602
 	if len(componentsBeforeProvider) == 2 && strings.EqualFold(componentsBeforeProvider[0], "subscriptions") {
 		return types.Subscription
 	}
 
+	// #nosec G602
 	if len(componentsBeforeProvider) == 4 && strings.EqualFold(componentsBeforeProvider[0], "subscriptions") &&
+		// #nosec G602
 		strings.EqualFold(componentsBeforeProvider[2], "resourceGroups") {
 		return types.ResourceGroup
 	}
