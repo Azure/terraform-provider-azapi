@@ -84,7 +84,7 @@ func TestAccIdDataSource_tenants(t *testing.T) {
 func (r IdDataSource) resourceGroup() string {
 	return `
 data "azapi_resource_id" "test" {
-  type      = "Microsoft.Resources/resourceGroups@2022-09-01"
+  type      = "Microsoft.Resources/resourceGroups@2023-07-01"
   name      = "resourceGroupName"
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000"
 }
