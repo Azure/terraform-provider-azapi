@@ -1353,8 +1353,8 @@ resource "azapi_resource" "test" {
       deliveryInfo = {
         destination = {
           rootFolderPath = "test"
-          container  = azurerm_storage_container.test.name
-          resourceId = azurerm_storage_account.test.id
+          container      = azurerm_storage_container.test.name
+          resourceId     = azurerm_storage_account.test.id
         }
       }
     }
