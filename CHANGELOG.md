@@ -1,4 +1,4 @@
-## v1.9.0 (unreleased)
+## v1.9.0
 FEATURES:
 - **New Data Source**: azapi_resource_list
 - **New Data Source**: azapi_resource_id
