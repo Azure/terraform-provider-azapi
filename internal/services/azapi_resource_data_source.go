@@ -28,24 +28,25 @@ func AzApiDataSource() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ValidateFunc: validation.StringIsNotEmpty,
-				ExactlyOneOf: []string{"name", "resource_id"},
+				Type:          schema.TypeString,
+				Optional:      true,
+				ValidateFunc:  validation.StringIsNotEmpty,
+				ConflictsWith: []string{"resource_id"},
 			},
 
 			"parent_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
-				ValidateFunc: validate.ResourceID,
+				Type:          schema.TypeString,
+				Optional:      true,
+				Computed:      true,
+				ValidateFunc:  validate.ResourceID,
+				ConflictsWith: []string{"resource_id"},
 			},
 
 			"resource_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ValidateFunc: validate.ResourceID,
-				ExactlyOneOf: []string{"name", "resource_id"},
+				Type:          schema.TypeString,
+				Optional:      true,
+				ValidateFunc:  validate.ResourceID,
+				ConflictsWith: []string{"name", "parent_id"},
 			},
 
 			"type": {
@@ -83,9 +84,9 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 	defer cancel()
 
 	var id parse.ResourceId
+	resourceType := d.Get("type").(string)
 	if name := d.Get("name").(string); len(name) != 0 {
 		parentId := d.Get("parent_id").(string)
-		resourceType := d.Get("type").(string)
 		if parentId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.ResourceGroupResourceType.String())) {
 			parentId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
 		}
@@ -96,7 +97,11 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
+		resourceId := d.Get("resource_id").(string)
+		if resourceId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.SubscriptionResourceType.String())) {
+			resourceId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+		}
+		buildId, err := parse.ResourceIDWithResourceType(resourceId, resourceType)
 		if err != nil {
 			return err
 		}
