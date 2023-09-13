@@ -1,3 +1,7 @@
+## v1.10.0
+ENHANCEMENTS:
+- `azapi_resource` data source: When creating `Microsoft.Resources/subscriptions`, `resource_id` is optional and defaults to the ID of the default subscription.
+
 ## v1.9.0
 FEATURES:
 - **New Data Source**: azapi_resource_list
