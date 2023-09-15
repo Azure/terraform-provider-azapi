@@ -1,6 +1,7 @@
-## v1.10.0
+## v1.10.0 (unreleased)
 ENHANCEMENTS:
 - `azapi_resource` data source: When creating `Microsoft.Resources/subscriptions`, `resource_id` is optional and defaults to the ID of the default subscription.
+- Add a new logger to record the traffic in a structured way.
 
 ## v1.9.0
 FEATURES:
