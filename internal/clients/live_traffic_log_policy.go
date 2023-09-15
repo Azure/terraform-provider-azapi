@@ -44,30 +44,22 @@ func NewLiveTrafficLogPolicy() policy.Policy {
 }
 
 func (p *liveTrafficLogPolicy) Do(req *policy.Request) (*http.Response, error) {
-	bodyString, err := p.requestBodyString(req)
-	if err != nil {
-		return nil, err
-	}
 	rawRequest := req.Raw()
 	liveReq := liveRequest{
 		Headers: p.header(rawRequest.Header),
 		Method:  rawRequest.Method,
 		Url:     rawRequest.URL.String(),
-		Body:    bodyString,
+		Body:    p.requestBodyString(req),
 	}
 	if err := req.RewindBody(); err != nil {
 		return nil, err
 	}
 	response, err := req.Next() // Make the request
-	bodyString, err = p.responseBodyString(response)
-	if err != nil {
-		return response, err
-	}
 	liveResp := liveResponse{}
 	if err == nil {
 		liveResp.Headers = p.header(response.Header)
 		liveResp.StatusCode = response.StatusCode
-		liveResp.Body = bodyString
+		liveResp.Body = p.responseBodyString(response)
 	} else {
 		liveResp.Body = err.Error()
 	}
@@ -86,26 +78,29 @@ func (p *liveTrafficLogPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return response, err
 }
 
-func (p *liveTrafficLogPolicy) requestBodyString(req *policy.Request) (string, error) {
+func (p *liveTrafficLogPolicy) requestBodyString(req *policy.Request) string {
 	if req.Raw().Body == nil {
-		return "", nil
+		return ""
 	}
 	body, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
+		log.Printf("[ERROR] Failed to read request body: %v", err)
 		body = []byte(err.Error())
 	}
 	if err := req.RewindBody(); err != nil {
-		return "", err
+		log.Printf("[ERROR] Failed to rewind request body: %v", err)
+		return ""
 	}
-	return string(body), nil
+	return string(body)
 }
 
-func (p *liveTrafficLogPolicy) responseBodyString(resp *http.Response) (string, error) {
+func (p *liveTrafficLogPolicy) responseBodyString(resp *http.Response) string {
 	body, err := runtime.Payload(resp)
 	if err != nil {
-		return "", err
+		log.Printf("[ERROR] Failed to read response body: %v", err)
+		return ""
 	}
-	return string(body), nil
+	return string(body)
 }
 
 func (p *liveTrafficLogPolicy) header(input http.Header) map[string]string {
