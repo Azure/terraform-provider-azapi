@@ -55,6 +55,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		}
 		perCallPolicies = append(perCallPolicies, withCorrelationRequestID(id))
 	}
+	perRetryPolicies := make([]policy.Policy, 0)
+	perRetryPolicies = append(perRetryPolicies, NewLiveTrafficLogPolicy())
 
 	allowedHeaders := []string{
 		"Access-Control-Allow-Methods",
@@ -96,7 +98,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				AllowedHeaders:     allowedHeaders,
 				AllowedQueryParams: allowedQueryParams,
 			},
-			PerCallPolicies: perCallPolicies,
+			PerCallPolicies:  perCallPolicies,
+			PerRetryPolicies: perRetryPolicies,
 		},
 		DisableRPRegistration: o.SkipProviderRegistration,
 	})
@@ -117,7 +120,8 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 				AllowedHeaders:     allowedHeaders,
 				AllowedQueryParams: allowedQueryParams,
 			},
-			PerCallPolicies: perCallPolicies,
+			PerCallPolicies:  perCallPolicies,
+			PerRetryPolicies: perRetryPolicies,
 		},
 		DisableRPRegistration: o.SkipProviderRegistration,
 	})
