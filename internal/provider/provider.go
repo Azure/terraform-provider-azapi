@@ -81,24 +81,24 @@ func azureProvider() *schema.Provider {
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"resource_manager": {
+						"active_directory_authority_host": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_RESOURCE_MANAGER", ""),
-							Description: "The Resource Manager Endpoint which should be used.",
-						},
-
-						"active_directory": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_ACTIVE_DIRECTORY", ""),
+							DefaultFunc: schema.EnvDefaultFunc("ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST", ""),
 							Description: "The Active Directory login endpoint which should be used.",
 						},
 
-						"active_directory_resource_id": {
+						"resource_manager_endpoint": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_ACTIVE_DIRECTORY_RESOURCE_ID", ""),
+							DefaultFunc: schema.EnvDefaultFunc("ARM_RESOURCE_MANAGER_ENDPOINT", ""),
+							Description: "The Resource Manager Endpoint which should be used.",
+						},
+
+						"resource_manager_audience": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							DefaultFunc: schema.EnvDefaultFunc("ARM_RESOURCE_MANAGER_AUDIENCE", ""),
 							Description: "The resource ID to obtain AD tokens for.",
 						},
 					},
@@ -286,17 +286,17 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			endpoint := endpointRaw[0].(map[string]interface{})
 			resourceManagerEndpoint := cloudConfig.Services[cloud.ResourceManager].Endpoint
 			resourceManagerAudience := cloudConfig.Services[cloud.ResourceManager].Audience
-			if v, ok := endpoint["resource_manager"].(string); ok && len(v) > 0 {
+			if v, ok := endpoint["resource_manager_endpoint"].(string); ok && len(v) > 0 {
 				resourceManagerEndpoint = v
 			}
-			if v, ok := endpoint["active_directory_resource_id"].(string); ok && len(v) > 0 {
+			if v, ok := endpoint["resource_manager_audience"].(string); ok && len(v) > 0 {
 				resourceManagerAudience = v
 			}
 			cloudConfig.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
 				Endpoint: resourceManagerEndpoint,
 				Audience: resourceManagerAudience,
 			}
-			if v, ok := endpoint["active_directory"].(string); ok && len(v) > 0 {
+			if v, ok := endpoint["active_directory_authority_host"].(string); ok && len(v) > 0 {
 				cloudConfig.ActiveDirectoryAuthorityHost = v
 			}
 		}
