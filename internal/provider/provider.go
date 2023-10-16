@@ -75,6 +75,36 @@ func azureProvider() *schema.Provider {
 				},
 			},
 
+			"endpoint": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"resource_manager": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_RESOURCE_MANAGER", ""),
+							Description: "The Resource Manager Endpoint which should be used.",
+						},
+
+						"active_directory": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_ACTIVE_DIRECTORY", ""),
+							Description: "The Active Directory login endpoint which should be used.",
+						},
+
+						"active_directory_resource_id": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							DefaultFunc: schema.EnvDefaultFunc("ARM_ENDPOINT_ACTIVE_DIRECTORY_RESOURCE_ID", ""),
+							Description: "The resource ID to obtain AD tokens for.",
+						},
+					},
+				},
+			},
+
 			"environment": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -250,6 +280,25 @@ func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
 			cloudConfig = cloud.AzureChina
 		default:
 			return nil, diag.Errorf("unknown `environment` specified: %q", env)
+		}
+
+		if endpointRaw := d.Get("endpoint").([]interface{}); len(endpointRaw) > 0 {
+			endpoint := endpointRaw[0].(map[string]interface{})
+			resourceManagerEndpoint := cloudConfig.Services[cloud.ResourceManager].Endpoint
+			resourceManagerAudience := cloudConfig.Services[cloud.ResourceManager].Audience
+			if v, ok := endpoint["resource_manager"].(string); ok && len(v) > 0 {
+				resourceManagerEndpoint = v
+			}
+			if v, ok := endpoint["active_directory_resource_id"].(string); ok && len(v) > 0 {
+				resourceManagerAudience = v
+			}
+			cloudConfig.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
+				Endpoint: resourceManagerEndpoint,
+				Audience: resourceManagerAudience,
+			}
+			if v, ok := endpoint["active_directory"].(string); ok && len(v) > 0 {
+				cloudConfig.ActiveDirectoryAuthorityHost = v
+			}
 		}
 
 		// Maps the auth related environment variables used in the provider to what azidentity honors.
