@@ -376,8 +376,6 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		}
 	}
 
-	body["name"] = id.Name
-
 	ignoreChanges := d.Get("ignore_body_changes").([]interface{})
 	if !d.IsNewResource() && len(ignoreChanges) != 0 {
 		merged, err := overrideWithPaths(body, existing, ignoreChanges)
@@ -393,7 +391,12 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	if d.Get("schema_validation_enabled").(bool) {
-		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, body); err != nil {
+		bodyToValidate := make(map[string]interface{})
+		for k, v := range body {
+			bodyToValidate[k] = v
+		}
+		bodyToValidate["name"] = id.Name
+		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, bodyToValidate); err != nil {
 			return err
 		}
 	}
