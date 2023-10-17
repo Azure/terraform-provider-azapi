@@ -78,6 +78,18 @@ It's possible to configure the behaviour of certain resources using the followin
 
 * `default_naming_suffix` - (Optional) The default name suffix to create the azure resource. Used together with `name` in each resource block. Conflicts with `default_name`. Changing this forces new resources to be created.
 
+* `endpoint` - (Optional) A `endpoint` block as defined below.
+
+---
+
+A `endpoint` block supports the following:
+
+* `resource_manager_endpoint` - (Optional) The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.
+
+* `resource_manager_audience` - (Optional) The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.
+
+* `active_directory_authority_host` - (Optional) The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.
+
 ---
 
 When authenticating as a Service Principal using a Client Certificate, the following fields can be set:
