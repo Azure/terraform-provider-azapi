@@ -4,6 +4,9 @@ ENHANCEMENTS:
 - Add a new logger to record the traffic in a structured way.
 - `azapi`: Support `endpoint` block, which is used to configure the endpoints of the Azure Clouds.
 
+BUG FIXES:
+- Fix a bug that `body` is not set when import with an unrecognized `api-version`.
+
 ## v1.9.0
 FEATURES:
 - **New Data Source**: azapi_resource_list

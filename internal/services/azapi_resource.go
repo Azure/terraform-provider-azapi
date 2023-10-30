@@ -472,6 +472,13 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 			}
 			// #nosec G104
 			d.Set("body", string(data))
+		} else {
+			data, err := json.Marshal(responseBody)
+			if err != nil {
+				return err
+			}
+			// #nosec G104
+			d.Set("body", string(data))
 		}
 		// #nosec G104
 		d.Set("ignore_casing", false)
