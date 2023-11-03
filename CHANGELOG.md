@@ -1,9 +1,10 @@
-## v1.10.0 (unreleased)
+## v1.10.0
 ENHANCEMENTS:
 - `azapi_resource` data source: When creating `Microsoft.Resources/subscriptions`, `resource_id` is optional and defaults to the ID of the default subscription.
 - Add a new logger to record the traffic in a structured way.
 - `azapi`: Support `endpoint` block, which is used to configure the endpoints of the Azure Clouds.
 - `azapi_resource_action` resource: Support `GET` method.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/505b813ce50368156e3da1b86f07977b5a913be9
 
 BUG FIXES:
 - Fix a bug that `body` is not set when import with an unrecognized `api-version`.
