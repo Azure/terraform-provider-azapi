@@ -245,7 +245,6 @@ func Test_WriteOnly(t *testing.T) {
 `,
 			Output: `
 {
-    "name": "mylb",
     "location": "westus",
     "tags": {},
     "properties": {
@@ -349,7 +348,6 @@ func Test_WriteOnly(t *testing.T) {
 `,
 			Output: `
 {
-    "name": "acctest5076",
     "location": "westeurope",
     "tags": {},
     "properties": {
@@ -420,7 +418,6 @@ func Test_WriteOnly(t *testing.T) {
     }
   },
   "location": "West Europe",
-  "name": "henglu-sb-namespace",
   "properties": {
     "disableLocalAuth": false,
     "zoneRedundant": false
