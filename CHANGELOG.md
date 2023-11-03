@@ -7,6 +7,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix a bug that `body` is not set when import with an unrecognized `api-version`.
+- Fix a bug that deploy time constants are not removed from the request body when using `azapi_update_resource` resource.
 
 ## v1.9.0
 FEATURES:
