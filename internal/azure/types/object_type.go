@@ -28,7 +28,7 @@ func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 	res := make(map[string]interface{})
 	for key, def := range t.Properties {
 		if _, ok := bodyMap[key]; ok {
-			if !def.IsReadOnly() && def.Type != nil && def.Type.Type != nil {
+			if !def.IsReadOnly() && !def.IsDeployTimeConstant() && def.Type != nil && def.Type.Type != nil {
 				res[key] = (*def.Type.Type).GetWriteOnly(bodyMap[key])
 			}
 		}
@@ -160,6 +160,15 @@ func (o ObjectProperty) IsRequired() bool {
 func (o ObjectProperty) IsReadOnly() bool {
 	for _, value := range o.Flags {
 		if value == ReadOnly {
+			return true
+		}
+	}
+	return false
+}
+
+func (o ObjectProperty) IsDeployTimeConstant() bool {
+	for _, value := range o.Flags {
+		if value == DeployTimeConstant {
 			return true
 		}
 	}
