@@ -1,3 +1,8 @@
+## v1.11.0 (unreleased)
+ENHANCEMENTS:
+- `azapi_resource_action` resource: Support `HEAD` method.
+
+
 ## v1.10.0
 ENHANCEMENTS:
 - `azapi_resource` data source: When creating `Microsoft.Resources/subscriptions`, `resource_id` is optional and defaults to the ID of the default subscription.

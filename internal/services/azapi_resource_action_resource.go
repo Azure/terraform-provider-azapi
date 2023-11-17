@@ -66,6 +66,7 @@ func ResourceAction() *schema.Resource {
 					"PUT",
 					"DELETE",
 					"GET",
+					"HEAD",
 				}, false),
 			},
 
