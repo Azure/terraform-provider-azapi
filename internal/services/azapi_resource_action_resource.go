@@ -189,7 +189,10 @@ func resourceResourceActionDelete(d *schema.ResourceData, meta interface{}) erro
 	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
 	defer cancel()
 
-	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
+	resourceId, _ := d.GetChange("resource_id")
+	resourceType, _ := d.GetChange("type")
+
+	id, err := parse.ResourceIDWithResourceType(resourceId.(string), resourceType.(string))
 	if err != nil {
 		return err
 	}
