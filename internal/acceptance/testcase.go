@@ -123,13 +123,13 @@ func (td TestData) externalProviders() map[string]resource.ExternalProvider {
 
 func PreCheck(t *testing.T) {
 	variables := []string{
-		// "ARM_CLIENT_ID",
-		// "ARM_CLIENT_SECRET",
-		// "ARM_SUBSCRIPTION_ID",
-		// "ARM_TENANT_ID",
-		// "ARM_TEST_LOCATION",
-		// "ARM_TEST_LOCATION_ALT",
-		// "ARM_TEST_LOCATION_ALT2",
+		"ARM_CLIENT_ID",
+		"ARM_CLIENT_SECRET",
+		"ARM_SUBSCRIPTION_ID",
+		"ARM_TENANT_ID",
+		"ARM_TEST_LOCATION",
+		"ARM_TEST_LOCATION_ALT",
+		"ARM_TEST_LOCATION_ALT2",
 	}
 
 	for _, variable := range variables {
