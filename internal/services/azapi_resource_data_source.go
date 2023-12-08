@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -21,6 +22,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 type AzapiResourceDataSourceModel struct {
@@ -188,8 +191,13 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	bkof := backoff.WithContext(backoff.NewExponentialBackOff(), ctx)
+
+	operation := func() (interface{}, error) {
+		return client.Get(bkof.Context(), id.AzureResourceId, id.ApiVersion)
+	}
+	responseBody, err := backoff.RetryWithData(operation, bkof)
+
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
