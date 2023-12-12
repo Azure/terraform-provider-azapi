@@ -78,6 +78,14 @@ func ResourceAction() *schema.Resource {
 				StateFunc:        utils.NormalizeJson,
 			},
 
+			"when": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Default:      "apply",
+				Description:  "When to perform the action, value must be one of: 'apply', 'destroy'. Default is 'apply'.",
+				ValidateFunc: validation.StringInSlice([]string{"apply", "destroy"}, false),
+			},
+
 			"locks": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -144,9 +152,12 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 		defer locks.UnlockByID(id.(string))
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
-	if err != nil {
-		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
+	var responseBody interface{} = "{}"
+	if d.Get("when").(string) == "apply" {
+		responseBody, err = client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
+		if err != nil {
+			return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
+		}
 	}
 
 	resourceId := id.ID()
@@ -154,6 +165,7 @@ func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	d.SetId(resourceId)
+
 	// #nosec G104
 	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
 
@@ -169,5 +181,35 @@ func resourceResourceActionRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceResourceActionDelete(d *schema.ResourceData, meta interface{}) error {
+	if when, _ := d.GetChange("when"); when.(string) != "destroy" {
+		return nil
+	}
+
+	client := meta.(*clients.Client).ResourceClient
+	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
+	defer cancel()
+
+	resourceId, _ := d.GetChange("resource_id")
+	resourceType, _ := d.GetChange("type")
+
+	id, err := parse.ResourceIDWithResourceType(resourceId.(string), resourceType.(string))
+	if err != nil {
+		return err
+	}
+
+	actionName, _ := d.GetChange("action")
+	method, _ := d.GetChange("method")
+	body, _ := d.GetChange("body")
+	var requestBody interface{}
+	if len(body.(string)) != 0 {
+		err := json.Unmarshal([]byte(body.(string)), &requestBody)
+		if err != nil {
+			return fmt.Errorf("unmarshalling `body`: %+v", err)
+		}
+	}
+
+	if _, err := client.Action(ctx, id.AzureResourceId, actionName.(string), id.ApiVersion, method.(string), requestBody); err != nil {
+		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
+	}
 	return nil
 }

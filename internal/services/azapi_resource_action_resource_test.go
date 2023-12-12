@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -18,6 +19,25 @@ func TestAccActionResource_basic(t *testing.T) {
 		{
 			Config: r.basic(data),
 			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_basicWhenDestroy(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.basicWhenDestroy(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That("azapi_resource_action.test").Key("output").HasValue("{}"),
+			),
+		},
+		{
+			Destroy: true,
+			Config:  r.basicWhenDestroy(data),
+			Check:   resource.ComposeTestCheckFunc(),
 		},
 	})
 }
@@ -79,6 +99,33 @@ resource "azapi_resource_action" "test" {
   depends_on = [
     data.azapi_resource_action.list
   ]
+}
+`, GenericResource{}.defaultTag(data))
+}
+
+func (r ActionResource) basicWhenDestroy(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_resource_action" "list" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = azapi_resource.test.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  when        = "destroy"
+  action      = "agentRegistrationInformation/regenerateKey"
+  body = jsonencode({
+    keyName = "primary"
+  })
+  depends_on = [
+    data.azapi_resource_action.list
+  ]
+  response_export_values = ["*"]
 }
 `, GenericResource{}.defaultTag(data))
 }
