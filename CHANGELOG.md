@@ -1,6 +1,8 @@
-## v1.11.0 (unreleased)
+## v1.11.0
 ENHANCEMENTS:
 - `azapi_resource_action` resource: Support `HEAD` method.
+- `azapi_resource_action` resource: Support `when` field, which is used to control when to execute the action.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/fcfe2a66a04575f204767182fc575612c82eebc1
 
 
 ## v1.10.0
