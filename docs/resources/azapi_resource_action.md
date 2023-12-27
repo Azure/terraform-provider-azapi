@@ -8,11 +8,11 @@ description: |-
 
 # azapi_resource_action
 
-This resource can perform any Azure resource manager resource action. 
+This resource can perform any Azure resource manager resource action.
 It's recommended to use `azapi_resource_action` resource to perform actions which change a resource's state, please use `azapi_resource_action` data source,
 if user wants to perform readonly action.
 
--> **Note** When delete `azapi_resource_action`, no operation will be performed.
+-> **Note** The action can be performed on either apply or destroy. The default is apply, see `when` argument for more details.
 
 ## Example Usage
 
@@ -115,7 +115,7 @@ The following arguments are supported:
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `resource_id` - (Required) The ID of an existing azure source. 
+* `resource_id` - (Required) The ID of an existing azure source.
 
 * `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
@@ -130,6 +130,7 @@ The following arguments are supported:
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
   Here's an example. If it sets to `["keys"]`, it will set the following json to computed property `output`.
+
 ```
 {
   "keys": [
@@ -146,6 +147,8 @@ The following arguments are supported:
   ]
 }
 ```
+
+* `when` - (Optional) When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.
 
 ## Attributes Reference
 
