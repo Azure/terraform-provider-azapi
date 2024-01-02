@@ -1,3 +1,7 @@
+## v1.12.0 (Unreleased)
+BUG FIXES:
+- Fix a bug that `ignore_body_changes` incorrectly removes tags. 
+
 ## v1.11.0
 ENHANCEMENTS:
 - `azapi_resource_action` resource: Support `HEAD` method.

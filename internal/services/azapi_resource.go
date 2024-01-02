@@ -384,7 +384,7 @@ func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{})
 		}
 
 		if id.ResourceDef != nil {
-			merged = (*id.ResourceDef).GetWriteOnly(merged.(map[string]interface{}))
+			merged = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(merged))
 		}
 
 		body = merged.(map[string]interface{})
@@ -458,7 +458,7 @@ func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
 	// if it's imported
 	if len(d.Get("name").(string)) == 0 {
 		if id.ResourceDef != nil {
-			writeOnlyBody := (*id.ResourceDef).GetWriteOnly(responseBody)
+			writeOnlyBody := (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(responseBody))
 			if bodyMap, ok := writeOnlyBody.(map[string]interface{}); ok {
 				delete(bodyMap, "location")
 				delete(bodyMap, "tags")

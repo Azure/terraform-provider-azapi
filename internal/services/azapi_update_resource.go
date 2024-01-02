@@ -200,7 +200,7 @@ func resourceAzApiUpdateResourceCreateUpdate(d *schema.ResourceData, meta interf
 	}
 
 	if id.ResourceDef != nil {
-		requestBody = (*id.ResourceDef).GetWriteOnly(requestBody)
+		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
 	}
 	j, _ := json.Marshal(requestBody)
 	log.Printf("[INFO] request body: %v\n", string(j))
