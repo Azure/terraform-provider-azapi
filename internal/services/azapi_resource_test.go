@@ -514,7 +514,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 

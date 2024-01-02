@@ -21,8 +21,9 @@ const (
 )
 
 type ResourceClient struct {
-	host string
-	pl   runtime.Pipeline
+	host  string
+	pl    runtime.Pipeline
+	retry *any
 }
 
 func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
@@ -38,9 +39,15 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 		return nil, err
 	}
 	return &ResourceClient{
-		host: ep,
-		pl:   pl,
+		host:  ep,
+		pl:    pl,
+		retry: nil,
 	}, nil
+}
+
+func (client *ResourceClient) WithRetry(retry *any) (*ResourceClient, error) {
+	client.retry = retry
+	return client, nil
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
@@ -50,17 +57,19 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	}
 	var responseBody interface{}
 	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
-	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
-			Frequency: 10 * time.Second,
-		})
-		if err == nil {
-			return resp, nil
-		}
-		if !client.shouldIgnorePollingError(err) {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
 	}
+	ptresp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+		Frequency: 10 * time.Second,
+	})
+	if err == nil {
+		return ptresp, nil
+	}
+	if !client.shouldIgnorePollingError(err) {
+		return nil, err
+	}
+
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
 	}
