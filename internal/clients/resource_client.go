@@ -64,7 +64,7 @@ func (client *ResourceClient) WithRetry(retry *ResourceClientRetryableErrors) *R
 }
 
 // CreateOrUpdateWithRetry configures the retryable errors for the client.
-// It calls CreateOrUpdate, the checks if the error is contained in the retryable errors list.
+// It calls CreateOrUpdate, then checks if the error is contained in the retryable errors list.
 // If it is, it will retry the operation with the configured backoff.
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (client *ResourceClient) CreateOrUpdateWithRetry(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
