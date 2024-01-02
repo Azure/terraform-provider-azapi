@@ -51,12 +51,19 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 	}, nil
 }
 
+// NewResourceClientRertryableErrors creates a ResourceClientRetryableErrors object.
+// TODO: add inputs with resource schema to generate the retryable errors object.
+func NewResourceClientRetryableErrors() *ResourceClientRetryableErrors {
+	return &ResourceClientRetryableErrors{}
+}
+
+// WithRetry configures the retryable errors for the client.
 func (client *ResourceClient) WithRetry(retry *ResourceClientRetryableErrors) *ResourceClient {
 	client.retry = retry
 	return client
 }
 
-// WithRetryableErrors configures the retryable errors for the client.
+// CreateOrUpdateWithRetry configures the retryable errors for the client.
 // It calls CreateOrUpdate, the checks if the error is contained in the retryable errors list.
 // If it is, it will retry the operation with the configured backoff.
 // If it is not, it will return the error as a backoff.PermanentError{}.
