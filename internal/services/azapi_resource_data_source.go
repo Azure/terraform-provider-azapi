@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
@@ -109,20 +108,13 @@ func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error
 		id = buildId
 	}
 
-	bkof := backoff.WithContext(backoff.NewExponentialBackOff(), ctx)
-
-	operation := func() (interface{}, error) {
-		return client.Get(bkof.Context(), id.AzureResourceId, id.ApiVersion)
-	}
-	responseBody, err := backoff.RetryWithData(operation, bkof)
-
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			return fmt.Errorf("not found %q: %+v", id, err)
 		}
 		return fmt.Errorf("reading %q: %+v", id, err)
 	}
-
 	d.SetId(id.ID())
 	// #nosec G104
 	d.Set("name", id.Name)
