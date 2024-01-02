@@ -191,13 +191,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
-	bkof := backoff.WithContext(backoff.NewExponentialBackOff(), ctx)
-
-	operation := func() (interface{}, error) {
-		return client.Get(bkof.Context(), id.AzureResourceId, id.ApiVersion)
-	}
-	responseBody, err := backoff.RetryWithData(operation, bkof)
-
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
