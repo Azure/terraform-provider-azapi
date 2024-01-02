@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/cenkalti/backoff/v4"
 )
 
 const (
@@ -23,7 +24,12 @@ const (
 type ResourceClient struct {
 	host  string
 	pl    runtime.Pipeline
-	retry *any
+	retry *ResourceClientRetryableErrors
+}
+
+type ResourceClientRetryableErrors struct {
+	backoff *backoff.ExponentialBackOff
+	errors  []string
 }
 
 func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
@@ -45,9 +51,33 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 	}, nil
 }
 
-func (client *ResourceClient) WithRetry(retry *any) (*ResourceClient, error) {
+func (client *ResourceClient) WithRetry(retry *ResourceClientRetryableErrors) *ResourceClient {
 	client.retry = retry
-	return client, nil
+	return client
+}
+
+// WithRetryableErrors configures the retryable errors for the client.
+// It calls CreateOrUpdate, the checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (client *ResourceClient) CreateOrUpdateWithRetry(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
+	if client.retry == nil {
+		return nil, fmt.Errorf("Retry is not configured. Please call WithRetry() first.")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := client.CreateOrUpdate(ctx, resourceID, apiVersion, body)
+			if err != nil {
+				for _, e := range client.retry.errors {
+					if !strings.Contains(err.Error(), e) {
+						return nil, &backoff.PermanentError{Err: err}
+					}
+				}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(client.retry.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
