@@ -2,6 +2,14 @@
 BUG FIXES:
 - Fix a bug that `ignore_body_changes` incorrectly removes tags. 
 
+NOTICE:
+- Provider field `default_naming_prefix` and `default_naming_suffix` are deprecated. It will not work in the next minor release and will be removed in the next major release.
+  Please specify the naming prefix and suffix in the resource's `name` field instead.
+- The `azapi_resource`'s `removing_special_chars` field is deprecated. It will not work in the next minor release and will be removed in the next major release.
+  Please specify the `name` field and remove the special characters in the `name` field instead.
+- Defining the `identity` inside the `body` field is not recommended. In the next minor release, it will not sync the `identity` inside the `body` field to `identity` block.
+  Please define the `identity` block instead.
+
 ## v1.11.0
 ENHANCEMENTS:
 - `azapi_resource_action` resource: Support `HEAD` method.
