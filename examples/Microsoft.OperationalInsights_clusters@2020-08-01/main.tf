@@ -35,7 +35,7 @@ resource "azapi_resource" "cluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     sku = {
       capacity = 1000
       name     = "CapacityReservation"

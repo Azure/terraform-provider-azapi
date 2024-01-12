@@ -101,7 +101,7 @@ resource "azapi_resource" "fhirService" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     kind = "fhir-R4"
     properties = {
       acrConfiguration = {

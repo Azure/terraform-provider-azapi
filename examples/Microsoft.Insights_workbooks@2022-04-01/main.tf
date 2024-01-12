@@ -31,7 +31,7 @@ resource "azapi_resource" "workbook" {
   parent_id = azapi_resource.resourceGroup.id
   name      = "be1ad266-d329-4454-b693-8287e4d3b35d"
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     kind = "shared"
     properties = {
       category       = "workbook"
