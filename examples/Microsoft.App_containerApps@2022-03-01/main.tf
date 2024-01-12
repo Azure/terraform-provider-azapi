@@ -86,7 +86,7 @@ resource "azapi_resource" "containerApp" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       configuration = {
         activeRevisionsMode = "Single"

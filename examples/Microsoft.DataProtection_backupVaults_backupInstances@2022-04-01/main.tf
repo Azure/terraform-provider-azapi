@@ -67,7 +67,7 @@ resource "azapi_resource" "backupVault" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       storageSettings = [
         {

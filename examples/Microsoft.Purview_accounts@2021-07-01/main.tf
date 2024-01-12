@@ -35,7 +35,7 @@ resource "azapi_resource" "account" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       publicNetworkAccess = "Enabled"
     }

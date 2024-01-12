@@ -79,7 +79,7 @@ resource "azapi_resource" "workspace" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       defaultDataLakeStorage = {
         accountUrl = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.dfs

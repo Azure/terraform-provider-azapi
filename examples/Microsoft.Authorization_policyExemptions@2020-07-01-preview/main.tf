@@ -83,7 +83,7 @@ resource "azapi_resource" "policyAssignment" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       displayName        = ""
       enforcementMode    = "Default"

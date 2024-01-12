@@ -115,7 +115,7 @@ resource "azapi_resource" "app" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       customPersistentDisks = [
       ]

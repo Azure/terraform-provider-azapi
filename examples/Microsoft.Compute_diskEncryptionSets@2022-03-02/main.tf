@@ -87,7 +87,7 @@ resource "azapi_resource" "diskEncryptionSet" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       activeKey = {
         keyUrl = jsondecode(azapi_resource_action.key.output).properties.keyUriWithVersion

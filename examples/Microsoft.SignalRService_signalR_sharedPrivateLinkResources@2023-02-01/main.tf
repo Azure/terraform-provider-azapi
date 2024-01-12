@@ -42,7 +42,7 @@ resource "azapi_resource" "signalR" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       cors = {
       }

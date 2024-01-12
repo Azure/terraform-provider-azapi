@@ -161,7 +161,7 @@ resource "azapi_resource" "workspace" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       applicationInsights = azapi_resource.component.id
       keyVault            = azapi_resource.vault.id

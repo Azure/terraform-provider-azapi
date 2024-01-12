@@ -31,7 +31,7 @@ resource "azapi_resource" "cluster" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       enableAutoStop                = true
       enableDiskEncryption          = false

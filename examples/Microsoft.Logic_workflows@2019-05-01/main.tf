@@ -31,7 +31,7 @@ resource "azapi_resource" "workflow" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       definition = {
         "$schema" = "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#"

@@ -35,7 +35,7 @@ resource "azapi_resource" "webPubSub" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       disableAadAuth      = false
       disableLocalAuth    = false

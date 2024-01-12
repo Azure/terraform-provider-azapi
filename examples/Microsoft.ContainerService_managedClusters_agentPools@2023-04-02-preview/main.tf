@@ -35,7 +35,7 @@ resource "azapi_resource" "managedCluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       agentPoolProfiles = [
         {

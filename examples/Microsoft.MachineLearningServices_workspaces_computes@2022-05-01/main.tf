@@ -118,7 +118,7 @@ resource "azapi_resource" "workspace" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       applicationInsights = azapi_resource.component.id
       keyVault            = azapi_resource.vault.id
@@ -141,7 +141,7 @@ resource "azapi_resource" "compute" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       computeLocation  = "westeurope"
       computeType      = "ComputeInstance"

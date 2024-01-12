@@ -77,7 +77,7 @@ resource "azapi_resource" "cach" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       cacheSizeGB = 3072
       networkSettings = {

@@ -42,7 +42,7 @@ resource "azapi_resource" "namespace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -131,7 +131,7 @@ resource "azapi_resource" "iotConnector" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       deviceMapping = {
         content = {

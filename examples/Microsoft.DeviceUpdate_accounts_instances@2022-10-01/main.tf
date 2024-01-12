@@ -31,7 +31,7 @@ resource "azapi_resource" "account" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode(
+  body = jsonencode({
     properties = {
       publicNetworkAccess = "Enabled"
       sku                 = "Standard"
