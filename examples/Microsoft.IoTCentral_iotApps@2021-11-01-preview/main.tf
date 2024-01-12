@@ -32,9 +32,6 @@ resource "azapi_resource" "iotApp" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       displayName         = var.resource_name
       publicNetworkAccess = "Enabled"

@@ -43,9 +43,6 @@ resource "azapi_resource" "server" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       administratorLogin         = "acctestun"
       administratorLoginPassword = "H@Sh1CoR3!"

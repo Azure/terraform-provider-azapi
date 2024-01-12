@@ -31,11 +31,7 @@ resource "azapi_resource" "namespace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
+  body = jsonencode(
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -57,11 +53,7 @@ resource "azapi_resource" "namespace2" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "westus2"
-  body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
+  body = jsonencode(
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false

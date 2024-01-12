@@ -32,9 +32,6 @@ resource "azapi_resource" "databaseAccount" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     kind = "GlobalDocumentDB"
     properties = {
       capabilities = [

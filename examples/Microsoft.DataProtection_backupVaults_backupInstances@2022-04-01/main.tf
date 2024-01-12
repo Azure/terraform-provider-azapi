@@ -32,9 +32,6 @@ resource "azapi_resource" "server" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       administratorLogin         = "psqladmin"
       administratorLoginPassword = "H@Sh1CoR3!"
@@ -66,10 +63,11 @@ resource "azapi_resource" "backupVault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
-    identity = {
-      type = "SystemAssigned"
-    }
+  identity {
+    type = "SystemAssigned"
+    identity_ids = []
+  }
+  body = jsonencode(
     properties = {
       storageSettings = [
         {

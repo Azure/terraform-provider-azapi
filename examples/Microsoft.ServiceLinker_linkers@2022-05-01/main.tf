@@ -49,9 +49,6 @@ resource "azapi_resource" "databaseAccount" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     kind = "GlobalDocumentDB"
     properties = {
       capabilities = [
@@ -114,10 +111,11 @@ resource "azapi_resource" "app" {
   parent_id = azapi_resource.Spring.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
-    identity = {
-      type = "SystemAssigned"
-    }
+  identity {
+    type = "SystemAssigned"
+    identity_ids = []
+  }
+  body = jsonencode(
     properties = {
       customPersistentDisks = [
       ]

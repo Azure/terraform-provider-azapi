@@ -32,9 +32,6 @@ resource "azapi_resource" "storageAccount" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -77,9 +74,6 @@ resource "azapi_resource" "mediaService" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       publicNetworkAccess = "Enabled"
       storageAccounts = [

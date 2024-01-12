@@ -52,9 +52,6 @@ resource "azapi_resource" "site" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       clientAffinityEnabled = false
       clientCertEnabled     = false

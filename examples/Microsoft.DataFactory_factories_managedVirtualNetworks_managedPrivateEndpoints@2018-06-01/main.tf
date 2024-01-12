@@ -31,11 +31,7 @@ resource "azapi_resource" "factory" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
+  body = jsonencode(
     properties = {
       globalParameters = {
       }
@@ -53,9 +49,6 @@ resource "azapi_resource" "storageAccount" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     kind = "BlobStorage"
     properties = {
       accessTier                   = "Hot"

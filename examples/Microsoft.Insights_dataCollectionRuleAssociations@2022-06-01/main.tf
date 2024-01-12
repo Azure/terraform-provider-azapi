@@ -56,11 +56,7 @@ resource "azapi_resource" "dataCollectionRule" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
+  body = jsonencode(
     properties = {
       dataFlows = [
         {

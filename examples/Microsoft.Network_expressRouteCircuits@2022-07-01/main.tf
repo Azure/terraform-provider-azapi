@@ -32,9 +32,6 @@ resource "azapi_resource" "ExpressRoutePort" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       bandwidthInGbps = 10
       encapsulation   = "Dot1Q"
