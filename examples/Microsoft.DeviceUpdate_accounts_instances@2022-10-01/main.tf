@@ -32,10 +32,6 @@ resource "azapi_resource" "account" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       publicNetworkAccess = "Enabled"
       sku                 = "Standard"
@@ -52,9 +48,6 @@ resource "azapi_resource" "IotHub" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       cloudToDevice = {
       }

@@ -32,10 +32,6 @@ resource "azapi_resource" "registry" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       adminUserEnabled     = false
       anonymousPullEnabled = false
@@ -76,10 +72,6 @@ resource "azapi_resource" "task" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       isSystemTask = true
       status       = "Enabled"

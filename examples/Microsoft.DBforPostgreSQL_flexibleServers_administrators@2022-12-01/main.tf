@@ -43,10 +43,6 @@ resource "azapi_resource" "flexibleServer" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       administratorLogin         = "adminTerraform"
       administratorLoginPassword = "QAZwsx123"

@@ -32,10 +32,6 @@ resource "azapi_resource" "workbook" {
   name      = "be1ad266-d329-4454-b693-8287e4d3b35d"
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     kind = "shared"
     properties = {
       category       = "workbook"

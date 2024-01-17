@@ -32,10 +32,6 @@ resource "azapi_resource" "accessConnector" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
 
   })
   schema_validation_enabled = false

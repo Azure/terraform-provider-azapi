@@ -32,10 +32,6 @@ resource "azapi_resource" "vault" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       publicNetworkAccess = "Enabled"
     }

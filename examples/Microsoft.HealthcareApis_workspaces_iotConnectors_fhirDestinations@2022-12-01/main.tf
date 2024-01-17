@@ -43,10 +43,6 @@ resource "azapi_resource" "namespace" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -106,10 +102,6 @@ resource "azapi_resource" "fhirService" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     kind = "fhir-R4"
     properties = {
       acrConfiguration = {
@@ -140,10 +132,6 @@ resource "azapi_resource" "iotConnector" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       deviceMapping = {
         content = {

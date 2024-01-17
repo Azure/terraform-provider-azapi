@@ -43,10 +43,6 @@ resource "azapi_resource" "webPubSub" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       disableAadAuth      = false
       disableLocalAuth    = false

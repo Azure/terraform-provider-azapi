@@ -79,11 +79,11 @@ resource "azapi_resource" "policyAssignment" {
   parent_id = data.azapi_resource.subscription.id
   name      = var.resource_name
   location  = "westeurope"
+  identity {
+    type = "SystemAssigned"
+    identity_ids = []
+  }
   body = jsonencode({
-    identity = {
-      type                   = "SystemAssigned"
-      userAssignedIdentities = null
-    }
     properties = {
       displayName        = ""
       enforcementMode    = "Default"

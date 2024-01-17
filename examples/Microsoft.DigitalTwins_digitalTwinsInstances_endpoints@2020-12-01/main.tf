@@ -32,10 +32,6 @@ resource "azapi_resource" "namespace" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       disableLocalAuth    = false
       publicNetworkAccess = "Enabled"
@@ -57,9 +53,6 @@ resource "azapi_resource" "digitalTwinsInstance" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]

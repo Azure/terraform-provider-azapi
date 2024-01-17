@@ -32,10 +32,6 @@ resource "azapi_resource" "signalR" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       cors = {
       }

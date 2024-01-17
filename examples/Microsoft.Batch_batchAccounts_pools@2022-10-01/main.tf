@@ -32,10 +32,6 @@ resource "azapi_resource" "batchAccount" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       encryption = {
         keySource = "Microsoft.Batch"
@@ -53,10 +49,6 @@ resource "azapi_resource" "pool" {
   parent_id = azapi_resource.batchAccount.id
   name      = var.resource_name
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       certificates = null
       deploymentConfiguration = {

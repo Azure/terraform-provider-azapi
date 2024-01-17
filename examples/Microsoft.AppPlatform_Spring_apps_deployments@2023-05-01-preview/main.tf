@@ -49,9 +49,6 @@ resource "azapi_resource" "app" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type = "None"
-    }
     properties = {
       customPersistentDisks = [
       ]

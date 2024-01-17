@@ -32,10 +32,6 @@ resource "azapi_resource" "configurationStore" {
   name      = var.resource_name
   location  = var.location
   body = jsonencode({
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     properties = {
       disableLocalAuth      = false
       enablePurgeProtection = false
