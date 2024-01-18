@@ -514,7 +514,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
@@ -605,7 +605,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -646,7 +646,7 @@ resource "azurerm_user_assigned_identity" "test" {
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_resource_group.test.id
-  type                      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
   schema_validation_enabled = false
   body                      = <<BODY
     {
@@ -676,7 +676,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -698,7 +698,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 %s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -728,7 +728,7 @@ resource "azurerm_user_assigned_identity" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -763,7 +763,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -794,7 +794,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -828,7 +828,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -860,7 +860,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -887,7 +887,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
 
@@ -1021,7 +1021,7 @@ resource "azurerm_automation_account" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
@@ -1088,7 +1088,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2023-11-01-preview"
+  type      = "Microsoft.AppPlatform/spring/storages@2023-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -1124,7 +1124,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2023-11-01-preview"
+  type      = "Microsoft.AppPlatform/spring/storages@2023-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -1174,7 +1174,7 @@ resource "azurerm_route_table" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/routeTables/routes@2023-05-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1188,7 +1188,7 @@ resource "azapi_resource" "test" {
 }
 
 resource "azapi_resource" "test2" {
-  type      = "Microsoft.Network/routeTables/routes@2023-05-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1249,7 +1249,7 @@ func (r GenericResource) ignoreChanges(data acceptance.TestData) string {
 %[1]s
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
