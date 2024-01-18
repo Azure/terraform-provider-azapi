@@ -51,7 +51,7 @@ func (r ActionDataSource) basic(data acceptance.TestData) string {
 %s
 
 data "azapi_resource_action" "test" {
-  type                   = "Microsoft.Automation/automationAccounts@2022-08-08"
+  type                   = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id            = azapi_resource.test.id
   action                 = "listKeys"
   response_export_values = ["*"]

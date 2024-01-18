@@ -1,4 +1,7 @@
-## v1.12.0 (Unreleased)
+## v1.12.0
+ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/4abd79ba2baa05ba3c8364919b670ab43a9bf69c
+
 BUG FIXES:
 - Fix a bug that `ignore_body_changes` incorrectly removes tags. 
 
