@@ -20,10 +20,18 @@ variable "location" {
   default = "westeurope"
 }
 
+locals {
+  os_disk_name = "myosdisk1"
+
+  tags = {
+    environment = "accTest0001"
+  }
+}
+
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "virtualNetwork" {
@@ -48,7 +56,7 @@ resource "azapi_resource" "virtualNetwork" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  ignore_body_changes       = ["properties.subnets"]
 }
 
 resource "azapi_resource" "subnet" {
@@ -100,6 +108,7 @@ resource "azapi_resource" "networkInterface" {
   response_export_values    = ["*"]
 }
 
+
 resource "azapi_resource" "virtualMachine" {
   type      = "Microsoft.Compute/virtualMachines@2023-03-01"
   parent_id = azapi_resource.resourceGroup.id
@@ -138,13 +147,33 @@ resource "azapi_resource" "virtualMachine" {
         osDisk = {
           caching                 = "ReadWrite"
           createOption            = "FromImage"
-          name                    = "myosdisk1"
+          name                    = local.os_disk_name
           writeAcceleratorEnabled = false
         }
       }
     }
+    tags = local.tags
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
 
+data "azapi_resource" "managedDisk" {
+  type      = "Microsoft.Compute/disks@2022-03-02"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = local.os_disk_name
+
+  depends_on = [azapi_resource.virtualMachine]
+}
+
+resource "azapi_resource_action" "updateTags" {
+  type        = "Microsoft.Compute/disks@2022-03-02"
+  resource_id = data.azapi_resource.managedDisk.id
+  method      = "PATCH"
+
+  body = jsonencode({
+    tags = local.tags
+  })
+
+  depends_on = [azapi_resource.virtualMachine]
+}
