@@ -29,9 +29,9 @@ locals {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "virtualNetwork" {
@@ -56,7 +56,7 @@ resource "azapi_resource" "virtualNetwork" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  ignore_body_changes       = ["properties.subnets"]
 }
 
 resource "azapi_resource" "subnet" {
@@ -163,7 +163,7 @@ data "azapi_resource" "managedDisk" {
   parent_id = azapi_resource.resourceGroup.id
   name      = local.os_disk_name
 
-  depends_on = [ azapi_resource.virtualMachine]
+  depends_on = [azapi_resource.virtualMachine]
 }
 
 resource "azapi_resource_action" "updateTags" {
@@ -175,5 +175,5 @@ resource "azapi_resource_action" "updateTags" {
     tags = local.tags
   })
 
-  depends_on = [ azapi_resource.virtualMachine]
+  depends_on = [azapi_resource.virtualMachine]
 }

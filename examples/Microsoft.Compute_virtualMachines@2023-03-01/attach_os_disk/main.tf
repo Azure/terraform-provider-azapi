@@ -217,7 +217,7 @@ resource "azapi_resource" "attachedManagedDisk" {
       }
       networkAccessPolicy = "AllowAll"
       osType              = "Linux"
-      hyperVGeneration = "V1"
+      hyperVGeneration    = "V1"
       publicNetworkAccess = "Enabled"
       supportedCapabilities = {
         architecture = "x64"

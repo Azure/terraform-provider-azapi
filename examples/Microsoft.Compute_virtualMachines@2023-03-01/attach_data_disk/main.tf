@@ -21,15 +21,15 @@ variable "location" {
 }
 
 locals {
-  os_disk_name = "myosdisk1"
-  data_disk_name = "mydatadisk1"
+  os_disk_name            = "myosdisk1"
+  data_disk_name          = "mydatadisk1"
   attached_data_disk_name = "myattacheddatadisk1"
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "virtualNetwork" {
@@ -54,7 +54,7 @@ resource "azapi_resource" "virtualNetwork" {
   })
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  ignore_body_changes       = ["properties.subnets"]
 }
 
 resource "azapi_resource" "subnet" {
@@ -174,26 +174,26 @@ resource "azapi_resource" "virtualMachine" {
           writeAcceleratorEnabled = false
         }
         dataDisks = [
-        {
-          caching = "ReadWrite"
-          createOption = "Empty"
-          name = local.data_disk_name
-          diskSizeGB = 1
-          lun = 1
-          managedDisk = {
-            storageAccountType = "Standard_LRS"
+          {
+            caching      = "ReadWrite"
+            createOption = "Empty"
+            name         = local.data_disk_name
+            diskSizeGB   = 1
+            lun          = 1
+            managedDisk = {
+              storageAccountType = "Standard_LRS"
+            }
+          },
+          {
+            caching      = "ReadWrite"
+            createOption = "Attach"
+            name         = azapi_resource.attachedDisk.name
+            lun          = 2
+            managedDisk = {
+              id = azapi_resource.attachedDisk.id
+            }
           }
-        },
-        {
-          caching = "ReadWrite"
-          createOption = "Attach"
-          name = azapi_resource.attachedDisk.name
-          lun = 2
-          managedDisk = {
-            id = azapi_resource.attachedDisk.id
-          }
-        }
-      ]
+        ]
       }
     }
   })
