@@ -28,7 +28,7 @@ func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 	res := make(map[string]interface{})
 	for key, def := range t.Properties {
 		if _, ok := bodyMap[key]; ok {
-			if !def.IsReadOnly() && !def.IsDeployTimeConstant() && def.Type != nil && def.Type.Type != nil {
+			if (def.IsRequired() || (!def.IsReadOnly() && !def.IsDeployTimeConstant())) && def.Type != nil && def.Type.Type != nil {
 				res[key] = (*def.Type.Type).GetWriteOnly(bodyMap[key])
 			}
 		}
