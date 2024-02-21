@@ -245,6 +245,7 @@ func Test_WriteOnly(t *testing.T) {
 `,
 			Output: `
 {
+    "name": "mylb",
     "location": "westus",
     "tags": {},
     "properties": {
@@ -348,6 +349,7 @@ func Test_WriteOnly(t *testing.T) {
 `,
 			Output: `
 {
+    "name": "acctest5076",
     "location": "westeurope",
     "tags": {},
     "properties": {
@@ -417,6 +419,7 @@ func Test_WriteOnly(t *testing.T) {
       "/subscriptions/85b3dbca-5974-4067-9669-67a141095a76/resourceGroups/hengluservicebus-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/henglu-identity": {}
     }
   },
+  "name": "henglu-sb-namespace",
   "location": "West Europe",
   "properties": {
     "disableLocalAuth": false,
