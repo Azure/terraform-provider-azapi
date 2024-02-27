@@ -932,17 +932,15 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
   body = jsonencode({
-    sku = {
-      name = "Standard"
-      tier = "Standard"
-    }
     properties = {
-      disableLocalAuth = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
 }
@@ -957,18 +955,16 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "hclNaming"
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
   body = jsonencode({
-    sku = {
-      name = "Standard"
-      tier = "Standard"
-    }
     properties = {
-      disableLocalAuth = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
 }
@@ -984,18 +980,16 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.EventHub/namespaces@2023-01-01-preview"
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acc"
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
   body = jsonencode({
-    sku = {
-      name = "Standard"
-      tier = "Standard"
-    }
     properties = {
-      disableLocalAuth = true
+      sku = {
+        name = "Basic"
+      }
     }
   })
 }
