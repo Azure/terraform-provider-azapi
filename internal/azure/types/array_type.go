@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -11,7 +10,10 @@ import (
 var _ TypeBase = &ArrayType{}
 
 type ArrayType struct {
-	ItemType *TypeReference
+	Type      string         `json:"$type"`
+	ItemType  *TypeReference `json:"itemType"`
+	MinLength int            `json:"minLength"`
+	MaxLength int            `json:"maxLength"`
 }
 
 func (t *ArrayType) GetWriteOnly(body interface{}) interface{} {
@@ -52,6 +54,15 @@ func (t *ArrayType) Validate(body interface{}, path string) []error {
 		return errors
 	}
 
+	// check the length
+	if len(bodyArray) < t.MinLength {
+		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is less than %d", t.MinLength)))
+	}
+
+	if len(bodyArray) > t.MaxLength {
+		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is greater than %d", t.MaxLength)))
+	}
+
 	for index, value := range bodyArray {
 		if itemType != nil {
 			errors = append(errors, (*itemType).Validate(value, path+"."+strconv.Itoa(index))...)
@@ -63,28 +74,4 @@ func (t *ArrayType) Validate(body interface{}, path string) []error {
 func (t *ArrayType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase
-}
-
-func (t *ArrayType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "ItemType":
-			if v != nil {
-				var index int
-				err := json.Unmarshal(*v, &index)
-				if err != nil {
-					return err
-				}
-				t.ItemType = &TypeReference{TypeIndex: index}
-			}
-		default:
-			return fmt.Errorf("unmarshalling array type, unrecognized key: %s", k)
-		}
-	}
-	return nil
 }

@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
@@ -10,10 +9,11 @@ import (
 var _ TypeBase = &DiscriminatedObjectType{}
 
 type DiscriminatedObjectType struct {
-	Name           string
-	Discriminator  string
-	BaseProperties map[string]ObjectProperty
-	Elements       map[string]*TypeReference
+	Type           string                    `json:"$type"`
+	Name           string                    `json:"name"`
+	Discriminator  string                    `json:"discriminator"`
+	BaseProperties map[string]ObjectProperty `json:"baseProperties"`
+	Elements       map[string]*TypeReference `json:"elements"`
 }
 
 func (t *DiscriminatedObjectType) GetWriteOnly(body interface{}) interface{} {
@@ -126,59 +126,4 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 func (t *DiscriminatedObjectType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase
-}
-
-func (t *DiscriminatedObjectType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "Name":
-			if v != nil {
-				var name string
-				err := json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				t.Name = name
-			}
-		case "Discriminator":
-			if v != nil {
-				var discriminator string
-				err := json.Unmarshal(*v, &discriminator)
-				if err != nil {
-					return err
-				}
-				t.Discriminator = discriminator
-			}
-		case "BaseProperties":
-			if v != nil {
-				var baseProperties map[string]ObjectProperty
-				err := json.Unmarshal(*v, &baseProperties)
-				if err != nil {
-					return err
-				}
-				t.BaseProperties = baseProperties
-			}
-		case "Elements":
-			if v != nil {
-				var elementIndexes map[string]int
-				err := json.Unmarshal(*v, &elementIndexes)
-				if err != nil {
-					return err
-				}
-				elements := make(map[string]*TypeReference)
-				for key, index := range elementIndexes {
-					elements[key] = &TypeReference{TypeIndex: index}
-				}
-				t.Elements = elements
-			}
-		default:
-			return fmt.Errorf("unmarshalling discriminated object type, unrecognized key: %s", k)
-		}
-	}
-	return nil
 }

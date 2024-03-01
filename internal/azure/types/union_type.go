@@ -1,16 +1,14 @@
 package types
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
 var _ TypeBase = &UnionType{}
 
 type UnionType struct {
-	Elements []*TypeReference
+	Type     string           `json:"$type"`
+	Elements []*TypeReference `json:"elements"`
 }
 
 func (t *UnionType) GetWriteOnly(body interface{}) interface{} {
@@ -62,32 +60,4 @@ func (t *UnionType) Validate(body interface{}, path string) []error {
 func (t *UnionType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase
-}
-
-func (t *UnionType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "Elements":
-			if v != nil {
-				var indexes []int
-				err := json.Unmarshal(*v, &indexes)
-				if err != nil {
-					return err
-				}
-				elements := make([]*TypeReference, 0)
-				for _, index := range indexes {
-					elements = append(elements, &TypeReference{TypeIndex: index})
-				}
-				t.Elements = elements
-			}
-		default:
-			return fmt.Errorf("unmarshalling union type, unrecognized key: %s", k)
-		}
-	}
-	return nil
 }

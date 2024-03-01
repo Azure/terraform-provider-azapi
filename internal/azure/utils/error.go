@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+func ErrorCommon(key string, message string) error {
+	return fmt.Errorf("`%s` is invalid, %s", strings.TrimPrefix(key, "."), message)
+}
+
 func ErrorMismatch(key, expected, actual string) error {
 	return fmt.Errorf("`%s` is invalid, expect `%s` but got `%s`", strings.TrimPrefix(key, "."), expected, actual)
 }
