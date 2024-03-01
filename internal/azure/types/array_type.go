@@ -12,8 +12,8 @@ var _ TypeBase = &ArrayType{}
 type ArrayType struct {
 	Type      string         `json:"$type"`
 	ItemType  *TypeReference `json:"itemType"`
-	MinLength int            `json:"minLength"`
-	MaxLength int            `json:"maxLength"`
+	MinLength *int           `json:"minLength"`
+	MaxLength *int           `json:"maxLength"`
 }
 
 func (t *ArrayType) GetWriteOnly(body interface{}) interface{} {
@@ -55,11 +55,11 @@ func (t *ArrayType) Validate(body interface{}, path string) []error {
 	}
 
 	// check the length
-	if len(bodyArray) < t.MinLength {
+	if t.MinLength != nil && len(bodyArray) < *t.MinLength {
 		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is less than %d", t.MinLength)))
 	}
 
-	if len(bodyArray) > t.MaxLength {
+	if t.MaxLength != nil && len(bodyArray) > *t.MaxLength {
 		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is greater than %d", t.MaxLength)))
 	}
 
