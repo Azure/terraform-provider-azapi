@@ -1,0 +1,6846 @@
+[
+  {
+    "$type": "StringType",
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])*(\\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])*)*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes/attachedDataNetworks"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes/attachedDataNetworks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "Attached data network properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AttachedDataNetworkPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the attached data network resource."
+      },
+      "userPlaneDataInterface": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface."
+      },
+      "dnsAddresses": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you don't want DNS servers, you must provide an empty array."
+      },
+      "naptConfiguration": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The network address and port translation (NAPT) configuration.\nIf this is not specified, the attached data network will use a default NAPT configuration with NAPT enabled."
+      },
+      "userEquipmentAddressPoolPrefix": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will dynamically assign IP addresses to UEs.\nThe packet core instance assigns an IP address to a UE when the UE sets up a PDU session.\n You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the same size."
+      },
+      "userEquipmentStaticAddressPoolPrefix": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will assign static IP addresses to UEs.\nThe packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.\nAt least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InterfaceProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge device."
+      },
+      "ipv4Address": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The IPv4 address."
+      },
+      "ipv4Subnet": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The IPv4 subnet."
+      },
+      "ipv4Gateway": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The default IPv4 gateway (router)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NaptConfiguration",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Whether NAPT is enabled for connections to this attached data network."
+      },
+      "portRange": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Range of port numbers to use as translated ports on each translated address.\nIf not specified and NAPT is enabled, this range defaults to 1,024 - 49,999.\n(Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)"
+      },
+      "portReuseHoldTime": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second."
+      },
+      "pinholeLimits": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface."
+      },
+      "pinholeTimeouts": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PortRange",
+    "properties": {
+      "minPort": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The minimum port number"
+      },
+      "maxPort": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The maximum port number"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1024,
+    "maxValue": 65535
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PortReuseHoldTimes",
+    "properties": {
+      "tcp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default for TCP is 2 minutes."
+      },
+      "udp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default for UDP is 1 minute."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65536
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PinholeTimeouts",
+    "properties": {
+      "tcp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes."
+      },
+      "udp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds."
+      },
+      "icmp": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes/attachedDataNetworks@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks/dataNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/dataNetworks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Data network properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataNetworkPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the data network resource."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional description for this data network."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/dataNetworks@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/45"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes/diagnosticsPackages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/diagnosticsPackages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 2,
+        "description": "Diagnostics package properties. A diagnostics package file derived from the name of this resource will be uploaded to the Storage Account Container URL in the packet core control plane properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiagnosticsPackagePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the diagnostics package resource."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 2,
+        "description": "The status of the diagnostics package collection."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The reason for the current state of the diagnostics package collection."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Collecting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Collected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/diagnosticsPackages@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/60"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "Mobile network properties."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The identity used to retrieve any private keys used for SUPI concealment from Azure key vault."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MobileNetworkPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the mobile network resource."
+      },
+      "publicLandMobileNetworkIdentifier": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence."
+      },
+      "publicLandMobileNetworks": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence."
+      },
+      "serviceKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The mobile network resource identifier"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlmnId",
+    "properties": {
+      "mcc": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Mobile country code (MCC)."
+      },
+      "mnc": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "Mobile network code (MNC)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^\\d{3}$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^\\d{2,3}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicLandMobileNetwork",
+    "properties": {
+      "homeNetworkPublicKeys": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Configuration relating to SUPI concealment."
+      },
+      "mcc": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Mobile country code (MCC)."
+      },
+      "mnc": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "Mobile network code (MNC)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicLandMobileNetworkHomeNetworkPublicKeys",
+    "properties": {
+      "profileA": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A Protection Scheme."
+      },
+      "profileB": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B Protection Scheme."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HomeNetworkPublicKey",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 1,
+        "description": "The Home Network Public Key Identifier determines which public key was used to generate the SUCI sent to the AMF. See TS 23.003 Section 2.2B Section 5."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 255
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/91"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (currently only UserAssigned allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/78"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCaptures"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCaptures",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 1,
+        "description": "Packet capture session properties. Packet capture file(s) derived from the name of this session will be uploaded to the Storage Account Container URL in the packet core control plane properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCapturePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the packet capture session resource."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 2,
+        "description": "The status of the packet capture session."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The reason the current packet capture session state."
+      },
+      "captureStartTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The start time of the packet capture session."
+      },
+      "networkInterfaces": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "List of network interfaces to capture on."
+      },
+      "bytesToCapturePerPacket": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Number of bytes captured per packet, the remaining bytes are truncated. The default \"0\" means the entire packet is captured."
+      },
+      "totalBytesPerSession": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Maximum size of the capture output."
+      },
+      "timeLimitInSeconds": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Maximum duration of the capture session in seconds."
+      },
+      "outputFiles": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The list of output files of a packet capture session."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 4294967295
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1000,
+    "maxValue": 4294967295
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 5,
+    "maxValue": 18000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCaptures@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/109"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 1,
+        "description": "Packet core control plane Properties."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The identity used to retrieve the ingress certificate from Azure key vault."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCoreControlPlanePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the packet core control plane resource."
+      },
+      "installation": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "The installation state of the packet core control plane resource."
+      },
+      "sites": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 1,
+        "description": "Site(s) under which this packet core control plane should be deployed. The sites must be in the same location as the packet core control plane."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 1,
+        "description": "The platform where the packet core is deployed."
+      },
+      "coreNetworkTechnology": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 0,
+        "description": "The core network technology generation (5G core or EPC / 4G core)."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The desired version of the packet core software."
+      },
+      "installedVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The currently installed version of the packet core software."
+      },
+      "rollbackVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The previous version of the packet core software that was deployed. Used when performing the rollback action."
+      },
+      "controlPlaneAccessInterface": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks, this is the S1-MME interface."
+      },
+      "controlPlaneAccessVirtualIpv4Addresses": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "The virtual IP address(es) for the control plane on the access network in a High Availability (HA) system. In an HA deployment the access network router should be configured to anycast traffic for this address to the control plane access interfaces on the active and standby nodes. In non-HA system this list should be omitted or empty."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 1,
+        "description": "The SKU defining the throughput and SIM allowances for this packet core control plane deployment."
+      },
+      "ueMtu": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 0,
+        "description": "The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this value to allow for GTP encapsulation."
+      },
+      "localDiagnosticsAccess": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 1,
+        "description": "The kubernetes ingress configuration to control access to packet core diagnostics over local APIs."
+      },
+      "diagnosticsUpload": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 0,
+        "description": "Configuration for uploading packet core diagnostics"
+      },
+      "eventHub": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "Configuration for sending packet core events to an Azure Event Hub."
+      },
+      "signaling": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "Signaling configuration for the packet core."
+      },
+      "interopSettings": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "Settings to allow interoperability with third party components e.g. RANs and UEs."
+      },
+      "homeNetworkPrivateKeysProvisioning": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the secret containing private keys and keyIds for SUPI concealment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Installation",
+    "properties": {
+      "desiredState": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "The desired installation state"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 2,
+        "description": "Installation state"
+      },
+      "reinstallRequired": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 2,
+        "description": "Whether a reinstall of the packet core is required to pick up the latest configuration changes."
+      },
+      "reasons": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 2,
+        "description": "Reason(s) for the current installation state of the packet core."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 2,
+        "description": "A reference to an in-progress installation operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uninstalled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Installed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uninstalled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Installing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Installed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uninstalling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reinstalling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RollingBack"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoSlices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoPacketCoreDataPlane"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoAttachedDataNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PublicLandMobileNetworkIdentifierHasChanged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlPlaneAccessInterfaceHasChanged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserPlaneAccessInterfaceHasChanged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserPlaneDataInterfaceHasChanged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlPlaneAccessVirtualIpv4AddressesHasChanged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserPlaneAccessVirtualIpv4AddressesHasChanged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/168"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AsyncOperationId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 1,
+        "description": "Azure Async Operation ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[^/?#]+/[lL][oO][cC][aA][tT][iI][oO][nN][sS]/[^/?#]+/[oO][pP][eE][rR][aA][tT][iI][oO][nN][sS][tT][aA][tT][uU][sS][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 1,
+        "description": "Site resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+/[sS][iI][tT][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformConfiguration",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 1,
+        "description": "The platform type where packet core is deployed."
+      },
+      "azureStackEdgeDevice": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair, either device in the pair can be specified."
+      },
+      "azureStackEdgeDevices": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 2,
+        "description": "The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple devices, all devices will appear in this list."
+      },
+      "azureStackHciCluster": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 0,
+        "description": "The Azure Stack HCI cluster where the packet core is deployed."
+      },
+      "connectedCluster": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "Azure Arc connected cluster where the packet core is deployed."
+      },
+      "customLocation": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 0,
+        "description": "Azure Arc custom location where the packet core is deployed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AKS-HCI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "3P-AZURE-STACK-HCI"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureStackEdgeDeviceResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "Azure Stack Edge device resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[dD][aA][tT][aA][bB][oO][xX][eE][dD][gG][eE]/[dD][aA][tT][aA][bB][oO][xX][eE][dD][gG][eE][dD][eE][vV][iI][cC][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/179"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureStackHCIClusterResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 1,
+        "description": "Azure Stack HCI cluster resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[aA][zZ][uU][rR][eE][sS][tT][aA][cC][kK][hH][cC][iI]/[cC][lL][uU][sS][tT][eE][rR][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectedClusterResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 1,
+        "description": "Azure Arc connected cluster resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[kK][uU][bB][eE][rR][nN][eE][tT][eE][sS]/[cC][oO][nN][nN][eE][cC][tT][eE][dD][cC][lL][uU][sS][tT][eE][rR][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomLocationResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 1,
+        "description": "Azure Arc custom location resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[eE][xX][tT][eE][nN][dD][eE][dD][lL][oO][cC][aA][tT][iI][oO][nN]/[cC][uU][sS][tT][oO][mM][lL][oO][cC][aA][tT][iI][oO][nN][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "5GC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EPC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EPC + 5GC"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G5"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G10"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1280,
+    "maxValue": 1930
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LocalDiagnosticsAccessConfiguration",
+    "properties": {
+      "authenticationType": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 1,
+        "description": "How to authenticate users who access local diagnostics APIs."
+      },
+      "httpsServerCertificate": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 0,
+        "description": "The HTTPS server TLS certificate used to secure local access to diagnostics."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AAD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Password"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpsServerCertificate",
+    "properties": {
+      "certificateUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The certificate URL, unversioned. For example: https://contosovault.vault.azure.net/certificates/ingress."
+      },
+      "provisioning": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the certificate."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CertificateProvisioning",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 2,
+        "description": "The certificate's provisioning state"
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Reason for certificate provisioning failure."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotProvisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiagnosticsUploadConfiguration",
+    "properties": {
+      "storageAccountContainerUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Storage Account Container URL to upload diagnostics to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubConfiguration",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1,
+        "description": "Resource ID  of Azure Event Hub to send packet core events to."
+      },
+      "reportingInterval": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "The duration (in seconds) between UE usage reports."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[eE][vV][eE][nN][tT][hH][uU][bB]/[nN][aA][mM][eE][sS][pP][aA][cC][eE][sS]/[^/?#]+/[eV][vV][eE][nN][tT][hH][uU][bB][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 30,
+    "maxValue": 3600
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalingConfiguration",
+    "properties": {
+      "nasReroute": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "Configuration enabling 4G NAS reroute."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NASRerouteConfiguration",
+    "properties": {
+      "macroMmeGroupId": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 1,
+        "description": "The macro network's MME group ID. This is where unknown UEs are sent to via NAS reroute."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 65535
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HomeNetworkPrivateKeysProvisioning",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 3,
+        "description": "The provisioning state of the private keys for SUPI concealment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotProvisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/132"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 1,
+        "description": "Packet core data plane Properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCoreDataPlanePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the packet core data plane resource."
+      },
+      "userPlaneAccessInterface": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this is the S1-U interface."
+      },
+      "userPlaneAccessVirtualIpv4Addresses": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "The virtual IP address(es) for the user plane on the access network in a High Availability (HA) system. In an HA deployment the access network router should be configured to forward traffic for this address to the control plane access interface on the active or standby node. In non-HA system this list should be omitted or empty."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCoreDataPlanes@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/227"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 64,
+    "pattern": "^(?!(default|requested|service)$)[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks/services"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/services",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 1,
+        "description": "Service Properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/252"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the service resource."
+      },
+      "servicePrecedence": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "A precedence value that is used to decide between services when identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique among all services configured in the mobile network."
+      },
+      "serviceQosPolicy": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "The QoS policy to use for packets matching this service. This can be overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the QoS settings."
+      },
+      "pccRules": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 1,
+        "description": "The set of data flow policy rules that make up this service."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 255
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QosPolicy",
+    "properties": {
+      "5qi": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition the 5QI values."
+      },
+      "allocationAndRetentionPriorityLevel": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionCapability": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 0,
+        "description": "QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionVulnerability": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "maximumBitRate": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 1,
+        "description": "The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 127
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 15
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreempt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MayPreempt"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreemptable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preemptable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Ambr",
+    "properties": {
+      "uplink": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 1,
+        "description": "Uplink bit rate."
+      },
+      "downlink": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 1,
+        "description": "Downlink bit rate."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^\\d+(\\.\\d+)? (bps|Kbps|Mbps|Gbps|Tbps)$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PccRuleConfiguration",
+    "properties": {
+      "ruleName": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 1,
+        "description": "The name of the rule. This must be unique within the parent service. You must not use any of the following reserved strings - `default`, `requested` or `service`."
+      },
+      "rulePrecedence": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique among all data flow policy rules configured in the mobile network."
+      },
+      "ruleQosPolicy": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 0,
+        "description": "The QoS policy to use for packets matching this rule. If this field is null then the parent service will define the QoS settings."
+      },
+      "trafficControl": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "Determines whether flows that match this data flow policy rule are permitted."
+      },
+      "serviceDataFlowTemplates": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 1,
+        "description": "The set of data flow templates to use for this data flow policy rule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PccRuleQosPolicy",
+    "properties": {
+      "guaranteedBitRate": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that uses this QoS definition."
+      },
+      "5qi": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition the 5QI values."
+      },
+      "allocationAndRetentionPriorityLevel": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionCapability": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionVulnerability": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 0,
+        "description": "QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "maximumBitRate": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 1,
+        "description": "The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreempt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MayPreempt"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/267"
+      },
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreemptable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preemptable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceDataFlowTemplate",
+    "properties": {
+      "templateName": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 1,
+        "description": "The name of the data flow template. This must be unique within the parent data flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`."
+      },
+      "direction": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 1,
+        "description": "The direction of this flow."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 1,
+        "description": "A list of the allowed protocol(s) for this flow. If you want this flow to be able to use any protocol within the internet protocol suite, use the value `ip`. If you only want to allow a selection of protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml. For example, for UDP, you must use 17. If you use the value `ip` then you must leave the field `port` unspecified."
+      },
+      "remoteIpList": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 1,
+        "description": "The remote IP address(es) to which UEs will connect for this flow. If you want to allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR notation, including the netmask (for example, 192.0.2.54/24)."
+      },
+      "ports": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "The port(s) to which UEs will connect for this flow. You can specify zero or more ports or port ranges. If you specify one or more ports or port ranges then you must specify a value other than `ip` in the `protocol` field. This is an optional setting. If you do not specify it then connections will be allowed on all ports. Port ranges must be specified as <FirstPort>-<LastPort>. For example: [`8080`, `8082-8085`]."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uplink"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Downlink"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bidirectional"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(ip|[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/281"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(any|(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2])))$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/283"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])(-([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/285"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/276"
+    },
+    "minLength": 1,
+    "maxLength": 15
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/265"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/services@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/243"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/simGroups/sims"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/simGroups/sims",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/292"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 1,
+        "description": "SIM Properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimPropertiesFormat",
+    "properties": {
+      "authenticationKey": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 4,
+        "description": "The Ki value for the SIM."
+      },
+      "operatorKeyCode": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 4,
+        "description": "The Opc value for the SIM."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the SIM resource."
+      },
+      "simState": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 2,
+        "description": "The state of the SIM resource."
+      },
+      "siteProvisioningState": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 2,
+        "description": "A dictionary of sites to the provisioning state of this SIM on that site."
+      },
+      "internationalMobileSubscriberIdentity": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 1,
+        "description": "The international mobile subscriber identity (IMSI) for the SIM."
+      },
+      "integratedCircuitCardIdentifier": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 0,
+        "description": "The integrated circuit card ID (ICCID) for the SIM."
+      },
+      "deviceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on this value."
+      },
+      "simPolicy": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM."
+      },
+      "staticIpConfiguration": {
+        "type": {
+          "$ref": "#/326"
+        },
+        "flags": 0,
+        "description": "A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached data network, slice}."
+      },
+      "vendorName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the SIM vendor who provided this SIM, if any."
+      },
+      "vendorKeyFingerprint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The public key fingerprint of the SIM vendor who provided this SIM, if any."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "pattern": "^[0-9a-fA-F]{32}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/304"
+      },
+      {
+        "$ref": "#/305"
+      },
+      {
+        "$ref": "#/306"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adding"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteProvisioning",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/314"
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9]{5,15}$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9]{10,20}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimPolicyResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 1,
+        "description": "SIM policy resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+/[sS][iI][mM][pP][oO][lL][iI][cC][iI][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimStaticIpProperties",
+    "properties": {
+      "attachedDataNetwork": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "The attached data network on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The attached data network must be in the same location as the SIM."
+      },
+      "slice": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 0,
+        "description": "The network slice on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The slice must be in the same location as the SIM."
+      },
+      "staticIp": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 0,
+        "description": "The static IP configuration for the SIM to use at the defined network scope."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AttachedDataNetworkResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 1,
+        "description": "Attached data network resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[pP][aA][cC][kK][eE][tT][cC][oO][rR][eE][cC][oO][nN][tT][rR][oO][lL][pP][lL][aA][nN][eE][sS]/[^/?#]+/[pP][aA][cC][kK][eE][tT][cC][oO][rR][eE][dD][aA][tT][aA][pP][lL][aA][nN][eE][sS]/[^/?#]+/[aA][tT][tT][aA][cC][hH][eE][dD][dD][aA][tT][aA][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SliceResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 1,
+        "description": "Slice resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+/[sS][lL][iI][cC][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimStaticIpPropertiesStaticIp",
+    "properties": {
+      "ipv4Address": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The IPv4 address assigned to the SIM at this network scope. This address must be in the userEquipmentStaticAddressPoolPrefix defined in the attached data network."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/320"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/simGroups/sims@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/293"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/simGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/simGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/329"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 1,
+        "description": "SIM group Properties."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The identity used to retrieve the encryption key from Azure key vault."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimGroupPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the SIM group resource."
+      },
+      "encryptionKey": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 0,
+        "description": "A key to encrypt the SIM data that belongs to this SIM group."
+      },
+      "mobileNetwork": {
+        "type": {
+          "$ref": "#/341"
+        },
+        "flags": 0,
+        "description": "Mobile network that this SIM group belongs to. The mobile network must be in the same location as the SIM group."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultKey",
+    "properties": {
+      "keyUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The key URL, unversioned. For example: https://contosovault.vault.azure.net/keys/azureKey."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MobileNetworkResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/342"
+        },
+        "flags": 1,
+        "description": "Mobile network resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/simGroups@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/330"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks/simPolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/simPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 1,
+        "description": "SIM policy Properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/390"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimPolicyPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the SIM policy resource."
+      },
+      "siteProvisioningState": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 2,
+        "description": "A dictionary of sites to the provisioning state of this SIM policy on that site."
+      },
+      "ueAmbr": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 1,
+        "description": "Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR."
+      },
+      "defaultSlice": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 1,
+        "description": "The default slice to use if the UE does not explicitly specify it. This slice must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy."
+      },
+      "rfspIndex": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 0,
+        "description": "RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is unspecified."
+      },
+      "registrationTimer": {
+        "type": {
+          "$ref": "#/366"
+        },
+        "flags": 0,
+        "description": "UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds."
+      },
+      "sliceConfigurations": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 1,
+        "description": "The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain at least one item."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adding"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteProvisioning",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/363"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 256
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 30
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SliceConfiguration",
+    "properties": {
+      "slice": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 1,
+        "description": "A reference to the slice that these settings apply to. The slice must be in the same location as the SIM policy."
+      },
+      "defaultDataNetwork": {
+        "type": {
+          "$ref": "#/368"
+        },
+        "flags": 1,
+        "description": "The default data network to use if the UE does not explicitly specify it. Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy."
+      },
+      "dataNetworkConfigurations": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 1,
+        "description": "The allowed data networks and the settings to use for them. The list must not contain duplicate items and must contain at least one item."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataNetworkResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 1,
+        "description": "Data network resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+/[dD][aA][tT][aA][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataNetworkConfiguration",
+    "properties": {
+      "dataNetwork": {
+        "type": {
+          "$ref": "#/368"
+        },
+        "flags": 1,
+        "description": "A reference to the data network that these settings apply to. The data network must be in the same location as the SIM policy."
+      },
+      "sessionAmbr": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 1,
+        "description": "Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR."
+      },
+      "5qi": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition the 5QI values."
+      },
+      "allocationAndRetentionPriorityLevel": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionCapability": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 0,
+        "description": "Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "preemptionVulnerability": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 0,
+        "description": "Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters."
+      },
+      "defaultSessionType": {
+        "type": {
+          "$ref": "#/379"
+        },
+        "flags": 0,
+        "description": "The default PDU session type, which is used if the UE does not request a specific session type."
+      },
+      "additionalAllowedSessionTypes": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 0,
+        "description": "Allowed session types in addition to the default session type. Must not duplicate the default session type."
+      },
+      "allowedServices": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 1,
+        "description": "List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must contain at least one item. The services must be in the same location as the SIM policy."
+      },
+      "maximumNumberOfBufferedPackets": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 0,
+        "description": "The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU sessions."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreempt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MayPreempt"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotPreemptable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preemptable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/378"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/382"
+    },
+    "maxLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 1,
+        "description": "Service resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK][sS]/[^/?#]+/[sS][eE][rR][vV][iI][cC][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/384"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/370"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/367"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/simPolicies@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/347"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks/sites"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/sites",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/393"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/395"
+        },
+        "flags": 0,
+        "description": "Site properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/406"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SitePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/403"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the site resource."
+      },
+      "networkFunctions": {
+        "type": {
+          "$ref": "#/405"
+        },
+        "flags": 2,
+        "description": "An array of IDs of the network functions deployed in the site. Deleting the site will delete any network functions that are deployed in the site."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/396"
+      },
+      {
+        "$ref": "#/397"
+      },
+      {
+        "$ref": "#/398"
+      },
+      {
+        "$ref": "#/399"
+      },
+      {
+        "$ref": "#/400"
+      },
+      {
+        "$ref": "#/401"
+      },
+      {
+        "$ref": "#/402"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/404"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/sites@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/394"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/mobileNetworks/slices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/slices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/408"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 1,
+        "description": "Slice properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/422"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SlicePropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/419"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the network slice resource."
+      },
+      "snssai": {
+        "type": {
+          "$ref": "#/420"
+        },
+        "flags": 1,
+        "description": "Single-network slice selection assistance information (S-NSSAI). Unique at the scope of a mobile network."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional description for this network slice."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/412"
+      },
+      {
+        "$ref": "#/413"
+      },
+      {
+        "$ref": "#/414"
+      },
+      {
+        "$ref": "#/415"
+      },
+      {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
+        "$ref": "#/418"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Snssai",
+    "properties": {
+      "sst": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "Slice/service type (SST)."
+      },
+      "sd": {
+        "type": {
+          "$ref": "#/421"
+        },
+        "flags": 0,
+        "description": "Slice differentiator (SD)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Fa-f0-9]{6}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/mobileNetworks/slices@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/410"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlaneVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlaneVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/424"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/425"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 2,
+        "description": "Packet core control plane version properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCoreControlPlaneVersionPropertiesFormat",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/435"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the packet core control plane version resource."
+      },
+      "platforms": {
+        "type": {
+          "$ref": "#/453"
+        },
+        "flags": 0,
+        "description": "Platform specific packet core control plane version properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/428"
+      },
+      {
+        "$ref": "#/429"
+      },
+      {
+        "$ref": "#/430"
+      },
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/433"
+      },
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Platform",
+    "properties": {
+      "platformType": {
+        "type": {
+          "$ref": "#/439"
+        },
+        "flags": 0,
+        "description": "The platform type where this version can be deployed."
+      },
+      "versionState": {
+        "type": {
+          "$ref": "#/446"
+        },
+        "flags": 0,
+        "description": "The state of this packet core control plane version on this platform."
+      },
+      "minimumPlatformSoftwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The minimum software version of the platform where this packet core version can be deployed."
+      },
+      "maximumPlatformSoftwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The maximum software version of the platform where this packet core version can be deployed."
+      },
+      "recommendedVersion": {
+        "type": {
+          "$ref": "#/449"
+        },
+        "flags": 0,
+        "description": "Indicates whether this is the recommended version for this platform."
+      },
+      "obsoleteVersion": {
+        "type": {
+          "$ref": "#/452"
+        },
+        "flags": 0,
+        "description": "Indicates whether this version is obsoleted for this platform."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AKS-HCI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "3P-AZURE-STACK-HCI"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/437"
+      },
+      {
+        "$ref": "#/438"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preview"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Validating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ValidationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deprecated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/440"
+      },
+      {
+        "$ref": "#/441"
+      },
+      {
+        "$ref": "#/442"
+      },
+      {
+        "$ref": "#/443"
+      },
+      {
+        "$ref": "#/444"
+      },
+      {
+        "$ref": "#/445"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Recommended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRecommended"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/447"
+      },
+      {
+        "$ref": "#/448"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Obsolete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotObsolete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/450"
+      },
+      {
+        "$ref": "#/451"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/436"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlaneVersions@2024-02-01",
+    "scopeType": 5,
+    "body": {
+      "$ref": "#/426"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MobileNetwork/packetCoreControlPlanes/ues/extendedInformation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-02-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/ues/extendedInformation",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/456"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/457"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/459"
+        },
+        "flags": 2,
+        "description": "Extended UE Information Properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ExtendedUeInfoProperties",
+    "discriminator": "ratType",
+    "baseProperties": {
+      "lastReadAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of last UE info read from the packet core (UTC)."
+      }
+    },
+    "elements": {
+      "4G": {
+        "$ref": "#/460"
+      },
+      "5G": {
+        "$ref": "#/501"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeInfo4G",
+    "properties": {
+      "info": {
+        "type": {
+          "$ref": "#/461"
+        },
+        "flags": 1,
+        "description": "UE Information properties for 4G."
+      },
+      "ratType": {
+        "type": {
+          "$ref": "#/500"
+        },
+        "flags": 1,
+        "description": "RAT Type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeInfo4GProperties",
+    "properties": {
+      "imsi": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 1,
+        "description": "International mobile subscriber identifier"
+      },
+      "imei": {
+        "type": {
+          "$ref": "#/462"
+        },
+        "flags": 0,
+        "description": "International mobile equipment identity"
+      },
+      "imeisv": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 0,
+        "description": "International mobile equipment identity – software version"
+      },
+      "guti": {
+        "type": {
+          "$ref": "#/464"
+        },
+        "flags": 1,
+        "description": "Globally Unique Temporary Identifier (4G)"
+      },
+      "connectionInfo": {
+        "type": {
+          "$ref": "#/466"
+        },
+        "flags": 0,
+        "description": "UE Connection Info for 4G"
+      },
+      "sessionInfo": {
+        "type": {
+          "$ref": "#/499"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9]{15}$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9]{16}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Guti4G",
+    "properties": {
+      "plmn": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks."
+      },
+      "mmeId": {
+        "type": {
+          "$ref": "#/465"
+        },
+        "flags": 1,
+        "description": "MME identifier"
+      },
+      "mTmsi": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "MME Temporary Mobile Subscriber Identity"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MmeId",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 1,
+        "description": "MME group identifier"
+      },
+      "code": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "MME code"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeConnectionInfo4G",
+    "properties": {
+      "locationInfo": {
+        "type": {
+          "$ref": "#/467"
+        },
+        "flags": 0,
+        "description": "UE Location Info properties"
+      },
+      "globalRanNodeId": {
+        "type": {
+          "$ref": "#/469"
+        },
+        "flags": 1,
+        "description": "Global RAN Node ID"
+      },
+      "perUeTnla": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Per-UE transport network layer association"
+      },
+      "mmeS1apId": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "MME S1AP identifier"
+      },
+      "enbS1apId": {
+        "type": {
+          "$ref": "#/477"
+        },
+        "flags": 1,
+        "description": "eNodeB S1AP identifier"
+      },
+      "lastVisitedTai": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Last Visited TAI"
+      },
+      "ueState": {
+        "type": {
+          "$ref": "#/483"
+        },
+        "flags": 1,
+        "description": "State of the UE."
+      },
+      "rrcEstablishmentCause": {
+        "type": {
+          "$ref": "#/490"
+        },
+        "flags": 1,
+        "description": "Radio connection establishment cause"
+      },
+      "ueUsageSetting": {
+        "type": {
+          "$ref": "#/493"
+        },
+        "flags": 0,
+        "description": "The UE's usage setting"
+      },
+      "lastActivityTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of last activity of UE (UTC)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeLocationInfo",
+    "properties": {
+      "locationType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Location Type"
+      },
+      "tac": {
+        "type": {
+          "$ref": "#/468"
+        },
+        "flags": 1,
+        "description": "Type Allocation Code of UE"
+      },
+      "plmn": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "PLMN Identifier"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "(^[A-Fa-f0-9]{4}$)|(^[A-Fa-f0-9]{6}$)"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GlobalRanNodeId",
+    "properties": {
+      "plmnId": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "PLMN Identifier"
+      },
+      "gNbId": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 0,
+        "description": "gNodeB identifier"
+      },
+      "ngeNbId": {
+        "type": {
+          "$ref": "#/473"
+        },
+        "flags": 0,
+        "description": "NG-eNodeB identifier"
+      },
+      "eNbId": {
+        "type": {
+          "$ref": "#/474"
+        },
+        "flags": 0,
+        "description": "eNodeB identifier"
+      },
+      "n3IwfId": {
+        "type": {
+          "$ref": "#/475"
+        },
+        "flags": 0,
+        "description": "N3 IWF identifier"
+      },
+      "wagfId": {
+        "type": {
+          "$ref": "#/475"
+        },
+        "flags": 0,
+        "description": "W-AGF identifier"
+      },
+      "tngfId": {
+        "type": {
+          "$ref": "#/475"
+        },
+        "flags": 0,
+        "description": "TNGF identifier"
+      },
+      "nid": {
+        "type": {
+          "$ref": "#/476"
+        },
+        "flags": 0,
+        "description": "Network identifier"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GNbId",
+    "properties": {
+      "bitLength": {
+        "type": {
+          "$ref": "#/471"
+        },
+        "flags": 0
+      },
+      "gNBValue": {
+        "type": {
+          "$ref": "#/472"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 22,
+    "maxValue": 32
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Fa-f0-9]{6,8}$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(MacroNGeNB-[A-Fa-f0-9]{5}|LMacroNGeNB-[A-Fa-f0-9]{6}|SMacroNGeNB-[A-Fa-f0-9]{5})$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(MacroeNB-[A-Fa-f0-9]{5}|LMacroeNB-[A-Fa-f0-9]{6}|SMacroeNB-[A-Fa-f0-9]{5}|HomeeNB-[A-Fa-f0-9]{7})$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Fa-f0-9]+$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Fa-f0-9]{11}$"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 16777215
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Idle"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detached"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deregistered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/478"
+      },
+      {
+        "$ref": "#/479"
+      },
+      {
+        "$ref": "#/480"
+      },
+      {
+        "$ref": "#/481"
+      },
+      {
+        "$ref": "#/482"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Emergency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileOriginatedSignaling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileTerminatedSignaling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileOriginatedData"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileTerminatedData"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SMS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/484"
+      },
+      {
+        "$ref": "#/485"
+      },
+      {
+        "$ref": "#/486"
+      },
+      {
+        "$ref": "#/487"
+      },
+      {
+        "$ref": "#/488"
+      },
+      {
+        "$ref": "#/489"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VoiceCentric"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataCentric"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/491"
+      },
+      {
+        "$ref": "#/492"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeSessionInfo4G",
+    "properties": {
+      "ebi": {
+        "type": {
+          "$ref": "#/495"
+        },
+        "flags": 1,
+        "description": "EPS bearer identifier"
+      },
+      "apn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Access point name"
+      },
+      "ueIpAddress": {
+        "type": {
+          "$ref": "#/496"
+        },
+        "flags": 1,
+        "description": "UE IP address"
+      },
+      "pdnType": {
+        "type": {
+          "$ref": "#/498"
+        },
+        "flags": 1,
+        "description": "Packet Data Network Type"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 5,
+    "maxValue": 15
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeIpAddress",
+    "properties": {
+      "ipV4Addr": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "IPv4 address."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPV4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/497"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/494"
+    },
+    "maxLength": 11
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "4G"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeInfo5G",
+    "properties": {
+      "info": {
+        "type": {
+          "$ref": "#/502"
+        },
+        "flags": 1,
+        "description": "UE Information properties for 5G."
+      },
+      "ratType": {
+        "type": {
+          "$ref": "#/533"
+        },
+        "flags": 1,
+        "description": "RAT Type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeInfo5GProperties",
+    "properties": {
+      "supi": {
+        "type": {
+          "$ref": "#/503"
+        },
+        "flags": 1,
+        "description": "Subscription Permanent Identifier"
+      },
+      "pei": {
+        "type": {
+          "$ref": "#/504"
+        },
+        "flags": 0,
+        "description": "Permanent Equipment Identifier"
+      },
+      "fivegGuti": {
+        "type": {
+          "$ref": "#/505"
+        },
+        "flags": 1,
+        "description": "5G GUTI"
+      },
+      "connectionInfo": {
+        "type": {
+          "$ref": "#/509"
+        },
+        "flags": 0,
+        "description": "UE Connection Info for 5G."
+      },
+      "sessionInfo": {
+        "type": {
+          "$ref": "#/532"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(imsi-[0-9]{5,15}|nai-.+|.+)$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(imei-[0-9]{15}|imeisv-[0-9]{16}|.+)$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Guti5G",
+    "properties": {
+      "plmn": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks."
+      },
+      "amfId": {
+        "type": {
+          "$ref": "#/506"
+        },
+        "flags": 1,
+        "description": "AMF identifier"
+      },
+      "fivegTmsi": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "5G Temporary Mobile Subscriber Identity"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmfId",
+    "properties": {
+      "regionId": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "AMF region identifier"
+      },
+      "setId": {
+        "type": {
+          "$ref": "#/507"
+        },
+        "flags": 1,
+        "description": "AMF set identifier"
+      },
+      "pointer": {
+        "type": {
+          "$ref": "#/508"
+        },
+        "flags": 1,
+        "description": "AMF pointer"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 1023
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 63
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeConnectionInfo5G",
+    "properties": {
+      "locationInfo": {
+        "type": {
+          "$ref": "#/467"
+        },
+        "flags": 0,
+        "description": "UE Location Info properties"
+      },
+      "globalRanNodeId": {
+        "type": {
+          "$ref": "#/469"
+        },
+        "flags": 1,
+        "description": "Global RAN Node ID"
+      },
+      "perUeTnla": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Per-UE transport network layer association"
+      },
+      "amfUeNgapId": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 1,
+        "description": "The AMF UE NGAP ID"
+      },
+      "ranUeNgapId": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "The RAN UE NGAP ID"
+      },
+      "lastVisitedTai": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Last Visited TAI"
+      },
+      "allowedNssai": {
+        "type": {
+          "$ref": "#/510"
+        },
+        "flags": 0,
+        "description": "Allowed Network Slice Selection Assistance Information"
+      },
+      "ueState": {
+        "type": {
+          "$ref": "#/516"
+        },
+        "flags": 1,
+        "description": "State of the UE."
+      },
+      "rrcEstablishmentCause": {
+        "type": {
+          "$ref": "#/523"
+        },
+        "flags": 1,
+        "description": "Radio connection establishment cause"
+      },
+      "ueUsageSetting": {
+        "type": {
+          "$ref": "#/526"
+        },
+        "flags": 0,
+        "description": "The UE's usage setting"
+      },
+      "lastActivityTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of last activity of UE (UTC)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/420"
+    },
+    "maxLength": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Idle"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detached"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deregistered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/511"
+      },
+      {
+        "$ref": "#/512"
+      },
+      {
+        "$ref": "#/513"
+      },
+      {
+        "$ref": "#/514"
+      },
+      {
+        "$ref": "#/515"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Emergency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileOriginatedSignaling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileTerminatedSignaling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileOriginatedData"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MobileTerminatedData"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SMS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/517"
+      },
+      {
+        "$ref": "#/518"
+      },
+      {
+        "$ref": "#/519"
+      },
+      {
+        "$ref": "#/520"
+      },
+      {
+        "$ref": "#/521"
+      },
+      {
+        "$ref": "#/522"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VoiceCentric"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataCentric"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/524"
+      },
+      {
+        "$ref": "#/525"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeSessionInfo5G",
+    "properties": {
+      "pduSessionId": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "PDU session identifier"
+      },
+      "dnn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Data network name"
+      },
+      "snssai": {
+        "type": {
+          "$ref": "#/420"
+        },
+        "flags": 1,
+        "description": "Single-network slice selection assistance information (S-NSSAI)."
+      },
+      "ueIpAddress": {
+        "type": {
+          "$ref": "#/496"
+        },
+        "flags": 1,
+        "description": "UE IP address"
+      },
+      "pdnType": {
+        "type": {
+          "$ref": "#/529"
+        },
+        "flags": 1,
+        "description": "Packet Data Network Type"
+      },
+      "ambr": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 1,
+        "description": "Aggregate maximum bit rate."
+      },
+      "qosFlow": {
+        "type": {
+          "$ref": "#/531"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPV4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/528"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UeQOSFlow",
+    "properties": {
+      "qfi": {
+        "type": {
+          "$ref": "#/508"
+        },
+        "flags": 1,
+        "description": "Qos Flow Identifier"
+      },
+      "fiveqi": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 1,
+        "description": "5G QoS Identifier."
+      },
+      "mbr": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "Maximum Bit Rate"
+      },
+      "gbr": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "Guaranteed Bit Rate"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/530"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/527"
+    },
+    "maxLength": 15
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "5G"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.MobileNetwork/packetCoreControlPlanes/ues/extendedInformation@2024-02-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/458"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AsyncOperationStatus",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Fully qualified ID for the async operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the async operation."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The operation status."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Fully qualified ID for the resource that this async operation status relates to."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The start time of the operation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The end time of the operation."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/536"
+        },
+        "flags": 0,
+        "description": "Percentage of the operation that is complete."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "Properties returned by the resource provider on a successful operation"
+      },
+      "error": {
+        "type": {
+          "$ref": "#/537"
+        },
+        "flags": 0,
+        "description": "If present, details of the operation error."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/538"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/540"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/537"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/539"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.MobileNetwork/packetCoreControlPlanes/packetCaptures",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rollback",
+    "resourceType": "Microsoft.MobileNetwork/packetCoreControlPlanes",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reinstall",
+    "resourceType": "Microsoft.MobileNetwork/packetCoreControlPlanes",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCoreControlPlaneCollectDiagnosticsPackage",
+    "properties": {
+      "storageAccountBlobUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Storage Account Blob URL to upload the diagnostics package to."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "collectDiagnosticsPackage",
+    "resourceType": "Microsoft.MobileNetwork/packetCoreControlPlanes",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    },
+    "input": {
+      "$ref": "#/544"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimUploadList",
+    "properties": {
+      "sims": {
+        "type": {
+          "$ref": "#/548"
+        },
+        "flags": 1,
+        "description": "A list of SIMs to upload."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimNameAndProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SIM."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 1,
+        "description": "SIM Properties."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/547"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "uploadSims",
+    "resourceType": "Microsoft.MobileNetwork/simGroups",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    },
+    "input": {
+      "$ref": "#/546"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimDeleteList",
+    "properties": {
+      "sims": {
+        "type": {
+          "$ref": "#/551"
+        },
+        "flags": 1,
+        "description": "A list of SIM resource names to delete."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteSims",
+    "resourceType": "Microsoft.MobileNetwork/simGroups",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    },
+    "input": {
+      "$ref": "#/550"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptedSimUploadList",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "The upload file format version."
+      },
+      "azureKeyIdentifier": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "An identifier for the Azure SIM onboarding public key used for encrypted upload."
+      },
+      "vendorKeyFingerprint": {
+        "type": {
+          "$ref": "#/554"
+        },
+        "flags": 1,
+        "description": "The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport key."
+      },
+      "encryptedTransportKey": {
+        "type": {
+          "$ref": "#/554"
+        },
+        "flags": 1,
+        "description": "The transport key used for encrypting SIM credentials, encrypted using the SIM onboarding public key."
+      },
+      "signedTransportKey": {
+        "type": {
+          "$ref": "#/554"
+        },
+        "flags": 1,
+        "description": "The encrypted transport key, signed using the SIM vendor private key."
+      },
+      "sims": {
+        "type": {
+          "$ref": "#/579"
+        },
+        "flags": 1,
+        "description": "A list of SIMs to upload, with encrypted properties."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9a-fA-F]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimNameAndEncryptedProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SIM."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/556"
+        },
+        "flags": 1,
+        "description": "Encrypted SIM Properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptedSimPropertiesFormat",
+    "properties": {
+      "encryptedCredentials": {
+        "type": {
+          "$ref": "#/557"
+        },
+        "flags": 0,
+        "description": "The encrypted SIM credentials."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/565"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the SIM resource."
+      },
+      "simState": {
+        "type": {
+          "$ref": "#/569"
+        },
+        "flags": 2,
+        "description": "The state of the SIM resource."
+      },
+      "siteProvisioningState": {
+        "type": {
+          "$ref": "#/577"
+        },
+        "flags": 2,
+        "description": "A dictionary of sites to the provisioning state of this SIM on that site."
+      },
+      "internationalMobileSubscriberIdentity": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 1,
+        "description": "The international mobile subscriber identity (IMSI) for the SIM."
+      },
+      "integratedCircuitCardIdentifier": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 0,
+        "description": "The integrated circuit card ID (ICCID) for the SIM."
+      },
+      "deviceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on this value."
+      },
+      "simPolicy": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM."
+      },
+      "staticIpConfiguration": {
+        "type": {
+          "$ref": "#/578"
+        },
+        "flags": 0,
+        "description": "A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached data network, slice}."
+      },
+      "vendorName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the SIM vendor who provided this SIM, if any."
+      },
+      "vendorKeyFingerprint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The public key fingerprint of the SIM vendor who provided this SIM, if any."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "pattern": "^[0-9a-fA-F]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/558"
+      },
+      {
+        "$ref": "#/559"
+      },
+      {
+        "$ref": "#/560"
+      },
+      {
+        "$ref": "#/561"
+      },
+      {
+        "$ref": "#/562"
+      },
+      {
+        "$ref": "#/563"
+      },
+      {
+        "$ref": "#/564"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/566"
+      },
+      {
+        "$ref": "#/567"
+      },
+      {
+        "$ref": "#/568"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adding"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/570"
+      },
+      {
+        "$ref": "#/571"
+      },
+      {
+        "$ref": "#/572"
+      },
+      {
+        "$ref": "#/573"
+      },
+      {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteProvisioning",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/576"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/320"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/555"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "uploadEncryptedSims",
+    "resourceType": "Microsoft.MobileNetwork/simGroups",
+    "apiVersion": "2024-02-01",
+    "output": {
+      "$ref": "#/535"
+    },
+    "input": {
+      "$ref": "#/553"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteDeletePacketCore",
+    "properties": {
+      "packetCore": {
+        "type": {
+          "$ref": "#/582"
+        },
+        "flags": 0,
+        "description": "Reference to an packet core control plane resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PacketCoreControlPlaneResourceId",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/583"
+        },
+        "flags": 1,
+        "description": "Packet core control plane resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^/[sS][uU][bB][sS][cC][rR][iI][pP][tT][iI][oO][nN][sS]/[^/?#]+/[rR][eE][sS][oO][uU][rR][cC][eE][gG][rR][oO][uU][pP][sS]/[^/?#]+/[pP][rR][oO][vV][iI][dD][eE][rR][sS]/[mM][iI][cC][rR][oO][sS][oO][fF][tT]\\.[mM][oO][bB][iI][lL][eE][nN][eE][tT][wW][oO][rR][kK]/[pP][aA][cC][kK][eE][tT][cC][oO][rR][eE][cC][oO][nN][tT][rR][oO][lL][pP][lL][aA][nN][eE][sS]/[^/?#]+$"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deletePacketCore",
+    "resourceType": "Microsoft.MobileNetwork/mobileNetworks/sites",
+    "apiVersion": "2024-02-01",
+    "input": {
+      "$ref": "#/581"
+    }
+  }
+]

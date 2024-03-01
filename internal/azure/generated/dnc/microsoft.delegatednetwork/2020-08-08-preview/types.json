@@ -1,1 +1,590 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.DelegatedNetwork/controller"}},{"6":{"Value":"2020-08-08-preview"}},{"2":{"Name":"Microsoft.DelegatedNetwork/controller","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":2,"Description":"Properties of the provision operation request."},"location":{"Type":4,"Flags":0,"Description":"Location of the resource."},"tags":{"Type":17,"Flags":0,"Description":"The resource tags."}}}},{"2":{"Name":"DelegatedControllerProperties","Properties":{"resourceGuid":{"Type":4,"Flags":2,"Description":"Resource guid."},"provisioningState":{"Type":16,"Flags":2,"Description":"The current state of dnc controller resource."},"dncAppId":{"Type":4,"Flags":2,"Description":"dnc application id should be used by customer to authenticate with dnc gateway."},"dncTenantId":{"Type":4,"Flags":2,"Description":"tenant id of dnc application id"},"dncEndpoint":{"Type":4,"Flags":2,"Description":"dnc endpoint url that customers can use to connect to"}}}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Provisioning"}},{"5":{"Elements":[12,13,14,15,4]}},{"2":{"Name":"ControllerResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.DelegatedNetwork/controller@2020-08-08-preview","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.DelegatedNetwork/orchestrators"}},{"6":{"Value":"2020-08-08-preview"}},{"2":{"Name":"Microsoft.DelegatedNetwork/orchestrators","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":19,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":20,"Flags":10,"Description":"The resource api version"},"properties":{"Type":22,"Flags":0,"Description":"Properties of the provision operation request."},"location":{"Type":4,"Flags":0,"Description":"Location of the resource."},"kind":{"Type":30,"Flags":1,"Description":"The kind of workbook. Choices are user and shared."},"identity":{"Type":31,"Flags":0,"Description":"The identity of the orchestrator"},"tags":{"Type":35,"Flags":0,"Description":"The resource tags."}}}},{"2":{"Name":"OrchestratorResourceProperties","Properties":{"resourceGuid":{"Type":4,"Flags":2,"Description":"Resource guid."},"provisioningState":{"Type":27,"Flags":2,"Description":"The current state of orchestratorInstance resource."},"orchestratorAppId":{"Type":4,"Flags":0,"Description":"AAD ID used with apiserver"},"orchestratorTenantId":{"Type":4,"Flags":0,"Description":"TenantID of server App ID"},"clusterRootCA":{"Type":4,"Flags":0,"Description":"RootCA certificate of kubernetes cluster base64 encoded"},"apiServerEndpoint":{"Type":4,"Flags":0,"Description":"K8s APIServer url"},"controllerDetails":{"Type":28,"Flags":1,"Description":"Properties of the controller."}}}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Provisioning"}},{"5":{"Elements":[23,24,25,26,4]}},{"2":{"Name":"ControllerDetails","Properties":{"id":{"Type":4,"Flags":0,"Description":"controller arm resource id"}}}},{"6":{"Value":"Kubernetes"}},{"5":{"Elements":[29,4]}},{"2":{"Name":"OrchestratorIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The principal id of the system assigned identity which is used by orchestrator."},"tenantId":{"Type":4,"Flags":2,"Description":"The tenant id of the system assigned identity which is used by orchestrator."},"type":{"Type":34,"Flags":0,"Description":"The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity orchestrator clusters"}}}},{"6":{"Value":"SystemAssigned"}},{"6":{"Value":"None"}},{"5":{"Elements":[32,33]}},{"2":{"Name":"OrchestratorResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.DelegatedNetwork/orchestrators@2020-08-08-preview","ScopeType":8,"Body":21,"Flags":0}},{"6":{"Value":"Microsoft.DelegatedNetwork/delegatedSubnets"}},{"6":{"Value":"2020-08-08-preview"}},{"2":{"Name":"Microsoft.DelegatedNetwork/delegatedSubnets","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":37,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":38,"Flags":10,"Description":"The resource api version"},"properties":{"Type":40,"Flags":2,"Description":"Properties of the provision operation request."},"location":{"Type":4,"Flags":0,"Description":"Location of the resource."},"tags":{"Type":47,"Flags":0,"Description":"The resource tags."}}}},{"2":{"Name":"DelegatedSubnetProperties","Properties":{"resourceGuid":{"Type":4,"Flags":2,"Description":"Resource guid."},"provisioningState":{"Type":45,"Flags":2,"Description":"The current state of dnc delegated subnet resource."},"subnetDetails":{"Type":46,"Flags":0,"Description":"subnet details"},"controllerDetails":{"Type":28,"Flags":0,"Description":"Properties of the controller."}}}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Provisioning"}},{"5":{"Elements":[41,42,43,44,4]}},{"2":{"Name":"SubnetDetails","Properties":{"id":{"Type":4,"Flags":0,"Description":"subnet arm resource id"}}}},{"2":{"Name":"DelegatedSubnetResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.DelegatedNetwork/delegatedSubnets@2020-08-08-preview","ScopeType":8,"Body":39,"Flags":0}}]
+[
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[a-z][a-z0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DelegatedNetwork/controller"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-08-08-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DelegatedNetwork/controller",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "Properties of the provision operation request."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedControllerProperties",
+    "properties": {
+      "resourceGuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource guid."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The current state of dnc controller resource."
+      },
+      "dncAppId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "dnc application id should be used by customer to authenticate with dnc gateway."
+      },
+      "dncTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "tenant id of dnc application id"
+      },
+      "dncEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "dnc endpoint url that customers can use to connect to"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ControllerResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DelegatedNetwork/controller@2020-08-08-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DelegatedNetwork/orchestrators"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-08-08-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DelegatedNetwork/orchestrators",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Properties of the provision operation request."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Location of the resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 1,
+        "description": "The kind of workbook. Choices are user and shared."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The identity of the orchestrator"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OrchestratorResourceProperties",
+    "properties": {
+      "resourceGuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource guid."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "The current state of orchestratorInstance resource."
+      },
+      "orchestratorAppId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AAD ID used with apiserver"
+      },
+      "orchestratorTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "TenantID of server App ID"
+      },
+      "clusterRootCA": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "RootCA certificate of kubernetes cluster base64 encoded"
+      },
+      "apiServerEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "K8s APIServer url"
+      },
+      "controllerDetails": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 1,
+        "description": "Properties of the controller."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ControllerDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "controller arm resource id"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kubernetes"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OrchestratorIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of the system assigned identity which is used by orchestrator."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant id of the system assigned identity which is used by orchestrator."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity orchestrator clusters"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OrchestratorResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DelegatedNetwork/orchestrators@2020-08-08-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/15"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DelegatedNetwork/delegatedSubnets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-08-08-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DelegatedNetwork/delegatedSubnets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Properties of the provision operation request."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedSubnetProperties",
+    "properties": {
+      "resourceGuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource guid."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "The current state of dnc delegated subnet resource."
+      },
+      "subnetDetails": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "subnet details"
+      },
+      "controllerDetails": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Properties of the controller."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubnetDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "subnet arm resource id"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedSubnetResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DelegatedNetwork/delegatedSubnets@2020-08-08-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/33"
+    },
+    "flags": 0
+  }
+]

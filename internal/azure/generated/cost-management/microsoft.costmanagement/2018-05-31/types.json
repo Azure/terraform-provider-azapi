@@ -1,1 +1,648 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.CostManagement/reportconfigs"}},{"6":{"Value":"2018-05-31"}},{"2":{"Name":"Microsoft.CostManagement/reportconfigs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"The properties of the report config."},"tags":{"Type":56,"Flags":2,"Description":"Resource tags."}}}},{"2":{"Name":"ReportConfigProperties","Properties":{"schedule":{"Type":12,"Flags":0,"Description":"Has schedule information for the report config."},"format":{"Type":23,"Flags":0,"Description":"The format of the report being delivered."},"deliveryInfo":{"Type":24,"Flags":1,"Description":"Has delivery information for the report config."},"definition":{"Type":26,"Flags":1,"Description":"Has definition for the report config."}}}},{"2":{"Name":"ReportConfigSchedule","Properties":{"status":{"Type":15,"Flags":0,"Description":"The status of the schedule. Whether active or not. If inactive, the report's scheduled execution is paused."},"recurrence":{"Type":20,"Flags":1,"Description":"The schedule recurrence."},"recurrencePeriod":{"Type":21,"Flags":1,"Description":"Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date."}}}},{"6":{"Value":"Active"}},{"6":{"Value":"Inactive"}},{"5":{"Elements":[13,14,4]}},{"6":{"Value":"Daily"}},{"6":{"Value":"Weekly"}},{"6":{"Value":"Monthly"}},{"6":{"Value":"Annually"}},{"5":{"Elements":[16,17,18,19,4]}},{"2":{"Name":"ReportConfigRecurrencePeriod","Properties":{"from":{"Type":4,"Flags":1,"Description":"The start date of recurrence."},"to":{"Type":4,"Flags":0,"Description":"The end date of recurrence. If not provided, we default this to 10 years from the start date."}}}},{"6":{"Value":"Csv"}},{"5":{"Elements":[22,4]}},{"2":{"Name":"ReportConfigDeliveryInfo","Properties":{"destination":{"Type":25,"Flags":1,"Description":"Has destination for the report being delivered."}}}},{"2":{"Name":"ReportConfigDeliveryDestination","Properties":{"resourceId":{"Type":4,"Flags":1,"Description":"The resource id of the storage account where reports will be delivered."},"container":{"Type":4,"Flags":1,"Description":"The name of the container where reports will be uploaded."},"rootFolderPath":{"Type":4,"Flags":0,"Description":"The name of the directory where reports will be uploaded."}}}},{"2":{"Name":"ReportConfigDefinition","Properties":{"type":{"Type":28,"Flags":1,"Description":"The type of the report."},"timeframe":{"Type":33,"Flags":1,"Description":"The time frame for pulling data for the report. If custom, then a specific time period must be provided."},"timePeriod":{"Type":34,"Flags":0,"Description":"Has time period for pulling data for the report."},"dataset":{"Type":35,"Flags":0,"Description":"Has definition for data in this report config."}}}},{"6":{"Value":"Usage"}},{"5":{"Elements":[27,4]}},{"6":{"Value":"WeekToDate"}},{"6":{"Value":"MonthToDate"}},{"6":{"Value":"YearToDate"}},{"6":{"Value":"Custom"}},{"5":{"Elements":[29,30,31,32,4]}},{"2":{"Name":"ReportConfigTimePeriod","Properties":{"from":{"Type":4,"Flags":1,"Description":"The start date to pull data from."},"to":{"Type":4,"Flags":1,"Description":"The end date to pull data to."}}}},{"2":{"Name":"ReportConfigDataset","Properties":{"granularity":{"Type":37,"Flags":0,"Description":"The granularity of rows in the report."},"configuration":{"Type":38,"Flags":0,"Description":"Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided."},"aggregation":{"Type":43,"Flags":0,"Description":"Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have up to 2 aggregation clauses."},"grouping":{"Type":48,"Flags":0,"Description":"Array of group by expression to use in the report. Report can have up to 2 group by clauses."},"filter":{"Type":49,"Flags":0,"Description":"Has filter expression to use in the report."}}}},{"6":{"Value":"Daily"}},{"5":{"Elements":[36,4]}},{"2":{"Name":"ReportConfigDatasetConfiguration","Properties":{"columns":{"Type":39,"Flags":0,"Description":"Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report includes all columns."}}}},{"3":{"ItemType":4}},{"2":{"Name":"ReportConfigAggregation","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the column to aggregate."},"function":{"Type":42,"Flags":1,"Description":"The name of the aggregation function to use."}}}},{"6":{"Value":"Sum"}},{"5":{"Elements":[41,4]}},{"2":{"Name":"ReportConfigDatasetAggregation","Properties":{},"AdditionalProperties":40}},{"2":{"Name":"ReportConfigGrouping","Properties":{"columnType":{"Type":47,"Flags":1,"Description":"Has type of the column to group."},"name":{"Type":4,"Flags":1,"Description":"The name of the column to group."}}}},{"6":{"Value":"Tag"}},{"6":{"Value":"Dimension"}},{"5":{"Elements":[45,46,4]}},{"3":{"ItemType":44}},{"2":{"Name":"ReportConfigFilter","Properties":{"and":{"Type":50,"Flags":0,"Description":"The logical \"AND\" expression. Must have at least 2 items."},"or":{"Type":51,"Flags":0,"Description":"The logical \"OR\" expression. Must have at least 2 items."},"not":{"Type":49,"Flags":0,"Description":"The logical \"NOT\" expression."},"dimension":{"Type":52,"Flags":0,"Description":"Has comparison expression for a dimension"},"tag":{"Type":52,"Flags":0,"Description":"Has comparison expression for a tag"}}}},{"3":{"ItemType":49}},{"3":{"ItemType":49}},{"2":{"Name":"ReportConfigComparisonExpression","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the column to use in comparison."},"operator":{"Type":54,"Flags":1,"Description":"The operator to use for comparison."},"values":{"Type":55,"Flags":1,"Description":"Array of values to use for comparison"}}}},{"6":{"Value":"In"}},{"5":{"Elements":[53,4]}},{"3":{"ItemType":4}},{"2":{"Name":"ResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.CostManagement/reportconfigs@2018-05-31","ScopeType":12,"Body":10,"Flags":0}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/reportconfigs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2018-05-31"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/reportconfigs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties of the report config."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigProperties",
+    "properties": {
+      "schedule": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Has schedule information for the report config."
+      },
+      "format": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The format of the report being delivered."
+      },
+      "deliveryInfo": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "Has delivery information for the report config."
+      },
+      "definition": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "Has definition for the report config."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigSchedule",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The status of the schedule. Whether active or not. If inactive, the report's scheduled execution is paused."
+      },
+      "recurrence": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The schedule recurrence."
+      },
+      "recurrencePeriod": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inactive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Annually"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigRecurrencePeriod",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start date of recurrence."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end date of recurrence. If not provided, we default this to 10 years from the start date."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Csv"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDeliveryInfo",
+    "properties": {
+      "destination": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 1,
+        "description": "Has destination for the report being delivered."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDeliveryDestination",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The resource id of the storage account where reports will be delivered."
+      },
+      "container": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the container where reports will be uploaded."
+      },
+      "rootFolderPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the directory where reports will be uploaded."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDefinition",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The type of the report."
+      },
+      "timeframe": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "The time frame for pulling data for the report. If custom, then a specific time period must be provided."
+      },
+      "timePeriod": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Has time period for pulling data for the report."
+      },
+      "dataset": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Has definition for data in this report config."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Usage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WeekToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MonthToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "YearToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigTimePeriod",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start date to pull data from."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The end date to pull data to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDataset",
+    "properties": {
+      "granularity": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The granularity of rows in the report."
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided."
+      },
+      "aggregation": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have up to 2 aggregation clauses."
+      },
+      "grouping": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Array of group by expression to use in the report. Report can have up to 2 group by clauses."
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Has filter expression to use in the report."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDatasetConfiguration",
+    "properties": {
+      "columns": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report includes all columns."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigAggregation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to aggregate."
+      },
+      "function": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "The name of the aggregation function to use."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sum"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigDatasetAggregation",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/33"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigGrouping",
+    "properties": {
+      "columnType": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 1,
+        "description": "Has type of the column to group."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to group."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tag"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dimension"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/37"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigFilter",
+    "properties": {
+      "and": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The logical \"AND\" expression. Must have at least 2 items."
+      },
+      "or": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The logical \"OR\" expression. Must have at least 2 items."
+      },
+      "not": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The logical \"NOT\" expression."
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a dimension"
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a tag"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/42"
+    },
+    "minLength": 2
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/42"
+    },
+    "minLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportConfigComparisonExpression",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to use in comparison."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The operator to use for comparison."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Array of values to use for comparison"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/reportconfigs@2018-05-31",
+    "scopeType": 12,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  }
+]

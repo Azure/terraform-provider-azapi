@@ -1,1 +1,2073 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.ContainerRegistry/registries/tasks"}},{"6":{"Value":"2018-09-01"}},{"2":{"Name":"Microsoft.ContainerRegistry/registries/tasks","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"The properties of a task."},"location":{"Type":4,"Flags":1,"Description":"The location of the resource. This cannot be changed after the resource is created."},"tags":{"Type":88,"Flags":0,"Description":"The tags of the resource."}}}},{"2":{"Name":"TaskProperties","Properties":{"provisioningState":{"Type":18,"Flags":2,"Description":"The provisioning state of the task."},"creationDate":{"Type":4,"Flags":2,"Description":"The creation date of task."},"status":{"Type":21,"Flags":0,"Description":"The current status of task."},"platform":{"Type":22,"Flags":1,"Description":"The platform properties against which the run has to happen."},"agentConfiguration":{"Type":34,"Flags":0,"Description":"The machine configuration of the run agent."},"timeout":{"Type":3,"Flags":0,"Description":"Run timeout in seconds."},"step":{"Type":35,"Flags":1,"Description":"The properties of a task step."},"trigger":{"Type":53,"Flags":0,"Description":"The properties that describe all triggers for the task."},"credentials":{"Type":78,"Flags":0,"Description":"The properties that describes a set of credentials that will be used when this run is invoked."}}}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[12,13,14,15,16,17,4]}},{"6":{"Value":"Disabled"}},{"6":{"Value":"Enabled"}},{"5":{"Elements":[19,20,4]}},{"2":{"Name":"PlatformProperties","Properties":{"os":{"Type":25,"Flags":1,"Description":"The operating system type required for the run."},"architecture":{"Type":29,"Flags":0,"Description":"The OS architecture."},"variant":{"Type":33,"Flags":0,"Description":"Variant of the CPU."}}}},{"6":{"Value":"Windows"}},{"6":{"Value":"Linux"}},{"5":{"Elements":[23,24,4]}},{"6":{"Value":"amd64"}},{"6":{"Value":"x86"}},{"6":{"Value":"arm"}},{"5":{"Elements":[26,27,28,4]}},{"6":{"Value":"v6"}},{"6":{"Value":"v7"}},{"6":{"Value":"v8"}},{"5":{"Elements":[30,31,32,4]}},{"2":{"Name":"AgentProperties","Properties":{"cpu":{"Type":3,"Flags":0,"Description":"The CPU configuration in terms of number of cores required for the run."}}}},{"7":{"Name":"TaskStepProperties","Discriminator":"type","BaseProperties":{"baseImageDependencies":{"Type":40,"Flags":2,"Description":"List of base image dependencies for a step."},"contextPath":{"Type":4,"Flags":0,"Description":"The URL(absolute or relative) of the source context for the task step."},"contextAccessToken":{"Type":4,"Flags":0,"Description":"The token (git PAT or SAS token of storage account blob) associated with the context for a step."}},"Elements":{"Docker":41,"EncodedTask":46,"FileTask":50}}},{"2":{"Name":"BaseImageDependency","Properties":{"type":{"Type":39,"Flags":0,"Description":"The type of the base image dependency."},"registry":{"Type":4,"Flags":0,"Description":"The registry login server."},"repository":{"Type":4,"Flags":0,"Description":"The repository name."},"tag":{"Type":4,"Flags":0,"Description":"The tag name."},"digest":{"Type":4,"Flags":0,"Description":"The sha256-based digest of the image manifest."}}}},{"6":{"Value":"BuildTime"}},{"6":{"Value":"RunTime"}},{"5":{"Elements":[37,38,4]}},{"3":{"ItemType":36}},{"2":{"Name":"DockerBuildStep","Properties":{"imageNames":{"Type":42,"Flags":0,"Description":"The fully qualified image names including the repository and tag."},"isPushEnabled":{"Type":2,"Flags":0,"Description":"The value of this property indicates whether the image built should be pushed to the registry or not."},"noCache":{"Type":2,"Flags":0,"Description":"The value of this property indicates whether the image cache is enabled or not."},"dockerFilePath":{"Type":4,"Flags":1,"Description":"The Docker file path relative to the source context."},"target":{"Type":4,"Flags":0,"Description":"The name of the target build stage for the docker build."},"arguments":{"Type":44,"Flags":0,"Description":"The collection of override arguments to be used when executing this build step."},"type":{"Type":45,"Flags":1,"Description":"The type of the step."}}}},{"3":{"ItemType":4}},{"2":{"Name":"Argument","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the argument."},"value":{"Type":4,"Flags":1,"Description":"The value of the argument."},"isSecret":{"Type":2,"Flags":0,"Description":"Flag to indicate whether the argument represents a secret and want to be removed from build logs."}}}},{"3":{"ItemType":43}},{"6":{"Value":"Docker"}},{"2":{"Name":"EncodedTaskStep","Properties":{"encodedTaskContent":{"Type":4,"Flags":1,"Description":"Base64 encoded value of the template/definition file content."},"encodedValuesContent":{"Type":4,"Flags":0,"Description":"Base64 encoded value of the parameters/values file content."},"values":{"Type":48,"Flags":0,"Description":"The collection of overridable values that can be passed when running a task."},"type":{"Type":49,"Flags":1,"Description":"The type of the step."}}}},{"2":{"Name":"SetValue","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the overridable value."},"value":{"Type":4,"Flags":1,"Description":"The overridable value."},"isSecret":{"Type":2,"Flags":0,"Description":"Flag to indicate whether the value represents a secret or not."}}}},{"3":{"ItemType":47}},{"6":{"Value":"EncodedTask"}},{"2":{"Name":"FileTaskStep","Properties":{"taskFilePath":{"Type":4,"Flags":1,"Description":"The task template/definition file path relative to the source context."},"valuesFilePath":{"Type":4,"Flags":0,"Description":"The task values/parameters file path relative to the source context."},"values":{"Type":51,"Flags":0,"Description":"The collection of overridable values that can be passed when running a task."},"type":{"Type":52,"Flags":1,"Description":"The type of the step."}}}},{"3":{"ItemType":47}},{"6":{"Value":"FileTask"}},{"2":{"Name":"TriggerProperties","Properties":{"sourceTriggers":{"Type":70,"Flags":0,"Description":"The collection of triggers based on source code repository."},"baseImageTrigger":{"Type":71,"Flags":0,"Description":"The trigger based on base image dependencies."}}}},{"2":{"Name":"SourceTrigger","Properties":{"sourceRepository":{"Type":55,"Flags":1,"Description":"The properties that describes the source(code) for the task."},"sourceTriggerEvents":{"Type":66,"Flags":1,"Description":"The source event corresponding to the trigger."},"status":{"Type":69,"Flags":0,"Description":"The current status of trigger."},"name":{"Type":4,"Flags":1,"Description":"The name of the trigger."}}}},{"2":{"Name":"SourceProperties","Properties":{"sourceControlType":{"Type":58,"Flags":1,"Description":"The type of source control service."},"repositoryUrl":{"Type":4,"Flags":1,"Description":"The full URL to the source code repository"},"branch":{"Type":4,"Flags":0,"Description":"The branch name of the source code."},"sourceControlAuthProperties":{"Type":59,"Flags":0,"Description":"The authorization properties for accessing the source code repository and to set up\r\nwebhooks for notifications."}}}},{"6":{"Value":"Github"}},{"6":{"Value":"VisualStudioTeamService"}},{"5":{"Elements":[56,57,4]}},{"2":{"Name":"AuthInfo","Properties":{"tokenType":{"Type":62,"Flags":1,"Description":"The type of Auth token."},"token":{"Type":4,"Flags":1,"Description":"The access token used to access the source control provider."},"refreshToken":{"Type":4,"Flags":0,"Description":"The refresh token used to refresh the access token."},"scope":{"Type":4,"Flags":0,"Description":"The scope of the access token."},"expiresIn":{"Type":3,"Flags":0,"Description":"Time in seconds that the token remains valid"}}}},{"6":{"Value":"PAT"}},{"6":{"Value":"OAuth"}},{"5":{"Elements":[60,61,4]}},{"6":{"Value":"commit"}},{"6":{"Value":"pullrequest"}},{"5":{"Elements":[63,64,4]}},{"3":{"ItemType":65}},{"6":{"Value":"Disabled"}},{"6":{"Value":"Enabled"}},{"5":{"Elements":[67,68,4]}},{"3":{"ItemType":54}},{"2":{"Name":"BaseImageTrigger","Properties":{"baseImageTriggerType":{"Type":74,"Flags":1,"Description":"The type of the auto trigger for base image dependency updates."},"status":{"Type":77,"Flags":0,"Description":"The current status of trigger."},"name":{"Type":4,"Flags":1,"Description":"The name of the trigger."}}}},{"6":{"Value":"All"}},{"6":{"Value":"Runtime"}},{"5":{"Elements":[72,73,4]}},{"6":{"Value":"Disabled"}},{"6":{"Value":"Enabled"}},{"5":{"Elements":[75,76,4]}},{"2":{"Name":"Credentials","Properties":{"sourceRegistry":{"Type":79,"Flags":0,"Description":"Describes the credential parameters for accessing the source registry."},"customRegistries":{"Type":87,"Flags":0,"Description":"Describes the credential parameters for accessing other custom registries. The key\r\nfor the dictionary item will be the registry login server (myregistry.azurecr.io) and\r\nthe value of the item will be the registry credentials for accessing the registry."}}}},{"2":{"Name":"SourceRegistryCredentials","Properties":{"loginMode":{"Type":82,"Flags":0,"Description":"The authentication mode which determines the source registry login scope. The credentials for the source registry\r\nwill be generated using the given scope. These credentials will be used to login to\r\nthe source registry during the run."}}}},{"6":{"Value":"None"}},{"6":{"Value":"Default"}},{"5":{"Elements":[80,81,4]}},{"2":{"Name":"CustomRegistryCredentials","Properties":{"userName":{"Type":84,"Flags":0,"Description":"The username for logging into the custom registry."},"password":{"Type":84,"Flags":0,"Description":"The password for logging into the custom registry. The password is a secret \r\nobject that allows multiple ways of providing the value for it."}}}},{"2":{"Name":"SecretObject","Properties":{"value":{"Type":4,"Flags":0,"Description":"The value of the secret. The format of this value will be determined\r\nbased on the type of the secret object. If the type is Opaque, the value will be\r\nused as is without any modification."},"type":{"Type":86,"Flags":0,"Description":"The type of the secret object which determines how the value of the secret object has to be\r\ninterpreted."}}}},{"6":{"Value":"Opaque"}},{"5":{"Elements":[85,4]}},{"2":{"Name":"CredentialsCustomRegistries","Properties":{},"AdditionalProperties":83}},{"2":{"Name":"ResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.ContainerRegistry/registries/tasks@2018-09-01","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.ContainerRegistry/registries/runs"}},{"6":{"Value":"2018-09-01"}},{"2":{"Name":"Microsoft.ContainerRegistry/registries/runs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":90,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":91,"Flags":10,"Description":"The resource api version"},"properties":{"Type":93,"Flags":2,"Description":"The properties of a run."}}}},{"2":{"Name":"RunProperties","Properties":{"runId":{"Type":4,"Flags":0,"Description":"The unique identifier for the run."},"status":{"Type":102,"Flags":0,"Description":"The current status of the run."},"lastUpdatedTime":{"Type":4,"Flags":0,"Description":"The last updated time for the run."},"runType":{"Type":107,"Flags":0,"Description":"The type of run."},"createTime":{"Type":4,"Flags":0,"Description":"The time the run was scheduled."},"startTime":{"Type":4,"Flags":0,"Description":"The time the run started."},"finishTime":{"Type":4,"Flags":0,"Description":"The time the run finished."},"outputImages":{"Type":109,"Flags":0,"Description":"The list of all images that were generated from the run. This is applicable if the run generates base image dependencies."},"task":{"Type":4,"Flags":0,"Description":"The task against which run was scheduled."},"imageUpdateTrigger":{"Type":110,"Flags":0,"Description":"The image update trigger that caused the run. This is applicable if the task has base image trigger configured."},"sourceTrigger":{"Type":112,"Flags":0,"Description":"The source trigger that caused the run."},"platform":{"Type":22,"Flags":0,"Description":"The platform properties against which the run will happen."},"agentConfiguration":{"Type":34,"Flags":0,"Description":"The machine configuration of the run agent."},"sourceRegistryAuth":{"Type":4,"Flags":0,"Description":"The scope of the credentials that were used to login to the source registry during this run."},"customRegistries":{"Type":113,"Flags":0,"Description":"The list of custom registries that were logged in during this run."},"runErrorMessage":{"Type":4,"Flags":2,"Description":"The error message received from backend systems after the run is scheduled."},"provisioningState":{"Type":120,"Flags":0,"Description":"The provisioning state of a run."},"isArchiveEnabled":{"Type":2,"Flags":0,"Description":"The value that indicates whether archiving is enabled or not."}}}},{"6":{"Value":"Queued"}},{"6":{"Value":"Started"}},{"6":{"Value":"Running"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"Error"}},{"6":{"Value":"Timeout"}},{"5":{"Elements":[94,95,96,97,98,99,100,101,4]}},{"6":{"Value":"QuickBuild"}},{"6":{"Value":"QuickRun"}},{"6":{"Value":"AutoBuild"}},{"6":{"Value":"AutoRun"}},{"5":{"Elements":[103,104,105,106,4]}},{"2":{"Name":"ImageDescriptor","Properties":{"registry":{"Type":4,"Flags":0,"Description":"The registry login server."},"repository":{"Type":4,"Flags":0,"Description":"The repository name."},"tag":{"Type":4,"Flags":0,"Description":"The tag name."},"digest":{"Type":4,"Flags":0,"Description":"The sha256-based digest of the image manifest."}}}},{"3":{"ItemType":108}},{"2":{"Name":"ImageUpdateTrigger","Properties":{"id":{"Type":4,"Flags":0,"Description":"The unique ID of the trigger."},"timestamp":{"Type":4,"Flags":0,"Description":"The timestamp when the image update happened."},"images":{"Type":111,"Flags":0,"Description":"The list of image updates that caused the build."}}}},{"3":{"ItemType":108}},{"2":{"Name":"SourceTriggerDescriptor","Properties":{"id":{"Type":4,"Flags":0,"Description":"The unique ID of the trigger."},"eventType":{"Type":4,"Flags":0,"Description":"The event type of the trigger."},"commitId":{"Type":4,"Flags":0,"Description":"The unique ID that identifies a commit."},"pullRequestId":{"Type":4,"Flags":0,"Description":"The unique ID that identifies pull request."},"repositoryUrl":{"Type":4,"Flags":0,"Description":"The repository URL."},"branchName":{"Type":4,"Flags":0,"Description":"The branch name in the repository."},"providerType":{"Type":4,"Flags":0,"Description":"The source control provider type."}}}},{"3":{"ItemType":4}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[114,115,116,117,118,119,4]}},{"4":{"Name":"Microsoft.ContainerRegistry/registries/runs@2018-09-01","ScopeType":8,"Body":92,"Flags":1}},{"7":{"Name":"RunRequest","Discriminator":"type","BaseProperties":{"isArchiveEnabled":{"Type":2,"Flags":0,"Description":"The value that indicates whether archiving is enabled for the run or not."}},"Elements":{"DockerBuildRequest":123,"EncodedTaskRunRequest":127,"FileTaskRunRequest":130,"TaskRunRequest":133}}},{"2":{"Name":"DockerBuildRequest","Properties":{"imageNames":{"Type":124,"Flags":0,"Description":"The fully qualified image names including the repository and tag."},"isPushEnabled":{"Type":2,"Flags":0,"Description":"The value of this property indicates whether the image built should be pushed to the registry or not."},"noCache":{"Type":2,"Flags":0,"Description":"The value of this property indicates whether the image cache is enabled or not."},"dockerFilePath":{"Type":4,"Flags":1,"Description":"The Docker file path relative to the source location."},"target":{"Type":4,"Flags":0,"Description":"The name of the target build stage for the docker build."},"arguments":{"Type":125,"Flags":0,"Description":"The collection of override arguments to be used when executing the run."},"timeout":{"Type":3,"Flags":0,"Description":"Run timeout in seconds."},"platform":{"Type":22,"Flags":1,"Description":"The platform properties against which the run has to happen."},"agentConfiguration":{"Type":34,"Flags":0,"Description":"The machine configuration of the run agent."},"sourceLocation":{"Type":4,"Flags":0,"Description":"The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."},"credentials":{"Type":78,"Flags":0,"Description":"The properties that describes a set of credentials that will be used when this run is invoked."},"type":{"Type":126,"Flags":1,"Description":"The type of the run request."}}}},{"3":{"ItemType":4}},{"3":{"ItemType":43}},{"6":{"Value":"DockerBuildRequest"}},{"2":{"Name":"EncodedTaskRunRequest","Properties":{"encodedTaskContent":{"Type":4,"Flags":1,"Description":"Base64 encoded value of the template/definition file content."},"encodedValuesContent":{"Type":4,"Flags":0,"Description":"Base64 encoded value of the parameters/values file content."},"values":{"Type":128,"Flags":0,"Description":"The collection of overridable values that can be passed when running a task."},"timeout":{"Type":3,"Flags":0,"Description":"Run timeout in seconds."},"platform":{"Type":22,"Flags":1,"Description":"The platform properties against which the run has to happen."},"agentConfiguration":{"Type":34,"Flags":0,"Description":"The machine configuration of the run agent."},"sourceLocation":{"Type":4,"Flags":0,"Description":"The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."},"credentials":{"Type":78,"Flags":0,"Description":"The properties that describes a set of credentials that will be used when this run is invoked."},"type":{"Type":129,"Flags":1,"Description":"The type of the run request."}}}},{"3":{"ItemType":47}},{"6":{"Value":"EncodedTaskRunRequest"}},{"2":{"Name":"FileTaskRunRequest","Properties":{"taskFilePath":{"Type":4,"Flags":1,"Description":"The template/definition file path relative to the source."},"valuesFilePath":{"Type":4,"Flags":0,"Description":"The values/parameters file path relative to the source."},"values":{"Type":131,"Flags":0,"Description":"The collection of overridable values that can be passed when running a task."},"timeout":{"Type":3,"Flags":0,"Description":"Run timeout in seconds."},"platform":{"Type":22,"Flags":1,"Description":"The platform properties against which the run has to happen."},"agentConfiguration":{"Type":34,"Flags":0,"Description":"The machine configuration of the run agent."},"sourceLocation":{"Type":4,"Flags":0,"Description":"The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."},"credentials":{"Type":78,"Flags":0,"Description":"The properties that describes a set of credentials that will be used when this run is invoked."},"type":{"Type":132,"Flags":1,"Description":"The type of the run request."}}}},{"3":{"ItemType":47}},{"6":{"Value":"FileTaskRunRequest"}},{"2":{"Name":"TaskRunRequest","Properties":{"taskName":{"Type":4,"Flags":1,"Description":"The name of task against which run has to be queued."},"values":{"Type":134,"Flags":0,"Description":"The collection of overridable values that can be passed when running a task."},"type":{"Type":135,"Flags":1,"Description":"The type of the run request."}}}},{"3":{"ItemType":47}},{"6":{"Value":"TaskRunRequest"}},{"2":{"Name":"Run","Properties":{"properties":{"Type":93,"Flags":0,"Description":"The properties of a run."},"id":{"Type":4,"Flags":2,"Description":"The resource ID."},"name":{"Type":4,"Flags":2,"Description":"The name of the resource."},"type":{"Type":4,"Flags":2,"Description":"The type of the resource."}}}},{"8":{"Name":"scheduleRun","ResourceType":"Microsoft.ContainerRegistry/registries","ApiVersion":"2018-09-01","Output":136,"Input":122}},{"2":{"Name":"SourceUploadDefinition","Properties":{"uploadUrl":{"Type":4,"Flags":0,"Description":"The URL where the client can upload the source."},"relativePath":{"Type":4,"Flags":0,"Description":"The relative path to the source. This is used to submit the subsequent queue build request."}}}},{"8":{"Name":"listBuildSourceUploadUrl","ResourceType":"Microsoft.ContainerRegistry/registries","ApiVersion":"2018-09-01","Output":138}},{"2":{"Name":"RunGetLogResult","Properties":{"logLink":{"Type":4,"Flags":0,"Description":"The link to logs for a run on a azure container registry."}}}},{"8":{"Name":"listLogSasUrl","ResourceType":"Microsoft.ContainerRegistry/registries/runs","ApiVersion":"2018-09-01","Output":140}},{"8":{"Name":"cancel","ResourceType":"Microsoft.ContainerRegistry/registries/runs","ApiVersion":"2018-09-01"}},{"2":{"Name":"Task","Properties":{"properties":{"Type":11,"Flags":0,"Description":"The properties of a task."},"id":{"Type":4,"Flags":2,"Description":"The resource ID."},"name":{"Type":4,"Flags":2,"Description":"The name of the resource."},"type":{"Type":4,"Flags":2,"Description":"The type of the resource."},"location":{"Type":4,"Flags":1,"Description":"The location of the resource. This cannot be changed after the resource is created."},"tags":{"Type":144,"Flags":0,"Description":"The tags of the resource."}}}},{"2":{"Name":"ResourceTags","Properties":{},"AdditionalProperties":4}},{"8":{"Name":"listDetails","ResourceType":"Microsoft.ContainerRegistry/registries/tasks","ApiVersion":"2018-09-01","Output":143}}]
+[
+  {
+    "$type": "StringType",
+    "minLength": 5,
+    "maxLength": 50,
+    "pattern": "^[a-zA-Z0-9-_]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerRegistry/registries/tasks"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2018-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerRegistry/registries/tasks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The properties of a task."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource. This cannot be changed after the resource is created."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "The tags of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the task."
+      },
+      "creationDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The creation date of task."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The current status of task."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The platform properties against which the run has to happen."
+      },
+      "agentConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The machine configuration of the run agent."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Run timeout in seconds."
+      },
+      "step": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The properties of a task step."
+      },
+      "trigger": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "The properties that describe all triggers for the task."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The properties that describes a set of credentials that will be used when this run is invoked."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformProperties",
+    "properties": {
+      "os": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "The operating system type required for the run."
+      },
+      "architecture": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The OS architecture."
+      },
+      "variant": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Variant of the CPU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "amd64"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "x86"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "arm"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "v6"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "v7"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "v8"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentProperties",
+    "properties": {
+      "cpu": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The CPU configuration in terms of number of cores required for the run."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 300,
+    "maxValue": 28800
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "TaskStepProperties",
+    "discriminator": "type",
+    "baseProperties": {
+      "baseImageDependencies": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "List of base image dependencies for a step."
+      },
+      "contextPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL(absolute or relative) of the source context for the task step."
+      },
+      "contextAccessToken": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The token (git PAT or SAS token of storage account blob) associated with the context for a step."
+      }
+    },
+    "elements": {
+      "Docker": {
+        "$ref": "#/37"
+      },
+      "EncodedTask": {
+        "$ref": "#/43"
+      },
+      "FileTask": {
+        "$ref": "#/47"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BaseImageDependency",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of the base image dependency."
+      },
+      "registry": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The registry login server."
+      },
+      "repository": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The repository name."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The tag name."
+      },
+      "digest": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The sha256-based digest of the image manifest."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BuildTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RunTime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/32"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DockerBuildStep",
+    "properties": {
+      "imageNames": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The fully qualified image names including the repository and tag."
+      },
+      "isPushEnabled": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value of this property indicates whether the image built should be pushed to the registry or not."
+      },
+      "noCache": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value of this property indicates whether the image cache is enabled or not."
+      },
+      "dockerFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Docker file path relative to the source context."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the target build stage for the docker build."
+      },
+      "arguments": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The collection of override arguments to be used when executing this build step."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "The type of the step."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Argument",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the argument."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The value of the argument."
+      },
+      "isSecret": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether the argument represents a secret and want to be removed from build logs."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Docker"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncodedTaskStep",
+    "properties": {
+      "encodedTaskContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Base64 encoded value of the template/definition file content."
+      },
+      "encodedValuesContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Base64 encoded value of the parameters/values file content."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The collection of overridable values that can be passed when running a task."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "The type of the step."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SetValue",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the overridable value."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The overridable value."
+      },
+      "isSecret": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether the value represents a secret or not."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncodedTask"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FileTaskStep",
+    "properties": {
+      "taskFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The task template/definition file path relative to the source context."
+      },
+      "valuesFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The task values/parameters file path relative to the source context."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The collection of overridable values that can be passed when running a task."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "The type of the step."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FileTask"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TriggerProperties",
+    "properties": {
+      "sourceTriggers": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "The collection of triggers based on source code repository."
+      },
+      "baseImageTrigger": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The trigger based on base image dependencies."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceTrigger",
+    "properties": {
+      "sourceRepository": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "The properties that describes the source(code) for the task."
+      },
+      "sourceTriggerEvents": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "The source event corresponding to the trigger."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "The current status of trigger."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the trigger."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceProperties",
+    "properties": {
+      "sourceControlType": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 1,
+        "description": "The type of source control service."
+      },
+      "repositoryUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The full URL to the source code repository"
+      },
+      "branch": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The branch name of the source code."
+      },
+      "sourceControlAuthProperties": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "The authorization properties for accessing the source code repository and to set up\r\nwebhooks for notifications."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Github"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VisualStudioTeamService"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AuthInfo",
+    "properties": {
+      "tokenType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "The type of Auth token."
+      },
+      "token": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The access token used to access the source control provider."
+      },
+      "refreshToken": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The refresh token used to refresh the access token."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The scope of the access token."
+      },
+      "expiresIn": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Time in seconds that the token remains valid"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PAT"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OAuth"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "commit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pullrequest"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/62"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/51"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BaseImageTrigger",
+    "properties": {
+      "baseImageTriggerType": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 1,
+        "description": "The type of the auto trigger for base image dependency updates."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The current status of trigger."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the trigger."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Runtime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Credentials",
+    "properties": {
+      "sourceRegistry": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Describes the credential parameters for accessing the source registry."
+      },
+      "customRegistries": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Describes the credential parameters for accessing other custom registries. The key\r\nfor the dictionary item will be the registry login server (myregistry.azurecr.io) and\r\nthe value of the item will be the registry credentials for accessing the registry."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceRegistryCredentials",
+    "properties": {
+      "loginMode": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The authentication mode which determines the source registry login scope. The credentials for the source registry\r\nwill be generated using the given scope. These credentials will be used to login to\r\nthe source registry during the run."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomRegistryCredentials",
+    "properties": {
+      "userName": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "The username for logging into the custom registry."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "The password for logging into the custom registry. The password is a secret \r\nobject that allows multiple ways of providing the value for it."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretObject",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the secret. The format of this value will be determined\r\nbased on the type of the secret object. If the type is Opaque, the value will be\r\nused as is without any modification."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "The type of the secret object which determines how the value of the secret object has to be\r\ninterpreted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Opaque"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialsCustomRegistries",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/80"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerRegistry/registries/tasks@2018-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerRegistry/registries/runs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2018-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerRegistry/registries/runs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "The properties of a run."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunProperties",
+    "properties": {
+      "runId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unique identifier for the run."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "The current status of the run."
+      },
+      "lastUpdatedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The last updated time for the run."
+      },
+      "runType": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The type of run."
+      },
+      "createTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time the run was scheduled."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time the run started."
+      },
+      "finishTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time the run finished."
+      },
+      "outputImages": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The list of all images that were generated from the run. This is applicable if the run generates base image dependencies."
+      },
+      "task": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The task against which run was scheduled."
+      },
+      "imageUpdateTrigger": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "The image update trigger that caused the run. This is applicable if the task has base image trigger configured."
+      },
+      "sourceTrigger": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "The source trigger that caused the run."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The platform properties against which the run will happen."
+      },
+      "agentConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The machine configuration of the run agent."
+      },
+      "sourceRegistryAuth": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The scope of the credentials that were used to login to the source registry during this run."
+      },
+      "customRegistries": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "The list of custom registries that were logged in during this run."
+      },
+      "runErrorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message received from backend systems after the run is scheduled."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "The provisioning state of a run."
+      },
+      "isArchiveEnabled": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value that indicates whether archiving is enabled or not."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Started"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Timeout"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QuickBuild"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QuickRun"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoBuild"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoRun"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageDescriptor",
+    "properties": {
+      "registry": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The registry login server."
+      },
+      "repository": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The repository name."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The tag name."
+      },
+      "digest": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The sha256-based digest of the image manifest."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/105"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageUpdateTrigger",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unique ID of the trigger."
+      },
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp when the image update happened."
+      },
+      "images": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The list of image updates that caused the build."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/105"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceTriggerDescriptor",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unique ID of the trigger."
+      },
+      "eventType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The event type of the trigger."
+      },
+      "commitId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unique ID that identifies a commit."
+      },
+      "pullRequestId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The unique ID that identifies pull request."
+      },
+      "repositoryUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The repository URL."
+      },
+      "branchName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The branch name in the repository."
+      },
+      "providerType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The source control provider type."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerRegistry/registries/runs@2018-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/89"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RunRequest",
+    "discriminator": "type",
+    "baseProperties": {
+      "isArchiveEnabled": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value that indicates whether archiving is enabled for the run or not."
+      }
+    },
+    "elements": {
+      "DockerBuildRequest": {
+        "$ref": "#/120"
+      },
+      "EncodedTaskRunRequest": {
+        "$ref": "#/124"
+      },
+      "FileTaskRunRequest": {
+        "$ref": "#/127"
+      },
+      "TaskRunRequest": {
+        "$ref": "#/130"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DockerBuildRequest",
+    "properties": {
+      "imageNames": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "The fully qualified image names including the repository and tag."
+      },
+      "isPushEnabled": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value of this property indicates whether the image built should be pushed to the registry or not."
+      },
+      "noCache": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The value of this property indicates whether the image cache is enabled or not."
+      },
+      "dockerFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Docker file path relative to the source location."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the target build stage for the docker build."
+      },
+      "arguments": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "The collection of override arguments to be used when executing the run."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Run timeout in seconds."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The platform properties against which the run has to happen."
+      },
+      "agentConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The machine configuration of the run agent."
+      },
+      "sourceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The properties that describes a set of credentials that will be used when this run is invoked."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 1,
+        "description": "The type of the run request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DockerBuildRequest"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncodedTaskRunRequest",
+    "properties": {
+      "encodedTaskContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Base64 encoded value of the template/definition file content."
+      },
+      "encodedValuesContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Base64 encoded value of the parameters/values file content."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "The collection of overridable values that can be passed when running a task."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Run timeout in seconds."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The platform properties against which the run has to happen."
+      },
+      "agentConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The machine configuration of the run agent."
+      },
+      "sourceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The properties that describes a set of credentials that will be used when this run is invoked."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 1,
+        "description": "The type of the run request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EncodedTaskRunRequest"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FileTaskRunRequest",
+    "properties": {
+      "taskFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The template/definition file path relative to the source."
+      },
+      "valuesFilePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The values/parameters file path relative to the source."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 0,
+        "description": "The collection of overridable values that can be passed when running a task."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Run timeout in seconds."
+      },
+      "platform": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The platform properties against which the run has to happen."
+      },
+      "agentConfiguration": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The machine configuration of the run agent."
+      },
+      "sourceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+      },
+      "credentials": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The properties that describes a set of credentials that will be used when this run is invoked."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 1,
+        "description": "The type of the run request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FileTaskRunRequest"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskRunRequest",
+    "properties": {
+      "taskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of task against which run has to be queued."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The collection of overridable values that can be passed when running a task."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 1,
+        "description": "The type of the run request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TaskRunRequest"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Run",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "The properties of a run."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource ID."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "scheduleRun",
+    "resourceType": "Microsoft.ContainerRegistry/registries",
+    "apiVersion": "2018-09-01",
+    "output": {
+      "$ref": "#/133"
+    },
+    "input": {
+      "$ref": "#/119"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceUploadDefinition",
+    "properties": {
+      "uploadUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL where the client can upload the source."
+      },
+      "relativePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The relative path to the source. This is used to submit the subsequent queue build request."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listBuildSourceUploadUrl",
+    "resourceType": "Microsoft.ContainerRegistry/registries",
+    "apiVersion": "2018-09-01",
+    "output": {
+      "$ref": "#/135"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunGetLogResult",
+    "properties": {
+      "logLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The link to logs for a run on a azure container registry."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listLogSasUrl",
+    "resourceType": "Microsoft.ContainerRegistry/registries/runs",
+    "apiVersion": "2018-09-01",
+    "output": {
+      "$ref": "#/137"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.ContainerRegistry/registries/runs",
+    "apiVersion": "2018-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Task",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The properties of a task."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource ID."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource. This cannot be changed after the resource is created."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "The tags of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listDetails",
+    "resourceType": "Microsoft.ContainerRegistry/registries/tasks",
+    "apiVersion": "2018-09-01",
+    "output": {
+      "$ref": "#/140"
+    }
+  }
+]

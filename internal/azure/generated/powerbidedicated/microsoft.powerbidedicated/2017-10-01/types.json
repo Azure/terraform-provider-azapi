@@ -1,1 +1,468 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.PowerBIDedicated/capacities"}},{"6":{"Value":"2017-10-01"}},{"2":{"Name":"Microsoft.PowerBIDedicated/capacities","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"Properties of the provision operation request."},"location":{"Type":4,"Flags":1,"Description":"Location of the PowerBI Dedicated resource."},"sku":{"Type":40,"Flags":1,"Description":"The SKU of the PowerBI Dedicated resource."},"tags":{"Type":43,"Flags":0,"Description":"Key-value pairs of additional resource provisioning properties."}}}},{"2":{"Name":"DedicatedCapacityProperties","Properties":{"state":{"Type":24,"Flags":2,"Description":"The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning."},"provisioningState":{"Type":37,"Flags":2,"Description":"The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning."},"administration":{"Type":38,"Flags":0,"Description":"A collection of Dedicated capacity administrators"},"mode":{"Type":4,"Flags":2,"Description":"The capacity mode."},"tenantId":{"Type":4,"Flags":2,"Description":"Tenant ID for the capacity. Used for creating Pro Plus capacity."},"friendlyName":{"Type":4,"Flags":2,"Description":"Capacity name"}}}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Paused"}},{"6":{"Value":"Suspended"}},{"6":{"Value":"Provisioning"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Suspending"}},{"6":{"Value":"Pausing"}},{"6":{"Value":"Resuming"}},{"6":{"Value":"Preparing"}},{"6":{"Value":"Scaling"}},{"5":{"Elements":[12,13,14,15,16,17,18,19,20,21,22,23,4]}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Paused"}},{"6":{"Value":"Suspended"}},{"6":{"Value":"Provisioning"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Suspending"}},{"6":{"Value":"Pausing"}},{"6":{"Value":"Resuming"}},{"6":{"Value":"Preparing"}},{"6":{"Value":"Scaling"}},{"5":{"Elements":[25,26,27,28,29,30,31,32,33,34,35,36,4]}},{"2":{"Name":"DedicatedCapacityAdministrators","Properties":{"members":{"Type":39,"Flags":0,"Description":"An array of administrator user identities."}}}},{"3":{"ItemType":4}},{"2":{"Name":"ResourceSku","Properties":{"name":{"Type":4,"Flags":1,"Description":"Name of the SKU level."},"tier":{"Type":42,"Flags":0,"Description":"The name of the Azure pricing tier to which the SKU applies."},"capacity":{"Type":3,"Flags":0,"Description":"The capacity of the SKU."}}}},{"6":{"Value":"PBIE_Azure"}},{"5":{"Elements":[41,4]}},{"2":{"Name":"ResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.PowerBIDedicated/capacities@2017-10-01","ScopeType":8,"Body":10,"Flags":0}},{"8":{"Name":"suspend","ResourceType":"Microsoft.PowerBIDedicated/capacities","ApiVersion":"2017-10-01"}},{"8":{"Name":"resume","ResourceType":"Microsoft.PowerBIDedicated/capacities","ApiVersion":"2017-10-01"}},{"2":{"Name":"CheckCapacityNameAvailabilityParameters","Properties":{"name":{"Type":4,"Flags":0,"Description":"Name for checking availability."},"type":{"Type":4,"Flags":0,"Description":"The resource type of PowerBI dedicated."}}}},{"2":{"Name":"CheckCapacityNameAvailabilityResult","Properties":{"nameAvailable":{"Type":2,"Flags":0,"Description":"Indicator of availability of the capacity name."},"reason":{"Type":4,"Flags":0,"Description":"The reason of unavailability."},"message":{"Type":4,"Flags":0,"Description":"The detailed message of the request unavailability."}}}},{"8":{"Name":"checkNameAvailability","ResourceType":"Microsoft.PowerBIDedicated/locations","ApiVersion":"2017-10-01","Output":48,"Input":47}}]
+[
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[a-z][a-z0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.PowerBIDedicated/capacities"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2017-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.PowerBIDedicated/capacities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Properties of the provision operation request."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Location of the PowerBI Dedicated resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "The SKU of the PowerBI Dedicated resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Key-value pairs of additional resource provisioning properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DedicatedCapacityProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning."
+      },
+      "administration": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "A collection of Dedicated capacity administrators"
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The capacity mode."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Tenant ID for the capacity. Used for creating Pro Plus capacity."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Capacity name"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pausing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resuming"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preparing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scaling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pausing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resuming"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preparing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scaling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DedicatedCapacityAdministrators",
+    "properties": {
+      "members": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "An array of administrator user identities."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the SKU level."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The name of the Azure pricing tier to which the SKU applies."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The capacity of the SKU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PBIE_Azure"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.PowerBIDedicated/capacities@2017-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "suspend",
+    "resourceType": "Microsoft.PowerBIDedicated/capacities",
+    "apiVersion": "2017-10-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resume",
+    "resourceType": "Microsoft.PowerBIDedicated/capacities",
+    "apiVersion": "2017-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckCapacityNameAvailabilityParameters",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name for checking availability."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource type of PowerBI dedicated."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckCapacityNameAvailabilityResult",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Indicator of availability of the capacity name."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason of unavailability."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The detailed message of the request unavailability."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.PowerBIDedicated/locations",
+    "apiVersion": "2017-10-01",
+    "output": {
+      "$ref": "#/43"
+    },
+    "input": {
+      "$ref": "#/42"
+    }
+  }
+]

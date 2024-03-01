@@ -1,1 +1,2421 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.Security/alertsSuppressionRules"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/alertsSuppressionRules","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"describes AlertsSuppressionRule properties"}}}},{"2":{"Name":"AlertsSuppressionRuleProperties","Properties":{"alertType":{"Type":4,"Flags":1,"Description":"Type of the alert to automatically suppress. For all alert types, use '*'"},"lastModifiedUtc":{"Type":4,"Flags":2,"Description":"The last time this rule was modified"},"expirationDateUtc":{"Type":4,"Flags":0,"Description":"Expiration date of the rule, if value is not provided or provided as null there will no expiration at all"},"reason":{"Type":4,"Flags":1,"Description":"The reason for dismissing the alert"},"state":{"Type":15,"Flags":1,"Description":"Possible states of the rule"},"comment":{"Type":4,"Flags":0,"Description":"Any comment regarding the rule"},"suppressionAlertsScope":{"Type":16,"Flags":0,"Description":"The suppression conditions"}}}},{"6":{"Value":"Enabled"}},{"6":{"Value":"Disabled"}},{"6":{"Value":"Expired"}},{"5":{"Elements":[12,13,14]}},{"2":{"Name":"SuppressionAlertsScope","Properties":{"allOf":{"Type":18,"Flags":1,"Description":"All the conditions inside need to be true in order to suppress the alert"}}}},{"2":{"Name":"ScopeElement","Properties":{"field":{"Type":4,"Flags":0,"Description":"The alert entity type to suppress by."}},"AdditionalProperties":0}},{"3":{"ItemType":17}},{"4":{"Name":"Microsoft.Security/alertsSuppressionRules@2019-01-01-preview","ScopeType":4,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.Security/automations"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/automations","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":20,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":21,"Flags":10,"Description":"The resource api version"},"properties":{"Type":23,"Flags":0,"Description":"Security automation data"},"location":{"Type":4,"Flags":0,"Description":"Location where the resource is stored"},"kind":{"Type":4,"Flags":0,"Description":"Kind of the resource"},"etag":{"Type":4,"Flags":0,"Description":"Entity tag is used for comparing two or more entities from the same requested resource."},"tags":{"Type":67,"Flags":0,"Description":"A list of key value pairs that describe the resource."}}}},{"2":{"Name":"AutomationProperties","Properties":{"description":{"Type":4,"Flags":0,"Description":"The security automation description."},"isEnabled":{"Type":2,"Flags":0,"Description":"Indicates whether the security automation is enabled."},"scopes":{"Type":25,"Flags":0,"Description":"A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes."},"sources":{"Type":58,"Flags":0,"Description":"A collection of the source event types which evaluate the security automation set of rules."},"actions":{"Type":66,"Flags":0,"Description":"A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true."}}}},{"2":{"Name":"AutomationScope","Properties":{"description":{"Type":4,"Flags":0,"Description":"The resources scope description."},"scopePath":{"Type":4,"Flags":0,"Description":"The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs)."}}}},{"3":{"ItemType":24}},{"2":{"Name":"AutomationSource","Properties":{"eventSource":{"Type":38,"Flags":0,"Description":"A valid event source type."},"ruleSets":{"Type":57,"Flags":0,"Description":"A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or')."}}}},{"6":{"Value":"Assessments"}},{"6":{"Value":"AssessmentsSnapshot"}},{"6":{"Value":"SubAssessments"}},{"6":{"Value":"SubAssessmentsSnapshot"}},{"6":{"Value":"Alerts"}},{"6":{"Value":"SecureScores"}},{"6":{"Value":"SecureScoresSnapshot"}},{"6":{"Value":"SecureScoreControls"}},{"6":{"Value":"SecureScoreControlsSnapshot"}},{"6":{"Value":"RegulatoryComplianceAssessment"}},{"6":{"Value":"RegulatoryComplianceAssessmentSnapshot"}},{"5":{"Elements":[27,28,29,30,31,32,33,34,35,36,37,4]}},{"2":{"Name":"AutomationRuleSet","Properties":{"rules":{"Type":56,"Flags":0}}}},{"2":{"Name":"AutomationTriggeringRule","Properties":{"propertyJPath":{"Type":4,"Flags":0,"Description":"The JPath of the entity model property that should be checked."},"propertyType":{"Type":45,"Flags":0,"Description":"The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]"},"expectedValue":{"Type":4,"Flags":0,"Description":"The expected value."},"operator":{"Type":55,"Flags":0,"Description":"A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType."}}}},{"6":{"Value":"String"}},{"6":{"Value":"Integer"}},{"6":{"Value":"Number"}},{"6":{"Value":"Boolean"}},{"5":{"Elements":[41,42,43,44,4]}},{"6":{"Value":"Equals"}},{"6":{"Value":"GreaterThan"}},{"6":{"Value":"GreaterThanOrEqualTo"}},{"6":{"Value":"LesserThan"}},{"6":{"Value":"LesserThanOrEqualTo"}},{"6":{"Value":"NotEquals"}},{"6":{"Value":"Contains"}},{"6":{"Value":"StartsWith"}},{"6":{"Value":"EndsWith"}},{"5":{"Elements":[46,47,48,49,50,51,52,53,54,4]}},{"3":{"ItemType":40}},{"3":{"ItemType":39}},{"3":{"ItemType":26}},{"7":{"Name":"AutomationAction","Discriminator":"actionType","BaseProperties":{},"Elements":{"EventHub":60,"LogicApp":62,"Workspace":64}}},{"2":{"Name":"AutomationActionEventHub","Properties":{"eventHubResourceId":{"Type":4,"Flags":0,"Description":"The target Event Hub Azure Resource ID."},"sasPolicyName":{"Type":4,"Flags":2,"Description":"The target Event Hub SAS policy name."},"connectionString":{"Type":4,"Flags":0,"Description":"The target Event Hub connection string (it will not be included in any response)."},"actionType":{"Type":61,"Flags":1,"Description":"The type of the action that will be triggered by the Automation"}}}},{"6":{"Value":"EventHub"}},{"2":{"Name":"AutomationActionLogicApp","Properties":{"logicAppResourceId":{"Type":4,"Flags":0,"Description":"The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App"},"uri":{"Type":4,"Flags":0,"Description":"The Logic App trigger URI endpoint (it will not be included in any response)."},"actionType":{"Type":63,"Flags":1,"Description":"The type of the action that will be triggered by the Automation"}}}},{"6":{"Value":"LogicApp"}},{"2":{"Name":"AutomationActionWorkspace","Properties":{"workspaceResourceId":{"Type":4,"Flags":0,"Description":"The fully qualified Log Analytics Workspace Azure Resource ID."},"actionType":{"Type":65,"Flags":1,"Description":"The type of the action that will be triggered by the Automation"}}}},{"6":{"Value":"Workspace"}},{"3":{"ItemType":59}},{"2":{"Name":"Tags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.Security/automations@2019-01-01-preview","ScopeType":8,"Body":22,"Flags":0}},{"6":{"Value":"Microsoft.Security/assessmentMetadata"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/assessmentMetadata","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":69,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":70,"Flags":10,"Description":"The resource api version"},"properties":{"Type":72,"Flags":0,"Description":"Describes properties of an assessment metadata."}}}},{"2":{"Name":"SecurityAssessmentMetadataProperties","Properties":{"displayName":{"Type":4,"Flags":1,"Description":"User friendly display name of the assessment"},"policyDefinitionId":{"Type":4,"Flags":2,"Description":"Azure resource ID of the policy definition that turns this assessment calculation on"},"description":{"Type":4,"Flags":0,"Description":"Human readable description of the assessment"},"remediationDescription":{"Type":4,"Flags":0,"Description":"Human readable description of what you should do to mitigate this security issue"},"categories":{"Type":79,"Flags":0},"severity":{"Type":83,"Flags":1,"Description":"The severity level of the assessment"},"userImpact":{"Type":87,"Flags":0,"Description":"The user impact of the assessment"},"implementationEffort":{"Type":91,"Flags":0,"Description":"The implementation effort required to remediate this assessment"},"threats":{"Type":101,"Flags":0},"preview":{"Type":2,"Flags":0,"Description":"True if this assessment is in preview release status"},"assessmentType":{"Type":105,"Flags":1,"Description":"BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition"}}}},{"6":{"Value":"Compute"}},{"6":{"Value":"Networking"}},{"6":{"Value":"Data"}},{"6":{"Value":"IdentityAndAccess"}},{"6":{"Value":"IoT"}},{"5":{"Elements":[73,74,75,76,77,4]}},{"3":{"ItemType":78}},{"6":{"Value":"Low"}},{"6":{"Value":"Medium"}},{"6":{"Value":"High"}},{"5":{"Elements":[80,81,82,4]}},{"6":{"Value":"Low"}},{"6":{"Value":"Moderate"}},{"6":{"Value":"High"}},{"5":{"Elements":[84,85,86,4]}},{"6":{"Value":"Low"}},{"6":{"Value":"Moderate"}},{"6":{"Value":"High"}},{"5":{"Elements":[88,89,90,4]}},{"6":{"Value":"accountBreach"}},{"6":{"Value":"dataExfiltration"}},{"6":{"Value":"dataSpillage"}},{"6":{"Value":"maliciousInsider"}},{"6":{"Value":"elevationOfPrivilege"}},{"6":{"Value":"threatResistance"}},{"6":{"Value":"missingCoverage"}},{"6":{"Value":"denialOfService"}},{"5":{"Elements":[92,93,94,95,96,97,98,99,4]}},{"3":{"ItemType":100}},{"6":{"Value":"BuiltIn"}},{"6":{"Value":"CustomPolicy"}},{"6":{"Value":"CustomerManaged"}},{"5":{"Elements":[102,103,104,4]}},{"4":{"Name":"Microsoft.Security/assessmentMetadata@2019-01-01-preview","ScopeType":5,"ReadOnlyScopes":1,"Body":71,"Flags":0}},{"6":{"Value":"Microsoft.Security/assessments"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/assessments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":107,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":108,"Flags":10,"Description":"The resource api version"},"properties":{"Type":110,"Flags":0,"Description":"Describes properties of an assessment."}}}},{"2":{"Name":"SecurityAssessmentProperties","Properties":{"resourceDetails":{"Type":111,"Flags":1,"Description":"Details of the resource that was assessed"},"displayName":{"Type":4,"Flags":2,"Description":"User friendly display name of the assessment"},"status":{"Type":116,"Flags":1,"Description":"The result of the assessment"},"additionalData":{"Type":121,"Flags":0,"Description":"Additional data regarding the assessment"},"links":{"Type":122,"Flags":2,"Description":"Links relevant to the assessment"}}}},{"7":{"Name":"ResourceDetails","Discriminator":"source","BaseProperties":{},"Elements":{"Azure":112,"OnPremiseSql":114}}},{"2":{"Name":"AzureResourceDetails","Properties":{"id":{"Type":4,"Flags":2,"Description":"Azure resource Id of the assessed resource"},"source":{"Type":113,"Flags":1,"Description":"The platform where the assessed resource resides"}}}},{"6":{"Value":"Azure"}},{"2":{"Name":"OnPremiseSqlResourceDetails","Properties":{"serverName":{"Type":4,"Flags":1,"Description":"The Sql server name installed on the machine"},"databaseName":{"Type":4,"Flags":1,"Description":"The Sql database name installed on the machine"},"workspaceId":{"Type":4,"Flags":1,"Description":"Azure resource Id of the workspace the machine is attached to"},"vmuuid":{"Type":4,"Flags":1,"Description":"The unique Id of the machine"},"sourceComputerId":{"Type":4,"Flags":1,"Description":"The oms agent Id installed on the machine"},"machineName":{"Type":4,"Flags":1,"Description":"The name of the machine"},"source":{"Type":115,"Flags":1,"Description":"The platform where the assessed resource resides"}}}},{"6":{"Value":"OnPremiseSql"}},{"2":{"Name":"AssessmentStatus","Properties":{"code":{"Type":120,"Flags":1,"Description":"Programmatic code for the status of the assessment"},"cause":{"Type":4,"Flags":0,"Description":"Programmatic code for the cause of the assessment status"},"description":{"Type":4,"Flags":0,"Description":"Human readable description of the assessment status"}}}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"NotApplicable"}},{"5":{"Elements":[117,118,119,4]}},{"2":{"Name":"SecurityAssessmentPropertiesAdditionalData","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"AssessmentLinks","Properties":{"azurePortalUri":{"Type":4,"Flags":2,"Description":"Link to assessment in Azure Portal"}}}},{"4":{"Name":"Microsoft.Security/assessments@2019-01-01-preview","ScopeType":0,"Body":109,"Flags":0}},{"6":{"Value":"Microsoft.Security/regulatoryComplianceStandards"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/regulatoryComplianceStandards","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":124,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":125,"Flags":10,"Description":"The resource api version"},"properties":{"Type":127,"Flags":2,"Description":"Regulatory compliance standard data"}}}},{"2":{"Name":"RegulatoryComplianceStandardProperties","Properties":{"state":{"Type":132,"Flags":0,"Description":"Aggregative state based on the standard's supported controls states"},"passedControls":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance controls of the given standard with a passed state"},"failedControls":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance controls of the given standard with a failed state"},"skippedControls":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance controls of the given standard with a skipped state"},"unsupportedControls":{"Type":3,"Flags":2,"Description":"The number of regulatory compliance controls of the given standard which are unsupported by automated assessments"}}}},{"6":{"Value":"Passed"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Skipped"}},{"6":{"Value":"Unsupported"}},{"5":{"Elements":[128,129,130,131,4]}},{"4":{"Name":"Microsoft.Security/regulatoryComplianceStandards@2019-01-01-preview","ScopeType":4,"Body":126,"Flags":1}},{"6":{"Value":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":134,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":135,"Flags":10,"Description":"The resource api version"},"properties":{"Type":137,"Flags":2,"Description":"Regulatory compliance control data"}}}},{"2":{"Name":"RegulatoryComplianceControlProperties","Properties":{"description":{"Type":4,"Flags":2,"Description":"The description of the regulatory compliance control"},"state":{"Type":142,"Flags":0,"Description":"Aggregative state based on the control's supported assessments states"},"passedAssessments":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance assessments of the given control with a passed state"},"failedAssessments":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance assessments of the given control with a failed state"},"skippedAssessments":{"Type":3,"Flags":2,"Description":"The number of supported regulatory compliance assessments of the given control with a skipped state"}}}},{"6":{"Value":"Passed"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Skipped"}},{"6":{"Value":"Unsupported"}},{"5":{"Elements":[138,139,140,141,4]}},{"4":{"Name":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls@2019-01-01-preview","ScopeType":4,"Body":136,"Flags":1}},{"6":{"Value":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":144,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":145,"Flags":10,"Description":"The resource api version"},"properties":{"Type":147,"Flags":2,"Description":"Regulatory compliance assessment data"}}}},{"2":{"Name":"RegulatoryComplianceAssessmentProperties","Properties":{"description":{"Type":4,"Flags":2,"Description":"The description of the regulatory compliance assessment"},"assessmentType":{"Type":4,"Flags":2,"Description":"The expected type of assessment contained in the AssessmentDetailsLink"},"assessmentDetailsLink":{"Type":4,"Flags":2,"Description":"Link to more detailed assessment results data. The response type will be according to the assessmentType field"},"state":{"Type":152,"Flags":0,"Description":"Aggregative state based on the assessment's scanned resources states"},"passedResources":{"Type":3,"Flags":2,"Description":"The given assessment's related resources count with passed state."},"failedResources":{"Type":3,"Flags":2,"Description":"The given assessment's related resources count with failed state."},"skippedResources":{"Type":3,"Flags":2,"Description":"The given assessment's related resources count with skipped state."},"unsupportedResources":{"Type":3,"Flags":2,"Description":"The given assessment's related resources count with unsupported state."}}}},{"6":{"Value":"Passed"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Skipped"}},{"6":{"Value":"Unsupported"}},{"5":{"Elements":[148,149,150,151,4]}},{"4":{"Name":"Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments@2019-01-01-preview","ScopeType":4,"Body":146,"Flags":1}},{"6":{"Value":"Microsoft.Security/assessments/subAssessments"}},{"6":{"Value":"2019-01-01-preview"}},{"2":{"Name":"Microsoft.Security/assessments/subAssessments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":154,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":155,"Flags":10,"Description":"The resource api version"},"properties":{"Type":157,"Flags":2,"Description":"Describes properties of an sub-assessment."}}}},{"2":{"Name":"SecuritySubAssessmentProperties","Properties":{"id":{"Type":4,"Flags":2,"Description":"Vulnerability ID"},"displayName":{"Type":4,"Flags":2,"Description":"User friendly display name of the sub-assessment"},"status":{"Type":158,"Flags":0,"Description":"Status of the sub-assessment"},"remediation":{"Type":4,"Flags":2,"Description":"Information on how to remediate this sub-assessment"},"impact":{"Type":4,"Flags":2,"Description":"Description of the impact of this sub-assessment"},"category":{"Type":4,"Flags":2,"Description":"Category of the sub-assessment"},"description":{"Type":4,"Flags":2,"Description":"Human readable description of the assessment status"},"timeGenerated":{"Type":4,"Flags":2,"Description":"The date and time the sub-assessment was generated"},"resourceDetails":{"Type":111,"Flags":0,"Description":"Details of the resource that was assessed"},"additionalData":{"Type":167,"Flags":0,"Description":"Details of the sub-assessment"}}}},{"2":{"Name":"SubAssessmentStatus","Properties":{"code":{"Type":162,"Flags":2,"Description":"Programmatic code for the status of the assessment"},"cause":{"Type":4,"Flags":2,"Description":"Programmatic code for the cause of the assessment status"},"description":{"Type":4,"Flags":2,"Description":"Human readable description of the assessment status"},"severity":{"Type":166,"Flags":2,"Description":"The sub-assessment severity level"}}}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"NotApplicable"}},{"5":{"Elements":[159,160,161,4]}},{"6":{"Value":"Low"}},{"6":{"Value":"Medium"}},{"6":{"Value":"High"}},{"5":{"Elements":[163,164,165,4]}},{"7":{"Name":"AdditionalData","Discriminator":"assessedResourceType","BaseProperties":{},"Elements":{"ContainerRegistryVulnerability":168,"ServerVulnerabilityAssessment":176,"SqlServerVulnerability":181}}},{"2":{"Name":"ContainerRegistryVulnerabilityProperties","Properties":{"type":{"Type":4,"Flags":2,"Description":"Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered, Vulnerability"},"cvss":{"Type":170,"Flags":2,"Description":"Dictionary from cvss version to cvss details object"},"patchable":{"Type":2,"Flags":2,"Description":"Indicates whether a patch is available or not"},"cve":{"Type":172,"Flags":2,"Description":"List of CVEs"},"publishedTime":{"Type":4,"Flags":2,"Description":"Published time"},"vendorReferences":{"Type":174,"Flags":2},"repositoryName":{"Type":4,"Flags":2,"Description":"Name of the repository which the vulnerable image belongs to"},"imageDigest":{"Type":4,"Flags":2,"Description":"Digest of the vulnerable image"},"assessedResourceType":{"Type":175,"Flags":1,"Description":"Sub-assessment resource type"}}}},{"2":{"Name":"Cvss","Properties":{"base":{"Type":3,"Flags":2,"Description":"CVSS base"}}}},{"2":{"Name":"ContainerRegistryVulnerabilityPropertiesCvss","Properties":{},"AdditionalProperties":169}},{"2":{"Name":"CVE","Properties":{"title":{"Type":4,"Flags":2,"Description":"CVE title"},"link":{"Type":4,"Flags":2,"Description":"Link url"}}}},{"3":{"ItemType":171}},{"2":{"Name":"VendorReference","Properties":{"title":{"Type":4,"Flags":2,"Description":"Link title"},"link":{"Type":4,"Flags":2,"Description":"Link url"}}}},{"3":{"ItemType":173}},{"6":{"Value":"ContainerRegistryVulnerability"}},{"2":{"Name":"ServerVulnerabilityProperties","Properties":{"type":{"Type":4,"Flags":2,"Description":"Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered"},"cvss":{"Type":177,"Flags":2,"Description":"Dictionary from cvss version to cvss details object"},"patchable":{"Type":2,"Flags":2,"Description":"Indicates whether a patch is available or not"},"cve":{"Type":178,"Flags":2,"Description":"List of CVEs"},"threat":{"Type":4,"Flags":2,"Description":"Threat name"},"publishedTime":{"Type":4,"Flags":2,"Description":"Published time"},"vendorReferences":{"Type":179,"Flags":2},"assessedResourceType":{"Type":180,"Flags":1,"Description":"Sub-assessment resource type"}}}},{"2":{"Name":"ServerVulnerabilityPropertiesCvss","Properties":{},"AdditionalProperties":169}},{"3":{"ItemType":171}},{"3":{"ItemType":173}},{"6":{"Value":"ServerVulnerabilityAssessment"}},{"2":{"Name":"SqlServerVulnerabilityProperties","Properties":{"type":{"Type":4,"Flags":2,"Description":"The resource type the sub assessment refers to in its resource details"},"query":{"Type":4,"Flags":2,"Description":"The T-SQL query that runs on your SQL database to perform the particular check"},"assessedResourceType":{"Type":182,"Flags":1,"Description":"Sub-assessment resource type"}}}},{"6":{"Value":"SqlServerVulnerability"}},{"4":{"Name":"Microsoft.Security/assessments/subAssessments@2019-01-01-preview","ScopeType":0,"Body":156,"Flags":1}},{"2":{"Name":"Automation","Properties":{"properties":{"Type":23,"Flags":0,"Description":"Security automation data"},"id":{"Type":4,"Flags":2,"Description":"Resource Id"},"name":{"Type":4,"Flags":2,"Description":"Resource name"},"type":{"Type":4,"Flags":2,"Description":"Resource type"},"location":{"Type":4,"Flags":0,"Description":"Location where the resource is stored"},"kind":{"Type":4,"Flags":0,"Description":"Kind of the resource"},"etag":{"Type":4,"Flags":0,"Description":"Entity tag is used for comparing two or more entities from the same requested resource."},"tags":{"Type":185,"Flags":0,"Description":"A list of key value pairs that describe the resource."}}}},{"2":{"Name":"Tags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"AutomationValidationStatus","Properties":{"isValid":{"Type":2,"Flags":0,"Description":"Indicates whether the model is valid or not."},"message":{"Type":4,"Flags":0,"Description":"The validation message."}}}},{"8":{"Name":"validate","ResourceType":"Microsoft.Security/automations","ApiVersion":"2019-01-01-preview","Output":186,"Input":184}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/alertsSuppressionRules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/alertsSuppressionRules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "describes AlertsSuppressionRule properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertsSuppressionRuleProperties",
+    "properties": {
+      "alertType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Type of the alert to automatically suppress. For all alert types, use '*'"
+      },
+      "lastModifiedUtc": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The last time this rule was modified"
+      },
+      "expirationDateUtc": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Expiration date of the rule, if value is not provided or provided as null there will no expiration at all"
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The reason for dismissing the alert"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Possible states of the rule"
+      },
+      "comment": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Any comment regarding the rule"
+      },
+      "suppressionAlertsScope": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "The suppression conditions"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SuppressionAlertsScope",
+    "properties": {
+      "allOf": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "All the conditions inside need to be true in order to suppress the alert"
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScopeElement",
+    "properties": {
+      "field": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The alert entity type to suppress by."
+      }
+    },
+    "additionalProperties": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/11"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/alertsSuppressionRules@2019-01-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/automations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/automations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Security automation data"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Location where the resource is stored"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kind of the resource"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Entity tag is used for comparing two or more entities from the same requested resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "A list of key value pairs that describe the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The security automation description."
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Indicates whether the security automation is enabled."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes."
+      },
+      "sources": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "A collection of the source event types which evaluate the security automation set of rules."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationScope",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resources scope description."
+      },
+      "scopePath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationSource",
+    "properties": {
+      "eventSource": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "A valid event source type."
+      },
+      "ruleSets": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or')."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AssessmentsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubAssessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubAssessmentsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Alerts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScores"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoresSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoreControls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoreControlsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegulatoryComplianceAssessment"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegulatoryComplianceAssessmentSnapshot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationRuleSet",
+    "properties": {
+      "rules": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationTriggeringRule",
+    "properties": {
+      "propertyJPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The JPath of the entity model property that should be checked."
+      },
+      "propertyType": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]"
+      },
+      "expectedValue": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The expected value."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "String"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Integer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Number"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Boolean"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqualTo"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LesserThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LesserThanOrEqualTo"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEquals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EndsWith"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/35"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/34"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AutomationAction",
+    "discriminator": "actionType",
+    "baseProperties": {},
+    "elements": {
+      "EventHub": {
+        "$ref": "#/55"
+      },
+      "LogicApp": {
+        "$ref": "#/57"
+      },
+      "Workspace": {
+        "$ref": "#/59"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionEventHub",
+    "properties": {
+      "eventHubResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The target Event Hub Azure Resource ID."
+      },
+      "sasPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The target Event Hub SAS policy name."
+      },
+      "connectionString": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The target Event Hub connection string (it will not be included in any response)."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionLogicApp",
+    "properties": {
+      "logicAppResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App"
+      },
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Logic App trigger URI endpoint (it will not be included in any response)."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogicApp"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionWorkspace",
+    "properties": {
+      "workspaceResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The fully qualified Log Analytics Workspace Azure Resource ID."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Workspace"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/54"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/automations@2019-01-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/16"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/assessmentMetadata"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/assessmentMetadata",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "Describes properties of an assessment metadata."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentMetadataProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "User friendly display name of the assessment"
+      },
+      "policyDefinitionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Azure resource ID of the policy definition that turns this assessment calculation on"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of the assessment"
+      },
+      "remediationDescription": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of what you should do to mitigate this security issue"
+      },
+      "categories": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "The severity level of the assessment"
+      },
+      "userImpact": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The user impact of the assessment"
+      },
+      "implementationEffort": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The implementation effort required to remediate this assessment"
+      },
+      "threats": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0
+      },
+      "preview": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "True if this assessment is in preview release status"
+      },
+      "assessmentType": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 1,
+        "description": "BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Networking"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Data"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IdentityAndAccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IoT"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/73"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moderate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moderate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "accountBreach"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dataExfiltration"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dataSpillage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "maliciousInsider"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "elevationOfPrivilege"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "threatResistance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "missingCoverage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "denialOfService"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/95"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BuiltIn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomPolicy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManaged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/assessmentMetadata@2019-01-01-preview",
+    "scopeType": 5,
+    "readOnlyScopes": 1,
+    "body": {
+      "$ref": "#/66"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/assessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/assessments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Describes properties of an assessment."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentProperties",
+    "properties": {
+      "resourceDetails": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "Details of the resource that was assessed"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "User friendly display name of the assessment"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 1,
+        "description": "The result of the assessment"
+      },
+      "additionalData": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "Additional data regarding the assessment"
+      },
+      "links": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "Links relevant to the assessment"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ResourceDetails",
+    "discriminator": "source",
+    "baseProperties": {},
+    "elements": {
+      "Azure": {
+        "$ref": "#/107"
+      },
+      "OnPremiseSql": {
+        "$ref": "#/109"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Azure resource Id of the assessed resource"
+      },
+      "source": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 1,
+        "description": "The platform where the assessed resource resides"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnPremiseSqlResourceDetails",
+    "properties": {
+      "serverName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Sql server name installed on the machine"
+      },
+      "databaseName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Sql database name installed on the machine"
+      },
+      "workspaceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Azure resource Id of the workspace the machine is attached to"
+      },
+      "vmuuid": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The unique Id of the machine"
+      },
+      "sourceComputerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The oms agent Id installed on the machine"
+      },
+      "machineName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the machine"
+      },
+      "source": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 1,
+        "description": "The platform where the assessed resource resides"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnPremiseSql"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssessmentStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Programmatic code for the status of the assessment"
+      },
+      "cause": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Programmatic code for the cause of the assessment status"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Human readable description of the assessment status"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityAssessmentPropertiesAdditionalData",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssessmentLinks",
+    "properties": {
+      "azurePortalUri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link to assessment in Azure Portal"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/assessments@2019-01-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/104"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/regulatoryComplianceStandards"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 2,
+        "description": "Regulatory compliance standard data"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegulatoryComplianceStandardProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Aggregative state based on the standard's supported controls states"
+      },
+      "passedControls": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance controls of the given standard with a passed state"
+      },
+      "failedControls": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance controls of the given standard with a failed state"
+      },
+      "skippedControls": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance controls of the given standard with a skipped state"
+      },
+      "unsupportedControls": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of regulatory compliance controls of the given standard which are unsupported by automated assessments"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Passed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards@2019-01-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/121"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 2,
+        "description": "Regulatory compliance control data"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegulatoryComplianceControlProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The description of the regulatory compliance control"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Aggregative state based on the control's supported assessments states"
+      },
+      "passedAssessments": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance assessments of the given control with a passed state"
+      },
+      "failedAssessments": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance assessments of the given control with a failed state"
+      },
+      "skippedAssessments": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The number of supported regulatory compliance assessments of the given control with a skipped state"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Passed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls@2019-01-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/132"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 2,
+        "description": "Regulatory compliance assessment data"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegulatoryComplianceAssessmentProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The description of the regulatory compliance assessment"
+      },
+      "assessmentType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The expected type of assessment contained in the AssessmentDetailsLink"
+      },
+      "assessmentDetailsLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link to more detailed assessment results data. The response type will be according to the assessmentType field"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Aggregative state based on the assessment's scanned resources states"
+      },
+      "passedResources": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The given assessment's related resources count with passed state."
+      },
+      "failedResources": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The given assessment's related resources count with failed state."
+      },
+      "skippedResources": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The given assessment's related resources count with skipped state."
+      },
+      "unsupportedResources": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "The given assessment's related resources count with unsupported state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Passed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments@2019-01-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/142"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/assessments/subAssessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/assessments/subAssessments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 2,
+        "description": "Describes properties of an sub-assessment."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecuritySubAssessmentProperties",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Vulnerability ID"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "User friendly display name of the sub-assessment"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Status of the sub-assessment"
+      },
+      "remediation": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Information on how to remediate this sub-assessment"
+      },
+      "impact": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Description of the impact of this sub-assessment"
+      },
+      "category": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Category of the sub-assessment"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Human readable description of the assessment status"
+      },
+      "timeGenerated": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date and time the sub-assessment was generated"
+      },
+      "resourceDetails": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Details of the resource that was assessed"
+      },
+      "additionalData": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "Details of the sub-assessment"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubAssessmentStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 2,
+        "description": "Programmatic code for the status of the assessment"
+      },
+      "cause": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Programmatic code for the cause of the assessment status"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Human readable description of the assessment status"
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 2,
+        "description": "The sub-assessment severity level"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AdditionalData",
+    "discriminator": "assessedResourceType",
+    "baseProperties": {},
+    "elements": {
+      "ContainerRegistryVulnerability": {
+        "$ref": "#/164"
+      },
+      "ServerVulnerabilityAssessment": {
+        "$ref": "#/172"
+      },
+      "SqlServerVulnerability": {
+        "$ref": "#/177"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerRegistryVulnerabilityProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered, Vulnerability"
+      },
+      "cvss": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 2,
+        "description": "Dictionary from cvss version to cvss details object"
+      },
+      "patchable": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Indicates whether a patch is available or not"
+      },
+      "cve": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 2,
+        "description": "List of CVEs"
+      },
+      "publishedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Published time"
+      },
+      "vendorReferences": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 2
+      },
+      "repositoryName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the repository which the vulnerable image belongs to"
+      },
+      "imageDigest": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Digest of the vulnerable image"
+      },
+      "assessedResourceType": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 1,
+        "description": "Sub-assessment resource type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Cvss",
+    "properties": {
+      "base": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "CVSS base"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerRegistryVulnerabilityPropertiesCvss",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CVE",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "CVE title"
+      },
+      "link": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link url"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VendorReference",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link title"
+      },
+      "link": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Link url"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/169"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContainerRegistryVulnerability"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerVulnerabilityProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered"
+      },
+      "cvss": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "Dictionary from cvss version to cvss details object"
+      },
+      "patchable": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Indicates whether a patch is available or not"
+      },
+      "cve": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "List of CVEs"
+      },
+      "threat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Threat name"
+      },
+      "publishedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Published time"
+      },
+      "vendorReferences": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 2
+      },
+      "assessedResourceType": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 1,
+        "description": "Sub-assessment resource type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerVulnerabilityPropertiesCvss",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/169"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerVulnerabilityAssessment"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SqlServerVulnerabilityProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The resource type the sub assessment refers to in its resource details"
+      },
+      "query": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The T-SQL query that runs on your SQL database to perform the particular check"
+      },
+      "assessedResourceType": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 1,
+        "description": "Sub-assessment resource type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SqlServerVulnerability"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/assessments/subAssessments@2019-01-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/152"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Automation",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Security automation data"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Location where the resource is stored"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kind of the resource"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Entity tag is used for comparing two or more entities from the same requested resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "A list of key value pairs that describe the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationValidationStatus",
+    "properties": {
+      "isValid": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Indicates whether the model is valid or not."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The validation message."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validate",
+    "resourceType": "Microsoft.Security/automations",
+    "apiVersion": "2019-01-01-preview",
+    "output": {
+      "$ref": "#/182"
+    },
+    "input": {
+      "$ref": "#/180"
+    }
+  }
+]

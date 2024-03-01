@@ -1,1 +1,530 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.StreamAnalytics/clusters"}},{"6":{"Value":"2020-03-01-preview"}},{"2":{"Name":"Microsoft.StreamAnalytics/clusters","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"sku":{"Type":11,"Flags":0,"Description":"The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."},"properties":{"Type":14,"Flags":0,"Description":"The properties associated with a Stream Analytics cluster."},"tags":{"Type":20,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":0,"Description":"The geo-location where the resource lives"}}}},{"2":{"Name":"ClusterSku","Properties":{"name":{"Type":13,"Flags":0,"Description":"Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests."},"capacity":{"Type":3,"Flags":0,"Description":"Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate) requests."}}}},{"6":{"Value":"Default"}},{"5":{"Elements":[12,4]}},{"2":{"Name":"ClusterProperties","Properties":{"createdDate":{"Type":4,"Flags":2,"Description":"The date this cluster was created."},"clusterId":{"Type":4,"Flags":2,"Description":"Unique identifier for the cluster."},"provisioningState":{"Type":19,"Flags":2,"Description":"The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled"},"capacityAllocated":{"Type":3,"Flags":2,"Description":"Represents the number of streaming units currently being used on the cluster."},"capacityAssigned":{"Type":3,"Flags":2,"Description":"Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running, this would be the capacity allocated."}}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"InProgress"}},{"5":{"Elements":[15,16,17,18,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.StreamAnalytics/clusters@2020-03-01-preview","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/clusters/privateEndpoints"}},{"6":{"Value":"2020-03-01-preview"}},{"2":{"Name":"Microsoft.StreamAnalytics/clusters/privateEndpoints","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":22,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":23,"Flags":10,"Description":"The resource api version"},"properties":{"Type":25,"Flags":0,"Description":"The properties associated with a private endpoint."},"etag":{"Type":4,"Flags":2,"Description":"Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate) requests."}}}},{"2":{"Name":"PrivateEndpointProperties","Properties":{"createdDate":{"Type":4,"Flags":2,"Description":"The date when this private endpoint was created."},"manualPrivateLinkServiceConnections":{"Type":30,"Flags":0,"Description":"A list of connections to the remote resource. Immutable after it is set."}}}},{"2":{"Name":"PrivateLinkServiceConnection","Properties":{"properties":{"Type":27,"Flags":0,"Description":"Bag of properties defining a privatelinkServiceConnection."}}}},{"2":{"Name":"PrivateLinkServiceConnectionProperties","Properties":{"privateLinkServiceId":{"Type":4,"Flags":0,"Description":"The resource id of the private link service. Required on PUT (CreateOrUpdate) requests."},"groupIds":{"Type":28,"Flags":0,"Description":"The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to. Required on PUT (CreateOrUpdate) requests."},"requestMessage":{"Type":4,"Flags":2,"Description":"A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars."},"privateLinkServiceConnectionState":{"Type":29,"Flags":0,"Description":"A collection of read-only information about the state of the connection to the private remote resource."}}}},{"3":{"ItemType":4}},{"2":{"Name":"PrivateLinkConnectionState","Properties":{"status":{"Type":4,"Flags":2,"Description":"Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service."},"description":{"Type":4,"Flags":2,"Description":"The reason for approval/rejection of the connection."},"actionsRequired":{"Type":4,"Flags":2,"Description":"A message indicating if changes on the service provider require any updates on the consumer."}}}},{"3":{"ItemType":26}},{"4":{"Name":"Microsoft.StreamAnalytics/clusters/privateEndpoints@2020-03-01-preview","ScopeType":8,"Body":24,"Flags":0}},{"2":{"Name":"ClusterJobListResult","Properties":{"value":{"Type":45,"Flags":2,"Description":"A list of streaming jobs."},"nextLink":{"Type":4,"Flags":2,"Description":"The URL to fetch the next set of streaming jobs."}}}},{"2":{"Name":"ClusterJob","Properties":{"id":{"Type":4,"Flags":2,"Description":"Resource ID of the streaming job."},"streamingUnits":{"Type":3,"Flags":2,"Description":"The number of streaming units that are used by the streaming job."},"jobState":{"Type":44,"Flags":2,"Description":"The current execution state of the streaming job."}}}},{"6":{"Value":"Created"}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Stopped"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Degraded"}},{"6":{"Value":"Restarting"}},{"6":{"Value":"Scaling"}},{"5":{"Elements":[34,35,36,37,38,39,40,41,42,43,4]}},{"3":{"ItemType":33}},{"8":{"Name":"listStreamingJobs","ResourceType":"Microsoft.StreamAnalytics/clusters","ApiVersion":"2020-03-01-preview","Output":32}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/clusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/clusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The properties associated with a Stream Analytics cluster."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 36,
+    "maxValue": 396
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterProperties",
+    "properties": {
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date this cluster was created."
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique identifier for the cluster."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled"
+      },
+      "capacityAllocated": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "Represents the number of streaming units currently being used on the cluster."
+      },
+      "capacityAssigned": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running, this would be the capacity allocated."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/clusters@2020-03-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/clusters/privateEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The properties associated with a private endpoint."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointProperties",
+    "properties": {
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date when this private endpoint was created."
+      },
+      "manualPrivateLinkServiceConnections": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "A list of connections to the remote resource. Immutable after it is set."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Bag of properties defining a privatelinkServiceConnection."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionProperties",
+    "properties": {
+      "privateLinkServiceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource id of the private link service. Required on PUT (CreateOrUpdate) requests."
+      },
+      "groupIds": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to. Required on PUT (CreateOrUpdate) requests."
+      },
+      "requestMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "A collection of read-only information about the state of the connection to the private remote resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints@2020-03-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/19"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterJobListResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 2,
+        "description": "A list of streaming jobs."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The URL to fetch the next set of streaming jobs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterJob",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource ID of the streaming job."
+      },
+      "streamingUnits": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The number of streaming units that are used by the streaming job."
+      },
+      "jobState": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "The current execution state of the streaming job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restarting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scaling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listStreamingJobs",
+    "resourceType": "Microsoft.StreamAnalytics/clusters",
+    "apiVersion": "2020-03-01-preview",
+    "output": {
+      "$ref": "#/27"
+    }
+  }
+]

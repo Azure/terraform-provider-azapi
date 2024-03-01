@@ -1,1 +1,4976 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.Workloads/sapVirtualInstances"}},{"6":{"Value":"2023-10-01-preview"}},{"2":{"Name":"Microsoft.Workloads/sapVirtualInstances","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"identity":{"Type":11,"Flags":0,"Description":"Managed service identity (user assigned identities)"},"properties":{"Type":17,"Flags":1,"Description":"Defines the Virtual Instance for SAP solutions resource properties."},"tags":{"Type":156,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":157,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"UserAssignedServiceIdentity","Properties":{"type":{"Type":14,"Flags":1,"Description":"Type of manage identity"},"userAssignedIdentities":{"Type":16,"Flags":0,"Description":"User assigned identities dictionary"}}}},{"6":{"Value":"None"}},{"6":{"Value":"UserAssigned"}},{"5":{"Elements":[12,13,4]}},{"2":{"Name":"UserAssignedIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The principal ID of the assigned identity."},"clientId":{"Type":4,"Flags":2,"Description":"The client ID of the assigned identity."}}}},{"2":{"Name":"UserAssignedIdentities","Properties":{},"AdditionalProperties":15}},{"2":{"Name":"SAPVirtualInstanceProperties","Properties":{"environment":{"Type":20,"Flags":1,"Description":"Defines the environment type - Production/Non Production."},"sapProduct":{"Type":24,"Flags":1,"Description":"Defines the SAP Product type."},"managedResourcesNetworkAccessType":{"Type":27,"Flags":0,"Description":"Specifies the network access configuration for the resources that will be deployed in the Managed Resource Group. The options to choose from are Public and Private. If 'Private' is chosen, the Storage Account service tag should be enabled on the subnets in which the SAP VMs exist. This is required for establishing connectivity between VM extensions and the managed resource group storage account. This setting is currently applicable only to Storage Account. Learn more here https://go.microsoft.com/fwlink/?linkid=2247228"},"configuration":{"Type":28,"Flags":1,"Description":"Defines if the SAP system is being created using Azure Center for SAP solutions (ACSS) or if an existing SAP system is being registered with ACSS"},"managedResourceGroupConfiguration":{"Type":118,"Flags":0,"Description":"Managed resource group configuration"},"status":{"Type":126,"Flags":2,"Description":"Defines the SAP Instance status."},"health":{"Type":131,"Flags":2,"Description":"Defines the health of SAP Instances."},"state":{"Type":145,"Flags":2,"Description":"Defines the Virtual Instance for SAP state."},"provisioningState":{"Type":152,"Flags":2,"Description":"Defines the provisioning states."},"errors":{"Type":153,"Flags":2,"Description":"Indicates any errors on the Virtual Instance for SAP solutions resource."}}}},{"6":{"Value":"NonProd"}},{"6":{"Value":"Prod"}},{"5":{"Elements":[18,19,4]}},{"6":{"Value":"ECC"}},{"6":{"Value":"S4HANA"}},{"6":{"Value":"Other"}},{"5":{"Elements":[21,22,23,4]}},{"6":{"Value":"Public"}},{"6":{"Value":"Private"}},{"5":{"Elements":[25,26,4]}},{"7":{"Name":"SAPConfiguration","Discriminator":"configurationType","BaseProperties":{},"Elements":{"Deployment":29,"DeploymentWithOSConfig":112,"Discovery":116}}},{"2":{"Name":"DeploymentConfiguration","Properties":{"appLocation":{"Type":4,"Flags":0,"Description":"The geo-location where the SAP system is to be created."},"infrastructureConfiguration":{"Type":30,"Flags":0,"Description":"The infrastructure configuration."},"softwareConfiguration":{"Type":103,"Flags":0,"Description":"The software configuration."},"configurationType":{"Type":111,"Flags":1,"Description":"The configuration Type."}}}},{"7":{"Name":"InfrastructureConfiguration","Discriminator":"deploymentType","BaseProperties":{"appResourceGroup":{"Type":4,"Flags":1,"Description":"The application resource group where SAP system resources will be deployed."}},"Elements":{"SingleServer":31,"ThreeTier":69}}},{"2":{"Name":"SingleServerConfiguration","Properties":{"networkConfiguration":{"Type":32,"Flags":0,"Description":"Network configuration for the server"},"databaseType":{"Type":35,"Flags":0,"Description":"The database type."},"subnetId":{"Type":4,"Flags":1,"Description":"The subnet id."},"virtualMachineConfiguration":{"Type":36,"Flags":1,"Description":"Gets or sets the virtual machine configuration."},"dbDiskConfiguration":{"Type":48,"Flags":0,"Description":"Gets or sets the disk configuration."},"customResourceNames":{"Type":60,"Flags":0,"Description":"The set of custom names to be used for underlying azure resources that are part of the SAP system."},"deploymentType":{"Type":68,"Flags":1,"Description":"The type of SAP deployment, single server or Three tier."}}}},{"2":{"Name":"NetworkConfiguration","Properties":{"isSecondaryIpEnabled":{"Type":2,"Flags":0,"Description":"Specifies whether a secondary IP address should be added to the network interface on all VMs of the SAP system being deployed"}}}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[33,34,4]}},{"2":{"Name":"VirtualMachineConfiguration","Properties":{"vmSize":{"Type":4,"Flags":1,"Description":"The virtual machine size."},"imageReference":{"Type":37,"Flags":1,"Description":"The image reference."},"osProfile":{"Type":38,"Flags":1,"Description":"The OS profile."}}}},{"2":{"Name":"ImageReference","Properties":{"publisher":{"Type":4,"Flags":0,"Description":"The image publisher."},"offer":{"Type":4,"Flags":0,"Description":"Specifies the offer of the platform image or marketplace image used to create the virtual machine."},"sku":{"Type":4,"Flags":0,"Description":"The image SKU."},"version":{"Type":4,"Flags":0,"Description":"Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available."},"id":{"Type":4,"Flags":0,"Description":"Specifies the ARM resource ID of the Azure Compute Gallery image version used for creating ACSS VMs. You will need to provide this input when you choose to deploy virtual machines in ACSS with OS image from the Azure Compute gallery."}}}},{"2":{"Name":"OSProfile","Properties":{"adminUsername":{"Type":4,"Flags":0,"Description":"Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is created. <br><br> **Windows-only restriction:** Cannot end in \".\" <br><br> **Disallowed values:** \"administrator\", \"admin\", \"user\", \"user1\", \"test\", \"user2\", \"test1\", \"user3\", \"admin1\", \"1\", \"123\", \"a\", \"actuser\", \"adm\", \"admin2\", \"aspnet\", \"backup\", \"console\", \"david\", \"guest\", \"john\", \"owner\", \"root\", \"server\", \"sql\", \"support\", \"support_388945a0\", \"sys\", \"test2\", \"test3\", \"user4\", \"user5\". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters."},"adminPassword":{"Type":4,"Flags":0,"Description":"Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)"},"osConfiguration":{"Type":39,"Flags":0,"Description":"Specifies Windows operating system settings on the virtual machine."}}}},{"7":{"Name":"OSConfiguration","Discriminator":"osType","BaseProperties":{},"Elements":{"Linux":40,"Windows":46}}},{"2":{"Name":"LinuxConfiguration","Properties":{"disablePasswordAuthentication":{"Type":2,"Flags":0,"Description":"Specifies whether password authentication should be disabled."},"ssh":{"Type":41,"Flags":0,"Description":"Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair' instead)"},"sshKeyPair":{"Type":44,"Flags":0,"Description":"The SSH Key-pair used to authenticate with the VM's."},"osType":{"Type":45,"Flags":1,"Description":"The OS Type"}}}},{"2":{"Name":"SshConfiguration","Properties":{"publicKeys":{"Type":43,"Flags":0,"Description":"The list of SSH public keys used to authenticate with linux based VMs."}}}},{"2":{"Name":"SshPublicKey","Properties":{"keyData":{"Type":4,"Flags":0,"Description":"SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed)."}}}},{"3":{"ItemType":42}},{"2":{"Name":"SshKeyPair","Properties":{"publicKey":{"Type":4,"Flags":0,"Description":"SSH public key"},"privateKey":{"Type":4,"Flags":0,"Description":"SSH private key."}}}},{"6":{"Value":"Linux"}},{"2":{"Name":"WindowsConfiguration","Properties":{"osType":{"Type":47,"Flags":1,"Description":"The OS Type"}}}},{"6":{"Value":"Windows"}},{"2":{"Name":"DiskConfiguration","Properties":{"diskVolumeConfigurations":{"Type":59,"Flags":0,"Description":"The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup']."}}}},{"2":{"Name":"DiskVolumeConfiguration","Properties":{"count":{"Type":3,"Flags":0,"Description":"The total number of disks required for the concerned volume."},"sizeGB":{"Type":3,"Flags":0,"Description":"The disk size in GB."},"sku":{"Type":50,"Flags":0,"Description":"The disk SKU details."}}}},{"2":{"Name":"DiskSku","Properties":{"name":{"Type":58,"Flags":0,"Description":"Defines the disk sku name."}}}},{"6":{"Value":"Standard_LRS"}},{"6":{"Value":"Premium_LRS"}},{"6":{"Value":"StandardSSD_LRS"}},{"6":{"Value":"UltraSSD_LRS"}},{"6":{"Value":"Premium_ZRS"}},{"6":{"Value":"StandardSSD_ZRS"}},{"6":{"Value":"PremiumV2_LRS"}},{"5":{"Elements":[51,52,53,54,55,56,57,4]}},{"2":{"Name":"DiskConfigurationDiskVolumeConfigurations","Properties":{},"AdditionalProperties":49}},{"7":{"Name":"SingleServerCustomResourceNames","Discriminator":"namingPatternType","BaseProperties":{},"Elements":{"FullResourceName":61}}},{"2":{"Name":"SingleServerFullResourceNames","Properties":{"virtualMachine":{"Type":62,"Flags":0,"Description":"The resource names object for virtual machine and related resources."},"namingPatternType":{"Type":67,"Flags":1,"Description":"The pattern type to be used for resource naming."}}}},{"2":{"Name":"VirtualMachineResourceNames","Properties":{"vmName":{"Type":4,"Flags":0,"Description":"The full name for virtual machine. The length of this field can be upto 64 characters. If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an incrementor at the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name will be {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer."},"hostName":{"Type":4,"Flags":0,"Description":"The full name for virtual-machine's host (computer name). Currently, ACSS only supports host names which are less than or equal to 13 characters long. If this value is not provided, vmName will be used as host name."},"networkInterfaces":{"Type":64,"Flags":0,"Description":"The list of network interface name objects for the selected virtual machine. Currently, only one network interface is supported per virtual machine."},"osDiskName":{"Type":4,"Flags":0,"Description":"The full name for OS disk attached to the VM. If this value is not provided, it will be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk attached per Virtual Machine."},"dataDiskNames":{"Type":66,"Flags":0,"Description":"The full resource names for virtual machine data disks. This is a dictionary containing list of names of data disks per volume. Currently supported volumes for database layer are ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default' volume is supported"}}}},{"2":{"Name":"NetworkInterfaceResourceNames","Properties":{"networkInterfaceName":{"Type":4,"Flags":0,"Description":"The full name for network interface. If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name is {SID}-Nic. In case of HA-AvZone systems, default name will be {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more than 1 instance per layer. For distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic with an incrementor at the end in case of more than 1 instance per layer."}}}},{"3":{"ItemType":63}},{"3":{"ItemType":4}},{"2":{"Name":"VirtualMachineResourceNamesDataDiskNames","Properties":{},"AdditionalProperties":65}},{"6":{"Value":"FullResourceName"}},{"6":{"Value":"SingleServer"}},{"2":{"Name":"ThreeTierConfiguration","Properties":{"networkConfiguration":{"Type":32,"Flags":0,"Description":"Network configuration common to all servers"},"centralServer":{"Type":70,"Flags":1,"Description":"The central server configuration."},"applicationServer":{"Type":71,"Flags":1,"Description":"The application server configuration."},"databaseServer":{"Type":72,"Flags":1,"Description":"The database configuration."},"highAvailabilityConfig":{"Type":76,"Flags":0,"Description":"The high availability configuration."},"storageConfiguration":{"Type":80,"Flags":0,"Description":"The storage configuration."},"customResourceNames":{"Type":88,"Flags":0,"Description":"The set of custom names to be used for underlying azure resources that are part of the SAP system."},"deploymentType":{"Type":102,"Flags":1,"Description":"The type of SAP deployment, single server or Three tier."}}}},{"2":{"Name":"CentralServerConfiguration","Properties":{"subnetId":{"Type":4,"Flags":1,"Description":"The subnet id."},"virtualMachineConfiguration":{"Type":36,"Flags":1,"Description":"Gets or sets the virtual machine configuration."},"instanceCount":{"Type":3,"Flags":1,"Description":"The number of central server VMs."}}}},{"2":{"Name":"ApplicationServerConfiguration","Properties":{"subnetId":{"Type":4,"Flags":1,"Description":"The subnet id."},"virtualMachineConfiguration":{"Type":36,"Flags":1,"Description":"Gets or sets the virtual machine configuration."},"instanceCount":{"Type":3,"Flags":1,"Description":"The number of app server instances."}}}},{"2":{"Name":"DatabaseConfiguration","Properties":{"databaseType":{"Type":75,"Flags":0,"Description":"The database type."},"subnetId":{"Type":4,"Flags":1,"Description":"The subnet id."},"virtualMachineConfiguration":{"Type":36,"Flags":1,"Description":"Gets or sets the virtual machine configuration."},"instanceCount":{"Type":3,"Flags":1,"Description":"The number of database VMs."},"diskConfiguration":{"Type":48,"Flags":0,"Description":"Gets or sets the disk configuration."}}}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[73,74,4]}},{"2":{"Name":"HighAvailabilityConfiguration","Properties":{"highAvailabilityType":{"Type":79,"Flags":1,"Description":"The high availability type."}}}},{"6":{"Value":"AvailabilitySet"}},{"6":{"Value":"AvailabilityZone"}},{"5":{"Elements":[77,78,4]}},{"2":{"Name":"StorageConfiguration","Properties":{"transportFileShareConfiguration":{"Type":81,"Flags":0,"Description":"The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing."}}}},{"7":{"Name":"FileShareConfiguration","Discriminator":"configurationType","BaseProperties":{},"Elements":{"CreateAndMount":82,"Mount":84,"Skip":86}}},{"2":{"Name":"CreateAndMountFileShareConfiguration","Properties":{"resourceGroup":{"Type":4,"Flags":0,"Description":"The name of transport file share resource group. This should be pre created by the customer. The app rg is used in case of missing input."},"storageAccountName":{"Type":4,"Flags":0,"Description":"The name of file share storage account name . A custom name is used in case of missing input."},"configurationType":{"Type":83,"Flags":1,"Description":"The type of file share config."}}}},{"6":{"Value":"CreateAndMount"}},{"2":{"Name":"MountFileShareConfiguration","Properties":{"id":{"Type":4,"Flags":1,"Description":"The fileshare resource ID"},"privateEndpointId":{"Type":4,"Flags":1,"Description":"The private endpoint resource ID"},"configurationType":{"Type":85,"Flags":1,"Description":"The type of file share config."}}}},{"6":{"Value":"Mount"}},{"2":{"Name":"SkipFileShareConfiguration","Properties":{"configurationType":{"Type":87,"Flags":1,"Description":"The type of file share config."}}}},{"6":{"Value":"Skip"}},{"7":{"Name":"ThreeTierCustomResourceNames","Discriminator":"namingPatternType","BaseProperties":{},"Elements":{"FullResourceName":89}}},{"2":{"Name":"ThreeTierFullResourceNames","Properties":{"centralServer":{"Type":90,"Flags":0,"Description":"The full resource names object for central server layer resources."},"applicationServer":{"Type":96,"Flags":0,"Description":"The full resource names object for application layer resources. The number of entries in this list should be equal to the number VMs to be created for application layer."},"databaseServer":{"Type":98,"Flags":0,"Description":"The full resource names object for database layer resources. The number of entries in this list should be equal to the number VMs to be created for database layer."},"sharedStorage":{"Type":100,"Flags":0,"Description":"The resource names object for shared storage."},"namingPatternType":{"Type":101,"Flags":1,"Description":"The pattern type to be used for resource naming."}}}},{"2":{"Name":"CentralServerFullResourceNames","Properties":{"virtualMachines":{"Type":91,"Flags":0,"Description":"The list of names for all ASCS virtual machines to be deployed. The number of entries in this list should be equal to the number VMs to be created for ASCS layer. At maximum, there can be two virtual machines at this layer: ASCS and ERS."},"availabilitySetName":{"Type":4,"Flags":0,"Description":"The full name for availability set. In case name is not provided, it will be defaulted to {SID}-ASCS-AvSet."},"loadBalancer":{"Type":92,"Flags":0,"Description":"The resource names object for load balancer and related resources."}}}},{"3":{"ItemType":62}},{"2":{"Name":"LoadBalancerResourceNames","Properties":{"loadBalancerName":{"Type":4,"Flags":0,"Description":"The full resource name for load balancer. If this value is not provided, load balancer will be name as {ASCS/DB}-loadBalancer."},"frontendIpConfigurationNames":{"Type":93,"Flags":0,"Description":"The list of frontend IP configuration names. If provided as input, size of this list should be 2 for cs layer and should be 1 for database layer."},"backendPoolNames":{"Type":94,"Flags":0,"Description":"The list of backend pool names. Currently, ACSS deploys only one backend pool and hence, size of this list should be 1"},"healthProbeNames":{"Type":95,"Flags":0,"Description":"The list of health probe names. If provided as input, size of this list should be 2 for cs layer and should be 1 for database layer."}}}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"2":{"Name":"ApplicationServerFullResourceNames","Properties":{"virtualMachines":{"Type":97,"Flags":0,"Description":"The list of virtual machine naming details."},"availabilitySetName":{"Type":4,"Flags":0,"Description":"The full name for availability set. In case name is not provided, it will be defaulted to {SID}-App-AvSet."}}}},{"3":{"ItemType":62}},{"2":{"Name":"DatabaseServerFullResourceNames","Properties":{"virtualMachines":{"Type":99,"Flags":0,"Description":"The list of virtual machine naming details."},"availabilitySetName":{"Type":4,"Flags":0,"Description":"The full name for availability set. In case name is not provided, it will be defaulted to {SID}-DB-AvSet."},"loadBalancer":{"Type":92,"Flags":0,"Description":"The resource names object for load balancer and related resources."}}}},{"3":{"ItemType":62}},{"2":{"Name":"SharedStorageResourceNames","Properties":{"sharedStorageAccountName":{"Type":4,"Flags":0,"Description":"The full name of the shared storage account. If it is not provided, it will be defaulted to {SID}nfs{guid of 15 chars}."},"sharedStorageAccountPrivateEndPointName":{"Type":4,"Flags":0,"Description":"The full name of private end point for the shared storage account. If it is not provided, it will be defaulted to {storageAccountName}_pe"}}}},{"6":{"Value":"FullResourceName"}},{"6":{"Value":"ThreeTier"}},{"7":{"Name":"SoftwareConfiguration","Discriminator":"softwareInstallationType","BaseProperties":{},"Elements":{"External":104,"SAPInstallWithoutOSConfig":106,"ServiceInitiated":109}}},{"2":{"Name":"ExternalInstallationSoftwareConfiguration","Properties":{"centralServerVmId":{"Type":4,"Flags":0,"Description":"The resource ID of the virtual machine containing the central server instance."},"softwareInstallationType":{"Type":105,"Flags":1,"Description":"The SAP software installation Type."}}}},{"6":{"Value":"External"}},{"2":{"Name":"SAPInstallWithoutOSConfigSoftwareConfiguration","Properties":{"bomUrl":{"Type":4,"Flags":1,"Description":"The URL to the SAP Build of Materials(BOM) file."},"sapBitsStorageAccountId":{"Type":4,"Flags":1,"Description":"The SAP bits storage account id."},"softwareVersion":{"Type":4,"Flags":1,"Description":"The software version to install."},"highAvailabilitySoftwareConfiguration":{"Type":107,"Flags":0,"Description":"Gets or sets the HA software configuration."},"softwareInstallationType":{"Type":108,"Flags":1,"Description":"The SAP software installation Type."}}}},{"2":{"Name":"HighAvailabilitySoftwareConfiguration","Properties":{"fencingClientId":{"Type":4,"Flags":1,"Description":"The fencing client id."},"fencingClientPassword":{"Type":4,"Flags":1,"Description":"The fencing client id secret/password. The secret should never expire. This will be used pacemaker to start/stop the cluster VMs."}}}},{"6":{"Value":"SAPInstallWithoutOSConfig"}},{"2":{"Name":"ServiceInitiatedSoftwareConfiguration","Properties":{"bomUrl":{"Type":4,"Flags":1,"Description":"The URL to the SAP Build of Materials(BOM) file."},"softwareVersion":{"Type":4,"Flags":1,"Description":"The software version to install."},"sapBitsStorageAccountId":{"Type":4,"Flags":1,"Description":"The SAP bits storage account id."},"sapFqdn":{"Type":4,"Flags":1,"Description":"The FQDN to set for the SAP system during install."},"sshPrivateKey":{"Type":4,"Flags":1,"Description":"The SSH private key."},"highAvailabilitySoftwareConfiguration":{"Type":107,"Flags":0,"Description":"Gets or sets the HA software configuration."},"softwareInstallationType":{"Type":110,"Flags":1,"Description":"The SAP software installation Type."}}}},{"6":{"Value":"ServiceInitiated"}},{"6":{"Value":"Deployment"}},{"2":{"Name":"DeploymentWithOSConfiguration","Properties":{"appLocation":{"Type":4,"Flags":0,"Description":"The geo-location where the SAP system is to be created."},"infrastructureConfiguration":{"Type":30,"Flags":0,"Description":"The infrastructure configuration."},"softwareConfiguration":{"Type":103,"Flags":0,"Description":"The software configuration."},"osSapConfiguration":{"Type":113,"Flags":0,"Description":"The OS and SAP configuration."},"configurationType":{"Type":115,"Flags":1,"Description":"The configuration Type."}}}},{"2":{"Name":"OsSapConfiguration","Properties":{"deployerVmPackages":{"Type":114,"Flags":0,"Description":"The url and storage account ID where deployer VM packages are uploaded"},"sapFqdn":{"Type":4,"Flags":0,"Description":"The FQDN to set for the SAP system"}}}},{"2":{"Name":"DeployerVmPackages","Properties":{"url":{"Type":4,"Flags":0,"Description":"The URL to the deployer VM packages file."},"storageAccountId":{"Type":4,"Flags":0,"Description":"The deployer VM packages storage account id"}}}},{"6":{"Value":"DeploymentWithOSConfig"}},{"2":{"Name":"DiscoveryConfiguration","Properties":{"centralServerVmId":{"Type":4,"Flags":0,"Description":"The virtual machine ID of the Central Server."},"managedRgStorageAccountName":{"Type":4,"Flags":0,"Description":"The custom storage account name for the storage account created by the service in the managed resource group created as part of VIS deployment.<br><br>Refer to the storage account naming rules [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).<br><br>If not provided, the service will create the storage account with a random name."},"appLocation":{"Type":4,"Flags":2,"Description":"The geo-location where the SAP system exists."},"configurationType":{"Type":117,"Flags":1,"Description":"The configuration Type."}}}},{"6":{"Value":"Discovery"}},{"2":{"Name":"ManagedRGConfiguration","Properties":{"name":{"Type":4,"Flags":0,"Description":"Managed resource group name"}}}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Offline"}},{"6":{"Value":"PartiallyRunning"}},{"6":{"Value":"Unavailable"}},{"6":{"Value":"SoftShutdown"}},{"5":{"Elements":[119,120,121,122,123,124,125,4]}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[127,128,129,130,4]}},{"6":{"Value":"InfrastructureDeploymentPending"}},{"6":{"Value":"InfrastructureDeploymentInProgress"}},{"6":{"Value":"InfrastructureDeploymentFailed"}},{"6":{"Value":"SoftwareInstallationPending"}},{"6":{"Value":"SoftwareInstallationInProgress"}},{"6":{"Value":"SoftwareInstallationFailed"}},{"6":{"Value":"SoftwareDetectionInProgress"}},{"6":{"Value":"SoftwareDetectionFailed"}},{"6":{"Value":"DiscoveryPending"}},{"6":{"Value":"DiscoveryInProgress"}},{"6":{"Value":"DiscoveryFailed"}},{"6":{"Value":"RegistrationComplete"}},{"6":{"Value":"ACSSInstallationBlocked"}},{"5":{"Elements":[132,133,134,135,136,137,138,139,140,141,142,143,144,4]}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[146,147,148,149,150,151,4]}},{"2":{"Name":"SAPVirtualInstanceError","Properties":{"properties":{"Type":154,"Flags":0,"Description":"The Virtual Instance for SAP error body."}}}},{"2":{"Name":"ErrorDefinition","Properties":{"code":{"Type":4,"Flags":2,"Description":"Service specific error code which serves as the substatus for the HTTP error code."},"message":{"Type":4,"Flags":2,"Description":"Description of the error."},"details":{"Type":155,"Flags":2,"Description":"Internal error details."}}}},{"3":{"ItemType":154}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"SystemData","Properties":{"createdBy":{"Type":4,"Flags":0,"Description":"The identity that created the resource."},"createdByType":{"Type":162,"Flags":0,"Description":"The type of identity that created the resource."},"createdAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource creation (UTC)."},"lastModifiedBy":{"Type":4,"Flags":0,"Description":"The identity that last modified the resource."},"lastModifiedByType":{"Type":167,"Flags":0,"Description":"The type of identity that last modified the resource."},"lastModifiedAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource last modification (UTC)"}}}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[158,159,160,161,4]}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[163,164,165,166,4]}},{"4":{"Name":"Microsoft.Workloads/sapVirtualInstances@2023-10-01-preview","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.Workloads/sapVirtualInstances/centralInstances"}},{"6":{"Value":"2023-10-01-preview"}},{"2":{"Name":"Microsoft.Workloads/sapVirtualInstances/centralInstances","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":169,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":170,"Flags":10,"Description":"The resource api version"},"properties":{"Type":172,"Flags":0,"Description":"Defines the SAP Central Services Instance properties."},"tags":{"Type":233,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":157,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"SAPCentralServerProperties","Properties":{"instanceNo":{"Type":4,"Flags":2,"Description":"The central services instance number."},"subnet":{"Type":4,"Flags":2,"Description":"The central services instance subnet."},"messageServerProperties":{"Type":173,"Flags":0,"Description":"Defines the SAP message server properties."},"enqueueServerProperties":{"Type":179,"Flags":0,"Description":"Defines the SAP Enqueue Server properties."},"gatewayServerProperties":{"Type":185,"Flags":0,"Description":"Defines the SAP Gateway Server properties."},"enqueueReplicationServerProperties":{"Type":191,"Flags":0,"Description":"Defines the SAP Enqueue Replication Server (ERS) properties."},"kernelVersion":{"Type":4,"Flags":2,"Description":"The central services instance Kernel Version."},"kernelPatch":{"Type":4,"Flags":2,"Description":"The central services instance Kernel Patch level."},"loadBalancerDetails":{"Type":200,"Flags":2,"Description":"The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines"},"vmDetails":{"Type":212,"Flags":2,"Description":"The list of virtual machines corresponding to the Central Services instance."},"status":{"Type":220,"Flags":2,"Description":"Defines the SAP Instance status."},"health":{"Type":225,"Flags":2,"Description":"Defines the health of SAP Instances."},"provisioningState":{"Type":232,"Flags":2,"Description":"Defines the provisioning states."},"errors":{"Type":153,"Flags":2,"Description":"Defines the errors related to SAP Central Services Instance resource."}}}},{"2":{"Name":"MessageServerProperties","Properties":{"msPort":{"Type":3,"Flags":2,"Description":"message server port."},"internalMsPort":{"Type":3,"Flags":2,"Description":"message server internal MS port."},"httpPort":{"Type":3,"Flags":2,"Description":"message server HTTP Port."},"httpsPort":{"Type":3,"Flags":2,"Description":"message server HTTPS Port."},"hostname":{"Type":4,"Flags":2,"Description":"message server SAP Hostname."},"ipAddress":{"Type":4,"Flags":2,"Description":"message server IP Address."},"health":{"Type":178,"Flags":2,"Description":"Defines the health of SAP Instances."}}}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[174,175,176,177,4]}},{"2":{"Name":"EnqueueServerProperties","Properties":{"hostname":{"Type":4,"Flags":2,"Description":"Enqueue Server SAP Hostname."},"ipAddress":{"Type":4,"Flags":2,"Description":"Enqueue Server SAP IP Address."},"port":{"Type":3,"Flags":2,"Description":"Enqueue Server Port."},"health":{"Type":184,"Flags":2,"Description":"Defines the health of SAP Instances."}}}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[180,181,182,183,4]}},{"2":{"Name":"GatewayServerProperties","Properties":{"port":{"Type":3,"Flags":2,"Description":"Gateway Port."},"health":{"Type":190,"Flags":2,"Description":"Defines the health of SAP Instances."}}}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[186,187,188,189,4]}},{"2":{"Name":"EnqueueReplicationServerProperties","Properties":{"ersVersion":{"Type":194,"Flags":2,"Description":"Defines the type of Enqueue Replication Server."},"instanceNo":{"Type":4,"Flags":2,"Description":"ERS Instance Number."},"hostname":{"Type":4,"Flags":2,"Description":"ERS SAP Hostname."},"kernelVersion":{"Type":4,"Flags":2,"Description":"ERS SAP Kernel Version."},"kernelPatch":{"Type":4,"Flags":2,"Description":"ERS SAP Kernel Patch level."},"ipAddress":{"Type":4,"Flags":2,"Description":"ERS SAP IP Address."},"health":{"Type":199,"Flags":2,"Description":"Defines the health of SAP Instances."}}}},{"6":{"Value":"EnqueueReplicator1"}},{"6":{"Value":"EnqueueReplicator2"}},{"5":{"Elements":[192,193,4]}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[195,196,197,198,4]}},{"2":{"Name":"LoadBalancerDetails","Properties":{"id":{"Type":4,"Flags":2}}}},{"2":{"Name":"CentralServerVmDetails","Properties":{"type":{"Type":209,"Flags":2,"Description":"Defines the type of central server VM."},"virtualMachineId":{"Type":4,"Flags":2},"storageDetails":{"Type":211,"Flags":2,"Description":"Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared Storage."}}}},{"6":{"Value":"Primary"}},{"6":{"Value":"Secondary"}},{"6":{"Value":"Unknown"}},{"6":{"Value":"ASCS"}},{"6":{"Value":"ERSInactive"}},{"6":{"Value":"ERS"}},{"6":{"Value":"Standby"}},{"5":{"Elements":[202,203,204,205,206,207,208,4]}},{"2":{"Name":"StorageInformation","Properties":{"id":{"Type":4,"Flags":2}}}},{"3":{"ItemType":210}},{"3":{"ItemType":201}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Offline"}},{"6":{"Value":"PartiallyRunning"}},{"6":{"Value":"Unavailable"}},{"6":{"Value":"SoftShutdown"}},{"5":{"Elements":[213,214,215,216,217,218,219,4]}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[221,222,223,224,4]}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[226,227,228,229,230,231,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.Workloads/sapVirtualInstances/centralInstances@2023-10-01-preview","ScopeType":8,"Body":171,"Flags":0}},{"6":{"Value":"Microsoft.Workloads/sapVirtualInstances/databaseInstances"}},{"6":{"Value":"2023-10-01-preview"}},{"2":{"Name":"Microsoft.Workloads/sapVirtualInstances/databaseInstances","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":235,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":236,"Flags":10,"Description":"The resource api version"},"properties":{"Type":238,"Flags":0,"Description":"Defines the Database properties."},"tags":{"Type":265,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":157,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"SAPDatabaseProperties","Properties":{"subnet":{"Type":4,"Flags":2,"Description":"Database subnet."},"databaseSid":{"Type":4,"Flags":2,"Description":"Database SID name."},"databaseType":{"Type":4,"Flags":2,"Description":"Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server."},"ipAddress":{"Type":4,"Flags":2,"Description":"Database IP Address."},"loadBalancerDetails":{"Type":200,"Flags":2,"Description":"The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines"},"vmDetails":{"Type":249,"Flags":2,"Description":"The list of virtual machines corresponding to the Database resource."},"status":{"Type":257,"Flags":2,"Description":"Defines the SAP Instance status."},"provisioningState":{"Type":264,"Flags":2,"Description":"Defines the provisioning states."},"errors":{"Type":153,"Flags":2,"Description":"Defines the errors related to Database resource."}}}},{"2":{"Name":"DatabaseVmDetails","Properties":{"virtualMachineId":{"Type":4,"Flags":2},"status":{"Type":247,"Flags":2,"Description":"Defines the SAP Instance status."},"storageDetails":{"Type":248,"Flags":2,"Description":"Storage details of all the Storage Accounts attached to the Database Virtual Machine. For e.g. NFS on AFS Shared Storage."}}}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Offline"}},{"6":{"Value":"PartiallyRunning"}},{"6":{"Value":"Unavailable"}},{"6":{"Value":"SoftShutdown"}},{"5":{"Elements":[240,241,242,243,244,245,246,4]}},{"3":{"ItemType":210}},{"3":{"ItemType":239}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Offline"}},{"6":{"Value":"PartiallyRunning"}},{"6":{"Value":"Unavailable"}},{"6":{"Value":"SoftShutdown"}},{"5":{"Elements":[250,251,252,253,254,255,256,4]}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[258,259,260,261,262,263,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.Workloads/sapVirtualInstances/databaseInstances@2023-10-01-preview","ScopeType":8,"Body":237,"Flags":0}},{"6":{"Value":"Microsoft.Workloads/sapVirtualInstances/applicationInstances"}},{"6":{"Value":"2023-10-01-preview"}},{"2":{"Name":"Microsoft.Workloads/sapVirtualInstances/applicationInstances","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":267,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":268,"Flags":10,"Description":"The resource api version"},"properties":{"Type":270,"Flags":0,"Description":"Defines the SAP Application Server instance properties."},"tags":{"Type":298,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":157,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"SAPApplicationServerProperties","Properties":{"instanceNo":{"Type":4,"Flags":2,"Description":"Application server Instance Number."},"subnet":{"Type":4,"Flags":2,"Description":"Application server Subnet."},"hostname":{"Type":4,"Flags":2,"Description":"Application server instance SAP hostname."},"kernelVersion":{"Type":4,"Flags":2,"Description":"Application server instance SAP Kernel Version."},"kernelPatch":{"Type":4,"Flags":2,"Description":"Application server instance SAP Kernel Patch level."},"ipAddress":{"Type":4,"Flags":2,"Description":"Application server instance SAP IP Address."},"gatewayPort":{"Type":3,"Flags":2,"Description":"Application server instance gateway Port."},"icmHttpPort":{"Type":3,"Flags":2,"Description":"Application server instance ICM HTTP Port."},"icmHttpsPort":{"Type":3,"Flags":2,"Description":"Application server instance ICM HTTPS Port."},"dispatcherStatus":{"Type":4,"Flags":2,"Description":"Application server instance dispatcher status."},"loadBalancerDetails":{"Type":200,"Flags":2,"Description":"The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines"},"vmDetails":{"Type":277,"Flags":2,"Description":"The list of virtual machines."},"status":{"Type":285,"Flags":2,"Description":"Defines the SAP Instance status."},"health":{"Type":290,"Flags":2,"Description":"Defines the health of SAP Instances."},"provisioningState":{"Type":297,"Flags":2,"Description":"Defines the provisioning states."},"errors":{"Type":153,"Flags":2,"Description":"Defines the Application Instance errors."}}}},{"2":{"Name":"ApplicationServerVmDetails","Properties":{"type":{"Type":275,"Flags":2,"Description":"Defines the type of application server VM."},"virtualMachineId":{"Type":4,"Flags":2},"storageDetails":{"Type":276,"Flags":2,"Description":"Storage details of all the Storage Accounts attached to the App Virtual Machine. For e.g. NFS on AFS Shared Storage."}}}},{"6":{"Value":"Active"}},{"6":{"Value":"Standby"}},{"6":{"Value":"Unknown"}},{"5":{"Elements":[272,273,274,4]}},{"3":{"ItemType":210}},{"3":{"ItemType":271}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Offline"}},{"6":{"Value":"PartiallyRunning"}},{"6":{"Value":"Unavailable"}},{"6":{"Value":"SoftShutdown"}},{"5":{"Elements":[278,279,280,281,282,283,284,4]}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"Degraded"}},{"5":{"Elements":[286,287,288,289,4]}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[291,292,293,294,295,296,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.Workloads/sapVirtualInstances/applicationInstances@2023-10-01-preview","ScopeType":8,"Body":269,"Flags":0}},{"2":{"Name":"SAPSizingRecommendationRequest","Properties":{"appLocation":{"Type":4,"Flags":1,"Description":"The geo-location where the resource is to be created."},"environment":{"Type":303,"Flags":1,"Description":"Defines the environment type - Production/Non Production."},"sapProduct":{"Type":307,"Flags":1,"Description":"Defines the SAP Product type."},"deploymentType":{"Type":310,"Flags":1,"Description":"The deployment type. Eg: SingleServer/ThreeTier"},"saps":{"Type":3,"Flags":1,"Description":"The SAP Application Performance Standard measurement."},"dbMemory":{"Type":3,"Flags":1,"Description":"The database memory configuration."},"databaseType":{"Type":313,"Flags":1,"Description":"The database type."},"dbScaleMethod":{"Type":315,"Flags":0,"Description":"The DB scale method."},"highAvailabilityType":{"Type":318,"Flags":0,"Description":"The high availability type."}}}},{"6":{"Value":"NonProd"}},{"6":{"Value":"Prod"}},{"5":{"Elements":[301,302,4]}},{"6":{"Value":"ECC"}},{"6":{"Value":"S4HANA"}},{"6":{"Value":"Other"}},{"5":{"Elements":[304,305,306,4]}},{"6":{"Value":"SingleServer"}},{"6":{"Value":"ThreeTier"}},{"5":{"Elements":[308,309,4]}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[311,312,4]}},{"6":{"Value":"ScaleUp"}},{"5":{"Elements":[314,4]}},{"6":{"Value":"AvailabilitySet"}},{"6":{"Value":"AvailabilityZone"}},{"5":{"Elements":[316,317,4]}},{"7":{"Name":"SAPSizingRecommendationResult","Discriminator":"deploymentType","BaseProperties":{},"Elements":{"SingleServer":320,"ThreeTier":322}}},{"2":{"Name":"SingleServerRecommendationResult","Properties":{"vmSku":{"Type":4,"Flags":0,"Description":"The recommended VM SKU for single server."},"deploymentType":{"Type":321,"Flags":1,"Description":"The type of SAP deployment, single server or Three tier."}}}},{"6":{"Value":"SingleServer"}},{"2":{"Name":"ThreeTierRecommendationResult","Properties":{"dbVmSku":{"Type":4,"Flags":0,"Description":"The database VM SKU."},"databaseInstanceCount":{"Type":3,"Flags":0,"Description":"The database server instance count."},"centralServerVmSku":{"Type":4,"Flags":0,"Description":"The central server VM SKU."},"centralServerInstanceCount":{"Type":3,"Flags":0,"Description":"The central server instance count."},"applicationServerVmSku":{"Type":4,"Flags":0,"Description":"The application server VM SKU."},"applicationServerInstanceCount":{"Type":3,"Flags":0,"Description":"The application server instance count."},"deploymentType":{"Type":323,"Flags":1,"Description":"The type of SAP deployment, single server or Three tier."}}}},{"6":{"Value":"ThreeTier"}},{"8":{"Name":"getSizingRecommendations","ResourceType":"Microsoft.Workloads/locations/sapVirtualInstanceMetadata","ApiVersion":"2023-10-01-preview","Output":319,"Input":300}},{"2":{"Name":"SAPSupportedSkusRequest","Properties":{"appLocation":{"Type":4,"Flags":1,"Description":"The geo-location where the resource is to be created."},"environment":{"Type":328,"Flags":1,"Description":"Defines the environment type - Production/Non Production."},"sapProduct":{"Type":332,"Flags":1,"Description":"Defines the SAP Product type."},"deploymentType":{"Type":335,"Flags":1,"Description":"The deployment type. Eg: SingleServer/ThreeTier"},"databaseType":{"Type":338,"Flags":1,"Description":"The database type. Eg: HANA, DB2, etc"},"highAvailabilityType":{"Type":341,"Flags":0,"Description":"The high availability type."}}}},{"6":{"Value":"NonProd"}},{"6":{"Value":"Prod"}},{"5":{"Elements":[326,327,4]}},{"6":{"Value":"ECC"}},{"6":{"Value":"S4HANA"}},{"6":{"Value":"Other"}},{"5":{"Elements":[329,330,331,4]}},{"6":{"Value":"SingleServer"}},{"6":{"Value":"ThreeTier"}},{"5":{"Elements":[333,334,4]}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[336,337,4]}},{"6":{"Value":"AvailabilitySet"}},{"6":{"Value":"AvailabilityZone"}},{"5":{"Elements":[339,340,4]}},{"2":{"Name":"SAPSupportedResourceSkusResult","Properties":{"supportedSkus":{"Type":344,"Flags":0,"Description":"Gets the list of SAP supported SKUs."}}}},{"2":{"Name":"SAPSupportedSku","Properties":{"vmSku":{"Type":4,"Flags":0,"Description":"The VM Sku."},"isAppServerCertified":{"Type":2,"Flags":0,"Description":"True if the Sku is certified for App server in the SAP system."},"isDatabaseCertified":{"Type":2,"Flags":0,"Description":"True if the Sku is certified for Database server in the SAP system."}}}},{"3":{"ItemType":343}},{"8":{"Name":"getSapSupportedSku","ResourceType":"Microsoft.Workloads/locations/sapVirtualInstanceMetadata","ApiVersion":"2023-10-01-preview","Output":342,"Input":325}},{"2":{"Name":"SAPDiskConfigurationsRequest","Properties":{"appLocation":{"Type":4,"Flags":1,"Description":"The geo-location where the SAP resources will be created."},"environment":{"Type":349,"Flags":1,"Description":"Defines the environment type - Production/Non Production."},"sapProduct":{"Type":353,"Flags":1,"Description":"Defines the SAP Product type."},"databaseType":{"Type":356,"Flags":1,"Description":"The database type. Eg: HANA, DB2, etc"},"deploymentType":{"Type":359,"Flags":1,"Description":"The deployment type. Eg: SingleServer/ThreeTier"},"dbVmSku":{"Type":4,"Flags":1,"Description":"The VM SKU for database instance."}}}},{"6":{"Value":"NonProd"}},{"6":{"Value":"Prod"}},{"5":{"Elements":[347,348,4]}},{"6":{"Value":"ECC"}},{"6":{"Value":"S4HANA"}},{"6":{"Value":"Other"}},{"5":{"Elements":[350,351,352,4]}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[354,355,4]}},{"6":{"Value":"SingleServer"}},{"6":{"Value":"ThreeTier"}},{"5":{"Elements":[357,358,4]}},{"2":{"Name":"SAPDiskConfigurationsResult","Properties":{"volumeConfigurations":{"Type":364,"Flags":0,"Description":"The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup']."}}}},{"2":{"Name":"SAPDiskConfiguration","Properties":{"recommendedConfiguration":{"Type":49,"Flags":0,"Description":"The recommended disk details for a given VM Sku."},"supportedConfigurations":{"Type":363,"Flags":0,"Description":"The list of supported disks for a given VM Sku."}}}},{"2":{"Name":"DiskDetails","Properties":{"sku":{"Type":50,"Flags":0,"Description":"The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS."},"sizeGB":{"Type":3,"Flags":0,"Description":"The disk size in GB."},"minimumSupportedDiskCount":{"Type":3,"Flags":0,"Description":"The minimum supported disk count."},"maximumSupportedDiskCount":{"Type":3,"Flags":0,"Description":"The maximum supported disk count."},"iopsReadWrite":{"Type":3,"Flags":0,"Description":"The disk Iops."},"mbpsReadWrite":{"Type":3,"Flags":0,"Description":"The disk provisioned throughput in MBps."},"diskTier":{"Type":4,"Flags":0,"Description":"The disk tier, e.g. P10, E10."}}}},{"3":{"ItemType":362}},{"2":{"Name":"SAPDiskConfigurationsResultVolumeConfigurations","Properties":{},"AdditionalProperties":361}},{"8":{"Name":"getDiskConfigurations","ResourceType":"Microsoft.Workloads/locations/sapVirtualInstanceMetadata","ApiVersion":"2023-10-01-preview","Output":360,"Input":346}},{"2":{"Name":"SAPAvailabilityZoneDetailsRequest","Properties":{"appLocation":{"Type":4,"Flags":1,"Description":"The geo-location where the SAP resources will be created."},"sapProduct":{"Type":370,"Flags":1,"Description":"Defines the SAP Product type."},"databaseType":{"Type":373,"Flags":1,"Description":"The database type. Eg: HANA, DB2, etc"}}}},{"6":{"Value":"ECC"}},{"6":{"Value":"S4HANA"}},{"6":{"Value":"Other"}},{"5":{"Elements":[367,368,369,4]}},{"6":{"Value":"HANA"}},{"6":{"Value":"DB2"}},{"5":{"Elements":[371,372,4]}},{"2":{"Name":"SAPAvailabilityZoneDetailsResult","Properties":{"availabilityZonePairs":{"Type":376,"Flags":0,"Description":"Gets the list of availability zone pairs."}}}},{"2":{"Name":"SAPAvailabilityZonePair","Properties":{"zoneA":{"Type":3,"Flags":0,"Description":"The zone A."},"zoneB":{"Type":3,"Flags":0,"Description":"The zone B."}}}},{"3":{"ItemType":375}},{"8":{"Name":"getAvailabilityZoneDetails","ResourceType":"Microsoft.Workloads/locations/sapVirtualInstanceMetadata","ApiVersion":"2023-10-01-preview","Output":374,"Input":366}},{"2":{"Name":"StartRequest","Properties":{"startVm":{"Type":2,"Flags":0,"Description":"The boolean value indicates whether to start the virtual machines before starting the SAP instances."}}}},{"2":{"Name":"OperationStatusResult","Properties":{"id":{"Type":4,"Flags":0,"Description":"Fully qualified ID for the async operation."},"name":{"Type":4,"Flags":0,"Description":"Name of the async operation."},"status":{"Type":4,"Flags":1,"Description":"Operation status."},"percentComplete":{"Type":3,"Flags":0,"Description":"Percent of the operation that is complete."},"startTime":{"Type":4,"Flags":0,"Description":"The start time of the operation."},"endTime":{"Type":4,"Flags":0,"Description":"The end time of the operation."},"operations":{"Type":380,"Flags":0,"Description":"The operations list."},"error":{"Type":381,"Flags":0,"Description":"If present, details of the operation error."}}}},{"3":{"ItemType":379}},{"2":{"Name":"ErrorDetail","Properties":{"code":{"Type":4,"Flags":2,"Description":"The error code."},"message":{"Type":4,"Flags":2,"Description":"The error message."},"target":{"Type":4,"Flags":2,"Description":"The error target."},"details":{"Type":382,"Flags":2,"Description":"The error details."},"additionalInfo":{"Type":384,"Flags":2,"Description":"The error additional info."}}}},{"3":{"ItemType":381}},{"2":{"Name":"ErrorAdditionalInfo","Properties":{"type":{"Type":4,"Flags":2,"Description":"The additional info type."},"info":{"Type":0,"Flags":2,"Description":"The additional info."}}}},{"3":{"ItemType":383}},{"8":{"Name":"start","ResourceType":"Microsoft.Workloads/sapVirtualInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":378}},{"2":{"Name":"StopRequest","Properties":{"softStopTimeoutSeconds":{"Type":3,"Flags":0,"Description":"This parameter defines how long (in seconds) the soft shutdown waits until the RFC/HTTP clients no longer consider the server for calls with load balancing. Value 0 means that the kernel does not wait, but goes directly into the next shutdown state, i.e. hard stop."},"deallocateVm":{"Type":2,"Flags":0,"Description":"The boolean value indicates whether to Stop and deallocate the virtual machines along with the SAP instances."}}}},{"8":{"Name":"stop","ResourceType":"Microsoft.Workloads/sapVirtualInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":386}},{"8":{"Name":"start","ResourceType":"Microsoft.Workloads/sapVirtualInstances/centralInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":378}},{"8":{"Name":"stop","ResourceType":"Microsoft.Workloads/sapVirtualInstances/centralInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":386}},{"8":{"Name":"start","ResourceType":"Microsoft.Workloads/sapVirtualInstances/databaseInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":378}},{"8":{"Name":"stop","ResourceType":"Microsoft.Workloads/sapVirtualInstances/databaseInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":386}},{"8":{"Name":"start","ResourceType":"Microsoft.Workloads/sapVirtualInstances/applicationInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":378}},{"8":{"Name":"stop","ResourceType":"Microsoft.Workloads/sapVirtualInstances/applicationInstances","ApiVersion":"2023-10-01-preview","Output":379,"Input":386}}]
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z0-9]{2}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/sapVirtualInstances"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/sapVirtualInstances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Managed service identity (user assigned identities)"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Defines the Virtual Instance for SAP solutions resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedServiceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Type of manage identity"
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "User assigned identities dictionary"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPVirtualInstanceProperties",
+    "properties": {
+      "environment": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Defines the environment type - Production/Non Production."
+      },
+      "sapProduct": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "Defines the SAP Product type."
+      },
+      "managedResourcesNetworkAccessType": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Specifies the network access configuration for the resources that will be deployed in the Managed Resource Group. The options to choose from are Public and Private. If 'Private' is chosen, the Storage Account service tag should be enabled on the subnets in which the SAP VMs exist. This is required for establishing connectivity between VM extensions and the managed resource group storage account. This setting is currently applicable only to Storage Account. Learn more here https://go.microsoft.com/fwlink/?linkid=2247228"
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "Defines if the SAP system is being created using Azure Center for SAP solutions (ACSS) or if an existing SAP system is being registered with ACSS"
+      },
+      "managedResourceGroupConfiguration": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "Managed resource group configuration"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 2,
+        "description": "Defines the SAP Instance status."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 2,
+        "description": "Defines the Virtual Instance for SAP state."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Indicates any errors on the Virtual Instance for SAP solutions resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonProd"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prod"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S4HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SAPConfiguration",
+    "discriminator": "configurationType",
+    "baseProperties": {},
+    "elements": {
+      "Deployment": {
+        "$ref": "#/24"
+      },
+      "DeploymentWithOSConfig": {
+        "$ref": "#/110"
+      },
+      "Discovery": {
+        "$ref": "#/114"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentConfiguration",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The geo-location where the SAP system is to be created."
+      },
+      "infrastructureConfiguration": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The infrastructure configuration."
+      },
+      "softwareConfiguration": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The software configuration."
+      },
+      "configurationType": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 1,
+        "description": "The configuration Type."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "InfrastructureConfiguration",
+    "discriminator": "deploymentType",
+    "baseProperties": {
+      "appResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The application resource group where SAP system resources will be deployed."
+      }
+    },
+    "elements": {
+      "SingleServer": {
+        "$ref": "#/26"
+      },
+      "ThreeTier": {
+        "$ref": "#/67"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingleServerConfiguration",
+    "properties": {
+      "networkConfiguration": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Network configuration for the server"
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The database type."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The subnet id."
+      },
+      "virtualMachineConfiguration": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Gets or sets the virtual machine configuration."
+      },
+      "dbDiskConfiguration": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Gets or sets the disk configuration."
+      },
+      "customResourceNames": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The set of custom names to be used for underlying azure resources that are part of the SAP system."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "The type of SAP deployment, single server or Three tier."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkConfiguration",
+    "properties": {
+      "isSecondaryIpEnabled": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Specifies whether a secondary IP address should be added to the network interface on all VMs of the SAP system being deployed"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineConfiguration",
+    "properties": {
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The virtual machine size."
+      },
+      "imageReference": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "The image reference."
+      },
+      "osProfile": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "The OS profile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageReference",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The image publisher."
+      },
+      "offer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the offer of the platform image or marketplace image used to create the virtual machine."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The image SKU."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the ARM resource ID of the Azure Compute Gallery image version used for creating ACSS VMs. You will need to provide this input when you choose to deploy virtual machines in ACSS with OS image from the Azure Compute gallery."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OSProfile",
+    "properties": {
+      "adminUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is created. <br><br> **Windows-only restriction:** Cannot end in \".\" <br><br> **Disallowed values:** \"administrator\", \"admin\", \"user\", \"user1\", \"test\", \"user2\", \"test1\", \"user3\", \"admin1\", \"1\", \"123\", \"a\", \"actuser\", \"adm\", \"admin2\", \"aspnet\", \"backup\", \"console\", \"david\", \"guest\", \"john\", \"owner\", \"root\", \"server\", \"sql\", \"support\", \"support_388945a0\", \"sys\", \"test2\", \"test3\", \"user4\", \"user5\". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters."
+      },
+      "adminPassword": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)"
+      },
+      "osConfiguration": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Specifies Windows operating system settings on the virtual machine."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "OSConfiguration",
+    "discriminator": "osType",
+    "baseProperties": {},
+    "elements": {
+      "Linux": {
+        "$ref": "#/37"
+      },
+      "Windows": {
+        "$ref": "#/43"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxConfiguration",
+    "properties": {
+      "disablePasswordAuthentication": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Specifies whether password authentication should be disabled."
+      },
+      "ssh": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair' instead)"
+      },
+      "sshKeyPair": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The SSH Key-pair used to authenticate with the VM's."
+      },
+      "osType": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "The OS Type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SshConfiguration",
+    "properties": {
+      "publicKeys": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The list of SSH public keys used to authenticate with linux based VMs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SshPublicKey",
+    "properties": {
+      "keyData": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SshKeyPair",
+    "properties": {
+      "publicKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SSH public key"
+      },
+      "privateKey": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "SSH private key."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WindowsConfiguration",
+    "properties": {
+      "osType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "The OS Type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskConfiguration",
+    "properties": {
+      "diskVolumeConfigurations": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup']."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskVolumeConfiguration",
+    "properties": {
+      "count": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The total number of disks required for the concerned volume."
+      },
+      "sizeGB": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The disk size in GB."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The disk SKU details."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Defines the disk sku name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UltraSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PremiumV2_LRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskConfigurationDiskVolumeConfigurations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/46"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SingleServerCustomResourceNames",
+    "discriminator": "namingPatternType",
+    "baseProperties": {},
+    "elements": {
+      "FullResourceName": {
+        "$ref": "#/59"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingleServerFullResourceNames",
+    "properties": {
+      "virtualMachine": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "The resource names object for virtual machine and related resources."
+      },
+      "namingPatternType": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "The pattern type to be used for resource naming."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineResourceNames",
+    "properties": {
+      "vmName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for virtual machine. The length of this field can be upto 64 characters. If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name is {SID}vm. In case of HA-AvZone systems, default name will be {SID}{app/ascs/db}z{a/b}vm with an incrementor at the end in case of more than 1 vm per layer. For distributed and HA-AvSet systems, default name will be {SID}{app/ascs/db}vm with an incrementor at the end in case of more than 1 vm per layer."
+      },
+      "hostName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for virtual-machine's host (computer name). Currently, ACSS only supports host names which are less than or equal to 13 characters long. If this value is not provided, vmName will be used as host name."
+      },
+      "networkInterfaces": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "The list of network interface name objects for the selected virtual machine. Currently, only one network interface is supported per virtual machine."
+      },
+      "osDiskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for OS disk attached to the VM. If this value is not provided, it will be named by ARM as per its default naming standards (prefixed with vm name). There is only one OS disk attached per Virtual Machine."
+      },
+      "dataDiskNames": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The full resource names for virtual machine data disks. This is a dictionary containing list of names of data disks per volume. Currently supported volumes for database layer are ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default' volume is supported"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkInterfaceResourceNames",
+    "properties": {
+      "networkInterfaceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for network interface. If name is not provided, service uses a default name based on the deployment type. For SingleServer, default name is {SID}-Nic. In case of HA-AvZone systems, default name will be {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more than 1 instance per layer. For distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic with an incrementor at the end in case of more than 1 instance per layer."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/61"
+    },
+    "maxLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineResourceNamesDataDiskNames",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/63"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FullResourceName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleServer"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ThreeTierConfiguration",
+    "properties": {
+      "networkConfiguration": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Network configuration common to all servers"
+      },
+      "centralServer": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 1,
+        "description": "The central server configuration."
+      },
+      "applicationServer": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 1,
+        "description": "The application server configuration."
+      },
+      "databaseServer": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 1,
+        "description": "The database configuration."
+      },
+      "highAvailabilityConfig": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The high availability configuration."
+      },
+      "storageConfiguration": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The storage configuration."
+      },
+      "customResourceNames": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The set of custom names to be used for underlying azure resources that are part of the SAP system."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 1,
+        "description": "The type of SAP deployment, single server or Three tier."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CentralServerConfiguration",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The subnet id."
+      },
+      "virtualMachineConfiguration": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Gets or sets the virtual machine configuration."
+      },
+      "instanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The number of central server VMs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationServerConfiguration",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The subnet id."
+      },
+      "virtualMachineConfiguration": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Gets or sets the virtual machine configuration."
+      },
+      "instanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The number of app server instances."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabaseConfiguration",
+    "properties": {
+      "databaseType": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The database type."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The subnet id."
+      },
+      "virtualMachineConfiguration": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Gets or sets the virtual machine configuration."
+      },
+      "instanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The number of database VMs."
+      },
+      "diskConfiguration": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Gets or sets the disk configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HighAvailabilityConfiguration",
+    "properties": {
+      "highAvailabilityType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 1,
+        "description": "The high availability type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilitySet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilityZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageConfiguration",
+    "properties": {
+      "transportFileShareConfiguration": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FileShareConfiguration",
+    "discriminator": "configurationType",
+    "baseProperties": {},
+    "elements": {
+      "CreateAndMount": {
+        "$ref": "#/80"
+      },
+      "Mount": {
+        "$ref": "#/82"
+      },
+      "Skip": {
+        "$ref": "#/84"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateAndMountFileShareConfiguration",
+    "properties": {
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of transport file share resource group. This should be pre created by the customer. The app rg is used in case of missing input."
+      },
+      "storageAccountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of file share storage account name . A custom name is used in case of missing input."
+      },
+      "configurationType": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "The type of file share config."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CreateAndMount"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MountFileShareConfiguration",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fileshare resource ID"
+      },
+      "privateEndpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The private endpoint resource ID"
+      },
+      "configurationType": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "The type of file share config."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mount"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SkipFileShareConfiguration",
+    "properties": {
+      "configurationType": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "The type of file share config."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skip"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ThreeTierCustomResourceNames",
+    "discriminator": "namingPatternType",
+    "baseProperties": {},
+    "elements": {
+      "FullResourceName": {
+        "$ref": "#/87"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ThreeTierFullResourceNames",
+    "properties": {
+      "centralServer": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "The full resource names object for central server layer resources."
+      },
+      "applicationServer": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The full resource names object for application layer resources. The number of entries in this list should be equal to the number VMs to be created for application layer."
+      },
+      "databaseServer": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The full resource names object for database layer resources. The number of entries in this list should be equal to the number VMs to be created for database layer."
+      },
+      "sharedStorage": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The resource names object for shared storage."
+      },
+      "namingPatternType": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 1,
+        "description": "The pattern type to be used for resource naming."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CentralServerFullResourceNames",
+    "properties": {
+      "virtualMachines": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "The list of names for all ASCS virtual machines to be deployed. The number of entries in this list should be equal to the number VMs to be created for ASCS layer. At maximum, there can be two virtual machines at this layer: ASCS and ERS."
+      },
+      "availabilitySetName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for availability set. In case name is not provided, it will be defaulted to {SID}-ASCS-AvSet."
+      },
+      "loadBalancer": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "The resource names object for load balancer and related resources."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancerResourceNames",
+    "properties": {
+      "loadBalancerName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full resource name for load balancer. If this value is not provided, load balancer will be name as {ASCS/DB}-loadBalancer."
+      },
+      "frontendIpConfigurationNames": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "The list of frontend IP configuration names. If provided as input, size of this list should be 2 for cs layer and should be 1 for database layer."
+      },
+      "backendPoolNames": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The list of backend pool names. Currently, ACSS deploys only one backend pool and hence, size of this list should be 1"
+      },
+      "healthProbeNames": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "The list of health probe names. If provided as input, size of this list should be 2 for cs layer and should be 1 for database layer."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationServerFullResourceNames",
+    "properties": {
+      "virtualMachines": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The list of virtual machine naming details."
+      },
+      "availabilitySetName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for availability set. In case name is not provided, it will be defaulted to {SID}-App-AvSet."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabaseServerFullResourceNames",
+    "properties": {
+      "virtualMachines": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The list of virtual machine naming details."
+      },
+      "availabilitySetName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name for availability set. In case name is not provided, it will be defaulted to {SID}-DB-AvSet."
+      },
+      "loadBalancer": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "The resource names object for load balancer and related resources."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SharedStorageResourceNames",
+    "properties": {
+      "sharedStorageAccountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name of the shared storage account. If it is not provided, it will be defaulted to {SID}nfs{guid of 15 chars}."
+      },
+      "sharedStorageAccountPrivateEndPointName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full name of private end point for the shared storage account. If it is not provided, it will be defaulted to {storageAccountName}_pe"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FullResourceName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThreeTier"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SoftwareConfiguration",
+    "discriminator": "softwareInstallationType",
+    "baseProperties": {},
+    "elements": {
+      "External": {
+        "$ref": "#/102"
+      },
+      "SAPInstallWithoutOSConfig": {
+        "$ref": "#/104"
+      },
+      "ServiceInitiated": {
+        "$ref": "#/107"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalInstallationSoftwareConfiguration",
+    "properties": {
+      "centralServerVmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the virtual machine containing the central server instance."
+      },
+      "softwareInstallationType": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 1,
+        "description": "The SAP software installation Type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "External"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPInstallWithoutOSConfigSoftwareConfiguration",
+    "properties": {
+      "bomUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URL to the SAP Build of Materials(BOM) file."
+      },
+      "sapBitsStorageAccountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The SAP bits storage account id."
+      },
+      "softwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The software version to install."
+      },
+      "highAvailabilitySoftwareConfiguration": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Gets or sets the HA software configuration."
+      },
+      "softwareInstallationType": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "The SAP software installation Type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HighAvailabilitySoftwareConfiguration",
+    "properties": {
+      "fencingClientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fencing client id."
+      },
+      "fencingClientPassword": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "The fencing client id secret/password. The secret should never expire. This will be used pacemaker to start/stop the cluster VMs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SAPInstallWithoutOSConfig"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceInitiatedSoftwareConfiguration",
+    "properties": {
+      "bomUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URL to the SAP Build of Materials(BOM) file."
+      },
+      "softwareVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The software version to install."
+      },
+      "sapBitsStorageAccountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The SAP bits storage account id."
+      },
+      "sapFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The FQDN to set for the SAP system during install."
+      },
+      "sshPrivateKey": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "The SSH private key."
+      },
+      "highAvailabilitySoftwareConfiguration": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Gets or sets the HA software configuration."
+      },
+      "softwareInstallationType": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 1,
+        "description": "The SAP software installation Type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceInitiated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deployment"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentWithOSConfiguration",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The geo-location where the SAP system is to be created."
+      },
+      "infrastructureConfiguration": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The infrastructure configuration."
+      },
+      "softwareConfiguration": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The software configuration."
+      },
+      "osSapConfiguration": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "The OS and SAP configuration."
+      },
+      "configurationType": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 1,
+        "description": "The configuration Type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OsSapConfiguration",
+    "properties": {
+      "deployerVmPackages": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "The url and storage account ID where deployer VM packages are uploaded"
+      },
+      "sapFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The FQDN to set for the SAP system"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeployerVmPackages",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL to the deployer VM packages file."
+      },
+      "storageAccountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The deployer VM packages storage account id"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeploymentWithOSConfig"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveryConfiguration",
+    "properties": {
+      "centralServerVmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The virtual machine ID of the Central Server."
+      },
+      "managedRgStorageAccountName": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "The custom storage account name for the storage account created by the service in the managed resource group created as part of VIS deployment.<br><br>Refer to the storage account naming rules [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).<br><br>If not provided, the service will create the storage account with a random name."
+      },
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The geo-location where the SAP system exists."
+      },
+      "configurationType": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 1,
+        "description": "The configuration Type."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 24
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Discovery"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRGConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Managed resource group name"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InfrastructureDeploymentPending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InfrastructureDeploymentInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InfrastructureDeploymentFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftwareInstallationPending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftwareInstallationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftwareInstallationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftwareDetectionInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftwareDetectionFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DiscoveryPending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DiscoveryInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DiscoveryFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegistrationComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ACSSInstallationBlocked"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPVirtualInstanceError",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "The Virtual Instance for SAP error body."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDefinition",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Service specific error code which serves as the substatus for the HTTP error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Description of the error."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 2,
+        "description": "Internal error details."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/sapVirtualInstances@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^.*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/sapVirtualInstances/centralInstances"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/centralInstances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "Defines the SAP Central Services Instance properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPCentralServerProperties",
+    "properties": {
+      "instanceNo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The central services instance number."
+      },
+      "subnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The central services instance subnet."
+      },
+      "messageServerProperties": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "Defines the SAP message server properties."
+      },
+      "enqueueServerProperties": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Defines the SAP Enqueue Server properties."
+      },
+      "gatewayServerProperties": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 0,
+        "description": "Defines the SAP Gateway Server properties."
+      },
+      "enqueueReplicationServerProperties": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 0,
+        "description": "Defines the SAP Enqueue Replication Server (ERS) properties."
+      },
+      "kernelVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The central services instance Kernel Version."
+      },
+      "kernelPatch": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The central services instance Kernel Patch level."
+      },
+      "loadBalancerDetails": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 2,
+        "description": "The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines"
+      },
+      "vmDetails": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 2,
+        "description": "The list of virtual machines corresponding to the Central Services instance."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 2,
+        "description": "Defines the SAP Instance status."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Defines the errors related to SAP Central Services Instance resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessageServerProperties",
+    "properties": {
+      "msPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "message server port."
+      },
+      "internalMsPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "message server internal MS port."
+      },
+      "httpPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "message server HTTP Port."
+      },
+      "httpsPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "message server HTTPS Port."
+      },
+      "hostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "message server SAP Hostname."
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "message server IP Address."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnqueueServerProperties",
+    "properties": {
+      "hostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Enqueue Server SAP Hostname."
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Enqueue Server SAP IP Address."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Enqueue Server Port."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GatewayServerProperties",
+    "properties": {
+      "port": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gateway Port."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnqueueReplicationServerProperties",
+    "properties": {
+      "ersVersion": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 2,
+        "description": "Defines the type of Enqueue Replication Server."
+      },
+      "instanceNo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ERS Instance Number."
+      },
+      "hostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ERS SAP Hostname."
+      },
+      "kernelVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ERS SAP Kernel Version."
+      },
+      "kernelPatch": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ERS SAP Kernel Patch level."
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ERS SAP IP Address."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnqueueReplicator1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnqueueReplicator2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancerDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CentralServerVmDetails",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 2,
+        "description": "Defines the type of central server VM."
+      },
+      "virtualMachineId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      },
+      "storageDetails": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 2,
+        "description": "Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared Storage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ASCS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ERSInactive"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ERS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standby"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageInformation",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/210"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/201"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/centralInstances@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/171"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/sapVirtualInstances/databaseInstances"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/databaseInstances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Defines the Database properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPDatabaseProperties",
+    "properties": {
+      "subnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Database subnet."
+      },
+      "databaseSid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Database SID name."
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server."
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Database IP Address."
+      },
+      "loadBalancerDetails": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 2,
+        "description": "The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines"
+      },
+      "vmDetails": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 2,
+        "description": "The list of virtual machines corresponding to the Database resource."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 2,
+        "description": "Defines the SAP Instance status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Defines the errors related to Database resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabaseVmDetails",
+    "properties": {
+      "virtualMachineId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      },
+      "status": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 2,
+        "description": "Defines the SAP Instance status."
+      },
+      "storageDetails": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 2,
+        "description": "Storage details of all the Storage Accounts attached to the Database Virtual Machine. For e.g. NFS on AFS Shared Storage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/210"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/239"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/databaseInstances@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/237"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/sapVirtualInstances/applicationInstances"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/applicationInstances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 0,
+        "description": "Defines the SAP Application Server instance properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPApplicationServerProperties",
+    "properties": {
+      "instanceNo": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server Instance Number."
+      },
+      "subnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server Subnet."
+      },
+      "hostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server instance SAP hostname."
+      },
+      "kernelVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server instance SAP Kernel Version."
+      },
+      "kernelPatch": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server instance SAP Kernel Patch level."
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server instance SAP IP Address."
+      },
+      "gatewayPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Application server instance gateway Port."
+      },
+      "icmHttpPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Application server instance ICM HTTP Port."
+      },
+      "icmHttpsPort": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Application server instance ICM HTTPS Port."
+      },
+      "dispatcherStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Application server instance dispatcher status."
+      },
+      "loadBalancerDetails": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 2,
+        "description": "The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines"
+      },
+      "vmDetails": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 2,
+        "description": "The list of virtual machines."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 2,
+        "description": "Defines the SAP Instance status."
+      },
+      "health": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 2,
+        "description": "Defines the health of SAP Instances."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Defines the Application Instance errors."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationServerVmDetails",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Defines the type of application server VM."
+      },
+      "virtualMachineId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      },
+      "storageDetails": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 2,
+        "description": "Storage details of all the Storage Accounts attached to the App Virtual Machine. For e.g. NFS on AFS Shared Storage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/210"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/271"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyRunning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/sapVirtualInstances/applicationInstances@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/269"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPSizingRecommendationRequest",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource is to be created."
+      },
+      "environment": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 1,
+        "description": "Defines the environment type - Production/Non Production."
+      },
+      "sapProduct": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 1,
+        "description": "Defines the SAP Product type."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 1,
+        "description": "The deployment type. Eg: SingleServer/ThreeTier"
+      },
+      "saps": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The SAP Application Performance Standard measurement."
+      },
+      "dbMemory": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The database memory configuration."
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 1,
+        "description": "The database type."
+      },
+      "dbScaleMethod": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 0,
+        "description": "The DB scale method."
+      },
+      "highAvailabilityType": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "The high availability type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonProd"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prod"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S4HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/304"
+      },
+      {
+        "$ref": "#/305"
+      },
+      {
+        "$ref": "#/306"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleServer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThreeTier"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScaleUp"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilitySet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilityZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SAPSizingRecommendationResult",
+    "discriminator": "deploymentType",
+    "baseProperties": {},
+    "elements": {
+      "SingleServer": {
+        "$ref": "#/320"
+      },
+      "ThreeTier": {
+        "$ref": "#/322"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingleServerRecommendationResult",
+    "properties": {
+      "vmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The recommended VM SKU for single server."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 1,
+        "description": "The type of SAP deployment, single server or Three tier."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleServer"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ThreeTierRecommendationResult",
+    "properties": {
+      "dbVmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The database VM SKU."
+      },
+      "databaseInstanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The database server instance count."
+      },
+      "centralServerVmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The central server VM SKU."
+      },
+      "centralServerInstanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The central server instance count."
+      },
+      "applicationServerVmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The application server VM SKU."
+      },
+      "applicationServerInstanceCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The application server instance count."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 1,
+        "description": "The type of SAP deployment, single server or Three tier."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThreeTier"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getSizingRecommendations",
+    "resourceType": "Microsoft.Workloads/locations/sapVirtualInstanceMetadata",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/319"
+    },
+    "input": {
+      "$ref": "#/300"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPSupportedSkusRequest",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource is to be created."
+      },
+      "environment": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 1,
+        "description": "Defines the environment type - Production/Non Production."
+      },
+      "sapProduct": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 1,
+        "description": "Defines the SAP Product type."
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/335"
+        },
+        "flags": 1,
+        "description": "The deployment type. Eg: SingleServer/ThreeTier"
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 1,
+        "description": "The database type. Eg: HANA, DB2, etc"
+      },
+      "highAvailabilityType": {
+        "type": {
+          "$ref": "#/341"
+        },
+        "flags": 0,
+        "description": "The high availability type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonProd"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prod"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S4HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleServer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThreeTier"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilitySet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilityZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPSupportedResourceSkusResult",
+    "properties": {
+      "supportedSkus": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 0,
+        "description": "Gets the list of SAP supported SKUs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPSupportedSku",
+    "properties": {
+      "vmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The VM Sku."
+      },
+      "isAppServerCertified": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "True if the Sku is certified for App server in the SAP system."
+      },
+      "isDatabaseCertified": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "True if the Sku is certified for Database server in the SAP system."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/343"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getSapSupportedSku",
+    "resourceType": "Microsoft.Workloads/locations/sapVirtualInstanceMetadata",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/342"
+    },
+    "input": {
+      "$ref": "#/325"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPDiskConfigurationsRequest",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the SAP resources will be created."
+      },
+      "environment": {
+        "type": {
+          "$ref": "#/349"
+        },
+        "flags": 1,
+        "description": "Defines the environment type - Production/Non Production."
+      },
+      "sapProduct": {
+        "type": {
+          "$ref": "#/353"
+        },
+        "flags": 1,
+        "description": "Defines the SAP Product type."
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 1,
+        "description": "The database type. Eg: HANA, DB2, etc"
+      },
+      "deploymentType": {
+        "type": {
+          "$ref": "#/359"
+        },
+        "flags": 1,
+        "description": "The deployment type. Eg: SingleServer/ThreeTier"
+      },
+      "dbVmSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The VM SKU for database instance."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonProd"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prod"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/347"
+      },
+      {
+        "$ref": "#/348"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S4HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleServer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ThreeTier"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPDiskConfigurationsResult",
+    "properties": {
+      "volumeConfigurations": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 0,
+        "description": "The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup']."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPDiskConfiguration",
+    "properties": {
+      "recommendedConfiguration": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The recommended disk details for a given VM Sku."
+      },
+      "supportedConfigurations": {
+        "type": {
+          "$ref": "#/363"
+        },
+        "flags": 0,
+        "description": "The list of supported disks for a given VM Sku."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskDetails",
+    "properties": {
+      "sku": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS."
+      },
+      "sizeGB": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The disk size in GB."
+      },
+      "minimumSupportedDiskCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The minimum supported disk count."
+      },
+      "maximumSupportedDiskCount": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The maximum supported disk count."
+      },
+      "iopsReadWrite": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The disk Iops."
+      },
+      "mbpsReadWrite": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The disk provisioned throughput in MBps."
+      },
+      "diskTier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The disk tier, e.g. P10, E10."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/362"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPDiskConfigurationsResultVolumeConfigurations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/361"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getDiskConfigurations",
+    "resourceType": "Microsoft.Workloads/locations/sapVirtualInstanceMetadata",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/360"
+    },
+    "input": {
+      "$ref": "#/346"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPAvailabilityZoneDetailsRequest",
+    "properties": {
+      "appLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the SAP resources will be created."
+      },
+      "sapProduct": {
+        "type": {
+          "$ref": "#/370"
+        },
+        "flags": 1,
+        "description": "Defines the SAP Product type."
+      },
+      "databaseType": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 1,
+        "description": "The database type. Eg: HANA, DB2, etc"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S4HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DB2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPAvailabilityZoneDetailsResult",
+    "properties": {
+      "availabilityZonePairs": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 0,
+        "description": "Gets the list of availability zone pairs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SAPAvailabilityZonePair",
+    "properties": {
+      "zoneA": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The zone A."
+      },
+      "zoneB": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The zone B."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/375"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getAvailabilityZoneDetails",
+    "resourceType": "Microsoft.Workloads/locations/sapVirtualInstanceMetadata",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/374"
+    },
+    "input": {
+      "$ref": "#/366"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StartRequest",
+    "properties": {
+      "startVm": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The boolean value indicates whether to start the virtual machines before starting the SAP instances."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperationStatusResult",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Fully qualified ID for the async operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the async operation."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Operation status."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 0,
+        "description": "Percent of the operation that is complete."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The start time of the operation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The end time of the operation."
+      },
+      "operations": {
+        "type": {
+          "$ref": "#/381"
+        },
+        "flags": 0,
+        "description": "The operations list."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/382"
+        },
+        "flags": 0,
+        "description": "If present, details of the operation error."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/379"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/382"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/384"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StopRequest",
+    "properties": {
+      "softStopTimeoutSeconds": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "This parameter defines how long (in seconds) the soft shutdown waits until the RFC/HTTP clients no longer consider the server for calls with load balancing. Value 0 means that the kernel does not wait, but goes directly into the next shutdown state, i.e. hard stop."
+      },
+      "deallocateVm": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The boolean value indicates whether to Stop and deallocate the virtual machines along with the SAP instances."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/388"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/centralInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/centralInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/388"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/databaseInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/databaseInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/388"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/applicationInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/378"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Workloads/sapVirtualInstances/applicationInstances",
+    "apiVersion": "2023-10-01-preview",
+    "output": {
+      "$ref": "#/379"
+    },
+    "input": {
+      "$ref": "#/388"
+    }
+  }
+]
