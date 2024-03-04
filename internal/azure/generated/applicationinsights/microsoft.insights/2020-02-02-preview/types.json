@@ -1,1 +1,509 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.Insights/components"}},{"6":{"Value":"2020-02-02-preview"}},{"2":{"Name":"Microsoft.Insights/components","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"kind":{"Type":4,"Flags":1,"Description":"The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone."},"etag":{"Type":4,"Flags":0,"Description":"Resource etag"},"properties":{"Type":11,"Flags":0,"Description":"Properties that define an Application Insights component resource."},"location":{"Type":4,"Flags":1,"Description":"Resource location"},"tags":{"Type":31,"Flags":0,"Description":"Resource tags"}}}},{"2":{"Name":"ApplicationInsightsComponentProperties","Properties":{"ApplicationId":{"Type":4,"Flags":2,"Description":"The unique ID of your application. This field mirrors the 'Name' field and cannot be changed."},"AppId":{"Type":4,"Flags":2,"Description":"Application Insights Unique ID for your Application."},"Name":{"Type":4,"Flags":2,"Description":"Application name."},"Application_Type":{"Type":14,"Flags":1,"Description":"Type of application being monitored."},"Flow_Type":{"Type":16,"Flags":0,"Description":"Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API."},"Request_Source":{"Type":18,"Flags":0,"Description":"Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'."},"InstrumentationKey":{"Type":4,"Flags":2,"Description":"Application Insights Instrumentation key. A read-only value that applications can use to identify the destination for all telemetry sent to Azure Application Insights. This value will be supplied upon construction of each new Application Insights component."},"CreationDate":{"Type":4,"Flags":2,"Description":"Creation Date for the Application Insights component, in ISO 8601 format."},"TenantId":{"Type":4,"Flags":2,"Description":"Azure Tenant Id."},"HockeyAppId":{"Type":4,"Flags":0,"Description":"The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp."},"HockeyAppToken":{"Type":4,"Flags":2,"Description":"Token used to authenticate communications with between Application Insights and HockeyApp."},"provisioningState":{"Type":4,"Flags":2,"Description":"Current state of this component: whether or not is has been provisioned within the resource group it is defined. Users cannot change this value but are able to read from it. Values will include Succeeded, Deploying, Canceled, and Failed."},"SamplingPercentage":{"Type":3,"Flags":0,"Description":"Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry."},"ConnectionString":{"Type":4,"Flags":2,"Description":"Application Insights component connection string."},"RetentionInDays":{"Type":3,"Flags":2,"Description":"Retention period in days."},"DisableIpMasking":{"Type":2,"Flags":0,"Description":"Disable IP masking."},"ImmediatePurgeDataOn30Days":{"Type":2,"Flags":0,"Description":"Purge data immediately after 30 days."},"WorkspaceResourceId":{"Type":4,"Flags":0,"Description":"Resource Id of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property."},"LaMigrationDate":{"Type":4,"Flags":2,"Description":"The date which the component got migrated to LA, in ISO 8601 format."},"PrivateLinkScopedResources":{"Type":20,"Flags":2,"Description":"List of linked private link scope resources."},"publicNetworkAccessForIngestion":{"Type":23,"Flags":0,"Description":"The network access type for accessing Application Insights ingestion."},"publicNetworkAccessForQuery":{"Type":26,"Flags":0,"Description":"The network access type for accessing Application Insights query."},"IngestionMode":{"Type":30,"Flags":0,"Description":"Indicates the flow of the ingestion."},"DisableLocalAuth":{"Type":2,"Flags":0,"Description":"Disable Non-AAD based Auth."},"ForceCustomerStorageForProfiler":{"Type":2,"Flags":0,"Description":"Force users to create their own storage account for profiler and debugger."}}}},{"6":{"Value":"web"}},{"6":{"Value":"other"}},{"5":{"Elements":[12,13,4]}},{"6":{"Value":"Bluefield"}},{"5":{"Elements":[15,4]}},{"6":{"Value":"rest"}},{"5":{"Elements":[17,4]}},{"2":{"Name":"PrivateLinkScopedResource","Properties":{"ResourceId":{"Type":4,"Flags":0,"Description":"The full resource Id of the private link scope resource."},"ScopeId":{"Type":4,"Flags":0,"Description":"The private link scope unique Identifier."}}}},{"3":{"ItemType":19}},{"6":{"Value":"Enabled"}},{"6":{"Value":"Disabled"}},{"5":{"Elements":[21,22,4]}},{"6":{"Value":"Enabled"}},{"6":{"Value":"Disabled"}},{"5":{"Elements":[24,25,4]}},{"6":{"Value":"ApplicationInsights"}},{"6":{"Value":"ApplicationInsightsWithDiagnosticSettings"}},{"6":{"Value":"LogAnalytics"}},{"5":{"Elements":[27,28,29,4]}},{"2":{"Name":"ComponentsResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.Insights/components@2020-02-02-preview","ScopeType":8,"Body":10,"Flags":0}},{"2":{"Name":"ComponentPurgeBody","Properties":{"table":{"Type":4,"Flags":1,"Description":"Table from which to purge data."},"filters":{"Type":35,"Flags":1,"Description":"The set of columns and filters (queries) to run over them to purge the resulting data."}}}},{"2":{"Name":"ComponentPurgeBodyFilters","Properties":{"column":{"Type":4,"Flags":0,"Description":"The column of the table over which the given query should run"},"operator":{"Type":4,"Flags":0,"Description":"A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <, <=, between, and have the same behavior as they would in a KQL query."},"value":{"Type":0,"Flags":0,"Description":"the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values."},"key":{"Type":4,"Flags":0,"Description":"When filtering over custom dimensions, this key will be used as the name of the custom dimension."}}}},{"3":{"ItemType":34}},{"8":{"Name":"purge","ResourceType":"Microsoft.Insights/components","ApiVersion":"2020-02-02-preview","Input":33}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Insights/components"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-02-02-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Insights/components",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource etag"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Properties that define an Application Insights component resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationInsightsComponentProperties",
+    "properties": {
+      "ApplicationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The unique ID of your application. This field mirrors the 'Name' field and cannot be changed."
+      },
+      "AppId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Application Insights Unique ID for your Application."
+      },
+      "Name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Application name."
+      },
+      "Application_Type": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Type of application being monitored."
+      },
+      "Flow_Type": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "Used by the Application Insights system to determine what kind of flow this component was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API."
+      },
+      "Request_Source": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Describes what tool created this Application Insights component. Customers using this API should set this to the default 'rest'."
+      },
+      "InstrumentationKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Application Insights Instrumentation key. A read-only value that applications can use to identify the destination for all telemetry sent to Azure Application Insights. This value will be supplied upon construction of each new Application Insights component."
+      },
+      "CreationDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Creation Date for the Application Insights component, in ISO 8601 format."
+      },
+      "TenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Azure Tenant Id."
+      },
+      "HockeyAppId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The unique application ID created when a new application is added to HockeyApp, used for communications with HockeyApp."
+      },
+      "HockeyAppToken": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Token used to authenticate communications with between Application Insights and HockeyApp."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Current state of this component: whether or not is has been provisioned within the resource group it is defined. Users cannot change this value but are able to read from it. Values will include Succeeded, Deploying, Canceled, and Failed."
+      },
+      "SamplingPercentage": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry."
+      },
+      "ConnectionString": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Application Insights component connection string."
+      },
+      "RetentionInDays": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "Retention period in days."
+      },
+      "DisableIpMasking": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Disable IP masking."
+      },
+      "ImmediatePurgeDataOn30Days": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Purge data immediately after 30 days."
+      },
+      "WorkspaceResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource Id of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property."
+      },
+      "LaMigrationDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date which the component got migrated to LA, in ISO 8601 format."
+      },
+      "PrivateLinkScopedResources": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "List of linked private link scope resources."
+      },
+      "publicNetworkAccessForIngestion": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The network access type for accessing Application Insights ingestion."
+      },
+      "publicNetworkAccessForQuery": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The network access type for accessing Application Insights query."
+      },
+      "IngestionMode": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates the flow of the ingestion."
+      },
+      "DisableLocalAuth": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Disable Non-AAD based Auth."
+      },
+      "ForceCustomerStorageForProfiler": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Force users to create their own storage account for profiler and debugger."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "web"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bluefield"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rest"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkScopedResource",
+    "properties": {
+      "ResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The full resource Id of the private link scope resource."
+      },
+      "ScopeId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The private link scope unique Identifier."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplicationInsights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplicationInsightsWithDiagnosticSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogAnalytics"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComponentsResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Insights/components@2020-02-02-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComponentPurgeBody",
+    "properties": {
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Table from which to purge data."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The set of columns and filters (queries) to run over them to purge the resulting data."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComponentPurgeBodyFilters",
+    "properties": {
+      "column": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The column of the table over which the given query should run"
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A query operator to evaluate over the provided column and value(s). Supported operators are ==, =~, in, in~, >, >=, <, <=, between, and have the same behavior as they would in a KQL query."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values."
+      },
+      "key": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "When filtering over custom dimensions, this key will be used as the name of the custom dimension."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/29"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "purge",
+    "resourceType": "Microsoft.Insights/components",
+    "apiVersion": "2020-02-02-preview",
+    "input": {
+      "$ref": "#/28"
+    }
+  }
+]

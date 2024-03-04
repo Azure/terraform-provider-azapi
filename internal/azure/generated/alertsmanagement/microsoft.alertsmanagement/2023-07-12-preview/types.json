@@ -1,1 +1,894 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.AlertsManagement/alerts"}},{"6":{"Value":"2023-07-12-preview"}},{"2":{"Name":"Microsoft.AlertsManagement/alerts","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":2,"Description":"Alert property bag"}}}},{"2":{"Name":"AlertProperties","Properties":{"essentials":{"Type":12,"Flags":0,"Description":"This object contains consistent fields across different monitor services."},"context":{"Type":0,"Flags":2,"Description":"Information specific to the monitor service that gives more contextual details about the alert."},"egressConfig":{"Type":0,"Flags":2,"Description":"Config which would be used for displaying the data in portal."}}}},{"2":{"Name":"Essentials","Properties":{"severity":{"Type":18,"Flags":2,"Description":"Severity of alert Sev0 being highest and Sev4 being lowest."},"signalType":{"Type":22,"Flags":2,"Description":"The type of signal the alert is based on, which could be metrics, logs or activity logs."},"alertState":{"Type":26,"Flags":2,"Description":"Alert object state, which can be modified by the user."},"monitorCondition":{"Type":29,"Flags":2,"Description":"Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the defined alert rule thresholds."},"targetResource":{"Type":4,"Flags":0,"Description":"Target ARM resource, on which alert got created."},"targetResourceName":{"Type":4,"Flags":0,"Description":"Name of the target ARM resource name, on which alert got created."},"targetResourceGroup":{"Type":4,"Flags":0,"Description":"Resource group of target ARM resource, on which alert got created."},"targetResourceType":{"Type":4,"Flags":0,"Description":"Resource type of target ARM resource, on which alert got created."},"monitorService":{"Type":45,"Flags":2,"Description":"Monitor service on which the rule(monitor) is set."},"alertRule":{"Type":4,"Flags":2,"Description":"Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule."},"sourceCreatedId":{"Type":4,"Flags":2,"Description":"Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc."},"smartGroupId":{"Type":4,"Flags":2,"Description":"Unique Id of the smart group"},"smartGroupingReason":{"Type":4,"Flags":2,"Description":"Verbose reason describing the reason why this alert instance is added to a smart group"},"startDateTime":{"Type":4,"Flags":2,"Description":"Creation time(ISO-8601 format) of alert instance."},"lastModifiedDateTime":{"Type":4,"Flags":2,"Description":"Last modification time(ISO-8601 format) of alert instance."},"monitorConditionResolvedDateTime":{"Type":4,"Flags":2,"Description":"Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met."},"lastModifiedUserName":{"Type":4,"Flags":2,"Description":"User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user."},"actionStatus":{"Type":46,"Flags":0,"Description":"Action status"},"description":{"Type":4,"Flags":0,"Description":"Alert description."}}}},{"6":{"Value":"Sev0"}},{"6":{"Value":"Sev1"}},{"6":{"Value":"Sev2"}},{"6":{"Value":"Sev3"}},{"6":{"Value":"Sev4"}},{"5":{"Elements":[13,14,15,16,17,4]}},{"6":{"Value":"Metric"}},{"6":{"Value":"Log"}},{"6":{"Value":"Unknown"}},{"5":{"Elements":[19,20,21,4]}},{"6":{"Value":"New"}},{"6":{"Value":"Acknowledged"}},{"6":{"Value":"Closed"}},{"5":{"Elements":[23,24,25,4]}},{"6":{"Value":"Fired"}},{"6":{"Value":"Resolved"}},{"5":{"Elements":[27,28,4]}},{"6":{"Value":"Application Insights"}},{"6":{"Value":"ActivityLog Administrative"}},{"6":{"Value":"ActivityLog Security"}},{"6":{"Value":"ActivityLog Recommendation"}},{"6":{"Value":"ActivityLog Policy"}},{"6":{"Value":"ActivityLog Autoscale"}},{"6":{"Value":"Log Analytics"}},{"6":{"Value":"Nagios"}},{"6":{"Value":"Platform"}},{"6":{"Value":"SCOM"}},{"6":{"Value":"ServiceHealth"}},{"6":{"Value":"SmartDetector"}},{"6":{"Value":"VM Insights"}},{"6":{"Value":"Zabbix"}},{"6":{"Value":"Resource Health"}},{"5":{"Elements":[30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,4]}},{"2":{"Name":"ActionStatus","Properties":{"isSuppressed":{"Type":2,"Flags":0,"Description":"Value indicating whether alert is suppressed."}}}},{"4":{"Name":"Microsoft.AlertsManagement/alerts@2023-07-12-preview","ScopeType":0,"Body":10,"Flags":1}},{"6":{"Value":"default"}},{"6":{"Value":"Microsoft.AlertsManagement/alerts/enrichments"}},{"6":{"Value":"2023-07-12-preview"}},{"2":{"Name":"Microsoft.AlertsManagement/alerts/enrichments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":48,"Flags":9,"Description":"The resource name"},"type":{"Type":49,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":50,"Flags":10,"Description":"The resource api version"},"properties":{"Type":52,"Flags":2,"Description":"Properties of the alert enrichment item."},"systemData":{"Type":64,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"AlertEnrichmentProperties","Properties":{"alertId":{"Type":4,"Flags":2,"Description":"Unique Id (GUID) of the alert for which the enrichments are being retrieved."},"enrichments":{"Type":63,"Flags":0,"Description":"Enrichment details"}}}},{"7":{"Name":"AlertEnrichmentItem","Discriminator":"type","BaseProperties":{"title":{"Type":4,"Flags":1,"Description":"The enrichment title."},"description":{"Type":4,"Flags":1,"Description":"The enrichment description."},"status":{"Type":56,"Flags":1,"Description":"The status of the evaluation of the enrichment."},"errorMessage":{"Type":4,"Flags":0,"Description":"The error message. Will be present only if the status is 'Failed'."}},"Elements":{"PrometheusInstantQuery":57,"PrometheusRangeQuery":60}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"5":{"Elements":[54,55,4]}},{"2":{"Name":"PrometheusInstantQuery","Properties":{"time":{"Type":4,"Flags":1,"Description":"The date and the time of the evaluation."},"linkToApi":{"Type":4,"Flags":1,"Description":"Link to Prometheus query API (Url format)."},"datasources":{"Type":58,"Flags":1,"Description":"An array of the azure monitor workspace resource ids."},"grafanaExplorePath":{"Type":4,"Flags":1,"Description":"Partial link to the Grafana explore API."},"query":{"Type":4,"Flags":1,"Description":"The Prometheus expression query."},"type":{"Type":59,"Flags":1,"Description":"The enrichment type."}}}},{"3":{"ItemType":4}},{"6":{"Value":"PrometheusInstantQuery"}},{"2":{"Name":"PrometheusRangeQuery","Properties":{"start":{"Type":4,"Flags":1,"Description":"The start evaluation date and time in ISO8601 format."},"end":{"Type":4,"Flags":1,"Description":"The end evaluation date and time in ISO8601 format."},"step":{"Type":4,"Flags":1,"Description":"Query resolution step width in ISO8601 format."},"linkToApi":{"Type":4,"Flags":1,"Description":"Link to Prometheus query API (Url format)."},"datasources":{"Type":61,"Flags":1,"Description":"An array of the azure monitor workspace resource ids."},"grafanaExplorePath":{"Type":4,"Flags":1,"Description":"Partial link to the Grafana explore API."},"query":{"Type":4,"Flags":1,"Description":"The Prometheus expression query."},"type":{"Type":62,"Flags":1,"Description":"The enrichment type."}}}},{"3":{"ItemType":4}},{"6":{"Value":"PrometheusRangeQuery"}},{"3":{"ItemType":53}},{"2":{"Name":"SystemData","Properties":{"createdBy":{"Type":4,"Flags":0,"Description":"The identity that created the resource."},"createdByType":{"Type":69,"Flags":0,"Description":"The type of identity that created the resource."},"createdAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource creation (UTC)."},"lastModifiedBy":{"Type":4,"Flags":0,"Description":"The identity that last modified the resource."},"lastModifiedByType":{"Type":74,"Flags":0,"Description":"The type of identity that last modified the resource."},"lastModifiedAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource last modification (UTC)"}}}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[65,66,67,68,4]}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[70,71,72,73,4]}},{"4":{"Name":"Microsoft.AlertsManagement/alerts/enrichments@2023-07-12-preview","ScopeType":0,"Body":51,"Flags":1}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AlertsManagement/alerts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-07-12-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AlertsManagement/alerts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 2,
+        "description": "Alert property bag"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertProperties",
+    "properties": {
+      "essentials": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "This object contains consistent fields across different monitor services."
+      },
+      "context": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Information specific to the monitor service that gives more contextual details about the alert."
+      },
+      "egressConfig": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Config which would be used for displaying the data in portal."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Essentials",
+    "properties": {
+      "severity": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Severity of alert Sev0 being highest and Sev4 being lowest."
+      },
+      "signalType": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The type of signal the alert is based on, which could be metrics, logs or activity logs."
+      },
+      "alertState": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "Alert object state, which can be modified by the user."
+      },
+      "monitorCondition": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the defined alert rule thresholds."
+      },
+      "targetResource": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Target ARM resource, on which alert got created."
+      },
+      "targetResourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the target ARM resource name, on which alert got created."
+      },
+      "targetResourceGroup": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource group of target ARM resource, on which alert got created."
+      },
+      "targetResourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource type of target ARM resource, on which alert got created."
+      },
+      "monitorService": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Monitor service on which the rule(monitor) is set."
+      },
+      "alertRule": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule."
+      },
+      "sourceCreatedId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc."
+      },
+      "smartGroupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique Id of the smart group"
+      },
+      "smartGroupingReason": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Verbose reason describing the reason why this alert instance is added to a smart group"
+      },
+      "startDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Creation time(ISO-8601 format) of alert instance."
+      },
+      "lastModifiedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last modification time(ISO-8601 format) of alert instance."
+      },
+      "monitorConditionResolvedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met."
+      },
+      "lastModifiedUserName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user."
+      },
+      "actionStatus": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Action status"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Alert description."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Metric"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Acknowledged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Closed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resolved"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application Insights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Administrative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Security"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Recommendation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Policy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Autoscale"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log Analytics"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Nagios"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Platform"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SCOM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceHealth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SmartDetector"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VM Insights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zabbix"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resource Health"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionStatus",
+    "properties": {
+      "isSuppressed": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Value indicating whether alert is suppressed."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AlertsManagement/alerts@2023-07-12-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AlertsManagement/alerts/enrichments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-07-12-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AlertsManagement/alerts/enrichments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Properties of the alert enrichment item."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertEnrichmentProperties",
+    "properties": {
+      "alertId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique Id (GUID) of the alert for which the enrichments are being retrieved."
+      },
+      "enrichments": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Enrichment details"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AlertEnrichmentItem",
+    "discriminator": "type",
+    "baseProperties": {
+      "title": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The enrichment title."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The enrichment description."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 1,
+        "description": "The status of the evaluation of the enrichment."
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The error message. Will be present only if the status is 'Failed'."
+      }
+    },
+    "elements": {
+      "PrometheusInstantQuery": {
+        "$ref": "#/52"
+      },
+      "PrometheusRangeQuery": {
+        "$ref": "#/55"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrometheusInstantQuery",
+    "properties": {
+      "time": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The date and the time of the evaluation."
+      },
+      "linkToApi": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Link to Prometheus query API (Url format)."
+      },
+      "datasources": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "An array of the azure monitor workspace resource ids."
+      },
+      "grafanaExplorePath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Partial link to the Grafana explore API."
+      },
+      "query": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Prometheus expression query."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "The enrichment type."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrometheusInstantQuery"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrometheusRangeQuery",
+    "properties": {
+      "start": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start evaluation date and time in ISO8601 format."
+      },
+      "end": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The end evaluation date and time in ISO8601 format."
+      },
+      "step": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Query resolution step width in ISO8601 format."
+      },
+      "linkToApi": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Link to Prometheus query API (Url format)."
+      },
+      "datasources": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "An array of the azure monitor workspace resource ids."
+      },
+      "grafanaExplorePath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Partial link to the Grafana explore API."
+      },
+      "query": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Prometheus expression query."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "The enrichment type."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrometheusRangeQuery"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AlertsManagement/alerts/enrichments@2023-07-12-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/46"
+    },
+    "flags": 1
+  }
+]

@@ -1,1 +1,4409 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.StreamAnalytics/streamingjobs"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/streamingjobs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"The properties that are associated with a streaming job.  Required on PUT (CreateOrReplace) requests."},"identity":{"Type":219,"Flags":0,"Description":"Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs and outputs."},"tags":{"Type":220,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":0,"Description":"The geo-location where the resource lives"}}}},{"2":{"Name":"StreamingJobProperties","Properties":{"sku":{"Type":12,"Flags":0,"Description":"Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests."},"jobId":{"Type":4,"Flags":2,"Description":"A GUID uniquely identifying the streaming job. This GUID is generated upon creation of the streaming job."},"provisioningState":{"Type":4,"Flags":2,"Description":"Describes the provisioning status of the streaming job."},"jobState":{"Type":4,"Flags":2,"Description":"Describes the state of the streaming job."},"jobType":{"Type":17,"Flags":0,"Description":"Describes the type of the job. Valid modes are `Cloud` and 'Edge'."},"outputStartMode":{"Type":21,"Flags":0,"Description":"This property should only be utilized when it is desired that the job be started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time."},"outputStartTime":{"Type":4,"Flags":0,"Description":"Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime."},"lastOutputEventTime":{"Type":4,"Flags":2,"Description":"Value is either an ISO-8601 formatted timestamp indicating the last output event time of the streaming job or null indicating that output has not yet been produced. In case of multiple outputs or multiple streams, this shows the latest value in that set."},"eventsOutOfOrderPolicy":{"Type":24,"Flags":0,"Description":"Indicates the policy to apply to events that arrive out of order in the input event stream."},"outputErrorPolicy":{"Type":27,"Flags":0,"Description":"Indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due to being malformed (missing column values, column values of wrong type or size)."},"eventsOutOfOrderMaxDelayInSeconds":{"Type":3,"Flags":0,"Description":"The maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order."},"eventsLateArrivalMaxDelayInSeconds":{"Type":3,"Flags":0,"Description":"The maximum tolerable delay in seconds where events arriving late could be included.  Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait indefinitely. If the property is absent, it is interpreted to have a value of -1."},"dataLocale":{"Type":4,"Flags":0,"Description":"The data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if none specified."},"compatibilityLevel":{"Type":30,"Flags":0,"Description":"Controls certain runtime behaviors of the streaming job."},"createdDate":{"Type":4,"Flags":2,"Description":"Value is an ISO-8601 formatted UTC timestamp indicating when the streaming job was created."},"inputs":{"Type":107,"Flags":0,"Description":"A list of one or more inputs to the streaming job. The name property for each input is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual input."},"transformation":{"Type":108,"Flags":0,"Description":"Indicates the query and the number of streaming units to use for the streaming job. The name property of the transformation is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation."},"outputs":{"Type":186,"Flags":0,"Description":"A list of one or more outputs for the streaming job. The name property for each output is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual output."},"functions":{"Type":209,"Flags":0,"Description":"A list of one or more functions for the streaming job. The name property for each function is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the streaming job. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."},"jobStorageAccount":{"Type":210,"Flags":0,"Description":"The properties that are associated with an Azure Storage account with MSI"},"contentStoragePolicy":{"Type":217,"Flags":0,"Description":"Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also specify jobStorageAccount property. ."},"cluster":{"Type":218,"Flags":0,"Description":"The cluster which streaming jobs will run on."}}}},{"2":{"Name":"Sku","Properties":{"name":{"Type":14,"Flags":0,"Description":"The name of the SKU. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Standard"}},{"5":{"Elements":[13,4]}},{"6":{"Value":"Cloud"}},{"6":{"Value":"Edge"}},{"5":{"Elements":[15,16,4]}},{"6":{"Value":"JobStartTime"}},{"6":{"Value":"CustomTime"}},{"6":{"Value":"LastOutputEventTime"}},{"5":{"Elements":[18,19,20,4]}},{"6":{"Value":"Adjust"}},{"6":{"Value":"Drop"}},{"5":{"Elements":[22,23,4]}},{"6":{"Value":"Stop"}},{"6":{"Value":"Drop"}},{"5":{"Elements":[25,26,4]}},{"6":{"Value":"1.0"}},{"6":{"Value":"1.2"}},{"5":{"Elements":[28,29,4]}},{"2":{"Name":"Input","Properties":{"properties":{"Type":32,"Flags":0,"Description":"The properties that are associated with an input. Required on PUT (CreateOrReplace) requests."},"id":{"Type":4,"Flags":2,"Description":"Resource Id"},"name":{"Type":4,"Flags":0,"Description":"Resource name"},"type":{"Type":4,"Flags":2,"Description":"Resource type"}}}},{"7":{"Name":"InputProperties","Discriminator":"type","BaseProperties":{"serialization":{"Type":33,"Flags":0,"Description":"Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests."},"diagnostics":{"Type":51,"Flags":2,"Description":"Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."},"compression":{"Type":54,"Flags":0,"Description":"Describes how input data is compressed"},"partitionKey":{"Type":4,"Flags":0,"Description":"partitionKey Describes a key in the input data which is used for partitioning the input data"}},"Elements":{"Reference":59,"Stream":81}}},{"7":{"Name":"Serialization","Discriminator":"type","BaseProperties":{},"Elements":{"Avro":34,"Csv":36,"Json":41,"Parquet":49}}},{"2":{"Name":"AvroSerialization","Properties":{"properties":{"Type":0,"Flags":0,"Description":"The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests."},"type":{"Type":35,"Flags":1,"Description":"Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Avro"}},{"2":{"Name":"CsvSerialization","Properties":{"properties":{"Type":37,"Flags":0,"Description":"The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests."},"type":{"Type":40,"Flags":1,"Description":"Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"CsvSerializationProperties","Properties":{"fieldDelimiter":{"Type":4,"Flags":0,"Description":"Specifies the delimiter that will be used to separate comma-separated value (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required on PUT (CreateOrReplace) requests."},"encoding":{"Type":39,"Flags":0,"Description":"Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"UTF8"}},{"5":{"Elements":[38,4]}},{"6":{"Value":"Csv"}},{"2":{"Name":"JsonSerialization","Properties":{"properties":{"Type":42,"Flags":0,"Description":"The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests."},"type":{"Type":48,"Flags":1,"Description":"Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"JsonSerializationProperties","Properties":{"encoding":{"Type":44,"Flags":0,"Description":"Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests."},"format":{"Type":47,"Flags":0,"Description":"This property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property specifies the format of the JSON the output will be written in. The currently supported values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if left null."}}}},{"6":{"Value":"UTF8"}},{"5":{"Elements":[43,4]}},{"6":{"Value":"LineSeparated"}},{"6":{"Value":"Array"}},{"5":{"Elements":[45,46,4]}},{"6":{"Value":"Json"}},{"2":{"Name":"ParquetSerialization","Properties":{"properties":{"Type":0,"Flags":0,"Description":"The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace) requests."},"type":{"Type":50,"Flags":1,"Description":"Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Parquet"}},{"2":{"Name":"Diagnostics","Properties":{"conditions":{"Type":53,"Flags":2,"Description":"A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer attention."}}}},{"2":{"Name":"DiagnosticCondition","Properties":{"since":{"Type":4,"Flags":2,"Description":"The UTC timestamp of when the condition started. Customers should be able to find a corresponding event in the ops log around this time."},"code":{"Type":4,"Flags":2,"Description":"The opaque diagnostic code."},"message":{"Type":4,"Flags":2,"Description":"The human-readable message describing the condition in detail. Localized in the Accept-Language of the client request."}}}},{"3":{"ItemType":52}},{"2":{"Name":"Compression","Properties":{"type":{"Type":58,"Flags":1,"Description":"Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"None"}},{"6":{"Value":"GZip"}},{"6":{"Value":"Deflate"}},{"5":{"Elements":[55,56,57,4]}},{"2":{"Name":"ReferenceInputProperties","Properties":{"datasource":{"Type":60,"Flags":0,"Description":"Describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":80,"Flags":1,"Description":"Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests."}}}},{"7":{"Name":"ReferenceInputDataSource","Discriminator":"type","BaseProperties":{},"Elements":{"File":61,"Microsoft.Sql/Server/Database":64,"Microsoft.Storage/Blob":71}}},{"2":{"Name":"FileReferenceInputDataSource","Properties":{"properties":{"Type":62,"Flags":0,"Description":"The properties that are associated with a file input containing reference data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":63,"Flags":1,"Description":"Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"FileReferenceInputDataSourceProperties","Properties":{"path":{"Type":4,"Flags":0,"Description":"The path of the file."}}}},{"6":{"Value":"File"}},{"2":{"Name":"AzureSqlReferenceInputDataSource","Properties":{"properties":{"Type":65,"Flags":0,"Description":"The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":70,"Flags":1,"Description":"Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureSqlReferenceInputDataSourceProperties","Properties":{"server":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This is the name of the server that contains the database that will be written to."},"database":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This is the name of the database that output will be written to."},"user":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This is the user name that will be used to connect to the SQL Database instance."},"password":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This is the password that will be used to connect to the SQL Database instance."},"table":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. The name of the table in the Azure SQL database.."},"refreshType":{"Type":69,"Flags":0,"Description":"Indicates the type of data refresh option."},"refreshRate":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This indicates how frequently the data will be fetched from the database. It is of DateTime format."},"fullSnapshotQuery":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This query is used to fetch data from the sql database."},"deltaSnapshotQuery":{"Type":4,"Flags":0,"Description":"This element is associated with the datasource element. This query is used to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in Azure SQL Database."}}}},{"6":{"Value":"Static"}},{"6":{"Value":"RefreshPeriodicallyWithFull"}},{"6":{"Value":"RefreshPeriodicallyWithDelta"}},{"5":{"Elements":[66,67,68,4]}},{"6":{"Value":"Microsoft.Sql/Server/Database"}},{"2":{"Name":"BlobReferenceInputDataSource","Properties":{"properties":{"Type":72,"Flags":0,"Description":"The properties that are associated with a blob input containing reference data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":79,"Flags":1,"Description":"Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"BlobReferenceInputDataSourceProperties","Properties":{"storageAccounts":{"Type":74,"Flags":0,"Description":"A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."},"container":{"Type":4,"Flags":0,"Description":"The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."},"pathPattern":{"Type":4,"Flags":0,"Description":"The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."},"dateFormat":{"Type":4,"Flags":0,"Description":"The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."},"timeFormat":{"Type":4,"Flags":0,"Description":"The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."},"authenticationMode":{"Type":78,"Flags":0,"Description":"Authentication Mode."}}}},{"2":{"Name":"StorageAccount","Properties":{"accountName":{"Type":4,"Flags":0,"Description":"The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."},"accountKey":{"Type":4,"Flags":0,"Description":"The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."}}}},{"3":{"ItemType":73}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[75,76,77,4]}},{"6":{"Value":"Microsoft.Storage/Blob"}},{"6":{"Value":"Reference"}},{"2":{"Name":"StreamInputProperties","Properties":{"datasource":{"Type":82,"Flags":0,"Description":"Describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":106,"Flags":1,"Description":"Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests."}}}},{"7":{"Name":"StreamInputDataSource","Discriminator":"type","BaseProperties":{},"Elements":{"GatewayMessageBus":83,"Microsoft.Devices/IotHubs":86,"Microsoft.EventHub/EventHub":89,"Microsoft.ServiceBus/EventHub":96,"Microsoft.Storage/Blob":98}}},{"2":{"Name":"GatewayMessageBusStreamInputDataSource","Properties":{"properties":{"Type":84,"Flags":0,"Description":"The properties that are associated with a gateway message bus input containing stream data."},"type":{"Type":85,"Flags":1,"Description":"Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"GatewayMessageBusStreamInputDataSourceProperties","Properties":{"topic":{"Type":4,"Flags":0,"Description":"The name of the Service Bus topic."}}}},{"6":{"Value":"GatewayMessageBus"}},{"2":{"Name":"IoTHubStreamInputDataSource","Properties":{"properties":{"Type":87,"Flags":0,"Description":"The properties that are associated with an IoT Hub input containing stream data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":88,"Flags":1,"Description":"Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"IoTHubStreamInputDataSourceProperties","Properties":{"iotHubNamespace":{"Type":4,"Flags":0,"Description":"The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyName":{"Type":4,"Flags":0,"Description":"The shared access policy name for the IoT Hub. This policy must contain at least the Service connect permission. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyKey":{"Type":4,"Flags":0,"Description":"The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."},"consumerGroupName":{"Type":4,"Flags":0,"Description":"The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group."},"endpoint":{"Type":4,"Flags":0,"Description":"The IoT Hub endpoint to connect to (ie. messages/events, messages/operationsMonitoringEvents, etc.)."}}}},{"6":{"Value":"Microsoft.Devices/IotHubs"}},{"2":{"Name":"EventHubV2StreamInputDataSource","Properties":{"properties":{"Type":90,"Flags":0,"Description":"The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":95,"Flags":1,"Description":"Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"EventHubStreamInputDataSourceProperties","Properties":{"consumerGroupName":{"Type":4,"Flags":0,"Description":"The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group."},"eventHubName":{"Type":4,"Flags":0,"Description":"The name of the Event Hub. Required on PUT (CreateOrReplace) requests."},"serviceBusNamespace":{"Type":4,"Flags":0,"Description":"The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyName":{"Type":4,"Flags":0,"Description":"The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyKey":{"Type":4,"Flags":0,"Description":"The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."},"authenticationMode":{"Type":94,"Flags":0,"Description":"Authentication Mode."}}}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[91,92,93,4]}},{"6":{"Value":"Microsoft.EventHub/EventHub"}},{"2":{"Name":"EventHubStreamInputDataSource","Properties":{"properties":{"Type":90,"Flags":0,"Description":"The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":97,"Flags":1,"Description":"Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Microsoft.ServiceBus/EventHub"}},{"2":{"Name":"BlobStreamInputDataSource","Properties":{"properties":{"Type":99,"Flags":0,"Description":"The properties that are associated with a blob input containing stream data. Required on PUT (CreateOrReplace) requests."},"type":{"Type":105,"Flags":1,"Description":"Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"BlobStreamInputDataSourceProperties","Properties":{"sourcePartitionCount":{"Type":3,"Flags":0,"Description":"The partition count of the blob input data source. Range 1 - 1024."},"storageAccounts":{"Type":100,"Flags":0,"Description":"A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."},"container":{"Type":4,"Flags":0,"Description":"The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."},"pathPattern":{"Type":4,"Flags":0,"Description":"The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."},"dateFormat":{"Type":4,"Flags":0,"Description":"The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."},"timeFormat":{"Type":4,"Flags":0,"Description":"The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."},"authenticationMode":{"Type":104,"Flags":0,"Description":"Authentication Mode."}}}},{"3":{"ItemType":73}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[101,102,103,4]}},{"6":{"Value":"Microsoft.Storage/Blob"}},{"6":{"Value":"Stream"}},{"3":{"ItemType":31}},{"2":{"Name":"Transformation","Properties":{"properties":{"Type":109,"Flags":0,"Description":"The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests."},"id":{"Type":4,"Flags":2,"Description":"Resource Id"},"name":{"Type":4,"Flags":0,"Description":"Resource name"},"type":{"Type":4,"Flags":2,"Description":"Resource type"}}}},{"2":{"Name":"TransformationProperties","Properties":{"streamingUnits":{"Type":3,"Flags":0,"Description":"Specifies the number of streaming units that the streaming job uses."},"validStreamingUnits":{"Type":110,"Flags":0,"Description":"Specifies the valid streaming units a streaming job can scale to."},"query":{"Type":4,"Flags":0,"Description":"Specifies the query that will be run in the streaming job. You can learn more about the Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT (CreateOrReplace) requests."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the transformation. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."}}}},{"3":{"ItemType":3}},{"2":{"Name":"Output","Properties":{"properties":{"Type":112,"Flags":0,"Description":"The properties that are associated with an output. Required on PUT (CreateOrReplace) requests."},"id":{"Type":4,"Flags":2,"Description":"Resource Id"},"name":{"Type":4,"Flags":0,"Description":"Resource name"},"type":{"Type":4,"Flags":2,"Description":"Resource type"}}}},{"2":{"Name":"OutputProperties","Properties":{"datasource":{"Type":113,"Flags":0,"Description":"Describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests."},"timeWindow":{"Type":4,"Flags":0,"Description":"The time frame for filtering Stream Analytics job outputs."},"sizeWindow":{"Type":3,"Flags":0,"Description":"The size window to constrain a Stream Analytics output to."},"serialization":{"Type":33,"Flags":0,"Description":"Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests."},"diagnostics":{"Type":51,"Flags":2,"Description":"Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the output. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."}}}},{"7":{"Name":"OutputDataSource","Discriminator":"type","BaseProperties":{},"Elements":{"GatewayMessageBus":114,"Microsoft.AzureFunction":117,"Microsoft.DataLake/Accounts":120,"Microsoft.EventHub/EventHub":127,"Microsoft.ServiceBus/EventHub":135,"Microsoft.ServiceBus/Queue":137,"Microsoft.ServiceBus/Topic":145,"Microsoft.Sql/Server/DataWarehouse":154,"Microsoft.Sql/Server/Database":157,"Microsoft.Storage/Blob":164,"Microsoft.Storage/DocumentDB":172,"Microsoft.Storage/Table":175,"PowerBI":179}}},{"2":{"Name":"GatewayMessageBusOutputDataSource","Properties":{"properties":{"Type":115,"Flags":0,"Description":"The properties that are associated with a Gateway Message Bus output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":116,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"GatewayMessageBusOutputDataSourceProperties","Properties":{"topic":{"Type":4,"Flags":0,"Description":"The name of the Service Bus topic."}}}},{"6":{"Value":"GatewayMessageBus"}},{"2":{"Name":"AzureFunctionOutputDataSource","Properties":{"properties":{"Type":118,"Flags":0,"Description":"The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":119,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureFunctionOutputDataSourceProperties","Properties":{"functionAppName":{"Type":4,"Flags":0,"Description":"The name of your Azure Functions app."},"functionName":{"Type":4,"Flags":0,"Description":"The name of the function in your Azure Functions app."},"apiKey":{"Type":4,"Flags":0,"Description":"If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function."},"maxBatchSize":{"Type":3,"Flags":0,"Description":"A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB)."},"maxBatchCount":{"Type":3,"Flags":0,"Description":"A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The default value is 100."}}}},{"6":{"Value":"Microsoft.AzureFunction"}},{"2":{"Name":"AzureDataLakeStoreOutputDataSource","Properties":{"properties":{"Type":121,"Flags":0,"Description":"The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":126,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureDataLakeStoreOutputDataSourceProperties","Properties":{"accountName":{"Type":4,"Flags":0,"Description":"The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests."},"tenantId":{"Type":4,"Flags":0,"Description":"The tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests."},"filePathPrefix":{"Type":4,"Flags":0,"Description":"The location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests."},"dateFormat":{"Type":4,"Flags":0,"Description":"The date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date format instead."},"timeFormat":{"Type":4,"Flags":0,"Description":"The time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time format instead."},"authenticationMode":{"Type":125,"Flags":0,"Description":"Authentication Mode."},"refreshToken":{"Type":4,"Flags":0,"Description":"A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests."},"tokenUserPrincipalName":{"Type":4,"Flags":0,"Description":"The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."},"tokenUserDisplayName":{"Type":4,"Flags":0,"Description":"The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."}}}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[122,123,124,4]}},{"6":{"Value":"Microsoft.DataLake/Accounts"}},{"2":{"Name":"EventHubV2OutputDataSource","Properties":{"properties":{"Type":128,"Flags":0,"Description":"The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":134,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"EventHubOutputDataSourceProperties","Properties":{"partitionKey":{"Type":4,"Flags":0,"Description":"The key/column that is used to determine to which partition to send event data."},"propertyColumns":{"Type":129,"Flags":0,"Description":"The properties associated with this Event Hub output."},"eventHubName":{"Type":4,"Flags":0,"Description":"The name of the Event Hub. Required on PUT (CreateOrReplace) requests."},"serviceBusNamespace":{"Type":4,"Flags":0,"Description":"The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyName":{"Type":4,"Flags":0,"Description":"The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyKey":{"Type":4,"Flags":0,"Description":"The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."},"authenticationMode":{"Type":133,"Flags":0,"Description":"Authentication Mode."}}}},{"3":{"ItemType":4}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[130,131,132,4]}},{"6":{"Value":"Microsoft.EventHub/EventHub"}},{"2":{"Name":"EventHubOutputDataSource","Properties":{"properties":{"Type":128,"Flags":0,"Description":"The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":136,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Microsoft.ServiceBus/EventHub"}},{"2":{"Name":"ServiceBusQueueOutputDataSource","Properties":{"properties":{"Type":138,"Flags":0,"Description":"The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":144,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"ServiceBusQueueOutputDataSourceProperties","Properties":{"queueName":{"Type":4,"Flags":0,"Description":"The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests."},"propertyColumns":{"Type":139,"Flags":0,"Description":"A string array of the names of output columns to be attached to Service Bus messages as custom properties."},"systemPropertyColumns":{"Type":0,"Flags":0,"Description":"The system properties associated with the Service Bus Queue. The following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc."},"serviceBusNamespace":{"Type":4,"Flags":0,"Description":"The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyName":{"Type":4,"Flags":0,"Description":"The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyKey":{"Type":4,"Flags":0,"Description":"The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."},"authenticationMode":{"Type":143,"Flags":0,"Description":"Authentication Mode."}}}},{"3":{"ItemType":4}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[140,141,142,4]}},{"6":{"Value":"Microsoft.ServiceBus/Queue"}},{"2":{"Name":"ServiceBusTopicOutputDataSource","Properties":{"properties":{"Type":146,"Flags":0,"Description":"The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":153,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"ServiceBusTopicOutputDataSourceProperties","Properties":{"topicName":{"Type":4,"Flags":0,"Description":"The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests."},"propertyColumns":{"Type":147,"Flags":0,"Description":"A string array of the names of output columns to be attached to Service Bus messages as custom properties."},"systemPropertyColumns":{"Type":148,"Flags":0,"Description":"The system properties associated with the Service Bus Topic Output. The following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc."},"serviceBusNamespace":{"Type":4,"Flags":0,"Description":"The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyName":{"Type":4,"Flags":0,"Description":"The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."},"sharedAccessPolicyKey":{"Type":4,"Flags":0,"Description":"The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."},"authenticationMode":{"Type":152,"Flags":0,"Description":"Authentication Mode."}}}},{"3":{"ItemType":4}},{"2":{"Name":"ServiceBusTopicOutputDataSourcePropertiesSystemPropertyColumns","Properties":{},"AdditionalProperties":4}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[149,150,151,4]}},{"6":{"Value":"Microsoft.ServiceBus/Topic"}},{"2":{"Name":"AzureSynapseOutputDataSource","Properties":{"properties":{"Type":155,"Flags":0,"Description":"The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":156,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureSynapseOutputDataSourceProperties","Properties":{"server":{"Type":4,"Flags":0,"Description":"The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"database":{"Type":4,"Flags":0,"Description":"The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"table":{"Type":4,"Flags":0,"Description":"The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"user":{"Type":4,"Flags":0,"Description":"The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"password":{"Type":4,"Flags":0,"Description":"The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Microsoft.Sql/Server/DataWarehouse"}},{"2":{"Name":"AzureSqlDatabaseOutputDataSource","Properties":{"properties":{"Type":158,"Flags":0,"Description":"The properties that are associated with an Azure SQL database output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":163,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureSqlDatabaseOutputDataSourceProperties","Properties":{"server":{"Type":4,"Flags":0,"Description":"The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"database":{"Type":4,"Flags":0,"Description":"The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"user":{"Type":4,"Flags":0,"Description":"The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"password":{"Type":4,"Flags":0,"Description":"The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"table":{"Type":4,"Flags":0,"Description":"The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests."},"maxBatchCount":{"Type":3,"Flags":0,"Description":"Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests."},"maxWriterCount":{"Type":3,"Flags":0,"Description":"Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests."},"authenticationMode":{"Type":162,"Flags":0,"Description":"Authentication Mode."}}}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[159,160,161,4]}},{"6":{"Value":"Microsoft.Sql/Server/Database"}},{"2":{"Name":"BlobOutputDataSource","Properties":{"properties":{"Type":165,"Flags":0,"Description":"The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":171,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"BlobOutputDataSourceProperties","Properties":{"blobPathPrefix":{"Type":4,"Flags":0,"Description":"Blob path prefix."},"storageAccounts":{"Type":166,"Flags":0,"Description":"A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."},"container":{"Type":4,"Flags":0,"Description":"The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."},"pathPattern":{"Type":4,"Flags":0,"Description":"The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."},"dateFormat":{"Type":4,"Flags":0,"Description":"The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."},"timeFormat":{"Type":4,"Flags":0,"Description":"The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."},"authenticationMode":{"Type":170,"Flags":0,"Description":"Authentication Mode."}}}},{"3":{"ItemType":73}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[167,168,169,4]}},{"6":{"Value":"Microsoft.Storage/Blob"}},{"2":{"Name":"DocumentDbOutputDataSource","Properties":{"properties":{"Type":173,"Flags":0,"Description":"The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":174,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"DocumentDbOutputDataSourceProperties","Properties":{"accountId":{"Type":4,"Flags":0,"Description":"The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests."},"accountKey":{"Type":4,"Flags":0,"Description":"The account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests."},"database":{"Type":4,"Flags":0,"Description":"The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests."},"collectionNamePattern":{"Type":4,"Flags":0,"Description":"The collection name pattern for the collections to be used. The collection name format can be constructed using the optional {partition} token, where partitions start from 0. See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required on PUT (CreateOrReplace) requests."},"partitionKey":{"Type":4,"Flags":0,"Description":"The name of the field in output events used to specify the key for partitioning output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required to be specified."},"documentId":{"Type":4,"Flags":0,"Description":"The name of the field in output events used to specify the primary key which insert or update operations are based on."}}}},{"6":{"Value":"Microsoft.Storage/DocumentDB"}},{"2":{"Name":"AzureTableOutputDataSource","Properties":{"properties":{"Type":176,"Flags":0,"Description":"The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":178,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"AzureTableOutputDataSourceProperties","Properties":{"accountName":{"Type":4,"Flags":0,"Description":"The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."},"accountKey":{"Type":4,"Flags":0,"Description":"The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."},"table":{"Type":4,"Flags":0,"Description":"The name of the Azure Table. Required on PUT (CreateOrReplace) requests."},"partitionKey":{"Type":4,"Flags":0,"Description":"This element indicates the name of a column from the SELECT statement in the query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests."},"rowKey":{"Type":4,"Flags":0,"Description":"This element indicates the name of a column from the SELECT statement in the query that will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests."},"columnsToRemove":{"Type":177,"Flags":0,"Description":"If specified, each item in the array is the name of a column to remove (if present) from output event entities."},"batchSize":{"Type":3,"Flags":0,"Description":"The number of rows to write to the Azure Table at a time."}}}},{"3":{"ItemType":4}},{"6":{"Value":"Microsoft.Storage/Table"}},{"2":{"Name":"PowerBIOutputDataSource","Properties":{"properties":{"Type":180,"Flags":0,"Description":"The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests."},"type":{"Type":185,"Flags":1,"Description":"Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."}}}},{"2":{"Name":"PowerBIOutputDataSourceProperties","Properties":{"dataset":{"Type":4,"Flags":0,"Description":"The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests."},"table":{"Type":4,"Flags":0,"Description":"The name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests."},"groupId":{"Type":4,"Flags":0,"Description":"The ID of the Power BI group."},"groupName":{"Type":4,"Flags":0,"Description":"The name of the Power BI group. Use this property to help remember which specific Power BI group id was used."},"authenticationMode":{"Type":184,"Flags":0,"Description":"Authentication Mode."},"refreshToken":{"Type":4,"Flags":0,"Description":"A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests."},"tokenUserPrincipalName":{"Type":4,"Flags":0,"Description":"The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."},"tokenUserDisplayName":{"Type":4,"Flags":0,"Description":"The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."}}}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[181,182,183,4]}},{"6":{"Value":"PowerBI"}},{"3":{"ItemType":111}},{"2":{"Name":"Function","Properties":{"properties":{"Type":188,"Flags":0,"Description":"The properties that are associated with a function."},"id":{"Type":4,"Flags":2,"Description":"Resource Id"},"name":{"Type":4,"Flags":0,"Description":"Resource name"},"type":{"Type":4,"Flags":2,"Description":"Resource type"}}}},{"7":{"Name":"FunctionProperties","Discriminator":"type","BaseProperties":{"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."},"properties":{"Type":189,"Flags":0}},"Elements":{"Aggregate":205,"Scalar":207}}},{"2":{"Name":"FunctionConfiguration","Properties":{"inputs":{"Type":191,"Flags":0},"output":{"Type":192,"Flags":0,"Description":"Describes the output of a function."},"binding":{"Type":193,"Flags":0,"Description":"The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the endpoint."}}}},{"2":{"Name":"FunctionInput","Properties":{"dataType":{"Type":4,"Flags":0,"Description":"The (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx"},"isConfigurationParameter":{"Type":2,"Flags":0,"Description":"A flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a constant. Default is false."}}}},{"3":{"ItemType":190}},{"2":{"Name":"FunctionOutput","Properties":{"dataType":{"Type":4,"Flags":0,"Description":"The (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx"}}}},{"7":{"Name":"FunctionBinding","Discriminator":"type","BaseProperties":{},"Elements":{"Microsoft.MachineLearning/WebService":194,"Microsoft.StreamAnalytics/JavascriptUdf":202}}},{"2":{"Name":"AzureMachineLearningWebServiceFunctionBinding","Properties":{"properties":{"Type":195,"Flags":0,"Description":"The binding properties associated with an Azure Machine learning web service."},"type":{"Type":201,"Flags":1,"Description":"Indicates the function binding type."}}}},{"2":{"Name":"AzureMachineLearningWebServiceFunctionBindingProperties","Properties":{"endpoint":{"Type":4,"Flags":0,"Description":"The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs"},"apiKey":{"Type":4,"Flags":0,"Description":"The API key used to authenticate with Request-Response endpoint."},"inputs":{"Type":196,"Flags":0,"Description":"The inputs for the Azure Machine Learning web service endpoint."},"outputs":{"Type":200,"Flags":0,"Description":"A list of outputs from the Azure Machine Learning web service endpoint execution."},"batchSize":{"Type":3,"Flags":0,"Description":"Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000."}}}},{"2":{"Name":"AzureMachineLearningWebServiceInputs","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the input. This is the name provided while authoring the endpoint."},"columnNames":{"Type":198,"Flags":0,"Description":"A list of input columns for the Azure Machine Learning web service endpoint."}}}},{"2":{"Name":"AzureMachineLearningWebServiceInputColumn","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the input column."},"dataType":{"Type":4,"Flags":0,"Description":"The (Azure Machine Learning supported) data type of the input column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx ."},"mapTo":{"Type":3,"Flags":0,"Description":"The zero based index of the function parameter this input maps to."}}}},{"3":{"ItemType":197}},{"2":{"Name":"AzureMachineLearningWebServiceOutputColumn","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the output column."},"dataType":{"Type":4,"Flags":0,"Description":"The (Azure Machine Learning supported) data type of the output column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx ."}}}},{"3":{"ItemType":199}},{"6":{"Value":"Microsoft.MachineLearning/WebService"}},{"2":{"Name":"JavaScriptFunctionBinding","Properties":{"properties":{"Type":203,"Flags":0,"Description":"The binding properties associated with a JavaScript function."},"type":{"Type":204,"Flags":1,"Description":"Indicates the function binding type."}}}},{"2":{"Name":"JavaScriptFunctionBindingProperties","Properties":{"script":{"Type":4,"Flags":0,"Description":"The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'"}}}},{"6":{"Value":"Microsoft.StreamAnalytics/JavascriptUdf"}},{"2":{"Name":"AggregateFunctionProperties","Properties":{"type":{"Type":206,"Flags":1,"Description":"Indicates the type of function."}}}},{"6":{"Value":"Aggregate"}},{"2":{"Name":"ScalarFunctionProperties","Properties":{"type":{"Type":208,"Flags":1,"Description":"Indicates the type of function."}}}},{"6":{"Value":"Scalar"}},{"3":{"ItemType":187}},{"2":{"Name":"JobStorageAccount","Properties":{"authenticationMode":{"Type":214,"Flags":0,"Description":"Authentication Mode."},"accountName":{"Type":4,"Flags":0,"Description":"The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."},"accountKey":{"Type":4,"Flags":0,"Description":"The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."}}}},{"6":{"Value":"Msi"}},{"6":{"Value":"UserToken"}},{"6":{"Value":"ConnectionString"}},{"5":{"Elements":[211,212,213,4]}},{"6":{"Value":"SystemAccount"}},{"6":{"Value":"JobStorageAccount"}},{"5":{"Elements":[215,216,4]}},{"2":{"Name":"ClusterInfo","Properties":{"id":{"Type":4,"Flags":0,"Description":"The resource id of cluster."}}}},{"2":{"Name":"Identity","Properties":{"tenantId":{"Type":4,"Flags":2,"Description":"The identity tenantId"},"principalId":{"Type":4,"Flags":2,"Description":"The identity principal ID"},"type":{"Type":4,"Flags":0,"Description":"The identity type"}}}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.StreamAnalytics/streamingjobs@2020-03-01","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/streamingjobs/inputs"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/streamingjobs/inputs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":222,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":223,"Flags":10,"Description":"The resource api version"},"properties":{"Type":32,"Flags":0,"Description":"The properties that are associated with an input. Required on PUT (CreateOrReplace) requests."}}}},{"4":{"Name":"Microsoft.StreamAnalytics/streamingjobs/inputs@2020-03-01","ScopeType":8,"Body":224,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/streamingjobs/outputs"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/streamingjobs/outputs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":226,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":227,"Flags":10,"Description":"The resource api version"},"properties":{"Type":112,"Flags":0,"Description":"The properties that are associated with an output. Required on PUT (CreateOrReplace) requests."}}}},{"4":{"Name":"Microsoft.StreamAnalytics/streamingjobs/outputs@2020-03-01","ScopeType":8,"Body":228,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/streamingjobs/transformations"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/streamingjobs/transformations","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":230,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":231,"Flags":10,"Description":"The resource api version"},"properties":{"Type":109,"Flags":0,"Description":"The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests."}}}},{"4":{"Name":"Microsoft.StreamAnalytics/streamingjobs/transformations@2020-03-01","ScopeType":8,"Body":232,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/streamingjobs/functions"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/streamingjobs/functions","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":234,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":235,"Flags":10,"Description":"The resource api version"},"properties":{"Type":188,"Flags":0,"Description":"The properties that are associated with a function."}}}},{"4":{"Name":"Microsoft.StreamAnalytics/streamingjobs/functions@2020-03-01","ScopeType":8,"Body":236,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/clusters"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/clusters","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":238,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":239,"Flags":10,"Description":"The resource api version"},"sku":{"Type":241,"Flags":0,"Description":"The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests."},"etag":{"Type":4,"Flags":2,"Description":"The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."},"properties":{"Type":244,"Flags":0,"Description":"The properties associated with a Stream Analytics cluster."},"tags":{"Type":250,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":0,"Description":"The geo-location where the resource lives"}}}},{"2":{"Name":"ClusterSku","Properties":{"name":{"Type":243,"Flags":0,"Description":"Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests."},"capacity":{"Type":3,"Flags":0,"Description":"Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate) requests."}}}},{"6":{"Value":"Default"}},{"5":{"Elements":[242,4]}},{"2":{"Name":"ClusterProperties","Properties":{"createdDate":{"Type":4,"Flags":2,"Description":"The date this cluster was created."},"clusterId":{"Type":4,"Flags":2,"Description":"Unique identifier for the cluster."},"provisioningState":{"Type":249,"Flags":2,"Description":"The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled"},"capacityAllocated":{"Type":3,"Flags":2,"Description":"Represents the number of streaming units currently being used on the cluster."},"capacityAssigned":{"Type":3,"Flags":2,"Description":"Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running, this would be the capacity allocated."}}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"InProgress"}},{"5":{"Elements":[245,246,247,248,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.StreamAnalytics/clusters@2020-03-01","ScopeType":8,"Body":240,"Flags":0}},{"6":{"Value":"Microsoft.StreamAnalytics/clusters/privateEndpoints"}},{"6":{"Value":"2020-03-01"}},{"2":{"Name":"Microsoft.StreamAnalytics/clusters/privateEndpoints","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":252,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":253,"Flags":10,"Description":"The resource api version"},"properties":{"Type":255,"Flags":0,"Description":"The properties associated with a private endpoint."},"etag":{"Type":4,"Flags":2,"Description":"Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate) requests."}}}},{"2":{"Name":"PrivateEndpointProperties","Properties":{"createdDate":{"Type":4,"Flags":2,"Description":"The date when this private endpoint was created."},"manualPrivateLinkServiceConnections":{"Type":260,"Flags":0,"Description":"A list of connections to the remote resource. Immutable after it is set."}}}},{"2":{"Name":"PrivateLinkServiceConnection","Properties":{"properties":{"Type":257,"Flags":0,"Description":"Bag of properties defining a privatelinkServiceConnection."}}}},{"2":{"Name":"PrivateLinkServiceConnectionProperties","Properties":{"privateLinkServiceId":{"Type":4,"Flags":0,"Description":"The resource id of the private link service. Required on PUT (CreateOrUpdate) requests."},"groupIds":{"Type":258,"Flags":0,"Description":"The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to. Required on PUT (CreateOrUpdate) requests."},"requestMessage":{"Type":4,"Flags":2,"Description":"A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars."},"privateLinkServiceConnectionState":{"Type":259,"Flags":0,"Description":"A collection of read-only information about the state of the connection to the private remote resource."}}}},{"3":{"ItemType":4}},{"2":{"Name":"PrivateLinkConnectionState","Properties":{"status":{"Type":4,"Flags":2,"Description":"Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service."},"description":{"Type":4,"Flags":2,"Description":"The reason for approval/rejection of the connection."},"actionsRequired":{"Type":4,"Flags":2,"Description":"A message indicating if changes on the service provider require any updates on the consumer."}}}},{"3":{"ItemType":256}},{"4":{"Name":"Microsoft.StreamAnalytics/clusters/privateEndpoints@2020-03-01","ScopeType":8,"Body":254,"Flags":0}},{"2":{"Name":"StartStreamingJobParameters","Properties":{"outputStartMode":{"Type":266,"Flags":0,"Description":"Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time."},"outputStartTime":{"Type":4,"Flags":0,"Description":"Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime."}}}},{"6":{"Value":"JobStartTime"}},{"6":{"Value":"CustomTime"}},{"6":{"Value":"LastOutputEventTime"}},{"5":{"Elements":[263,264,265,4]}},{"8":{"Name":"start","ResourceType":"Microsoft.StreamAnalytics/streamingjobs","ApiVersion":"2020-03-01","Input":262}},{"8":{"Name":"stop","ResourceType":"Microsoft.StreamAnalytics/streamingjobs","ApiVersion":"2020-03-01"}},{"2":{"Name":"ScaleStreamingJobParameters","Properties":{"streamingUnits":{"Type":3,"Flags":0,"Description":"Specifies the number of streaming units that the streaming job will scale to."}}}},{"8":{"Name":"scale","ResourceType":"Microsoft.StreamAnalytics/streamingjobs","ApiVersion":"2020-03-01","Input":269}},{"2":{"Name":"ResourceTestStatus","Properties":{"status":{"Type":4,"Flags":2,"Description":"The status of the test operation."},"error":{"Type":272,"Flags":2,"Description":"Describes the error that occurred."}}}},{"2":{"Name":"ErrorResponse","Properties":{"code":{"Type":4,"Flags":2,"Description":"Error code associated with the error that occurred."},"message":{"Type":4,"Flags":2,"Description":"Describes the error in detail."}}}},{"8":{"Name":"test","ResourceType":"Microsoft.StreamAnalytics/streamingjobs/inputs","ApiVersion":"2020-03-01","Output":271,"Input":31}},{"8":{"Name":"test","ResourceType":"Microsoft.StreamAnalytics/streamingjobs/outputs","ApiVersion":"2020-03-01","Output":271,"Input":111}},{"8":{"Name":"test","ResourceType":"Microsoft.StreamAnalytics/streamingjobs/functions","ApiVersion":"2020-03-01","Output":271,"Input":187}},{"7":{"Name":"FunctionRetrieveDefaultDefinitionParameters","Discriminator":"bindingType","BaseProperties":{},"Elements":{"Microsoft.MachineLearning/WebService":277,"Microsoft.StreamAnalytics/JavascriptUdf":281}}},{"2":{"Name":"AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters","Properties":{"bindingRetrievalProperties":{"Type":278,"Flags":0,"Description":"The binding retrieval properties associated with an Azure Machine learning web service."},"bindingType":{"Type":280,"Flags":1,"Description":"Indicates the function binding type."}}}},{"2":{"Name":"AzureMachineLearningWebServiceFunctionBindingRetrievalProperties","Properties":{"executeEndpoint":{"Type":4,"Flags":0,"Description":"The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs"},"udfType":{"Type":279,"Flags":0,"Description":"The function type."}}}},{"6":{"Value":"Scalar"}},{"6":{"Value":"Microsoft.MachineLearning/WebService"}},{"2":{"Name":"JavaScriptFunctionRetrieveDefaultDefinitionParameters","Properties":{"bindingRetrievalProperties":{"Type":282,"Flags":0,"Description":"The binding retrieval properties associated with a JavaScript function."},"bindingType":{"Type":284,"Flags":1,"Description":"Indicates the function binding type."}}}},{"2":{"Name":"JavaScriptFunctionBindingRetrievalProperties","Properties":{"script":{"Type":4,"Flags":0,"Description":"The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'."},"udfType":{"Type":283,"Flags":0,"Description":"The function type."}}}},{"6":{"Value":"Scalar"}},{"6":{"Value":"Microsoft.StreamAnalytics/JavascriptUdf"}},{"8":{"Name":"retrieveDefaultDefinition","ResourceType":"Microsoft.StreamAnalytics/streamingjobs/functions","ApiVersion":"2020-03-01","Output":187,"Input":276}},{"2":{"Name":"ClusterJobListResult","Properties":{"value":{"Type":299,"Flags":2,"Description":"A list of streaming jobs."},"nextLink":{"Type":4,"Flags":2,"Description":"The URL to fetch the next set of streaming jobs."}}}},{"2":{"Name":"ClusterJob","Properties":{"id":{"Type":4,"Flags":2,"Description":"Resource ID of the streaming job."},"streamingUnits":{"Type":3,"Flags":2,"Description":"The number of streaming units that are used by the streaming job."},"jobState":{"Type":298,"Flags":2,"Description":"The current execution state of the streaming job."}}}},{"6":{"Value":"Created"}},{"6":{"Value":"Starting"}},{"6":{"Value":"Running"}},{"6":{"Value":"Stopping"}},{"6":{"Value":"Stopped"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Degraded"}},{"6":{"Value":"Restarting"}},{"6":{"Value":"Scaling"}},{"5":{"Elements":[288,289,290,291,292,293,294,295,296,297,4]}},{"3":{"ItemType":287}},{"8":{"Name":"listStreamingJobs","ResourceType":"Microsoft.StreamAnalytics/clusters","ApiVersion":"2020-03-01","Output":286}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/streamingjobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a streaming job.  Required on PUT (CreateOrReplace) requests."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs and outputs."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamingJobProperties",
+    "properties": {
+      "sku": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests."
+      },
+      "jobId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A GUID uniquely identifying the streaming job. This GUID is generated upon creation of the streaming job."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Describes the provisioning status of the streaming job."
+      },
+      "jobState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Describes the state of the streaming job."
+      },
+      "jobType": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Describes the type of the job. Valid modes are `Cloud` and 'Edge'."
+      },
+      "outputStartMode": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "This property should only be utilized when it is desired that the job be started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time."
+      },
+      "outputStartTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime."
+      },
+      "lastOutputEventTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Value is either an ISO-8601 formatted timestamp indicating the last output event time of the streaming job or null indicating that output has not yet been produced. In case of multiple outputs or multiple streams, this shows the latest value in that set."
+      },
+      "eventsOutOfOrderPolicy": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Indicates the policy to apply to events that arrive out of order in the input event stream."
+      },
+      "outputErrorPolicy": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due to being malformed (missing column values, column values of wrong type or size)."
+      },
+      "eventsOutOfOrderMaxDelayInSeconds": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order."
+      },
+      "eventsLateArrivalMaxDelayInSeconds": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The maximum tolerable delay in seconds where events arriving late could be included.  Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait indefinitely. If the property is absent, it is interpreted to have a value of -1."
+      },
+      "dataLocale": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if none specified."
+      },
+      "compatibilityLevel": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Controls certain runtime behaviors of the streaming job."
+      },
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Value is an ISO-8601 formatted UTC timestamp indicating when the streaming job was created."
+      },
+      "inputs": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "A list of one or more inputs to the streaming job. The name property for each input is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual input."
+      },
+      "transformation": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Indicates the query and the number of streaming units to use for the streaming job. The name property of the transformation is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 0,
+        "description": "A list of one or more outputs for the streaming job. The name property for each output is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual output."
+      },
+      "functions": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 0,
+        "description": "A list of one or more functions for the streaming job. The name property for each function is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the streaming job. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      },
+      "jobStorageAccount": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Azure Storage account with MSI"
+      },
+      "contentStoragePolicy": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also specify jobStorageAccount property. ."
+      },
+      "cluster": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "The cluster which streaming jobs will run on."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The name of the SKU. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cloud"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Edge"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JobStartTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LastOutputEventTime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adjust"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Drop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stop"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Drop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "1.0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "1.2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Input",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an input. Required on PUT (CreateOrReplace) requests."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "InputProperties",
+    "discriminator": "type",
+    "baseProperties": {
+      "serialization": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests."
+      },
+      "diagnostics": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      },
+      "compression": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "Describes how input data is compressed"
+      },
+      "partitionKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "partitionKey Describes a key in the input data which is used for partitioning the input data"
+      }
+    },
+    "elements": {
+      "Reference": {
+        "$ref": "#/54"
+      },
+      "Stream": {
+        "$ref": "#/77"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "Serialization",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "Avro": {
+        "$ref": "#/28"
+      },
+      "Csv": {
+        "$ref": "#/31"
+      },
+      "Json": {
+        "$ref": "#/36"
+      },
+      "Parquet": {
+        "$ref": "#/44"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvroSerialization",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Avro"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CsvSerialization",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CsvSerializationProperties",
+    "properties": {
+      "fieldDelimiter": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the delimiter that will be used to separate comma-separated value (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required on PUT (CreateOrReplace) requests."
+      },
+      "encoding": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UTF8"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Csv"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JsonSerialization",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JsonSerializationProperties",
+    "properties": {
+      "encoding": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests."
+      },
+      "format": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "This property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property specifies the format of the JSON the output will be written in. The currently supported values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if left null."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UTF8"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LineSeparated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Array"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Json"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ParquetSerialization",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Parquet"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Diagnostics",
+    "properties": {
+      "conditions": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 2,
+        "description": "A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer attention."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiagnosticCondition",
+    "properties": {
+      "since": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The UTC timestamp of when the condition started. Customers should be able to find a corresponding event in the ops log around this time."
+      },
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The opaque diagnostic code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The human-readable message describing the condition in detail. Localized in the Accept-Language of the client request."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Compression",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GZip"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deflate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReferenceInputProperties",
+    "properties": {
+      "datasource": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ReferenceInputDataSource",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "File": {
+        "$ref": "#/56"
+      },
+      "Microsoft.Sql/Server/Database": {
+        "$ref": "#/59"
+      },
+      "Microsoft.Storage/Blob": {
+        "$ref": "#/67"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FileReferenceInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a file input containing reference data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FileReferenceInputDataSourceProperties",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The path of the file."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "File"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSqlReferenceInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSqlReferenceInputDataSourceProperties",
+    "properties": {
+      "server": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This is the name of the server that contains the database that will be written to."
+      },
+      "database": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This is the name of the database that output will be written to."
+      },
+      "user": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This is the user name that will be used to connect to the SQL Database instance."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This is the password that will be used to connect to the SQL Database instance."
+      },
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. The name of the table in the Azure SQL database.."
+      },
+      "refreshType": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Indicates the type of data refresh option."
+      },
+      "refreshRate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This indicates how frequently the data will be fetched from the database. It is of DateTime format."
+      },
+      "fullSnapshotQuery": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This query is used to fetch data from the sql database."
+      },
+      "deltaSnapshotQuery": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element is associated with the datasource element. This query is used to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in Azure SQL Database."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Static"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RefreshPeriodicallyWithFull"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RefreshPeriodicallyWithDelta"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sql/Server/Database"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobReferenceInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a blob input containing reference data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobReferenceInputDataSourceProperties",
+    "properties": {
+      "storageAccounts": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."
+      },
+      "container": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."
+      },
+      "pathPattern": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."
+      },
+      "dateFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."
+      },
+      "timeFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageAccount",
+    "properties": {
+      "accountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Storage/Blob"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reference"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamInputProperties",
+    "properties": {
+      "datasource": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "Describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 1,
+        "description": "Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "StreamInputDataSource",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "GatewayMessageBus": {
+        "$ref": "#/79"
+      },
+      "Microsoft.Devices/IotHubs": {
+        "$ref": "#/82"
+      },
+      "Microsoft.EventHub/EventHub": {
+        "$ref": "#/85"
+      },
+      "Microsoft.ServiceBus/EventHub": {
+        "$ref": "#/92"
+      },
+      "Microsoft.Storage/Blob": {
+        "$ref": "#/94"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GatewayMessageBusStreamInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a gateway message bus input containing stream data."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GatewayMessageBusStreamInputDataSourceProperties",
+    "properties": {
+      "topic": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Service Bus topic."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GatewayMessageBus"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubStreamInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an IoT Hub input containing stream data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubStreamInputDataSourceProperties",
+    "properties": {
+      "iotHubNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy name for the IoT Hub. This policy must contain at least the Service connect permission. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."
+      },
+      "consumerGroupName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group."
+      },
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The IoT Hub endpoint to connect to (ie. messages/events, messages/operationsMonitoringEvents, etc.)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Devices/IotHubs"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubV2StreamInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubStreamInputDataSourceProperties",
+    "properties": {
+      "consumerGroupName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group."
+      },
+      "eventHubName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Event Hub. Required on PUT (CreateOrReplace) requests."
+      },
+      "serviceBusNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.EventHub/EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubStreamInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceBus/EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobStreamInputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a blob input containing stream data. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 1,
+        "description": "Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobStreamInputDataSourceProperties",
+    "properties": {
+      "sourcePartitionCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The partition count of the blob input data source. Range 1 - 1024."
+      },
+      "storageAccounts": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."
+      },
+      "container": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."
+      },
+      "pathPattern": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."
+      },
+      "dateFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."
+      },
+      "timeFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Storage/Blob"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stream"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/25"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Transformation",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransformationProperties",
+    "properties": {
+      "streamingUnits": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies the number of streaming units that the streaming job uses."
+      },
+      "validStreamingUnits": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Specifies the valid streaming units a streaming job can scale to."
+      },
+      "query": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the query that will be run in the streaming job. You can learn more about the Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT (CreateOrReplace) requests."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the transformation. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Output",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an output. Required on PUT (CreateOrReplace) requests."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OutputProperties",
+    "properties": {
+      "datasource": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests."
+      },
+      "timeWindow": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time frame for filtering Stream Analytics job outputs."
+      },
+      "sizeWindow": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The size window to constrain a Stream Analytics output to."
+      },
+      "serialization": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace) requests."
+      },
+      "diagnostics": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the output. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "OutputDataSource",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "GatewayMessageBus": {
+        "$ref": "#/110"
+      },
+      "Microsoft.AzureFunction": {
+        "$ref": "#/113"
+      },
+      "Microsoft.DataLake/Accounts": {
+        "$ref": "#/116"
+      },
+      "Microsoft.EventHub/EventHub": {
+        "$ref": "#/123"
+      },
+      "Microsoft.ServiceBus/EventHub": {
+        "$ref": "#/131"
+      },
+      "Microsoft.ServiceBus/Queue": {
+        "$ref": "#/133"
+      },
+      "Microsoft.ServiceBus/Topic": {
+        "$ref": "#/141"
+      },
+      "Microsoft.Sql/Server/DataWarehouse": {
+        "$ref": "#/150"
+      },
+      "Microsoft.Sql/Server/Database": {
+        "$ref": "#/153"
+      },
+      "Microsoft.Storage/Blob": {
+        "$ref": "#/160"
+      },
+      "Microsoft.Storage/DocumentDB": {
+        "$ref": "#/168"
+      },
+      "Microsoft.Storage/Table": {
+        "$ref": "#/171"
+      },
+      "PowerBI": {
+        "$ref": "#/175"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GatewayMessageBusOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a Gateway Message Bus output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GatewayMessageBusOutputDataSourceProperties",
+    "properties": {
+      "topic": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Service Bus topic."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GatewayMessageBus"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureFunctionOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureFunctionOutputDataSourceProperties",
+    "properties": {
+      "functionAppName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of your Azure Functions app."
+      },
+      "functionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the function in your Azure Functions app."
+      },
+      "apiKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function."
+      },
+      "maxBatchSize": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB)."
+      },
+      "maxBatchCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The default value is 100."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AzureFunction"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureDataLakeStoreOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureDataLakeStoreOutputDataSourceProperties",
+    "properties": {
+      "accountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests."
+      },
+      "filePathPrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests."
+      },
+      "dateFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date format instead."
+      },
+      "timeFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time format instead."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      },
+      "refreshToken": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests."
+      },
+      "tokenUserPrincipalName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."
+      },
+      "tokenUserDisplayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DataLake/Accounts"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubV2OutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubOutputDataSourceProperties",
+    "properties": {
+      "partitionKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The key/column that is used to determine to which partition to send event data."
+      },
+      "propertyColumns": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "The properties associated with this Event Hub output."
+      },
+      "eventHubName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Event Hub. Required on PUT (CreateOrReplace) requests."
+      },
+      "serviceBusNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.EventHub/EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceBus/EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceBusQueueOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceBusQueueOutputDataSourceProperties",
+    "properties": {
+      "queueName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests."
+      },
+      "propertyColumns": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "A string array of the names of output columns to be attached to Service Bus messages as custom properties."
+      },
+      "systemPropertyColumns": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The system properties associated with the Service Bus Queue. The following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc."
+      },
+      "serviceBusNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceBus/Queue"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceBusTopicOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceBusTopicOutputDataSourceProperties",
+    "properties": {
+      "topicName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests."
+      },
+      "propertyColumns": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "A string array of the names of output columns to be attached to Service Bus messages as custom properties."
+      },
+      "systemPropertyColumns": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "The system properties associated with the Service Bus Topic Output. The following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc."
+      },
+      "serviceBusNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests."
+      },
+      "sharedAccessPolicyKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceBusTopicOutputDataSourcePropertiesSystemPropertyColumns",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceBus/Topic"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSynapseOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSynapseOutputDataSourceProperties",
+    "properties": {
+      "server": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "database": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "user": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sql/Server/DataWarehouse"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSqlDatabaseOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Azure SQL database output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSqlDatabaseOutputDataSourceProperties",
+    "properties": {
+      "server": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "database": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "user": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests."
+      },
+      "maxBatchCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests."
+      },
+      "maxWriterCount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sql/Server/Database"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobOutputDataSourceProperties",
+    "properties": {
+      "blobPathPrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Blob path prefix."
+      },
+      "storageAccounts": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests."
+      },
+      "container": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of a container within the associated Storage account. This container contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests."
+      },
+      "pathPattern": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine whether or not they should be included as input or output to the job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation and example."
+      },
+      "dateFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead."
+      },
+      "timeFormat": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Storage/Blob"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DocumentDbOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DocumentDbOutputDataSourceProperties",
+    "properties": {
+      "accountId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests."
+      },
+      "database": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests."
+      },
+      "collectionNamePattern": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The collection name pattern for the collections to be used. The collection name format can be constructed using the optional {partition} token, where partitions start from 0. See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required on PUT (CreateOrReplace) requests."
+      },
+      "partitionKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the field in output events used to specify the key for partitioning output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required to be specified."
+      },
+      "documentId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the field in output events used to specify the primary key which insert or update operations are based on."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Storage/DocumentDB"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureTableOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureTableOutputDataSourceProperties",
+    "properties": {
+      "accountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      },
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure Table. Required on PUT (CreateOrReplace) requests."
+      },
+      "partitionKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element indicates the name of a column from the SELECT statement in the query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests."
+      },
+      "rowKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This element indicates the name of a column from the SELECT statement in the query that will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests."
+      },
+      "columnsToRemove": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "If specified, each item in the array is the name of a column to remove (if present) from output event entities."
+      },
+      "batchSize": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The number of rows to write to the Azure Table at a time."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Storage/Table"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PowerBIOutputDataSource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 1,
+        "description": "Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PowerBIOutputDataSourceProperties",
+    "properties": {
+      "dataset": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests."
+      },
+      "table": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests."
+      },
+      "groupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ID of the Power BI group."
+      },
+      "groupName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Power BI group. Use this property to help remember which specific Power BI group id was used."
+      },
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      },
+      "refreshToken": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests."
+      },
+      "tokenUserPrincipalName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."
+      },
+      "tokenUserDisplayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerBI"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/107"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Function",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a function."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FunctionProperties",
+    "discriminator": "type",
+    "baseProperties": {
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 0
+      }
+    },
+    "elements": {
+      "Aggregate": {
+        "$ref": "#/202"
+      },
+      "Scalar": {
+        "$ref": "#/204"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FunctionConfiguration",
+    "properties": {
+      "inputs": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 0
+      },
+      "output": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 0,
+        "description": "Describes the output of a function."
+      },
+      "binding": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 0,
+        "description": "The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FunctionInput",
+    "properties": {
+      "dataType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx"
+      },
+      "isConfigurationParameter": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 0,
+        "description": "A flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a constant. Default is false."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/186"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FunctionOutput",
+    "properties": {
+      "dataType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FunctionBinding",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "Microsoft.MachineLearning/WebService": {
+        "$ref": "#/191"
+      },
+      "Microsoft.StreamAnalytics/JavascriptUdf": {
+        "$ref": "#/199"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceFunctionBinding",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "The binding properties associated with an Azure Machine learning web service."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 1,
+        "description": "Indicates the function binding type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceFunctionBindingProperties",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs"
+      },
+      "apiKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The API key used to authenticate with Request-Response endpoint."
+      },
+      "inputs": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 0,
+        "description": "The inputs for the Azure Machine Learning web service endpoint."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "A list of outputs from the Azure Machine Learning web service endpoint execution."
+      },
+      "batchSize": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceInputs",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the input. This is the name provided while authoring the endpoint."
+      },
+      "columnNames": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "A list of input columns for the Azure Machine Learning web service endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceInputColumn",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the input column."
+      },
+      "dataType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The (Azure Machine Learning supported) data type of the input column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx ."
+      },
+      "mapTo": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The zero based index of the function parameter this input maps to."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/194"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceOutputColumn",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the output column."
+      },
+      "dataType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The (Azure Machine Learning supported) data type of the output column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx ."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/196"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MachineLearning/WebService"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JavaScriptFunctionBinding",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "The binding properties associated with a JavaScript function."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 1,
+        "description": "Indicates the function binding type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JavaScriptFunctionBindingProperties",
+    "properties": {
+      "script": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/JavascriptUdf"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AggregateFunctionProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 1,
+        "description": "Indicates the type of function."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Aggregate"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalarFunctionProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 1,
+        "description": "Indicates the type of function."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scalar"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/183"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobStorageAccount",
+    "properties": {
+      "authenticationMode": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "Authentication Mode."
+      },
+      "accountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Msi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionString"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAccount"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JobStorageAccount"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterInfo",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource id of cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The identity tenantId"
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The identity principal ID"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/streamingjobs/inputs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an input. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/221"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/streamingjobs/outputs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with an output. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/225"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/streamingjobs/transformations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/transformations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/transformations@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/229"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/streamingjobs/functions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/functions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "The properties that are associated with a function."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/functions@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/233"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/clusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/clusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "The properties associated with a Stream Analytics cluster."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate) requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 36,
+    "maxValue": 396
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterProperties",
+    "properties": {
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date this cluster was created."
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique identifier for the cluster."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 2,
+        "description": "The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled"
+      },
+      "capacityAllocated": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Represents the number of streaming units currently being used on the cluster."
+      },
+      "capacityAssigned": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running, this would be the capacity allocated."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/clusters@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/237"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/clusters/privateEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "The properties associated with a private endpoint."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate) requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointProperties",
+    "properties": {
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date when this private endpoint was created."
+      },
+      "manualPrivateLinkServiceConnections": {
+        "type": {
+          "$ref": "#/258"
+        },
+        "flags": 0,
+        "description": "A list of connections to the remote resource. Immutable after it is set."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Bag of properties defining a privatelinkServiceConnection."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionProperties",
+    "properties": {
+      "privateLinkServiceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource id of the private link service. Required on PUT (CreateOrUpdate) requests."
+      },
+      "groupIds": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to. Required on PUT (CreateOrUpdate) requests."
+      },
+      "requestMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 0,
+        "description": "A collection of read-only information about the state of the connection to the private remote resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/254"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints@2020-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/252"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StartStreamingJobParameters",
+    "properties": {
+      "outputStartMode": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 0,
+        "description": "Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time."
+      },
+      "outputStartTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JobStartTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LastOutputEventTime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs",
+    "apiVersion": "2020-03-01",
+    "input": {
+      "$ref": "#/260"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs",
+    "apiVersion": "2020-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScaleStreamingJobParameters",
+    "properties": {
+      "streamingUnits": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies the number of streaming units that the streaming job will scale to."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "scale",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs",
+    "apiVersion": "2020-03-01",
+    "input": {
+      "$ref": "#/267"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTestStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The status of the test operation."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 2,
+        "description": "Describes the error that occurred."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorResponse",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Error code associated with the error that occurred."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Describes the error in detail."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "test",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+    "apiVersion": "2020-03-01",
+    "output": {
+      "$ref": "#/269"
+    },
+    "input": {
+      "$ref": "#/25"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "test",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+    "apiVersion": "2020-03-01",
+    "output": {
+      "$ref": "#/269"
+    },
+    "input": {
+      "$ref": "#/107"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "test",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs/functions",
+    "apiVersion": "2020-03-01",
+    "output": {
+      "$ref": "#/269"
+    },
+    "input": {
+      "$ref": "#/183"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FunctionRetrieveDefaultDefinitionParameters",
+    "discriminator": "bindingType",
+    "baseProperties": {},
+    "elements": {
+      "Microsoft.MachineLearning/WebService": {
+        "$ref": "#/275"
+      },
+      "Microsoft.StreamAnalytics/JavascriptUdf": {
+        "$ref": "#/279"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters",
+    "properties": {
+      "bindingRetrievalProperties": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 0,
+        "description": "The binding retrieval properties associated with an Azure Machine learning web service."
+      },
+      "bindingType": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 1,
+        "description": "Indicates the function binding type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMachineLearningWebServiceFunctionBindingRetrievalProperties",
+    "properties": {
+      "executeEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs"
+      },
+      "udfType": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "The function type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scalar"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.MachineLearning/WebService"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JavaScriptFunctionRetrieveDefaultDefinitionParameters",
+    "properties": {
+      "bindingRetrievalProperties": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 0,
+        "description": "The binding retrieval properties associated with a JavaScript function."
+      },
+      "bindingType": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 1,
+        "description": "Indicates the function binding type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JavaScriptFunctionBindingRetrievalProperties",
+    "properties": {
+      "script": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'."
+      },
+      "udfType": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 0,
+        "description": "The function type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scalar"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.StreamAnalytics/JavascriptUdf"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "retrieveDefaultDefinition",
+    "resourceType": "Microsoft.StreamAnalytics/streamingjobs/functions",
+    "apiVersion": "2020-03-01",
+    "output": {
+      "$ref": "#/183"
+    },
+    "input": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterJobListResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 2,
+        "description": "A list of streaming jobs."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The URL to fetch the next set of streaming jobs."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterJob",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource ID of the streaming job."
+      },
+      "streamingUnits": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "The number of streaming units that are used by the streaming job."
+      },
+      "jobState": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 2,
+        "description": "The current execution state of the streaming job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restarting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scaling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/285"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listStreamingJobs",
+    "resourceType": "Microsoft.StreamAnalytics/clusters",
+    "apiVersion": "2020-03-01",
+    "output": {
+      "$ref": "#/284"
+    }
+  }
+]

@@ -1,1 +1,2501 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.Authorization/accessReviewHistoryDefinitions"}},{"6":{"Value":"2021-11-16-preview"}},{"2":{"Name":"Microsoft.Authorization/accessReviewHistoryDefinitions","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"displayName":{"Type":4,"Flags":4,"Description":"The display name for the history definition."},"reviewHistoryPeriodStartDateTime":{"Type":4,"Flags":6,"Description":"Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."},"reviewHistoryPeriodEndDateTime":{"Type":4,"Flags":6,"Description":"Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."},"decisions":{"Type":17,"Flags":4,"Description":"Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied the data will only contain review results in which the decision maker approved or denied a review request."},"status":{"Type":22,"Flags":6,"Description":"This read-only field specifies the of the requested review history data. This is either requested, in-progress, done or error."},"createdDateTime":{"Type":4,"Flags":6,"Description":"Date time when history definition was created"},"createdBy":{"Type":23,"Flags":6,"Description":"The user or other identity who created this history definition."},"scopes":{"Type":37,"Flags":4,"Description":"A collection of scopes used when selecting review history data"},"settings":{"Type":38,"Flags":4,"Description":"Recurrence settings for recurring history reports, skip for one-time reports."},"instances":{"Type":55,"Flags":4,"Description":"Set of access review history instances for this history definition."},"properties":{"Type":56,"Flags":2,"Description":"Access Review History Definition properties."}}}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"NotReviewed"}},{"6":{"Value":"DontKnow"}},{"6":{"Value":"NotNotified"}},{"5":{"Elements":[11,12,13,14,15,4]}},{"3":{"ItemType":16}},{"6":{"Value":"Requested"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Done"}},{"6":{"Value":"Error"}},{"5":{"Elements":[18,19,20,21,4]}},{"2":{"Name":"AccessReviewActorIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The identity id"},"principalType":{"Type":26,"Flags":2,"Description":"The identity type : user/servicePrincipal"},"principalName":{"Type":4,"Flags":2,"Description":"The identity display name"},"userPrincipalName":{"Type":4,"Flags":2,"Description":"The user principal name(if valid)"}}}},{"6":{"Value":"user"}},{"6":{"Value":"servicePrincipal"}},{"5":{"Elements":[24,25,4]}},{"2":{"Name":"AccessReviewScope","Properties":{"resourceId":{"Type":4,"Flags":2,"Description":"ResourceId in which this review is getting created"},"roleDefinitionId":{"Type":4,"Flags":2,"Description":"This is used to indicate the role being reviewed"},"principalType":{"Type":33,"Flags":2,"Description":"The identity type user/servicePrincipal to review"},"assignmentState":{"Type":36,"Flags":2,"Description":"The role assignment state eligible/active to review"},"inactiveDuration":{"Type":4,"Flags":0,"Description":"Duration users are inactive for. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"},"expandNestedMemberships":{"Type":2,"Flags":0,"Description":"Flag to indicate whether to expand nested memberships or not."}}}},{"6":{"Value":"user"}},{"6":{"Value":"guestUser"}},{"6":{"Value":"servicePrincipal"}},{"6":{"Value":"user,group"}},{"6":{"Value":"redeemedGuestUser"}},{"5":{"Elements":[28,29,30,31,32,4]}},{"6":{"Value":"eligible"}},{"6":{"Value":"active"}},{"5":{"Elements":[34,35,4]}},{"3":{"ItemType":27}},{"2":{"Name":"AccessReviewHistoryScheduleSettings","Properties":{"pattern":{"Type":39,"Flags":0,"Description":"Access Review History Definition recurrence settings."},"range":{"Type":43,"Flags":0,"Description":"Access Review History Definition recurrence settings."}}}},{"2":{"Name":"AccessReviewRecurrencePattern","Properties":{"type":{"Type":42,"Flags":0,"Description":"The recurrence type : weekly, monthly, etc."},"interval":{"Type":3,"Flags":0,"Description":"The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly."}}}},{"6":{"Value":"weekly"}},{"6":{"Value":"absoluteMonthly"}},{"5":{"Elements":[40,41,4]}},{"2":{"Name":"AccessReviewRecurrenceRange","Properties":{"type":{"Type":47,"Flags":0,"Description":"The recurrence range type. The possible values are: endDate, noEnd, numbered."},"numberOfOccurrences":{"Type":3,"Flags":0,"Description":"The number of times to repeat the access review. Required and must be positive if type is numbered."},"startDate":{"Type":4,"Flags":0,"Description":"The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create."},"endDate":{"Type":4,"Flags":0,"Description":"The DateTime when the review is scheduled to end. Required if type is endDate"}}}},{"6":{"Value":"endDate"}},{"6":{"Value":"noEnd"}},{"6":{"Value":"numbered"}},{"5":{"Elements":[44,45,46,4]}},{"2":{"Name":"AccessReviewHistoryInstance","Properties":{"id":{"Type":4,"Flags":2,"Description":"The access review history definition instance id."},"name":{"Type":4,"Flags":2,"Description":"The access review history definition instance unique id."},"type":{"Type":4,"Flags":2,"Description":"The resource type."},"properties":{"Type":49,"Flags":0,"Description":"Access Review History Definition Instance properties."}}}},{"2":{"Name":"AccessReviewHistoryInstanceProperties","Properties":{"reviewHistoryPeriodStartDateTime":{"Type":4,"Flags":0,"Description":"Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."},"reviewHistoryPeriodEndDateTime":{"Type":4,"Flags":0,"Description":"Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."},"displayName":{"Type":4,"Flags":0,"Description":"The display name for the parent history definition."},"status":{"Type":54,"Flags":2,"Description":"Status of the requested review history instance data. This is either requested, in-progress, done or error. The state transitions are as follows - Requested -> InProgress -> Done -> Expired"},"runDateTime":{"Type":4,"Flags":0,"Description":"Date time when the history data report is scheduled to be generated."},"fulfilledDateTime":{"Type":4,"Flags":0,"Description":"Date time when the history data report is scheduled to be generated."},"downloadUri":{"Type":4,"Flags":2,"Description":"Uri which can be used to retrieve review history data. To generate this Uri, generateDownloadUri() must be called for a specific accessReviewHistoryDefinitionInstance. The link expires after a 24 hour period. Callers can see the expiration date time by looking at the 'se' parameter in the generated uri."},"expiration":{"Type":4,"Flags":0,"Description":"Date time when history data report expires and the associated data is deleted."}}}},{"6":{"Value":"Requested"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Done"}},{"6":{"Value":"Error"}},{"5":{"Elements":[50,51,52,53,4]}},{"3":{"ItemType":48}},{"2":{"Name":"AccessReviewHistoryDefinitionProperties","Properties":{"displayName":{"Type":4,"Flags":0,"Description":"The display name for the history definition."},"reviewHistoryPeriodStartDateTime":{"Type":4,"Flags":2,"Description":"Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."},"reviewHistoryPeriodEndDateTime":{"Type":4,"Flags":2,"Description":"Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."},"decisions":{"Type":63,"Flags":0,"Description":"Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied the data will only contain review results in which the decision maker approved or denied a review request."},"status":{"Type":68,"Flags":2,"Description":"This read-only field specifies the of the requested review history data. This is either requested, in-progress, done or error."},"createdDateTime":{"Type":4,"Flags":2,"Description":"Date time when history definition was created"},"createdBy":{"Type":23,"Flags":2,"Description":"The user or other identity who created this history definition."},"scopes":{"Type":69,"Flags":0,"Description":"A collection of scopes used when selecting review history data"},"settings":{"Type":38,"Flags":0,"Description":"Recurrence settings for recurring history reports, skip for one-time reports."},"instances":{"Type":70,"Flags":0,"Description":"Set of access review history instances for this history definition."}}}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"NotReviewed"}},{"6":{"Value":"DontKnow"}},{"6":{"Value":"NotNotified"}},{"5":{"Elements":[57,58,59,60,61,4]}},{"3":{"ItemType":62}},{"6":{"Value":"Requested"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Done"}},{"6":{"Value":"Error"}},{"5":{"Elements":[64,65,66,67,4]}},{"3":{"ItemType":27}},{"3":{"ItemType":48}},{"4":{"Name":"Microsoft.Authorization/accessReviewHistoryDefinitions@2021-11-16-preview","ScopeType":4,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.Authorization/accessReviewScheduleDefinitions"}},{"6":{"Value":"2021-11-16-preview"}},{"2":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":72,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":73,"Flags":10,"Description":"The resource api version"},"displayName":{"Type":4,"Flags":4,"Description":"The display name for the schedule definition."},"status":{"Type":86,"Flags":6,"Description":"This read-only field specifies the status of an accessReview."},"descriptionForAdmins":{"Type":4,"Flags":4,"Description":"The description provided by the access review creator and visible to admins."},"descriptionForReviewers":{"Type":4,"Flags":4,"Description":"The description provided by the access review creator to be shown to reviewers."},"createdBy":{"Type":23,"Flags":6,"Description":"The user or other identity who created this review."},"settings":{"Type":87,"Flags":4,"Description":"Access Review Settings."},"scope":{"Type":27,"Flags":6,"Description":"This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId."},"reviewers":{"Type":97,"Flags":4,"Description":"This is the collection of reviewers."},"backupReviewers":{"Type":98,"Flags":4,"Description":"This is the collection of backup reviewers."},"reviewersType":{"Type":102,"Flags":6,"Description":"This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."},"instances":{"Type":123,"Flags":4,"Description":"This is the collection of instances returned when one does an expand on it."},"properties":{"Type":124,"Flags":2,"Description":"Access Review properties."}}}},{"6":{"Value":"NotStarted"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Completed"}},{"6":{"Value":"Applied"}},{"6":{"Value":"Initializing"}},{"6":{"Value":"Applying"}},{"6":{"Value":"Completing"}},{"6":{"Value":"Scheduled"}},{"6":{"Value":"AutoReviewing"}},{"6":{"Value":"AutoReviewed"}},{"6":{"Value":"Starting"}},{"5":{"Elements":[75,76,77,78,79,80,81,82,83,84,85,4]}},{"2":{"Name":"AccessReviewScheduleSettings","Properties":{"mailNotificationsEnabled":{"Type":2,"Flags":0,"Description":"Flag to indicate whether sending mails to reviewers and the review creator is enabled."},"reminderNotificationsEnabled":{"Type":2,"Flags":0,"Description":"Flag to indicate whether sending reminder emails to reviewers are enabled."},"defaultDecisionEnabled":{"Type":2,"Flags":0,"Description":"Flag to indicate whether reviewers are required to provide a justification when reviewing access."},"justificationRequiredOnApproval":{"Type":2,"Flags":0,"Description":"Flag to indicate whether the reviewer is required to pass justification when recording a decision."},"defaultDecision":{"Type":91,"Flags":0,"Description":"This specifies the behavior for the autoReview feature when an access review completes."},"autoApplyDecisionsEnabled":{"Type":2,"Flags":0,"Description":"Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after the review completes, apply the access review."},"recommendationsEnabled":{"Type":2,"Flags":0,"Description":"Flag to indicate whether showing recommendations to reviewers is enabled."},"recommendationLookBackDuration":{"Type":4,"Flags":0,"Description":"Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review) by default. However, in some scenarios, customers want to change how far back to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"},"instanceDurationInDays":{"Type":3,"Flags":0,"Description":"The duration in days for an instance."},"recurrence":{"Type":92,"Flags":0,"Description":"Access Review Settings."}}}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"Recommendation"}},{"5":{"Elements":[88,89,90,4]}},{"2":{"Name":"AccessReviewRecurrenceSettings","Properties":{"pattern":{"Type":39,"Flags":0,"Description":"Access Review schedule definition recurrence pattern."},"range":{"Type":43,"Flags":0,"Description":"Access Review schedule definition recurrence range."}}}},{"2":{"Name":"AccessReviewReviewer","Properties":{"principalId":{"Type":4,"Flags":0,"Description":"The id of the reviewer(user/servicePrincipal)"},"principalType":{"Type":96,"Flags":2,"Description":"The identity type : user/servicePrincipal"}}}},{"6":{"Value":"user"}},{"6":{"Value":"servicePrincipal"}},{"5":{"Elements":[94,95,4]}},{"3":{"ItemType":93}},{"3":{"ItemType":93}},{"6":{"Value":"Assigned"}},{"6":{"Value":"Self"}},{"6":{"Value":"Managers"}},{"5":{"Elements":[99,100,101,4]}},{"2":{"Name":"AccessReviewInstance","Properties":{"id":{"Type":4,"Flags":2,"Description":"The access review instance id."},"name":{"Type":4,"Flags":2,"Description":"The access review instance name."},"type":{"Type":4,"Flags":2,"Description":"The resource type."},"properties":{"Type":104,"Flags":0,"Description":"Access Review properties."}}}},{"2":{"Name":"AccessReviewInstanceProperties","Properties":{"status":{"Type":116,"Flags":2,"Description":"This read-only field specifies the status of an access review instance."},"startDateTime":{"Type":4,"Flags":0,"Description":"The DateTime when the review instance is scheduled to be start."},"endDateTime":{"Type":4,"Flags":0,"Description":"The DateTime when the review instance is scheduled to end."},"reviewers":{"Type":117,"Flags":0,"Description":"This is the collection of reviewers."},"backupReviewers":{"Type":118,"Flags":0,"Description":"This is the collection of backup reviewers."},"reviewersType":{"Type":122,"Flags":2,"Description":"This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."}}}},{"6":{"Value":"NotStarted"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Completed"}},{"6":{"Value":"Applied"}},{"6":{"Value":"Initializing"}},{"6":{"Value":"Applying"}},{"6":{"Value":"Completing"}},{"6":{"Value":"Scheduled"}},{"6":{"Value":"AutoReviewing"}},{"6":{"Value":"AutoReviewed"}},{"6":{"Value":"Starting"}},{"5":{"Elements":[105,106,107,108,109,110,111,112,113,114,115,4]}},{"3":{"ItemType":93}},{"3":{"ItemType":93}},{"6":{"Value":"Assigned"}},{"6":{"Value":"Self"}},{"6":{"Value":"Managers"}},{"5":{"Elements":[119,120,121,4]}},{"3":{"ItemType":103}},{"2":{"Name":"AccessReviewScheduleDefinitionProperties","Properties":{"displayName":{"Type":4,"Flags":0,"Description":"The display name for the schedule definition."},"status":{"Type":136,"Flags":2,"Description":"This read-only field specifies the status of an accessReview."},"descriptionForAdmins":{"Type":4,"Flags":0,"Description":"The description provided by the access review creator and visible to admins."},"descriptionForReviewers":{"Type":4,"Flags":0,"Description":"The description provided by the access review creator to be shown to reviewers."},"createdBy":{"Type":23,"Flags":2,"Description":"The user or other identity who created this review."},"settings":{"Type":87,"Flags":0,"Description":"Access Review Settings."},"scope":{"Type":27,"Flags":2,"Description":"This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId."},"reviewers":{"Type":137,"Flags":0,"Description":"This is the collection of reviewers."},"backupReviewers":{"Type":138,"Flags":0,"Description":"This is the collection of backup reviewers."},"reviewersType":{"Type":142,"Flags":2,"Description":"This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."},"instances":{"Type":143,"Flags":0,"Description":"This is the collection of instances returned when one does an expand on it."}}}},{"6":{"Value":"NotStarted"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Completed"}},{"6":{"Value":"Applied"}},{"6":{"Value":"Initializing"}},{"6":{"Value":"Applying"}},{"6":{"Value":"Completing"}},{"6":{"Value":"Scheduled"}},{"6":{"Value":"AutoReviewing"}},{"6":{"Value":"AutoReviewed"}},{"6":{"Value":"Starting"}},{"5":{"Elements":[125,126,127,128,129,130,131,132,133,134,135,4]}},{"3":{"ItemType":93}},{"3":{"ItemType":93}},{"6":{"Value":"Assigned"}},{"6":{"Value":"Self"}},{"6":{"Value":"Managers"}},{"5":{"Elements":[139,140,141,4]}},{"3":{"ItemType":103}},{"4":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions@2021-11-16-preview","ScopeType":4,"Body":74,"Flags":0}},{"6":{"Value":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances"}},{"6":{"Value":"2021-11-16-preview"}},{"2":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":145,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":146,"Flags":10,"Description":"The resource api version"},"status":{"Type":159,"Flags":6,"Description":"This read-only field specifies the status of an access review instance."},"startDateTime":{"Type":4,"Flags":4,"Description":"The DateTime when the review instance is scheduled to be start."},"endDateTime":{"Type":4,"Flags":4,"Description":"The DateTime when the review instance is scheduled to end."},"reviewers":{"Type":160,"Flags":4,"Description":"This is the collection of reviewers."},"backupReviewers":{"Type":161,"Flags":4,"Description":"This is the collection of backup reviewers."},"reviewersType":{"Type":165,"Flags":6,"Description":"This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."},"properties":{"Type":104,"Flags":2,"Description":"Access Review properties."}}}},{"6":{"Value":"NotStarted"}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Completed"}},{"6":{"Value":"Applied"}},{"6":{"Value":"Initializing"}},{"6":{"Value":"Applying"}},{"6":{"Value":"Completing"}},{"6":{"Value":"Scheduled"}},{"6":{"Value":"AutoReviewing"}},{"6":{"Value":"AutoReviewed"}},{"6":{"Value":"Starting"}},{"5":{"Elements":[148,149,150,151,152,153,154,155,156,157,158,4]}},{"3":{"ItemType":93}},{"3":{"ItemType":93}},{"6":{"Value":"Assigned"}},{"6":{"Value":"Self"}},{"6":{"Value":"Managers"}},{"5":{"Elements":[162,163,164,4]}},{"4":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances@2021-11-16-preview","ScopeType":5,"ReadOnlyScopes":1,"Body":147,"Flags":0}},{"6":{"Value":"default"}},{"6":{"Value":"Microsoft.Authorization/accessReviewScheduleSettings"}},{"6":{"Value":"2021-11-16-preview"}},{"2":{"Name":"Microsoft.Authorization/accessReviewScheduleSettings","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":167,"Flags":9,"Description":"The resource name"},"type":{"Type":168,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":169,"Flags":10,"Description":"The resource api version"},"mailNotificationsEnabled":{"Type":2,"Flags":4,"Description":"Flag to indicate whether sending mails to reviewers and the review creator is enabled."},"reminderNotificationsEnabled":{"Type":2,"Flags":4,"Description":"Flag to indicate whether sending reminder emails to reviewers are enabled."},"defaultDecisionEnabled":{"Type":2,"Flags":4,"Description":"Flag to indicate whether reviewers are required to provide a justification when reviewing access."},"justificationRequiredOnApproval":{"Type":2,"Flags":4,"Description":"Flag to indicate whether the reviewer is required to pass justification when recording a decision."},"defaultDecision":{"Type":174,"Flags":4,"Description":"This specifies the behavior for the autoReview feature when an access review completes."},"autoApplyDecisionsEnabled":{"Type":2,"Flags":4,"Description":"Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after the review completes, apply the access review."},"recommendationsEnabled":{"Type":2,"Flags":4,"Description":"Flag to indicate whether showing recommendations to reviewers is enabled."},"recommendationLookBackDuration":{"Type":4,"Flags":4,"Description":"Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review) by default. However, in some scenarios, customers want to change how far back to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"},"instanceDurationInDays":{"Type":3,"Flags":4,"Description":"The duration in days for an instance."},"recurrence":{"Type":92,"Flags":4,"Description":"Access Review Settings."},"properties":{"Type":87,"Flags":2,"Description":"Access Review properties."}}}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"Recommendation"}},{"5":{"Elements":[171,172,173,4]}},{"4":{"Name":"Microsoft.Authorization/accessReviewScheduleSettings@2021-11-16-preview","ScopeType":4,"Body":170,"Flags":0}},{"6":{"Value":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions"}},{"6":{"Value":"2021-11-16-preview"}},{"2":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":176,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":177,"Flags":10,"Description":"The resource api version"},"properties":{"Type":179,"Flags":2,"Description":"Access Review Decision properties."}}}},{"2":{"Name":"AccessReviewDecisionProperties","Properties":{"principal":{"Type":180,"Flags":2,"Description":"Principal associated with the decision record. Can be AccessReviewDecisionUserIdentity or AccessReviewDecisionServicePrincipalIdentity"},"resource":{"Type":185,"Flags":2,"Description":"Resource associated with this decision record."},"recommendation":{"Type":191,"Flags":2,"Description":"The feature- generated recommendation shown to the reviewer."},"decision":{"Type":197,"Flags":0,"Description":"The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny"},"justification":{"Type":4,"Flags":0,"Description":"Justification provided by approvers for their action"},"reviewedDateTime":{"Type":4,"Flags":2,"Description":"Date Time when a decision was taken."},"reviewedBy":{"Type":23,"Flags":2,"Description":"Details of the approver."},"applyResult":{"Type":204,"Flags":2,"Description":"The outcome of applying the decision."},"appliedDateTime":{"Type":4,"Flags":2,"Description":"The date and time when the review decision was applied."},"appliedBy":{"Type":23,"Flags":2,"Description":"Details of the approver."}}}},{"7":{"Name":"AccessReviewDecisionIdentity","Discriminator":"type","BaseProperties":{"id":{"Type":4,"Flags":2,"Description":"The id of principal whose access was reviewed."},"displayName":{"Type":4,"Flags":2,"Description":"The display name of the user whose access was reviewed."}},"Elements":{"servicePrincipal":181,"user":183}}},{"2":{"Name":"AccessReviewDecisionServicePrincipalIdentity","Properties":{"appId":{"Type":4,"Flags":2,"Description":"The appId for the service principal entity being reviewed"},"type":{"Type":182,"Flags":1,"Description":"The type of decision target : User/ServicePrincipal"}}}},{"6":{"Value":"servicePrincipal"}},{"2":{"Name":"AccessReviewDecisionUserIdentity","Properties":{"userPrincipalName":{"Type":4,"Flags":2,"Description":"The user principal name of the user whose access was reviewed."},"type":{"Type":184,"Flags":1,"Description":"The type of decision target : User/ServicePrincipal"}}}},{"6":{"Value":"user"}},{"7":{"Name":"AccessReviewDecisionResource","Discriminator":"type","BaseProperties":{"id":{"Type":4,"Flags":2,"Description":"The id of resource associated with a decision record."},"displayName":{"Type":4,"Flags":2,"Description":"The display name of resource associated with a decision record."}},"Elements":{"azureRole":186}}},{"2":{"Name":"AccessReviewDecisionResourceAzureRole","Properties":{"type":{"Type":187,"Flags":1,"Description":"The type of resource: azureRole"}}}},{"6":{"Value":"azureRole"}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"NoInfoAvailable"}},{"5":{"Elements":[188,189,190,4]}},{"6":{"Value":"Approve"}},{"6":{"Value":"Deny"}},{"6":{"Value":"NotReviewed"}},{"6":{"Value":"DontKnow"}},{"6":{"Value":"NotNotified"}},{"5":{"Elements":[192,193,194,195,196,4]}},{"6":{"Value":"New"}},{"6":{"Value":"Applying"}},{"6":{"Value":"AppliedSuccessfully"}},{"6":{"Value":"AppliedWithUnknownFailure"}},{"6":{"Value":"AppliedSuccessfullyButObjectNotFound"}},{"6":{"Value":"ApplyNotSupported"}},{"5":{"Elements":[198,199,200,201,202,203,4]}},{"4":{"Name":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions@2021-11-16-preview","ScopeType":1,"Body":178,"Flags":1}},{"8":{"Name":"generateDownloadUri","ResourceType":"Microsoft.Authorization/accessReviewHistoryDefinitions/instances","ApiVersion":"2021-11-16-preview","Output":48}},{"8":{"Name":"stop","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions","ApiVersion":"2021-11-16-preview"}},{"8":{"Name":"stop","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","ApiVersion":"2021-11-16-preview"}},{"8":{"Name":"resetDecisions","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","ApiVersion":"2021-11-16-preview"}},{"8":{"Name":"applyDecisions","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","ApiVersion":"2021-11-16-preview"}},{"8":{"Name":"sendReminders","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","ApiVersion":"2021-11-16-preview"}},{"8":{"Name":"acceptRecommendations","ResourceType":"Microsoft.Authorization/accessReviewScheduleDefinitions/instances","ApiVersion":"2021-11-16-preview"}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Authorization/accessReviewHistoryDefinitions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-11-16-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Authorization/accessReviewHistoryDefinitions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The display name for the history definition."
+      },
+      "reviewHistoryPeriodStartDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 6,
+        "description": "Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."
+      },
+      "reviewHistoryPeriodEndDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 6,
+        "description": "Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."
+      },
+      "decisions": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 4,
+        "description": "Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied the data will only contain review results in which the decision maker approved or denied a review request."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 6,
+        "description": "This read-only field specifies the of the requested review history data. This is either requested, in-progress, done or error."
+      },
+      "createdDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 6,
+        "description": "Date time when history definition was created"
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 6,
+        "description": "The user or other identity who created this history definition."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 4,
+        "description": "A collection of scopes used when selecting review history data"
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 4,
+        "description": "Recurrence settings for recurring history reports, skip for one-time reports."
+      },
+      "instances": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 4,
+        "description": "Set of access review history instances for this history definition."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Access Review History Definition properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DontKnow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotNotified"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/4"
+      },
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Requested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Done"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewActorIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The identity id"
+      },
+      "principalType": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The identity type : user/servicePrincipal"
+      },
+      "principalName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The identity display name"
+      },
+      "userPrincipalName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The user principal name(if valid)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "user"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewScope",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "ResourceId in which this review is getting created"
+      },
+      "roleDefinitionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "This is used to indicate the role being reviewed"
+      },
+      "principalType": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The identity type user/servicePrincipal to review"
+      },
+      "assignmentState": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "The role assignment state eligible/active to review"
+      },
+      "inactiveDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Duration users are inactive for. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"
+      },
+      "expandNestedMemberships": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether to expand nested memberships or not."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "user"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "guestUser"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "user,group"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "redeemedGuestUser"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "eligible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewHistoryScheduleSettings",
+    "properties": {
+      "pattern": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Access Review History Definition recurrence settings."
+      },
+      "range": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Access Review History Definition recurrence settings."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewRecurrencePattern",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The recurrence type : weekly, monthly, etc."
+      },
+      "interval": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "absoluteMonthly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewRecurrenceRange",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The recurrence range type. The possible values are: endDate, noEnd, numbered."
+      },
+      "numberOfOccurrences": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The number of times to repeat the access review. Required and must be positive if type is numbered."
+      },
+      "startDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create."
+      },
+      "endDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The DateTime when the review is scheduled to end. Required if type is endDate"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "endDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "noEnd"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "numbered"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewHistoryInstance",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The access review history definition instance id."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The access review history definition instance unique id."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The resource type."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Access Review History Definition Instance properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewHistoryInstanceProperties",
+    "properties": {
+      "reviewHistoryPeriodStartDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."
+      },
+      "reviewHistoryPeriodEndDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name for the parent history definition."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Status of the requested review history instance data. This is either requested, in-progress, done or error. The state transitions are as follows - Requested -> InProgress -> Done -> Expired"
+      },
+      "runDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Date time when the history data report is scheduled to be generated."
+      },
+      "fulfilledDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Date time when the history data report is scheduled to be generated."
+      },
+      "downloadUri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Uri which can be used to retrieve review history data. To generate this Uri, generateDownloadUri() must be called for a specific accessReviewHistoryDefinitionInstance. The link expires after a 24 hour period. Callers can see the expiration date time by looking at the 'se' parameter in the generated uri."
+      },
+      "expiration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Date time when history data report expires and the associated data is deleted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Requested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Done"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewHistoryDefinitionProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name for the history definition."
+      },
+      "reviewHistoryPeriodStartDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Date time used when selecting review data, all reviews included in data start on or after this date. For use only with one-time/non-recurring reports."
+      },
+      "reviewHistoryPeriodEndDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring reports."
+      },
+      "decisions": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied the data will only contain review results in which the decision maker approved or denied a review request."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "This read-only field specifies the of the requested review history data. This is either requested, in-progress, done or error."
+      },
+      "createdDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Date time when history definition was created"
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "The user or other identity who created this history definition."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "A collection of scopes used when selecting review history data"
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Recurrence settings for recurring history reports, skip for one-time reports."
+      },
+      "instances": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Set of access review history instances for this history definition."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DontKnow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotNotified"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/57"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Requested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Done"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Authorization/accessReviewHistoryDefinitions@2021-11-16-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Authorization/accessReviewScheduleDefinitions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-11-16-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The display name for the schedule definition."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 6,
+        "description": "This read-only field specifies the status of an accessReview."
+      },
+      "descriptionForAdmins": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The description provided by the access review creator and visible to admins."
+      },
+      "descriptionForReviewers": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The description provided by the access review creator to be shown to reviewers."
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 6,
+        "description": "The user or other identity who created this review."
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 4,
+        "description": "Access Review Settings."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 6,
+        "description": "This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId."
+      },
+      "reviewers": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 4,
+        "description": "This is the collection of reviewers."
+      },
+      "backupReviewers": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 4,
+        "description": "This is the collection of backup reviewers."
+      },
+      "reviewersType": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 6,
+        "description": "This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."
+      },
+      "instances": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 4,
+        "description": "This is the collection of instances returned when one does an expand on it."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 2,
+        "description": "Access Review properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applied"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewScheduleSettings",
+    "properties": {
+      "mailNotificationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether sending mails to reviewers and the review creator is enabled."
+      },
+      "reminderNotificationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether sending reminder emails to reviewers are enabled."
+      },
+      "defaultDecisionEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether reviewers are required to provide a justification when reviewing access."
+      },
+      "justificationRequiredOnApproval": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether the reviewer is required to pass justification when recording a decision."
+      },
+      "defaultDecision": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "This specifies the behavior for the autoReview feature when an access review completes."
+      },
+      "autoApplyDecisionsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after the review completes, apply the access review."
+      },
+      "recommendationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether showing recommendations to reviewers is enabled."
+      },
+      "recommendationLookBackDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review) by default. However, in some scenarios, customers want to change how far back to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"
+      },
+      "instanceDurationInDays": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The duration in days for an instance."
+      },
+      "recurrence": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Access Review Settings."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Recommendation"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewRecurrenceSettings",
+    "properties": {
+      "pattern": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Access Review schedule definition recurrence pattern."
+      },
+      "range": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Access Review schedule definition recurrence range."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewReviewer",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The id of the reviewer(user/servicePrincipal)"
+      },
+      "principalType": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 2,
+        "description": "The identity type : user/servicePrincipal"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "user"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Self"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managers"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewInstance",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The access review instance id."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The access review instance name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The resource type."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Access Review properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewInstanceProperties",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 2,
+        "description": "This read-only field specifies the status of an access review instance."
+      },
+      "startDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The DateTime when the review instance is scheduled to be start."
+      },
+      "endDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The DateTime when the review instance is scheduled to end."
+      },
+      "reviewers": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "This is the collection of reviewers."
+      },
+      "backupReviewers": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "This is the collection of backup reviewers."
+      },
+      "reviewersType": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applied"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Self"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managers"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/98"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewScheduleDefinitionProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name for the schedule definition."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 2,
+        "description": "This read-only field specifies the status of an accessReview."
+      },
+      "descriptionForAdmins": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description provided by the access review creator and visible to admins."
+      },
+      "descriptionForReviewers": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description provided by the access review creator to be shown to reviewers."
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "The user or other identity who created this review."
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Access Review Settings."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId."
+      },
+      "reviewers": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "This is the collection of reviewers."
+      },
+      "backupReviewers": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "This is the collection of backup reviewers."
+      },
+      "reviewersType": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 2,
+        "description": "This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."
+      },
+      "instances": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "This is the collection of instances returned when one does an expand on it."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applied"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Self"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managers"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/98"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions@2021-11-16-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/69"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-11-16-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 6,
+        "description": "This read-only field specifies the status of an access review instance."
+      },
+      "startDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The DateTime when the review instance is scheduled to be start."
+      },
+      "endDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The DateTime when the review instance is scheduled to end."
+      },
+      "reviewers": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 4,
+        "description": "This is the collection of reviewers."
+      },
+      "backupReviewers": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 4,
+        "description": "This is the collection of backup reviewers."
+      },
+      "reviewersType": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 6,
+        "description": "This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen dynamically. For example managers review or self review."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 2,
+        "description": "Access Review properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applied"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Self"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managers"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances@2021-11-16-preview",
+    "scopeType": 5,
+    "readOnlyScopes": 1,
+    "body": {
+      "$ref": "#/142"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Authorization/accessReviewScheduleSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-11-16-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Authorization/accessReviewScheduleSettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "mailNotificationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether sending mails to reviewers and the review creator is enabled."
+      },
+      "reminderNotificationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether sending reminder emails to reviewers are enabled."
+      },
+      "defaultDecisionEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether reviewers are required to provide a justification when reviewing access."
+      },
+      "justificationRequiredOnApproval": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether the reviewer is required to pass justification when recording a decision."
+      },
+      "defaultDecision": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 4,
+        "description": "This specifies the behavior for the autoReview feature when an access review completes."
+      },
+      "autoApplyDecisionsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after the review completes, apply the access review."
+      },
+      "recommendationsEnabled": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 4,
+        "description": "Flag to indicate whether showing recommendations to reviewers is enabled."
+      },
+      "recommendationLookBackDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review) by default. However, in some scenarios, customers want to change how far back to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration. The value should be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))"
+      },
+      "instanceDurationInDays": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 4,
+        "description": "The duration in days for an instance."
+      },
+      "recurrence": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 4,
+        "description": "Access Review Settings."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Access Review properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Recommendation"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Authorization/accessReviewScheduleSettings@2021-11-16-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/165"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-11-16-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Access Review Decision properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewDecisionProperties",
+    "properties": {
+      "principal": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 2,
+        "description": "Principal associated with the decision record. Can be AccessReviewDecisionUserIdentity or AccessReviewDecisionServicePrincipalIdentity"
+      },
+      "resource": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 2,
+        "description": "Resource associated with this decision record."
+      },
+      "recommendation": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 2,
+        "description": "The feature- generated recommendation shown to the reviewer."
+      },
+      "decision": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny"
+      },
+      "justification": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Justification provided by approvers for their action"
+      },
+      "reviewedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Date Time when a decision was taken."
+      },
+      "reviewedBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Details of the approver."
+      },
+      "applyResult": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 2,
+        "description": "The outcome of applying the decision."
+      },
+      "appliedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date and time when the review decision was applied."
+      },
+      "appliedBy": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Details of the approver."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AccessReviewDecisionIdentity",
+    "discriminator": "type",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The id of principal whose access was reviewed."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The display name of the user whose access was reviewed."
+      }
+    },
+    "elements": {
+      "servicePrincipal": {
+        "$ref": "#/176"
+      },
+      "user": {
+        "$ref": "#/178"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewDecisionServicePrincipalIdentity",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The appId for the service principal entity being reviewed"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 1,
+        "description": "The type of decision target : User/ServicePrincipal"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipal"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewDecisionUserIdentity",
+    "properties": {
+      "userPrincipalName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The user principal name of the user whose access was reviewed."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 1,
+        "description": "The type of decision target : User/ServicePrincipal"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "user"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AccessReviewDecisionResource",
+    "discriminator": "type",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The id of resource associated with a decision record."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The display name of resource associated with a decision record."
+      }
+    },
+    "elements": {
+      "azureRole": {
+        "$ref": "#/181"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessReviewDecisionResourceAzureRole",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 1,
+        "description": "The type of resource: azureRole"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azureRole"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoInfoAvailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approve"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotReviewed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DontKnow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotNotified"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Applying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppliedSuccessfully"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppliedWithUnknownFailure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppliedSuccessfullyButObjectNotFound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplyNotSupported"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances/decisions@2021-11-16-preview",
+    "scopeType": 1,
+    "body": {
+      "$ref": "#/173"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateDownloadUri",
+    "resourceType": "Microsoft.Authorization/accessReviewHistoryDefinitions/instances",
+    "apiVersion": "2021-11-16-preview",
+    "output": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions",
+    "apiVersion": "2021-11-16-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "apiVersion": "2021-11-16-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resetDecisions",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "apiVersion": "2021-11-16-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "applyDecisions",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "apiVersion": "2021-11-16-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "sendReminders",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "apiVersion": "2021-11-16-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "acceptRecommendations",
+    "resourceType": "Microsoft.Authorization/accessReviewScheduleDefinitions/instances",
+    "apiVersion": "2021-11-16-preview"
+  }
+]

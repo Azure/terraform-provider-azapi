@@ -1,85 +1,106 @@
 package types
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 type Schema struct {
 	Types []*TypeBase
 }
 
+type typeItem struct {
+	Type string `json:"$type"`
+}
+
 func (s *Schema) UnmarshalJSON(body []byte) error {
-	var m []map[string]*json.RawMessage
+	var m []*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
 		return err
 	}
 	types := make([]*TypeBase, 0)
 	for _, v := range m {
-		for _, typeBaseKind := range PossibleTypeBaseKindValues() {
-			if value := v[string(typeBaseKind)]; value != nil {
-				switch typeBaseKind {
-				case TypeBaseKindBuiltInType:
-					var t BuiltInType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindObjectType:
-					var t ObjectType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindArrayType:
-					var t ArrayType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindResourceType:
-					var t ResourceType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindUnionType:
-					var t UnionType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindStringLiteralType:
-					var t StringLiteralType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindDiscriminatedObjectType:
-					var t DiscriminatedObjectType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				case TypeBaseKindResourceFunctionType:
-					var t ResourceFunctionType
-					err = json.Unmarshal(*value, &t)
-					if err != nil {
-						return err
-					}
-					types = append(types, t.AsTypeBase())
-				}
-				break
-			}
+		var t typeItem
+		err = json.Unmarshal(*v, &t)
+		if err != nil {
+			return err
 		}
-
+		dec := json.NewDecoder(bytes.NewReader(*v))
+		dec.DisallowUnknownFields()
+		switch t.Type {
+		case "StringType":
+			var t StringType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "IntegerType":
+			var t IntegerType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "BooleanType":
+			var t BooleanType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "AnyType":
+			var t AnyType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "StringLiteralType":
+			var t StringLiteralType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "ObjectType":
+			var t ObjectType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "ArrayType":
+			var t ArrayType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "ResourceType":
+			var t ResourceType
+			// ResourceType has a custom UnmarshalJSON method
+			err = json.Unmarshal(*v, &t)
+			if err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "UnionType":
+			var t UnionType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "DiscriminatedObjectType":
+			var t DiscriminatedObjectType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		case "ResourceFunctionType":
+			var t ResourceFunctionType
+			if err = dec.Decode(&t); err != nil {
+				return err
+			}
+			types = append(types, t.AsTypeBase())
+		default:
+			return fmt.Errorf("unknown type %s", t.Type)
+		}
 	}
 	for index, v := range types {
 		if v != nil {

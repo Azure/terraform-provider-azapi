@@ -10,9 +10,11 @@ import (
 var _ TypeBase = &ObjectType{}
 
 type ObjectType struct {
-	Name                 string
-	Properties           map[string]ObjectProperty
-	AdditionalProperties *TypeReference
+	Type                 string                    `json:"$type"`
+	Name                 string                    `json:"name"`
+	Properties           map[string]ObjectProperty `json:"properties"`
+	AdditionalProperties *TypeReference            `json:"additionalProperties"`
+	Sensitive            bool                      `json:"sensitive"`
 }
 
 func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
@@ -99,49 +101,6 @@ func (t *ObjectType) AsTypeBase() *TypeBase {
 	return &typeBase
 }
 
-func (t *ObjectType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "Name":
-			if v != nil {
-				var name string
-				err := json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				t.Name = name
-			}
-		case "Properties":
-			if v != nil {
-				var properties map[string]ObjectProperty
-				err := json.Unmarshal(*v, &properties)
-				if err != nil {
-					return err
-				}
-				t.Properties = properties
-			}
-		case "AdditionalProperties":
-			if v != nil {
-				var index int
-				err := json.Unmarshal(*v, &index)
-				if err != nil {
-					return err
-				}
-				t.AdditionalProperties = &TypeReference{TypeIndex: index}
-			}
-		default:
-			return fmt.Errorf("unmarshalling object type, unrecognized key: %s", k)
-		}
-	}
-
-	return nil
-}
-
 type ObjectProperty struct {
 	Type        *TypeReference
 	Flags       []ObjectPropertyFlag
@@ -183,7 +142,7 @@ func (o *ObjectProperty) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "Description":
+		case "description":
 			if v != nil {
 				var description string
 				err := json.Unmarshal(*v, &description)
@@ -192,7 +151,7 @@ func (o *ObjectProperty) UnmarshalJSON(body []byte) error {
 				}
 				o.Description = &description
 			}
-		case "Flags":
+		case "flags":
 			if v != nil {
 				var flag int
 				err := json.Unmarshal(*v, &flag)
@@ -207,14 +166,14 @@ func (o *ObjectProperty) UnmarshalJSON(body []byte) error {
 				}
 				o.Flags = flags
 			}
-		case "Type":
+		case "type":
 			if v != nil {
-				var index int
-				err := json.Unmarshal(*v, &index)
+				var typeRef TypeReference
+				err := json.Unmarshal(*v, &typeRef)
 				if err != nil {
 					return err
 				}
-				o.Type = &TypeReference{TypeIndex: index}
+				o.Type = &typeRef
 			}
 		default:
 			return fmt.Errorf("unmarshalling object property, unrecognized key: %s", k)
@@ -235,8 +194,10 @@ const (
 	WriteOnly ObjectPropertyFlag = 1 << 2
 
 	DeployTimeConstant ObjectPropertyFlag = 1 << 3
+
+	Identifier ObjectPropertyFlag = 1 << 4
 )
 
 func PossibleObjectPropertyFlagValues() []ObjectPropertyFlag {
-	return []ObjectPropertyFlag{None, Required, ReadOnly, WriteOnly, DeployTimeConstant}
+	return []ObjectPropertyFlag{None, Required, ReadOnly, WriteOnly, DeployTimeConstant, Identifier}
 }

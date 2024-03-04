@@ -1,0 +1,2098 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z0-9][-a-z0-9]*(?<!-)$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DBforMySQL/flexibleServers"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DBforMySQL/flexibleServers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The cmk identity for the server."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The SKU (pricing tier) of the server."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Properties of the server."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MySQLServerIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId from the KeyVault"
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "TenantId from the KeyVault"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Type of managed service identity."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "Metadata of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MySQLServerIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MySQLServerSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the sku, e.g. Standard_D32s_v3."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The tier of the particular SKU, e.g. GeneralPurpose."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Burstable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeneralPurpose"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MemoryOptimized"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerProperties",
+    "properties": {
+      "administratorLogin": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation)."
+      },
+      "administratorLoginPassword": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 4,
+        "description": "The password of the administrator login (required for server creation)."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Server version."
+      },
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "availability Zone information of the server."
+      },
+      "createMode": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 4,
+        "description": "The mode to create a new MySQL server."
+      },
+      "sourceServerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The source MySQL server id."
+      },
+      "restorePointInTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 4,
+        "description": "Restore point creation time (ISO8601 format), specifying the time to restore from."
+      },
+      "replicationRole": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The replication role."
+      },
+      "replicaCapacity": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "The maximum number of replicas that a primary server can have."
+      },
+      "dataEncryption": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The Data Encryption for CMK."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "The state of a server."
+      },
+      "fullyQualifiedDomainName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The fully qualified domain name of a server."
+      },
+      "storage": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Storage related properties of a server."
+      },
+      "backup": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "Backup related properties of a server."
+      },
+      "highAvailability": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "High availability related properties of a server."
+      },
+      "network": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Network related properties of a server."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "PrivateEndpointConnections related properties of a server."
+      },
+      "maintenanceWindow": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Maintenance window of a server."
+      },
+      "importSourceProperties": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Source properties for import from storage."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "5.7"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "8.0.21"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PointInTimeRestore"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replica"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoRestore"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Source"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replica"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataEncryption",
+    "properties": {
+      "primaryUserAssignedIdentityId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Primary user identity resource id"
+      },
+      "primaryKeyURI": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Primary key uri"
+      },
+      "geoBackupUserAssignedIdentityId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Geo backup user identity resource id as identity can't cross region, need identity in same region as geo backup"
+      },
+      "geoBackupKeyURI": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Geo backup key uri as key vault can't cross region, need cmk in same region as geo backup"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureKeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemManaged"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dropping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Storage",
+    "properties": {
+      "storageSizeGB": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Max storage size allowed for a server."
+      },
+      "iops": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Storage IOPS for a server."
+      },
+      "autoGrow": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Enable Storage Auto Grow or not."
+      },
+      "logOnDisk": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "Enable Log On Disk or not."
+      },
+      "storageSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The sku name of the server storage."
+      },
+      "autoIoScaling": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Enable IO Auto Scaling or not."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Backup",
+    "properties": {
+      "backupRetentionDays": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Backup retention days for the server."
+      },
+      "backupIntervalHours": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Backup interval hours for the server."
+      },
+      "geoRedundantBackup": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Whether or not geo redundant backup is enabled."
+      },
+      "earliestRestoreDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Earliest restore point creation time (ISO8601 format)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HighAvailability",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "High availability mode for a server."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "The state of server high availability."
+      },
+      "standbyAvailabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Availability zone of the standby server."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZoneRedundant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SameZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEnabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CreatingStandby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailingOver"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemovingStandby"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Network",
+    "properties": {
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "Whether or not public network access is allowed for this server. Value is 'Disabled' when server has VNet integration."
+      },
+      "delegatedSubnetResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Delegated subnet resource id used to setup vnet for a server."
+      },
+      "privateDnsZoneResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Private DNS zone resource id."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/72"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceWindow",
+    "properties": {
+      "customWindow": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "indicates whether custom window is enabled or disabled"
+      },
+      "startHour": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "start hour for maintenance window"
+      },
+      "startMinute": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "start minute for maintenance window"
+      },
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "day of week for maintenance window"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImportSourceProperties",
+    "properties": {
+      "storageType": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Storage type of import source."
+      },
+      "storageUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Uri of the import source storage."
+      },
+      "sasToken": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 4,
+        "description": "Sas token for accessing source storage. Read and list permissions are required for sas token."
+      },
+      "dataDirPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relative path of data directory in storage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureBlob"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DBforMySQL/flexibleServers@2023-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedThreatProtectionProperties",
+    "properties": {
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Specifies the UTC creation time of the policy."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been applied yet on the specific database or server."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the Threat Protection."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings@2023-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/108"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DBforMySQL/locations/capabilitySets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DBforMySQL/locations/capabilitySets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 2,
+        "description": "The properties of a location capability set."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityPropertiesV2",
+    "properties": {
+      "supportedGeoBackupRegions": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 2,
+        "description": "supported geo backup regions"
+      },
+      "supportedFlexibleServerEditions": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 2,
+        "description": "A list of supported flexible server editions."
+      },
+      "supportedServerVersions": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 2,
+        "description": "A list of supported server versions."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerEditionCapabilityV2",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Server edition name"
+      },
+      "defaultSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Default Sku name"
+      },
+      "defaultStorageSize": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Default storage size"
+      },
+      "supportedStorageEditions": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 2,
+        "description": "A list of supported storage editions"
+      },
+      "supportedSkus": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 2,
+        "description": "A list of supported Skus"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageEditionCapability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "storage edition name"
+      },
+      "minStorageSize": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The minimal supported storage size."
+      },
+      "maxStorageSize": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The maximum supported storage size."
+      },
+      "minBackupRetentionDays": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Minimal backup retention days"
+      },
+      "maxBackupRetentionDays": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Maximum backup retention days"
+      },
+      "minBackupIntervalHours": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Minimal backup interval hours"
+      },
+      "maxBackupIntervalHours": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Maximum backup interval hours"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/125"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SkuCapabilityV2",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "vCore name"
+      },
+      "vCores": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "supported vCores"
+      },
+      "supportedIops": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "supported IOPS"
+      },
+      "supportedMemoryPerVCoreMB": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "supported memory per vCore in MB"
+      },
+      "supportedZones": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2,
+        "description": "Supported zones"
+      },
+      "supportedHAMode": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 2,
+        "description": "Supported high availability mode"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/127"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/124"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerVersionCapabilityV2",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "server version"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/132"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DBforMySQL/locations/capabilitySets@2023-12-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/121"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "failover",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HighAvailabilityValidationEstimation",
+    "properties": {
+      "estimatedDowntime": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Estimated seconds of downtime for the deployment."
+      },
+      "scheduledStandbyAvailabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Scheduled Availability zone of the standby server."
+      },
+      "expectedStandbyAvailabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Expected Availability zone of the standby server."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validateEstimateHighAvailability",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview",
+    "output": {
+      "$ref": "#/136"
+    },
+    "input": {
+      "$ref": "#/136"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerRestartParameter",
+    "properties": {
+      "restartWithFailover": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "Whether or not failover to standby server when restarting a server with high availability enabled."
+      },
+      "maxFailoverSeconds": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The maximum allowed failover time in seconds."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview",
+    "input": {
+      "$ref": "#/138"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerGtidSetParameter",
+    "properties": {
+      "gtidSet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Gtid set of server."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resetGtid",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview",
+    "input": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Server",
+    "properties": {
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The cmk identity for the server."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The SKU (pricing tier) of the server."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Properties of the server."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cutoverMigration",
+    "resourceType": "Microsoft.DBforMySQL/flexibleServers",
+    "apiVersion": "2023-12-01-preview",
+    "output": {
+      "$ref": "#/147"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualNetworkSubnetUsageParameter",
+    "properties": {
+      "virtualNetworkResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Virtual network resource id."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualNetworkSubnetUsageResult",
+    "properties": {
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location name."
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The subscription id."
+      },
+      "delegatedSubnetsUsage": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 2,
+        "description": "A list of delegated subnet usage"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedSubnetUsage",
+    "properties": {
+      "subnetName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "name of the subnet"
+      },
+      "usage": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Number of used delegated subnets"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/152"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkVirtualNetworkSubnetUsage",
+    "resourceType": "Microsoft.DBforMySQL/locations",
+    "apiVersion": "2023-12-01-preview",
+    "output": {
+      "$ref": "#/151"
+    },
+    "input": {
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NameAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource name to verify."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource type used for verification."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NameAvailability",
+    "properties": {
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Error Message."
+      },
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Indicates whether the resource name is available."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reason for name being unavailable."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.DBforMySQL/locations",
+    "apiVersion": "2023-12-01-preview",
+    "output": {
+      "$ref": "#/156"
+    },
+    "input": {
+      "$ref": "#/155"
+    }
+  }
+]

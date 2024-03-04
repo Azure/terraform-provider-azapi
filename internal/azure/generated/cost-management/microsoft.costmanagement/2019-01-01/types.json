@@ -1,1 +1,751 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.CostManagement/exports"}},{"6":{"Value":"2019-01-01"}},{"2":{"Name":"Microsoft.CostManagement/exports","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"The properties of the export."},"tags":{"Type":67,"Flags":2,"Description":"Resource tags."}}}},{"2":{"Name":"ExportProperties","Properties":{"schedule":{"Type":12,"Flags":0,"Description":"Has schedule information for the export."},"format":{"Type":23,"Flags":0,"Description":"The format of the export being delivered."},"deliveryInfo":{"Type":24,"Flags":1,"Description":"Has delivery information for the export."},"definition":{"Type":26,"Flags":1,"Description":"Has definition for the export."}}}},{"2":{"Name":"ExportSchedule","Properties":{"status":{"Type":15,"Flags":0,"Description":"The status of the schedule. Whether active or not. If inactive, the export's scheduled execution is paused."},"recurrence":{"Type":20,"Flags":1,"Description":"The schedule recurrence."},"recurrencePeriod":{"Type":21,"Flags":0,"Description":"Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date."}}}},{"6":{"Value":"Active"}},{"6":{"Value":"Inactive"}},{"5":{"Elements":[13,14,4]}},{"6":{"Value":"Daily"}},{"6":{"Value":"Weekly"}},{"6":{"Value":"Monthly"}},{"6":{"Value":"Annually"}},{"5":{"Elements":[16,17,18,19,4]}},{"2":{"Name":"ExportRecurrencePeriod","Properties":{"from":{"Type":4,"Flags":1,"Description":"The start date of recurrence."},"to":{"Type":4,"Flags":0,"Description":"The end date of recurrence."}}}},{"6":{"Value":"Csv"}},{"5":{"Elements":[22,4]}},{"2":{"Name":"ExportDeliveryInfo","Properties":{"destination":{"Type":25,"Flags":1,"Description":"Has destination for the export being delivered."}}}},{"2":{"Name":"ExportDeliveryDestination","Properties":{"resourceId":{"Type":4,"Flags":1,"Description":"The resource id of the storage account where exports will be delivered."},"container":{"Type":4,"Flags":1,"Description":"The name of the container where exports will be uploaded."},"rootFolderPath":{"Type":4,"Flags":0,"Description":"The name of the directory where exports will be uploaded."}}}},{"2":{"Name":"QueryDefinition","Properties":{"type":{"Type":28,"Flags":1,"Description":"The type of the query."},"timeframe":{"Type":38,"Flags":1,"Description":"The time frame for pulling data for the query. If custom, then a specific time period must be provided."},"timePeriod":{"Type":39,"Flags":0,"Description":"Has time period for pulling data for the query."},"dataset":{"Type":40,"Flags":0,"Description":"Has definition for data in this query."}}}},{"6":{"Value":"Usage"}},{"5":{"Elements":[27,4]}},{"6":{"Value":"WeekToDate"}},{"6":{"Value":"MonthToDate"}},{"6":{"Value":"YearToDate"}},{"6":{"Value":"TheLastWeek"}},{"6":{"Value":"TheLastMonth"}},{"6":{"Value":"TheLastYear"}},{"6":{"Value":"Custom"}},{"6":{"Value":"BillingMonthToDate"}},{"6":{"Value":"TheLastBillingMonth"}},{"5":{"Elements":[29,30,31,32,33,34,35,36,37,4]}},{"2":{"Name":"QueryTimePeriod","Properties":{"from":{"Type":4,"Flags":1,"Description":"The start date to pull data from."},"to":{"Type":4,"Flags":1,"Description":"The end date to pull data to."}}}},{"2":{"Name":"QueryDataset","Properties":{"granularity":{"Type":43,"Flags":0,"Description":"The granularity of rows in the query."},"configuration":{"Type":44,"Flags":0,"Description":"Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided."},"aggregation":{"Type":49,"Flags":0,"Description":"Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses."},"grouping":{"Type":54,"Flags":0,"Description":"Array of group by expression to use in the query. Query can have up to 2 group by clauses."},"sorting":{"Type":59,"Flags":0,"Description":"Array of sorting by columns in query."},"filter":{"Type":60,"Flags":0,"Description":"The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter."}}}},{"6":{"Value":"Daily"}},{"6":{"Value":"Hourly"}},{"5":{"Elements":[41,42,4]}},{"2":{"Name":"QueryDatasetConfiguration","Properties":{"columns":{"Type":45,"Flags":0,"Description":"Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query includes all columns."}}}},{"3":{"ItemType":4}},{"2":{"Name":"QueryAggregation","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the column to aggregate."},"function":{"Type":48,"Flags":1,"Description":"The name of the aggregation function to use."}}}},{"6":{"Value":"Sum"}},{"5":{"Elements":[47,4]}},{"2":{"Name":"QueryDatasetAggregation","Properties":{},"AdditionalProperties":46}},{"2":{"Name":"QueryGrouping","Properties":{"type":{"Type":53,"Flags":1,"Description":"Has type of the column to group."},"name":{"Type":4,"Flags":1,"Description":"The name of the column to group."}}}},{"6":{"Value":"Tag"}},{"6":{"Value":"Dimension"}},{"5":{"Elements":[51,52,4]}},{"3":{"ItemType":50}},{"2":{"Name":"QuerySortingConfiguration","Properties":{"querySortingDirection":{"Type":58,"Flags":0,"Description":"The sorting direction"},"name":{"Type":4,"Flags":0,"Description":"The name of the column to use in sorting."}}}},{"6":{"Value":"Ascending"}},{"6":{"Value":"Descending"}},{"5":{"Elements":[56,57,4]}},{"3":{"ItemType":55}},{"2":{"Name":"QueryFilter","Properties":{"and":{"Type":61,"Flags":0,"Description":"The logical \"AND\" expression. Must have at least 2 items."},"or":{"Type":62,"Flags":0,"Description":"The logical \"OR\" expression. Must have at least 2 items."},"not":{"Type":60,"Flags":0,"Description":"The logical \"NOT\" expression."},"dimension":{"Type":63,"Flags":0,"Description":"Has comparison expression for a dimension"},"tag":{"Type":63,"Flags":0,"Description":"Has comparison expression for a tag"}}}},{"3":{"ItemType":60}},{"3":{"ItemType":60}},{"2":{"Name":"QueryComparisonExpression","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the column to use in comparison."},"operator":{"Type":65,"Flags":1,"Description":"The operator to use for comparison."},"values":{"Type":66,"Flags":1,"Description":"Array of values to use for comparison"}}}},{"6":{"Value":"In"}},{"5":{"Elements":[64,4]}},{"3":{"ItemType":4}},{"2":{"Name":"ResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.CostManagement/exports@2019-01-01","ScopeType":0,"Body":10,"Flags":0}},{"8":{"Name":"run","ResourceType":"Microsoft.CostManagement/exports","ApiVersion":"2019-01-01"}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/exports"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2019-01-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/exports",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties of the export."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportProperties",
+    "properties": {
+      "schedule": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Has schedule information for the export."
+      },
+      "format": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The format of the export being delivered."
+      },
+      "deliveryInfo": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "Has delivery information for the export."
+      },
+      "definition": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "Has definition for the export."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportSchedule",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The status of the schedule. Whether active or not. If inactive, the export's scheduled execution is paused."
+      },
+      "recurrence": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The schedule recurrence."
+      },
+      "recurrencePeriod": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inactive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Annually"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportRecurrencePeriod",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start date of recurrence."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end date of recurrence."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Csv"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportDeliveryInfo",
+    "properties": {
+      "destination": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 1,
+        "description": "Has destination for the export being delivered."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportDeliveryDestination",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The resource id of the storage account where exports will be delivered."
+      },
+      "container": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the container where exports will be uploaded."
+      },
+      "rootFolderPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the directory where exports will be uploaded."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryDefinition",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The type of the query."
+      },
+      "timeframe": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The time frame for pulling data for the query. If custom, then a specific time period must be provided."
+      },
+      "timePeriod": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Has time period for pulling data for the query."
+      },
+      "dataset": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Has definition for data in this query."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Usage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WeekToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MonthToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "YearToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TheLastWeek"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TheLastMonth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TheLastYear"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BillingMonthToDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TheLastBillingMonth"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryTimePeriod",
+    "properties": {
+      "from": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start date to pull data from."
+      },
+      "to": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The end date to pull data to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryDataset",
+    "properties": {
+      "granularity": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The granularity of rows in the query."
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided."
+      },
+      "aggregation": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses."
+      },
+      "grouping": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Array of group by expression to use in the query. Query can have up to 2 group by clauses."
+      },
+      "sorting": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Array of sorting by columns in query."
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hourly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryDatasetConfiguration",
+    "properties": {
+      "columns": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query includes all columns."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryAggregation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to aggregate."
+      },
+      "function": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The name of the aggregation function to use."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sum"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryDatasetAggregation",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryGrouping",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Has type of the column to group."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to group."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tag"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dimension"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuerySortingConfiguration",
+    "properties": {
+      "querySortingDirection": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The sorting direction"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the column to use in sorting."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ascending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Descending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryFilter",
+    "properties": {
+      "and": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The logical \"AND\" expression. Must have at least 2 items."
+      },
+      "or": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "The logical \"OR\" expression. Must have at least 2 items."
+      },
+      "not": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The logical \"NOT\" expression."
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a dimension"
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a tag"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/53"
+    },
+    "minLength": 2
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/53"
+    },
+    "minLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryComparisonExpression",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to use in comparison."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "The operator to use for comparison."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "Array of values to use for comparison"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/exports@2019-01-01",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "run",
+    "resourceType": "Microsoft.CostManagement/exports",
+    "apiVersion": "2019-01-01"
+  }
+]

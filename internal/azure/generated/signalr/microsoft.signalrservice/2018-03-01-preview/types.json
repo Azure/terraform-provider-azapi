@@ -1,1 +1,447 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.SignalRService/SignalR"}},{"6":{"Value":"2018-03-01-preview"}},{"2":{"Name":"Microsoft.SignalRService/SignalR","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"location":{"Type":4,"Flags":1,"Description":"Azure GEO region: e.g. West US | East US | North Central US | South Central US | West Europe | North Europe | East Asia | Southeast Asia | etc. \r\nThe geo region of a resource never changes after it is created."},"tags":{"Type":11,"Flags":0,"Description":"A list of key value pairs that describe the resource."},"sku":{"Type":12,"Flags":0,"Description":"The billing information of the resource.(e.g. basic vs. standard)"},"properties":{"Type":18,"Flags":0,"Description":"Settings used to provision or configure the resource"}}}},{"2":{"Name":"SignalRUpdateParametersTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"ResourceSku","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified)"},"tier":{"Type":17,"Flags":0,"Description":"Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier"},"size":{"Type":4,"Flags":0,"Description":"Optional, string. When the name field is the combination of tier and some other value, this would be the standalone code."},"family":{"Type":4,"Flags":0,"Description":"Optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here."},"capacity":{"Type":3,"Flags":0,"Description":"Optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not \r\npossible for the resource this may be omitted."}}}},{"6":{"Value":"Free"}},{"6":{"Value":"Basic"}},{"6":{"Value":"Standard"}},{"6":{"Value":"Premium"}},{"5":{"Elements":[13,14,15,16,4]}},{"2":{"Name":"SignalRCreateOrUpdatePropertiesOrSignalRProperties","Properties":{"hostNamePrefix":{"Type":4,"Flags":0,"Description":"Prefix for the hostName of the SignalR service. Retained for future use.\r\nThe hostname will be of format: &lt;hostNamePrefix&gt;.service.signalr.net."},"provisioningState":{"Type":28,"Flags":2,"Description":"Provisioning state of the resource."},"externalIP":{"Type":4,"Flags":2,"Description":"The publicly accessible IP of the SignalR service."},"hostName":{"Type":4,"Flags":2,"Description":"FQDN of the SignalR service instance. Format: xxx.service.signalr.net"},"publicPort":{"Type":3,"Flags":2,"Description":"The publicly accessibly port of the SignalR service which is designed for browser/client side usage."},"serverPort":{"Type":3,"Flags":2,"Description":"The publicly accessibly port of the SignalR service which is designed for customer server side usage."},"version":{"Type":4,"Flags":2,"Description":"Version of the SignalR resource. Probably you need the same or higher version of client SDKs."}}}},{"6":{"Value":"Unknown"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"Running"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Moving"}},{"5":{"Elements":[19,20,21,22,23,24,25,26,27,4]}},{"4":{"Name":"Microsoft.SignalRService/SignalR@2018-03-01-preview","ScopeType":8,"Body":10,"Flags":0}},{"2":{"Name":"NameAvailabilityParameters","Properties":{"type":{"Type":4,"Flags":1,"Description":"The resource type. Should be always \"Microsoft.SignalRService/SignalR\"."},"name":{"Type":4,"Flags":1,"Description":"The SignalR service name to validate. e.g.\"my-signalR-name-here\""}}}},{"2":{"Name":"NameAvailability","Properties":{"nameAvailable":{"Type":2,"Flags":0,"Description":"Indicates whether the name is available or not."},"reason":{"Type":4,"Flags":0,"Description":"The reason of the availability. Required if name is not available."},"message":{"Type":4,"Flags":0,"Description":"The message of the operation."}}}},{"8":{"Name":"checkNameAvailability","ResourceType":"Microsoft.SignalRService/locations","ApiVersion":"2018-03-01-preview","Output":31,"Input":30}},{"2":{"Name":"SignalRKeys","Properties":{"primaryKey":{"Type":4,"Flags":0,"Description":"The primary access key."},"secondaryKey":{"Type":4,"Flags":0,"Description":"The secondary access key."},"primaryConnectionString":{"Type":4,"Flags":0,"Description":"SignalR connection string constructed via the primaryKey"},"secondaryConnectionString":{"Type":4,"Flags":0,"Description":"SignalR connection string constructed via the secondaryKey"}}}},{"8":{"Name":"listKeys","ResourceType":"Microsoft.SignalRService/SignalR","ApiVersion":"2018-03-01-preview","Output":33}},{"2":{"Name":"RegenerateKeyParameters","Properties":{"keyType":{"Type":38,"Flags":0,"Description":"The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive)."}}}},{"6":{"Value":"Primary"}},{"6":{"Value":"Secondary"}},{"5":{"Elements":[36,37,4]}},{"8":{"Name":"regenerateKey","ResourceType":"Microsoft.SignalRService/SignalR","ApiVersion":"2018-03-01-preview","Input":35}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.SignalRService/SignalR"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2018-03-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.SignalRService/SignalR",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Azure GEO region: e.g. West US | East US | North Central US | South Central US | West Europe | North Europe | East Asia | Southeast Asia | etc. \r\nThe geo region of a resource never changes after it is created."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "A list of key value pairs that describe the resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The billing information of the resource.(e.g. basic vs. standard)"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Settings used to provision or configure the resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalRUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified)"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier"
+      },
+      "size": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional, string. When the name field is the combination of tier and some other value, this would be the standalone code."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional, string. If the service has different generations of hardware, for the same SKU, then that can be captured here."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Optional, integer. If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not \r\npossible for the resource this may be omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalRCreateOrUpdatePropertiesOrSignalRProperties",
+    "properties": {
+      "hostNamePrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Prefix for the hostName of the SignalR service. Retained for future use.\r\nThe hostname will be of format: &lt;hostNamePrefix&gt;.service.signalr.net."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "externalIP": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The publicly accessible IP of the SignalR service."
+      },
+      "hostName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "FQDN of the SignalR service instance. Format: xxx.service.signalr.net"
+      },
+      "publicPort": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The publicly accessibly port of the SignalR service which is designed for browser/client side usage."
+      },
+      "serverPort": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The publicly accessibly port of the SignalR service which is designed for customer server side usage."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Version of the SignalR resource. Probably you need the same or higher version of client SDKs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.SignalRService/SignalR@2018-03-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NameAvailabilityParameters",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The resource type. Should be always \"Microsoft.SignalRService/SignalR\"."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The SignalR service name to validate. e.g.\"my-signalR-name-here\""
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NameAvailability",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates whether the name is available or not."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The reason of the availability. Required if name is not available."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The message of the operation."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.SignalRService/locations",
+    "apiVersion": "2018-03-01-preview",
+    "output": {
+      "$ref": "#/25"
+    },
+    "input": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalRKeys",
+    "properties": {
+      "primaryKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The primary access key."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The secondary access key."
+      },
+      "primaryConnectionString": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "SignalR connection string constructed via the primaryKey"
+      },
+      "secondaryConnectionString": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "SignalR connection string constructed via the secondaryKey"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listKeys",
+    "resourceType": "Microsoft.SignalRService/SignalR",
+    "apiVersion": "2018-03-01-preview",
+    "output": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegenerateKeyParameters",
+    "properties": {
+      "keyType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regenerateKey",
+    "resourceType": "Microsoft.SignalRService/SignalR",
+    "apiVersion": "2018-03-01-preview",
+    "input": {
+      "$ref": "#/30"
+    }
+  }
+]

@@ -1,1 +1,2180 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.VirtualMachineImages/imageTemplates"}},{"6":{"Value":"2023-07-01"}},{"2":{"Name":"Microsoft.VirtualMachineImages/imageTemplates","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"The properties of the image template"},"identity":{"Type":127,"Flags":1,"Description":"The identity of the image template, if configured."},"tags":{"Type":133,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":134,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"ImageTemplateProperties","Properties":{"source":{"Type":12,"Flags":1,"Description":"Specifies the properties used to describe the source image."},"customize":{"Type":35,"Flags":0,"Description":"Specifies the properties used to describe the customization steps of the image, like Image source etc"},"optimize":{"Type":36,"Flags":0,"Description":"Specifies optimization to be performed on image."},"validate":{"Type":41,"Flags":0,"Description":"Configuration options and list of validations to be performed on the resulting image."},"distribute":{"Type":77,"Flags":1,"Description":"The distribution targets where the image output needs to go to."},"errorHandling":{"Type":78,"Flags":0,"Description":"Error handling options upon a build failure"},"provisioningState":{"Type":91,"Flags":2,"Description":"Provisioning state of the resource"},"provisioningError":{"Type":92,"Flags":2,"Description":"Provisioning error, if any"},"lastRunStatus":{"Type":109,"Flags":2,"Description":"State of 'run' that is currently executing or was last executed."},"buildTimeoutInMinutes":{"Type":3,"Flags":0,"Description":"Maximum duration to wait while building the image template (includes all customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours)."},"vmProfile":{"Type":124,"Flags":0,"Description":"Describes how virtual machine is set up to build images"},"stagingResourceGroup":{"Type":4,"Flags":0,"Description":"The staging resource group id in the same subscription as the image template that will be used to build the image. If this field is empty, a resource group with a random name will be created. If the resource group specified in this field doesn't exist, it will be created with the same name. If the resource group specified exists, it must be empty and in the same region as the image template. The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist, but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain."},"exactStagingResourceGroup":{"Type":4,"Flags":2,"Description":"The staging resource group id in the same subscription as the image template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if the value specified in the 'stagingResourceGroup' field is empty."}}}},{"7":{"Name":"ImageTemplateSource","Discriminator":"type","BaseProperties":{},"Elements":{"ManagedImage":13,"PlatformImage":15,"SharedImageVersion":18}}},{"2":{"Name":"ImageTemplateManagedImageSource","Properties":{"imageId":{"Type":4,"Flags":1,"Description":"ARM resource id of the managed image in customer subscription"},"type":{"Type":14,"Flags":1,"Description":"Specifies the type of source image you want to start with."}}}},{"6":{"Value":"ManagedImage"}},{"2":{"Name":"ImageTemplatePlatformImageSource","Properties":{"publisher":{"Type":4,"Flags":0,"Description":"Image Publisher in [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."},"offer":{"Type":4,"Flags":0,"Description":"Image offer from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."},"sku":{"Type":4,"Flags":0,"Description":"Image sku from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."},"version":{"Type":4,"Flags":0,"Description":"Image version from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here, the version is evaluated when the image build takes place, not when the template is submitted."},"exactVersion":{"Type":4,"Flags":2,"Description":"Image version from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'."},"planInfo":{"Type":16,"Flags":0,"Description":"Optional configuration of purchase plan for platform image."},"type":{"Type":17,"Flags":1,"Description":"Specifies the type of source image you want to start with."}}}},{"2":{"Name":"PlatformImagePurchasePlan","Properties":{"planName":{"Type":4,"Flags":1,"Description":"Name of the purchase plan."},"planProduct":{"Type":4,"Flags":1,"Description":"Product of the purchase plan."},"planPublisher":{"Type":4,"Flags":1,"Description":"Publisher of the purchase plan."}}}},{"6":{"Value":"PlatformImage"}},{"2":{"Name":"ImageTemplateSharedImageVersionSource","Properties":{"imageVersionId":{"Type":4,"Flags":1,"Description":"ARM resource id of the image version. When image version name is 'latest', the version is evaluated when the image build takes place."},"exactVersion":{"Type":4,"Flags":2,"Description":"Exact ARM resource id of the image version. This readonly field differs from the image version Id in 'imageVersionId' only if the version name specified in 'imageVersionId' field is 'latest'."},"type":{"Type":19,"Flags":1,"Description":"Specifies the type of source image you want to start with."}}}},{"6":{"Value":"SharedImageVersion"}},{"7":{"Name":"ImageTemplateCustomizer","Discriminator":"type","BaseProperties":{"name":{"Type":4,"Flags":0,"Description":"Friendly Name to provide context on what this customization step does"}},"Elements":{"File":21,"PowerShell":23,"Shell":27,"WindowsRestart":30,"WindowsUpdate":32}}},{"2":{"Name":"ImageTemplateFileCustomizer","Properties":{"sourceUri":{"Type":4,"Flags":0,"Description":"The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the file provided in the sourceUri field above"},"destination":{"Type":4,"Flags":0,"Description":"The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be uploaded to in the VM"},"type":{"Type":22,"Flags":1,"Description":"The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"}}}},{"6":{"Value":"File"}},{"2":{"Name":"ImageTemplatePowerShellCustomizer","Properties":{"scriptUri":{"Type":4,"Flags":0,"Description":"URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the power shell script provided in the scriptUri field above"},"inline":{"Type":24,"Flags":0,"Description":"Array of PowerShell commands to execute"},"runElevated":{"Type":2,"Flags":0,"Description":"If specified, the PowerShell script will be run with elevated privileges"},"runAsSystem":{"Type":2,"Flags":0,"Description":"If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true."},"validExitCodes":{"Type":25,"Flags":0,"Description":"Valid exit codes for the PowerShell script. [Default: 0]"},"type":{"Type":26,"Flags":1,"Description":"The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"}}}},{"3":{"ItemType":4}},{"3":{"ItemType":3}},{"6":{"Value":"PowerShell"}},{"2":{"Name":"ImageTemplateShellCustomizer","Properties":{"scriptUri":{"Type":4,"Flags":0,"Description":"URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the shell script provided in the scriptUri field"},"inline":{"Type":28,"Flags":0,"Description":"Array of shell commands to execute"},"type":{"Type":29,"Flags":1,"Description":"The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"}}}},{"3":{"ItemType":4}},{"6":{"Value":"Shell"}},{"2":{"Name":"ImageTemplateRestartCustomizer","Properties":{"restartCommand":{"Type":4,"Flags":0,"Description":"Command to execute the restart [Default: 'shutdown /r /f /t 0 /c \"packer restart\"']"},"restartCheckCommand":{"Type":4,"Flags":0,"Description":"Command to check if restart succeeded [Default: '']"},"restartTimeout":{"Type":4,"Flags":0,"Description":"Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default: '5m']"},"type":{"Type":31,"Flags":1,"Description":"The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"}}}},{"6":{"Value":"WindowsRestart"}},{"2":{"Name":"ImageTemplateWindowsUpdateCustomizer","Properties":{"searchCriteria":{"Type":4,"Flags":0,"Description":"Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link for examples and detailed description of this field."},"filters":{"Type":33,"Flags":0,"Description":"Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer to above link for examples and detailed description of this field."},"updateLimit":{"Type":3,"Flags":0,"Description":"Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)"},"type":{"Type":34,"Flags":1,"Description":"The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"}}}},{"3":{"ItemType":4}},{"6":{"Value":"WindowsUpdate"}},{"3":{"ItemType":20}},{"2":{"Name":"ImageTemplatePropertiesOptimize","Properties":{"vmBoot":{"Type":37,"Flags":0,"Description":"Optimization is applied on the image for a faster VM boot."}}}},{"2":{"Name":"ImageTemplatePropertiesOptimizeVmBoot","Properties":{"state":{"Type":40,"Flags":0,"Description":"Enabling this field will improve VM boot time by optimizing the final customized image output."}}}},{"6":{"Value":"Enabled"}},{"6":{"Value":"Disabled"}},{"5":{"Elements":[38,39]}},{"2":{"Name":"ImageTemplatePropertiesValidate","Properties":{"continueDistributeOnFailure":{"Type":2,"Flags":0,"Description":"If validation fails and this field is set to false, output image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to true, output image(s) will still be distributed. Please use this option with caution as it may result in bad images being distributed for use. In either case (true or false), the end to end image run will be reported as having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.]"},"sourceValidationOnly":{"Type":2,"Flags":0,"Description":"If this field is set to true, the image specified in the 'source' section will directly be validated. No separate build will be run to generate and then validate a customized image."},"inVMValidations":{"Type":52,"Flags":0,"Description":"List of validations to be performed."}}}},{"7":{"Name":"ImageTemplateInVMValidator","Discriminator":"type","BaseProperties":{"name":{"Type":4,"Flags":0,"Description":"Friendly Name to provide context on what this validation step does"}},"Elements":{"File":43,"PowerShell":45,"Shell":49}}},{"2":{"Name":"ImageTemplateFileValidator","Properties":{"sourceUri":{"Type":4,"Flags":0,"Description":"The URI of the file to be uploaded to the VM for validation. It can be a github link, Azure Storage URI (authorized or SAS), etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the file provided in the sourceUri field above"},"destination":{"Type":4,"Flags":0,"Description":"The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be uploaded to in the VM"},"type":{"Type":44,"Flags":1,"Description":"The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"}}}},{"6":{"Value":"File"}},{"2":{"Name":"ImageTemplatePowerShellValidator","Properties":{"scriptUri":{"Type":4,"Flags":0,"Description":"URI of the PowerShell script to be run for validation. It can be a github link, Azure Storage URI, etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the power shell script provided in the scriptUri field above"},"inline":{"Type":46,"Flags":0,"Description":"Array of PowerShell commands to execute"},"runElevated":{"Type":2,"Flags":0,"Description":"If specified, the PowerShell script will be run with elevated privileges"},"runAsSystem":{"Type":2,"Flags":0,"Description":"If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true."},"validExitCodes":{"Type":47,"Flags":0,"Description":"Valid exit codes for the PowerShell script. [Default: 0]"},"type":{"Type":48,"Flags":1,"Description":"The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"}}}},{"3":{"ItemType":4}},{"3":{"ItemType":3}},{"6":{"Value":"PowerShell"}},{"2":{"Name":"ImageTemplateShellValidator","Properties":{"scriptUri":{"Type":4,"Flags":0,"Description":"URI of the shell script to be run for validation. It can be a github link, Azure Storage URI, etc"},"sha256Checksum":{"Type":4,"Flags":0,"Description":"SHA256 checksum of the shell script provided in the scriptUri field"},"inline":{"Type":50,"Flags":0,"Description":"Array of shell commands to execute"},"type":{"Type":51,"Flags":1,"Description":"The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"}}}},{"3":{"ItemType":4}},{"6":{"Value":"Shell"}},{"3":{"ItemType":42}},{"7":{"Name":"ImageTemplateDistributor","Discriminator":"type","BaseProperties":{"runOutputName":{"Type":4,"Flags":1,"Description":"The name to be used for the associated RunOutput."},"artifactTags":{"Type":54,"Flags":0,"Description":"Tags that will be applied to the artifact once it has been created/updated by the distributor."}},"Elements":{"ManagedImage":55,"SharedImage":57,"VHD":75}}},{"2":{"Name":"ImageTemplateDistributorArtifactTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"ImageTemplateManagedImageDistributor","Properties":{"imageId":{"Type":4,"Flags":1,"Description":"Resource Id of the Managed Disk Image"},"location":{"Type":4,"Flags":1,"Description":"Azure location for the image, should match if image already exists"},"type":{"Type":56,"Flags":1,"Description":"Type of distribution."}}}},{"6":{"Value":"ManagedImage"}},{"2":{"Name":"ImageTemplateSharedImageDistributor","Properties":{"galleryImageId":{"Type":4,"Flags":1,"Description":"Resource Id of the Azure Compute Gallery image"},"replicationRegions":{"Type":58,"Flags":0,"Description":"[Deprecated] A list of regions that the image will be replicated to. This list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions instead."},"excludeFromLatest":{"Type":2,"Flags":0,"Description":"Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false)."},"storageAccountType":{"Type":62,"Flags":0,"Description":"[Deprecated] Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This field is deprecated - use targetRegions instead."},"targetRegions":{"Type":68,"Flags":0,"Description":"The target regions where the distributed Image Version is going to be replicated to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified."},"versioning":{"Type":69,"Flags":0,"Description":"Describes how to generate new x.y.z version number for distribution."},"type":{"Type":74,"Flags":1,"Description":"Type of distribution."}}}},{"3":{"ItemType":4}},{"6":{"Value":"Standard_LRS"}},{"6":{"Value":"Standard_ZRS"}},{"6":{"Value":"Premium_LRS"}},{"5":{"Elements":[59,60,61,4]}},{"2":{"Name":"TargetRegion","Properties":{"name":{"Type":4,"Flags":1,"Description":"The name of the region."},"replicaCount":{"Type":3,"Flags":0,"Description":"The number of replicas of the Image Version to be created in this region. Omit to use the default (1)."},"storageAccountType":{"Type":67,"Flags":0,"Description":"Specifies the storage account type to be used to store the image in this region. Omit to use the default (Standard_LRS)."}}}},{"6":{"Value":"Standard_LRS"}},{"6":{"Value":"Standard_ZRS"}},{"6":{"Value":"Premium_LRS"}},{"5":{"Elements":[64,65,66,4]}},{"3":{"ItemType":63}},{"7":{"Name":"DistributeVersioner","Discriminator":"scheme","BaseProperties":{},"Elements":{"Latest":70,"Source":72}}},{"2":{"Name":"DistributeVersionerLatest","Properties":{"major":{"Type":3,"Flags":0,"Description":"Major version for the generated version number. Determine what is \"latest\" based on versions with this value as the major version. -1 is equivalent to leaving it unset."},"scheme":{"Type":71,"Flags":1,"Description":"Version numbering scheme to be used."}}}},{"6":{"Value":"Latest"}},{"2":{"Name":"DistributeVersionerSource","Properties":{"scheme":{"Type":73,"Flags":1,"Description":"Version numbering scheme to be used."}}}},{"6":{"Value":"Source"}},{"6":{"Value":"SharedImage"}},{"2":{"Name":"ImageTemplateVhdDistributor","Properties":{"uri":{"Type":4,"Flags":0,"Description":"Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case VHD would be published to the storage account in the staging resource group."},"type":{"Type":76,"Flags":1,"Description":"Type of distribution."}}}},{"6":{"Value":"VHD"}},{"3":{"ItemType":53}},{"2":{"Name":"ImageTemplatePropertiesErrorHandling","Properties":{"onCustomizerError":{"Type":81,"Flags":0,"Description":"If there is a customizer error and this field is set to 'cleanup', the build VM and associated network resources will be cleaned up. This is the default behavior. If there is a customizer error and this field is set to 'abort', the build VM will be preserved."},"onValidationError":{"Type":84,"Flags":0,"Description":"If there is a validation error and this field is set to 'cleanup', the build VM and associated network resources will be cleaned up. This is the default behavior. If there is a validation error and this field is set to 'abort', the build VM will be preserved."}}}},{"6":{"Value":"cleanup"}},{"6":{"Value":"abort"}},{"5":{"Elements":[79,80,4]}},{"6":{"Value":"cleanup"}},{"6":{"Value":"abort"}},{"5":{"Elements":[82,83,4]}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[85,86,87,88,89,90]}},{"2":{"Name":"ProvisioningError","Properties":{"provisioningErrorCode":{"Type":108,"Flags":0,"Description":"Error code of the provisioning failure"},"message":{"Type":4,"Flags":0,"Description":"Verbose error message about the provisioning failure"}}}},{"6":{"Value":"BadSourceType"}},{"6":{"Value":"BadPIRSource"}},{"6":{"Value":"BadManagedImageSource"}},{"6":{"Value":"BadSharedImageVersionSource"}},{"6":{"Value":"BadCustomizerType"}},{"6":{"Value":"UnsupportedCustomizerType"}},{"6":{"Value":"NoCustomizerScript"}},{"6":{"Value":"BadValidatorType"}},{"6":{"Value":"UnsupportedValidatorType"}},{"6":{"Value":"NoValidatorScript"}},{"6":{"Value":"BadDistributeType"}},{"6":{"Value":"BadSharedImageDistribute"}},{"6":{"Value":"BadStagingResourceGroup"}},{"6":{"Value":"ServerError"}},{"6":{"Value":"Other"}},{"5":{"Elements":[93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,4]}},{"2":{"Name":"ImageTemplateLastRunStatus","Properties":{"startTime":{"Type":4,"Flags":0,"Description":"Start time of the last run (UTC)"},"endTime":{"Type":4,"Flags":0,"Description":"End time of the last run (UTC)"},"runState":{"Type":116,"Flags":0,"Description":"State of the last run"},"runSubState":{"Type":123,"Flags":0,"Description":"Sub-state of the last run"},"message":{"Type":4,"Flags":0,"Description":"Verbose information about the last run state"}}}},{"6":{"Value":"Running"}},{"6":{"Value":"Canceling"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"PartiallySucceeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[110,111,112,113,114,115]}},{"6":{"Value":"Queued"}},{"6":{"Value":"Building"}},{"6":{"Value":"Customizing"}},{"6":{"Value":"Optimizing"}},{"6":{"Value":"Validating"}},{"6":{"Value":"Distributing"}},{"5":{"Elements":[117,118,119,120,121,122]}},{"2":{"Name":"ImageTemplateVmProfile","Properties":{"vmSize":{"Type":4,"Flags":0,"Description":"Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images)."},"osDiskSizeGB":{"Type":3,"Flags":0,"Description":"Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size."},"userAssignedIdentities":{"Type":125,"Flags":0,"Description":"Optional array of resource IDs of user assigned managed identities to be configured on the build VM and validation VM. This may include the identity of the image template."},"vnetConfig":{"Type":126,"Flags":0,"Description":"Optional configuration of the virtual network to use to deploy the build VM and validation VM in. Omit if no specific virtual network needs to be used."}}}},{"3":{"ItemType":4}},{"2":{"Name":"VirtualNetworkConfig","Properties":{"subnetId":{"Type":4,"Flags":0,"Description":"Resource id of a pre-existing subnet."},"proxyVmSize":{"Type":4,"Flags":0,"Description":"Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty string to use the default (Standard_A1_v2)."}}}},{"2":{"Name":"ImageTemplateIdentity","Properties":{"type":{"Type":130,"Flags":0,"Description":"The type of identity used for the image template. The type 'None' will remove any identities from the image template."},"userAssignedIdentities":{"Type":132,"Flags":0,"Description":"The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."}}}},{"6":{"Value":"UserAssigned"}},{"6":{"Value":"None"}},{"5":{"Elements":[128,129]}},{"2":{"Name":"UserAssignedIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The principal ID of the assigned identity."},"clientId":{"Type":4,"Flags":2,"Description":"The client ID of the assigned identity."}}}},{"2":{"Name":"UserAssignedIdentities","Properties":{},"AdditionalProperties":131}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"SystemData","Properties":{"createdBy":{"Type":4,"Flags":0,"Description":"The identity that created the resource."},"createdByType":{"Type":139,"Flags":0,"Description":"The type of identity that created the resource."},"createdAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource creation (UTC)."},"lastModifiedBy":{"Type":4,"Flags":0,"Description":"The identity that last modified the resource."},"lastModifiedByType":{"Type":144,"Flags":0,"Description":"The type of identity that last modified the resource."},"lastModifiedAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource last modification (UTC)"}}}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[135,136,137,138,4]}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[140,141,142,143,4]}},{"4":{"Name":"Microsoft.VirtualMachineImages/imageTemplates@2023-07-01","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.VirtualMachineImages/imageTemplates/triggers"}},{"6":{"Value":"2023-07-01"}},{"2":{"Name":"Microsoft.VirtualMachineImages/imageTemplates/triggers","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":146,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":147,"Flags":10,"Description":"The resource api version"},"properties":{"Type":149,"Flags":0,"Description":"The properties of a trigger"},"systemData":{"Type":134,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"7":{"Name":"TriggerProperties","Discriminator":"kind","BaseProperties":{"status":{"Type":150,"Flags":2,"Description":"Trigger status"},"provisioningState":{"Type":157,"Flags":2,"Description":"Provisioning state of the resource"}},"Elements":{"SourceImage":158}}},{"2":{"Name":"TriggerStatus","Properties":{"code":{"Type":4,"Flags":2,"Description":"The status code."},"message":{"Type":4,"Flags":2,"Description":"The detailed status message, including for alerts and error messages."},"time":{"Type":4,"Flags":2,"Description":"The time of the status."}}}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[151,152,153,154,155,156]}},{"2":{"Name":"SourceImageTriggerProperties","Properties":{"kind":{"Type":159,"Flags":1,"Description":"The kind of trigger."}}}},{"6":{"Value":"SourceImage"}},{"4":{"Name":"Microsoft.VirtualMachineImages/imageTemplates/triggers@2023-07-01","ScopeType":8,"Body":148,"Flags":0}},{"6":{"Value":"Microsoft.VirtualMachineImages/imageTemplates/runOutputs"}},{"6":{"Value":"2023-07-01"}},{"2":{"Name":"Microsoft.VirtualMachineImages/imageTemplates/runOutputs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":161,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":162,"Flags":10,"Description":"The resource api version"},"properties":{"Type":164,"Flags":2,"Description":"The properties of the run output"},"systemData":{"Type":134,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"RunOutputProperties","Properties":{"artifactId":{"Type":4,"Flags":0,"Description":"The resource id of the artifact."},"artifactUri":{"Type":4,"Flags":0,"Description":"The location URI of the artifact."},"provisioningState":{"Type":171,"Flags":2,"Description":"Provisioning state of the resource"}}}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[165,166,167,168,169,170]}},{"4":{"Name":"Microsoft.VirtualMachineImages/imageTemplates/runOutputs@2023-07-01","ScopeType":8,"Body":163,"Flags":1}},{"8":{"Name":"run","ResourceType":"Microsoft.VirtualMachineImages/imageTemplates","ApiVersion":"2023-07-01"}},{"8":{"Name":"cancel","ResourceType":"Microsoft.VirtualMachineImages/imageTemplates","ApiVersion":"2023-07-01"}}]
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9-_.]{1,64}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VirtualMachineImages/imageTemplates"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The properties of the image template"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The identity of the image template, if configured."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Specifies the properties used to describe the source image."
+      },
+      "customize": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Specifies the properties used to describe the customization steps of the image, like Image source etc"
+      },
+      "optimize": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Specifies optimization to be performed on image."
+      },
+      "validate": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Configuration options and list of validations to be performed on the resulting image."
+      },
+      "distribute": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "The distribution targets where the image output needs to go to."
+      },
+      "errorHandling": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "Error handling options upon a build failure"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      },
+      "provisioningError": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 2,
+        "description": "Provisioning error, if any"
+      },
+      "lastRunStatus": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 2,
+        "description": "State of 'run' that is currently executing or was last executed."
+      },
+      "buildTimeoutInMinutes": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Maximum duration to wait while building the image template (includes all customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours)."
+      },
+      "vmProfile": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "Describes how virtual machine is set up to build images"
+      },
+      "stagingResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The staging resource group id in the same subscription as the image template that will be used to build the image. If this field is empty, a resource group with a random name will be created. If the resource group specified in this field doesn't exist, it will be created with the same name. If the resource group specified exists, it must be empty and in the same region as the image template. The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn't exist, but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain."
+      },
+      "exactStagingResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The staging resource group id in the same subscription as the image template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if the value specified in the 'stagingResourceGroup' field is empty."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ImageTemplateSource",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "ManagedImage": {
+        "$ref": "#/7"
+      },
+      "PlatformImage": {
+        "$ref": "#/9"
+      },
+      "SharedImageVersion": {
+        "$ref": "#/12"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateManagedImageSource",
+    "properties": {
+      "imageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARM resource id of the managed image in customer subscription"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Specifies the type of source image you want to start with."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedImage"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePlatformImageSource",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Image Publisher in [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."
+      },
+      "offer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Image offer from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Image sku from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages)."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Image version from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here, the version is evaluated when the image build takes place, not when the template is submitted."
+      },
+      "exactVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Image version from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'."
+      },
+      "planInfo": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Optional configuration of purchase plan for platform image."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 1,
+        "description": "Specifies the type of source image you want to start with."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformImagePurchasePlan",
+    "properties": {
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the purchase plan."
+      },
+      "planProduct": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Product of the purchase plan."
+      },
+      "planPublisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher of the purchase plan."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PlatformImage"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateSharedImageVersionSource",
+    "properties": {
+      "imageVersionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ARM resource id of the image version. When image version name is 'latest', the version is evaluated when the image build takes place."
+      },
+      "exactVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Exact ARM resource id of the image version. This readonly field differs from the image version Id in 'imageVersionId' only if the version name specified in 'imageVersionId' field is 'latest'."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Specifies the type of source image you want to start with."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SharedImageVersion"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ImageTemplateCustomizer",
+    "discriminator": "type",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly Name to provide context on what this customization step does"
+      }
+    },
+    "elements": {
+      "File": {
+        "$ref": "#/15"
+      },
+      "PowerShell": {
+        "$ref": "#/17"
+      },
+      "Shell": {
+        "$ref": "#/23"
+      },
+      "WindowsRestart": {
+        "$ref": "#/26"
+      },
+      "WindowsUpdate": {
+        "$ref": "#/28"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateFileCustomizer",
+    "properties": {
+      "sourceUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the file provided in the sourceUri field above"
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be uploaded to in the VM"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "File"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePowerShellCustomizer",
+    "properties": {
+      "scriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the power shell script provided in the scriptUri field above"
+      },
+      "inline": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Array of PowerShell commands to execute"
+      },
+      "runElevated": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If specified, the PowerShell script will be run with elevated privileges"
+      },
+      "runAsSystem": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true."
+      },
+      "validExitCodes": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Valid exit codes for the PowerShell script. [Default: 0]"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 1,
+        "description": "The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerShell"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateShellCustomizer",
+    "properties": {
+      "scriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the shell script provided in the scriptUri field"
+      },
+      "inline": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Array of shell commands to execute"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Shell"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateRestartCustomizer",
+    "properties": {
+      "restartCommand": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Command to execute the restart [Default: 'shutdown /r /f /t 0 /c \"packer restart\"']"
+      },
+      "restartCheckCommand": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Command to check if restart succeeded [Default: '']"
+      },
+      "restartTimeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default: '5m']"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WindowsRestart"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateWindowsUpdateCustomizer",
+    "properties": {
+      "searchCriteria": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link for examples and detailed description of this field."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer to above link for examples and detailed description of this field."
+      },
+      "updateLimit": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The type of customization tool you want to use on the Image. For example, \"Shell\" can be shell customizer"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WindowsUpdate"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePropertiesOptimize",
+    "properties": {
+      "vmBoot": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Optimization is applied on the image for a faster VM boot."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePropertiesOptimizeVmBoot",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Enabling this field will improve VM boot time by optimizing the final customized image output."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePropertiesValidate",
+    "properties": {
+      "continueDistributeOnFailure": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If validation fails and this field is set to false, output image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to true, output image(s) will still be distributed. Please use this option with caution as it may result in bad images being distributed for use. In either case (true or false), the end to end image run will be reported as having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.]"
+      },
+      "sourceValidationOnly": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If this field is set to true, the image specified in the 'source' section will directly be validated. No separate build will be run to generate and then validate a customized image."
+      },
+      "inVMValidations": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "List of validations to be performed."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ImageTemplateInVMValidator",
+    "discriminator": "type",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly Name to provide context on what this validation step does"
+      }
+    },
+    "elements": {
+      "File": {
+        "$ref": "#/40"
+      },
+      "PowerShell": {
+        "$ref": "#/42"
+      },
+      "Shell": {
+        "$ref": "#/46"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateFileValidator",
+    "properties": {
+      "sourceUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URI of the file to be uploaded to the VM for validation. It can be a github link, Azure Storage URI (authorized or SAS), etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the file provided in the sourceUri field above"
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be uploaded to in the VM"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "File"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePowerShellValidator",
+    "properties": {
+      "scriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI of the PowerShell script to be run for validation. It can be a github link, Azure Storage URI, etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the power shell script provided in the scriptUri field above"
+      },
+      "inline": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Array of PowerShell commands to execute"
+      },
+      "runElevated": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If specified, the PowerShell script will be run with elevated privileges"
+      },
+      "runAsSystem": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true."
+      },
+      "validExitCodes": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Valid exit codes for the PowerShell script. [Default: 0]"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerShell"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateShellValidator",
+    "properties": {
+      "scriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI of the shell script to be run for validation. It can be a github link, Azure Storage URI, etc"
+      },
+      "sha256Checksum": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SHA256 checksum of the shell script provided in the scriptUri field"
+      },
+      "inline": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Array of shell commands to execute"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "The type of validation you want to use on the Image. For example, \"Shell\" can be shell validation"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Shell"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ImageTemplateDistributor",
+    "discriminator": "type",
+    "baseProperties": {
+      "runOutputName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name to be used for the associated RunOutput."
+      },
+      "artifactTags": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Tags that will be applied to the artifact once it has been created/updated by the distributor."
+      }
+    },
+    "elements": {
+      "ManagedImage": {
+        "$ref": "#/52"
+      },
+      "SharedImage": {
+        "$ref": "#/54"
+      },
+      "VHD": {
+        "$ref": "#/74"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateDistributorArtifactTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateManagedImageDistributor",
+    "properties": {
+      "imageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Id of the Managed Disk Image"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure location for the image, should match if image already exists"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Type of distribution."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedImage"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateSharedImageDistributor",
+    "properties": {
+      "galleryImageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Id of the Azure Compute Gallery image"
+      },
+      "replicationRegions": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "[Deprecated] A list of regions that the image will be replicated to. This list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions instead."
+      },
+      "excludeFromLatest": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false)."
+      },
+      "storageAccountType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "[Deprecated] Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This field is deprecated - use targetRegions instead."
+      },
+      "targetRegions": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "The target regions where the distributed Image Version is going to be replicated to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified."
+      },
+      "versioning": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "Describes how to generate new x.y.z version number for distribution."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "Type of distribution."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetRegion",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the region."
+      },
+      "replicaCount": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The number of replicas of the Image Version to be created in this region. Omit to use the default (1)."
+      },
+      "storageAccountType": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Specifies the storage account type to be used to store the image in this region. Omit to use the default (Standard_LRS)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "DistributeVersioner",
+    "discriminator": "scheme",
+    "baseProperties": {},
+    "elements": {
+      "Latest": {
+        "$ref": "#/68"
+      },
+      "Source": {
+        "$ref": "#/71"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DistributeVersionerLatest",
+    "properties": {
+      "major": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "Major version for the generated version number. Determine what is \"latest\" based on versions with this value as the major version. -1 is equivalent to leaving it unset."
+      },
+      "scheme": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 1,
+        "description": "Version numbering scheme to be used."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": -1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Latest"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DistributeVersionerSource",
+    "properties": {
+      "scheme": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "Version numbering scheme to be used."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Source"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SharedImage"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateVhdDistributor",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case VHD would be published to the storage account in the staging resource group."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "Type of distribution."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VHD"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplatePropertiesErrorHandling",
+    "properties": {
+      "onCustomizerError": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "If there is a customizer error and this field is set to 'cleanup', the build VM and associated network resources will be cleaned up. This is the default behavior. If there is a customizer error and this field is set to 'abort', the build VM will be preserved."
+      },
+      "onValidationError": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "If there is a validation error and this field is set to 'cleanup', the build VM and associated network resources will be cleaned up. This is the default behavior. If there is a validation error and this field is set to 'abort', the build VM will be preserved."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cleanup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "abort"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cleanup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "abort"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProvisioningError",
+    "properties": {
+      "provisioningErrorCode": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "Error code of the provisioning failure"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Verbose error message about the provisioning failure"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadSourceType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadPIRSource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadManagedImageSource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadSharedImageVersionSource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadCustomizerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnsupportedCustomizerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoCustomizerScript"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadValidatorType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnsupportedValidatorType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoValidatorScript"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadDistributeType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadSharedImageDistribute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BadStagingResourceGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerError"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateLastRunStatus",
+    "properties": {
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Start time of the last run (UTC)"
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "End time of the last run (UTC)"
+      },
+      "runState": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "State of the last run"
+      },
+      "runSubState": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "Sub-state of the last run"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Verbose information about the last run state"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallySucceeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Customizing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Optimizing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Validating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Distributing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 960
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateVmProfile",
+    "properties": {
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images)."
+      },
+      "osDiskSizeGB": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Optional array of resource IDs of user assigned managed identities to be configured on the build VM and validation VM. This may include the identity of the image template."
+      },
+      "vnetConfig": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Optional configuration of the virtual network to use to deploy the build VM and validation VM in. Omit if no specific virtual network needs to be used."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualNetworkConfig",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource id of a pre-existing subnet."
+      },
+      "proxyVmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty string to use the default (Standard_A1_v2)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImageTemplateIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the image template. The type 'None' will remove any identities from the image template."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/131"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates@2023-07-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VirtualMachineImages/imageTemplates/triggers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates/triggers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "The properties of a trigger"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "TriggerProperties",
+    "discriminator": "kind",
+    "baseProperties": {
+      "status": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 2,
+        "description": "Trigger status"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      }
+    },
+    "elements": {
+      "SourceImage": {
+        "$ref": "#/158"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TriggerStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The detailed status message, including for alerts and error messages."
+      },
+      "time": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time of the status."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceImageTriggerProperties",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 1,
+        "description": "The kind of trigger."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SourceImage"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates/triggers@2023-07-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/148"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VirtualMachineImages/imageTemplates/runOutputs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates/runOutputs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 2,
+        "description": "The properties of the run output"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunOutputProperties",
+    "properties": {
+      "artifactId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource id of the artifact."
+      },
+      "artifactUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location URI of the artifact."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VirtualMachineImages/imageTemplates/runOutputs@2023-07-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/163"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "run",
+    "resourceType": "Microsoft.VirtualMachineImages/imageTemplates",
+    "apiVersion": "2023-07-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.VirtualMachineImages/imageTemplates",
+    "apiVersion": "2023-07-01"
+  }
+]

@@ -1,1 +1,689 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.Quantum/workspaces"}},{"6":{"Value":"2023-11-13-preview"}},{"2":{"Name":"Microsoft.Quantum/workspaces","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"Gets or sets the properties. Define quantum workspace's specific properties."},"identity":{"Type":32,"Flags":0,"Description":"Managed Identity information."},"tags":{"Type":36,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":37,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"WorkspaceResourceProperties","Properties":{"providers":{"Type":20,"Flags":0,"Description":"List of Providers selected for this Workspace"},"usable":{"Type":24,"Flags":2,"Description":"Whether the current workspace is ready to accept Jobs."},"provisioningState":{"Type":31,"Flags":2,"Description":"Provisioning status field"},"storageAccount":{"Type":4,"Flags":0,"Description":"ARM Resource Id of the storage account associated with this workspace."},"endpointUri":{"Type":4,"Flags":2,"Description":"The URI of the workspace endpoint."},"apiKeyEnabled":{"Type":2,"Flags":0,"Description":"Indicator of enablement of the Quantum workspace Api keys."}}}},{"2":{"Name":"Provider","Properties":{"providerId":{"Type":4,"Flags":0,"Description":"Unique id of this provider."},"providerSku":{"Type":4,"Flags":0,"Description":"The sku associated with pricing information for this provider."},"instanceUri":{"Type":4,"Flags":0,"Description":"A Uri identifying the specific instance of this provider."},"applicationName":{"Type":4,"Flags":0,"Description":"The provider's marketplace application display name."},"provisioningState":{"Type":19,"Flags":0,"Description":"Provisioning status field"},"resourceUsageId":{"Type":4,"Flags":0,"Description":"Id to track resource usage for the provider."}}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Launching"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Deleting"}},{"6":{"Value":"Deleted"}},{"6":{"Value":"Failed"}},{"5":{"Elements":[13,14,15,16,17,18,4]}},{"3":{"ItemType":12}},{"6":{"Value":"Yes"}},{"6":{"Value":"No"}},{"6":{"Value":"Partial"}},{"5":{"Elements":[21,22,23,4]}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"ProviderLaunching"}},{"6":{"Value":"ProviderUpdating"}},{"6":{"Value":"ProviderDeleting"}},{"6":{"Value":"ProviderProvisioning"}},{"6":{"Value":"Failed"}},{"5":{"Elements":[25,26,27,28,29,30,4]}},{"2":{"Name":"QuantumWorkspaceIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The principal ID of resource identity."},"tenantId":{"Type":4,"Flags":2,"Description":"The tenant ID of resource."},"type":{"Type":35,"Flags":0,"Description":"The identity type."}}}},{"6":{"Value":"SystemAssigned"}},{"6":{"Value":"None"}},{"5":{"Elements":[33,34,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"SystemData","Properties":{"createdBy":{"Type":4,"Flags":0,"Description":"The identity that created the resource."},"createdByType":{"Type":42,"Flags":0,"Description":"The type of identity that created the resource."},"createdAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource creation (UTC)."},"lastModifiedBy":{"Type":4,"Flags":0,"Description":"The identity that last modified the resource."},"lastModifiedByType":{"Type":47,"Flags":0,"Description":"The type of identity that last modified the resource."},"lastModifiedAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource last modification (UTC)"}}}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[38,39,40,41,4]}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[43,44,45,46,4]}},{"4":{"Name":"Microsoft.Quantum/workspaces@2023-11-13-preview","ScopeType":8,"Body":10,"Flags":0}},{"2":{"Name":"CheckNameAvailabilityParameters","Properties":{"name":{"Type":4,"Flags":0,"Description":"Name for checking availability."},"type":{"Type":4,"Flags":0,"Description":"The resource type of Quantum Workspace."}}}},{"2":{"Name":"CheckNameAvailabilityResult","Properties":{"nameAvailable":{"Type":2,"Flags":0,"Description":"Indicator of availability of the Quantum Workspace resource name."},"reason":{"Type":4,"Flags":0,"Description":"The reason of unavailability."},"message":{"Type":4,"Flags":2,"Description":"The detailed info regarding the reason associated with the Namespace."}}}},{"8":{"Name":"checkNameAvailability","ResourceType":"Microsoft.Quantum/locations","ApiVersion":"2023-11-13-preview","Output":50,"Input":49}},{"2":{"Name":"ListKeysResult","Properties":{"apiKeyEnabled":{"Type":2,"Flags":0,"Description":"Indicator of enablement of the Quantum workspace Api keys."},"primaryKey":{"Type":53,"Flags":0,"Description":"The quantum workspace primary api key."},"secondaryKey":{"Type":53,"Flags":0,"Description":"The quantum workspace secondary api key."},"primaryConnectionString":{"Type":4,"Flags":2,"Description":"The connection string of the primary api key."},"secondaryConnectionString":{"Type":4,"Flags":2,"Description":"The connection string of the secondary api key."}}}},{"2":{"Name":"ApiKey","Properties":{"createdAt":{"Type":4,"Flags":0,"Description":"The creation time of the api key."},"key":{"Type":4,"Flags":2,"Description":"The Api key."}}}},{"8":{"Name":"listKeys","ResourceType":"Microsoft.Quantum/workspaces","ApiVersion":"2023-11-13-preview","Output":52}},{"2":{"Name":"APIKeys","Properties":{"keys":{"Type":59,"Flags":0,"Description":"A list of api key names."}}}},{"6":{"Value":"Primary"}},{"6":{"Value":"Secondary"}},{"5":{"Elements":[56,57,4]}},{"3":{"ItemType":58}},{"8":{"Name":"regenerateKey","ResourceType":"Microsoft.Quantum/workspaces","ApiVersion":"2023-11-13-preview","Input":55}}]
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quantum/workspaces"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-11-13-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Quantum/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Gets or sets the properties. Define quantum workspace's specific properties."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Managed Identity information."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceResourceProperties",
+    "properties": {
+      "providers": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "List of Providers selected for this Workspace"
+      },
+      "usable": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Whether the current workspace is ready to accept Jobs."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Provisioning status field"
+      },
+      "storageAccount": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM Resource Id of the storage account associated with this workspace."
+      },
+      "endpointUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The URI of the workspace endpoint."
+      },
+      "apiKeyEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicator of enablement of the Quantum workspace Api keys."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Provider",
+    "properties": {
+      "providerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Unique id of this provider."
+      },
+      "providerSku": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The sku associated with pricing information for this provider."
+      },
+      "instanceUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A Uri identifying the specific instance of this provider."
+      },
+      "applicationName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The provider's marketplace application display name."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Provisioning status field"
+      },
+      "resourceUsageId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Id to track resource usage for the provider."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Launching"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/6"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Partial"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProviderLaunching"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProviderUpdating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProviderDeleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProviderProvisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuantumWorkspaceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quantum/workspaces@2023-11-13-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityParameters",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name for checking availability."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource type of Quantum Workspace."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityResult",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicator of availability of the Quantum Workspace resource name."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason of unavailability."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The detailed info regarding the reason associated with the Namespace."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.Quantum/locations",
+    "apiVersion": "2023-11-13-preview",
+    "output": {
+      "$ref": "#/45"
+    },
+    "input": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListKeysResult",
+    "properties": {
+      "apiKeyEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicator of enablement of the Quantum workspace Api keys."
+      },
+      "primaryKey": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The quantum workspace primary api key."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The quantum workspace secondary api key."
+      },
+      "primaryConnectionString": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The connection string of the primary api key."
+      },
+      "secondaryConnectionString": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The connection string of the secondary api key."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiKey",
+    "properties": {
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The creation time of the api key."
+      },
+      "key": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The Api key."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listKeys",
+    "resourceType": "Microsoft.Quantum/workspaces",
+    "apiVersion": "2023-11-13-preview",
+    "output": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "APIKeys",
+    "properties": {
+      "keys": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "A list of api key names."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/54"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regenerateKey",
+    "resourceType": "Microsoft.Quantum/workspaces",
+    "apiVersion": "2023-11-13-preview",
+    "input": {
+      "$ref": "#/51"
+    }
+  }
+]

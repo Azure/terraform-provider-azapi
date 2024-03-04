@@ -9,7 +9,8 @@ import (
 var _ TypeBase = &StringLiteralType{}
 
 type StringLiteralType struct {
-	Value string `json:"Value"`
+	Type  string `json:"$type"`
+	Value string `json:"value"`
 }
 
 func (t *StringLiteralType) GetWriteOnly(i interface{}) interface{} {

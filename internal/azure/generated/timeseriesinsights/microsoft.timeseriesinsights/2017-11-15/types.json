@@ -1,1 +1,1248 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.TimeSeriesInsights/environments"}},{"6":{"Value":"2017-11-15"}},{"2":{"Name":"Microsoft.TimeSeriesInsights/environments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"sku":{"Type":11,"Flags":1,"Description":"The sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and the billing rate."},"properties":{"Type":15,"Flags":1,"Description":"Properties used to create an environment."},"location":{"Type":4,"Flags":1,"Description":"The location of the resource."},"tags":{"Type":39,"Flags":0,"Description":"Key-value pairs of additional properties for the resource."}}}},{"2":{"Name":"Sku","Properties":{"name":{"Type":14,"Flags":1,"Description":"The name of this SKU."},"capacity":{"Type":3,"Flags":1,"Description":"The capacity of the sku. This value can be changed to support scale out of environments after they have been created."}}}},{"6":{"Value":"S1"}},{"6":{"Value":"S2"}},{"5":{"Elements":[12,13]}},{"2":{"Name":"EnvironmentCreationPropertiesOrEnvironmentResourceProperties","Properties":{"dataRetentionTime":{"Type":4,"Flags":1,"Description":"ISO8601 timespan specifying the minimum number of days the environment's events will be available for query."},"storageLimitExceededBehavior":{"Type":18,"Flags":0,"Description":"The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If \"PauseIngress\" is specified, new events will not be read from the event source. If \"PurgeOldData\" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData."},"partitionKeyProperties":{"Type":22,"Flags":0,"Description":"The list of partition keys according to which the data in the environment will be ordered."},"dataAccessId":{"Type":4,"Flags":2,"Description":"An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment."},"dataAccessFqdn":{"Type":4,"Flags":2,"Description":"The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment."},"status":{"Type":23,"Flags":2,"Description":"An object that represents the status of the environment, and its internal state in the Time Series Insights service."},"provisioningState":{"Type":38,"Flags":2,"Description":"Provisioning state of the resource."},"creationTime":{"Type":4,"Flags":2,"Description":"The time the resource was created."}}}},{"6":{"Value":"PurgeOldData"}},{"6":{"Value":"PauseIngress"}},{"5":{"Elements":[16,17]}},{"2":{"Name":"PartitionKeyProperty","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the property."},"type":{"Type":21,"Flags":0,"Description":"The type of the property."}}}},{"6":{"Value":"String"}},{"5":{"Elements":[20,4]}},{"3":{"ItemType":19}},{"2":{"Name":"EnvironmentStatus","Properties":{"ingress":{"Type":24,"Flags":2,"Description":"An object that represents the status of ingress on an environment."}}}},{"2":{"Name":"IngressEnvironmentStatus","Properties":{"state":{"Type":30,"Flags":0,"Description":"This string represents the state of ingress operations on an environment. It can be \"Disabled\", \"Ready\", \"Running\", \"Paused\" or \"Unknown\""},"stateDetails":{"Type":31,"Flags":2,"Description":"An object that contains the details about an environment's state."}}}},{"6":{"Value":"Disabled"}},{"6":{"Value":"Ready"}},{"6":{"Value":"Running"}},{"6":{"Value":"Paused"}},{"6":{"Value":"Unknown"}},{"5":{"Elements":[25,26,27,28,29]}},{"2":{"Name":"EnvironmentStateDetails","Properties":{"code":{"Type":4,"Flags":0,"Description":"Contains the code that represents the reason of an environment being in a particular state. Can be used to programmatically handle specific cases."},"message":{"Type":4,"Flags":0,"Description":"A message that describes the state in detail."}}}},{"6":{"Value":"Accepted"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[32,33,34,35,36,37]}},{"2":{"Name":"CreateOrUpdateTrackedResourcePropertiesTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.TimeSeriesInsights/environments@2017-11-15","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.TimeSeriesInsights/environments/eventSources"}},{"6":{"Value":"2017-11-15"}},{"7":{"Name":"Microsoft.TimeSeriesInsights/environments/eventSources","Discriminator":"kind","BaseProperties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":41,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":42,"Flags":10,"Description":"The resource api version"},"location":{"Type":4,"Flags":1,"Description":"The location of the resource."},"tags":{"Type":44,"Flags":0,"Description":"Key-value pairs of additional properties for the resource."}},"Elements":{"Microsoft.EventHub":45,"Microsoft.IoTHub":55,"Microsoft.IotHub":65}}},{"2":{"Name":"CreateOrUpdateTrackedResourcePropertiesTags","Properties":{},"AdditionalProperties":4}},{"2":{"Name":"EventHubEventSourceCreateOrUpdateParametersOrEventHubEventSourceResource","Properties":{"properties":{"Type":46,"Flags":1,"Description":"Properties of the EventHub event source that are required on create or update requests."},"kind":{"Type":54,"Flags":1,"Description":"The kind of the event source."}}}},{"2":{"Name":"EventHubEventSourceCreationPropertiesOrEventHubEventSourceResourceProperties","Properties":{"sharedAccessKey":{"Type":4,"Flags":5,"Description":"The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses."},"serviceBusNamespace":{"Type":4,"Flags":1,"Description":"The name of the service bus that contains the event hub."},"eventHubName":{"Type":4,"Flags":1,"Description":"The name of the event hub."},"consumerGroupName":{"Type":4,"Flags":1,"Description":"The name of the event hub's consumer group that holds the partitions from which events will be read."},"keyName":{"Type":4,"Flags":1,"Description":"The name of the SAS key that grants the Time Series Insights service access to the event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub."},"eventSourceResourceId":{"Type":4,"Flags":1,"Description":"The resource id of the event source in Azure Resource Manager."},"timestampPropertyName":{"Type":4,"Flags":0,"Description":"The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."},"provisioningState":{"Type":53,"Flags":2,"Description":"Provisioning state of the resource."},"creationTime":{"Type":4,"Flags":2,"Description":"The time the resource was created."}}}},{"6":{"Value":"Accepted"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[47,48,49,50,51,52]}},{"6":{"Value":"Microsoft.EventHub"}},{"2":{"Name":"IoTHubEventSourceCreateOrUpdateParameters","Properties":{"properties":{"Type":56,"Flags":5,"Description":"Properties of the IoTHub event source that are required on create or update requests."},"kind":{"Type":64,"Flags":1,"Description":"The kind of the event source."}}}},{"2":{"Name":"IoTHubEventSourceCreationProperties","Properties":{"sharedAccessKey":{"Type":4,"Flags":1,"Description":"The value of the Shared Access Policy key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses."},"iotHubName":{"Type":4,"Flags":1,"Description":"The name of the iot hub."},"consumerGroupName":{"Type":4,"Flags":1,"Description":"The name of the iot hub's consumer group that holds the partitions from which events will be read."},"keyName":{"Type":4,"Flags":1,"Description":"The name of the Shared Access Policy key that grants the Time Series Insights service access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub."},"eventSourceResourceId":{"Type":4,"Flags":1,"Description":"The resource id of the event source in Azure Resource Manager."},"timestampPropertyName":{"Type":4,"Flags":0,"Description":"The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."},"provisioningState":{"Type":63,"Flags":2,"Description":"Provisioning state of the resource."},"creationTime":{"Type":4,"Flags":2,"Description":"The time the resource was created."}}}},{"6":{"Value":"Accepted"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[57,58,59,60,61,62]}},{"6":{"Value":"Microsoft.IoTHub"}},{"2":{"Name":"IoTHubEventSourceResource","Properties":{"properties":{"Type":66,"Flags":2,"Description":"Properties of the IoTHub event source resource."},"kind":{"Type":74,"Flags":1,"Description":"The kind of the event source."}}}},{"2":{"Name":"IoTHubEventSourceResourceProperties","Properties":{"iotHubName":{"Type":4,"Flags":1,"Description":"The name of the iot hub."},"consumerGroupName":{"Type":4,"Flags":1,"Description":"The name of the iot hub's consumer group that holds the partitions from which events will be read."},"keyName":{"Type":4,"Flags":1,"Description":"The name of the Shared Access Policy key that grants the Time Series Insights service access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub."},"eventSourceResourceId":{"Type":4,"Flags":1,"Description":"The resource id of the event source in Azure Resource Manager."},"timestampPropertyName":{"Type":4,"Flags":0,"Description":"The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."},"provisioningState":{"Type":73,"Flags":2,"Description":"Provisioning state of the resource."},"creationTime":{"Type":4,"Flags":2,"Description":"The time the resource was created."}}}},{"6":{"Value":"Accepted"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[67,68,69,70,71,72]}},{"6":{"Value":"Microsoft.IotHub"}},{"4":{"Name":"Microsoft.TimeSeriesInsights/environments/eventSources@2017-11-15","ScopeType":8,"Body":43,"Flags":0}},{"6":{"Value":"Microsoft.TimeSeriesInsights/environments/referenceDataSets"}},{"6":{"Value":"2017-11-15"}},{"2":{"Name":"Microsoft.TimeSeriesInsights/environments/referenceDataSets","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":76,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":77,"Flags":10,"Description":"The resource api version"},"properties":{"Type":79,"Flags":1,"Description":"Properties used to create a reference data set."},"location":{"Type":4,"Flags":1,"Description":"The location of the resource."},"tags":{"Type":97,"Flags":0,"Description":"Key-value pairs of additional properties for the resource."}}}},{"2":{"Name":"ReferenceDataSetCreationPropertiesOrReferenceDataSetResourceProperties","Properties":{"keyProperties":{"Type":86,"Flags":1,"Description":"The list of key properties for the reference data set."},"dataStringComparisonBehavior":{"Type":89,"Flags":0,"Description":"The reference data set key comparison behavior can be set using this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used."},"provisioningState":{"Type":96,"Flags":2,"Description":"Provisioning state of the resource."},"creationTime":{"Type":4,"Flags":2,"Description":"The time the resource was created."}}}},{"2":{"Name":"ReferenceDataSetKeyProperty","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the key property."},"type":{"Type":85,"Flags":0,"Description":"The type of the key property."}}}},{"6":{"Value":"String"}},{"6":{"Value":"Double"}},{"6":{"Value":"Bool"}},{"6":{"Value":"DateTime"}},{"5":{"Elements":[81,82,83,84]}},{"3":{"ItemType":80}},{"6":{"Value":"Ordinal"}},{"6":{"Value":"OrdinalIgnoreCase"}},{"5":{"Elements":[87,88]}},{"6":{"Value":"Accepted"}},{"6":{"Value":"Creating"}},{"6":{"Value":"Updating"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[90,91,92,93,94,95]}},{"2":{"Name":"CreateOrUpdateTrackedResourcePropertiesTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.TimeSeriesInsights/environments/referenceDataSets@2017-11-15","ScopeType":8,"Body":78,"Flags":0}},{"6":{"Value":"Microsoft.TimeSeriesInsights/environments/accessPolicies"}},{"6":{"Value":"2017-11-15"}},{"2":{"Name":"Microsoft.TimeSeriesInsights/environments/accessPolicies","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":99,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":100,"Flags":10,"Description":"The resource api version"},"properties":{"Type":102,"Flags":1}}}},{"2":{"Name":"AccessPolicyResourceProperties","Properties":{"principalObjectId":{"Type":4,"Flags":0,"Description":"The objectId of the principal in Azure Active Directory."},"description":{"Type":4,"Flags":0,"Description":"An description of the access policy."},"roles":{"Type":106,"Flags":0,"Description":"The list of roles the principal is assigned on the environment."}}}},{"6":{"Value":"Reader"}},{"6":{"Value":"Contributor"}},{"5":{"Elements":[103,104]}},{"3":{"ItemType":105}},{"4":{"Name":"Microsoft.TimeSeriesInsights/environments/accessPolicies@2017-11-15","ScopeType":8,"Body":101,"Flags":0}}]
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90,
+    "pattern": "^[-\\w\\._\\(\\)]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.TimeSeriesInsights/environments"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2017-11-15"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.TimeSeriesInsights/environments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and the billing rate."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Properties used to create an environment."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Key-value pairs of additional properties for the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "The name of this SKU."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 1,
+        "description": "The capacity of the sku. This value can be changed to support scale out of environments after they have been created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 10
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentCreationPropertiesOrEnvironmentResourceProperties",
+    "properties": {
+      "dataRetentionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ISO8601 timespan specifying the minimum number of days the environment's events will be available for query."
+      },
+      "storageLimitExceededBehavior": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If \"PauseIngress\" is specified, new events will not be read from the event source. If \"PurgeOldData\" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData."
+      },
+      "partitionKeyProperties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The list of partition keys according to which the data in the environment will be ordered."
+      },
+      "dataAccessId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment."
+      },
+      "dataAccessFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "An object that represents the status of the environment, and its internal state in the Time Series Insights service."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the resource was created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PurgeOldData"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PauseIngress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PartitionKeyProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the property."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The type of the property."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "String"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentStatus",
+    "properties": {
+      "ingress": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "An object that represents the status of ingress on an environment."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IngressEnvironmentStatus",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "This string represents the state of ingress operations on an environment. It can be \"Disabled\", \"Ready\", \"Running\", \"Paused\" or \"Unknown\""
+      },
+      "stateDetails": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "An object that contains the details about an environment's state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentStateDetails",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Contains the code that represents the reason of an environment being in a particular state. Can be used to programmatically handle specific cases."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message that describes the state in detail."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateOrUpdateTrackedResourcePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.TimeSeriesInsights/environments@2017-11-15",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.TimeSeriesInsights/environments/eventSources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2017-11-15"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "Microsoft.TimeSeriesInsights/environments/eventSources",
+    "discriminator": "kind",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Key-value pairs of additional properties for the resource."
+      }
+    },
+    "elements": {
+      "Microsoft.EventHub": {
+        "$ref": "#/41"
+      },
+      "Microsoft.IoTHub": {
+        "$ref": "#/51"
+      },
+      "Microsoft.IotHub": {
+        "$ref": "#/61"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateOrUpdateTrackedResourcePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubEventSourceCreateOrUpdateParametersOrEventHubEventSourceResource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "Properties of the EventHub event source that are required on create or update requests."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "The kind of the event source."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventHubEventSourceCreationPropertiesOrEventHubEventSourceResourceProperties",
+    "properties": {
+      "sharedAccessKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 5,
+        "description": "The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses."
+      },
+      "serviceBusNamespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the service bus that contains the event hub."
+      },
+      "eventHubName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the event hub."
+      },
+      "consumerGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the event hub's consumer group that holds the partitions from which events will be read."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SAS key that grants the Time Series Insights service access to the event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub."
+      },
+      "eventSourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the event source in Azure Resource Manager."
+      },
+      "timestampPropertyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the resource was created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubEventSourceCreateOrUpdateParameters",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 5,
+        "description": "Properties of the IoTHub event source that are required on create or update requests."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "The kind of the event source."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubEventSourceCreationProperties",
+    "properties": {
+      "sharedAccessKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The value of the Shared Access Policy key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses."
+      },
+      "iotHubName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the iot hub."
+      },
+      "consumerGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the iot hub's consumer group that holds the partitions from which events will be read."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the Shared Access Policy key that grants the Time Series Insights service access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub."
+      },
+      "eventSourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the event source in Azure Resource Manager."
+      },
+      "timestampPropertyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the resource was created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.IoTHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubEventSourceResource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 2,
+        "description": "Properties of the IoTHub event source resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 1,
+        "description": "The kind of the event source."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IoTHubEventSourceResourceProperties",
+    "properties": {
+      "iotHubName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the iot hub."
+      },
+      "consumerGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the iot hub's consumer group that holds the partitions from which events will be read."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the Shared Access Policy key that grants the Time Series Insights service access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub."
+      },
+      "eventSourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the event source in Azure Resource Manager."
+      },
+      "timestampPropertyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the resource was created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.IotHub"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.TimeSeriesInsights/environments/eventSources@2017-11-15",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/39"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[A-Za-z0-9]"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.TimeSeriesInsights/environments/referenceDataSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2017-11-15"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.TimeSeriesInsights/environments/referenceDataSets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "Properties used to create a reference data set."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Key-value pairs of additional properties for the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReferenceDataSetCreationPropertiesOrReferenceDataSetResourceProperties",
+    "properties": {
+      "keyProperties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 1,
+        "description": "The list of key properties for the reference data set."
+      },
+      "dataStringComparisonBehavior": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The reference data set key comparison behavior can be set using this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the resource was created."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReferenceDataSetKeyProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the key property."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The type of the key property."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "String"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Double"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bool"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DateTime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/77"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ordinal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OrdinalIgnoreCase"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateOrUpdateTrackedResourcePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.TimeSeriesInsights/environments/referenceDataSets@2017-11-15",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/75"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.TimeSeriesInsights/environments/accessPolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2017-11-15"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.TimeSeriesInsights/environments/accessPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessPolicyResourceProperties",
+    "properties": {
+      "principalObjectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The objectId of the principal in Azure Active Directory."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An description of the access policy."
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "The list of roles the principal is assigned on the environment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reader"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contributor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.TimeSeriesInsights/environments/accessPolicies@2017-11-15",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/98"
+    },
+    "flags": 0
+  }
+]

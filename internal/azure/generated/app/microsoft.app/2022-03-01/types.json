@@ -1,1 +1,4478 @@
-[{"1":{"Kind":1}},{"1":{"Kind":2}},{"1":{"Kind":3}},{"1":{"Kind":4}},{"1":{"Kind":5}},{"1":{"Kind":6}},{"1":{"Kind":7}},{"1":{"Kind":8}},{"6":{"Value":"Microsoft.App/containerApps/authConfigs"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/containerApps/authConfigs","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":8,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":9,"Flags":10,"Description":"The resource api version"},"properties":{"Type":11,"Flags":0,"Description":"AuthConfig resource specific properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"AuthConfigProperties","Properties":{"platform":{"Type":12,"Flags":0,"Description":"The configuration settings of the platform of ContainerApp Service Authentication/Authorization."},"globalValidation":{"Type":13,"Flags":0,"Description":"The configuration settings that determines the validation flow of users using  Service Authentication/Authorization."},"identityProviders":{"Type":20,"Flags":0,"Description":"The configuration settings of each of the identity providers used to configure ContainerApp Service Authentication/Authorization."},"login":{"Type":58,"Flags":0,"Description":"The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization."},"httpSettings":{"Type":66,"Flags":0,"Description":"The configuration settings of the HTTP requests for authentication and authorization requests made against ContainerApp Service Authentication/Authorization."}}}},{"2":{"Name":"AuthPlatform","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>."},"runtimeVersion":{"Type":4,"Flags":0,"Description":"The RuntimeVersion of the Authentication / Authorization feature in use for the current app.\nThe setting in this value can control the behavior of certain features in the Authentication / Authorization module."}}}},{"2":{"Name":"GlobalValidation","Properties":{"unauthenticatedClientAction":{"Type":18,"Flags":0,"Description":"The action to take when an unauthenticated client attempts to access the app."},"redirectToProvider":{"Type":4,"Flags":0,"Description":"The default authentication provider to use when multiple providers are configured.\nThis setting is only needed if multiple providers are configured and the unauthenticated client\naction is set to \"RedirectToLoginPage\"."},"excludedPaths":{"Type":19,"Flags":0,"Description":"The paths for which unauthenticated flow would not be redirected to the login page."}}}},{"6":{"Value":"RedirectToLoginPage"}},{"6":{"Value":"AllowAnonymous"}},{"6":{"Value":"Return401"}},{"6":{"Value":"Return403"}},{"5":{"Elements":[14,15,16,17]}},{"3":{"ItemType":4}},{"2":{"Name":"IdentityProviders","Properties":{"azureActiveDirectory":{"Type":21,"Flags":0,"Description":"The configuration settings of the Azure Active directory provider."},"facebook":{"Type":35,"Flags":0,"Description":"The configuration settings of the Facebook provider."},"gitHub":{"Type":39,"Flags":0,"Description":"The configuration settings of the GitHub provider."},"google":{"Type":41,"Flags":0,"Description":"The configuration settings of the Google provider."},"twitter":{"Type":44,"Flags":0,"Description":"The configuration settings of the Twitter provider."},"apple":{"Type":46,"Flags":0,"Description":"The configuration settings of the Apple provider."},"azureStaticWebApps":{"Type":48,"Flags":0,"Description":"The configuration settings of the Azure Static Web Apps provider."},"customOpenIdConnectProviders":{"Type":57,"Flags":0,"Description":"The map of the name of the alias of each custom Open ID Connect provider to the\nconfiguration settings of the custom Open ID Connect provider."}}}},{"2":{"Name":"AzureActiveDirectory","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":22,"Flags":0,"Description":"The configuration settings of the Azure Active Directory app registration."},"login":{"Type":23,"Flags":0,"Description":"The configuration settings of the Azure Active Directory login flow."},"validation":{"Type":25,"Flags":0,"Description":"The configuration settings of the Azure Active Directory token validation flow."},"isAutoProvisioned":{"Type":2,"Flags":0,"Description":"Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling.\nThis is an internal flag primarily intended to support the Azure Management Portal. Users should not\nread or write to this property."}}}},{"2":{"Name":"AzureActiveDirectoryRegistration","Properties":{"openIdIssuer":{"Type":4,"Flags":0,"Description":"The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.\nWhen using Azure Active Directory, this value is the URI of the directory tenant, e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/.\nThis URI is a case-sensitive identifier for the token issuer.\nMore information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html"},"clientId":{"Type":4,"Flags":0,"Description":"The Client ID of this relying party application, known as the client_id.\nThis setting is required for enabling OpenID Connection authentication with Azure Active Directory or \nother 3rd party OpenID Connect providers.\nMore information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html"},"clientSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting name that contains the client secret of the relying party application."},"clientSecretCertificateThumbprint":{"Type":4,"Flags":0,"Description":"An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret. It is also optional."},"clientSecretCertificateSubjectAlternativeName":{"Type":4,"Flags":0,"Description":"An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret Certificate Thumbprint. It is also optional."},"clientSecretCertificateIssuer":{"Type":4,"Flags":0,"Description":"An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret Certificate Thumbprint. It is also optional."}}}},{"2":{"Name":"AzureActiveDirectoryLogin","Properties":{"loginParameters":{"Type":24,"Flags":0,"Description":"Login parameters to send to the OpenID Connect authorization endpoint when\na user logs in. Each parameter must be in the form \"key=value\"."},"disableWWWAuthenticate":{"Type":2,"Flags":0,"Description":"<code>true</code> if the www-authenticate provider should be omitted from the request; otherwise, <code>false</code>."}}}},{"3":{"ItemType":4}},{"2":{"Name":"AzureActiveDirectoryValidation","Properties":{"jwtClaimChecks":{"Type":26,"Flags":0,"Description":"The configuration settings of the checks that should be made while validating the JWT Claims."},"allowedAudiences":{"Type":29,"Flags":0,"Description":"The list of audiences that can make successful authentication/authorization requests."},"defaultAuthorizationPolicy":{"Type":30,"Flags":0,"Description":"The configuration settings of the default authorization policy."}}}},{"2":{"Name":"JwtClaimChecks","Properties":{"allowedGroups":{"Type":27,"Flags":0,"Description":"The list of the allowed groups."},"allowedClientApplications":{"Type":28,"Flags":0,"Description":"The list of the allowed client applications."}}}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"2":{"Name":"DefaultAuthorizationPolicy","Properties":{"allowedPrincipals":{"Type":31,"Flags":0,"Description":"The configuration settings of the Azure Active Directory allowed principals."},"allowedApplications":{"Type":34,"Flags":0,"Description":"The configuration settings of the Azure Active Directory allowed applications."}}}},{"2":{"Name":"AllowedPrincipals","Properties":{"groups":{"Type":32,"Flags":0,"Description":"The list of the allowed groups."},"identities":{"Type":33,"Flags":0,"Description":"The list of the allowed identities."}}}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"2":{"Name":"Facebook","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Facebook provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":36,"Flags":0,"Description":"The configuration settings of the app registration for the Facebook provider."},"graphApiVersion":{"Type":4,"Flags":0,"Description":"The version of the Facebook api to be used while logging in."},"login":{"Type":37,"Flags":0,"Description":"The configuration settings of the login flow."}}}},{"2":{"Name":"AppRegistration","Properties":{"appId":{"Type":4,"Flags":0,"Description":"The App ID of the app used for login."},"appSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting name that contains the app secret."}}}},{"2":{"Name":"LoginScopes","Properties":{"scopes":{"Type":38,"Flags":0,"Description":"A list of the scopes that should be requested while authenticating."}}}},{"3":{"ItemType":4}},{"2":{"Name":"GitHub","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the GitHub provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":40,"Flags":0,"Description":"The configuration settings of the app registration for the GitHub provider."},"login":{"Type":37,"Flags":0,"Description":"The configuration settings of the login flow."}}}},{"2":{"Name":"ClientRegistration","Properties":{"clientId":{"Type":4,"Flags":0,"Description":"The Client ID of the app used for login."},"clientSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting name that contains the client secret."}}}},{"2":{"Name":"Google","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Google provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":40,"Flags":0,"Description":"The configuration settings of the app registration for the Google provider."},"login":{"Type":37,"Flags":0,"Description":"The configuration settings of the login flow."},"validation":{"Type":42,"Flags":0,"Description":"The configuration settings of the Azure Active Directory token validation flow."}}}},{"2":{"Name":"AllowedAudiencesValidation","Properties":{"allowedAudiences":{"Type":43,"Flags":0,"Description":"The configuration settings of the allowed list of audiences from which to validate the JWT token."}}}},{"3":{"ItemType":4}},{"2":{"Name":"Twitter","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Twitter provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":45,"Flags":0,"Description":"The configuration settings of the app registration for the Twitter provider."}}}},{"2":{"Name":"TwitterRegistration","Properties":{"consumerKey":{"Type":4,"Flags":0,"Description":"The OAuth 1.0a consumer key of the Twitter application used for sign-in.\nThis setting is required for enabling Twitter Sign-In.\nTwitter Sign-In documentation: https://dev.twitter.com/web/sign-in"},"consumerSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting name that contains the OAuth 1.0a consumer secret of the Twitter\napplication used for sign-in."}}}},{"2":{"Name":"Apple","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Apple provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":47,"Flags":0,"Description":"The configuration settings of the Apple registration."},"login":{"Type":37,"Flags":0,"Description":"The configuration settings of the login flow."}}}},{"2":{"Name":"AppleRegistration","Properties":{"clientId":{"Type":4,"Flags":0,"Description":"The Client ID of the app used for login."},"clientSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting name that contains the client secret."}}}},{"2":{"Name":"AzureStaticWebApps","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, <code>true</code>."},"registration":{"Type":49,"Flags":0,"Description":"The configuration settings of the Azure Static Web Apps registration."}}}},{"2":{"Name":"AzureStaticWebAppsRegistration","Properties":{"clientId":{"Type":4,"Flags":0,"Description":"The Client ID of the app used for login."}}}},{"2":{"Name":"CustomOpenIdConnectProvider","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"<code>false</code> if the custom Open ID provider provider should not be enabled; otherwise, <code>true</code>."},"registration":{"Type":51,"Flags":0,"Description":"The configuration settings of the app registration for the custom Open ID Connect provider."},"login":{"Type":55,"Flags":0,"Description":"The configuration settings of the login flow of the custom Open ID Connect provider."}}}},{"2":{"Name":"OpenIdConnectRegistration","Properties":{"clientId":{"Type":4,"Flags":0,"Description":"The client id of the custom Open ID Connect provider."},"clientCredential":{"Type":52,"Flags":0,"Description":"The authentication credentials of the custom Open ID Connect provider."},"openIdConnectConfiguration":{"Type":54,"Flags":0,"Description":"The configuration settings of the endpoints used for the custom Open ID Connect provider."}}}},{"2":{"Name":"OpenIdConnectClientCredential","Properties":{"method":{"Type":53,"Flags":0,"Description":"The method that should be used to authenticate the user."},"clientSecretSettingName":{"Type":4,"Flags":0,"Description":"The app setting that contains the client secret for the custom Open ID Connect provider."}}}},{"6":{"Value":"ClientSecretPost"}},{"2":{"Name":"OpenIdConnectConfig","Properties":{"authorizationEndpoint":{"Type":4,"Flags":0,"Description":"The endpoint to be used to make an authorization request."},"tokenEndpoint":{"Type":4,"Flags":0,"Description":"The endpoint to be used to request a token."},"issuer":{"Type":4,"Flags":0,"Description":"The endpoint that issues the token."},"certificationUri":{"Type":4,"Flags":0,"Description":"The endpoint that provides the keys necessary to validate the token."},"wellKnownOpenIdConfiguration":{"Type":4,"Flags":0,"Description":"The endpoint that contains all the configuration endpoints for the provider."}}}},{"2":{"Name":"OpenIdConnectLogin","Properties":{"nameClaimType":{"Type":4,"Flags":0,"Description":"The name of the claim that contains the users name."},"scopes":{"Type":56,"Flags":0,"Description":"A list of the scopes that should be requested while authenticating."}}}},{"3":{"ItemType":4}},{"2":{"Name":"IdentityProvidersCustomOpenIdConnectProviders","Properties":{},"AdditionalProperties":50}},{"2":{"Name":"Login","Properties":{"routes":{"Type":59,"Flags":0,"Description":"The routes that specify the endpoints used for login and logout requests."},"preserveUrlFragmentsForLogins":{"Type":2,"Flags":0,"Description":"<code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>."},"allowedExternalRedirectUrls":{"Type":60,"Flags":0,"Description":"External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.\nThis is an advanced setting typically only needed by Windows Store application backends.\nNote that URLs within the current domain are always implicitly allowed."},"cookieExpiration":{"Type":61,"Flags":0,"Description":"The configuration settings of the session cookie's expiration."},"nonce":{"Type":65,"Flags":0,"Description":"The configuration settings of the nonce used in the login flow."}}}},{"2":{"Name":"LoginRoutes","Properties":{"logoutEndpoint":{"Type":4,"Flags":0,"Description":"The endpoint at which a logout request should be made."}}}},{"3":{"ItemType":4}},{"2":{"Name":"CookieExpiration","Properties":{"convention":{"Type":64,"Flags":0,"Description":"The convention used when determining the session cookie's expiration."},"timeToExpiration":{"Type":4,"Flags":0,"Description":"The time after the request is made when the session cookie should expire."}}}},{"6":{"Value":"FixedTime"}},{"6":{"Value":"IdentityProviderDerived"}},{"5":{"Elements":[62,63]}},{"2":{"Name":"Nonce","Properties":{"validateNonce":{"Type":2,"Flags":0,"Description":"<code>false</code> if the nonce should not be validated while completing the login flow; otherwise, <code>true</code>."},"nonceExpirationInterval":{"Type":4,"Flags":0,"Description":"The time after the request is made when the nonce should expire."}}}},{"2":{"Name":"HttpSettings","Properties":{"requireHttps":{"Type":2,"Flags":0,"Description":"<code>false</code> if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, <code>true</code>."},"routes":{"Type":67,"Flags":0,"Description":"The configuration settings of the paths HTTP requests."},"forwardProxy":{"Type":68,"Flags":0,"Description":"The configuration settings of a forward proxy used to make the requests."}}}},{"2":{"Name":"HttpSettingsRoutes","Properties":{"apiPrefix":{"Type":4,"Flags":0,"Description":"The prefix that should precede all the authentication/authorization paths."}}}},{"2":{"Name":"ForwardProxy","Properties":{"convention":{"Type":72,"Flags":0,"Description":"The convention used to determine the url of the request made."},"customHostHeaderName":{"Type":4,"Flags":0,"Description":"The name of the header containing the host of the request."},"customProtoHeaderName":{"Type":4,"Flags":0,"Description":"The name of the header containing the scheme of the request."}}}},{"6":{"Value":"NoProxy"}},{"6":{"Value":"Standard"}},{"6":{"Value":"Custom"}},{"5":{"Elements":[69,70,71]}},{"2":{"Name":"SystemData","Properties":{"createdBy":{"Type":4,"Flags":0,"Description":"The identity that created the resource."},"createdByType":{"Type":78,"Flags":0,"Description":"The type of identity that created the resource."},"createdAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource creation (UTC)."},"lastModifiedBy":{"Type":4,"Flags":0,"Description":"The identity that last modified the resource."},"lastModifiedByType":{"Type":83,"Flags":0,"Description":"The type of identity that last modified the resource."},"lastModifiedAt":{"Type":4,"Flags":0,"Description":"The timestamp of resource last modification (UTC)"}}}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[74,75,76,77,4]}},{"6":{"Value":"User"}},{"6":{"Value":"Application"}},{"6":{"Value":"ManagedIdentity"}},{"6":{"Value":"Key"}},{"5":{"Elements":[79,80,81,82,4]}},{"4":{"Name":"Microsoft.App/containerApps/authConfigs@2022-03-01","ScopeType":8,"Body":10,"Flags":0}},{"6":{"Value":"Microsoft.App/containerApps"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/containerApps","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":85,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":86,"Flags":10,"Description":"The resource api version"},"identity":{"Type":88,"Flags":0,"Description":"managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials in code."},"properties":{"Type":96,"Flags":0,"Description":"ContainerApp resource specific properties"},"tags":{"Type":168,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"ManagedServiceIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."},"tenantId":{"Type":4,"Flags":2,"Description":"The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."},"type":{"Type":93,"Flags":1,"Description":"Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."},"userAssignedIdentities":{"Type":95,"Flags":0,"Description":"The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."}}}},{"6":{"Value":"None"}},{"6":{"Value":"SystemAssigned"}},{"6":{"Value":"UserAssigned"}},{"6":{"Value":"SystemAssigned,UserAssigned"}},{"5":{"Elements":[89,90,91,92,4]}},{"2":{"Name":"UserAssignedIdentity","Properties":{"principalId":{"Type":4,"Flags":2,"Description":"The principal ID of the assigned identity."},"clientId":{"Type":4,"Flags":2,"Description":"The client ID of the assigned identity."}}}},{"2":{"Name":"UserAssignedIdentities","Properties":{},"AdditionalProperties":94}},{"2":{"Name":"ContainerAppProperties","Properties":{"provisioningState":{"Type":102,"Flags":2,"Description":"Provisioning state of the Container App."},"managedEnvironmentId":{"Type":4,"Flags":0,"Description":"Resource ID of the Container App's environment."},"latestRevisionName":{"Type":4,"Flags":2,"Description":"Name of the latest revision of the Container App."},"latestRevisionFqdn":{"Type":4,"Flags":2,"Description":"Fully Qualified Domain Name of the latest revision of the Container App."},"customDomainVerificationId":{"Type":4,"Flags":2,"Description":"Id used to verify domain name ownership"},"configuration":{"Type":103,"Flags":0,"Description":"Non versioned Container App configuration properties."},"template":{"Type":127,"Flags":0,"Description":"Container App versioned application definition."},"outboundIpAddresses":{"Type":167,"Flags":2,"Description":"Outbound IP Addresses for container app."}}}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"Deleting"}},{"5":{"Elements":[97,98,99,100,101,4]}},{"2":{"Name":"Configuration","Properties":{"secrets":{"Type":105,"Flags":0,"Description":"Collection of secrets used by a Container app"},"activeRevisionsMode":{"Type":108,"Flags":0,"Description":"ActiveRevisionsMode controls how active revisions are handled for the Container app:\n<list><item>Multiple: multiple revisions can be active.</item><item>Single: Only one revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is the default.</item></list>"},"ingress":{"Type":109,"Flags":0,"Description":"Ingress configurations."},"registries":{"Type":122,"Flags":0,"Description":"Collection of private container registry credentials for containers used by the Container app"},"dapr":{"Type":123,"Flags":0,"Description":"Dapr configuration for the Container App."}}}},{"2":{"Name":"Secret","Properties":{"name":{"Type":4,"Flags":0,"Description":"Secret Name."},"value":{"Type":4,"Flags":4,"Description":"Secret Value."}}}},{"3":{"ItemType":104}},{"6":{"Value":"Multiple"}},{"6":{"Value":"Single"}},{"5":{"Elements":[106,107,4]}},{"2":{"Name":"Ingress","Properties":{"fqdn":{"Type":4,"Flags":2,"Description":"Hostname."},"external":{"Type":2,"Flags":0,"Description":"Bool indicating if app exposes an external http endpoint"},"targetPort":{"Type":3,"Flags":0,"Description":"Target Port in containers for traffic from ingress"},"transport":{"Type":113,"Flags":0,"Description":"Ingress transport protocol"},"traffic":{"Type":115,"Flags":0,"Description":"Traffic weights for app's revisions"},"customDomains":{"Type":120,"Flags":0,"Description":"custom domain bindings for Container Apps' hostnames."},"allowInsecure":{"Type":2,"Flags":0,"Description":"Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections"}}}},{"6":{"Value":"auto"}},{"6":{"Value":"http"}},{"6":{"Value":"http2"}},{"5":{"Elements":[110,111,112,4]}},{"2":{"Name":"TrafficWeight","Properties":{"revisionName":{"Type":4,"Flags":0,"Description":"Name of a revision"},"weight":{"Type":3,"Flags":0,"Description":"Traffic weight assigned to a revision"},"latestRevision":{"Type":2,"Flags":0,"Description":"Indicates that the traffic weight belongs to a latest stable revision"},"label":{"Type":4,"Flags":0,"Description":"Associates a traffic label with a revision"}}}},{"3":{"ItemType":114}},{"2":{"Name":"CustomDomain","Properties":{"name":{"Type":4,"Flags":1,"Description":"Hostname."},"bindingType":{"Type":119,"Flags":0,"Description":"Custom Domain binding type."},"certificateId":{"Type":4,"Flags":0,"Description":"Resource Id of the Certificate to be bound to this hostname."}}}},{"6":{"Value":"Disabled"}},{"6":{"Value":"SniEnabled"}},{"5":{"Elements":[117,118,4]}},{"3":{"ItemType":116}},{"2":{"Name":"RegistryCredentials","Properties":{"server":{"Type":4,"Flags":0,"Description":"Container Registry Server"},"username":{"Type":4,"Flags":0,"Description":"Container Registry Username"},"passwordSecretRef":{"Type":4,"Flags":0,"Description":"The name of the Secret that contains the registry login password"},"identity":{"Type":4,"Flags":0,"Description":"A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use 'system'"}}}},{"3":{"ItemType":121}},{"2":{"Name":"Dapr","Properties":{"enabled":{"Type":2,"Flags":0,"Description":"Boolean indicating if the Dapr side car is enabled"},"appId":{"Type":4,"Flags":0,"Description":"Dapr application identifier"},"appProtocol":{"Type":126,"Flags":0,"Description":"Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http"},"appPort":{"Type":3,"Flags":0,"Description":"Tells Dapr which port your application is listening on"}}}},{"6":{"Value":"http"}},{"6":{"Value":"grpc"}},{"5":{"Elements":[124,125,4]}},{"2":{"Name":"Template","Properties":{"revisionSuffix":{"Type":4,"Flags":0,"Description":"User friendly suffix that is appended to the revision name"},"containers":{"Type":149,"Flags":0,"Description":"List of container definitions for the Container App."},"scale":{"Type":150,"Flags":0,"Description":"Scaling properties for the Container App."},"volumes":{"Type":166,"Flags":0,"Description":"List of volume definitions for the Container App."}}}},{"2":{"Name":"Container","Properties":{"image":{"Type":4,"Flags":0,"Description":"Container image tag."},"name":{"Type":4,"Flags":0,"Description":"Custom container name."},"command":{"Type":129,"Flags":0,"Description":"Container start command."},"args":{"Type":130,"Flags":0,"Description":"Container start command arguments."},"env":{"Type":132,"Flags":0,"Description":"Container environment variables."},"resources":{"Type":133,"Flags":0,"Description":"Container resource requirements."},"probes":{"Type":146,"Flags":0,"Description":"List of probes for the container."},"volumeMounts":{"Type":148,"Flags":0,"Description":"Container volume mounts."}}}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"2":{"Name":"EnvironmentVar","Properties":{"name":{"Type":4,"Flags":0,"Description":"Environment variable name."},"value":{"Type":4,"Flags":0,"Description":"Non-secret environment variable value."},"secretRef":{"Type":4,"Flags":0,"Description":"Name of the Container App secret from which to pull the environment variable value."}}}},{"3":{"ItemType":131}},{"2":{"Name":"ContainerResources","Properties":{"cpu":{"Type":3,"Flags":0,"Description":"Required CPU in cores, e.g. 0.5"},"memory":{"Type":4,"Flags":0,"Description":"Required memory, e.g. \"250Mb\""},"ephemeralStorage":{"Type":4,"Flags":2,"Description":"Ephemeral Storage, e.g. \"1Gi\""}}}},{"2":{"Name":"ContainerAppProbe","Properties":{"failureThreshold":{"Type":3,"Flags":0,"Description":"Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. Maximum value is 10."},"httpGet":{"Type":135,"Flags":0,"Description":"HTTPGet specifies the http request to perform."},"initialDelaySeconds":{"Type":3,"Flags":0,"Description":"Number of seconds after the container has started before liveness probes are initiated. Minimum value is 1. Maximum value is 60."},"periodSeconds":{"Type":3,"Flags":0,"Description":"How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value is 240."},"successThreshold":{"Type":3,"Flags":0,"Description":"Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. Maximum value is 10."},"tcpSocket":{"Type":141,"Flags":0,"Description":"TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported."},"terminationGracePeriodSeconds":{"Type":3,"Flags":0,"Description":"Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum value is 3600 seconds (1 hour)"},"timeoutSeconds":{"Type":3,"Flags":0,"Description":"Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 240."},"type":{"Type":145,"Flags":0,"Description":"The type of probe."}}}},{"2":{"Name":"ContainerAppProbeHttpGet","Properties":{"host":{"Type":4,"Flags":0,"Description":"Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."},"httpHeaders":{"Type":137,"Flags":0,"Description":"Custom headers to set in the request. HTTP allows repeated headers."},"path":{"Type":4,"Flags":0,"Description":"Path to access on the HTTP server."},"port":{"Type":3,"Flags":1,"Description":"Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."},"scheme":{"Type":140,"Flags":0,"Description":"Scheme to use for connecting to the host. Defaults to HTTP."}}}},{"2":{"Name":"ContainerAppProbeHttpGetHttpHeadersItem","Properties":{"name":{"Type":4,"Flags":1,"Description":"The header field name"},"value":{"Type":4,"Flags":1,"Description":"The header field value"}}}},{"3":{"ItemType":136}},{"6":{"Value":"HTTP"}},{"6":{"Value":"HTTPS"}},{"5":{"Elements":[138,139,4]}},{"2":{"Name":"ContainerAppProbeTcpSocket","Properties":{"host":{"Type":4,"Flags":0,"Description":"Optional: Host name to connect to, defaults to the pod IP."},"port":{"Type":3,"Flags":1,"Description":"Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."}}}},{"6":{"Value":"Liveness"}},{"6":{"Value":"Readiness"}},{"6":{"Value":"Startup"}},{"5":{"Elements":[142,143,144,4]}},{"3":{"ItemType":134}},{"2":{"Name":"VolumeMount","Properties":{"volumeName":{"Type":4,"Flags":0,"Description":"This must match the Name of a Volume."},"mountPath":{"Type":4,"Flags":0,"Description":"Path within the container at which the volume should be mounted.Must not contain ':'."}}}},{"3":{"ItemType":147}},{"3":{"ItemType":128}},{"2":{"Name":"Scale","Properties":{"minReplicas":{"Type":3,"Flags":0,"Description":"Optional. Minimum number of container replicas."},"maxReplicas":{"Type":3,"Flags":0,"Description":"Optional. Maximum number of container replicas. Defaults to 10 if not set."},"rules":{"Type":161,"Flags":0,"Description":"Scaling rules."}}}},{"2":{"Name":"ScaleRule","Properties":{"name":{"Type":4,"Flags":0,"Description":"Scale Rule Name"},"azureQueue":{"Type":152,"Flags":0,"Description":"Azure Queue based scaling."},"custom":{"Type":155,"Flags":0,"Description":"Custom scale rule."},"http":{"Type":158,"Flags":0,"Description":"HTTP requests based scaling."}}}},{"2":{"Name":"QueueScaleRule","Properties":{"queueName":{"Type":4,"Flags":0,"Description":"Queue name."},"queueLength":{"Type":3,"Flags":0,"Description":"Queue length."},"auth":{"Type":154,"Flags":0,"Description":"Authentication secrets for the queue scale rule."}}}},{"2":{"Name":"ScaleRuleAuth","Properties":{"secretRef":{"Type":4,"Flags":0,"Description":"Name of the Container App secret from which to pull the auth params."},"triggerParameter":{"Type":4,"Flags":0,"Description":"Trigger Parameter that uses the secret"}}}},{"3":{"ItemType":153}},{"2":{"Name":"CustomScaleRule","Properties":{"type":{"Type":4,"Flags":0,"Description":"Type of the custom scale rule\neg: azure-servicebus, redis etc."},"metadata":{"Type":156,"Flags":0,"Description":"Metadata properties to describe custom scale rule."},"auth":{"Type":157,"Flags":0,"Description":"Authentication secrets for the custom scale rule."}}}},{"2":{"Name":"CustomScaleRuleMetadata","Properties":{},"AdditionalProperties":4}},{"3":{"ItemType":153}},{"2":{"Name":"HttpScaleRule","Properties":{"metadata":{"Type":159,"Flags":0,"Description":"Metadata properties to describe http scale rule."},"auth":{"Type":160,"Flags":0,"Description":"Authentication secrets for the custom scale rule."}}}},{"2":{"Name":"HttpScaleRuleMetadata","Properties":{},"AdditionalProperties":4}},{"3":{"ItemType":153}},{"3":{"ItemType":151}},{"2":{"Name":"Volume","Properties":{"name":{"Type":4,"Flags":0,"Description":"Volume name."},"storageType":{"Type":165,"Flags":0,"Description":"Storage type for the volume. If not provided, use EmptyDir."},"storageName":{"Type":4,"Flags":0,"Description":"Name of storage resource. No need to provide for EmptyDir."}}}},{"6":{"Value":"AzureFile"}},{"6":{"Value":"EmptyDir"}},{"5":{"Elements":[163,164,4]}},{"3":{"ItemType":162}},{"3":{"ItemType":4}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.App/containerApps@2022-03-01","ScopeType":8,"Body":87,"Flags":0}},{"6":{"Value":"Microsoft.App/managedEnvironments/daprComponents"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/managedEnvironments/daprComponents","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":170,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":171,"Flags":10,"Description":"The resource api version"},"properties":{"Type":173,"Flags":0,"Description":"Dapr Component resource specific properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"DaprComponentProperties","Properties":{"componentType":{"Type":4,"Flags":0,"Description":"Component type"},"version":{"Type":4,"Flags":0,"Description":"Component version"},"ignoreErrors":{"Type":2,"Flags":0,"Description":"Boolean describing if the component errors are ignores"},"initTimeout":{"Type":4,"Flags":0,"Description":"Initialization timeout"},"secrets":{"Type":174,"Flags":0,"Description":"Collection of secrets used by a Dapr component"},"metadata":{"Type":176,"Flags":0,"Description":"Component metadata"},"scopes":{"Type":177,"Flags":0,"Description":"Names of container apps that can use this Dapr component"}}}},{"3":{"ItemType":104}},{"2":{"Name":"DaprMetadata","Properties":{"name":{"Type":4,"Flags":0,"Description":"Metadata property name."},"value":{"Type":4,"Flags":0,"Description":"Metadata property value."},"secretRef":{"Type":4,"Flags":0,"Description":"Name of the Dapr Component secret from which to pull the metadata property value."}}}},{"3":{"ItemType":175}},{"3":{"ItemType":4}},{"4":{"Name":"Microsoft.App/managedEnvironments/daprComponents@2022-03-01","ScopeType":8,"Body":172,"Flags":0}},{"6":{"Value":"Microsoft.App/managedEnvironments"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/managedEnvironments","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":179,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":180,"Flags":10,"Description":"The resource api version"},"properties":{"Type":182,"Flags":0,"Description":"Managed environment resource specific properties"},"tags":{"Type":197,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"ManagedEnvironmentProperties","Properties":{"provisioningState":{"Type":193,"Flags":2,"Description":"Provisioning state of the Environment."},"daprAIInstrumentationKey":{"Type":4,"Flags":0,"Description":"Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry"},"daprAIConnectionString":{"Type":4,"Flags":0,"Description":"Application Insights connection string used by Dapr to export Service to Service communication telemetry"},"vnetConfiguration":{"Type":194,"Flags":0,"Description":"Vnet configuration for the environment"},"deploymentErrors":{"Type":4,"Flags":2,"Description":"Any errors that occurred during deployment or deployment validation"},"defaultDomain":{"Type":4,"Flags":2,"Description":"Default Domain Name for the cluster"},"staticIp":{"Type":4,"Flags":2,"Description":"Static IP of the Environment"},"appLogsConfiguration":{"Type":195,"Flags":0,"Description":"Cluster configuration which enables the log daemon to export\napp logs to a destination. Currently only \"log-analytics\" is\nsupported"},"zoneRedundant":{"Type":2,"Flags":0,"Description":"Whether or not this Managed Environment is zone-redundant."}}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"Waiting"}},{"6":{"Value":"InitializationInProgress"}},{"6":{"Value":"InfrastructureSetupInProgress"}},{"6":{"Value":"InfrastructureSetupComplete"}},{"6":{"Value":"ScheduledForDelete"}},{"6":{"Value":"UpgradeRequested"}},{"6":{"Value":"UpgradeFailed"}},{"5":{"Elements":[183,184,185,186,187,188,189,190,191,192,4]}},{"2":{"Name":"VnetConfiguration","Properties":{"internal":{"Type":2,"Flags":0,"Description":"Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property"},"infrastructureSubnetId":{"Type":4,"Flags":0,"Description":"Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges."},"runtimeSubnetId":{"Type":4,"Flags":0,"Description":"This field is deprecated and not used. If you wish to provide your own subnet that Container App containers are injected into, then you should leverage the infrastructureSubnetId."},"dockerBridgeCidr":{"Type":4,"Flags":0,"Description":"CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges."},"platformReservedCidr":{"Type":4,"Flags":0,"Description":"IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges."},"platformReservedDnsIP":{"Type":4,"Flags":0,"Description":"An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server."}}}},{"2":{"Name":"AppLogsConfiguration","Properties":{"destination":{"Type":4,"Flags":0,"Description":"Logs destination, can be 'log-analytics', 'azure-monitor' or 'none'"},"logAnalyticsConfiguration":{"Type":196,"Flags":0,"Description":"Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'"}}}},{"2":{"Name":"LogAnalyticsConfiguration","Properties":{"customerId":{"Type":4,"Flags":0,"Description":"Log analytics customer id"},"sharedKey":{"Type":4,"Flags":4,"Description":"Log analytics customer key"}}}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.App/managedEnvironments@2022-03-01","ScopeType":8,"Body":181,"Flags":0}},{"6":{"Value":"Microsoft.App/managedEnvironments/certificates"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/managedEnvironments/certificates","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":199,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":200,"Flags":10,"Description":"The resource api version"},"properties":{"Type":202,"Flags":0,"Description":"Certificate resource specific properties"},"tags":{"Type":209,"Flags":0,"Description":"Resource tags."},"location":{"Type":4,"Flags":1,"Description":"The geo-location where the resource lives"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"CertificateProperties","Properties":{"provisioningState":{"Type":208,"Flags":2,"Description":"Provisioning state of the certificate."},"password":{"Type":4,"Flags":4,"Description":"Certificate password."},"subjectName":{"Type":4,"Flags":2,"Description":"Subject name of the certificate."},"value":{"Type":0,"Flags":4,"Description":"PFX or PEM blob"},"issuer":{"Type":4,"Flags":2,"Description":"Certificate issuer."},"issueDate":{"Type":4,"Flags":2,"Description":"Certificate issue Date."},"expirationDate":{"Type":4,"Flags":2,"Description":"Certificate expiration date."},"thumbprint":{"Type":4,"Flags":2,"Description":"Certificate thumbprint."},"valid":{"Type":2,"Flags":2,"Description":"Is the certificate valid?."},"publicKeyHash":{"Type":4,"Flags":2,"Description":"Public key hash."}}}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"6":{"Value":"DeleteFailed"}},{"6":{"Value":"Pending"}},{"5":{"Elements":[203,204,205,206,207,4]}},{"2":{"Name":"TrackedResourceTags","Properties":{},"AdditionalProperties":4}},{"4":{"Name":"Microsoft.App/managedEnvironments/certificates@2022-03-01","ScopeType":8,"Body":201,"Flags":0}},{"6":{"Value":"Microsoft.App/managedEnvironments/storages"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/managedEnvironments/storages","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":211,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":212,"Flags":10,"Description":"The resource api version"},"properties":{"Type":214,"Flags":0,"Description":"Storage properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"ManagedEnvironmentStorageProperties","Properties":{"azureFile":{"Type":215,"Flags":0,"Description":"Azure file properties"}}}},{"2":{"Name":"AzureFileProperties","Properties":{"accountName":{"Type":4,"Flags":0,"Description":"Storage account name for azure file."},"accountKey":{"Type":4,"Flags":0,"Description":"Storage account key for azure file."},"accessMode":{"Type":218,"Flags":0,"Description":"Access mode for storage"},"shareName":{"Type":4,"Flags":0,"Description":"Azure file share name."}}}},{"6":{"Value":"ReadOnly"}},{"6":{"Value":"ReadWrite"}},{"5":{"Elements":[216,217,4]}},{"4":{"Name":"Microsoft.App/managedEnvironments/storages@2022-03-01","ScopeType":8,"Body":213,"Flags":0}},{"6":{"Value":"Microsoft.App/containerApps/sourcecontrols"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/containerApps/sourcecontrols","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":220,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":221,"Flags":10,"Description":"The resource api version"},"properties":{"Type":223,"Flags":0,"Description":"SourceControl resource specific properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"SourceControlProperties","Properties":{"operationState":{"Type":228,"Flags":2,"Description":"Current provisioning State of the operation"},"repoUrl":{"Type":4,"Flags":0,"Description":"The repo url which will be integrated to ContainerApp."},"branch":{"Type":4,"Flags":0,"Description":"The branch which will trigger the auto deployment"},"githubActionConfiguration":{"Type":229,"Flags":0,"Description":"Container App Revision Template with all possible settings and the\ndefaults if user did not provide them. The defaults are populated\nas they were at the creation time"}}}},{"6":{"Value":"InProgress"}},{"6":{"Value":"Succeeded"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Canceled"}},{"5":{"Elements":[224,225,226,227,4]}},{"2":{"Name":"GithubActionConfiguration","Properties":{"registryInfo":{"Type":230,"Flags":0,"Description":"Registry configurations."},"azureCredentials":{"Type":231,"Flags":0,"Description":"AzureCredentials configurations."},"contextPath":{"Type":4,"Flags":0,"Description":"Context path"},"image":{"Type":4,"Flags":0,"Description":"Image name"},"publishType":{"Type":4,"Flags":0,"Description":"Code or Image"},"os":{"Type":4,"Flags":0,"Description":"Operation system"},"runtimeStack":{"Type":4,"Flags":0,"Description":"Runtime stack"},"runtimeVersion":{"Type":4,"Flags":0,"Description":"Runtime version"}}}},{"2":{"Name":"RegistryInfo","Properties":{"registryUrl":{"Type":4,"Flags":0,"Description":"registry server Url."},"registryUserName":{"Type":4,"Flags":0,"Description":"registry username."},"registryPassword":{"Type":4,"Flags":4,"Description":"registry secret."}}}},{"2":{"Name":"AzureCredentials","Properties":{"clientId":{"Type":4,"Flags":4,"Description":"Client Id."},"clientSecret":{"Type":4,"Flags":4,"Description":"Client Secret."},"tenantId":{"Type":4,"Flags":4,"Description":"Tenant Id."},"subscriptionId":{"Type":4,"Flags":0,"Description":"Subscription Id."}}}},{"4":{"Name":"Microsoft.App/containerApps/sourcecontrols@2022-03-01","ScopeType":8,"Body":222,"Flags":0}},{"6":{"Value":"Microsoft.App/containerApps/revisions"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/containerApps/revisions","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":233,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":234,"Flags":10,"Description":"The resource api version"},"properties":{"Type":236,"Flags":2,"Description":"Revision resource specific properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"RevisionProperties","Properties":{"createdTime":{"Type":4,"Flags":2,"Description":"Timestamp describing when the revision was created\nby controller"},"fqdn":{"Type":4,"Flags":2,"Description":"Fully qualified domain name of the revision"},"template":{"Type":127,"Flags":2,"Description":"Container App Revision Template with all possible settings and the\ndefaults if user did not provide them. The defaults are populated\nas they were at the creation time"},"active":{"Type":2,"Flags":2,"Description":"Boolean describing if the Revision is Active"},"replicas":{"Type":3,"Flags":2,"Description":"Number of pods currently running for this revision"},"trafficWeight":{"Type":3,"Flags":2,"Description":"Traffic weight assigned to this revision"},"provisioningError":{"Type":4,"Flags":2,"Description":"Optional Field - Platform Error Message"},"healthState":{"Type":240,"Flags":2,"Description":"Current health State of the revision"},"provisioningState":{"Type":246,"Flags":2,"Description":"Current provisioning State of the revision"}}}},{"6":{"Value":"Healthy"}},{"6":{"Value":"Unhealthy"}},{"6":{"Value":"None"}},{"5":{"Elements":[237,238,239,4]}},{"6":{"Value":"Provisioning"}},{"6":{"Value":"Provisioned"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Deprovisioning"}},{"6":{"Value":"Deprovisioned"}},{"5":{"Elements":[241,242,243,244,245,4]}},{"4":{"Name":"Microsoft.App/containerApps/revisions@2022-03-01","ScopeType":8,"Body":235,"Flags":1}},{"6":{"Value":"Microsoft.App/containerApps/revisions/replicas"}},{"6":{"Value":"2022-03-01"}},{"2":{"Name":"Microsoft.App/containerApps/revisions/replicas","Properties":{"id":{"Type":4,"Flags":10,"Description":"The resource id"},"name":{"Type":4,"Flags":9,"Description":"The resource name"},"type":{"Type":248,"Flags":10,"Description":"The resource type"},"apiVersion":{"Type":249,"Flags":10,"Description":"The resource api version"},"properties":{"Type":251,"Flags":2,"Description":"Replica resource specific properties"},"systemData":{"Type":73,"Flags":2,"Description":"Azure Resource Manager metadata containing createdBy and modifiedBy information."}}}},{"2":{"Name":"ReplicaProperties","Properties":{"createdTime":{"Type":4,"Flags":2,"Description":"Timestamp describing when the pod was created by controller"},"containers":{"Type":253,"Flags":0,"Description":"The containers collection under a replica."}}}},{"2":{"Name":"ReplicaContainer","Properties":{"name":{"Type":4,"Flags":0,"Description":"The Name of the Container"},"containerId":{"Type":4,"Flags":0,"Description":"The Id of the Container"},"ready":{"Type":2,"Flags":0,"Description":"The container ready status"},"started":{"Type":2,"Flags":0,"Description":"The container start status"},"restartCount":{"Type":3,"Flags":0,"Description":"The container restart count"},"logStreamEndpoint":{"Type":4,"Flags":2,"Description":"Log Stream endpoint"},"execEndpoint":{"Type":4,"Flags":2,"Description":"Container exec endpoint"}}}},{"3":{"ItemType":252}},{"4":{"Name":"Microsoft.App/containerApps/revisions/replicas@2022-03-01","ScopeType":8,"Body":250,"Flags":1}},{"2":{"Name":"CustomHostnameAnalysisResult","Properties":{"hostName":{"Type":4,"Flags":2,"Description":"Host name that was analyzed"},"isHostnameAlreadyVerified":{"Type":2,"Flags":2,"Description":"<code>true</code> if hostname is already verified; otherwise, <code>false</code>."},"customDomainVerificationTest":{"Type":259,"Flags":2,"Description":"DNS verification test result."},"customDomainVerificationFailureInfo":{"Type":260,"Flags":2,"Description":"Raw failure information if DNS verification fails."},"hasConflictOnManagedEnvironment":{"Type":2,"Flags":2,"Description":"<code>true</code> if there is a conflict on the Container App's managed environment; otherwise, <code>false</code>."},"conflictWithEnvironmentCustomDomain":{"Type":2,"Flags":2,"Description":"<code>true</code> if there is a conflict on the Container App's managed environment level custom domain; otherwise, <code>false</code>."},"conflictingContainerAppResourceId":{"Type":4,"Flags":2,"Description":"Name of the conflicting Container App on the Managed Environment if it's within the same subscription."},"cNameRecords":{"Type":263,"Flags":0,"Description":"CName records visible for this hostname."},"txtRecords":{"Type":264,"Flags":0,"Description":"TXT records visible for this hostname."},"aRecords":{"Type":265,"Flags":0,"Description":"A records visible for this hostname."},"alternateCNameRecords":{"Type":266,"Flags":0,"Description":"Alternate CName records visible for this hostname."},"alternateTxtRecords":{"Type":267,"Flags":0,"Description":"Alternate TXT records visible for this hostname."}}}},{"6":{"Value":"Passed"}},{"6":{"Value":"Failed"}},{"6":{"Value":"Skipped"}},{"5":{"Elements":[256,257,258]}},{"2":{"Name":"CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo","Properties":{"code":{"Type":4,"Flags":2,"Description":"Standardized string to programmatically identify the error."},"message":{"Type":4,"Flags":2,"Description":"Detailed error description and debugging information."},"target":{"Type":4,"Flags":2,"Description":"Detailed error description and debugging information."},"details":{"Type":262,"Flags":0,"Description":"Details or the error"}}}},{"2":{"Name":"CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem","Properties":{"code":{"Type":4,"Flags":2,"Description":"Standardized string to programmatically identify the error."},"message":{"Type":4,"Flags":2,"Description":"Detailed error description and debugging information."},"target":{"Type":4,"Flags":2,"Description":"Detailed error description and debugging information."}}}},{"3":{"ItemType":261}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"3":{"ItemType":4}},{"8":{"Name":"listCustomHostNameAnalysis","ResourceType":"Microsoft.App/containerApps","ApiVersion":"2022-03-01","Output":255}},{"2":{"Name":"SecretsCollection","Properties":{"value":{"Type":271,"Flags":1,"Description":"Collection of resources."}}}},{"2":{"Name":"ContainerAppSecret","Properties":{"name":{"Type":4,"Flags":2,"Description":"Secret Name."},"value":{"Type":4,"Flags":2,"Description":"Secret Value."}}}},{"3":{"ItemType":270}},{"8":{"Name":"listSecrets","ResourceType":"Microsoft.App/containerApps","ApiVersion":"2022-03-01","Output":269}},{"8":{"Name":"activate","ResourceType":"Microsoft.App/containerApps/revisions","ApiVersion":"2022-03-01"}},{"8":{"Name":"deactivate","ResourceType":"Microsoft.App/containerApps/revisions","ApiVersion":"2022-03-01"}},{"8":{"Name":"restart","ResourceType":"Microsoft.App/containerApps/revisions","ApiVersion":"2022-03-01"}},{"2":{"Name":"DaprSecretsCollection","Properties":{"value":{"Type":278,"Flags":1,"Description":"Collection of secrets for ListSecrets Action"}}}},{"2":{"Name":"DaprSecret","Properties":{"name":{"Type":4,"Flags":2,"Description":"Secret Name."},"value":{"Type":4,"Flags":2,"Description":"Secret Value."}}}},{"3":{"ItemType":277}},{"8":{"Name":"listSecrets","ResourceType":"Microsoft.App/managedEnvironments/daprComponents","ApiVersion":"2022-03-01","Output":276}},{"2":{"Name":"CheckNameAvailabilityRequest","Properties":{"name":{"Type":4,"Flags":0,"Description":"The name of the resource for which availability needs to be checked."},"type":{"Type":4,"Flags":0,"Description":"The resource type."}}}},{"2":{"Name":"CheckNameAvailabilityResponse","Properties":{"nameAvailable":{"Type":2,"Flags":0,"Description":"Indicates if the resource name is available."},"reason":{"Type":284,"Flags":0,"Description":"The reason why the given name is not available."},"message":{"Type":4,"Flags":0,"Description":"Detailed reason why the given name is available."}}}},{"6":{"Value":"Invalid"}},{"6":{"Value":"AlreadyExists"}},{"5":{"Elements":[282,283,4]}},{"8":{"Name":"checkNameAvailability","ResourceType":"Microsoft.App/managedEnvironments","ApiVersion":"2022-03-01","Output":281,"Input":280}}]
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/containerApps/authConfigs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/containerApps/authConfigs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "AuthConfig resource specific properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AuthConfigProperties",
+    "properties": {
+      "platform": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the platform of ContainerApp Service Authentication/Authorization."
+      },
+      "globalValidation": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The configuration settings that determines the validation flow of users using  Service Authentication/Authorization."
+      },
+      "identityProviders": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The configuration settings of each of the identity providers used to configure ContainerApp Service Authentication/Authorization."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization."
+      },
+      "httpSettings": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the HTTP requests for authentication and authorization requests made against ContainerApp Service Authentication/Authorization."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AuthPlatform",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>."
+      },
+      "runtimeVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The RuntimeVersion of the Authentication / Authorization feature in use for the current app.\nThe setting in this value can control the behavior of certain features in the Authentication / Authorization module."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GlobalValidation",
+    "properties": {
+      "unauthenticatedClientAction": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The action to take when an unauthenticated client attempts to access the app."
+      },
+      "redirectToProvider": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The default authentication provider to use when multiple providers are configured.\nThis setting is only needed if multiple providers are configured and the unauthenticated client\naction is set to \"RedirectToLoginPage\"."
+      },
+      "excludedPaths": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The paths for which unauthenticated flow would not be redirected to the login page."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RedirectToLoginPage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AllowAnonymous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Return401"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Return403"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityProviders",
+    "properties": {
+      "azureActiveDirectory": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active directory provider."
+      },
+      "facebook": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Facebook provider."
+      },
+      "gitHub": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the GitHub provider."
+      },
+      "google": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Google provider."
+      },
+      "twitter": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Twitter provider."
+      },
+      "apple": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Apple provider."
+      },
+      "azureStaticWebApps": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Static Web Apps provider."
+      },
+      "customOpenIdConnectProviders": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The map of the name of the alias of each custom Open ID Connect provider to the\nconfiguration settings of the custom Open ID Connect provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureActiveDirectory",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory app registration."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory login flow."
+      },
+      "validation": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory token validation flow."
+      },
+      "isAutoProvisioned": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling.\nThis is an internal flag primarily intended to support the Azure Management Portal. Users should not\nread or write to this property."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureActiveDirectoryRegistration",
+    "properties": {
+      "openIdIssuer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.\nWhen using Azure Active Directory, this value is the URI of the directory tenant, e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/.\nThis URI is a case-sensitive identifier for the token issuer.\nMore information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html"
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Client ID of this relying party application, known as the client_id.\nThis setting is required for enabling OpenID Connection authentication with Azure Active Directory or \nother 3rd party OpenID Connect providers.\nMore information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html"
+      },
+      "clientSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting name that contains the client secret of the relying party application."
+      },
+      "clientSecretCertificateThumbprint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret. It is also optional."
+      },
+      "clientSecretCertificateSubjectAlternativeName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret Certificate Thumbprint. It is also optional."
+      },
+      "clientSecretCertificateIssuer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property acts as\na replacement for the Client Secret Certificate Thumbprint. It is also optional."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureActiveDirectoryLogin",
+    "properties": {
+      "loginParameters": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Login parameters to send to the OpenID Connect authorization endpoint when\na user logs in. Each parameter must be in the form \"key=value\"."
+      },
+      "disableWWWAuthenticate": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>true</code> if the www-authenticate provider should be omitted from the request; otherwise, <code>false</code>."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureActiveDirectoryValidation",
+    "properties": {
+      "jwtClaimChecks": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the checks that should be made while validating the JWT Claims."
+      },
+      "allowedAudiences": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The list of audiences that can make successful authentication/authorization requests."
+      },
+      "defaultAuthorizationPolicy": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the default authorization policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JwtClaimChecks",
+    "properties": {
+      "allowedGroups": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The list of the allowed groups."
+      },
+      "allowedClientApplications": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The list of the allowed client applications."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefaultAuthorizationPolicy",
+    "properties": {
+      "allowedPrincipals": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory allowed principals."
+      },
+      "allowedApplications": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory allowed applications."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AllowedPrincipals",
+    "properties": {
+      "groups": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The list of the allowed groups."
+      },
+      "identities": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The list of the allowed identities."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Facebook",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Facebook provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the app registration for the Facebook provider."
+      },
+      "graphApiVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The version of the Facebook api to be used while logging in."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppRegistration",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The App ID of the app used for login."
+      },
+      "appSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting name that contains the app secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoginScopes",
+    "properties": {
+      "scopes": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "A list of the scopes that should be requested while authenticating."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHub",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the GitHub provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the app registration for the GitHub provider."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClientRegistration",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Client ID of the app used for login."
+      },
+      "clientSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting name that contains the client secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Google",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Google provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the app registration for the Google provider."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow."
+      },
+      "validation": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Active Directory token validation flow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AllowedAudiencesValidation",
+    "properties": {
+      "allowedAudiences": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the allowed list of audiences from which to validate the JWT token."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Twitter",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Twitter provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the app registration for the Twitter provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TwitterRegistration",
+    "properties": {
+      "consumerKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The OAuth 1.0a consumer key of the Twitter application used for sign-in.\nThis setting is required for enabling Twitter Sign-In.\nTwitter Sign-In documentation: https://dev.twitter.com/web/sign-in"
+      },
+      "consumerSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting name that contains the OAuth 1.0a consumer secret of the Twitter\napplication used for sign-in."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Apple",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Apple provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Apple registration."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppleRegistration",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Client ID of the app used for login."
+      },
+      "clientSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting name that contains the client secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureStaticWebApps",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the Azure Static Web Apps registration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureStaticWebAppsRegistration",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Client ID of the app used for login."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomOpenIdConnectProvider",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the custom Open ID provider provider should not be enabled; otherwise, <code>true</code>."
+      },
+      "registration": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the app registration for the custom Open ID Connect provider."
+      },
+      "login": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the login flow of the custom Open ID Connect provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OpenIdConnectRegistration",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The client id of the custom Open ID Connect provider."
+      },
+      "clientCredential": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The authentication credentials of the custom Open ID Connect provider."
+      },
+      "openIdConnectConfiguration": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the endpoints used for the custom Open ID Connect provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OpenIdConnectClientCredential",
+    "properties": {
+      "method": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The method that should be used to authenticate the user."
+      },
+      "clientSecretSettingName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app setting that contains the client secret for the custom Open ID Connect provider."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ClientSecretPost"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OpenIdConnectConfig",
+    "properties": {
+      "authorizationEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint to be used to make an authorization request."
+      },
+      "tokenEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint to be used to request a token."
+      },
+      "issuer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint that issues the token."
+      },
+      "certificationUri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint that provides the keys necessary to validate the token."
+      },
+      "wellKnownOpenIdConfiguration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint that contains all the configuration endpoints for the provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OpenIdConnectLogin",
+    "properties": {
+      "nameClaimType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the claim that contains the users name."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "A list of the scopes that should be requested while authenticating."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityProvidersCustomOpenIdConnectProviders",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Login",
+    "properties": {
+      "routes": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The routes that specify the endpoints used for login and logout requests."
+      },
+      "preserveUrlFragmentsForLogins": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>."
+      },
+      "allowedExternalRedirectUrls": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.\nThis is an advanced setting typically only needed by Windows Store application backends.\nNote that URLs within the current domain are always implicitly allowed."
+      },
+      "cookieExpiration": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the session cookie's expiration."
+      },
+      "nonce": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the nonce used in the login flow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoginRoutes",
+    "properties": {
+      "logoutEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint at which a logout request should be made."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CookieExpiration",
+    "properties": {
+      "convention": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The convention used when determining the session cookie's expiration."
+      },
+      "timeToExpiration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time after the request is made when the session cookie should expire."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FixedTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IdentityProviderDerived"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Nonce",
+    "properties": {
+      "validateNonce": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the nonce should not be validated while completing the login flow; otherwise, <code>true</code>."
+      },
+      "nonceExpirationInterval": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time after the request is made when the nonce should expire."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpSettings",
+    "properties": {
+      "requireHttps": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "<code>false</code> if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, <code>true</code>."
+      },
+      "routes": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The configuration settings of the paths HTTP requests."
+      },
+      "forwardProxy": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "The configuration settings of a forward proxy used to make the requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpSettingsRoutes",
+    "properties": {
+      "apiPrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The prefix that should precede all the authentication/authorization paths."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ForwardProxy",
+    "properties": {
+      "convention": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "The convention used to determine the url of the request made."
+      },
+      "customHostHeaderName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the header containing the host of the request."
+      },
+      "customProtoHeaderName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the header containing the scheme of the request."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoProxy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/containerApps/authConfigs@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/containerApps"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/containerApps",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "managed identities for the Container App to interact with other Azure services without maintaining any secrets or credentials in code."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "ContainerApp resource specific properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the Container App."
+      },
+      "managedEnvironmentId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource ID of the Container App's environment."
+      },
+      "latestRevisionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the latest revision of the Container App."
+      },
+      "latestRevisionFqdn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully Qualified Domain Name of the latest revision of the Container App."
+      },
+      "customDomainVerificationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Id used to verify domain name ownership"
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Non versioned Container App configuration properties."
+      },
+      "template": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "Container App versioned application definition."
+      },
+      "outboundIpAddresses": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 2,
+        "description": "Outbound IP Addresses for container app."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Configuration",
+    "properties": {
+      "secrets": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Collection of secrets used by a Container app"
+      },
+      "activeRevisionsMode": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "ActiveRevisionsMode controls how active revisions are handled for the Container app:\n<list><item>Multiple: multiple revisions can be active.</item><item>Single: Only one revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is the default.</item></list>"
+      },
+      "ingress": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Ingress configurations."
+      },
+      "registries": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Collection of private container registry credentials for containers used by the Container app"
+      },
+      "dapr": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 0,
+        "description": "Dapr configuration for the Container App."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Secret",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Secret Name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Secret Value."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/99"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Multiple"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Single"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Ingress",
+    "properties": {
+      "fqdn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Hostname."
+      },
+      "external": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Bool indicating if app exposes an external http endpoint"
+      },
+      "targetPort": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Target Port in containers for traffic from ingress"
+      },
+      "transport": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "Ingress transport protocol"
+      },
+      "traffic": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Traffic weights for app's revisions"
+      },
+      "customDomains": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "custom domain bindings for Container Apps' hostnames."
+      },
+      "allowInsecure": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "auto"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrafficWeight",
+    "properties": {
+      "revisionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of a revision"
+      },
+      "weight": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Traffic weight assigned to a revision"
+      },
+      "latestRevision": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Indicates that the traffic weight belongs to a latest stable revision"
+      },
+      "label": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Associates a traffic label with a revision"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/111"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomDomain",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Hostname."
+      },
+      "bindingType": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "Custom Domain binding type."
+      },
+      "certificateId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource Id of the Certificate to be bound to this hostname."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SniEnabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegistryCredentials",
+    "properties": {
+      "server": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Container Registry Server"
+      },
+      "username": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Container Registry Username"
+      },
+      "passwordSecretRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the Secret that contains the registry login password"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use 'system'"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/118"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Dapr",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Boolean indicating if the Dapr side car is enabled"
+      },
+      "appId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Dapr application identifier"
+      },
+      "appProtocol": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http"
+      },
+      "appPort": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Tells Dapr which port your application is listening on"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "grpc"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Template",
+    "properties": {
+      "revisionSuffix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "User friendly suffix that is appended to the revision name"
+      },
+      "containers": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "List of container definitions for the Container App."
+      },
+      "scale": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "Scaling properties for the Container App."
+      },
+      "volumes": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "List of volume definitions for the Container App."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Container",
+    "properties": {
+      "image": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Container image tag."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Custom container name."
+      },
+      "command": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Container start command."
+      },
+      "args": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Container start command arguments."
+      },
+      "env": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Container environment variables."
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Container resource requirements."
+      },
+      "probes": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "List of probes for the container."
+      },
+      "volumeMounts": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "Container volume mounts."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentVar",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Environment variable name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Non-secret environment variable value."
+      },
+      "secretRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the Container App secret from which to pull the environment variable value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerResources",
+    "properties": {
+      "cpu": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Required CPU in cores, e.g. 0.5"
+      },
+      "memory": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Required memory, e.g. \"250Mb\""
+      },
+      "ephemeralStorage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Ephemeral Storage, e.g. \"1Gi\""
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppProbe",
+    "properties": {
+      "failureThreshold": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. Maximum value is 10."
+      },
+      "httpGet": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "HTTPGet specifies the http request to perform."
+      },
+      "initialDelaySeconds": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Number of seconds after the container has started before liveness probes are initiated. Minimum value is 1. Maximum value is 60."
+      },
+      "periodSeconds": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value is 240."
+      },
+      "successThreshold": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. Maximum value is 10."
+      },
+      "tcpSocket": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported."
+      },
+      "terminationGracePeriodSeconds": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum value is 3600 seconds (1 hour)"
+      },
+      "timeoutSeconds": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 240."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "The type of probe."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppProbeHttpGet",
+    "properties": {
+      "host": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+      },
+      "httpHeaders": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "Custom headers to set in the request. HTTP allows repeated headers."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Path to access on the HTTP server."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+      },
+      "scheme": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Scheme to use for connecting to the host. Defaults to HTTP."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppProbeHttpGetHttpHeadersItem",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The header field name"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The header field value"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HTTP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HTTPS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppProbeTcpSocket",
+    "properties": {
+      "host": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional: Host name to connect to, defaults to the pod IP."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Liveness"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Readiness"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Startup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/131"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeMount",
+    "properties": {
+      "volumeName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This must match the Name of a Volume."
+      },
+      "mountPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Path within the container at which the volume should be mounted.Must not contain ':'."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/144"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/125"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Scale",
+    "properties": {
+      "minReplicas": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Optional. Minimum number of container replicas."
+      },
+      "maxReplicas": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Optional. Maximum number of container replicas. Defaults to 10 if not set."
+      },
+      "rules": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "Scaling rules."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScaleRule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Scale Rule Name"
+      },
+      "azureQueue": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Azure Queue based scaling."
+      },
+      "custom": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Custom scale rule."
+      },
+      "http": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "HTTP requests based scaling."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueueScaleRule",
+    "properties": {
+      "queueName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Queue name."
+      },
+      "queueLength": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Queue length."
+      },
+      "auth": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "Authentication secrets for the queue scale rule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScaleRuleAuth",
+    "properties": {
+      "secretRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the Container App secret from which to pull the auth params."
+      },
+      "triggerParameter": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Trigger Parameter that uses the secret"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomScaleRule",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Type of the custom scale rule\neg: azure-servicebus, redis etc."
+      },
+      "metadata": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Metadata properties to describe custom scale rule."
+      },
+      "auth": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Authentication secrets for the custom scale rule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomScaleRuleMetadata",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpScaleRule",
+    "properties": {
+      "metadata": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "Metadata properties to describe http scale rule."
+      },
+      "auth": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Authentication secrets for the custom scale rule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HttpScaleRuleMetadata",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/148"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Volume",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Volume name."
+      },
+      "storageType": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Storage type for the volume. If not provided, use EmptyDir."
+      },
+      "storageName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of storage resource. No need to provide for EmptyDir."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureFile"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EmptyDir"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/159"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/containerApps@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/81"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/managedEnvironments/daprComponents"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/managedEnvironments/daprComponents",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Dapr Component resource specific properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprComponentProperties",
+    "properties": {
+      "componentType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Component type"
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Component version"
+      },
+      "ignoreErrors": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Boolean describing if the component errors are ignores"
+      },
+      "initTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Initialization timeout"
+      },
+      "secrets": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "Collection of secrets used by a Dapr component"
+      },
+      "metadata": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "Component metadata"
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "Names of container apps that can use this Dapr component"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/99"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprMetadata",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Metadata property name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Metadata property value."
+      },
+      "secretRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the Dapr Component secret from which to pull the metadata property value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/managedEnvironments/daprComponents@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/169"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/managedEnvironments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/managedEnvironments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Managed environment resource specific properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedEnvironmentProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the Environment."
+      },
+      "daprAIInstrumentationKey": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry"
+      },
+      "daprAIConnectionString": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Application Insights connection string used by Dapr to export Service to Service communication telemetry"
+      },
+      "vnetConfiguration": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 0,
+        "description": "Vnet configuration for the environment"
+      },
+      "deploymentErrors": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Any errors that occurred during deployment or deployment validation"
+      },
+      "defaultDomain": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Default Domain Name for the cluster"
+      },
+      "staticIp": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Static IP of the Environment"
+      },
+      "appLogsConfiguration": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "Cluster configuration which enables the log daemon to export\napp logs to a destination. Currently only \"log-analytics\" is\nsupported"
+      },
+      "zoneRedundant": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Whether or not this Managed Environment is zone-redundant."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Waiting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InitializationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InfrastructureSetupInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InfrastructureSetupComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScheduledForDelete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpgradeRequested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpgradeFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VnetConfiguration",
+    "properties": {
+      "internal": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property"
+      },
+      "infrastructureSubnetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges."
+      },
+      "runtimeSubnetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This field is deprecated and not used. If you wish to provide your own subnet that Container App containers are injected into, then you should leverage the infrastructureSubnetId."
+      },
+      "dockerBridgeCidr": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges."
+      },
+      "platformReservedCidr": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges."
+      },
+      "platformReservedDnsIP": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppLogsConfiguration",
+    "properties": {
+      "destination": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Logs destination, can be 'log-analytics', 'azure-monitor' or 'none'"
+      },
+      "logAnalyticsConfiguration": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 0,
+        "description": "Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogAnalyticsConfiguration",
+    "properties": {
+      "customerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Log analytics customer id"
+      },
+      "sharedKey": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Log analytics customer key"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/managedEnvironments@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/178"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/managedEnvironments/certificates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/managedEnvironments/certificates",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 0,
+        "description": "Certificate resource specific properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CertificateProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the certificate."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Certificate password."
+      },
+      "subjectName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Subject name of the certificate."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 4,
+        "description": "PFX or PEM blob"
+      },
+      "issuer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Certificate issuer."
+      },
+      "issueDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Certificate issue Date."
+      },
+      "expirationDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Certificate expiration date."
+      },
+      "thumbprint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Certificate thumbprint."
+      },
+      "valid": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Is the certificate valid?."
+      },
+      "publicKeyHash": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Public key hash."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeleteFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/managedEnvironments/certificates@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/198"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/managedEnvironments/storages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/managedEnvironments/storages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "Storage properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedEnvironmentStorageProperties",
+    "properties": {
+      "azureFile": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "Azure file properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureFileProperties",
+    "properties": {
+      "accountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Storage account name for azure file."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Storage account key for azure file."
+      },
+      "accessMode": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "Access mode for storage"
+      },
+      "shareName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure file share name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/managedEnvironments/storages@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/211"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/containerApps/sourcecontrols"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/containerApps/sourcecontrols",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 0,
+        "description": "SourceControl resource specific properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceControlProperties",
+    "properties": {
+      "operationState": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 2,
+        "description": "Current provisioning State of the operation"
+      },
+      "repoUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The repo url which will be integrated to ContainerApp."
+      },
+      "branch": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The branch which will trigger the auto deployment"
+      },
+      "githubActionConfiguration": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 0,
+        "description": "Container App Revision Template with all possible settings and the\ndefaults if user did not provide them. The defaults are populated\nas they were at the creation time"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GithubActionConfiguration",
+    "properties": {
+      "registryInfo": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 0,
+        "description": "Registry configurations."
+      },
+      "azureCredentials": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 0,
+        "description": "AzureCredentials configurations."
+      },
+      "contextPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Context path"
+      },
+      "image": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Image name"
+      },
+      "publishType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Code or Image"
+      },
+      "os": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Operation system"
+      },
+      "runtimeStack": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Runtime stack"
+      },
+      "runtimeVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Runtime version"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegistryInfo",
+    "properties": {
+      "registryUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "registry server Url."
+      },
+      "registryUserName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "registry username."
+      },
+      "registryPassword": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "registry secret."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureCredentials",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Client Id."
+      },
+      "clientSecret": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Client Secret."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 4,
+        "description": "Tenant Id."
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Subscription Id."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/containerApps/sourcecontrols@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/220"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/containerApps/revisions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/containerApps/revisions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/234"
+        },
+        "flags": 2,
+        "description": "Revision resource specific properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RevisionProperties",
+    "properties": {
+      "createdTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Timestamp describing when the revision was created\nby controller"
+      },
+      "fqdn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified domain name of the revision"
+      },
+      "template": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 2,
+        "description": "Container App Revision Template with all possible settings and the\ndefaults if user did not provide them. The defaults are populated\nas they were at the creation time"
+      },
+      "active": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "Boolean describing if the Revision is Active"
+      },
+      "replicas": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 2,
+        "description": "Number of pods currently running for this revision"
+      },
+      "trafficWeight": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 2,
+        "description": "Traffic weight assigned to this revision"
+      },
+      "provisioningError": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Optional Field - Platform Error Message"
+      },
+      "healthState": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 2,
+        "description": "Current health State of the revision"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 2,
+        "description": "Current provisioning State of the revision"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deprovisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deprovisioned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/containerApps/revisions@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/233"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.App/containerApps/revisions/replicas"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.App/containerApps/revisions/replicas",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 2,
+        "description": "Replica resource specific properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReplicaProperties",
+    "properties": {
+      "createdTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Timestamp describing when the pod was created by controller"
+      },
+      "containers": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "The containers collection under a replica."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReplicaContainer",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Name of the Container"
+      },
+      "containerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Id of the Container"
+      },
+      "ready": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The container ready status"
+      },
+      "started": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The container start status"
+      },
+      "restartCount": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The container restart count"
+      },
+      "logStreamEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Log Stream endpoint"
+      },
+      "execEndpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Container exec endpoint"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/250"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.App/containerApps/revisions/replicas@2022-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/248"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomHostnameAnalysisResult",
+    "properties": {
+      "hostName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Host name that was analyzed"
+      },
+      "isHostnameAlreadyVerified": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "<code>true</code> if hostname is already verified; otherwise, <code>false</code>."
+      },
+      "customDomainVerificationTest": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 2,
+        "description": "DNS verification test result."
+      },
+      "customDomainVerificationFailureInfo": {
+        "type": {
+          "$ref": "#/258"
+        },
+        "flags": 2,
+        "description": "Raw failure information if DNS verification fails."
+      },
+      "hasConflictOnManagedEnvironment": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "<code>true</code> if there is a conflict on the Container App's managed environment; otherwise, <code>false</code>."
+      },
+      "conflictWithEnvironmentCustomDomain": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "<code>true</code> if there is a conflict on the Container App's managed environment level custom domain; otherwise, <code>false</code>."
+      },
+      "conflictingContainerAppResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the conflicting Container App on the Managed Environment if it's within the same subscription."
+      },
+      "cNameRecords": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 0,
+        "description": "CName records visible for this hostname."
+      },
+      "txtRecords": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "TXT records visible for this hostname."
+      },
+      "aRecords": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "A records visible for this hostname."
+      },
+      "alternateCNameRecords": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 0,
+        "description": "Alternate CName records visible for this hostname."
+      },
+      "alternateTxtRecords": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 0,
+        "description": "Alternate TXT records visible for this hostname."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Passed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Standardized string to programmatically identify the error."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Detailed error description and debugging information."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Detailed error description and debugging information."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 0,
+        "description": "Details or the error"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Standardized string to programmatically identify the error."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Detailed error description and debugging information."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Detailed error description and debugging information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/259"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCustomHostNameAnalysis",
+    "resourceType": "Microsoft.App/containerApps",
+    "apiVersion": "2022-03-01",
+    "output": {
+      "$ref": "#/253"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretsCollection",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 1,
+        "description": "Collection of resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerAppSecret",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Secret Name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 2,
+        "description": "Secret Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/268"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.App/containerApps",
+    "apiVersion": "2022-03-01",
+    "output": {
+      "$ref": "#/267"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "activate",
+    "resourceType": "Microsoft.App/containerApps/revisions",
+    "apiVersion": "2022-03-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deactivate",
+    "resourceType": "Microsoft.App/containerApps/revisions",
+    "apiVersion": "2022-03-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.App/containerApps/revisions",
+    "apiVersion": "2022-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprSecretsCollection",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 1,
+        "description": "Collection of secrets for ListSecrets Action"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprSecret",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Secret Name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 2,
+        "description": "Secret Value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/275"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSecrets",
+    "resourceType": "Microsoft.App/managedEnvironments/daprComponents",
+    "apiVersion": "2022-03-01",
+    "output": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the resource for which availability needs to be checked."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityResponse",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Indicates if the resource name is available."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 0,
+        "description": "The reason why the given name is not available."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Detailed reason why the given name is available."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AlreadyExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.App/managedEnvironments",
+    "apiVersion": "2022-03-01",
+    "output": {
+      "$ref": "#/279"
+    },
+    "input": {
+      "$ref": "#/278"
+    }
+  }
+]
