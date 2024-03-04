@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/cenkalti/backoff/v4"
 )
 
 const (
@@ -21,8 +22,14 @@ const (
 )
 
 type ResourceClient struct {
-	host string
-	pl   runtime.Pipeline
+	host  string
+	pl    runtime.Pipeline
+	retry *ResourceClientRetryableErrors
+}
+
+type ResourceClientRetryableErrors struct {
+	backoff *backoff.ExponentialBackOff
+	errors  []string
 }
 
 func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
@@ -38,9 +45,46 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 		return nil, err
 	}
 	return &ResourceClient{
-		host: ep,
-		pl:   pl,
+		host:  ep,
+		pl:    pl,
+		retry: nil,
 	}, nil
+}
+
+// NewResourceClientRertryableErrors creates a ResourceClientRetryableErrors object.
+// TODO: add inputs with resource schema to generate the retryable errors object.
+func NewResourceClientRetryableErrors() *ResourceClientRetryableErrors {
+	return &ResourceClientRetryableErrors{}
+}
+
+// WithRetry configures the retryable errors for the client.
+func (client *ResourceClient) WithRetry(retry *ResourceClientRetryableErrors) *ResourceClient {
+	client.retry = retry
+	return client
+}
+
+// CreateOrUpdateWithRetry configures the retryable errors for the client.
+// It calls CreateOrUpdate, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (client *ResourceClient) CreateOrUpdateWithRetry(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
+	if client.retry == nil {
+		return nil, fmt.Errorf("Retry is not configured. Please call WithRetry() first.")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := client.CreateOrUpdate(ctx, resourceID, apiVersion, body)
+			if err != nil {
+				for _, e := range client.retry.errors {
+					if !strings.Contains(err.Error(), e) {
+						return nil, &backoff.PermanentError{Err: err}
+					}
+				}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(client.retry.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
@@ -50,17 +94,19 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	}
 	var responseBody interface{}
 	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
-	if err == nil {
-		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
-			Frequency: 10 * time.Second,
-		})
-		if err == nil {
-			return resp, nil
-		}
-		if !client.shouldIgnorePollingError(err) {
-			return nil, err
-		}
+	if err != nil {
+		return nil, err
 	}
+	ptresp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+		Frequency: 10 * time.Second,
+	})
+	if err == nil {
+		return ptresp, nil
+	}
+	if !client.shouldIgnorePollingError(err) {
+		return nil, err
+	}
+
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
 	}
