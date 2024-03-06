@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tftypes
 
 import (
@@ -7,8 +10,8 @@ import (
 	"math/big"
 	"sort"
 
-	"github.com/vmihailenco/msgpack"
-	msgpackCodes "github.com/vmihailenco/msgpack/codes"
+	msgpack "github.com/vmihailenco/msgpack/v5"
+	msgpackCodes "github.com/vmihailenco/msgpack/v5/msgpcode"
 )
 
 type msgPackUnknownType struct{}
@@ -74,7 +77,7 @@ func msgpackUnmarshal(dec *msgpack.Decoder, typ Type, path *AttributePath) (Valu
 			if err != nil {
 				return Value{}, path.NewErrorf("couldn't decode number as int64: %w", err)
 			}
-			return NewValue(Number, big.NewFloat(float64(rv))), nil
+			return NewValue(Number, new(big.Float).SetInt64(rv)), nil
 		}
 		switch peek {
 		case msgpackCodes.Int8, msgpackCodes.Int16, msgpackCodes.Int32, msgpackCodes.Int64:
@@ -82,19 +85,19 @@ func msgpackUnmarshal(dec *msgpack.Decoder, typ Type, path *AttributePath) (Valu
 			if err != nil {
 				return Value{}, path.NewErrorf("couldn't decode number as int64: %w", err)
 			}
-			return NewValue(Number, big.NewFloat(float64(rv))), nil
+			return NewValue(Number, new(big.Float).SetInt64(rv)), nil
 		case msgpackCodes.Uint8, msgpackCodes.Uint16, msgpackCodes.Uint32, msgpackCodes.Uint64:
 			rv, err := dec.DecodeUint64()
 			if err != nil {
 				return Value{}, path.NewErrorf("couldn't decode number as uint64: %w", err)
 			}
-			return NewValue(Number, big.NewFloat(float64(rv))), nil
+			return NewValue(Number, new(big.Float).SetUint64(rv)), nil
 		case msgpackCodes.Float, msgpackCodes.Double:
 			rv, err := dec.DecodeFloat64()
 			if err != nil {
 				return Value{}, path.NewErrorf("couldn't decode number as float64: %w", err)
 			}
-			return NewValue(Number, big.NewFloat(float64(rv))), nil
+			return NewValue(Number, big.NewFloat(rv)), nil
 		default:
 			rv, err := dec.DecodeString()
 			if err != nil {
@@ -118,14 +121,19 @@ func msgpackUnmarshal(dec *msgpack.Decoder, typ Type, path *AttributePath) (Valu
 		}
 		return NewValue(Bool, rv), nil
 	case typ.Is(List{}):
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
 		return msgpackUnmarshalList(dec, typ.(List).ElementType, path)
 	case typ.Is(Set{}):
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
 		return msgpackUnmarshalSet(dec, typ.(Set).ElementType, path)
 	case typ.Is(Map{}):
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
 		return msgpackUnmarshalMap(dec, typ.(Map).ElementType, path)
 	case typ.Is(Tuple{}):
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
 		return msgpackUnmarshalTuple(dec, typ.(Tuple).ElementTypes, path)
 	case typ.Is(Object{}):
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
 		return msgpackUnmarshalObject(dec, typ.(Object).AttributeTypes, path)
 	}
 	return Value{}, path.NewErrorf("unsupported type %s", typ.String())
@@ -239,24 +247,8 @@ func msgpackUnmarshalMap(dec *msgpack.Decoder, typ Type, path *AttributePath) (V
 		vals[key] = val
 	}
 
-	elTyp := typ
-
-	if typ.Is(DynamicPseudoType) {
-		var elements []Value
-
-		for _, val := range vals {
-			elements = append(elements, val)
-		}
-
-		elTyp, err = TypeFromElements(elements)
-
-		if err != nil {
-			return Value{}, path.NewErrorf("invalid elements for map: %w", err)
-		}
-	}
-
 	return NewValue(Map{
-		ElementType: elTyp,
+		ElementType: typ,
 	}, vals), nil
 }
 
@@ -275,7 +267,6 @@ func msgpackUnmarshalTuple(dec *msgpack.Decoder, types []Type, path *AttributePa
 		return Value{}, path.NewErrorf("error decoding tuple; expected %d items, got %d", len(types), length)
 	}
 
-	elTypes := make([]Type, 0, length)
 	vals := make([]Value, 0, length)
 	for i := 0; i < length; i++ {
 		innerPath := path.WithElementKeyInt(i)
@@ -284,12 +275,11 @@ func msgpackUnmarshalTuple(dec *msgpack.Decoder, types []Type, path *AttributePa
 		if err != nil {
 			return Value{}, err
 		}
-		elTypes = append(elTypes, val.Type())
 		vals = append(vals, val)
 	}
 
 	return NewValue(Tuple{
-		ElementTypes: elTypes,
+		ElementTypes: types,
 	}, vals), nil
 }
 
@@ -308,7 +298,6 @@ func msgpackUnmarshalObject(dec *msgpack.Decoder, types map[string]Type, path *A
 		return Value{}, path.NewErrorf("error decoding object; expected %d attributes, got %d", len(types), length)
 	}
 
-	attrTypes := make(map[string]Type, length)
 	vals := make(map[string]Value, length)
 	for i := 0; i < length; i++ {
 		key, err := dec.DecodeString()
@@ -324,12 +313,11 @@ func msgpackUnmarshalObject(dec *msgpack.Decoder, types map[string]Type, path *A
 		if err != nil {
 			return Value{}, err
 		}
-		attrTypes[key] = val.Type()
 		vals[key] = val
 	}
 
 	return NewValue(Object{
-		AttributeTypes: attrTypes,
+		AttributeTypes: types,
 	}, vals), nil
 }
 
@@ -384,20 +372,25 @@ func marshalMsgPack(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder)
 	case typ.Is(Bool):
 		return marshalMsgPackBool(val, typ, p, enc)
 	case typ.Is(List{}):
-		return marshalMsgPackList(val, typ, p, enc)
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
+		return marshalMsgPackList(val, typ.(List), p, enc)
 	case typ.Is(Set{}):
-		return marshalMsgPackSet(val, typ, p, enc)
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
+		return marshalMsgPackSet(val, typ.(Set), p, enc)
 	case typ.Is(Map{}):
-		return marshalMsgPackMap(val, typ, p, enc)
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
+		return marshalMsgPackMap(val, typ.(Map), p, enc)
 	case typ.Is(Tuple{}):
-		return marshalMsgPackTuple(val, typ, p, enc)
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
+		return marshalMsgPackTuple(val, typ.(Tuple), p, enc)
 	case typ.Is(Object{}):
-		return marshalMsgPackObject(val, typ, p, enc)
+		//nolint:forcetypeassert // Is func above guarantees this type assertion
+		return marshalMsgPackObject(val, typ.(Object), p, enc)
 	}
 	return fmt.Errorf("unknown type %s", typ)
 }
 
-func marshalMsgPackDynamicPseudoType(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackDynamicPseudoType(val Value, _ Type, p *AttributePath, enc *msgpack.Encoder) error {
 	typeJSON, err := val.Type().MarshalJSON()
 	if err != nil {
 		return p.NewErrorf("error generating JSON for type %s: %w", val.Type(), err)
@@ -479,7 +472,7 @@ func marshalMsgPackBool(val Value, typ Type, p *AttributePath, enc *msgpack.Enco
 	return nil
 }
 
-func marshalMsgPackList(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackList(val Value, typ List, p *AttributePath, enc *msgpack.Encoder) error {
 	l, ok := val.value.([]Value)
 	if !ok {
 		return unexpectedValueTypeError(p, l, val.value, typ)
@@ -489,7 +482,7 @@ func marshalMsgPackList(val Value, typ Type, p *AttributePath, enc *msgpack.Enco
 		return p.NewErrorf("error encoding list length: %w", err)
 	}
 	for pos, i := range l {
-		err := marshalMsgPack(i, typ.(List).ElementType, p.WithElementKeyInt(pos), enc)
+		err := marshalMsgPack(i, typ.ElementType, p.WithElementKeyInt(pos), enc)
 		if err != nil {
 			return err
 		}
@@ -497,7 +490,7 @@ func marshalMsgPackList(val Value, typ Type, p *AttributePath, enc *msgpack.Enco
 	return nil
 }
 
-func marshalMsgPackSet(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackSet(val Value, typ Set, p *AttributePath, enc *msgpack.Encoder) error {
 	s, ok := val.value.([]Value)
 	if !ok {
 		return unexpectedValueTypeError(p, s, val.value, typ)
@@ -507,7 +500,7 @@ func marshalMsgPackSet(val Value, typ Type, p *AttributePath, enc *msgpack.Encod
 		return p.NewErrorf("error encoding set length: %w", err)
 	}
 	for _, i := range s {
-		err := marshalMsgPack(i, typ.(Set).ElementType, p.WithElementKeyValue(i), enc)
+		err := marshalMsgPack(i, typ.ElementType, p.WithElementKeyValue(i), enc)
 		if err != nil {
 			return err
 		}
@@ -515,7 +508,7 @@ func marshalMsgPackSet(val Value, typ Type, p *AttributePath, enc *msgpack.Encod
 	return nil
 }
 
-func marshalMsgPackMap(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackMap(val Value, typ Map, p *AttributePath, enc *msgpack.Encoder) error {
 	m, ok := val.value.(map[string]Value)
 	if !ok {
 		return unexpectedValueTypeError(p, m, val.value, typ)
@@ -529,7 +522,7 @@ func marshalMsgPackMap(val Value, typ Type, p *AttributePath, enc *msgpack.Encod
 		if err != nil {
 			return p.NewErrorf("error encoding map key: %w", err)
 		}
-		err = marshalMsgPack(v, typ.(Map).ElementType, p, enc)
+		err = marshalMsgPack(v, typ.ElementType, p, enc)
 		if err != nil {
 			return err
 		}
@@ -537,12 +530,12 @@ func marshalMsgPackMap(val Value, typ Type, p *AttributePath, enc *msgpack.Encod
 	return nil
 }
 
-func marshalMsgPackTuple(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackTuple(val Value, typ Tuple, p *AttributePath, enc *msgpack.Encoder) error {
 	t, ok := val.value.([]Value)
 	if !ok {
 		return unexpectedValueTypeError(p, t, val.value, typ)
 	}
-	types := typ.(Tuple).ElementTypes
+	types := typ.ElementTypes
 	err := enc.EncodeArrayLen(len(types))
 	if err != nil {
 		return p.NewErrorf("error encoding tuple length: %w", err)
@@ -557,12 +550,12 @@ func marshalMsgPackTuple(val Value, typ Type, p *AttributePath, enc *msgpack.Enc
 	return nil
 }
 
-func marshalMsgPackObject(val Value, typ Type, p *AttributePath, enc *msgpack.Encoder) error {
+func marshalMsgPackObject(val Value, typ Object, p *AttributePath, enc *msgpack.Encoder) error {
 	o, ok := val.value.(map[string]Value)
 	if !ok {
 		return unexpectedValueTypeError(p, o, val.value, typ)
 	}
-	types := typ.(Object).AttributeTypes
+	types := typ.AttributeTypes
 	keys := make([]string, 0, len(types))
 	for k := range types {
 		keys = append(keys, k)

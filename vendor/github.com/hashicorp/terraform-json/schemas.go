@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tfjson
 
 import (
@@ -39,7 +42,7 @@ func (p *ProviderSchemas) Validate() error {
 		return errors.New("unexpected provider schema data, format version is missing")
 	}
 
-	constraint, err := version.NewConstraint(PlanFormatVersionConstraints)
+	constraint, err := version.NewConstraint(ProviderSchemasFormatVersionConstraints)
 	if err != nil {
 		return fmt.Errorf("invalid version constraint: %w", err)
 	}
@@ -83,6 +86,9 @@ type ProviderSchema struct {
 
 	// The schemas for any data sources in this provider.
 	DataSourceSchemas map[string]*Schema `json:"data_source_schemas,omitempty"`
+
+	// The definitions for any functions in this provider.
+	Functions map[string]*FunctionSignature `json:"functions,omitempty"`
 }
 
 // Schema is the JSON representation of a particular schema
@@ -223,6 +229,13 @@ type SchemaAttribute struct {
 	Sensitive bool `json:"sensitive,omitempty"`
 }
 
+// jsonSchemaAttribute describes an attribute within a schema block
+// in a middle-step internal representation before marshalled into
+// a more useful SchemaAttribute with cty.Type.
+//
+// This avoid panic on marshalling cty.NilType (from cty upstream)
+// which the default Go marshaller cannot ignore because it's a
+// not nil-able struct.
 type jsonSchemaAttribute struct {
 	AttributeType       json.RawMessage            `json:"type,omitempty"`
 	AttributeNestedType *SchemaNestedAttributeType `json:"nested_type,omitempty"`

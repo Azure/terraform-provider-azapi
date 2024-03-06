@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package terraform
 
 import (
@@ -20,7 +23,7 @@ import (
 type diffChangeType byte
 
 const (
-	diffInvalid diffChangeType = iota
+	diffInvalid diffChangeType = iota //nolint:deadcode,varcheck
 	diffNone
 	diffCreate
 	diffUpdate

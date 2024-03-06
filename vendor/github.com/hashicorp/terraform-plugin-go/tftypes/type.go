@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tftypes
 
 import (
@@ -12,6 +15,12 @@ import (
 // implemented by the tftypes package. Types define the shape and
 // characteristics of data coming from or being sent to Terraform.
 type Type interface {
+	// AttributePathStepper requires each Type to implement the
+	// ApplyTerraform5AttributePathStep method, so Type is compatible with
+	// WalkAttributePath. The method should return the Type found at that
+	// AttributePath within the Type or ErrInvalidStep.
+	AttributePathStepper
+
 	// Is is used to determine what type a Type implementation is. It is
 	// the recommended method for determining whether two types are
 	// equivalent or not.
@@ -34,7 +43,7 @@ type Type interface {
 	// MarshalJSON returns a JSON representation of the Type's signature.
 	// It is modeled based on Terraform's requirements for type signature
 	// JSON representations, and may change over time to match Terraform's
-	// formatting.
+	// formatting. The error return should always be nil.
 	//
 	// Deprecated: this is not meant to be called by third-party code.
 	MarshalJSON() ([]byte, error)
