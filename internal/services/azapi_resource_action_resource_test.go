@@ -205,7 +205,6 @@ resource "azurerm_windows_function_app" "test" {
 
   site_config {}
   ftp_publish_basic_authentication_enabled = false
-  webdeploy_publish_basic_authentication_enabled = false
 }
 
 data "azapi_resource_id" "host" {
