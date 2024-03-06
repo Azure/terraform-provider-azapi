@@ -1,134 +1,201 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func AzApiDataSource() *schema.Resource {
-	return &schema.Resource{
-		Read: resourceAzApiDataSourceRead,
+type AzapiResourceDataSourceModel struct {
+	ID                   types.String `tfsdk:"id"`
+	Name                 types.String `tfsdk:"name"`
+	ParentID             types.String `tfsdk:"parent_id"`
+	ResourceID           types.String `tfsdk:"resource_id"`
+	Type                 types.String `tfsdk:"type"`
+	ResponseExportValues types.List   `tfsdk:"response_export_values"`
+	Location             types.String `tfsdk:"location"`
+	Identity             types.List   `tfsdk:"identity"`
+	Output               types.String `tfsdk:"output"`
+	Tags                 types.Map    `tfsdk:"tags"`
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Read: schema.DefaultTimeout(5 * time.Minute),
-		},
+type AzapiResourceDataSource struct {
+	ProviderData *clients.Client
+}
 
-		Schema: map[string]*schema.Schema{
-			"name": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ValidateFunc:  validation.StringIsNotEmpty,
-				ConflictsWith: []string{"resource_id"},
-			},
+var _ datasource.DataSource = &AzapiResourceDataSource{}
+var _ datasource.DataSourceWithConfigure = &AzapiResourceDataSource{}
 
-			"parent_id": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				Computed:      true,
-				ValidateFunc:  validate.ResourceID,
-				ConflictsWith: []string{"resource_id"},
-			},
+func (r *AzapiResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
 
-			"resource_id": {
-				Type:          schema.TypeString,
-				Optional:      true,
-				ValidateFunc:  validate.ResourceID,
-				ConflictsWith: []string{"name", "parent_id"},
-			},
+func (r *AzapiResourceDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource"
+}
 
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceType,
-			},
-
-			"response_export_values": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
-				},
-			},
-
-			"location": location.SchemaLocationDataSource(),
-
-			"identity": identity.SchemaIdentityDataSource(),
-
-			"output": {
-				Type:     schema.TypeString,
+func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
 				Computed: true,
 			},
 
-			"tags": tags.SchemaTagsDataSource(),
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
+				},
+			},
+
+			`name`: schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					myvalidator.StringIsNotEmpty(),
+				},
+			},
+
+			"parent_id": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"resource_id": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"location": schema.StringAttribute{
+				Computed: true,
+			},
+
+			"identity": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"type": schema.StringAttribute{
+							Computed: true,
+						},
+
+						"principal_id": schema.StringAttribute{
+							Computed: true,
+						},
+
+						"tenant_id": schema.StringAttribute{
+							Computed: true,
+						},
+
+						"identity_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+						},
+					},
+				},
+			},
+
+			"response_export_values": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"output": schema.StringAttribute{
+				Computed: true,
+			},
+
+			"tags": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+			},
 		},
 	}
 }
 
-func resourceAzApiDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
-	defer cancel()
+func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.ReadRequest, response *datasource.ReadResponse) {
+	var model AzapiResourceDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
 
 	var id parse.ResourceId
-	resourceType := d.Get("type").(string)
-	if name := d.Get("name").(string); len(name) != 0 {
-		parentId := d.Get("parent_id").(string)
-		if parentId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.ResourceGroupResourceType.String())) {
-			parentId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+	resourceType := model.Type.ValueString()
+	azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+	if name := model.Name.ValueString(); len(name) != 0 {
+		parentId := model.ParentID.ValueString()
+		if parentId == "" && strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+			parentId = fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId())
 		}
-
 		buildId, err := parse.NewResourceID(name, parentId, resourceType)
 		if err != nil {
-			return err
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
 		}
 		id = buildId
 	} else {
-		resourceId := d.Get("resource_id").(string)
-		if resourceId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.SubscriptionResourceType.String())) {
-			resourceId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+		resourceId := model.ResourceID.ValueString()
+		if resourceId == "" && strings.EqualFold(azureResourceType, arm.SubscriptionResourceType.String()) {
+			resourceId = fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId())
 		}
 		buildId, err := parse.ResourceIDWithResourceType(resourceId, resourceType)
 		if err != nil {
-			return err
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
 		}
 		id = buildId
 	}
 
+	client := r.ProviderData.ResourceClient
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
-			return fmt.Errorf("not found %q: %+v", id, err)
+			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
+			return
 		}
-		return fmt.Errorf("reading %q: %+v", id, err)
+		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("retrieving resource %q: %+v", id, err).Error())
+		return
 	}
-	d.SetId(id.ID())
-	// #nosec G104
-	d.Set("name", id.Name)
-	// #nosec G104
-	d.Set("parent_id", id.ParentId)
+
+	model.ID = basetypes.NewStringValue(id.ID())
+	model.Name = basetypes.NewStringValue(id.Name)
+	model.ParentID = basetypes.NewStringValue(id.ParentId)
+	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
-		// #nosec G104
-		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
-		// #nosec G104
-		d.Set("location", bodyMap["location"])
-		// #nosec G104
-		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
+		model.Tags = tags.FlattenTags(bodyMap["tags"])
+		model.Location = basetypes.NewStringNull()
+		if v := bodyMap["location"]; v != nil {
+			model.Location = basetypes.NewStringValue(location.Normalize(v.(string)))
+		}
+		model.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
+		if v := identity.FlattenIdentity(bodyMap["identity"]); v != nil {
+			model.Identity = identity.ToList(*v)
+		}
 	}
-	// #nosec G104
-	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
-	return nil
+	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

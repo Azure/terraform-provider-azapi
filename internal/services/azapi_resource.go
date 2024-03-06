@@ -4,565 +4,807 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
 	"reflect"
 	"regexp"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
-	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
+	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/go-cty/cty"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-func AzApiResource() *schema.Resource {
-	return &schema.Resource{
-		Create: resourceAzApiResourceCreateUpdate,
-		Read:   resourceAzApiResourceRead,
-		Update: resourceAzApiResourceCreateUpdate,
-		Delete: resourceAzApiResourceDelete,
+type AzapiResourceModel struct {
+	ID                      types.String `tfsdk:"id"`
+	Name                    types.String `tfsdk:"name"`
+	ParentID                types.String `tfsdk:"parent_id"`
+	Type                    types.String `tfsdk:"type"`
+	Location                types.String `tfsdk:"location"`
+	Identity                types.List   `tfsdk:"identity"`
+	Body                    types.String `tfsdk:"body"`
+	Locks                   types.List   `tfsdk:"locks"`
+	RemovingSpecialChars    types.Bool   `tfsdk:"removing_special_chars"`
+	SchemaValidationEnabled types.Bool   `tfsdk:"schema_validation_enabled"`
+	IgnoreBodyChanges       types.List   `tfsdk:"ignore_body_changes"`
+	IgnoreCasing            types.Bool   `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty   types.Bool   `tfsdk:"ignore_missing_property"`
+	ResponseExportValues    types.List   `tfsdk:"response_export_values"`
+	Output                  types.String `tfsdk:"output"`
+	Tags                    types.Map    `tfsdk:"tags"`
+}
 
-		Importer: &schema.ResourceImporter{
-			StateContext: func(ctx context.Context, d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-				log.Printf("[DEBUG] Importing Resource - parsing %q", d.Id())
+var _ resource.Resource = &AzapiResource{}
+var _ resource.ResourceWithConfigure = &AzapiResource{}
+var _ resource.ResourceWithModifyPlan = &AzapiResource{}
+var _ resource.ResourceWithValidateConfig = &AzapiResource{}
+var _ resource.ResourceWithImportState = &AzapiResource{}
 
-				input := d.Id()
-				idUrl, err := url.Parse(input)
-				if err != nil {
-					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", input, err)
-				}
-				apiVersion := idUrl.Query().Get("api-version")
-				if len(apiVersion) == 0 {
-					resourceType := utils.GetResourceType(input)
-					apiVersions := azure.GetApiVersions(resourceType)
-					if len(apiVersions) != 0 {
-						input = fmt.Sprintf("%s?api-version=%s", input, apiVersions[len(apiVersions)-1])
-					}
-				}
+type AzapiResource struct {
+	ProviderData *clients.Client
+}
 
-				id, err := parse.ResourceIDWithApiVersion(input)
-				if err != nil {
-					return []*schema.ResourceData{d}, fmt.Errorf("parsing Resource ID %q: %+v", d.Id(), err)
-				}
-				// override the id to remove the api-version
-				d.SetId(id.ID())
-				// #nosec G104
-				d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-				return []*schema.ResourceData{d}, nil
-			},
-		},
+func (r *AzapiResource) Configure(_ context.Context, request resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(30 * time.Minute),
-			Read:   schema.DefaultTimeout(5 * time.Minute),
-			Update: schema.DefaultTimeout(30 * time.Minute),
-			Delete: schema.DefaultTimeout(30 * time.Minute),
-		},
+func (r *AzapiResource) Metadata(_ context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource"
+}
 
-		Schema: map[string]*schema.Schema{
-			"name": resourceName.SchemaResourceNameOC(),
-
-			"removing_special_chars": resourceName.SchemaResourceNameRemovingSpecialCharacters(),
-
-			"parent_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Computed:     true,
-				ValidateFunc: validate.ResourceID,
-			},
-
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceType,
-			},
-
-			"location": location.SchemaLocationOC(),
-
-			"identity": identity.SchemaIdentity(),
-
-			"body": {
-				Type:             schema.TypeString,
-				Optional:         true,
-				Default:          "{}",
-				ValidateFunc:     validation.StringIsJSON,
-				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
-			},
-
-			"ignore_casing": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
-			},
-
-			"ignore_body_changes": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+func (r *AzapiResource) Schema(_ context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 
-			"ignore_missing_property": {
-				Type:     schema.TypeBool,
+			"name": schema.StringAttribute{
 				Optional: true,
-				Default:  true,
-			},
-
-			"response_export_values": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 
-			"locks": {
-				Type:     schema.TypeList,
+			"removing_special_chars": schema.BoolAttribute{
 				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+				Computed: true,
+				Default:  defaults.BoolDefault(false),
+			},
+
+			"parent_id": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
 				},
 			},
 
-			"schema_validation_enabled": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  true,
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
+				},
 			},
 
-			"output": {
-				Type:     schema.TypeString,
+			"location": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					myplanmodifier.UseStateWhen(func(a, b types.String) bool {
+						return location.Normalize(a.ValueString()) == location.Normalize(b.ValueString())
+					}),
+				},
+			},
+
+			"body": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.StringDefault("{}"),
+				Validators: []validator.String{
+					myvalidator.StringIsJSON(),
+				},
+				PlanModifiers: []planmodifier.String{
+					myplanmodifier.UseStateWhen(func(a, b types.String) bool {
+						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
+					}),
+				},
+			},
+
+			"ignore_body_changes": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"ignore_casing": schema.BoolAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.BoolDefault(false),
+			},
+
+			"ignore_missing_property": schema.BoolAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.BoolDefault(true),
+			},
+
+			"response_export_values": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"locks": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"schema_validation_enabled": schema.BoolAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.BoolDefault(true),
+			},
+
+			"output": schema.StringAttribute{
 				Computed: true,
 			},
 
-			"tags": tags.SchemaTagsOC(),
+			"tags": schema.MapAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Computed:    true,
+				Validators: []validator.Map{
+					tags.Validator(),
+				},
+			},
 		},
+		Blocks: map[string]schema.Block{
+			"identity": schema.ListNestedBlock{
+				NestedObject: schema.NestedBlockObject{
+					Attributes: map[string]schema.Attribute{
+						"type": schema.StringAttribute{
+							Required: true,
+							Validators: []validator.String{stringvalidator.OneOf(
+								string(identity.SystemAssignedUserAssigned),
+								string(identity.UserAssigned),
+								string(identity.SystemAssigned),
+								string(identity.None),
+							)},
+						},
 
-		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			if d.HasChange("identity") || d.HasChange("tags") || d.HasChange("response_export_values") {
-				// #nosec G104
-				d.SetNewComputed("output")
-			}
-			old, new := d.GetChange("body")
-			if utils.NormalizeJson(old) != utils.NormalizeJson(new) {
-				// #nosec G104
-				d.SetNewComputed("output")
-			}
+						"identity_ids": schema.ListAttribute{
+							ElementType: types.StringType,
+							Optional:    true,
+							Validators: []validator.List{
+								listvalidator.ValueStringsAre(myvalidator.StringIsUserAssignedIdentityID()),
+							},
+						},
 
-			parentId := d.Get("parent_id").(string)
-			resourceType := d.Get("type").(string)
-			var assignedName string
+						"principal_id": schema.StringAttribute{
+							Computed: true,
+						},
 
-			config := d.GetRawConfig()
-			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
-				return fmt.Errorf("resource name can't be empty, either specifying a default name or a resource name")
-			}
-
-			// body refers other resource, can't be verified during plan
-			if len(d.Get("body").(string)) == 0 {
-				return nil
-			}
-
-			var body map[string]interface{}
-			err := json.Unmarshal([]byte(d.Get("body").(string)), &body)
-			if err != nil {
-				return err
-			}
-
-			props := []string{"identity", "location", "tags"}
-			for _, prop := range props {
-				if isConfigExist(config, prop) && body[prop] != nil {
-					return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-				}
-			}
-
-			azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(d.Get("type").(string))
-			if err != nil {
-				return err
-			}
-			resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
-			if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-				if isResourceHasProperty(resourceDef, "tags") {
-					body["tags"] = meta.(*clients.Client).Features.DefaultTags
-					currentTags := d.Get("tags")
-					defaultTags := meta.(*clients.Client).Features.DefaultTags
-					if !reflect.DeepEqual(currentTags, defaultTags) {
-						// #nosec G104
-						d.SetNew("tags", defaultTags)
-					}
-				}
-			}
-
-			if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) != 0 {
-				currentName := d.Get("name").(string)
-				defaultName := meta.(*clients.Client).Features.DefaultNaming
-				assignedName = defaultName
-				if currentName != defaultName {
-					// #nosec G104
-					d.SetNew("name", assignedName)
-				}
-			}
-
-			if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
-				currentName := d.Get("name").(string)
-				assignedName = value.(string)
-
-				if len(meta.(*clients.Client).Features.DefaultNamingPrefix) != 0 {
-					assignedName = meta.(*clients.Client).Features.DefaultNamingPrefix + assignedName
-				}
-				if len(meta.(*clients.Client).Features.DefaultNamingSuffix) != 0 {
-					assignedName += meta.(*clients.Client).Features.DefaultNamingSuffix
-				}
-				if _, ok := d.GetOk("removing_special_chars"); ok && isConfigExist(config, "removing_special_chars") {
-					assignedName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(assignedName, "")
-				}
-				if currentName != assignedName {
-					// #nosec G104
-					d.SetNew("name", assignedName)
-				}
-			}
-
-			// verify parent_id when it's known
-			if len(parentId) > 0 {
-				_, err := parse.NewResourceID(assignedName, parentId, resourceType)
-				if err != nil {
-					return err
-				}
-			}
-
-			if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-				if isResourceHasProperty(resourceDef, "location") {
-					body["location"] = meta.(*clients.Client).Features.DefaultLocation
-					currentLocation := d.Get("location").(string)
-					defaultLocation := meta.(*clients.Client).Features.DefaultLocation
-					if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
-						// #nosec G104
-						d.SetNew("location", defaultLocation)
-					}
-				}
-			}
-
-			if d.Get("schema_validation_enabled").(bool) {
-				if value, ok := d.GetOk("tags"); ok && isConfigExist(config, "tags") {
-					tagsModel := tags.ExpandTags(value.(map[string]interface{}))
-					if len(tagsModel) != 0 {
-						body["tags"] = tagsModel
-					}
-				}
-				if value, ok := d.GetOk("location"); ok && isConfigExist(config, "location") {
-					body["location"] = location.Normalize(value.(string))
-				}
-				if value, ok := d.GetOk("identity"); ok && isConfigExist(config, "identity") {
-					identityModel, err := identity.ExpandIdentity(value.([]interface{}))
-					if err != nil {
-						return err
-					}
-					if identityModel != nil {
-						body["identity"] = identityModel
-					}
-				}
-				body["name"] = assignedName
-				if err := schemaValidation(azureResourceType, apiVersion, resourceDef, body); err != nil {
-					return err
-				}
-			}
-			return nil
+						"tenant_id": schema.StringAttribute{
+							Computed: true,
+						},
+					},
+				},
+			},
 		},
+		Version: 0,
 	}
 }
 
-func resourceAzApiResourceCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	if !d.IsNewResource() {
-		d.Partial(true)
+func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.ValidateConfigRequest, response *resource.ValidateConfigResponse) {
+	var config *AzapiResourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
+		return
+	}
+	// destroy doesn't need to modify plan
+	if config == nil {
+		return
 	}
 
-	config := d.GetRawConfig()
-	var resourceName string
+	resourceType := config.Type.ValueString()
 
-	if !isConfigExist(config, "name") && len(meta.(*clients.Client).Features.DefaultNaming) == 0 {
-		return fmt.Errorf("either a default name or a user assigned name in config file needs to be assigned")
+	// for resource group, if parent_id is not specified, set it to subscription id
+	if config.ParentID.IsNull() {
+		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+		if !strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+			response.Diagnostics.AddError("Missing required argument", `The argument "parent_id" is required, but no definition was found.`)
+			return
+		}
 	}
 
-	if value, ok := d.GetOk("name"); ok && isConfigExist(config, "name") {
-		resourceName = value.(string)
+	if config.Body.IsUnknown() {
+		return
+	}
+
+	body := make(map[string]interface{})
+	if bodyValueString := config.Body.ValueString(); bodyValueString != "" {
+		if err := json.Unmarshal([]byte(bodyValueString), &body); err != nil {
+			response.Diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, bodyValueString, err))
+			return
+		}
+	}
+	if diags := validateDuplicatedDefinitions(config, body); diags.HasError() {
+		response.Diagnostics.Append(diags...)
+		return
+	}
+}
+
+func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) {
+	var config, state, plan *AzapiResourceModel
+	response.Diagnostics.Append(request.Config.Get(ctx, &config)...)
+	response.Diagnostics.Append(request.State.Get(ctx, &state)...)
+	response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	// destroy doesn't need to modify plan
+	if config == nil {
+		return
+	}
+
+	defer func() {
+		response.Plan.Set(ctx, plan)
+	}()
+
+	resourceType := config.Type.ValueString()
+
+	// for resource group, if parent_id is not specified, set it to subscription id
+	if config.ParentID.IsNull() {
+		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+		if strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+			plan.ParentID = types.StringValue(fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId()))
+		}
+	}
+
+	if assignedName, diags := r.nameWithDefaultNaming(config.Name, plan.RemovingSpecialChars.ValueBool()); !diags.HasError() {
+		plan.Name = assignedName
+		// replace the resource if the name is changed
+		if state != nil && !state.Name.Equal(plan.Name) {
+			response.RequiresReplace.Append(path.Root("name"))
+		}
 	} else {
-		resourceName = meta.(*clients.Client).Features.DefaultNaming
+		response.Diagnostics.Append(diags...)
+		return
 	}
 
-	parentId := d.Get("parent_id").(string)
-	resourceType := d.Get("type").(string)
-	if parentId == "" && strings.HasPrefix(strings.ToUpper(resourceType), strings.ToUpper(arm.ResourceGroupResourceType.String())) {
-		parentId = fmt.Sprintf("/subscriptions/%s", meta.(*clients.Client).Account.GetSubscriptionId())
+	// if the config identity type and identity ids are not changed, use the state identity
+	if !config.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
+		configIdentity := identity.FromList(config.Identity)
+		stateIdentity := identity.FromList(state.Identity)
+		if configIdentity.Type.Equal(stateIdentity.Type) && configIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
+			plan.Identity = state.Identity
+		}
 	}
 
-	id, err := parse.NewResourceID(resourceName, parentId, resourceType)
+	if plan.Body.IsUnknown() {
+		if config.Tags.IsNull() {
+			plan.Tags = basetypes.NewMapUnknown(types.StringType)
+		}
+		if config.Location.IsNull() {
+			plan.Location = basetypes.NewStringUnknown()
+		}
+		plan.Output = types.StringUnknown()
+		return
+	}
+
+	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || utils.NormalizeJson(plan.Body.ValueString()) != utils.NormalizeJson(state.Body.ValueString()) {
+		plan.Output = types.StringUnknown()
+	}
+
+	body := make(map[string]interface{})
+	err := json.Unmarshal([]byte(plan.Body.ValueString()), &body)
 	if err != nil {
-		return err
+		response.Diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, plan.Body.ValueString(), err))
+		return
 	}
 
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
-	if d.IsNewResource() {
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
+		return
+	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
+
+	plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
+	if state == nil || !state.Tags.Equal(plan.Tags) {
+		plan.Output = types.StringUnknown()
+	}
+
+	locationValue := plan.Location
+	// the resource is new
+	if locationValue.IsUnknown() || config.Location.IsNull() {
+		locationValue = config.Location
+	}
+	plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
+	if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
+		// if the location is changed, replace the resource
+		response.RequiresReplace.Append(path.Root("location"))
+	}
+
+	if plan.SchemaValidationEnabled.ValueBool() {
+		if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
+			return
+		}
+		body["name"] = plan.Name.ValueString()
+		err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+	}
+}
+
+func (r *AzapiResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
+	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+}
+
+func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+}
+
+func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan, responseState *tfsdk.State, diagnostics *diag.Diagnostics) {
+	var plan, state *AzapiResourceModel
+	diagnostics.Append(requestPlan.Get(ctx, &plan)...)
+	diagnostics.Append(responseState.Get(ctx, &state)...)
+	if diagnostics.HasError() {
+		return
+	}
+
+	id, err := parse.NewResourceID(plan.Name.ValueString(), plan.ParentID.ValueString(), plan.Type.ValueString())
+	if err != nil {
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
+	client := r.ProviderData.ResourceClient
+	isNewResource := responseState == nil || responseState.Raw.IsNull()
+	if isNewResource {
+		// check if the resource already exists
+		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err == nil {
-			return tf.ImportAsExistsError("azapi_resource", id.ID())
+			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
+			return
 		}
 		if !utils.ResponseErrorWasNotFound(err) {
-			return fmt.Errorf("checking for presence of existing %s: %+v", id, err)
+			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
+			return
 		}
 	}
 
-	var body map[string]interface{}
-	err = json.Unmarshal([]byte(d.Get("body").(string)), &body)
+	// build the request body
+	body := make(map[string]interface{})
+	err = json.Unmarshal([]byte(plan.Body.ValueString()), &body)
 	if err != nil {
-		return err
+		diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, plan.Body.ValueString(), err))
+		return
+	}
+	if diagnostics.Append(expandBody(body, *plan)...); diagnostics.HasError() {
+		return
 	}
 
-	props := []string{"identity", "location", "tags"}
-	for _, prop := range props {
-		if isConfigExist(config, prop) && body[prop] != nil {
-			return fmt.Errorf("can't specify both property `%[1]s` and `%[1]s` in `body`", prop)
-		}
-	}
-
-	if !isConfigExist(config, "tags") && body["tags"] == nil && len(meta.(*clients.Client).Features.DefaultTags) != 0 {
-		if isResourceHasProperty(id.ResourceDef, "tags") {
-			body["tags"] = meta.(*clients.Client).Features.DefaultTags
-		}
-	}
-
-	if !isConfigExist(config, "location") && body["location"] == nil && len(meta.(*clients.Client).Features.DefaultLocation) != 0 {
-		if isResourceHasProperty(id.ResourceDef, "location") {
-			body["location"] = meta.(*clients.Client).Features.DefaultLocation
-		}
-	}
-
-	if value, ok := d.GetOk("tags"); ok && isConfigExist(config, "tags") {
-		tagsModel := tags.ExpandTags(value.(map[string]interface{}))
-		if len(tagsModel) != 0 {
-			body["tags"] = tagsModel
-		}
-	}
-	if value, ok := d.GetOk("location"); ok && isConfigExist(config, "location") {
-		body["location"] = location.Normalize(value.(string))
-	}
-	if value, ok := d.GetOk("identity"); ok && isConfigExist(config, "identity") {
-		identityModel, err := identity.ExpandIdentity(value.([]interface{}))
-		if err != nil {
-			return err
-		}
-		if identityModel != nil {
-			body["identity"] = identityModel
-		}
-	}
-
-	ignoreChanges := d.Get("ignore_body_changes").([]interface{})
-	if !d.IsNewResource() && len(ignoreChanges) != 0 {
-		merged, err := overrideWithPaths(body, existing, ignoreChanges)
-		if err != nil {
-			return err
+	if !isNewResource {
+		// handle the case that identity block was once set, now it's removed
+		if stateIdentity := identity.FromList(state.Identity); body["identity"] == nil && stateIdentity.Type.ValueString() != string(identity.None) {
+			noneIdentity := identity.Model{Type: types.StringValue(string(identity.None))}
+			out, _ := identity.ExpandIdentity(noneIdentity)
+			body["identity"] = out
 		}
 
-		if id.ResourceDef != nil {
-			merged = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(merged))
-		}
-
-		body = merged.(map[string]interface{})
-	}
-
-	if d.Get("schema_validation_enabled").(bool) {
-		bodyToValidate := make(map[string]interface{})
-		for k, v := range body {
-			bodyToValidate[k] = v
-		}
-		bodyToValidate["name"] = id.Name
-		if err := schemaValidation(id.AzureResourceType, id.ApiVersion, id.ResourceDef, bodyToValidate); err != nil {
-			return err
-		}
-	}
-
-	j, _ := json.Marshal(body)
-	log.Printf("[INFO] request body: %v\n", string(j))
-
-	for _, id := range d.Get("locks").([]interface{}) {
-		locks.ByID(id.(string))
-		defer locks.UnlockByID(id.(string))
-	}
-
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
-	if err != nil {
-		if d.IsNewResource() {
-			if _, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion); err == nil {
-				d.SetId(id.ID())
+		// handle the case that `ignore_body_changes` is set
+		if ignoreChanges := AsStringList(plan.IgnoreBodyChanges); len(ignoreChanges) != 0 {
+			// retrieve the existing resource
+			existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+			if err != nil {
+				diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+				return
 			}
+
+			merged, err := overrideWithPaths(body, existing, ignoreChanges)
+			if err != nil {
+				diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: value: %s, err: %+v`, plan.IgnoreBodyChanges.String(), err))
+				return
+			}
+
+			if id.ResourceDef != nil {
+				merged = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(merged))
+			}
+
+			body = merged.(map[string]interface{})
 		}
-		return fmt.Errorf("creating/updating %q: %+v", id, err)
 	}
 
-	d.SetId(id.ID())
-
-	if !d.IsNewResource() {
-		d.Partial(false)
+	// create/update the resource
+	for _, lockId := range AsStringList(plan.Locks) {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
-	return resourceAzApiResourceRead(d, meta)
+	responseBody, err := client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
+	if err != nil {
+		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
+		return
+	}
+
+	// generate the computed fields
+	plan.ID = types.StringValue(id.ID())
+	plan.Output = types.StringValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
+	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		if !plan.Identity.IsNull() {
+			planIdentity := identity.FromList(plan.Identity)
+			if v := identity.FlattenIdentity(bodyMap["identity"]); v != nil {
+				planIdentity.TenantID = v.TenantID
+				planIdentity.PrincipalID = v.PrincipalID
+			} else {
+				planIdentity.TenantID = types.StringNull()
+				planIdentity.PrincipalID = types.StringNull()
+			}
+			plan.Identity = identity.ToList(planIdentity)
+		}
+	}
+
+	diagnostics.Append(responseState.Set(ctx, plan)...)
 }
 
-func resourceAzApiResourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForRead(meta.(*clients.Client).StopContext, d)
-	defer cancel()
+func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
+	var model AzapiResourceModel
+	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
 
-	id, err := parse.ResourceIDWithResourceType(d.Id(), d.Get("type").(string))
+	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {
-		return err
+		response.Diagnostics.AddError("Error parsing ID", err.Error())
+		return
+	}
+
+	client := r.ProviderData.ResourceClient
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	if err != nil {
+		if utils.ResponseErrorWasNotFound(err) {
+			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			response.State.RemoveResource(ctx)
+			return
+		}
+		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+		return
+	}
+
+	state := model
+	state.Name = types.StringValue(id.Name)
+	state.ParentID = types.StringValue(id.ParentId)
+	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+
+	bodyJson := model.Body.ValueString()
+	requestBody := make(map[string]interface{})
+	err = json.Unmarshal([]byte(bodyJson), &requestBody)
+	if err != nil && !model.Body.IsNull() {
+		response.Diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, bodyJson, err))
+		return
+	}
+	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+		if v, ok := bodyMap["location"]; ok && location.Normalize(v.(string)) != location.Normalize(model.Location.ValueString()) {
+			state.Location = types.StringValue(v.(string))
+		}
+		if output := tags.FlattenTags(bodyMap["tags"]); len(output.Elements()) != 0 || len(state.Tags.Elements()) != 0 {
+			state.Tags = output
+		}
+		if requestBody["identity"] == nil {
+			identityFromResponse := identity.FlattenIdentity(bodyMap["identity"])
+			switch {
+			case state.Identity.IsNull() && (identityFromResponse == nil || identityFromResponse.Type.ValueString() == string(identity.None)):
+				state.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
+			case state.Identity.IsNull() && identityFromResponse != nil && identityFromResponse.Type.ValueString() != string(identity.None):
+				state.Identity = identity.ToList(*identityFromResponse)
+			case !state.Identity.IsNull() && identityFromResponse == nil:
+				stateIdentity := identity.FromList(state.Identity)
+				if stateIdentity.Type.ValueString() == string(identity.None) {
+					// do nothing
+				} else {
+					state.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
+				}
+			case !state.Identity.IsNull() && identityFromResponse != nil:
+				stateIdentity := identity.FromList(state.Identity)
+				if len(stateIdentity.IdentityIDs.Elements()) == 0 && len(identityFromResponse.IdentityIDs.Elements()) == 0 {
+					// to suppress the diff of identity_ids = [] and identity_ids = null
+					identityFromResponse.IdentityIDs = stateIdentity.IdentityIDs
+				}
+				state.Identity = identity.ToList(*identityFromResponse)
+			}
+		}
+	}
+	state.Output = types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	if ignoreBodyChanges := AsStringList(model.IgnoreBodyChanges); len(ignoreBodyChanges) != 0 {
+		if out, err := overrideWithPaths(responseBody, requestBody, ignoreBodyChanges); err == nil {
+			responseBody = out
+		} else {
+			response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: value: %s, err: %+v`, model.IgnoreBodyChanges.String(), err))
+			return
+		}
+	}
+
+	option := utils.UpdateJsonOption{
+		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
+		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
+	}
+	body := utils.UpdateObject(requestBody, responseBody, option)
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid body", err.Error())
+		return
+	}
+	state.Body = types.StringValue(string(data))
+
+	response.Diagnostics.Append(response.State.Set(ctx, state)...)
+}
+
+func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
+	client := r.ProviderData.ResourceClient
+
+	var model *AzapiResourceModel
+	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+
+	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Error parsing ID", err.Error())
+		return
+	}
+
+	for _, lockId := range AsStringList(model.Locks) {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
+	}
+
+	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	if err != nil && !utils.ResponseErrorWasNotFound(err) {
+		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
+	}
+}
+
+func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
+	tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
+
+	input := request.ID
+	idUrl, err := url.Parse(input)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", input, err).Error())
+		return
+	}
+	apiVersion := idUrl.Query().Get("api-version")
+	if apiVersion == "" {
+		resourceType := utils.GetResourceType(input)
+		apiVersions := azure.GetApiVersions(resourceType)
+		if len(apiVersions) != 0 {
+			input = fmt.Sprintf("%s?api-version=%s", input, apiVersions[len(apiVersions)-1])
+		}
+	}
+
+	id, err := parse.ResourceIDWithApiVersion(input)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", input, err).Error())
+		return
+	}
+
+	client := r.ProviderData.ResourceClient
+
+	state := AzapiResourceModel{
+		ID:                      types.StringValue(id.ID()),
+		Name:                    types.StringValue(id.Name),
+		ParentID:                types.StringValue(id.ParentId),
+		Type:                    types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion)),
+		Locks:                   types.ListNull(types.StringType),
+		Identity:                types.ListNull(identity.Model{}.ModelType()),
+		RemovingSpecialChars:    types.BoolValue(false),
+		SchemaValidationEnabled: types.BoolValue(true),
+		IgnoreBodyChanges:       types.ListNull(types.StringType),
+		IgnoreCasing:            types.BoolValue(false),
+		IgnoreMissingProperty:   types.BoolValue(true),
+		ResponseExportValues:    types.ListNull(types.StringType),
+		Output:                  types.StringValue("{}"),
+		Tags:                    types.MapNull(types.StringType),
 	}
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
-			log.Printf("[INFO] Error reading %q - removing from state", id.ID())
-			d.SetId("")
-			return nil
+			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
+			response.State.RemoveResource(ctx)
+			return
 		}
-		return fmt.Errorf("reading %q: %+v", id, err)
+		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+		return
 	}
 
-	bodyJson := d.Get("body").(string)
-	var requestBody interface{}
-	err = json.Unmarshal([]byte(bodyJson), &requestBody)
-	if err != nil && len(bodyJson) != 0 {
-		return err
-	}
-
-	// if it's imported
-	if len(d.Get("name").(string)) == 0 {
-		if id.ResourceDef != nil {
-			writeOnlyBody := (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(responseBody))
-			if bodyMap, ok := writeOnlyBody.(map[string]interface{}); ok {
-				delete(bodyMap, "location")
-				delete(bodyMap, "tags")
-				delete(bodyMap, "name")
-				delete(bodyMap, "identity")
-				writeOnlyBody = bodyMap
-			}
-			data, err := json.Marshal(writeOnlyBody)
-			if err != nil {
-				return err
-			}
-			// #nosec G104
-			d.Set("body", string(data))
-		} else {
-			data, err := json.Marshal(responseBody)
-			if err != nil {
-				return err
-			}
-			// #nosec G104
-			d.Set("body", string(data))
+	tflog.Info(ctx, fmt.Sprintf("resource %q is imported", id.ID()))
+	if id.ResourceDef != nil {
+		writeOnlyBody := (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(responseBody))
+		if bodyMap, ok := writeOnlyBody.(map[string]interface{}); ok {
+			delete(bodyMap, "location")
+			delete(bodyMap, "tags")
+			delete(bodyMap, "name")
+			delete(bodyMap, "identity")
+			writeOnlyBody = bodyMap
 		}
-		// #nosec G104
-		d.Set("ignore_casing", false)
-		// #nosec G104
-		d.Set("ignore_missing_property", true)
-		// #nosec G104
-		d.Set("schema_validation_enabled", true)
-		// #nosec G104
-		d.Set("removing_special_chars", false)
-	} else {
-		option := utils.UpdateJsonOption{
-			IgnoreCasing:          d.Get("ignore_casing").(bool),
-			IgnoreMissingProperty: d.Get("ignore_missing_property").(bool),
-		}
-		if out, err := overrideWithPaths(responseBody, requestBody, d.Get("ignore_body_changes").([]interface{})); err == nil {
-			responseBody = out
-		} else {
-			return err
-		}
-		body := utils.UpdateObject(requestBody, responseBody, option)
-		data, err := json.Marshal(body)
+		data, err := json.Marshal(writeOnlyBody)
 		if err != nil {
-			return err
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
 		}
-		// #nosec G104
-		d.Set("body", string(data))
+		state.Body = types.StringValue(string(data))
+	} else {
+		data, err := json.Marshal(responseBody)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid body", err.Error())
+			return
+		}
+		state.Body = types.StringValue(string(data))
 	}
-
-	// #nosec G104
-	d.Set("name", id.Name)
-	// #nosec G104
-	d.Set("parent_id", id.ParentId)
-	// #nosec G104
-	d.Set("type", fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
-
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
-		// #nosec G104
-		d.Set("tags", tags.FlattenTags(bodyMap["tags"]))
-		// #nosec G104
-		d.Set("location", bodyMap["location"])
-		// #nosec G104
-		d.Set("identity", identity.FlattenIdentity(bodyMap["identity"]))
-	}
-
-	// #nosec G104
-	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
-	return nil
-}
-
-func resourceAzApiResourceDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	id, err := parse.ResourceIDWithResourceType(d.Id(), d.Get("type").(string))
-	if err != nil {
-		return err
-	}
-
-	for _, id := range d.Get("locks").([]interface{}) {
-		locks.ByID(id.(string))
-		defer locks.UnlockByID(id.(string))
-	}
-
-	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
-	if err != nil {
-		if utils.ResponseErrorWasNotFound(err) {
-			return nil
+		if v, ok := bodyMap["location"]; ok {
+			state.Location = types.StringValue(location.Normalize(v.(string)))
 		}
-		return fmt.Errorf("deleting %q: %+v", id, err)
+		if output := tags.FlattenTags(bodyMap["tags"]); len(output.Elements()) != 0 {
+			state.Tags = output
+		}
+		if v := identity.FlattenIdentity(bodyMap["identity"]); v != nil {
+			state.Identity = identity.ToList(*v)
+		}
 	}
 
-	return nil
+	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
-func isConfigExist(config cty.Value, path string) bool {
-	if config.CanIterateElements() {
-		configMap := config.AsValueMap()
-		if value, ok := configMap[path]; ok {
-			if value.Type().IsListType() {
-				return len(value.AsValueSlice()) != 0
+func (r *AzapiResource) nameWithDefaultNaming(name types.String, removingSpecialChars bool) (types.String, diag.Diagnostics) {
+	if name.IsNull() && r.ProviderData.Features.DefaultNaming != "" {
+		return types.StringValue(r.ProviderData.Features.DefaultNaming), diag.Diagnostics{}
+	}
+
+	assignedName := ""
+	if !name.IsNull() && !name.IsUnknown() {
+		assignedName = name.ValueString()
+		if len(r.ProviderData.Features.DefaultNamingPrefix) != 0 {
+			assignedName = r.ProviderData.Features.DefaultNamingPrefix + assignedName
+		}
+		if len(r.ProviderData.Features.DefaultNamingSuffix) != 0 {
+			assignedName += r.ProviderData.Features.DefaultNamingSuffix
+		}
+		if removingSpecialChars {
+			assignedName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(assignedName, "")
+		}
+	}
+	if assignedName == "" {
+		return types.StringNull(), diag.Diagnostics{
+			diag.NewErrorDiagnostic("Missing required argument", `The argument "name" is required, but no definition was found.`),
+		}
+	}
+	return types.StringValue(assignedName), diag.Diagnostics{}
+}
+
+func (r *AzapiResource) tagsWithDefaultTags(config types.Map, body map[string]interface{}, state *AzapiResourceModel, resourceDef *aztypes.ResourceType) types.Map {
+	if config.IsNull() {
+		switch {
+		case body["tags"] != nil:
+			return tags.FlattenTags(body["tags"])
+		case len(r.ProviderData.Features.DefaultTags) != 0 && canResourceHaveProperty(resourceDef, "tags"):
+			defaultTags := r.ProviderData.Features.DefaultTags
+			if state == nil || state.Tags.IsNull() {
+				return tags.FlattenTags(defaultTags)
+			} else {
+				currentTags := tags.ExpandTags(state.Tags)
+				if !reflect.DeepEqual(currentTags, defaultTags) {
+					return tags.FlattenTags(defaultTags)
+				} else {
+					return state.Tags
+				}
 			}
-			return !value.IsNull()
 		}
 	}
-	return false
+	return config
+}
+
+func (r *AzapiResource) locationWithDefaultLocation(config types.String, body map[string]interface{}, state *AzapiResourceModel, resourceDef *aztypes.ResourceType) types.String {
+	if config.IsNull() {
+		switch {
+		case body["location"] != nil:
+			return types.StringValue(body["location"].(string))
+		case len(r.ProviderData.Features.DefaultLocation) != 0 && canResourceHaveProperty(resourceDef, "location"):
+			defaultLocation := r.ProviderData.Features.DefaultLocation
+			if state == nil || state.Location.IsNull() {
+				return types.StringValue(defaultLocation)
+			} else {
+				currentLocation := state.Location.ValueString()
+				if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
+					return types.StringValue(defaultLocation)
+				} else {
+					return state.Location
+				}
+			}
+		}
+	}
+	return config
+}
+
+func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diagnostics {
+	if body == nil {
+		return diag.Diagnostics{}
+	}
+	if body["location"] == nil && !model.Location.IsNull() && !model.Location.IsUnknown() {
+		body["location"] = model.Location.ValueString()
+	}
+	if body["tags"] == nil && !model.Tags.IsNull() && !model.Tags.IsUnknown() {
+		body["tags"] = tags.ExpandTags(model.Tags)
+	}
+	if body["identity"] == nil && !model.Identity.IsNull() && !model.Identity.IsUnknown() {
+		identityModel := identity.FromList(model.Identity)
+		out, err := identity.ExpandIdentity(identityModel)
+		if err != nil {
+			return diag.Diagnostics{
+				diag.NewErrorDiagnostic("Invalid configuration", fmt.Sprintf(`The argument "identity" is invalid: value: %s, err: %+v`, model.Identity.String(), err)),
+			}
+		}
+		body["identity"] = out
+	}
+	return diag.Diagnostics{}
+}
+
+func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]interface{}) diag.Diagnostics {
+	diags := diag.Diagnostics{}
+	if !model.Tags.IsNull() && !model.Tags.IsUnknown() && body["tags"] != nil {
+		diags.AddError("Invalid configuration", `can't specify both the argument "tags" and "tags" in the argument "body"`)
+	}
+	if !model.Location.IsNull() && !model.Location.IsUnknown() && body["location"] != nil {
+		diags.AddError("Invalid configuration", `can't specify both the argument "location" and "location" in the argument "body"`)
+	}
+	if !model.Identity.IsNull() && !model.Identity.IsUnknown() && body["identity"] != nil {
+		diags.AddError("Invalid configuration", `can't specify both the argument "identity" and "identity" in the argument "body"`)
+	}
+	return diags
 }

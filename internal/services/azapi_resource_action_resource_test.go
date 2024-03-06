@@ -12,7 +12,7 @@ import (
 type ActionResource struct{}
 
 func TestAccActionResource_basic(t *testing.T) {
-	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -43,7 +43,7 @@ func TestAccActionResource_basicWhenDestroy(t *testing.T) {
 }
 
 func TestAccActionResource_registerResourceProvider(t *testing.T) {
-	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -55,7 +55,7 @@ func TestAccActionResource_registerResourceProvider(t *testing.T) {
 }
 
 func TestAccActionResource_providerAction(t *testing.T) {
-	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -204,6 +204,8 @@ resource "azurerm_windows_function_app" "test" {
   service_plan_id            = azurerm_service_plan.test.id
 
   site_config {}
+  ftp_publish_basic_authentication_enabled = false
+  webdeploy_publish_basic_authentication_enabled = false
 }
 
 data "azapi_resource_id" "host" {

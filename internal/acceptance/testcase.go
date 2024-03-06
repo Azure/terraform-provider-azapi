@@ -5,11 +5,13 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/provider"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
@@ -55,9 +57,9 @@ func BuildTestData(t *testing.T, resourceType string, resourceLabel string) Test
 
 		ResourceType:      resourceType,
 		resourceLabel:     resourceLabel,
-		LocationPrimary:   os.Getenv("ARM_TEST_LOCATION"),
-		LocationSecondary: os.Getenv("ARM_TEST_LOCATION_ALT"),
-		LocationTernary:   os.Getenv("ARM_TEST_LOCATION_ALT2"),
+		LocationPrimary:   location.Normalize(os.Getenv("ARM_TEST_LOCATION")),
+		LocationSecondary: location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT")),
+		LocationTernary:   location.Normalize(os.Getenv("ARM_TEST_LOCATION_ALT2")),
 	}
 }
 
@@ -98,17 +100,14 @@ func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps [
 
 func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 	testCase.ExternalProviders = td.externalProviders()
-	testCase.ProviderFactories = td.providers()
+	testCase.ProtoV6ProviderFactories = td.providers()
 
 	resource.ParallelTest(t, testCase)
 }
 
-func (td TestData) providers() map[string]func() (*schema.Provider, error) {
-	return map[string]func() (*schema.Provider, error){
-		"azapi": func() (*schema.Provider, error) { //nolint:unparam
-			azapi := provider.AzureProvider()
-			return azapi, nil
-		},
+func (td TestData) providers() map[string]func() (tfprotov6.ProviderServer, error) {
+	return map[string]func() (tfprotov6.ProviderServer, error){
+		"azapi": providerserver.NewProtocol6WithError(provider.AzureProvider()),
 	}
 }
 

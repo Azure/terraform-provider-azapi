@@ -1,109 +1,151 @@
 package services
 
 import (
+	"context"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azapi/internal/tf"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func ResourceIdDataSource() *schema.Resource {
-	return &schema.Resource{
-		Read: resourceIdDataSourceRead,
+type ResourceIdDataSourceModel struct {
+	ID                types.String `tfsdk:"id"`
+	Type              types.String `tfsdk:"type"`
+	Name              types.String `tfsdk:"name"`
+	ParentID          types.String `tfsdk:"parent_id"`
+	ResourceID        types.String `tfsdk:"resource_id"`
+	ResourceGroupName types.String `tfsdk:"resource_group_name"`
+	SubscriptionID    types.String `tfsdk:"subscription_id"`
+	ProviderNamespace types.String `tfsdk:"provider_namespace"`
+	Parts             types.Map    `tfsdk:"parts"`
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Read: schema.DefaultTimeout(30 * time.Minute),
-		},
+type ResourceIdDataSource struct {
+}
 
-		Schema: map[string]*schema.Schema{
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceType,
-			},
+var _ datasource.DataSource = &ResourceIdDataSource{}
+var _ datasource.DataSourceWithValidateConfig = &ResourceIdDataSource{}
 
-			"parent_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
-				ValidateFunc: validate.ResourceID,
-				RequiredWith: []string{"name"},
-				ExactlyOneOf: []string{"resource_id", "parent_id"},
-			},
+func (r *ResourceIdDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource_id"
+}
 
-			"name": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
-				RequiredWith: []string{"parent_id"},
-			},
-
-			"resource_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
-				ValidateFunc: validate.ResourceID,
-				ExactlyOneOf: []string{"resource_id", "parent_id"},
-			},
-
-			"resource_group_name": {
-				Type:     schema.TypeString,
+func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
 				Computed: true,
 			},
 
-			"subscription_id": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-
-			"provider_namespace": {
-				Type:     schema.TypeString,
-				Computed: true,
-			},
-
-			"parts": {
-				Type:     schema.TypeMap,
-				Computed: true,
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
 				},
+			},
+
+			"parent_id": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"name": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+			},
+
+			"resource_id": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"resource_group_name": schema.StringAttribute{
+				Computed: true,
+			},
+
+			"subscription_id": schema.StringAttribute{
+				Computed: true,
+			},
+
+			"provider_namespace": schema.StringAttribute{
+				Computed: true,
+			},
+
+			"parts": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
 			},
 		},
 	}
 }
 
-func resourceIdDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	_, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
-	defer cancel()
+func (r *ResourceIdDataSource) ValidateConfig(ctx context.Context, request datasource.ValidateConfigRequest, response *datasource.ValidateConfigResponse) {
+	var config *ResourceIdDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
+		return
+	}
+
+	if config == nil {
+		return
+	}
+
+	if config.Name.IsNull() && !config.ParentID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `The argument "name" is required when the argument "parent_id" is set`)
+	}
+	if !config.Name.IsNull() && config.ParentID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `The argument "parent_id" is required when the argument "name" is set`)
+	}
+	if config.Name.IsNull() && config.ResourceID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `One of the arguments "name" or "resource_id" must be set`)
+	}
+	if !config.Name.IsNull() && !config.ResourceID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `Only one of the arguments "name" or "resource_id" can be set`)
+	}
+	if response.Diagnostics.HasError() {
+		return
+	}
+}
+
+func (r *ResourceIdDataSource) Read(ctx context.Context, request datasource.ReadRequest, response *datasource.ReadResponse) {
+	var model ResourceIdDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
 
 	var id parse.ResourceId
-
-	if name := d.Get("name").(string); len(name) != 0 {
-		buildId, err := parse.NewResourceID(d.Get("name").(string), d.Get("parent_id").(string), d.Get("type").(string))
+	if name := model.Name.ValueString(); len(name) != 0 {
+		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 		if err != nil {
-			return err
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
+		buildId, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
 		if err != nil {
-			return err
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
 		}
 		id = buildId
 	}
 
-	d.SetId(id.ID())
-	// #nosec G104
-	d.Set("name", id.Name)
-	// #nosec G104
-	d.Set("parent_id", id.ParentId)
-	// #nosec G104
-	d.Set("resource_id", id.AzureResourceId)
+	model.ID = basetypes.NewStringValue(id.ID())
+	model.Name = basetypes.NewStringValue(id.Name)
+	model.ParentID = basetypes.NewStringValue(id.ParentId)
+	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
 
 	armId, err := arm.ParseResourceID(id.AzureResourceId)
 	if id.AzureResourceId == "/" {
@@ -112,26 +154,23 @@ func resourceIdDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		}, nil
 	}
 	if err != nil {
-		return err
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
 	}
 
-	// #nosec G104
-	d.Set("resource_group_name", armId.ResourceGroupName)
-	// #nosec G104
-	d.Set("subscription_id", armId.SubscriptionID)
-	// #nosec G104
-	d.Set("provider_namespace", armId.ResourceType.Namespace)
+	model.ResourceGroupName = basetypes.NewStringValue(armId.ResourceGroupName)
+	model.SubscriptionID = basetypes.NewStringValue(armId.SubscriptionID)
+	model.ProviderNamespace = basetypes.NewStringValue(armId.ResourceType.Namespace)
 
 	path := id.AzureResourceId
 	path = strings.TrimPrefix(path, "/")
 	path = strings.TrimSuffix(path, "/")
 	components := strings.Split(path, "/")
-	parts := make(map[string]string)
+	parts := make(map[string]attr.Value)
 	for i := 0; i < len(components)-1; i += 2 {
-		parts[components[i]] = components[i+1]
+		parts[components[i]] = basetypes.NewStringValue(components[i+1])
 	}
-	// #nosec G104
-	d.Set("parts", parts)
+	model.Parts = basetypes.NewMapValueMust(types.StringType, parts)
 
-	return nil
+	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

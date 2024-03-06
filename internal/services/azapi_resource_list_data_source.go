@@ -1,75 +1,105 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azapi/internal/tf"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func ResourceListDataSource() *schema.Resource {
-	return &schema.Resource{
-		Read: resourceListDataSourceRead,
+type ResourceListDataSourceModel struct {
+	ID                   types.String `tfsdk:"id"`
+	Type                 types.String `tfsdk:"type"`
+	ParentID             types.String `tfsdk:"parent_id"`
+	ResponseExportValues types.List   `tfsdk:"response_export_values"`
+	Output               types.String `tfsdk:"output"`
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Read: schema.DefaultTimeout(30 * time.Minute),
-		},
+type ResourceListDataSource struct {
+	ProviderData *clients.Client
+}
 
-		Schema: map[string]*schema.Schema{
-			"parent_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceID,
+var _ datasource.DataSource = &ResourceListDataSource{}
+var _ datasource.DataSourceWithConfigure = &ResourceListDataSource{}
+
+func (r *ResourceListDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
+
+func (r *ResourceListDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource_list"
+}
+
+func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
 			},
 
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceType,
-			},
-
-			"response_export_values": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
 				},
 			},
 
-			"output": {
-				Type:     schema.TypeString,
+			"parent_id": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"response_export_values": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"output": schema.StringAttribute{
 				Computed: true,
 			},
 		},
 	}
 }
 
-func resourceListDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	id, err := parse.NewResourceIDSkipScopeValidation("", d.Get("parent_id").(string), d.Get("type").(string))
-	if err != nil {
-		return err
+func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.ReadRequest, response *datasource.ReadResponse) {
+	var model ResourceListDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
 	}
+
+	id, err := parse.NewResourceIDSkipScopeValidation("", model.ParentID.ValueString(), model.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
+	client := r.ProviderData.ResourceClient
 	responseBody, err := client.List(ctx, listUrl, id.ApiVersion)
 	if err != nil {
-		return fmt.Errorf("list resource, url: %s, error: %+v", listUrl, err)
+		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
+		return
 	}
 
-	d.SetId(listUrl)
-	// #nosec G104
-	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
+	model.ID = basetypes.NewStringValue(listUrl)
+	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
-	return nil
+	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

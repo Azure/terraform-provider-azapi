@@ -1,13 +1,15 @@
 package identity
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type IdentityType string
@@ -19,119 +21,76 @@ const (
 	SystemAssignedUserAssigned IdentityType = "SystemAssigned, UserAssigned"
 )
 
-func SchemaIdentity() *schema.Schema {
-	return &schema.Schema{
-		Type:     schema.TypeList,
-		Optional: true,
-		Computed: true,
-		MaxItems: 1,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"type": {
-					Type:     schema.TypeString,
-					Required: true,
-					ValidateFunc: validation.StringInSlice([]string{
-						string(None),
-						string(UserAssigned),
-						string(SystemAssigned),
-						string(SystemAssignedUserAssigned),
-					}, false),
-				},
+type Model struct {
+	Type        types.String `tfsdk:"type"`
+	IdentityIDs types.List   `tfsdk:"identity_ids"`
+	PrincipalID types.String `tfsdk:"principal_id"`
+	TenantID    types.String `tfsdk:"tenant_id"`
+}
 
-				"identity_ids": {
-					Type:     schema.TypeList,
-					Optional: true,
-					Elem: &schema.Schema{
-						Type:         schema.TypeString,
-						ValidateFunc: validate.UserAssignedIdentityID,
-					},
-				},
+func (m Model) ModelType() attr.Type {
+	return types.ObjectType{AttrTypes: m.AttrType()}
+}
 
-				"principal_id": {
-					Type:     schema.TypeString,
-					Computed: true,
-				},
-
-				"tenant_id": {
-					Type:     schema.TypeString,
-					Computed: true,
-				},
-			},
-		},
+func (m Model) AttrType() map[string]attr.Type {
+	return map[string]attr.Type{
+		"type":         types.StringType,
+		"identity_ids": types.ListType{ElemType: types.StringType},
+		"principal_id": types.StringType,
+		"tenant_id":    types.StringType,
 	}
 }
 
-func SchemaIdentityDataSource() *schema.Schema {
-	return &schema.Schema{
-		Type:     schema.TypeList,
-		Optional: true,
-		Computed: true,
-		MaxItems: 1,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"type": {
-					Type:     schema.TypeString,
-					Computed: true,
-				},
-
-				"identity_ids": {
-					Type:     schema.TypeList,
-					Computed: true,
-					Elem: &schema.Schema{
-						Type: schema.TypeString,
-					},
-				},
-
-				"principal_id": {
-					Type:     schema.TypeString,
-					Computed: true,
-				},
-
-				"tenant_id": {
-					Type:     schema.TypeString,
-					Computed: true,
-				},
-			},
-		},
+func (m Model) Value() attr.Value {
+	var identityIDs attr.Value
+	if m.IdentityIDs.IsNull() {
+		identityIDs = basetypes.NewListNull(types.StringType)
+	} else {
+		identityIDs = basetypes.NewListValueMust(types.StringType, m.IdentityIDs.Elements())
 	}
+
+	return types.ObjectValueMust(m.AttrType(), map[string]attr.Value{
+		"type":         types.StringValue(m.Type.ValueString()),
+		"identity_ids": identityIDs,
+		"principal_id": types.StringValue(m.PrincipalID.ValueString()),
+		"tenant_id":    types.StringValue(m.TenantID.ValueString()),
+	})
 }
 
-func ExpandIdentity(input []interface{}) (interface{}, error) {
-	if len(input) == 0 || input[0] == nil {
-		return nil, nil
-	}
+func (m Model) ObjectType() attr.Type {
+	return types.ObjectType{AttrTypes: m.AttrType()}
+}
 
-	v := input[0].(map[string]interface{})
-
+func ExpandIdentity(input Model) (interface{}, error) {
 	config := map[string]interface{}{}
-	identityType := IdentityType(v["type"].(string))
+	identityType := IdentityType(input.Type.ValueString())
 	config["type"] = identityType
-	identityIds := v["identity_ids"].([]interface{})
+	identityIds := input.IdentityIDs.Elements()
 	userAssignedIdentities := make(map[string]interface{}, len(identityIds))
 	if len(identityIds) != 0 {
 		if identityType != UserAssigned && identityType != SystemAssignedUserAssigned {
 			return nil, fmt.Errorf("`identity_ids` can only be specified when `type` includes `UserAssigned`")
 		}
 		for _, id := range identityIds {
-			userAssignedIdentities[id.(string)] = make(map[string]interface{})
+			userAssignedIdentities[id.(basetypes.StringValue).ValueString()] = make(map[string]interface{})
 		}
 		config["userAssignedIdentities"] = userAssignedIdentities
 	}
 	return config, nil
 }
 
-func FlattenIdentity(identity interface{}) []interface{} {
+func FlattenIdentity(identity interface{}) *Model {
 	if identity == nil {
 		return nil
 	}
 	if identityMap, ok := identity.(map[string]interface{}); ok {
-		identityIds := make([]string, 0)
+		identityIds := make([]attr.Value, 0)
 		if identityMap["userAssignedIdentities"] != nil {
 			userAssignedIdentities := identityMap["userAssignedIdentities"].(map[string]interface{})
 			for key := range userAssignedIdentities {
 				identityId, err := parse.UserAssignedIdentitiesID(key)
 				if err == nil {
-					identityIds = append(identityIds, identityId.ID())
+					identityIds = append(identityIds, basetypes.NewStringValue(identityId.ID()))
 				}
 			}
 		}
@@ -148,14 +107,43 @@ func FlattenIdentity(identity interface{}) []interface{} {
 			identityType = string(None)
 		}
 
-		return []interface{}{
-			map[string]interface{}{
-				"type":         identityType,
-				"identity_ids": identityIds,
-				"principal_id": identityMap["principalId"],
-				"tenant_id":    identityMap["tenantId"],
-			},
+		principalId := ""
+		if v := identityMap["principalId"]; v != nil {
+			principalId = v.(string)
+		}
+
+		tenantId := ""
+		if v := identityMap["tenantId"]; v != nil {
+			tenantId = v.(string)
+		}
+		return &Model{
+			Type:        basetypes.NewStringValue(identityType),
+			IdentityIDs: basetypes.NewListValueMust(types.StringType, identityIds),
+			PrincipalID: basetypes.NewStringValue(principalId),
+			TenantID:    basetypes.NewStringValue(tenantId),
 		}
 	}
 	return nil
+}
+
+func FromList(input types.List) Model {
+	identityModel := Model{
+		Type: types.StringValue(string(None)),
+	}
+	elements := input.Elements()
+	if len(elements) == 0 {
+		return identityModel
+	}
+	diags := elements[0].(basetypes.ObjectValue).As(context.Background(), &identityModel, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    false,
+		UnhandledUnknownAsEmpty: false,
+	})
+	if diags.HasError() {
+		tflog.Warn(context.Background(), fmt.Sprintf("failed to convert list to identity: %s", diags))
+	}
+	return identityModel
+}
+
+func ToList(input Model) types.List {
+	return basetypes.NewListValueMust(input.ObjectType(), []attr.Value{input.Value()})
 }

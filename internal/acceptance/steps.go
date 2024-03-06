@@ -18,9 +18,9 @@ func (td TestData) RequiresImportErrorStep(configBuilder func(data TestData) str
 	}
 }
 
-func RequiresImportError(resourceName string) *regexp.Regexp {
-	message := "to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for %q for more information."
-	return regexp.MustCompile(fmt.Sprintf(message, resourceName))
+func RequiresImportError(_ string) *regexp.Regexp {
+	message := "Resource already exists"
+	return regexp.MustCompile(message)
 }
 
 // ImportStep returns a Test Step which Imports the Resource, optionally

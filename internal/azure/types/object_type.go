@@ -24,7 +24,7 @@ func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 	// check body type
 	bodyMap, ok := body.(map[string]interface{})
 	if !ok {
-		return nil
+		return body
 	}
 
 	res := make(map[string]interface{})

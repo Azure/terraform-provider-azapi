@@ -1,93 +1,79 @@
 package tags
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func SchemaTagsOC() *schema.Schema {
-	return &schema.Schema{
-		Type:         schema.TypeMap,
-		Optional:     true,
-		Computed:     true,
-		ValidateFunc: ValidateTags,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
+func ExpandTags(input types.Map) map[string]string {
+	output := make(map[string]string)
+	if diags := input.ElementsAs(context.Background(), &output, false); diags.HasError() {
+		return nil
 	}
+	return output
 }
 
-func SchemaTags() *schema.Schema {
-	return &schema.Schema{
-		Type:         schema.TypeMap,
-		Optional:     true,
-		ValidateFunc: ValidateTags,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
+func FlattenTags(input interface{}) types.Map {
+	if input == nil {
+		return basetypes.NewMapNull(types.StringType)
 	}
+	tagsMap := make(map[string]attr.Value)
+	switch inputMap := input.(type) {
+	case map[string]interface{}:
+		for k, v := range inputMap {
+			tagsMap[k] = basetypes.NewStringValue(v.(string))
+		}
+	case map[string]string:
+		for k, v := range inputMap {
+			tagsMap[k] = basetypes.NewStringValue(v)
+		}
+	}
+	return basetypes.NewMapValueMust(types.StringType, tagsMap)
 }
 
-func SchemaTagsDataSource() *schema.Schema {
-	return &schema.Schema{
-		Type:     schema.TypeMap,
-		Computed: true,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-	}
+func Validator() validator.Map {
+	return tagsValidator{}
 }
 
-func ValidateTags(v interface{}, _ string) (warnings []string, errors []error) {
-	tagsMap := v.(map[string]interface{})
+type tagsValidator struct{}
+
+func (v tagsValidator) ValidateMap(ctx context.Context, request validator.MapRequest, response *validator.MapResponse) {
+	input := request.ConfigValue
+
+	if input.IsUnknown() || input.IsNull() {
+		return
+	}
+
+	tagsMap := make(map[string]string)
+	if response.Diagnostics.Append(input.ElementsAs(context.Background(), &tagsMap, false)...); response.Diagnostics.HasError() {
+		return
+	}
 
 	if len(tagsMap) > 50 {
-		errors = append(errors, fmt.Errorf("a maximum of 50 tags can be applied to each ARM resource"))
+		response.Diagnostics.AddError("Invalid tags", fmt.Errorf("a maximum of 50 tags can be applied to each ARM resource").Error())
 	}
 
 	for k, v := range tagsMap {
 		if len(k) > 512 {
-			errors = append(errors, fmt.Errorf("the maximum length for a tag key is 512 characters: %q is %d characters", k, len(k)))
+			response.Diagnostics.AddError("Invalid tags", fmt.Errorf("the maximum length for a tag key is 512 characters: %q is %d characters", k, len(k)).Error())
 		}
 
-		value, err := TagValueToString(v)
-		if err != nil {
-			errors = append(errors, err)
-		} else if len(value) > 256 {
-			errors = append(errors, fmt.Errorf("the maximum length for a tag value is 256 characters: the value for %q is %d characters", k, len(value)))
+		if len(v) > 256 {
+			response.Diagnostics.AddError("Invalid tags", fmt.Errorf("the maximum length for a tag value is 256 characters: the value for %q is %d characters", k, len(v)).Error())
 		}
 	}
 
-	return warnings, errors
 }
 
-func TagValueToString(v interface{}) (string, error) {
-	switch value := v.(type) {
-	case string:
-		return value, nil
-	case int:
-		return fmt.Sprintf("%d", value), nil
-	default:
-		return "", fmt.Errorf("unknown tag type %T in tag value", value)
-	}
+func (v tagsValidator) Description(ctx context.Context) string {
+	return "validate the tags"
 }
 
-func ExpandTags(tagsMap map[string]interface{}) map[string]string {
-	output := make(map[string]string, len(tagsMap))
-
-	for i, v := range tagsMap {
-		// Validate should have ignored this error already
-		value, _ := TagValueToString(v)
-		output[i] = value
-	}
-
-	return output
-}
-
-func FlattenTags(input interface{}) map[string]interface{} {
-	if input != nil {
-		return input.(map[string]interface{})
-	}
-	return nil
+func (v tagsValidator) MarkdownDescription(ctx context.Context) string {
+	return "validate the tags"
 }
