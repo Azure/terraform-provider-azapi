@@ -291,6 +291,9 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		response.Plan.Set(ctx, plan)
 	}()
 
+	if state != nil {
+		plan.Output = state.Output
+	}
 	resourceType := config.Type.ValueString()
 
 	// for resource group, if parent_id is not specified, set it to subscription id
@@ -745,6 +748,8 @@ func (r *AzapiResource) tagsWithDefaultTags(config types.Map, body map[string]in
 					return state.Tags
 				}
 			}
+		case state != nil && !state.Tags.IsUnknown() && len(state.Tags.Elements()) == 0:
+			return state.Tags
 		}
 	}
 	return config
