@@ -115,7 +115,7 @@ func (td TestData) externalProviders() map[string]resource.ExternalProvider {
 	return map[string]resource.ExternalProvider{
 		"azurerm": {
 			Source:            "registry.terraform.io/hashicorp/azurerm",
-			VersionConstraint: "= 3.41.0",
+			VersionConstraint: "= 3.90.0",
 		},
 	}
 }

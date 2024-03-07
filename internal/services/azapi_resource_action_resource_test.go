@@ -24,7 +24,7 @@ func TestAccActionResource_basic(t *testing.T) {
 }
 
 func TestAccActionResource_basicWhenDestroy(t *testing.T) {
-	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
 	data.DataSourceTest(t, []resource.TestStep{
@@ -204,7 +204,9 @@ resource "azurerm_windows_function_app" "test" {
   service_plan_id            = azurerm_service_plan.test.id
 
   site_config {}
-  ftp_publish_basic_authentication_enabled = false
+
+  ftp_publish_basic_authentication_enabled       = false
+  webdeploy_publish_basic_authentication_enabled = false
 }
 
 data "azapi_resource_id" "host" {
@@ -231,6 +233,8 @@ resource "azapi_resource_action" "test" {
     }
   })
 }
+
+
 
 
 `, data.LocationPrimary, data.RandomStringOfLength(10))

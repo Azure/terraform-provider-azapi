@@ -173,6 +173,19 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 
 	if model.When.ValueString() == "apply" {
 		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	} else {
+		id, err := parse.ResourceIDWithResourceType(model.ResourceId.ValueString(), model.Type.ValueString())
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+		resourceId := id.ID()
+		if actionName := model.Action.ValueString(); actionName != "" {
+			resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
+		}
+		model.ID = basetypes.NewStringValue(resourceId)
+		model.Output = basetypes.NewStringValue("{}")
+		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
 
