@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
-	"regexp"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -96,9 +95,10 @@ func (r *AzapiResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			},
 
 			"removing_special_chars": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(false),
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -291,6 +291,8 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		response.Plan.Set(ctx, plan)
 	}()
 
+	// Output is a computed field, it defaults to unknown if there's any plan change
+	// It sets to the state if the state exists, and will set to unknown if the output needs to be updated
 	if state != nil {
 		plan.Output = state.Output
 	}
@@ -304,8 +306,8 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if assignedName, diags := r.nameWithDefaultNaming(config.Name, plan.RemovingSpecialChars.ValueBool()); !diags.HasError() {
-		plan.Name = assignedName
+	if name, diags := r.nameWithDefaultNaming(config.Name); !diags.HasError() {
+		plan.Name = name
 		// replace the resource if the name is changed
 		if state != nil && !state.Name.Equal(plan.Name) {
 			response.RequiresReplace.Append(path.Root("name"))
@@ -358,11 +360,15 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		plan.Output = types.StringUnknown()
 	}
 
+	// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
 	locationValue := plan.Location
-	// the resource is new
+	// For the following cases, we need to use the location in config as the specified location
+	// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
+	// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
 	if locationValue.IsUnknown() || config.Location.IsNull() {
 		locationValue = config.Location
 	}
+	// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
 	plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
 	if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
 		// if the location is changed, replace the resource
@@ -537,21 +543,32 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			state.Tags = output
 		}
 		if requestBody["identity"] == nil {
+			// The following codes are used to reflect the actual changes of identity when it's not configured inside the body.
+			// And it suppresses the diff of nil identity and identity whose type is none.
 			identityFromResponse := identity.FlattenIdentity(bodyMap["identity"])
 			switch {
+			// Identity is not specified in config, and it's not in the response
 			case state.Identity.IsNull() && (identityFromResponse == nil || identityFromResponse.Type.ValueString() == string(identity.None)):
 				state.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
+
+			// Identity is not specified in config, but it's in the response
 			case state.Identity.IsNull() && identityFromResponse != nil && identityFromResponse.Type.ValueString() != string(identity.None):
 				state.Identity = identity.ToList(*identityFromResponse)
+
+			// Identity is specified in config, but it's not in the response
 			case !state.Identity.IsNull() && identityFromResponse == nil:
 				stateIdentity := identity.FromList(state.Identity)
+				// skip when the configured identity type is none
 				if stateIdentity.Type.ValueString() == string(identity.None) {
 					// do nothing
 				} else {
 					state.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
 				}
+
+			// Identity is specified in config, and it's in the response
 			case !state.Identity.IsNull() && identityFromResponse != nil:
 				stateIdentity := identity.FromList(state.Identity)
+				// suppress the diff of identity_ids = [] and identity_ids = null
 				if len(stateIdentity.IdentityIDs.Elements()) == 0 && len(identityFromResponse.IdentityIDs.Elements()) == 0 {
 					// to suppress the diff of identity_ids = [] and identity_ids = null
 					identityFromResponse.IdentityIDs = stateIdentity.IdentityIDs
@@ -705,30 +722,16 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
-func (r *AzapiResource) nameWithDefaultNaming(name types.String, removingSpecialChars bool) (types.String, diag.Diagnostics) {
-	if name.IsNull() && r.ProviderData.Features.DefaultNaming != "" {
+func (r *AzapiResource) nameWithDefaultNaming(config types.String) (types.String, diag.Diagnostics) {
+	if !config.IsNull() {
+		return config, diag.Diagnostics{}
+	}
+	if r.ProviderData.Features.DefaultNaming != "" {
 		return types.StringValue(r.ProviderData.Features.DefaultNaming), diag.Diagnostics{}
 	}
-
-	assignedName := ""
-	if !name.IsNull() && !name.IsUnknown() {
-		assignedName = name.ValueString()
-		if len(r.ProviderData.Features.DefaultNamingPrefix) != 0 {
-			assignedName = r.ProviderData.Features.DefaultNamingPrefix + assignedName
-		}
-		if len(r.ProviderData.Features.DefaultNamingSuffix) != 0 {
-			assignedName += r.ProviderData.Features.DefaultNamingSuffix
-		}
-		if removingSpecialChars {
-			assignedName = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(assignedName, "")
-		}
+	return types.StringNull(), diag.Diagnostics{
+		diag.NewErrorDiagnostic("Missing required argument", `The argument "name" is required, but no definition was found.`),
 	}
-	if assignedName == "" {
-		return types.StringNull(), diag.Diagnostics{
-			diag.NewErrorDiagnostic("Missing required argument", `The argument "name" is required, but no definition was found.`),
-		}
-	}
-	return types.StringValue(assignedName), diag.Diagnostics{}
 }
 
 func (r *AzapiResource) tagsWithDefaultTags(config types.Map, body map[string]interface{}, state *AzapiResourceModel, resourceDef *aztypes.ResourceType) types.Map {
@@ -748,6 +751,7 @@ func (r *AzapiResource) tagsWithDefaultTags(config types.Map, body map[string]in
 					return state.Tags
 				}
 			}
+		// To suppress the diff of config: tags = null and state: tags = {}
 		case state != nil && !state.Tags.IsUnknown() && len(state.Tags.Elements()) == 0:
 			return state.Tags
 		}

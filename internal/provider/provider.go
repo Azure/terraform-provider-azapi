@@ -239,13 +239,15 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			},
 
 			"default_naming_prefix": schema.StringAttribute{
-				Optional:    true,
-				Description: "The default prefix which should be used for resources.",
+				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
+				Optional:           true,
+				Description:        "The default prefix which should be used for resources.",
 			},
 
 			"default_naming_suffix": schema.StringAttribute{
-				Optional:    true,
-				Description: "The default suffix which should be used for resources.",
+				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
+				Optional:           true,
+				Description:        "The default suffix which should be used for resources.",
 			},
 
 			"default_location": schema.StringAttribute{
