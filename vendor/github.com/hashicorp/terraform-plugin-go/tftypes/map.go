@@ -1,6 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tftypes
 
 import (
+	"bytes"
 	"fmt"
 	"sort"
 )
@@ -14,6 +18,19 @@ type Map struct {
 	// see https://golang.org/ref/spec#Comparison_operators
 	// this enforces the use of Is, instead
 	_ []struct{}
+}
+
+// ApplyTerraform5AttributePathStep applies an AttributePathStep to a Map,
+// returning the Type found at that AttributePath within the Map. If the
+// AttributePathStep cannot be applied to the Map, an ErrInvalidStep error
+// will be returned.
+func (m Map) ApplyTerraform5AttributePathStep(step AttributePathStep) (interface{}, error) {
+	switch step.(type) {
+	case ElementKeyString:
+		return m.ElementType, nil
+	default:
+		return nil, ErrInvalidStep
+	}
 }
 
 // Equal returns true if the two Maps are exactly equal. Unlike Is, passing in
@@ -71,11 +88,17 @@ func (m Map) supportedGoTypes() []string {
 //
 // Deprecated: this is not meant to be called by third-party code.
 func (m Map) MarshalJSON() ([]byte, error) {
-	attributeType, err := m.ElementType.MarshalJSON()
-	if err != nil {
-		return nil, fmt.Errorf("error marshaling tftypes.Map's attribute type %T to JSON: %w", m.ElementType, err)
-	}
-	return []byte(`["map",` + string(attributeType) + `]`), nil
+	var buf bytes.Buffer
+
+	buf.WriteString(`["map",`)
+
+	// MarshalJSON is always error safe
+	elementTypeBytes, _ := m.ElementType.MarshalJSON()
+
+	buf.Write(elementTypeBytes)
+	buf.WriteString(`]`)
+
+	return buf.Bytes(), nil
 }
 
 func valueFromMap(typ Type, in interface{}) (Value, error) {
@@ -89,9 +112,7 @@ func valueFromMap(typ Type, in interface{}) (Value, error) {
 		var elType Type
 		for _, k := range keys {
 			v := value[k]
-			if v.Type().Is(DynamicPseudoType) && v.IsKnown() {
-				return Value{}, NewAttributePath().WithElementKeyString(k).NewErrorf("invalid value %s for %s", v, v.Type())
-			} else if !v.Type().Is(DynamicPseudoType) && !v.Type().UsableAs(typ) {
+			if !v.Type().UsableAs(typ) {
 				return Value{}, NewAttributePath().WithElementKeyString(k).NewErrorf("can't use %s as %s", v.Type(), typ)
 			}
 			if elType == nil {

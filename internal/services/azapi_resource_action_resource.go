@@ -4,212 +4,252 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func ResourceAction() *schema.Resource {
-	return &schema.Resource{
-		Create: resourceResourceActionCreateUpdate,
-		Read:   resourceResourceActionRead,
-		Update: resourceResourceActionCreateUpdate,
-		Delete: resourceResourceActionDelete,
+type ActionResourceModel struct {
+	ID                   types.String `tfsdk:"id"`
+	Type                 types.String `tfsdk:"type"`
+	ResourceId           types.String `tfsdk:"resource_id"`
+	Action               types.String `tfsdk:"action"`
+	Method               types.String `tfsdk:"method"`
+	Body                 types.String `tfsdk:"body"`
+	When                 types.String `tfsdk:"when"`
+	Locks                types.List   `tfsdk:"locks"`
+	ResponseExportValues types.List   `tfsdk:"response_export_values"`
+	Output               types.String `tfsdk:"output"`
+}
 
-		Importer: tf.DefaultImporter(func(id string) error {
-			return fmt.Errorf("`azapi_resource_action` doesn't support import")
-		}),
+type ActionResource struct {
+	ProviderData *clients.Client
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(30 * time.Minute),
-			Read:   schema.DefaultTimeout(5 * time.Minute),
-			Update: schema.DefaultTimeout(30 * time.Minute),
-			Delete: schema.DefaultTimeout(30 * time.Minute),
-		},
+var _ resource.Resource = &ActionResource{}
+var _ resource.ResourceWithConfigure = &ActionResource{}
+var _ resource.ResourceWithModifyPlan = &ActionResource{}
 
-		Schema: map[string]*schema.Schema{
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.ResourceType,
-			},
+func (r *ActionResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
 
-			"resource_id": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ForceNew:     true,
-				ValidateFunc: validate.ResourceID,
-			},
+func (r *ActionResource) Metadata(ctx context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource_action"
+}
 
-			"action": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-			},
-
-			"method": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  "POST",
-				ValidateFunc: validation.StringInSlice([]string{
-					"POST",
-					"PATCH",
-					"PUT",
-					"DELETE",
-					"GET",
-					"HEAD",
-				}, false),
-			},
-
-			"body": {
-				Type:             schema.TypeString,
-				Optional:         true,
-				ValidateFunc:     validation.StringIsJSON,
-				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
-				StateFunc:        utils.NormalizeJson,
-			},
-
-			"when": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      "apply",
-				Description:  "When to perform the action, value must be one of: 'apply', 'destroy'. Default is 'apply'.",
-				ValidateFunc: validation.StringInSlice([]string{"apply", "destroy"}, false),
-			},
-
-			"locks": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 
-			"response_export_values": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 
-			"output": {
-				Type:     schema.TypeString,
+			"resource_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"action": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+
+			"method": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.StringDefault("POST"),
+				Validators: []validator.String{
+					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
+				},
+			},
+
+			"body": schema.StringAttribute{
+				Optional: true,
+				Validators: []validator.String{
+					myvalidator.StringIsJSON(),
+				},
+				PlanModifiers: []planmodifier.String{
+					myplanmodifier.UseStateWhen(func(a, b types.String) bool {
+						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
+					}),
+				},
+			},
+
+			"when": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Default:  defaults.StringDefault("apply"),
+				Validators: []validator.String{
+					stringvalidator.OneOf("apply", "destroy"),
+				},
+			},
+
+			"locks": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"response_export_values": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"output": schema.StringAttribute{
 				Computed: true,
 			},
 		},
-
-		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			if d.HasChange("response_export_values") || d.HasChange("action") || d.HasChange("body") {
-				// #nosec G104
-				d.SetNewComputed("output")
-			}
-			return nil
-		},
 	}
 }
 
-func resourceResourceActionCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	if !d.IsNewResource() {
-		d.Partial(true)
+func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) {
+	var config, plan, state *ActionResourceModel
+	response.Diagnostics.Append(request.Config.Get(ctx, &config)...)
+	response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...)
+	response.Diagnostics.Append(request.State.Get(ctx, &state)...)
+	if response.Diagnostics.HasError() {
+		return
 	}
 
-	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
+	// destroy doesn't need to modify plan
+	if config == nil {
+		return
+	}
+
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) {
+		plan.Output = types.StringUnknown()
+	}
+}
+
+func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
+	var model ActionResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+
+	if model.When.ValueString() == "apply" {
+		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	} else {
+		id, err := parse.ResourceIDWithResourceType(model.ResourceId.ValueString(), model.Type.ValueString())
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+		resourceId := id.ID()
+		if actionName := model.Action.ValueString(); actionName != "" {
+			resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
+		}
+		model.ID = basetypes.NewStringValue(resourceId)
+		model.Output = basetypes.NewStringValue("{}")
+		response.Diagnostics.Append(response.State.Set(ctx, model)...)
+	}
+}
+
+func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	var model ActionResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+
+	if model.When.ValueString() == "apply" {
+		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	}
+}
+
+func (r *ActionResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
+	var model ActionResourceModel
+	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
+
+	if model.When.ValueString() != "destroy" {
+		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	}
+}
+
+func (r *ActionResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
+
+}
+
+func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, state *tfsdk.State, diagnostics *diag.Diagnostics) {
+	id, err := parse.ResourceIDWithResourceType(model.ResourceId.ValueString(), model.Type.ValueString())
 	if err != nil {
-		return err
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
 	}
 
-	actionName := d.Get("action").(string)
-	method := d.Get("method").(string)
-	body := d.Get("body").(string)
+	body := model.Body.ValueString()
 	var requestBody interface{}
-	if len(body) != 0 {
+	if body != "" {
 		err = json.Unmarshal([]byte(body), &requestBody)
 		if err != nil {
-			return fmt.Errorf("unmarshalling `body`: %+v", err)
+			diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "body" is invalid, value: %q, error: %s`, body, err.Error()))
+			return
 		}
 	}
 
-	log.Printf("[INFO] request body: %v\n", body)
-
-	for _, id := range d.Get("locks").([]interface{}) {
-		locks.ByID(id.(string))
-		defer locks.UnlockByID(id.(string))
+	for _, id := range AsStringList(model.Locks) {
+		locks.ByID(id)
+		defer locks.UnlockByID(id)
 	}
 
-	var responseBody interface{} = "{}"
-	if d.Get("when").(string) == "apply" {
-		responseBody, err = client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
-		if err != nil {
-			return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
-		}
+	client := r.ProviderData.ResourceClient
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)
+	if err != nil {
+		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
+		return
 	}
 
 	resourceId := id.ID()
-	if actionName != "" {
+	if actionName := model.Action.ValueString(); actionName != "" {
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
-	d.SetId(resourceId)
+	model.ID = basetypes.NewStringValue(resourceId)
+	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
-	// #nosec G104
-	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
-
-	if !d.IsNewResource() {
-		d.Partial(false)
-	}
-
-	return resourceResourceActionRead(d, meta)
-}
-
-func resourceResourceActionRead(d *schema.ResourceData, meta interface{}) error {
-	return nil
-}
-
-func resourceResourceActionDelete(d *schema.ResourceData, meta interface{}) error {
-	if when, _ := d.GetChange("when"); when.(string) != "destroy" {
-		return nil
-	}
-
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForDelete(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	resourceId, _ := d.GetChange("resource_id")
-	resourceType, _ := d.GetChange("type")
-
-	id, err := parse.ResourceIDWithResourceType(resourceId.(string), resourceType.(string))
-	if err != nil {
-		return err
-	}
-
-	actionName, _ := d.GetChange("action")
-	method, _ := d.GetChange("method")
-	body, _ := d.GetChange("body")
-	var requestBody interface{}
-	if len(body.(string)) != 0 {
-		err := json.Unmarshal([]byte(body.(string)), &requestBody)
-		if err != nil {
-			return fmt.Errorf("unmarshalling `body`: %+v", err)
-		}
-	}
-
-	if _, err := client.Action(ctx, id.AzureResourceId, actionName.(string), id.ApiVersion, method.(string), requestBody); err != nil {
-		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
-	}
-	return nil
+	diagnostics.Append(state.Set(ctx, model)...)
 }

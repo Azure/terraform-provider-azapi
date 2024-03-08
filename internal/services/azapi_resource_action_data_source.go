@@ -1,114 +1,141 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/validate"
-	"github.com/Azure/terraform-provider-azapi/internal/tf"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func ResourceActionDataSource() *schema.Resource {
-	return &schema.Resource{
-		Read: resourceActionDataSourceRead,
+type ResourceActionDataSourceModel struct {
+	ID                   types.String `tfsdk:"id"`
+	ResourceID           types.String `tfsdk:"resource_id"`
+	Type                 types.String `tfsdk:"type"`
+	Action               types.String `tfsdk:"action"`
+	Method               types.String `tfsdk:"method"`
+	Body                 types.String `tfsdk:"body"`
+	ResponseExportValues types.List   `tfsdk:"response_export_values"`
+	Output               types.String `tfsdk:"output"`
+}
 
-		Timeouts: &schema.ResourceTimeout{
-			Read: schema.DefaultTimeout(30 * time.Minute),
-		},
+type ResourceActionDataSource struct {
+	ProviderData *clients.Client
+}
 
-		Schema: map[string]*schema.Schema{
-			"resource_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ValidateFunc: validate.ResourceID,
+var _ datasource.DataSource = &ResourceActionDataSource{}
+var _ datasource.DataSourceWithConfigure = &ResourceActionDataSource{}
+
+func (r *ResourceActionDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
+	if v, ok := request.ProviderData.(*clients.Client); ok {
+		r.ProviderData = v
+	}
+}
+
+func (r *ResourceActionDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
+	response.TypeName = request.ProviderTypeName + "_resource_action"
+}
+
+func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed: true,
 			},
 
-			"type": {
-				Type:         schema.TypeString,
-				Required:     true,
-				ValidateFunc: validate.ResourceType,
-			},
-
-			"action": {
-				Type:     schema.TypeString,
-				Optional: true,
-			},
-
-			"method": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default:  "POST",
-				ValidateFunc: validation.StringInSlice([]string{
-					"POST",
-					"GET",
-				}, false),
-			},
-
-			"body": {
-				Type:             schema.TypeString,
-				Optional:         true,
-				ValidateFunc:     validation.StringIsJSON,
-				DiffSuppressFunc: tf.SuppressJsonOrderingDifference,
-			},
-
-			"response_export_values": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.StringIsNotEmpty,
+			"type": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceType(),
 				},
 			},
 
-			"output": {
-				Type:     schema.TypeString,
+			"resource_id": schema.StringAttribute{
+				Optional: true,
+				Validators: []validator.String{
+					myvalidator.StringIsResourceID(),
+				},
+			},
+
+			"action": schema.StringAttribute{
+				Optional: true,
+			},
+
+			"method": schema.StringAttribute{
+				Optional: true,
+				Computed: true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("POST", "GET"),
+				},
+			},
+
+			"body": schema.StringAttribute{
+				Optional: true,
+				Validators: []validator.String{
+					myvalidator.StringIsJSON(),
+				},
+			},
+
+			"response_export_values": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+			},
+
+			"output": schema.StringAttribute{
 				Computed: true,
 			},
 		},
 	}
 }
 
-func resourceActionDataSourceRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*clients.Client).ResourceClient
-	ctx, cancel := tf.ForCreateUpdate(meta.(*clients.Client).StopContext, d)
-	defer cancel()
-
-	id, err := parse.ResourceIDWithResourceType(d.Get("resource_id").(string), d.Get("type").(string))
-	if err != nil {
-		return err
+func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.ReadRequest, response *datasource.ReadResponse) {
+	var model ResourceActionDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
 	}
 
-	actionName := d.Get("action").(string)
-	method := d.Get("method").(string)
-	body := d.Get("body").(string)
+	id, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
 
+	body := model.Body.ValueString()
 	var requestBody interface{}
-	if len(body) != 0 {
-		err = json.Unmarshal([]byte(body), &requestBody)
+	if body != "" {
+		err := json.Unmarshal([]byte(body), &requestBody)
 		if err != nil {
-			return fmt.Errorf("unmarshalling `body`: %+v", err)
+			response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "body" is invalid, value: %q, error: %s`, body, err.Error()))
+			return
 		}
 	}
 
-	log.Printf("[INFO] request body: %v\n", body)
-	responseBody, err := client.Action(ctx, id.AzureResourceId, actionName, id.ApiVersion, method, requestBody)
+	method := model.Method.ValueString()
+	if method == "" {
+		method = "POST"
+	}
+
+	client := r.ProviderData.ResourceClient
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody)
 	if err != nil {
-		return fmt.Errorf("performing action %s of %q: %+v", actionName, id, err)
+		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
+		return
 	}
 
-	resourceId := id.ID()
-	if actionName != "" {
-		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
-	}
-	d.SetId(resourceId)
-	// #nosec G104
-	d.Set("output", flattenOutput(responseBody, d.Get("response_export_values").([]interface{})))
+	model.ID = basetypes.NewStringValue(id.ID())
+	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
-	return nil
+	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

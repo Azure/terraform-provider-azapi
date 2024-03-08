@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/Azure/terraform-provider-azapi/internal/provider"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 
 func main() {
@@ -18,17 +18,14 @@ func main() {
 	flag.BoolVar(&debugMode, "debuggable", false, "set to true to run the provider with support for debuggers like delve")
 	flag.Parse()
 
-	if debugMode {
-		err := plugin.Debug(context.Background(), "registry.terraform.io/Azure/azapi",
-			&plugin.ServeOpts{
-				ProviderFunc: provider.AzureProvider,
-			})
-		if err != nil {
-			log.Println(err.Error())
-		}
-	} else {
-		plugin.Serve(&plugin.ServeOpts{
-			ProviderFunc: provider.AzureProvider,
-		})
+	serveOpts := providerserver.ServeOpts{
+		Debug:   debugMode,
+		Address: "registry.terraform.io/Azure/azapi",
+	}
+
+	err := providerserver.Serve(context.Background(), provider.AzureProvider, serveOpts)
+
+	if err != nil {
+		log.Fatalf("Error serving provider: %s", err)
 	}
 }

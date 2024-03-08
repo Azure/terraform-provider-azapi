@@ -12,105 +12,125 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
-	"github.com/Azure/terraform-provider-azapi/internal/azure/resourceName"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
-	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/version"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func AzureProvider() *schema.Provider {
-	return azureProvider()
+func AzureProvider() provider.Provider {
+	return &Provider{}
 }
 
-func azureProvider() *schema.Provider {
-	dataSources := make(map[string]*schema.Resource)
-	resources := make(map[string]*schema.Resource)
+type Provider struct {
+}
 
-	resources["azapi_resource"] = services.AzApiResource()
-	resources["azapi_update_resource"] = services.AzApiUpdateResource()
-	resources["azapi_resource_action"] = services.ResourceAction()
-	resources["azapi_data_plane_resource"] = services.AzApiDataPlaneResource()
+type providerData struct {
+	SubscriptionID              types.String `tfsdk:"subscription_id"`
+	ClientID                    types.String `tfsdk:"client_id"`
+	TenantID                    types.String `tfsdk:"tenant_id"`
+	AuxiliaryTenantIDs          types.List   `tfsdk:"auxiliary_tenant_ids"`
+	Endpoint                    types.List   `tfsdk:"endpoint"`
+	Environment                 types.String `tfsdk:"environment"`
+	ClientCertificatePath       types.String `tfsdk:"client_certificate_path"`
+	ClientCertificatePassword   types.String `tfsdk:"client_certificate_password"`
+	ClientSecret                types.String `tfsdk:"client_secret"`
+	SkipProviderRegistration    types.Bool   `tfsdk:"skip_provider_registration"`
+	OIDCRequestToken            types.String `tfsdk:"oidc_request_token"`
+	OIDCRequestURL              types.String `tfsdk:"oidc_request_url"`
+	OIDCToken                   types.String `tfsdk:"oidc_token"`
+	OIDCTokenFilePath           types.String `tfsdk:"oidc_token_file_path"`
+	UseOIDC                     types.Bool   `tfsdk:"use_oidc"`
+	UseCLI                      types.Bool   `tfsdk:"use_cli"`
+	UseMSI                      types.Bool   `tfsdk:"use_msi"`
+	PartnerID                   types.String `tfsdk:"partner_id"`
+	CustomCorrelationRequestID  types.String `tfsdk:"custom_correlation_request_id"`
+	DisableCorrelationRequestID types.Bool   `tfsdk:"disable_correlation_request_id"`
+	DisableTerraformPartnerID   types.Bool   `tfsdk:"disable_terraform_partner_id"`
+	DefaultName                 types.String `tfsdk:"default_name"`
+	DefaultNamingPrefix         types.String `tfsdk:"default_naming_prefix"`
+	DefaultNamingSuffix         types.String `tfsdk:"default_naming_suffix"`
+	DefaultLocation             types.String `tfsdk:"default_location"`
+	DefaultTags                 types.Map    `tfsdk:"default_tags"`
+}
 
-	dataSources["azapi_resource"] = services.AzApiDataSource()
-	dataSources["azapi_resource_action"] = services.ResourceActionDataSource()
-	dataSources["azapi_resource_list"] = services.ResourceListDataSource()
-	dataSources["azapi_resource_id"] = services.ResourceIdDataSource()
+type providerEndpointData struct {
+	ActiveDirectoryAuthorityHost types.String `tfsdk:"active_directory_authority_host"`
+	ResourceManagerEndpoint      types.String `tfsdk:"resource_manager_endpoint"`
+	ResourceManagerAudience      types.String `tfsdk:"resource_manager_audience"`
+}
 
-	p := &schema.Provider{
-		Schema: map[string]*schema.Schema{
-			"subscription_id": {
-				Type:        schema.TypeString,
+func (p Provider) Metadata(ctx context.Context, request provider.MetadataRequest, response *provider.MetadataResponse) {
+	response.TypeName = "azapi"
+}
+
+func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, response *provider.SchemaResponse) {
+	response.Schema = schema.Schema{
+		Description: "The Azure API Provider",
+		Attributes: map[string]schema.Attribute{
+			"subscription_id": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_SUBSCRIPTION_ID", ""),
 				Description: "The Subscription ID which should be used.",
 			},
 
-			"client_id": {
-				Type:        schema.TypeString,
+			"client_id": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_ID", ""),
 				Description: "The Client ID which should be used.",
 			},
 
-			"tenant_id": {
-				Type:        schema.TypeString,
+			"tenant_id": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_TENANT_ID", ""),
 				Description: "The Tenant ID which should be used.",
 			},
 
-			"auxiliary_tenant_ids": {
-				Type:     schema.TypeList,
-				Optional: true,
-				MaxItems: 3,
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
-				},
+			"auxiliary_tenant_ids": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators:  []validator.List{listvalidator.SizeAtMost(3)},
+				Description: "The Auxiliary Tenant IDs which should be used.",
 			},
 
-			"endpoint": {
-				Type:     schema.TypeList,
-				Optional: true,
-				MaxItems: 1,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"active_directory_authority_host": {
-							Type:        schema.TypeString,
+			"endpoint": schema.ListNestedAttribute{
+				Optional:   true,
+				Validators: []validator.List{listvalidator.SizeAtMost(1)},
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"active_directory_authority_host": schema.StringAttribute{
 							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST", ""),
 							Description: "The Active Directory login endpoint which should be used.",
 						},
 
-						"resource_manager_endpoint": {
-							Type:        schema.TypeString,
+						"resource_manager_endpoint": schema.StringAttribute{
 							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_RESOURCE_MANAGER_ENDPOINT", ""),
 							Description: "The Resource Manager Endpoint which should be used.",
 						},
 
-						"resource_manager_audience": {
-							Type:        schema.TypeString,
+						"resource_manager_audience": schema.StringAttribute{
 							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("ARM_RESOURCE_MANAGER_AUDIENCE", ""),
 							Description: "The resource ID to obtain AD tokens for.",
 						},
 					},
 				},
 			},
 
-			"environment": {
-				Type:         schema.TypeString,
-				Required:     true,
-				DefaultFunc:  schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
-				ValidateFunc: validation.StringInSlice([]string{"public", "usgovernment", "china"}, true),
-				Description:  "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
+			"environment": schema.StringAttribute{
+				Optional: true,
+				Validators: []validator.String{
+					stringvalidator.OneOfCaseInsensitive("public", "usgovernment", "china"),
+				},
+				Description: "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
 			},
 
 			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
@@ -122,83 +142,62 @@ func azureProvider() *schema.Provider {
 			// },
 
 			// Client Certificate specific fields
-			"client_certificate_path": {
-				Type:        schema.TypeString,
+			"client_certificate_path": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PATH", ""),
 				Description: "The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.",
 			},
 
-			"client_certificate_password": {
-				Type:        schema.TypeString,
+			"client_certificate_password": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_CERTIFICATE_PASSWORD", ""),
 				Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
 			},
 
 			// Client Secret specific fields
-			"client_secret": {
-				Type:        schema.TypeString,
+			"client_secret": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_SECRET", ""),
 				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
 			},
 
-			"skip_provider_registration": {
-				Type:        schema.TypeBool,
+			"skip_provider_registration": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_SKIP_PROVIDER_REGISTRATION", false),
 				Description: "Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?",
 			},
 
 			// OIDC specific fields
-			"oidc_request_token": {
-				Type:        schema.TypeString,
+			"oidc_request_token": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"}, ""),
 				Description: "The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
 			},
-			"oidc_request_url": {
-				Type:        schema.TypeString,
+
+			"oidc_request_url": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{"ARM_OIDC_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_URL"}, ""),
 				Description: "The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.",
 			},
 
-			"oidc_token": {
-				Type:        schema.TypeString,
+			"oidc_token": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN", ""),
 				Description: "The OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
 			},
 
-			"oidc_token_file_path": {
-				Type:        schema.TypeString,
+			"oidc_token_file_path": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_OIDC_TOKEN_FILE_PATH", ""),
 				Description: "The path to a file containing an OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
 			},
 
-			"use_oidc": {
-				Type:        schema.TypeBool,
+			"use_oidc": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_OIDC", false),
 				Description: "Allow OpenID Connect to be used for authentication",
 			},
 
 			// Azure CLI specific fields
-			"use_cli": {
-				Type:        schema.TypeBool,
+			"use_cli": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_CLI", true),
 				Description: "Allow Azure CLI to be used for Authentication.",
 			},
 
 			// Managed Service Identity specific fields
-			"use_msi": {
-				Type:        schema.TypeBool,
+			"use_msi": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_USE_MSI", true),
 				Description: "Allow Managed Service Identity to be used for Authentication.",
 			},
 
@@ -211,165 +210,376 @@ func azureProvider() *schema.Provider {
 			// },
 
 			// Managed Tracking GUID for User-agent
-			"partner_id": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ValidateFunc: validation.Any(validation.IsUUID, validation.StringIsEmpty),
-				DefaultFunc:  schema.EnvDefaultFunc("ARM_PARTNER_ID", ""),
-				Description:  "A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.",
+			"partner_id": schema.StringAttribute{
+				Optional: true,
+				Validators: []validator.String{
+					stringvalidator.Any(myvalidator.StringIsUUID(), myvalidator.StringIsEmpty()),
+				},
+				Description: "A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.",
 			},
 
-			"custom_correlation_request_id": {
-				Type:        schema.TypeString,
+			"custom_correlation_request_id": schema.StringAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_CORRELATION_REQUEST_ID", ""),
 				Description: "The value of the x-ms-correlation-request-id header (otherwise an auto-generated UUID will be used).",
 			},
 
-			"disable_correlation_request_id": {
-				Type:        schema.TypeBool,
+			"disable_correlation_request_id": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_DISABLE_CORRELATION_REQUEST_ID", false),
 				Description: "This will disable the x-ms-correlation-request-id header.",
 			},
 
-			"disable_terraform_partner_id": {
-				Type:        schema.TypeBool,
+			"disable_terraform_partner_id": schema.BoolAttribute{
 				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("ARM_DISABLE_TERRAFORM_PARTNER_ID", false),
 				Description: "This will disable the Terraform Partner ID which is used if a custom `partner_id` isn't specified.",
 			},
 
-			"default_name": resourceName.SchemaResourceName(),
+			"default_name": schema.StringAttribute{
+				Optional:    true,
+				Description: "The default name which should be used for resources.",
+			},
 
-			"default_naming_prefix": resourceName.SchemaResourceNamePrefix(),
+			"default_naming_prefix": schema.StringAttribute{
+				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
+				Optional:           true,
+				Description:        "The default prefix which should be used for resources.",
+			},
 
-			"default_naming_suffix": resourceName.SchemaResourceNameSuffix(),
+			"default_naming_suffix": schema.StringAttribute{
+				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
+				Optional:           true,
+				Description:        "The default suffix which should be used for resources.",
+			},
 
-			"default_location": location.SchemaLocation(),
+			"default_location": schema.StringAttribute{
+				Optional:    true,
+				Description: "The default location which should be used for resources.",
+			},
 
-			"default_tags": tags.SchemaTags(),
+			"default_tags": schema.MapAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Validators: []validator.Map{
+					tags.Validator(),
+				},
+				Description: "The default tags which should be used for resources.",
+			},
 		},
-
-		DataSourcesMap: dataSources,
-		ResourcesMap:   resources,
 	}
-
-	p.ConfigureContextFunc = providerConfigure(p)
-
-	return p
 }
 
-func providerConfigure(p *schema.Provider) schema.ConfigureContextFunc {
-	return func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		var auxTenants []string
-		if v, ok := d.Get("auxiliary_tenant_ids").([]interface{}); ok && len(v) > 0 {
-			auxTenants = *utils.ExpandStringSlice(v)
-		} else if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
-			auxTenants = strings.Split(v, ";")
-		}
+func (p Provider) Configure(ctx context.Context, request provider.ConfigureRequest, response *provider.ConfigureResponse) {
+	var model providerData
+	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
+		return
+	}
 
-		var cloudConfig cloud.Configuration
-		env := d.Get("environment").(string)
-		switch strings.ToLower(env) {
-		case "public":
-			cloudConfig = cloud.AzurePublic
-		case "usgovernment":
-			cloudConfig = cloud.AzureGovernment
-		case "china":
-			cloudConfig = cloud.AzureChina
-		default:
-			return nil, diag.Errorf("unknown `environment` specified: %q", env)
-		}
+	if !model.DefaultName.IsNull() && (!model.DefaultNamingPrefix.IsNull() || !model.DefaultNamingSuffix.IsNull()) {
+		response.Diagnostics.AddError("Invalid `default_name` value.", "The `default_name` value cannot be used with `default_naming_prefix` or `default_naming_suffix`.")
+		return
+	}
 
-		if endpointRaw := d.Get("endpoint").([]interface{}); len(endpointRaw) > 0 {
-			endpoint := endpointRaw[0].(map[string]interface{})
-			resourceManagerEndpoint := cloudConfig.Services[cloud.ResourceManager].Endpoint
-			resourceManagerAudience := cloudConfig.Services[cloud.ResourceManager].Audience
-			if v, ok := endpoint["resource_manager_endpoint"].(string); ok && len(v) > 0 {
-				resourceManagerEndpoint = v
+	// set the defaults from environment variables
+	if model.SubscriptionID.IsNull() {
+		if v := os.Getenv("ARM_SUBSCRIPTION_ID"); v != "" {
+			model.SubscriptionID = types.StringValue(v)
+		}
+	}
+	if model.ClientID.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_ID"); v != "" {
+			model.ClientID = types.StringValue(v)
+		}
+	}
+
+	if model.TenantID.IsNull() {
+		if v := os.Getenv("ARM_TENANT_ID"); v != "" {
+			model.TenantID = types.StringValue(v)
+		}
+	}
+
+	if model.Endpoint.IsNull() {
+		activeDirectoryAuthorityHost := os.Getenv("ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST")
+		resourceManagerEndpoint := os.Getenv("ARM_RESOURCE_MANAGER_ENDPOINT")
+		resourceManagerAudience := os.Getenv("ARM_RESOURCE_MANAGER_AUDIENCE")
+		attrTypes := make(map[string]attr.Type)
+		attrTypes["active_directory_authority_host"] = types.StringType
+		attrTypes["resource_manager_endpoint"] = types.StringType
+		attrTypes["resource_manager_audience"] = types.StringType
+		model.Endpoint = types.ListValueMust(types.ObjectType{
+			AttrTypes: attrTypes,
+		}, []attr.Value{
+			types.ObjectValueMust(attrTypes, map[string]attr.Value{
+				"active_directory_authority_host": types.StringValue(activeDirectoryAuthorityHost),
+				"resource_manager_endpoint":       types.StringValue(resourceManagerEndpoint),
+				"resource_manager_audience":       types.StringValue(resourceManagerAudience),
+			}),
+		})
+	}
+
+	if model.Environment.IsNull() {
+		if v := os.Getenv("ARM_ENVIRONMENT"); v != "" {
+			model.Environment = types.StringValue(v)
+		} else {
+			model.Environment = types.StringValue("public")
+		}
+	}
+
+	if model.AuxiliaryTenantIDs.IsNull() {
+		if v := os.Getenv("ARM_AUXILIARY_TENANT_IDS"); v != "" {
+			values := make([]attr.Value, 0)
+			for _, v := range strings.Split(v, ";") {
+				values = append(values, types.StringValue(v))
 			}
-			if v, ok := endpoint["resource_manager_audience"].(string); ok && len(v) > 0 {
-				resourceManagerAudience = v
-			}
-			cloudConfig.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
-				Endpoint: resourceManagerEndpoint,
-				Audience: resourceManagerAudience,
-			}
-			if v, ok := endpoint["active_directory_authority_host"].(string); ok && len(v) > 0 {
-				cloudConfig.ActiveDirectoryAuthorityHost = v
-			}
+			model.AuxiliaryTenantIDs = types.ListValueMust(types.StringType, values)
 		}
+	}
 
-		// Maps the auth related environment variables used in the provider to what azidentity honors.
-		if v := d.Get("tenant_id").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_TENANT_ID", v)
+	if model.ClientCertificatePath.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_CERTIFICATE_PATH"); v != "" {
+			model.ClientCertificatePath = types.StringValue(v)
 		}
-		if v := d.Get("client_id").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_ID", v)
-		}
-		if v := d.Get("client_secret").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_SECRET", v)
-		}
-		if v := d.Get("client_certificate_path").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
-		}
-		if v := d.Get("client_certificate_password").(string); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
-		}
-		if len(auxTenants) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_ADDITIONALLY_ALLOWED_TENANTS", strings.Join(auxTenants, ";"))
-		}
+	}
 
-		option := &azidentity.DefaultAzureCredentialOptions{
-			AdditionallyAllowedTenants: auxTenants,
-			ClientOptions: azcore.ClientOptions{
-				Cloud: cloudConfig,
-			},
-			TenantID: d.Get("tenant_id").(string),
+	if model.ClientCertificatePassword.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_CERTIFICATE_PASSWORD"); v != "" {
+			model.ClientCertificatePassword = types.StringValue(v)
 		}
-		cred, err := newDefaultAzureCredential(d, option)
-		if err != nil {
-			return nil, diag.Errorf("failed to obtain a credential: %v", err)
-		}
+	}
 
-		copt := &clients.Option{
-			Cred:                 cred,
-			CloudCfg:             cloudConfig,
-			ApplicationUserAgent: buildUserAgent(p.TerraformVersion, d.Get("partner_id").(string), d.Get("disable_terraform_partner_id").(bool)),
-			Features: features.UserFeatures{
-				DefaultTags:         tags.ExpandTags(d.Get("default_tags").(map[string]interface{})),
-				DefaultLocation:     location.Normalize(d.Get("default_location").(string)),
-				DefaultNaming:       d.Get("default_name").(string),
-				DefaultNamingPrefix: d.Get("default_naming_prefix").(string),
-				DefaultNamingSuffix: d.Get("default_naming_suffix").(string),
-			},
-			SkipProviderRegistration:    d.Get("skip_provider_registration").(bool),
-			DisableCorrelationRequestID: d.Get("disable_correlation_request_id").(bool),
-			CustomCorrelationRequestID:  d.Get("custom_correlation_request_id").(string),
-			SubscriptionId:              d.Get("subscription_id").(string),
+	if model.ClientSecret.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_SECRET"); v != "" {
+			model.ClientSecret = types.StringValue(v)
 		}
+	}
 
-		//lint:ignore SA1019 SDKv2 migration - staticcheck's own linter directives are currently being ignored under golanci-lint
-		stopCtx, ok := schema.StopContext(ctx) //nolint:staticcheck
-		if !ok {
-			stopCtx = ctx
+	if model.SkipProviderRegistration.IsNull() {
+		if v := os.Getenv("ARM_SKIP_PROVIDER_REGISTRATION"); v != "" {
+			model.SkipProviderRegistration = types.BoolValue(v == "true")
+		} else {
+			model.SkipProviderRegistration = types.BoolValue(false)
 		}
+	}
 
-		client := &clients.Client{}
-		if err := client.Build(stopCtx, copt); err != nil {
-			return nil, diag.FromErr(err)
+	if model.OIDCRequestToken.IsNull() {
+		if v := os.Getenv("ARM_OIDC_REQUEST_TOKEN"); v != "" {
+			model.OIDCRequestToken = types.StringValue(v)
+		} else if v := os.Getenv("ACTIONS_ID_TOKEN_REQUEST_TOKEN"); v != "" {
+			model.OIDCRequestToken = types.StringValue(v)
 		}
+	}
 
-		// load schema
-		azure.GetAzureSchema()
-		return client, nil
+	if model.OIDCRequestURL.IsNull() {
+		if v := os.Getenv("ARM_OIDC_REQUEST_URL"); v != "" {
+			model.OIDCRequestURL = types.StringValue(v)
+		} else if v := os.Getenv("ACTIONS_ID_TOKEN_REQUEST_URL"); v != "" {
+			model.OIDCRequestURL = types.StringValue(v)
+		}
+	}
+
+	if model.OIDCToken.IsNull() {
+		if v := os.Getenv("ARM_OIDC_TOKEN"); v != "" {
+			model.OIDCToken = types.StringValue(v)
+		}
+	}
+
+	if model.OIDCTokenFilePath.IsNull() {
+		if v := os.Getenv("ARM_OIDC_TOKEN_FILE_PATH"); v != "" {
+			model.OIDCTokenFilePath = types.StringValue(v)
+		}
+	}
+
+	if model.UseOIDC.IsNull() {
+		if v := os.Getenv("ARM_USE_OIDC"); v != "" {
+			model.UseOIDC = types.BoolValue(v == "true")
+		} else {
+			model.UseOIDC = types.BoolValue(false)
+		}
+	}
+
+	if model.UseCLI.IsNull() {
+		if v := os.Getenv("ARM_USE_CLI"); v != "" {
+			model.UseCLI = types.BoolValue(v == "true")
+		} else {
+			model.UseCLI = types.BoolValue(true)
+		}
+	}
+
+	if model.UseMSI.IsNull() {
+		if v := os.Getenv("ARM_USE_MSI"); v != "" {
+			model.UseMSI = types.BoolValue(v == "true")
+		} else {
+			model.UseMSI = types.BoolValue(true)
+		}
+	}
+
+	if model.PartnerID.IsNull() {
+		if v := os.Getenv("ARM_PARTNER_ID"); v != "" {
+			model.PartnerID = types.StringValue(v)
+		}
+	}
+
+	if model.CustomCorrelationRequestID.IsNull() {
+		if v := os.Getenv("ARM_CORRELATION_REQUEST_ID"); v != "" {
+			model.CustomCorrelationRequestID = types.StringValue(v)
+		}
+	}
+
+	if model.DisableCorrelationRequestID.IsNull() {
+		if v := os.Getenv("ARM_DISABLE_CORRELATION_REQUEST_ID"); v != "" {
+			model.DisableCorrelationRequestID = types.BoolValue(v == "true")
+		} else {
+			model.DisableCorrelationRequestID = types.BoolValue(false)
+		}
+	}
+
+	if model.DisableTerraformPartnerID.IsNull() {
+		if v := os.Getenv("ARM_DISABLE_TERRAFORM_PARTNER_ID"); v != "" {
+			model.DisableTerraformPartnerID = types.BoolValue(v == "true")
+		} else {
+			model.DisableTerraformPartnerID = types.BoolValue(false)
+		}
+	}
+
+	var cloudConfig cloud.Configuration
+	env := model.Environment.ValueString()
+	switch strings.ToLower(env) {
+	case "public":
+		cloudConfig = cloud.AzurePublic
+	case "usgovernment":
+		cloudConfig = cloud.AzureGovernment
+	case "china":
+		cloudConfig = cloud.AzureChina
+	default:
+		response.Diagnostics.AddError("Invalid `environment` value.", fmt.Sprintf("The `environment` value '%s' is invalid. Valid values are 'public', 'usgovernment' and 'china'.", env))
+		return
+	}
+
+	if elements := model.Endpoint.Elements(); len(elements) != 0 {
+		var endpoint providerEndpointData
+		diags := elements[0].(basetypes.ObjectValue).As(ctx, &endpoint, basetypes.ObjectAsOptions{
+			UnhandledNullAsEmpty:    false,
+			UnhandledUnknownAsEmpty: false,
+		})
+		response.Diagnostics.Append(diags...)
+		if diags.HasError() {
+			return
+		}
+		resourceManagerEndpoint := cloudConfig.Services[cloud.ResourceManager].Endpoint
+		resourceManagerAudience := cloudConfig.Services[cloud.ResourceManager].Audience
+		if v := endpoint.ResourceManagerEndpoint.ValueString(); v != "" {
+			resourceManagerEndpoint = v
+		}
+		if v := endpoint.ResourceManagerAudience.ValueString(); v != "" {
+			resourceManagerAudience = v
+		}
+		cloudConfig.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
+			Endpoint: resourceManagerEndpoint,
+			Audience: resourceManagerAudience,
+		}
+		if v := endpoint.ActiveDirectoryAuthorityHost.ValueString(); v != "" {
+			cloudConfig.ActiveDirectoryAuthorityHost = v
+		}
+	}
+
+	// Maps the auth related environment variables used in the provider to what azidentity honors.
+	if v := model.TenantID.ValueString(); v != "" {
+		_ = os.Setenv("AZURE_TENANT_ID", v)
+	}
+	if v := model.ClientID.ValueString(); v != "" {
+		_ = os.Setenv("AZURE_CLIENT_ID", v)
+	}
+	if v := model.ClientSecret.ValueString(); v != "" {
+		_ = os.Setenv("AZURE_CLIENT_SECRET", v)
+	}
+	if v := model.ClientCertificatePath.ValueString(); v != "" {
+		_ = os.Setenv("AZURE_CERTIFICATE_PATH", v)
+	}
+	if v := model.ClientCertificatePassword.ValueString(); v != "" {
+		_ = os.Setenv("AZURE_CERTIFICATE_PASSWORD", v)
+	}
+	var auxTenants []string
+	if elements := model.AuxiliaryTenantIDs.Elements(); len(elements) != 0 {
+		for _, element := range elements {
+			auxTenants = append(auxTenants, element.(basetypes.StringValue).ValueString())
+		}
+		_ = os.Setenv("AZURE_AUXILIARY_TENANT_IDS", strings.Join(auxTenants, ";"))
+	}
+
+	option := &azidentity.DefaultAzureCredentialOptions{
+		AdditionallyAllowedTenants: auxTenants,
+		ClientOptions: azcore.ClientOptions{
+			Cloud: cloudConfig,
+		},
+		TenantID: model.TenantID.ValueString(),
+	}
+
+	cred, err := newDefaultAzureCredential(model, option)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
+		return
+	}
+
+	copt := &clients.Option{
+		Cred:                 cred,
+		CloudCfg:             cloudConfig,
+		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
+		Features: features.UserFeatures{
+			DefaultTags:         tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:     location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:       model.DefaultName.ValueString(),
+			DefaultNamingPrefix: model.DefaultNamingPrefix.ValueString(),
+			DefaultNamingSuffix: model.DefaultNamingSuffix.ValueString(),
+		},
+		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
+		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
+		CustomCorrelationRequestID:  model.CustomCorrelationRequestID.ValueString(),
+		SubscriptionId:              model.SubscriptionID.ValueString(),
+	}
+
+	client := &clients.Client{}
+	if err = client.Build(ctx, copt); err != nil {
+		response.Diagnostics.AddError("Error Building Client", err.Error())
+		return
+	}
+
+	// load schema
+	azure.GetAzureSchema()
+
+	response.ResourceData = client
+	response.DataSourceData = client
+}
+
+func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSource {
+	return []func() datasource.DataSource{
+		func() datasource.DataSource {
+			return &services.ResourceIdDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.ResourceListDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.ResourceActionDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.AzapiResourceDataSource{}
+		},
+	}
+
+}
+
+func (p Provider) Resources(ctx context.Context) []func() resource.Resource {
+	return []func() resource.Resource{
+		func() resource.Resource {
+			return &services.AzapiResource{}
+		},
+		func() resource.Resource {
+			return &services.AzapiUpdateResource{}
+		},
+		func() resource.Resource {
+			return &services.ActionResource{}
+		},
+		func() resource.Resource {
+			return &services.DataPlaneResource{}
+		},
 	}
 }
 
@@ -379,8 +589,7 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 		// We can therefore assume that if it's missing it's 0.10 or 0.11
 		terraformVersion = "0.11+compatible"
 	}
-
-	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io) Terraform Plugin SDK/%s", terraformVersion, meta.SDKVersionString())
+	tfUserAgent := fmt.Sprintf("HashiCorp Terraform/%s (+https://www.terraform.io)", terraformVersion)
 	providerUserAgent := fmt.Sprintf("terraform-provider-azapi/%s", version.ProviderVersion)
 	userAgent := strings.TrimSpace(fmt.Sprintf("%s %s", tfUserAgent, providerUserAgent))
 
@@ -403,25 +612,25 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 	return userAgent
 }
 
-func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.DefaultAzureCredentialOptions) (*azidentity.ChainedTokenCredential, error) {
+func newDefaultAzureCredential(model providerData, options *azidentity.DefaultAzureCredentialOptions) (*azidentity.ChainedTokenCredential, error) {
 	var creds []azcore.TokenCredential
 
 	if options == nil {
 		options = &azidentity.DefaultAzureCredentialOptions{}
 	}
 
-	if d.Get("use_oidc").(bool) {
+	if model.UseOIDC.ValueBool() {
 		oidcCred, err := NewOidcCredential(&OidcCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
 				Cloud: options.Cloud,
 			},
 			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-			TenantID:                   d.Get("tenant_id").(string),
-			ClientID:                   d.Get("client_id").(string),
-			RequestToken:               d.Get("oidc_request_token").(string),
-			RequestUrl:                 d.Get("oidc_request_url").(string),
-			Token:                      d.Get("oidc_token").(string),
-			TokenFilePath:              d.Get("oidc_token_file_path").(string),
+			TenantID:                   model.TenantID.ValueString(),
+			ClientID:                   model.ClientID.ValueString(),
+			RequestToken:               model.OIDCRequestToken.ValueString(),
+			RequestUrl:                 model.OIDCRequestURL.ValueString(),
+			Token:                      model.OIDCToken.ValueString(),
+			TokenFilePath:              model.OIDCTokenFilePath.ValueString(),
 		})
 
 		if err == nil {
@@ -441,7 +650,7 @@ func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.Defau
 		log.Printf("newDefaultAzureCredential failed to initialize environment credential:\n\t%s", err.Error())
 	}
 
-	if d.Get("use_msi").(bool) {
+	if model.UseMSI.ValueBool() {
 		o := &azidentity.ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
 		if ID, ok := os.LookupEnv("AZURE_CLIENT_ID"); ok {
 			o.ID = azidentity.ClientID(ID)
@@ -454,7 +663,7 @@ func newDefaultAzureCredential(d *schema.ResourceData, options *azidentity.Defau
 		}
 	}
 
-	if d.Get("use_cli").(bool) {
+	if model.UseCLI.ValueBool() {
 		cliCred, err := azidentity.NewAzureCLICredential(&azidentity.AzureCLICredentialOptions{
 			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 			TenantID:                   options.TenantID})

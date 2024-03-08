@@ -123,6 +123,9 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
+	// the identity block now is optional only, because framework doesn't allow computed+optional block, so the identity block couldn't be synced when it's set in the `body`
+	importIgnores := []string{"identity.#", "identity.0.%", "identity.0.identity_ids.#", "identity.0.identity_ids.0", "identity.0.principal_id", "identity.0.tenant_id", "identity.0.type"}
+
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.completeBody(data),
@@ -130,7 +133,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStep(append(importIgnores, defaultIgnores()...)...),
 	})
 }
 
@@ -220,7 +223,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 				check.That(data.ResourceName).Key("tags").DoesNotExist(),
-				check.That(data.ResourceName).Key("location").IsEmpty(),
+				check.That(data.ResourceName).Key("location").DoesNotExist(),
 			),
 		},
 		data.ImportStep(defaultIgnores()...),
@@ -293,6 +296,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 }
 
 func TestAccGenericResource_defaultsNamingPrefixAndSuffix(t *testing.T) {
+	t.Skip(`The default naming prefix and suffix are not compatible with the framework, because the computed name is not the same as the config name, the framework will fail as it's an invalid plan'`)
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 

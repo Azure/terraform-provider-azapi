@@ -1,7 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tftypes
 
 import (
-	"encoding/json"
+	"bytes"
 	"fmt"
 	"strings"
 )
@@ -17,6 +20,23 @@ type Tuple struct {
 	// see https://golang.org/ref/spec#Comparison_operators
 	// this enforces the use of Is, instead
 	_ []struct{}
+}
+
+// ApplyTerraform5AttributePathStep applies an AttributePathStep to a Tuple,
+// returning the Type found at that AttributePath within the Tuple. If the
+// AttributePathStep cannot be applied to the Tuple, an ErrInvalidStep error
+// will be returned.
+func (tu Tuple) ApplyTerraform5AttributePathStep(step AttributePathStep) (interface{}, error) {
+	switch s := step.(type) {
+	case ElementKeyInt:
+		if int64(s) < 0 || int64(s) >= int64(len(tu.ElementTypes)) {
+			return nil, ErrInvalidStep
+		}
+
+		return tu.ElementTypes[int64(s)], nil
+	default:
+		return nil, ErrInvalidStep
+	}
 }
 
 // Equal returns true if the two Tuples are exactly equal. Unlike Is, passing
@@ -109,9 +129,7 @@ func valueFromTuple(types []Type, in interface{}) (Value, error) {
 			}
 			for pos, v := range value {
 				typ := types[pos]
-				if v.Type().Is(DynamicPseudoType) && v.IsKnown() {
-					return Value{}, NewAttributePath().WithElementKeyInt(pos).NewErrorf("invalid value %s for %s", v, v.Type())
-				} else if !v.Type().Is(DynamicPseudoType) && !v.Type().UsableAs(typ) {
+				if !v.Type().UsableAs(typ) {
 					return Value{}, NewAttributePath().WithElementKeyInt(pos).NewErrorf("can't use %s as %s", v.Type(), typ)
 				}
 			}
@@ -130,9 +148,22 @@ func valueFromTuple(types []Type, in interface{}) (Value, error) {
 //
 // Deprecated: this is not meant to be called by third-party code.
 func (tu Tuple) MarshalJSON() ([]byte, error) {
-	elements, err := json.Marshal(tu.ElementTypes)
-	if err != nil {
-		return nil, err
+	var buf bytes.Buffer
+
+	buf.WriteString(`["tuple",[`)
+
+	for index, elementType := range tu.ElementTypes {
+		if index > 0 {
+			buf.WriteString(",")
+		}
+
+		// MarshalJSON is always error safe
+		elementTypeBytes, _ := elementType.MarshalJSON()
+
+		buf.Write(elementTypeBytes)
 	}
-	return []byte(`["tuple",` + string(elements) + `]`), nil
+
+	buf.WriteString(`]]`)
+
+	return buf.Bytes(), nil
 }

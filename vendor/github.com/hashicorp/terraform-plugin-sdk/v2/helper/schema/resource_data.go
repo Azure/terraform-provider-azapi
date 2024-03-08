@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package schema
 
 import (
@@ -7,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/go-cty/cty/gocty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -132,6 +136,9 @@ func (d *ResourceData) HasChanges(keys ...string) bool {
 //
 // This function only works with root attribute keys.
 func (d *ResourceData) HasChangesExcept(keys ...string) bool {
+	if d == nil || d.diff == nil {
+		return false
+	}
 	for attr := range d.diff.Attributes {
 		rootAttr := strings.Split(attr, ".")[0]
 		var skipAttr bool
@@ -155,20 +162,16 @@ func (d *ResourceData) HasChangesExcept(keys ...string) bool {
 func (d *ResourceData) HasChange(key string) bool {
 	o, n := d.GetChange(key)
 
-	// If the type implements the Equal interface, then call that
-	// instead of just doing a reflect.DeepEqual. An example where this is
-	// needed is *Set
-	if eq, ok := o.(Equal); ok {
-		return !eq.Equal(n)
-	}
-
-	return !reflect.DeepEqual(o, n)
+	return !cmp.Equal(n, o)
 }
 
 // HasChangeExcept returns whether any keys outside the given key have been changed.
 //
 // This function only works with root attribute keys.
 func (d *ResourceData) HasChangeExcept(key string) bool {
+	if d == nil || d.diff == nil {
+		return false
+	}
 	for attr := range d.diff.Attributes {
 		rootAttr := strings.Split(attr, ".")[0]
 
@@ -528,7 +531,7 @@ func (d *ResourceData) getChange(
 func (d *ResourceData) get(addr []string, source getSource) getResult {
 	d.once.Do(d.init)
 
-	level := "set"
+	var level string
 	flags := source & ^getSourceLevelMask
 	exact := flags&getSourceExact != 0
 	source = source & getSourceLevelMask
@@ -588,8 +591,12 @@ func (d *ResourceData) GetProviderMeta(dst interface{}) error {
 // GetRawConfig is considered experimental and advanced functionality, and
 // familiarity with the Terraform protocol is suggested when using it.
 func (d *ResourceData) GetRawConfig() cty.Value {
+	// These methods follow the field readers preference order.
 	if d.diff != nil && !d.diff.RawConfig.IsNull() {
 		return d.diff.RawConfig
+	}
+	if d.config != nil && !d.config.CtyValue.IsNull() {
+		return d.config.CtyValue
 	}
 	if d.state != nil && !d.state.RawConfig.IsNull() {
 		return d.state.RawConfig
@@ -604,6 +611,7 @@ func (d *ResourceData) GetRawConfig() cty.Value {
 // GetRawState is considered experimental and advanced functionality, and
 // familiarity with the Terraform protocol is suggested when using it.
 func (d *ResourceData) GetRawState() cty.Value {
+	// These methods follow the field readers preference order.
 	if d.diff != nil && !d.diff.RawState.IsNull() {
 		return d.diff.RawState
 	}
@@ -620,6 +628,7 @@ func (d *ResourceData) GetRawState() cty.Value {
 // GetRawPlan is considered experimental and advanced functionality, and
 // familiarity with the Terraform protocol is suggested when using it.
 func (d *ResourceData) GetRawPlan() cty.Value {
+	// These methods follow the field readers preference order.
 	if d.diff != nil && !d.diff.RawPlan.IsNull() {
 		return d.diff.RawPlan
 	}

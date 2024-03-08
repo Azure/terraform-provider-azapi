@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package tf5server
 
 import (
@@ -17,6 +20,8 @@ import (
 // serve tfprotov5.ProviderServers as gRPC plugins for go-plugin.
 type GRPCProviderPlugin struct {
 	GRPCProvider func() tfprotov5.ProviderServer
+	Opts         []ServeOpt
+	Name         string
 }
 
 // Server always returns an error; we're only implementing the GRPCPlugin
@@ -40,6 +45,6 @@ func (p *GRPCProviderPlugin) GRPCClient(context.Context, *plugin.GRPCBroker, *gr
 // GRPCServer registers the gRPC provider server with the gRPC server that
 // go-plugin is standing up.
 func (p *GRPCProviderPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) error {
-	tfplugin5.RegisterProviderServer(s, New(p.GRPCProvider()))
+	tfplugin5.RegisterProviderServer(s, New(p.Name, p.GRPCProvider(), p.Opts...))
 	return nil
 }

@@ -141,6 +141,7 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
+			outMap := make(map[string]interface{})
 			for key, value := range oldValue {
 				if newValue, ok := newMap[key]; ok {
 					nestedPath := strings.TrimPrefix(path+"."+key, ".")
@@ -148,10 +149,12 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 					if err != nil {
 						return nil, err
 					}
-					oldValue[key] = out
+					outMap[key] = out
+				} else {
+					outMap[key] = value
 				}
 			}
-			return oldValue, nil
+			return outMap, nil
 		}
 	case []interface{}:
 		// Does not support override specific item in list
