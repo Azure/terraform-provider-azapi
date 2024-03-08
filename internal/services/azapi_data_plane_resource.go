@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
@@ -13,6 +12,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -24,19 +24,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"time"
 )
 
 type DataPlaneResourceModel struct {
-	ID                    types.String `tfsdk:"id"`
-	Name                  types.String `tfsdk:"name"`
-	ParentID              types.String `tfsdk:"parent_id"`
-	Type                  types.String `tfsdk:"type"`
-	Body                  types.String `tfsdk:"body"`
-	IgnoreCasing          types.Bool   `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool   `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List   `tfsdk:"response_export_values"`
-	Locks                 types.List   `tfsdk:"locks"`
-	Output                types.String `tfsdk:"output"`
+	ID                    types.String   `tfsdk:"id"`
+	Name                  types.String   `tfsdk:"name"`
+	ParentID              types.String   `tfsdk:"parent_id"`
+	Type                  types.String   `tfsdk:"type"`
+	Body                  types.String   `tfsdk:"body"`
+	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
+	Locks                 types.List     `tfsdk:"locks"`
+	Output                types.String   `tfsdk:"output"`
+	Timeouts              timeouts.Value `tfsdk:"timeouts"`
 }
 
 type DataPlaneResource struct {
@@ -137,6 +139,14 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Computed: true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Create: true,
+				Read:   true,
+				Delete: true,
+			}),
+		},
 	}
 }
 
@@ -172,6 +182,15 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	if diagnostics.Append(plan.Get(ctx, &model)...); diagnostics.HasError() {
 		return
 	}
+
+	createUpdateTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
+	diagnostics.Append(diags...)
+	if diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
+	defer cancel()
 
 	id, err := parse.NewDataPlaneResourceId(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 	if err != nil {
@@ -221,6 +240,15 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	id, err := parse.DataPlaneResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {
@@ -275,6 +303,15 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 	if response.Diagnostics.HasError() {
 		return
 	}
+
+	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
+	defer cancel()
 
 	id, err := parse.DataPlaneResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {

@@ -3,10 +3,12 @@ package services
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -16,15 +18,16 @@ import (
 )
 
 type ResourceIdDataSourceModel struct {
-	ID                types.String `tfsdk:"id"`
-	Type              types.String `tfsdk:"type"`
-	Name              types.String `tfsdk:"name"`
-	ParentID          types.String `tfsdk:"parent_id"`
-	ResourceID        types.String `tfsdk:"resource_id"`
-	ResourceGroupName types.String `tfsdk:"resource_group_name"`
-	SubscriptionID    types.String `tfsdk:"subscription_id"`
-	ProviderNamespace types.String `tfsdk:"provider_namespace"`
-	Parts             types.Map    `tfsdk:"parts"`
+	ID                types.String   `tfsdk:"id"`
+	Type              types.String   `tfsdk:"type"`
+	Name              types.String   `tfsdk:"name"`
+	ParentID          types.String   `tfsdk:"parent_id"`
+	ResourceID        types.String   `tfsdk:"resource_id"`
+	ResourceGroupName types.String   `tfsdk:"resource_group_name"`
+	SubscriptionID    types.String   `tfsdk:"subscription_id"`
+	ProviderNamespace types.String   `tfsdk:"provider_namespace"`
+	Parts             types.Map      `tfsdk:"parts"`
+	Timeouts          timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ResourceIdDataSource struct {
@@ -89,6 +92,12 @@ func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.Sc
 				ElementType: types.StringType,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Read: true,
+			}),
+		},
 	}
 }
 
@@ -124,6 +133,15 @@ func (r *ResourceIdDataSource) Read(ctx context.Context, request datasource.Read
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	var id parse.ResourceId
 	if name := model.Name.ValueString(); len(name) != 0 {

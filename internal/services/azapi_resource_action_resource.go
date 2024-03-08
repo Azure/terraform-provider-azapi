@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
@@ -26,16 +28,17 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String `tfsdk:"id"`
-	Type                 types.String `tfsdk:"type"`
-	ResourceId           types.String `tfsdk:"resource_id"`
-	Action               types.String `tfsdk:"action"`
-	Method               types.String `tfsdk:"method"`
-	Body                 types.String `tfsdk:"body"`
-	When                 types.String `tfsdk:"when"`
-	Locks                types.List   `tfsdk:"locks"`
-	ResponseExportValues types.List   `tfsdk:"response_export_values"`
-	Output               types.String `tfsdk:"output"`
+	ID                   types.String   `tfsdk:"id"`
+	Type                 types.String   `tfsdk:"type"`
+	ResourceId           types.String   `tfsdk:"resource_id"`
+	Action               types.String   `tfsdk:"action"`
+	Method               types.String   `tfsdk:"method"`
+	Body                 types.String   `tfsdk:"body"`
+	When                 types.String   `tfsdk:"when"`
+	Locks                types.List     `tfsdk:"locks"`
+	ResponseExportValues types.List     `tfsdk:"response_export_values"`
+	Output               types.String   `tfsdk:"output"`
+	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ActionResource struct {
@@ -143,6 +146,14 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Computed: true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Create: true,
+				Read:   true,
+				Delete: true,
+			}),
+		},
 	}
 }
 
@@ -216,6 +227,15 @@ func (r *ActionResource) Read(ctx context.Context, request resource.ReadRequest,
 }
 
 func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, state *tfsdk.State, diagnostics *diag.Diagnostics) {
+	actionTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
+	diagnostics.Append(diags...)
+	if diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, actionTimeout)
+	defer cancel()
+
 	id, err := parse.ResourceIDWithResourceType(model.ResourceId.ValueString(), model.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())

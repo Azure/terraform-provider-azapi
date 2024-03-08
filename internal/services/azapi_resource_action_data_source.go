@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -18,14 +20,15 @@ import (
 )
 
 type ResourceActionDataSourceModel struct {
-	ID                   types.String `tfsdk:"id"`
-	ResourceID           types.String `tfsdk:"resource_id"`
-	Type                 types.String `tfsdk:"type"`
-	Action               types.String `tfsdk:"action"`
-	Method               types.String `tfsdk:"method"`
-	Body                 types.String `tfsdk:"body"`
-	ResponseExportValues types.List   `tfsdk:"response_export_values"`
-	Output               types.String `tfsdk:"output"`
+	ID                   types.String   `tfsdk:"id"`
+	ResourceID           types.String   `tfsdk:"resource_id"`
+	Type                 types.String   `tfsdk:"type"`
+	Action               types.String   `tfsdk:"action"`
+	Method               types.String   `tfsdk:"method"`
+	Body                 types.String   `tfsdk:"body"`
+	ResponseExportValues types.List     `tfsdk:"response_export_values"`
+	Output               types.String   `tfsdk:"output"`
+	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ResourceActionDataSource struct {
@@ -97,6 +100,12 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Computed: true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Read: true,
+			}),
+		},
 	}
 }
 
@@ -105,6 +114,15 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	id, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
 	if err != nil {

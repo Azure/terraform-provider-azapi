@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
@@ -22,6 +23,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -38,22 +40,23 @@ import (
 )
 
 type AzapiResourceModel struct {
-	ID                      types.String `tfsdk:"id"`
-	Name                    types.String `tfsdk:"name"`
-	ParentID                types.String `tfsdk:"parent_id"`
-	Type                    types.String `tfsdk:"type"`
-	Location                types.String `tfsdk:"location"`
-	Identity                types.List   `tfsdk:"identity"`
-	Body                    types.String `tfsdk:"body"`
-	Locks                   types.List   `tfsdk:"locks"`
-	RemovingSpecialChars    types.Bool   `tfsdk:"removing_special_chars"`
-	SchemaValidationEnabled types.Bool   `tfsdk:"schema_validation_enabled"`
-	IgnoreBodyChanges       types.List   `tfsdk:"ignore_body_changes"`
-	IgnoreCasing            types.Bool   `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty   types.Bool   `tfsdk:"ignore_missing_property"`
-	ResponseExportValues    types.List   `tfsdk:"response_export_values"`
-	Output                  types.String `tfsdk:"output"`
-	Tags                    types.Map    `tfsdk:"tags"`
+	ID                      types.String   `tfsdk:"id"`
+	Name                    types.String   `tfsdk:"name"`
+	ParentID                types.String   `tfsdk:"parent_id"`
+	Type                    types.String   `tfsdk:"type"`
+	Location                types.String   `tfsdk:"location"`
+	Identity                types.List     `tfsdk:"identity"`
+	Body                    types.String   `tfsdk:"body"`
+	Locks                   types.List     `tfsdk:"locks"`
+	RemovingSpecialChars    types.Bool     `tfsdk:"removing_special_chars"`
+	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
+	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
+	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
+	ResponseExportValues    types.List     `tfsdk:"response_export_values"`
+	Output                  types.String   `tfsdk:"output"`
+	Tags                    types.Map      `tfsdk:"tags"`
+	Timeouts                timeouts.Value `tfsdk:"timeouts"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -76,7 +79,7 @@ func (r *AzapiResource) Metadata(_ context.Context, request resource.MetadataReq
 	response.TypeName = request.ProviderTypeName + "_resource"
 }
 
-func (r *AzapiResource) Schema(_ context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
+func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -230,6 +233,12 @@ func (r *AzapiResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					},
 				},
 			},
+
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Create: true,
+				Read:   true,
+				Delete: true,
+			}),
 		},
 		Version: 0,
 	}
@@ -404,6 +413,15 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
+	createUpdateTimeout, diags := plan.Timeouts.Create(ctx, 30*time.Minute)
+	diagnostics.Append(diags...)
+	if diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
+	defer cancel()
+
 	id, err := parse.NewResourceID(plan.Name.ValueString(), plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
@@ -504,6 +522,15 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {
@@ -611,6 +638,15 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
+	defer cancel()
 
 	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {

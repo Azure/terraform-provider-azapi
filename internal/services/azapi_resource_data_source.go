@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -22,16 +24,17 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String `tfsdk:"id"`
-	Name                 types.String `tfsdk:"name"`
-	ParentID             types.String `tfsdk:"parent_id"`
-	ResourceID           types.String `tfsdk:"resource_id"`
-	Type                 types.String `tfsdk:"type"`
-	ResponseExportValues types.List   `tfsdk:"response_export_values"`
-	Location             types.String `tfsdk:"location"`
-	Identity             types.List   `tfsdk:"identity"`
-	Output               types.String `tfsdk:"output"`
-	Tags                 types.Map    `tfsdk:"tags"`
+	ID                   types.String   `tfsdk:"id"`
+	Name                 types.String   `tfsdk:"name"`
+	ParentID             types.String   `tfsdk:"parent_id"`
+	ResourceID           types.String   `tfsdk:"resource_id"`
+	Type                 types.String   `tfsdk:"type"`
+	ResponseExportValues types.List     `tfsdk:"response_export_values"`
+	Location             types.String   `tfsdk:"location"`
+	Identity             types.List     `tfsdk:"identity"`
+	Output               types.String   `tfsdk:"output"`
+	Tags                 types.Map      `tfsdk:"tags"`
+	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
 type AzapiResourceDataSource struct {
@@ -134,6 +137,12 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				ElementType: types.StringType,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Read: true,
+			}),
+		},
 	}
 }
 
@@ -142,6 +151,15 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	var id parse.ResourceId
 	resourceType := model.Type.ValueString()
