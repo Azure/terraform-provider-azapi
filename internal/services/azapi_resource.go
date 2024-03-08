@@ -712,6 +712,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Type:                    types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion)),
 		Locks:                   types.ListNull(types.StringType),
 		Identity:                types.ListNull(identity.Model{}.ModelType()),
+		Body:                    types.StringValue("{}"),
 		RemovingSpecialChars:    types.BoolValue(false),
 		SchemaValidationEnabled: types.BoolValue(true),
 		IgnoreBodyChanges:       types.ListNull(types.StringType),
@@ -744,19 +745,11 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 			delete(bodyMap, "identity")
 			writeOnlyBody = bodyMap
 		}
-		data, err := json.Marshal(writeOnlyBody)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid body", err.Error())
-			return
-		}
-		state.Body = types.StringValue(string(data))
+		payload := utils.ToAttrValue(writeOnlyBody)
+		state.Payload = basetypes.NewDynamicValue(payload)
 	} else {
-		data, err := json.Marshal(responseBody)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid body", err.Error())
-			return
-		}
-		state.Body = types.StringValue(string(data))
+		payload := utils.ToAttrValue(responseBody)
+		state.Payload = basetypes.NewDynamicValue(payload)
 	}
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 		if v, ok := bodyMap["location"]; ok {
