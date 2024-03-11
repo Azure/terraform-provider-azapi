@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
@@ -12,6 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -26,18 +28,19 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String `tfsdk:"id"`
-	Name                  types.String `tfsdk:"name"`
-	ParentID              types.String `tfsdk:"parent_id"`
-	ResourceID            types.String `tfsdk:"resource_id"`
-	Type                  types.String `tfsdk:"type"`
-	Body                  types.String `tfsdk:"body"`
-	IgnoreCasing          types.Bool   `tfsdk:"ignore_casing"`
-	IgnoreBodyChanges     types.List   `tfsdk:"ignore_body_changes"`
-	IgnoreMissingProperty types.Bool   `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List   `tfsdk:"response_export_values"`
-	Locks                 types.List   `tfsdk:"locks"`
-	Output                types.String `tfsdk:"output"`
+	ID                    types.String   `tfsdk:"id"`
+	Name                  types.String   `tfsdk:"name"`
+	ParentID              types.String   `tfsdk:"parent_id"`
+	ResourceID            types.String   `tfsdk:"resource_id"`
+	Type                  types.String   `tfsdk:"type"`
+	Body                  types.String   `tfsdk:"body"`
+	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
+	IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
+	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
+	Locks                 types.List     `tfsdk:"locks"`
+	Output                types.String   `tfsdk:"output"`
+	Timeouts              timeouts.Value `tfsdk:"timeouts"`
 }
 
 type AzapiUpdateResource struct {
@@ -162,6 +165,14 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed: true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Create: true,
+				Read:   true,
+				Delete: true,
+			}),
+		},
 	}
 }
 
@@ -242,6 +253,15 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		return
 	}
 
+	createUpdateTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
+	diagnostics.Append(diags...)
+	if diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
+	defer cancel()
+
 	var id parse.ResourceId
 	if name := model.Name.ValueString(); len(name) != 0 {
 		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
@@ -316,6 +336,15 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
 	if err != nil {

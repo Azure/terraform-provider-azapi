@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -17,11 +19,12 @@ import (
 )
 
 type ResourceListDataSourceModel struct {
-	ID                   types.String `tfsdk:"id"`
-	Type                 types.String `tfsdk:"type"`
-	ParentID             types.String `tfsdk:"parent_id"`
-	ResponseExportValues types.List   `tfsdk:"response_export_values"`
-	Output               types.String `tfsdk:"output"`
+	ID                   types.String   `tfsdk:"id"`
+	Type                 types.String   `tfsdk:"type"`
+	ParentID             types.String   `tfsdk:"parent_id"`
+	ResponseExportValues types.List     `tfsdk:"response_export_values"`
+	Output               types.String   `tfsdk:"output"`
+	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ResourceListDataSource struct {
@@ -74,6 +77,12 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Computed: true,
 			},
 		},
+
+		Blocks: map[string]schema.Block{
+			"timeouts": timeouts.Block(ctx, timeouts.Opts{
+				Read: true,
+			}),
+		},
 	}
 }
 
@@ -82,6 +91,15 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, readTimeout)
+	defer cancel()
 
 	id, err := parse.NewResourceIDSkipScopeValidation("", model.ParentID.ValueString(), model.Type.ValueString())
 	if err != nil {
