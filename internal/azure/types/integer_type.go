@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
@@ -23,8 +24,14 @@ func (t *IntegerType) Validate(body interface{}, path string) []error {
 	var v int
 	switch input := body.(type) {
 	case float64:
+		if math.Round(input) != input {
+			return []error{utils.ErrorMismatch(path, "integer", fmt.Sprintf("%T", body))}
+		}
 		v = int(input)
 	case float32:
+		if math.Round(float64(input)) != float64(input) {
+			return []error{utils.ErrorMismatch(path, "integer", fmt.Sprintf("%T", body))}
+		}
 		v = int(input)
 	case int64:
 		v = int(input)
