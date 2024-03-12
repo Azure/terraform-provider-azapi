@@ -143,6 +143,52 @@ func Test_BodyValidation(t *testing.T) {
 `,
 			Error: false,
 		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myapp",
+			ApiVersion: "2020-07-01",
+			Body: `
+{
+    "location": "westeurope",
+    "properties": {
+        "activeDeploymentName": "mydeployment1",
+        "fqdn": "myapp.mydomain.com",
+        "httpsOnly": 1,
+        "persistentDisk": {
+            "mountPath": "/persistent",
+            "sizeInGB": 2
+        },
+        "temporaryDisk": {
+            "mountPath": "/temp",
+            "sizeInGB": 2
+        }
+    }
+}
+`,
+			Error: false,
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myapp",
+			ApiVersion: "2020-07-01",
+			Body: `
+{
+    "location": "westeurope",
+    "properties": {
+        "activeDeploymentName": "mydeployment1",
+        "fqdn": "myapp.mydomain.com",
+        "httpsOnly": 1,
+        "persistentDisk": {
+            "mountPath": "/persistent",
+            "sizeInGB": 2.2
+        },
+        "temporaryDisk": {
+            "mountPath": "/temp",
+            "sizeInGB": 2.1
+        }
+    }
+}
+`,
+			Error: true,
+		},
 	}
 
 	for index, data := range testData {
