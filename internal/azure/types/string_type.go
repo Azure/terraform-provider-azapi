@@ -29,10 +29,10 @@ func (s *StringType) Validate(body interface{}, path string) []error {
 		return []error{utils.ErrorMismatch(path, "string", fmt.Sprintf("%T", body))}
 	}
 	if s.MinLength != nil && len(v) < *s.MinLength {
-		return []error{utils.ErrorCommon(path, fmt.Sprintf("string length is less than %d", s.MinLength))}
+		return []error{utils.ErrorCommon(path, fmt.Sprintf("string length is less than %d", *s.MinLength))}
 	}
 	if s.MaxLength != nil && len(v) > *s.MaxLength {
-		return []error{utils.ErrorCommon(path, fmt.Sprintf("string length is greater than %d", s.MaxLength))}
+		return []error{utils.ErrorCommon(path, fmt.Sprintf("string length is greater than %d", *s.MaxLength))}
 	}
 	if s.Pattern != "" {
 		isMatch, err := regexp.Match(s.Pattern, []byte(v))

@@ -56,11 +56,11 @@ func (t *ArrayType) Validate(body interface{}, path string) []error {
 
 	// check the length
 	if t.MinLength != nil && len(bodyArray) < *t.MinLength {
-		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is less than %d", t.MinLength)))
+		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is less than %d", *t.MinLength)))
 	}
 
 	if t.MaxLength != nil && len(bodyArray) > *t.MaxLength {
-		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is greater than %d", t.MaxLength)))
+		errors = append(errors, utils.ErrorCommon(path, fmt.Sprintf("array length is greater than %d", *t.MaxLength)))
 	}
 
 	for index, value := range bodyArray {

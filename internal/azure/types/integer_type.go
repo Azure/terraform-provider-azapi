@@ -43,10 +43,10 @@ func (t *IntegerType) Validate(body interface{}, path string) []error {
 		return []error{utils.ErrorMismatch(path, "integer", fmt.Sprintf("%T", body))}
 	}
 	if t.MinValue != nil && v < *t.MinValue {
-		return []error{utils.ErrorCommon(path, fmt.Sprintf("value is less than %d", t.MinValue))}
+		return []error{utils.ErrorCommon(path, fmt.Sprintf("value is less than %d", *t.MinValue))}
 	}
 	if t.MaxValue != nil && v > *t.MaxValue {
-		return []error{utils.ErrorCommon(path, fmt.Sprintf("value is greater than %d", t.MaxValue))}
+		return []error{utils.ErrorCommon(path, fmt.Sprintf("value is greater than %d", *t.MaxValue))}
 	}
 	return nil
 }
