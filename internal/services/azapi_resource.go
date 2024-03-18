@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -706,6 +707,13 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		ResponseExportValues:    types.ListNull(types.StringType),
 		Output:                  types.StringValue("{}"),
 		Tags:                    types.MapNull(types.StringType),
+		Timeouts: timeouts.Value{
+			Object: types.ObjectNull(map[string]attr.Type{
+				"create": types.StringType,
+				"read":   types.StringType,
+				"delete": types.StringType,
+			}),
+		},
 	}
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
