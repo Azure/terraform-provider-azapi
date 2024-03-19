@@ -138,6 +138,9 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 	if len(pathSet) == 0 || old == nil {
 		return old, nil
 	}
+	if _, ok := pathSet[path]; ok {
+		return new, nil
+	}
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
@@ -167,9 +170,6 @@ func OverrideWithPaths(old interface{}, new interface{}, path string, pathSet ma
 			return mergeArray(oldValue, newArr), nil
 		}
 	default:
-		if _, ok := pathSet[path]; ok {
-			return new, nil
-		}
 	}
 
 	return old, nil
