@@ -1,3 +1,7 @@
+## V1.13.0
+ENHANCEMENTS:
+- `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
+
 ## v1.12.1
 BUG FIXES:
 - Fix a bug that `azapi_resource` removes some required fields in the `body` when using `ignore_body_changes` feature.

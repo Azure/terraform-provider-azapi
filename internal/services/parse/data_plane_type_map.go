@@ -271,6 +271,12 @@ const raw = `
     "ResourceType": "Microsoft.Purview/accounts/Workflow/workflows",
     "ParentIDExample": "{accountName}.purview.azure.com",
     "Url": "/workflows/{workflowId}"
+  },	
+  {
+	"UrlFormat": "{parentId}/databases/{name}",
+	"ResourceType": "Microsoft.Synapse/workspaces/databases",
+	"ParentIDExample": "{workspaceName}.dev.azuresynapse.net",
+	"Url": "/databases/{databaseName}"
   },
   {
     "UrlFormat": "{parentId}/dataflows/{name}",
