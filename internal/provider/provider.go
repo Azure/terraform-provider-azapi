@@ -40,6 +40,7 @@ type Provider struct {
 type providerData struct {
 	SubscriptionID              types.String `tfsdk:"subscription_id"`
 	ClientID                    types.String `tfsdk:"client_id"`
+	ClientIDFilePath            types.String `tfsdk:"client_id_file_path"`
 	TenantID                    types.String `tfsdk:"tenant_id"`
 	AuxiliaryTenantIDs          types.List   `tfsdk:"auxiliary_tenant_ids"`
 	Endpoint                    types.List   `tfsdk:"endpoint"`
@@ -47,6 +48,7 @@ type providerData struct {
 	ClientCertificatePath       types.String `tfsdk:"client_certificate_path"`
 	ClientCertificatePassword   types.String `tfsdk:"client_certificate_password"`
 	ClientSecret                types.String `tfsdk:"client_secret"`
+	ClientSecretFilePath        types.String `tfsdk:"client_secret_file_path"`
 	SkipProviderRegistration    types.Bool   `tfsdk:"skip_provider_registration"`
 	OIDCRequestToken            types.String `tfsdk:"oidc_request_token"`
 	OIDCRequestURL              types.String `tfsdk:"oidc_request_url"`
@@ -64,6 +66,50 @@ type providerData struct {
 	DefaultNamingSuffix         types.String `tfsdk:"default_naming_suffix"`
 	DefaultLocation             types.String `tfsdk:"default_location"`
 	DefaultTags                 types.Map    `tfsdk:"default_tags"`
+}
+
+func (model providerData) GetClientId() (*string, error) {
+	clientId := strings.TrimSpace(model.ClientID.ValueString())
+
+	if path := model.ClientIDFilePath.ValueString(); path != "" {
+		fileClientIdRaw, err := os.ReadFile(path)
+
+		if err != nil {
+			return nil, fmt.Errorf("reading Client ID from file %q: %v", path, err)
+		}
+
+		fileClientId := strings.TrimSpace(string(fileClientIdRaw))
+
+		if clientId != "" && clientId != fileClientId {
+			return nil, fmt.Errorf("mismatch between supplied Client ID and supplied Client ID file contents - please either remove one or ensure they match")
+		}
+
+		clientId = fileClientId
+	}
+
+	return &clientId, nil
+}
+
+func (model providerData) GetClientSecret() (*string, error) {
+	clientSecret := strings.TrimSpace(model.ClientSecret.ValueString())
+
+	if path := model.ClientSecretFilePath.ValueString(); path != "" {
+		fileSecretRaw, err := os.ReadFile(path)
+
+		if err != nil {
+			return nil, fmt.Errorf("reading Client Secret from file %q: %v", path, err)
+		}
+
+		fileSecret := strings.TrimSpace(string(fileSecretRaw))
+
+		if clientSecret != "" && clientSecret != fileSecret {
+			return nil, fmt.Errorf("mismatch between supplied Client Secret and supplied Client Secret file contents - please either remove one or ensure they match")
+		}
+
+		clientSecret = fileSecret
+	}
+
+	return &clientSecret, nil
 }
 
 type providerEndpointData struct {
@@ -88,6 +134,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"client_id": schema.StringAttribute{
 				Optional:    true,
 				Description: "The Client ID which should be used.",
+			},
+
+			"client_id_file_path": schema.StringAttribute{
+				Optional:    true,
+				Description: "The path to a file containing the Client ID which should be used.",
 			},
 
 			"tenant_id": schema.StringAttribute{
@@ -156,6 +207,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"client_secret": schema.StringAttribute{
 				Optional:    true,
 				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
+			},
+
+			"client_secret_file_path": schema.StringAttribute{
+				Optional:    true,
+				Description: "The path to a file containing the Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
 			},
 
 			"skip_provider_registration": schema.BoolAttribute{
@@ -289,6 +345,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.ClientID = types.StringValue(v)
 		}
 	}
+	if model.ClientIDFilePath.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_ID_FILE_PATH"); v != "" {
+			model.ClientIDFilePath = types.StringValue(v)
+		}
+	}
 
 	if model.TenantID.IsNull() {
 		if v := os.Getenv("ARM_TENANT_ID"); v != "" {
@@ -348,6 +409,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	if model.ClientSecret.IsNull() {
 		if v := os.Getenv("ARM_CLIENT_SECRET"); v != "" {
 			model.ClientSecret = types.StringValue(v)
+		}
+	}
+
+	if model.ClientSecretFilePath.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_SECRET_FILE_PATH"); v != "" {
+			model.ClientSecretFilePath = types.StringValue(v)
 		}
 	}
 
@@ -484,11 +551,17 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	if v := model.TenantID.ValueString(); v != "" {
 		_ = os.Setenv("AZURE_TENANT_ID", v)
 	}
-	if v := model.ClientID.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CLIENT_ID", v)
+	if v, err := model.GetClientId(); err != nil {
+		response.Diagnostics.AddError("Failed to obtain a Client ID.", err.Error())
+		return
+	} else if v != nil && *v != "" {
+		_ = os.Setenv("AZURE_CLIENT_ID", *v)
 	}
-	if v := model.ClientSecret.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CLIENT_SECRET", v)
+	if v, err := model.GetClientSecret(); err != nil {
+		response.Diagnostics.AddError("Failed to obtain a Client Secret.", err.Error())
+		return
+	} else if v != nil && *v != "" {
+		_ = os.Setenv("AZURE_CLIENT_SECRET", *v)
 	}
 	if v := model.ClientCertificatePath.ValueString(); v != "" {
 		_ = os.Setenv("AZURE_CERTIFICATE_PATH", v)
@@ -619,6 +692,11 @@ func newDefaultAzureCredential(model providerData, options *azidentity.DefaultAz
 		options = &azidentity.DefaultAzureCredentialOptions{}
 	}
 
+	clientId, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+
 	if model.UseOIDC.ValueBool() {
 		oidcCred, err := NewOidcCredential(&OidcCredentialOptions{
 			ClientOptions: azcore.ClientOptions{
@@ -626,7 +704,7 @@ func newDefaultAzureCredential(model providerData, options *azidentity.DefaultAz
 			},
 			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 			TenantID:                   model.TenantID.ValueString(),
-			ClientID:                   model.ClientID.ValueString(),
+			ClientID:                   *clientId,
 			RequestToken:               model.OIDCRequestToken.ValueString(),
 			RequestUrl:                 model.OIDCRequestURL.ValueString(),
 			Token:                      model.OIDCToken.ValueString(),

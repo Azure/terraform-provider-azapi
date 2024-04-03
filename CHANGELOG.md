@@ -1,3 +1,7 @@
+## v1.13.0
+ENHANCEMENTS:
+- `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
+
 ## v1.12.1
 BUG FIXES:
 - Fix a bug that `azapi_resource` removes some required fields in the `body` when using `ignore_body_changes` feature.
