@@ -72,6 +72,7 @@ func (model providerData) GetClientId() (*string, error) {
 	clientId := strings.TrimSpace(model.ClientID.ValueString())
 
 	if path := model.ClientIDFilePath.ValueString(); path != "" {
+		// #nosec G304
 		fileClientIdRaw, err := os.ReadFile(path)
 
 		if err != nil {
@@ -94,6 +95,7 @@ func (model providerData) GetClientSecret() (*string, error) {
 	clientSecret := strings.TrimSpace(model.ClientSecret.ValueString())
 
 	if path := model.ClientSecretFilePath.ValueString(); path != "" {
+		// #nosec G304
 		fileSecretRaw, err := os.ReadFile(path)
 
 		if err != nil {
