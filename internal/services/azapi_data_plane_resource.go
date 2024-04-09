@@ -353,8 +353,12 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	} else {
 		payload, err := dynamic.FromJSON(data, model.Payload.UnderlyingValue().Type(ctx))
 		if err != nil {
-			response.Diagnostics.AddError("Invalid payload", err.Error())
-			return
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
+			}
 		}
 		model.Payload = payload
 	}
