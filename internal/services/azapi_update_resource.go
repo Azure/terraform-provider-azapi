@@ -130,6 +130,9 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 
 			"payload": schema.DynamicAttribute{
 				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
 			},
 
 			"ignore_body_changes": schema.ListAttribute{

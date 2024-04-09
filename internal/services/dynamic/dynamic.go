@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -349,4 +350,16 @@ func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 	default:
 		return nil, nil, fmt.Errorf("Unhandled type: %T", v)
 	}
+}
+
+func SemanticallyEqual(a, b types.Dynamic) bool {
+	aJson, err := ToJSON(a)
+	if err != nil {
+		return false
+	}
+	bJson, err := ToJSON(b)
+	if err != nil {
+		return false
+	}
+	return utils.NormalizeJson(string(aJson)) == utils.NormalizeJson(string(bJson))
 }

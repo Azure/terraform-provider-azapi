@@ -114,6 +114,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 
 			"payload": schema.DynamicAttribute{
 				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{
