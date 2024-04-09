@@ -22,7 +22,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks.#", "locks.0", "locks.1", "removing_special_chars"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "removing_special_chars", "payload"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
@@ -36,6 +36,21 @@ func TestAccGenericResource_basic(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.basic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
+func TestAccGenericResource_dynamicSchema(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.dynamicSchema(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -527,6 +542,31 @@ resource "azapi_resource" "test" {
       base64Value = "%[3]s"
     }
   })
+}
+`, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) dynamicSchema(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_automation_account.test.id
+
+  payload = {
+    properties = {
+      base64Value = "%[3]s"
+    }
+  }
 }
 `, r.template(data), data.RandomString, testCertBase64)
 }

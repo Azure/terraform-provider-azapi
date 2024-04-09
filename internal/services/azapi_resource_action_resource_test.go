@@ -66,6 +66,18 @@ func TestAccActionResource_providerAction(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_dynamicSchema(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.dynamicSchema(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func TestAccActionResource_nonstandardLRO(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
@@ -163,6 +175,26 @@ resource "azapi_resource_action" "test" {
     type = "Microsoft.Cache/Redis"
     name = "cacheName"
   })
+}
+`
+}
+
+func (r ActionResource) dynamicSchema() string {
+	return `
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@2023-04-01"
+  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  payload = {
+    type = "Microsoft.Cache/Redis"
+    name = "cacheName"
+  }
 }
 `
 }

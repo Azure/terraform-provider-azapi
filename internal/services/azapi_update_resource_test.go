@@ -33,6 +33,23 @@ func TestAccGenericUpdateResource_automationAccount(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_dynamicSchema(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.dynamicSchema(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("parent_id").Exists(),
+				check.That(data.ResourceName).Key("name").Exists(),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -150,6 +167,29 @@ resource "azapi_update_resource" "test" {
       publicNetworkAccess = true
     }
   })
+}
+`, r.template(data), data.RandomStringOfLength(5))
+}
+
+func (r GenericUpdateResource) dynamicSchema(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azurerm_automation_account.test.id
+  payload = {
+    properties = {
+      publicNetworkAccess = true
+    }
+  }
 }
 `, r.template(data), data.RandomStringOfLength(5))
 }

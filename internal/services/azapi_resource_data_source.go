@@ -33,6 +33,7 @@ type AzapiResourceDataSourceModel struct {
 	Location             types.String   `tfsdk:"location"`
 	Identity             types.List     `tfsdk:"identity"`
 	Output               types.String   `tfsdk:"output"`
+	OutputPayload        types.Dynamic  `tfsdk:"output_payload"`
 	Tags                 types.Map      `tfsdk:"tags"`
 	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
@@ -132,6 +133,10 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Computed: true,
 			},
 
+			"output_payload": schema.DynamicAttribute{
+				Computed: true,
+			},
+
 			"tags": schema.MapAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
@@ -215,5 +220,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		}
 	}
 	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }
