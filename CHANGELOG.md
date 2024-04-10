@@ -1,3 +1,7 @@
+## v1.13.0 (unreleased)
+BUG FIXES:
+- Fix a bug that `azapi_resource_action` doesn't support 204 status code as a success response.
+
 ## v1.12.1
 BUG FIXES:
 - Fix a bug that `azapi_resource` removes some required fields in the `body` when using `ignore_body_changes` feature.
