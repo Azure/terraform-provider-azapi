@@ -130,7 +130,8 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

@@ -89,6 +89,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.String{
 					myvalidator.StringIsJSON(),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
 			},
 
 			"payload": schema.DynamicAttribute{
@@ -104,7 +105,8 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

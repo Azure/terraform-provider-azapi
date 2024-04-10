@@ -155,6 +155,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
 					}),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
 			},
 
 			"ignore_body_changes": schema.ListAttribute{
@@ -163,18 +164,21 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(false),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(true),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -200,7 +204,8 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

@@ -75,7 +75,8 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

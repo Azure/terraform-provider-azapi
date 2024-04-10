@@ -110,6 +110,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
 					}),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
 			},
 
 			"payload": schema.DynamicAttribute{
@@ -120,15 +121,17 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(false),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(true),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -148,7 +151,8 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

@@ -119,6 +119,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
 					}),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
 			},
 
 			"payload": schema.DynamicAttribute{
@@ -154,7 +155,8 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 			},
 
 			"output": schema.StringAttribute{
-				Computed: true,
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
 			},
 
 			"output_payload": schema.DynamicAttribute{

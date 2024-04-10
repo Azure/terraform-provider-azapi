@@ -69,7 +69,7 @@ resource "azapi_update_resource" "example" {
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   resource_id = azurerm_lb.example.id
 
-  body = jsonencode({
+  payload = {
     properties = {
       inboundNatRules = [
         {
@@ -79,7 +79,7 @@ resource "azapi_update_resource" "example" {
         }
       ]
     }
-  })
+  }
 
   depends_on = [
     azurerm_lb_nat_rule.example,
@@ -109,20 +109,20 @@ The following arguments are supported:
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `body` - (Required) A JSON object that contains the request body used to add on an existing azure resource. 
+* `payload` - (Required) A dynamic attribute that contains the request body used to add on an existing azure resource. 
 
 ---
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
+  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property `output_payload`.
 ```
 {
-  "properties" : {
-    "loginServer" : "registry1.azurecr.io"
-    "policies" : {
-      "quarantinePolicy" = {
-        "status" = "disabled"
+  properties = {
+    loginServer = "registry1.azurecr.io"
+    policies = {
+      quarantinePolicy = {
+        status = "disabled"
       }
     }
   }
@@ -131,28 +131,22 @@ The following arguments are supported:
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
-* `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
-
-* `ignore_body_changes` - (Optional) A list of properties that should be ignored when comparing the `body` with its current state.
-
-* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
-
 ## Attributes Reference
 
 In addition to the Arguments listed above - the following Attributes are exported:
 
 * `id` - The ID of the azure resource.
 
-* `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
+* `output_payload` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azapi_resource.example.output).properties.loginServer
+  value = azapi_resource.example.output_payload.properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = azapi_resource.example.output_payload.properties.policies.quarantinePolicy.status
 }
 ```
 
