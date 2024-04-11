@@ -30,6 +30,20 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_dynamicSchema(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.dynamicSchema(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -144,6 +158,56 @@ resource "azapi_data_plane_resource" "test" {
   depends_on = [
     azurerm_role_assignment.test,
   ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) dynamicSchema(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_purview_account" "example" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
+  parent_id = replace(azurerm_purview_account.example.scan_endpoint, "https://", "")
+  name      = "acctest%[2]s"
+  payload = {
+    kind = "Custom"
+    properties = {
+      description        = "Let's put a cool desc here"
+      classificationName = "MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER"
+      columnPatterns = [
+        {
+          pattern = "^data$"
+          kind    = "Regex"
+        }
+      ]
+      dataPatterns = [
+        {
+          pattern = "^[0-9]{2}-[0-9]{4}-[0-9]{6}-[0-9]{3}$"
+          kind    = "Regex"
+        }
+      ]
+      minimumPercentageMatch = 60
+      ruleStatus             = "Enabled"
+    }
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
+	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
@@ -34,11 +35,13 @@ type DataPlaneResourceModel struct {
 	ParentID              types.String   `tfsdk:"parent_id"`
 	Type                  types.String   `tfsdk:"type"`
 	Body                  types.String   `tfsdk:"body"`
+	Payload               types.Dynamic  `tfsdk:"payload"`
 	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
 	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
 	Locks                 types.List     `tfsdk:"locks"`
 	Output                types.String   `tfsdk:"output"`
+	OutputPayload         types.Dynamic  `tfsdk:"output_payload"`
 	Timeouts              timeouts.Value `tfsdk:"timeouts"`
 }
 
@@ -49,6 +52,7 @@ type DataPlaneResource struct {
 var _ resource.Resource = &DataPlaneResource{}
 var _ resource.ResourceWithConfigure = &DataPlaneResource{}
 var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
+var _ resource.ResourceWithValidateConfig = &DataPlaneResource{}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -106,12 +110,21 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
 					}),
 				},
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
+			},
+
+			"payload": schema.DynamicAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:           true,
+				Computed:           true,
+				Default:            defaults.BoolDefault(false),
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -137,6 +150,11 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			},
 
 			"output": schema.StringAttribute{
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
+			},
+
+			"output_payload": schema.DynamicAttribute{
 				Computed: true,
 			},
 		},
@@ -148,6 +166,23 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Delete: true,
 			}),
 		},
+	}
+}
+
+func (r *DataPlaneResource) ValidateConfig(ctx context.Context, request resource.ValidateConfigRequest, response *resource.ValidateConfigResponse) {
+	var config *DataPlaneResourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
+		return
+	}
+	// destroy doesn't need to modify plan
+	if config == nil {
+		return
+	}
+
+	// can't specify both body and payload
+	if !config.Body.IsNull() && !config.Payload.IsNull() {
+		response.Diagnostics.AddError("Invalid config", "can't specify both body and payload")
+		return
 	}
 }
 
@@ -165,8 +200,10 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || utils.NormalizeJson(plan.Body.ValueString()) != utils.NormalizeJson(state.Body.ValueString()) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || utils.NormalizeJson(plan.Body.ValueString()) != utils.NormalizeJson(state.Body.ValueString()) || !plan.Payload.Equal(state.Payload) {
 		plan.Output = types.StringUnknown()
+		plan.OutputPayload = basetypes.NewDynamicUnknown()
+		response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 	}
 }
 
@@ -212,11 +249,24 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		}
 	}
 
-	body := make(map[string]interface{})
-	err = json.Unmarshal([]byte(model.Body.ValueString()), &body)
-	if err != nil {
-		diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "body" is invalid, value: %s, error: %s`, model.Body.ValueString(), err))
-		return
+	var body map[string]interface{}
+	switch {
+	case !model.Payload.IsNull():
+		out, err := expandPayload(model.Payload)
+		if err != nil {
+			diagnostics.AddError("Invalid payload", err.Error())
+			return
+		}
+		body = out
+	case !model.Body.IsNull():
+		bodyValueString := model.Body.ValueString()
+		err := json.Unmarshal([]byte(bodyValueString), &body)
+		if err != nil {
+			diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, model.Body.ValueString(), err))
+			return
+		}
+	default:
+		body = map[string]interface{}{}
 	}
 
 	for _, id := range AsStringList(model.Locks) {
@@ -232,6 +282,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 
 	model.ID = basetypes.NewStringValue(id.ID())
 	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
@@ -269,29 +320,60 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	bodyJson := model.Body.ValueString()
-	requestBody := make(map[string]interface{})
-	err = json.Unmarshal([]byte(bodyJson), &requestBody)
-	if err != nil && bodyJson != "" {
-		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "body" is invalid, value: %s, error: %s`, bodyJson, err))
-		return
+	var requestBody map[string]interface{}
+	var useBody bool
+	switch {
+	case !model.Payload.IsNull():
+		useBody = false
+		out, err := expandPayload(model.Payload)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid payload", err.Error())
+			return
+		}
+		requestBody = out
+	case !model.Body.IsNull():
+		useBody = true
+		bodyValueString := model.Body.ValueString()
+		err := json.Unmarshal([]byte(bodyValueString), &requestBody)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, model.Body.ValueString(), err))
+			return
+		}
+	default:
+		requestBody = map[string]interface{}{}
 	}
 
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
 	}
-	data, err := json.Marshal(utils.UpdateObject(requestBody, responseBody, option))
+	body := utils.UpdateObject(requestBody, responseBody, option)
+
+	data, err := json.Marshal(body)
 	if err != nil {
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
+	if useBody {
+		model.Body = types.StringValue(string(data))
+	} else {
+		payload, err := dynamic.FromJSON(data, model.Payload.UnderlyingValue().Type(ctx))
+		if err != nil {
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
+			}
+		}
+		model.Payload = payload
+	}
 
-	model.Body = basetypes.NewStringValue(string(data))
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
 
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
 }

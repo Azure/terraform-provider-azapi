@@ -51,12 +51,12 @@ data "azapi_resource" "example" {
 
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(data.azapi_resource.example.output).properties.loginServer
+  value = data.azapi_resource.example.output_payload.properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(data.azapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = data.azapi_resource.example.output_payload.properties.policies.quarantinePolicy.status
 }
 ```
 
@@ -86,14 +86,14 @@ The following arguments are supported:
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following json to computed property `output`.
+  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the HCL object to computed property `output_payload`.
 ```
 {
-  "properties" : {
-    "loginServer" : "registry1.azurecr.io"
-    "policies" : {
-      "quarantinePolicy" = {
-        "status" = "disabled"
+  properties = {
+    loginServer = "registry1.azurecr.io"
+    policies = {
+      quarantinePolicy = {
+        status = "disabled"
       }
     }
   }
@@ -110,16 +110,16 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `location` - The Azure Region where the azure resource should exist.
 
-* `output` - The output json containing the properties specified in `response_export_values`. Here're some examples to decode json and extract the value.
+* `output_payload` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = jsondecode(azapi_resource.example.output).properties.loginServer
+  value = azapi_resource.example.output_payload.properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
+  value = azapi_resource.example.output_payload.properties.policies.quarantinePolicy.status
 }
 ```
 

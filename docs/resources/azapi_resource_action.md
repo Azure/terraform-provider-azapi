@@ -101,9 +101,9 @@ data "azapi_resource_action" "test" {
   type        = "Microsoft.ResourceGraph@2020-04-01-preview"
   resource_id = "/providers/Microsoft.ResourceGraph"
   action      = "resources"
-  body = jsonencode({
+  payload = {
     query = "resources| where name contains \"test\""
-  })
+  }
   response_export_values = ["*"]
 }
 ```
@@ -121,7 +121,7 @@ The following arguments are supported:
 
 ---
 
-* `body` - (Optional) A JSON object that contains the request body.
+* `payload` - (Optional) A dynamic attribute that contains the request body.
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
 
@@ -129,20 +129,20 @@ The following arguments are supported:
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["keys"]`, it will set the following json to computed property `output`.
+  Here's an example. If it sets to `["keys"]`, it will set the following HCL object to computed property `output_payload`.
 
 ```
 {
-  "keys": [
+  keys = [
     {
-      "KeyName": "Primary",
-      "Permissions": "Full",
-      "Value": "nHGYNd******i4wdug=="
+      KeyName = "Primary"
+      Permissions = "Full"
+      Value = "nHGYNd******i4wdug=="
     },
     {
-      "KeyName": "Secondary",
-      "Permissions": "Full",
-      "Value": "6yoCad******SLzKzg=="
+      KeyName = "Secondary"
+      Permissions = "Full"
+      Value = "6yoCad******SLzKzg=="
     }
   ]
 }
@@ -156,17 +156,17 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource action.
 
-* `output` - The output json containing the properties specified in `response_export_values`. Here are some examples to decode json and extract the value.
+* `output_payload` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = jsondecode(azapi_resource_action.test.output).keys.0.Value
+  value = azapi_resource_action.test.output_payload.keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = jsondecode(azapi_resource_action.test.output).keys.1.Value
+  value = azapi_resource_action.test.output_payload.keys.1.Value
 }
 ```
 

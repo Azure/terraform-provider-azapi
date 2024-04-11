@@ -33,6 +33,7 @@ type AzapiResourceDataSourceModel struct {
 	Location             types.String   `tfsdk:"location"`
 	Identity             types.List     `tfsdk:"identity"`
 	Output               types.String   `tfsdk:"output"`
+	OutputPayload        types.Dynamic  `tfsdk:"output_payload"`
 	Tags                 types.Map      `tfsdk:"tags"`
 	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
@@ -129,6 +130,11 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"output": schema.StringAttribute{
+				Computed:           true,
+				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
+			},
+
+			"output_payload": schema.DynamicAttribute{
 				Computed: true,
 			},
 
@@ -215,5 +221,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		}
 	}
 	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }
