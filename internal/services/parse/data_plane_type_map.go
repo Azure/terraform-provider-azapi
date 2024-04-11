@@ -273,6 +273,12 @@ const raw = `
     "Url": "/workflows/{workflowId}"
   },
   {
+    "UrlFormat": "{parentId}/databases/{name}",
+    "ResourceType": "Microsoft.Synapse/workspaces/databases",
+    "ParentIDExample": "{workspaceName}.dev.azuresynapse.net",
+    "Url": "/databases/{databaseName}"
+  },
+  {
     "UrlFormat": "{parentId}/dataflows/{name}",
     "ResourceType": "Microsoft.Synapse/workspaces/dataflows",
     "ParentIDExample": "{workspaceName}.dev.azuresynapse.net",

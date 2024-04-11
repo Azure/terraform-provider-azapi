@@ -1,6 +1,10 @@
 ## v1.13.0 (unreleased)
+ENHANCEMENTS:
+- `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
+
 BUG FIXES:
 - Fix a bug that `azapi_resource_action` doesn't support 204 status code as a success response.
+
 
 ## v1.12.1
 BUG FIXES:
