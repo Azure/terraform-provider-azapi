@@ -175,10 +175,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional:           true,
-				Computed:           true,
-				Default:            defaults.BoolDefault(true),
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `payload` to ignore.",
+				Optional: true,
+				Computed: true,
+				Default:  defaults.BoolDefault(true),
 			},
 
 			"response_export_values": schema.ListAttribute{

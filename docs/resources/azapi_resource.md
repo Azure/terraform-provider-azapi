@@ -126,6 +126,9 @@ The following arguments are supported:
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
+* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `payload` to suppress plan-diff. Defaults to `true`.
+  It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+
 * `schema_validation_enabled` - (Optional) Whether enabled the validation on `type` and `payload` with embedded schema. Defaults to `true`.
 
 ---
