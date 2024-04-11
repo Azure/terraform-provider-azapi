@@ -175,6 +175,7 @@ The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/d
 | Microsoft.Purview/accounts/Scanning/integrationruntimes | /integrationruntimes/{integrationRuntimeName} | {accountName}.purview.azure.com/scan                                                        |
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints | /managedvirtualnetworks/{managedVirtualNetworkName}/managedprivateendpoints/{managedPrivateEndpointName} | {accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}     |
 | Microsoft.Purview/accounts/Workflow/workflows | /workflows/{workflowId} | {accountName}.purview.azure.com                                                             |
+| Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/datasets | /datasets/{datasetName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/kqlScripts | /kqlScripts/{kqlScriptName} | {workspaceName}.dev.azuresynapse.net                                                        |
