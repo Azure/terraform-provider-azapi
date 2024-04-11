@@ -225,7 +225,7 @@ func (client *ResourceClient) action(ctx context.Context, resourceID string, act
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
