@@ -1,5 +1,6 @@
 ## v1.13.0 (unreleased)
 ENHANCEMENTS:
+- `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
 
 BUG FIXES:
