@@ -38,7 +38,7 @@ type AzapiUpdateResourceModel struct {
 	Payload               types.Dynamic  `tfsdk:"payload"`
 	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
 	IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
-	IgnoreMissingProperty types.Bool     `tfsdk:""`
+	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
 	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
 	Locks                 types.List     `tfsdk:"locks"`
 	Output                types.String   `tfsdk:"output"`
