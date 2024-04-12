@@ -1,5 +1,12 @@
 ## v1.13.0 (unreleased)
 ENHANCEMENTS:
+- `azapi_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
+- `azapi_update_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
+- `azapi_resource_action` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
+- `azapi_data_plane_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
+- `azapi_resource` data source: Support for the `output_payload` field, which is dynamic schema and used to read the output payload.
+- `azapi_resource_action` data source: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
+- `azapi_resource_list` data source: Support for the `output_payload` field, which is dynamic schema and used to read the output payload.
 - `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
 
