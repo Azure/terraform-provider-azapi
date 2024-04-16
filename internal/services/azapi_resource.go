@@ -361,7 +361,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if plan.Body.IsUnknown() || plan.Payload.IsUnknown() {
+	if plan.Body.IsUnknown() || !dynamic.IsFullyKnown(plan.Payload) {
 		if config.Tags.IsNull() {
 			plan.Tags = basetypes.NewMapUnknown(types.StringType)
 		}
