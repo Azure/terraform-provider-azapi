@@ -6,7 +6,7 @@ description: |-
   Parses an Azure resource ID into its separate fields.
 ---
 
-# azapi_resource_list
+# azapi_resource_id
 
 This resource can parse an Azure resource ID into its separate fields.
 
