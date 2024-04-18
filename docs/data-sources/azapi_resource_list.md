@@ -57,7 +57,7 @@ The following arguments are supported:
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["value"]`, it will set the following HCL object to computed property `output_payload`.
+  Here's an example. If it sets to `["value"]`, it will set the following HCL object to computed property `output`.
 ```
 {
   value = [
@@ -79,7 +79,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource list.
 
-* `output_payload` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
+* `output` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
 
 ## Timeouts

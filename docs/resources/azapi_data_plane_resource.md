@@ -37,7 +37,7 @@ resource "azapi_data_plane_resource" "dataset" {
   type      = "Microsoft.Synapse/workspaces/datasets@2020-12-01"
   parent_id = trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://")
   name      = "example-dataset"
-  payload = {
+  body = {
     properties = {
       type = "AzureBlob",
       typeProperties = {
@@ -79,13 +79,13 @@ The following arguments are supported:
 
 -> **Note** For the available resource types and parent IDs, please refer to the `Available Resources` section below.
 
-* `payload` - (Required) A dynamic attribute that contains the request body used to create and update data plane resource. 
+* `body` - (Required) A dynamic attribute that contains the request body used to create and update data plane resource. 
 
 ---
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property `output_payload`.
+  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property `output`.
 ```
 {
   "properties" : {
@@ -101,7 +101,7 @@ The following arguments are supported:
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
-* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `payload` to suppress plan-diff. Defaults to `true`. 
+* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. 
 It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 
 ## Attributes Reference
@@ -110,16 +110,16 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource.
 
-* `output_payload` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
+* `output` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = azapi_data_plane_resource.example.output_payload.properties.loginServer
+  value = azapi_data_plane_resource.example.output.properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = azapi_data_plane_resource.example.output_payload.properties.policies.quarantinePolicy.status
+  value = azapi_data_plane_resource.example.output.properties.policies.quarantinePolicy.status
 }
 ```
 

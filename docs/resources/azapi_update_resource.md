@@ -69,7 +69,7 @@ resource "azapi_update_resource" "example" {
   type        = "Microsoft.Network/loadBalancers@2021-03-01"
   resource_id = azurerm_lb.example.id
 
-  payload = {
+  body = {
     properties = {
       inboundNatRules = [
         {
@@ -109,13 +109,13 @@ The following arguments are supported:
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `payload` - (Required) A dynamic attribute that contains the request body used to add on an existing azure resource. 
+* `body` - (Required) A dynamic attribute that contains the request body used to add on an existing azure resource. 
 
 ---
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property `output_payload`.
+  Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property `output`.
 ```
 {
   properties = {
@@ -131,7 +131,7 @@ The following arguments are supported:
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
-* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `payload` to suppress plan-diff. Defaults to `true`.
+* `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
   It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 
 ## Attributes Reference
@@ -140,16 +140,16 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource.
 
-* `output_payload` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
+* `output` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 ```
 // it will output "registry1.azurecr.io"
 output "login_server" {
-  value = azapi_resource.example.output_payload.properties.loginServer
+  value = azapi_resource.example.output.properties.loginServer
 }
 
 // it will output "disabled"
 output "quarantine_policy" {
-  value = azapi_resource.example.output_payload.properties.policies.quarantinePolicy.status
+  value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
 }
 ```
 
