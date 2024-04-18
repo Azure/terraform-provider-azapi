@@ -22,7 +22,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "removing_special_chars", "payload"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "removing_special_chars", "output"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
@@ -563,7 +563,7 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  payload = {
+  body = {
     properties = {
       base64Value = "%[3]s"
     }

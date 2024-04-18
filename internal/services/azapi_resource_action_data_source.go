@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -25,11 +24,9 @@ type ResourceActionDataSourceModel struct {
 	Type                 types.String   `tfsdk:"type"`
 	Action               types.String   `tfsdk:"action"`
 	Method               types.String   `tfsdk:"method"`
-	Body                 types.String   `tfsdk:"body"`
-	Payload              types.Dynamic  `tfsdk:"payload"`
+	Body                 types.Dynamic  `tfsdk:"body"`
 	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.String   `tfsdk:"output"`
-	OutputPayload        types.Dynamic  `tfsdk:"output_payload"`
+	Output               types.Dynamic  `tfsdk:"output"`
 	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
@@ -39,7 +36,6 @@ type ResourceActionDataSource struct {
 
 var _ datasource.DataSource = &ResourceActionDataSource{}
 var _ datasource.DataSourceWithConfigure = &ResourceActionDataSource{}
-var _ datasource.DataSourceWithValidateConfig = &ResourceActionDataSource{}
 
 func (r *ResourceActionDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -84,15 +80,10 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				},
 			},
 
-			"body": schema.StringAttribute{
-				Optional: true,
-				Validators: []validator.String{
-					myvalidator.StringIsJSON(),
-				},
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
-			},
-
-			"payload": schema.DynamicAttribute{
+			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
+			// If the body is specified as a JSON string, the underlying value will be a string
+			// TODO: Remove the support for JSON string in the next major release
+			"body": schema.DynamicAttribute{
 				Optional: true,
 			},
 
@@ -104,12 +95,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				},
 			},
 
-			"output": schema.StringAttribute{
-				Computed:           true,
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
-			},
-
-			"output_payload": schema.DynamicAttribute{
+			"output": schema.DynamicAttribute{
 				Computed: true,
 			},
 		},
@@ -119,23 +105,6 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Read: true,
 			}),
 		},
-	}
-}
-
-func (r *ResourceActionDataSource) ValidateConfig(ctx context.Context, request datasource.ValidateConfigRequest, response *datasource.ValidateConfigResponse) {
-	var config *ResourceActionDataSourceModel
-	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
-		return
-	}
-	// destroy doesn't need to modify plan
-	if config == nil {
-		return
-	}
-
-	// can't specify both body and payload
-	if !config.Body.IsNull() && !config.Payload.IsNull() {
-		response.Diagnostics.AddError("Invalid config", "can't specify both body and payload")
-		return
 	}
 }
 
@@ -161,23 +130,9 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	}
 
 	var requestBody interface{}
-	switch {
-	case !model.Payload.IsNull():
-		out, err := expandPayload(model.Payload)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid payload", err.Error())
-			return
-		}
-		requestBody = out
-	case !model.Body.IsNull():
-		bodyValueString := model.Body.ValueString()
-		err := json.Unmarshal([]byte(bodyValueString), &requestBody)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, model.Body.ValueString(), err))
-			return
-		}
-	default:
-		requestBody = map[string]interface{}{}
+	if err := unmarshalBody(model.Body, &requestBody); err != nil {
+		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+		return
 	}
 
 	method := model.Method.ValueString()
@@ -193,8 +148,11 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
-	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+	if isBodyJSON(model.Body) {
+		model.Output = types.DynamicValue(basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
+	} else {
+		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

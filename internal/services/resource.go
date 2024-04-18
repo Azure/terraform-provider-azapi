@@ -152,3 +152,54 @@ func AsStringList(input types.List) []string {
 	}
 	return result
 }
+
+// bodySemanticallyEqual compares two dynamic values semantically.
+// If the values are JSON strings, it normalizes the JSON strings before comparing them.
+// If the values are HCL objects, it compares them semantically.
+func bodySemanticallyEqual(a, b types.Dynamic) bool {
+	if a.IsNull() && b.IsNull() {
+		return true
+	}
+	if a.IsNull() || b.IsNull() {
+		return false
+	}
+	aType := a.UnderlyingValue().Type(context.TODO())
+	bType := b.UnderlyingValue().Type(context.TODO())
+	if aType.Equal(types.StringType) && bType.Equal(types.StringType) {
+		aJson := a.UnderlyingValue().(types.String).ValueString()
+		bJson := b.UnderlyingValue().(types.String).ValueString()
+		return utils.NormalizeJson(aJson) == utils.NormalizeJson(bJson)
+	}
+	return dynamic.SemanticallyEqual(a, b)
+}
+
+func unmarshalBody(input types.Dynamic, out interface{}) error {
+	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
+		return nil
+	}
+	switch value := input.UnderlyingValue().(type) {
+	case types.String:
+		err := json.Unmarshal([]byte(value.ValueString()), out)
+		if err != nil {
+			return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, value.ValueString(), err)
+		}
+		return nil
+	default:
+		data, err := dynamic.ToJSON(input)
+		if err != nil {
+			return fmt.Errorf(`invalid dynamic value: value: %s, err: %+v`, input.String(), err)
+		}
+		if err = json.Unmarshal(data, &out); err != nil {
+			return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
+		}
+		return nil
+	}
+}
+
+func isBodyJSON(input types.Dynamic) bool {
+	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
+		return false
+	}
+	_, ok := input.UnderlyingValue().(types.String)
+	return ok
+}

@@ -2,18 +2,16 @@ package services
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
-	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
+	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -34,13 +32,11 @@ type ActionResourceModel struct {
 	ResourceId           types.String   `tfsdk:"resource_id"`
 	Action               types.String   `tfsdk:"action"`
 	Method               types.String   `tfsdk:"method"`
-	Body                 types.String   `tfsdk:"body"`
-	Payload              types.Dynamic  `tfsdk:"payload"`
+	Body                 types.Dynamic  `tfsdk:"body"`
 	When                 types.String   `tfsdk:"when"`
 	Locks                types.List     `tfsdk:"locks"`
 	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.String   `tfsdk:"output"`
-	OutputPayload        types.Dynamic  `tfsdk:"output_payload"`
+	Output               types.Dynamic  `tfsdk:"output"`
 	Timeouts             timeouts.Value `tfsdk:"timeouts"`
 }
 
@@ -51,7 +47,7 @@ type ActionResource struct {
 var _ resource.Resource = &ActionResource{}
 var _ resource.ResourceWithConfigure = &ActionResource{}
 var _ resource.ResourceWithModifyPlan = &ActionResource{}
-var _ resource.ResourceWithValidateConfig = &ActionResource{}
+var _ resource.ResourceWithUpgradeState = &ActionResource{}
 
 func (r *ActionResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -61,6 +57,12 @@ func (r *ActionResource) Configure(ctx context.Context, request resource.Configu
 
 func (r *ActionResource) Metadata(ctx context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_resource_action"
+}
+
+func (r *ActionResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
+	return map[int64]resource.StateUpgrader{
+		0: migration.AzapiResourceActionMigrationV0ToV1(ctx),
+	}
 }
 
 func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
@@ -109,23 +111,15 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				},
 			},
 
-			"body": schema.StringAttribute{
+			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
+			// If the body is specified as a JSON string, the underlying value will be a string
+			// TODO: Remove the support for JSON string in the next major release
+			"body": schema.DynamicAttribute{
 				Optional: true,
-				Validators: []validator.String{
-					myvalidator.StringIsJSON(),
-				},
-				PlanModifiers: []planmodifier.String{
-					myplanmodifier.UseStateWhen(func(a, b types.String) bool {
-						return utils.NormalizeJson(a.ValueString()) == utils.NormalizeJson(b.ValueString())
-					}),
-				},
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `payload` argument to specify the body of the resource.",
-			},
-
-			"payload": schema.DynamicAttribute{
-				Optional: true,
+				Computed: true,
+				Default:  defaults.DynamicDefault(types.StringValue("{}")),
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
 			},
 
@@ -154,12 +148,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				},
 			},
 
-			"output": schema.StringAttribute{
-				Computed:           true,
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `output_payload` argument to output the response of the resource.",
-			},
-
-			"output_payload": schema.DynamicAttribute{
+			"output": schema.DynamicAttribute{
 				Computed: true,
 			},
 		},
@@ -171,23 +160,8 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Delete: true,
 			}),
 		},
-	}
-}
 
-func (r *ActionResource) ValidateConfig(ctx context.Context, request resource.ValidateConfigRequest, response *resource.ValidateConfigResponse) {
-	var config *ActionResourceModel
-	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
-		return
-	}
-	// destroy doesn't need to modify plan
-	if config == nil {
-		return
-	}
-
-	// can't specify both body and payload
-	if !config.Body.IsNull() && !config.Payload.IsNull() {
-		response.Diagnostics.AddError("Invalid config", "can't specify both body and payload")
-		return
+		Version: 1,
 	}
 }
 
@@ -205,9 +179,8 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || utils.NormalizeJson(plan.Body.ValueString()) != utils.NormalizeJson(state.Body.ValueString()) || !plan.Payload.Equal(state.Payload) {
-		plan.Output = types.StringUnknown()
-		plan.OutputPayload = basetypes.NewDynamicUnknown()
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
+		plan.Output = basetypes.NewDynamicUnknown()
 		response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 	}
 }
@@ -231,8 +204,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 			resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 		}
 		model.ID = basetypes.NewStringValue(resourceId)
-		model.Output = basetypes.NewStringValue("{}")
-		model.OutputPayload = basetypes.NewDynamicNull()
+		model.Output = basetypes.NewDynamicNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
@@ -280,23 +252,9 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	}
 
 	var requestBody interface{}
-	switch {
-	case !model.Payload.IsNull():
-		out, err := expandPayload(model.Payload)
-		if err != nil {
-			diagnostics.AddError("Invalid payload", err.Error())
-			return
-		}
-		requestBody = out
-	case !model.Body.IsNull():
-		bodyValueString := model.Body.ValueString()
-		err := json.Unmarshal([]byte(bodyValueString), &requestBody)
-		if err != nil {
-			diagnostics.AddError("Invalid JSON string", fmt.Sprintf(`The argument "body" is invalid: value: %s, err: %+v`, model.Body.ValueString(), err))
-			return
-		}
-	default:
-		requestBody = map[string]interface{}{}
+	if err := unmarshalBody(model.Body, &requestBody); err != nil {
+		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+		return
 	}
 
 	for _, id := range AsStringList(model.Locks) {
@@ -316,8 +274,10 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
-	model.Output = basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
-	model.OutputPayload = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-
+	if isBodyJSON(model.Body) {
+		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
+	} else {
+		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+	}
 	diagnostics.Append(state.Set(ctx, model)...)
 }

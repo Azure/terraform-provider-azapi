@@ -1,12 +1,17 @@
 ## v1.13.0 (unreleased)
+BREAKING CHANGES:
+- Provider field `default_naming_prefix` and `default_naming_suffix` are deprecated. It will not work in this release and will be removed in the next major release.
+  Please specify the naming prefix and suffix in the resource's `name` field instead.
+- The `azapi_resource`'s `removing_special_chars` field is deprecated. It will not work in this release and will be removed in the next major release.
+  Please specify the `name` field and remove the special characters in the `name` field instead.
+- Defining the `identity` inside the `body` field is not recommended. In this release, it will not sync the `identity` inside the `body` field to `identity` block.
+  Please define the `identity` block instead.
+- `azapi_resource` data source: The `output` field changes from JSON string to HCL object. Users can use access the fields in the output as an HCL object. Please remove the `jsondecode` function when using the `output` field.
+- `azapi_resource_list` data source: The `output` field changes from JSON string to HCL object. Users can use access the fields in the output as an HCL object. Please remove the `jsondecode` function when using the `output` field.
+
 ENHANCEMENTS:
-- `azapi_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
-- `azapi_update_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
-- `azapi_resource_action` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
-- `azapi_data_plane_resource` resource: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
-- `azapi_resource` data source: Support for the `output_payload` field, which is dynamic schema and used to read the output payload.
-- `azapi_resource_action` data source: Support for the `payload` and `output_payload` fields, which are dynamic schema and used to specify the payload and read the output payload.
-- `azapi_resource_list` data source: Support for the `output_payload` field, which is dynamic schema and used to read the output payload.
+- `azapi_resource` resource, `azapi_update_resource` resource, `azapi_resource_action` resource, `azapi_data_plane_resource` resource, `azapi_resource_action` data source: The `body` field supports the dynamic schema and allows user to use the HCL object to specify the body.
+- `azapi_resource` resource, `azapi_update_resource` resource, `azapi_resource_action` resource, `azapi_data_plane_resource` resource, `azapi_resource_action` data source, `azapi_resource` data source, `azapi_resource_list` data source: The `output` field supports the dynamic schema and allows user to read the output as an HCL object.
 - `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
 
