@@ -507,7 +507,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	// generate the computed fields
 	plan.ID = types.StringValue(id.ID())
-	if isBodyJSON(plan.Body) {
+	if dynamicIsString(plan.Body) {
 		plan.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues))))
 	} else {
 		plan.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(plan.ResponseExportValues)))
@@ -637,7 +637,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		state.Body = types.DynamicValue(types.StringValue(string(data)))
 		state.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {

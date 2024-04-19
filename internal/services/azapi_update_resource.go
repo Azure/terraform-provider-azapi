@@ -335,7 +335,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {
 		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
@@ -407,7 +407,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		state.Body = types.DynamicValue(types.StringValue(string(data)))
 		state.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {

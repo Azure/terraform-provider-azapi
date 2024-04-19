@@ -241,7 +241,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {
 		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
@@ -300,7 +300,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		model.Body = types.DynamicValue(types.StringValue(string(data)))
 		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {

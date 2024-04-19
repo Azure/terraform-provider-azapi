@@ -274,7 +274,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
-	if isBodyJSON(model.Body) {
+	if dynamicIsString(model.Body) {
 		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
 	} else {
 		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))

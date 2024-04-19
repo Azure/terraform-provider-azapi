@@ -196,7 +196,7 @@ func unmarshalBody(input types.Dynamic, out interface{}) error {
 	}
 }
 
-func isBodyJSON(input types.Dynamic) bool {
+func dynamicIsString(input types.Dynamic) bool {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
 		return false
 	}
