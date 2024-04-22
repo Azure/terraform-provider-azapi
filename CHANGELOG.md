@@ -14,6 +14,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource, `azapi_update_resource` resource, `azapi_resource_action` resource, `azapi_data_plane_resource` resource, `azapi_resource_action` data source, `azapi_resource` data source, `azapi_resource_list` data source: The `output` field supports the dynamic schema and allows user to read the output as an HCL object.
 - `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
+- `azapi_resource` resource, `azapi_update_resource` resource: Ignore the order of the elements in a list if the element has a `name` field as identifier.
 
 BUG FIXES:
 - Fix a bug that `azapi_resource_action` doesn't support 204 status code as a success response.

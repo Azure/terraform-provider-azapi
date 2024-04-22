@@ -19,6 +19,125 @@ func Test_UpdateObject(t *testing.T) {
 			OldJson: `
 {
   "properties": {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.0.0.0/16"
+      ]
+    },
+    "dhcpOptions": {
+      "dnsServers": null
+    },
+    "subnets": [
+      {
+        "name": "default",
+        "properties": {
+          "addressPrefix": "10.0.3.0/24"
+        }
+      }
+    ]
+  }
+}
+`,
+			NewJson: `
+{
+  "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
+  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422",
+  "location": "westus",
+  "name": "henglu422",
+  "properties": {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.0.0.0/16"
+      ]
+    },
+    "dhcpOptions": {
+      "dnsServers": []
+    },
+    "enableDdosProtection": false,
+    "provisioningState": "Succeeded",
+    "resourceGuid": "86ec5186-a958-4b83-b5e7-3b88a728c34c",
+    "subnets": [
+      {
+        "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/henglu422",
+        "name": "henglu422",
+        "properties": {
+          "addressPrefix": "10.0.2.0/24",
+          "delegations": [],
+          "networkSecurityGroup": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/networkSecurityGroups/NRMS-zpedr2ai6dglmhenglu422"
+          },
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled",
+          "provisioningState": "Succeeded"
+        },
+        "type": "Microsoft.Network/virtualNetworks/subnets"
+      },
+      {
+        "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/default",
+        "name": "default",
+        "properties": {
+          "addressPrefix": "10.0.3.0/24",
+          "delegations": [],
+          "networkSecurityGroup": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/networkSecurityGroups/NRMS-zpedr2ai6dglmhenglu422"
+          },
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled",
+          "provisioningState": "Succeeded"
+        },
+        "type": "Microsoft.Network/virtualNetworks/subnets"
+      }
+    ],
+    "virtualNetworkPeerings": []
+  },
+  "type": "Microsoft.Network/virtualNetworks"
+}
+`,
+			ExpectJson: `
+{
+  "properties": {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.0.0.0/16"
+      ]
+    },
+    "dhcpOptions": {
+      "dnsServers": []
+    },
+    "subnets": [
+      {
+        "name": "default",
+        "properties": {
+          "addressPrefix": "10.0.3.0/24"
+        }
+      },
+      {
+        "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/henglu422",
+        "name": "henglu422",
+        "properties": {
+          "addressPrefix": "10.0.2.0/24",
+          "delegations": [],
+          "networkSecurityGroup": {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/networkSecurityGroups/NRMS-zpedr2ai6dglmhenglu422"
+          },
+          "privateEndpointNetworkPolicies": "Disabled",
+          "privateLinkServiceNetworkPolicies": "Enabled",
+          "provisioningState": "Succeeded"
+        },
+        "type": "Microsoft.Network/virtualNetworks/subnets"
+      }
+    ]
+  }
+}
+`,
+		},
+		{
+			OldJson: `
+{
+  "properties": {
     "compression": "None",
     "consumerGroup": "acctesteventhubcg",
     "dataFormat": "",
