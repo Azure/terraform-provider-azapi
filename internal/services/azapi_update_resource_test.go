@@ -129,6 +129,20 @@ func TestAccGenericUpdateResource_ignoreChangesArray(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_ignoreOrderInArray(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreOrderInArray(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -368,6 +382,69 @@ resource "azapi_update_resource" "test" {
 
   ignore_body_changes = ["properties.subnets"]
   depends_on          = [azurerm_subnet.test]
+}
+`, r.template(data), data.RandomInt())
+}
+
+func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "vnet" {
+  type      = "Microsoft.Network/virtualNetworks@2023-09-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctest%[2]d"
+  location  = azurerm_resource_group.test.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16",
+        ]
+      }
+      dhcpOptions = {
+        dnsServers = [
+        ]
+      }
+      subnets = [
+        {
+          name = "first"
+          properties = {
+            addressPrefix = "10.0.3.0/24"
+          }
+        },
+        {
+          name = "second"
+          properties = {
+            addressPrefix = "10.0.4.0/24"
+          }
+        }
+      ]
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
+  resource_id = azapi_resource.vnet.id
+  body = {
+    properties = {
+      subnets = [
+        {
+          name = "second"
+          properties = {
+            addressPrefix = "10.0.4.0/24"
+          }
+        },
+        {
+          name = "first"
+          properties = {
+            addressPrefix = "10.0.3.0/24"
+          }
+        }
+      ]
+    }
+  }
 }
 `, r.template(data), data.RandomInt())
 }

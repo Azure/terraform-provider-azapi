@@ -81,12 +81,23 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 		}
 	case []interface{}:
 		if newArr, ok := new.([]interface{}); ok {
-			if len(oldValue) != len(newArr) {
-				return newArr
-			}
 			res := make([]interface{}, 0)
-			for index := range oldValue {
-				res = append(res, UpdateObject(oldValue[index], newArr[index], option))
+			used := make([]bool, len(newArr))
+
+			for _, oldItem := range oldValue {
+				for index, newItem := range newArr {
+					if areSameArrayItems(oldItem, newItem) {
+						res = append(res, UpdateObject(oldItem, newItem, option))
+						used[index] = true
+						break
+					}
+				}
+			}
+
+			for index, newItem := range newArr {
+				if !used[index] {
+					res = append(res, newItem)
+				}
 			}
 			return res
 		}
@@ -101,6 +112,31 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 		}
 	}
 	return new
+}
+
+func areSameArrayItems(a, b interface{}) bool {
+	aId := identifierOfArrayItem(a)
+	bId := identifierOfArrayItem(b)
+	if aId == "" || bId == "" {
+		return false
+	}
+	return aId == bId
+}
+
+func identifierOfArrayItem(input interface{}) string {
+	inputMap, ok := input.(map[string]interface{})
+	if !ok {
+		return ""
+	}
+	name := inputMap["name"]
+	if name == nil {
+		return ""
+	}
+	nameValue, ok := name.(string)
+	if !ok {
+		return ""
+	}
+	return nameValue
 }
 
 // ExtractObject is used to extract object from old for a json path
