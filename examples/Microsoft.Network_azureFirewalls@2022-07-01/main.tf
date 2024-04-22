@@ -31,7 +31,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -45,10 +45,12 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "publicIPAddress" {
@@ -56,7 +58,7 @@ resource "azapi_resource" "publicIPAddress" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       ddosSettings = {
         protectionMode = "VirtualNetworkInherited"
@@ -69,7 +71,7 @@ resource "azapi_resource" "publicIPAddress" {
       name = "Standard"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -78,7 +80,7 @@ resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = "AzureFirewallSubnet"
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.1.0/24"
       delegations = [
@@ -90,7 +92,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -100,7 +102,7 @@ resource "azapi_resource" "azureFirewall" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       additionalProperties = {
       }
@@ -123,7 +125,7 @@ resource "azapi_resource" "azureFirewall" {
       }
       threatIntelMode = "Deny"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

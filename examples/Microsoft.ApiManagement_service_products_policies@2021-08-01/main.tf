@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -52,7 +52,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,7 +61,7 @@ resource "azapi_resource" "product" {
   type      = "Microsoft.ApiManagement/service/products@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description          = ""
       displayName          = "Test Product"
@@ -69,7 +69,7 @@ resource "azapi_resource" "product" {
       subscriptionRequired = false
       terms                = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -78,12 +78,12 @@ resource "azapi_resource" "policy2" {
   type      = "Microsoft.ApiManagement/service/products/policies@2021-08-01"
   parent_id = azapi_resource.product.id
   name      = "policy"
-  body = jsonencode({
+  body = {
     properties = {
       format = "rawxml-link"
       value  = "https://gist.githubusercontent.com/riordanp/ca22f8113afae0eb38cc12d718fd048d/raw/d6ac89a2f35a6881a7729f8cb4883179dc88eea1/example.xml"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

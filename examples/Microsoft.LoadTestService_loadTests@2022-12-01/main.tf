@@ -36,11 +36,11 @@ resource "azapi_resource" "loadTest" {
     identity_ids = []
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       description = "This is new load test"
     }
-  })
+  }
 
   tags = {
     Team = "Dev Exp"

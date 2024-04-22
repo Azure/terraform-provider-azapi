@@ -31,11 +31,11 @@ resource "azapi_resource" "profile" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     sku = {
       name = "Standard_Verizon"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,7 +45,7 @@ resource "azapi_resource" "endpoint" {
   parent_id = azapi_resource.profile.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       isHttpAllowed  = true
       isHttpsAllowed = true
@@ -61,7 +61,7 @@ resource "azapi_resource" "endpoint" {
       ]
       queryStringCachingBehavior = "IgnoreQueryString"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

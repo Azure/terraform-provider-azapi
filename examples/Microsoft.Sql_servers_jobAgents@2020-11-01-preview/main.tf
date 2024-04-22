@@ -42,7 +42,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin            = "4dministr4t0r"
       administratorLoginPassword    = "superSecur3!!!"
@@ -51,7 +51,7 @@ resource "azapi_resource" "server" {
       restrictOutboundNetworkAccess = "Disabled"
       version                       = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -67,7 +67,7 @@ resource "azapi_resource" "database" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       autoPauseDelay                   = 0
       collation                        = "SQL_Latin1_General_CP1_CI_AS"
@@ -81,7 +81,7 @@ resource "azapi_resource" "database" {
       requestedBackupStorageRedundancy = "Geo"
       zoneRedundant                    = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -91,11 +91,11 @@ resource "azapi_resource" "jobAgent" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       databaseId = azapi_resource.database.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

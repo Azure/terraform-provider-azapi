@@ -31,13 +31,13 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -59,11 +59,11 @@ resource "azapi_resource" "table" {
   type      = "Microsoft.Storage/storageAccounts/tableServices/tables@2022-09-01"
   parent_id = data.azapi_resource.tableService.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       signedIdentifiers = []
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

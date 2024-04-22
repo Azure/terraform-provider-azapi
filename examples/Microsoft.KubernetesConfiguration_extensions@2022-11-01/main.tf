@@ -35,7 +35,7 @@ resource "azapi_resource" "managedCluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       agentPoolProfiles = [
         {
@@ -47,7 +47,7 @@ resource "azapi_resource" "managedCluster" {
       ]
       dnsPrefix = var.resource_name
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -56,12 +56,12 @@ resource "azapi_resource" "extension" {
   type      = "Microsoft.KubernetesConfiguration/extensions@2022-11-01"
   parent_id = azapi_resource.managedCluster.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       autoUpgradeMinorVersion = true
       extensionType           = "microsoft.flux"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

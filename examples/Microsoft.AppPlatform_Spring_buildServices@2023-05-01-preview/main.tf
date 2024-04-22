@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "E0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,10 +53,10 @@ resource "azapi_resource_action" "buildService" {
   type        = "Microsoft.AppPlatform/Spring/buildServices@2023-05-01-preview"
   resource_id = data.azapi_resource_id.buildService.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

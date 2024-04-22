@@ -31,7 +31,7 @@ resource "azapi_resource" "streamingJob" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       cluster = {
       }
@@ -54,7 +54,7 @@ resource "azapi_resource" "streamingJob" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -64,7 +64,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -96,7 +96,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -112,7 +112,7 @@ resource "azapi_resource" "output" {
   type      = "Microsoft.StreamAnalytics/streamingJobs/outputs@2021-10-01-preview"
   parent_id = azapi_resource.streamingJob.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       datasource = {
         properties = {
@@ -127,7 +127,7 @@ resource "azapi_resource" "output" {
       }
       serialization = null
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

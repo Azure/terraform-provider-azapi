@@ -31,14 +31,14 @@ resource "azapi_resource" "virtualWan" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allowBranchToBranchTraffic     = true
       disableVpnEncryption           = false
       office365LocalBreakoutCategory = "None"
       type                           = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,7 +48,7 @@ resource "azapi_resource" "vpnSite" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -83,7 +83,7 @@ resource "azapi_resource" "vpnSite" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

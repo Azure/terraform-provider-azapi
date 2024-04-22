@@ -31,7 +31,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -45,17 +45,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = "internal"
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.2.0/24"
       delegations = [
@@ -67,7 +69,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -77,7 +79,7 @@ resource "azapi_resource" "networkInterface" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       enableAcceleratedNetworking = false
       enableIPForwarding          = false
@@ -95,7 +97,7 @@ resource "azapi_resource" "networkInterface" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -105,7 +107,7 @@ resource "azapi_resource" "virtualMachine" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       additionalCapabilities = {
       }
@@ -175,7 +177,7 @@ resource "azapi_resource" "virtualMachine" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -185,7 +187,7 @@ resource "azapi_resource" "guestConfigurationAssignment" {
   parent_id = azapi_resource.virtualMachine.id
   name      = "WhitelistedApplication"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       guestConfiguration = {
         assignmentType = ""
@@ -201,7 +203,7 @@ resource "azapi_resource" "guestConfigurationAssignment" {
         version     = "1.*"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

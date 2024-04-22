@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "E0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_resource" "gateway" {
   type      = "Microsoft.AppPlatform/Spring/gateways@2023-05-01-preview"
   parent_id = azapi_resource.Spring.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       httpsOnly = false
       public    = false
@@ -57,7 +57,7 @@ resource "azapi_resource" "gateway" {
       name     = "E0"
       tier     = "Enterprise"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -66,11 +66,11 @@ resource "azapi_resource" "domain" {
   type      = "Microsoft.AppPlatform/Spring/gateways/domains@2023-05-01-preview"
   parent_id = azapi_resource.gateway.id
   name      = "${var.resource_name}.azuremicroservices.io"
-  body = jsonencode({
+  body = {
     properties = {
       thumbprint = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

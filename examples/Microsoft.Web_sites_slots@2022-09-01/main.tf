@@ -31,7 +31,7 @@ resource "azapi_resource" "serverfarm" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       hyperV         = false
       perSiteScaling = false
@@ -41,7 +41,7 @@ resource "azapi_resource" "serverfarm" {
     sku = {
       name = "S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "site" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       clientAffinityEnabled = false
       clientCertEnabled     = false
@@ -81,7 +81,7 @@ resource "azapi_resource" "site" {
       }
       vnetRouteAllEnabled = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -91,7 +91,7 @@ resource "azapi_resource" "slot" {
   parent_id = azapi_resource.site.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       clientAffinityEnabled    = false
       clientCertEnabled        = false
@@ -122,7 +122,7 @@ resource "azapi_resource" "slot" {
       }
       vnetRouteAllEnabled = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

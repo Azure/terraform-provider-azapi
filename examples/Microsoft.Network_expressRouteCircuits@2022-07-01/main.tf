@@ -31,13 +31,13 @@ resource "azapi_resource" "ExpressRoutePort" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       encapsulation   = "Dot1Q"
       peeringLocation = "CDC-Canberra"
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]
@@ -48,7 +48,7 @@ resource "azapi_resource" "expressRouteCircuit" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizationKey = ""
       bandwidthInGbps  = 5
@@ -61,7 +61,7 @@ resource "azapi_resource" "expressRouteCircuit" {
       name   = "Premium_MeteredData"
       tier   = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]

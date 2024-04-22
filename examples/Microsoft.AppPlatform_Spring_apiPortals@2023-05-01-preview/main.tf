@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "E0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_resource" "apiPortal" {
   type      = "Microsoft.AppPlatform/Spring/apiPortals@2023-05-01-preview"
   parent_id = azapi_resource.Spring.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       gatewayIds = [
       ]
@@ -59,7 +59,7 @@ resource "azapi_resource" "apiPortal" {
       name     = "E0"
       tier     = "Enterprise"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

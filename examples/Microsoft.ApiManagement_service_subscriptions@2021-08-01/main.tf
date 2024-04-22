@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -64,7 +64,7 @@ resource "azapi_resource" "service" {
       capacity = 1
       name     = "Developer"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   timeouts {
@@ -78,7 +78,7 @@ resource "azapi_resource" "product" {
   type      = "Microsoft.ApiManagement/service/products@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description          = ""
       displayName          = "Test Product"
@@ -86,7 +86,7 @@ resource "azapi_resource" "product" {
       subscriptionRequired = true
       terms                = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -95,13 +95,13 @@ resource "azapi_resource" "user" {
   type      = "Microsoft.ApiManagement/service/users@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       email     = "azure-acctest230630032559695401@example.com"
       firstName = "Acceptance"
       lastName  = "Test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -110,7 +110,7 @@ resource "azapi_resource" "subscription" {
   type      = "Microsoft.ApiManagement/service/subscriptions@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = "0f393927-8f2d-499d-906f-c03943328d31"
-  body = jsonencode({
+  body = {
     properties = {
       allowTracing = true
       displayName  = "Butter Parser API Enterprise Edition"
@@ -118,7 +118,7 @@ resource "azapi_resource" "subscription" {
       scope        = azapi_resource.product.id
       state        = "submitted"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

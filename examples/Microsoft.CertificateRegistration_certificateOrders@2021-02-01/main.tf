@@ -31,7 +31,7 @@ resource "azapi_resource" "certificateOrder" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       autoRenew         = true
       distinguishedName = "CN=example.com"
@@ -39,7 +39,7 @@ resource "azapi_resource" "certificateOrder" {
       productType       = "StandardDomainValidatedSsl"
       validityInYears   = 1
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

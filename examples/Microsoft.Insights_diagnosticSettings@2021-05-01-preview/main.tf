@@ -42,7 +42,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [
       ]
@@ -59,7 +59,7 @@ resource "azapi_resource" "vault" {
       }
       tenantId = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -69,7 +69,7 @@ resource "azapi_resource" "namespace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -81,7 +81,7 @@ resource "azapi_resource" "namespace" {
       name     = "Basic"
       tier     = "Basic"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -90,7 +90,7 @@ resource "azapi_resource" "authorizationRule" {
   type      = "Microsoft.EventHub/namespaces/authorizationRules@2021-11-01"
   parent_id = azapi_resource.namespace.id
   name      = "example"
-  body = jsonencode({
+  body = {
     properties = {
       rights = [
         "Listen",
@@ -98,7 +98,7 @@ resource "azapi_resource" "authorizationRule" {
         "Manage",
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -107,7 +107,7 @@ resource "azapi_resource" "diagnosticSetting" {
   type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
   parent_id = azapi_resource.vault.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       eventHubAuthorizationRuleId = azapi_resource.authorizationRule.id
       eventHubName                = azapi_resource.namespace.name
@@ -132,7 +132,7 @@ resource "azapi_resource" "diagnosticSetting" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

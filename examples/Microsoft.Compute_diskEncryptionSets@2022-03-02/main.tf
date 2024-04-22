@@ -42,7 +42,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         family = "A"
@@ -52,10 +52,12 @@ resource "azapi_resource" "vault" {
       enableSoftDelete = true
       tenantId         = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.accessPolicies"]
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
 }
 
 data "azapi_resource_id" "key" {
@@ -68,13 +70,13 @@ resource "azapi_resource_action" "key" {
   type        = "Microsoft.KeyVault/vaults/keys@2023-02-01"
   resource_id = data.azapi_resource_id.key.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       keySize = 2048
       kty     = "RSA"
       keyOps  = ["encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"]
     }
-  })
+  }
   response_export_values = ["*"]
 }
 
@@ -87,7 +89,7 @@ resource "azapi_resource" "diskEncryptionSet" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       activeKey = {
         keyUrl = jsondecode(azapi_resource_action.key.output).properties.keyUriWithVersion
@@ -98,7 +100,7 @@ resource "azapi_resource" "diskEncryptionSet" {
       encryptionType                    = "EncryptionAtRestWithCustomerKey"
       rotationToLatestKeyVersionEnabled = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

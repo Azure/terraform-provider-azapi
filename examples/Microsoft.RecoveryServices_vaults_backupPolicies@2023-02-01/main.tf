@@ -31,14 +31,14 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
     }
     sku = {
       name = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_resource" "backupPolicy" {
   type      = "Microsoft.RecoveryServices/vaults/backupPolicies@2023-02-01"
   parent_id = azapi_resource.vault.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       backupManagementType = "AzureStorage"
       retentionPolicy = {
@@ -72,7 +72,7 @@ resource "azapi_resource" "backupPolicy" {
       timeZone     = "UTC"
       workLoadType = "AzureFileShare"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

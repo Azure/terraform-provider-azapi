@@ -31,7 +31,7 @@ resource "azapi_resource" "publicIPAddress" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       ddosSettings = {
         protectionMode = "VirtualNetworkInherited"
@@ -44,7 +44,7 @@ resource "azapi_resource" "publicIPAddress" {
       name = "Standard"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -54,7 +54,7 @@ resource "azapi_resource" "loadBalancer" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       frontendIPConfigurations = [
         {
@@ -71,7 +71,7 @@ resource "azapi_resource" "loadBalancer" {
       name = "Standard"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -80,10 +80,10 @@ resource "azapi_resource" "backendAddressPool" {
   type      = "Microsoft.Network/loadBalancers/backendAddressPools@2022-07-01"
   parent_id = azapi_resource.loadBalancer.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "databaseAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "GlobalDocumentDB"
     properties = {
       capabilities = [
@@ -66,7 +66,7 @@ resource "azapi_resource" "databaseAccount" {
       virtualNetworkRules = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -75,7 +75,7 @@ resource "azapi_resource" "sqlRoleDefinition" {
   type      = "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2021-10-15"
   parent_id = azapi_resource.databaseAccount.id
   name      = "c3ce1661-d0b9-3476-0a7c-2654ce2f3055"
-  body = jsonencode({
+  body = {
     properties = {
       assignableScopes = [
         azapi_resource.databaseAccount.id,
@@ -90,7 +90,7 @@ resource "azapi_resource" "sqlRoleDefinition" {
       roleName = var.resource_name
       type     = "CustomRole"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -66,7 +66,7 @@ resource "azapi_resource" "storageAccount" {
     tags = {
       environment = "production"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -75,10 +75,10 @@ resource "azapi_update_resource" "update_advancedThreatProtectionSetting" {
   type      = "Microsoft.Security/advancedThreatProtectionSettings@2019-01-01"
   parent_id = azapi_resource.storageAccount.id
   name      = "current"
-  body = jsonencode({
+  body = {
     properties = {
       isEnabled = true
     }
-  })
+  }
   response_export_values = ["*"]
 }

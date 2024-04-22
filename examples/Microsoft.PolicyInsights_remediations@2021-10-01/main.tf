@@ -41,7 +41,7 @@ resource "azapi_resource" "policyAssignment" {
   type      = "Microsoft.Authorization/policyAssignments@2022-06-01"
   parent_id = data.azapi_resource.subscription.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       displayName     = ""
       enforcementMode = "Default"
@@ -57,7 +57,7 @@ resource "azapi_resource" "policyAssignment" {
       policyDefinitionId = "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
       scope              = data.azapi_resource.subscription.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -66,7 +66,7 @@ resource "azapi_resource" "remediation" {
   type      = "Microsoft.PolicyInsights/remediations@2021-10-01"
   parent_id = data.azapi_resource.subscription.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       filters = {
         locations = [
@@ -76,7 +76,7 @@ resource "azapi_resource" "remediation" {
       policyDefinitionReferenceId = ""
       resourceDiscoveryMode       = "ExistingNonCompliant"
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]

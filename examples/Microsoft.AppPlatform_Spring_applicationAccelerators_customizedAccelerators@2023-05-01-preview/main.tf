@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "E0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -55,7 +55,7 @@ resource "azapi_resource" "customizedAccelerator" {
   type      = "Microsoft.AppPlatform/Spring/applicationAccelerators/customizedAccelerators@2023-05-01-preview"
   parent_id = azapi_resource.applicationAccelerator.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       displayName = ""
@@ -70,7 +70,7 @@ resource "azapi_resource" "customizedAccelerator" {
       }
       iconUrl = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

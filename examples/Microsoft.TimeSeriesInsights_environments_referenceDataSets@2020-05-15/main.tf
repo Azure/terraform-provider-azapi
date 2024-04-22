@@ -31,7 +31,7 @@ resource "azapi_resource" "environment" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "Gen1"
     properties = {
       dataRetentionTime            = "P30D"
@@ -41,7 +41,7 @@ resource "azapi_resource" "environment" {
       capacity = 1
       name     = "S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "referenceDataSet" {
   parent_id = azapi_resource.environment.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       dataStringComparisonBehavior = "Ordinal"
       keyProperties = [
@@ -61,7 +61,7 @@ resource "azapi_resource" "referenceDataSet" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

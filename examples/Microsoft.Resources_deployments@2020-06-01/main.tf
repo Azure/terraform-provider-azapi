@@ -30,7 +30,7 @@ resource "azapi_resource" "deployment" {
   type      = "Microsoft.Resources/deployments@2020-06-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       mode = "Complete"
       template = {
@@ -83,7 +83,7 @@ resource "azapi_resource" "deployment" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "registry" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       adminUserEnabled     = false
       anonymousPullEnabled = false
@@ -61,7 +61,7 @@ resource "azapi_resource" "registry" {
       name = "Premium"
       tier = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -70,14 +70,14 @@ resource "azapi_resource" "scopeMap" {
   type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-08-01-preview"
   parent_id = azapi_resource.registry.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       actions = [
         "repositories/testrepo/content/read",
       ]
       description = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

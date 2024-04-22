@@ -31,14 +31,14 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
     }
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_update_resource" "defenderForStorageSetting" {
   type      = "Microsoft.Security/defenderForStorageSettings@2022-12-01-preview"
   parent_id = azapi_resource.storageAccount.id
   name      = "current"
-  body = jsonencode({
+  body = {
     properties = {
       isEnabled = true
       malwareScanning = {
@@ -61,5 +61,5 @@ resource "azapi_update_resource" "defenderForStorageSetting" {
       }
       overrideSubscriptionLevelSettings = true
     }
-  })
+  }
 }

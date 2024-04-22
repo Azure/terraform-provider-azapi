@@ -42,13 +42,13 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "mradministrator"
       administratorLoginPassword = "thisIsDog11"
       version                    = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -57,14 +57,14 @@ resource "azapi_resource" "administrator" {
   type      = "Microsoft.Sql/servers/administrators@2020-11-01-preview"
   parent_id = azapi_resource.server.id
   name      = "ActiveDirectory"
-  body = jsonencode({
+  body = {
     properties = {
       administratorType = "ActiveDirectory"
       login             = "sqladmin"
       sid               = data.azurerm_client_config.current.client_id
       tenantId          = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "configuration" {
   parent_id = azapi_resource.automationAccount.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = "test"
       logVerbose  = false
@@ -63,7 +63,7 @@ resource "azapi_resource" "configuration" {
     tags = {
       ENV = "prod"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

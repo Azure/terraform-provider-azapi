@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "runbook" {
   parent_id = azapi_resource.automationAccount.id
   name      = "Get-AzureVMTutorial"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = "This is a test runbook for terraform acceptance test"
       draft = {
@@ -61,7 +61,7 @@ resource "azapi_resource" "runbook" {
       logVerbose       = true
       runbookType      = "PowerShell"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -76,7 +76,7 @@ resource "azapi_resource" "webHook" {
   type      = "Microsoft.Automation/automationAccounts/webHooks@2015-10-31"
   parent_id = azapi_resource.automationAccount.id
   name      = "TestRunbook_webhook"
-  body = jsonencode({
+  body = {
     properties = {
       expiryTime = "2025-06-30T04:27:24Z"
       isEnabled  = true
@@ -87,10 +87,12 @@ resource "azapi_resource" "webHook" {
         name = azapi_resource.runbook.name
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.expiryTime"]
   depends_on                = [azapi_resource_action.publish_runbook]
+  lifecycle {
+    ignore_changes = [body.properties.expiryTime]
+  }
 }
 

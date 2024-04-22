@@ -31,13 +31,13 @@ resource "azapi_resource" "integrationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
     sku = {
       name = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -46,14 +46,14 @@ resource "azapi_resource" "batchConfiguration" {
   type      = "Microsoft.Logic/integrationAccounts/batchConfigurations@2019-05-01"
   parent_id = azapi_resource.integrationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       batchGroupName = "TestBatchGroup"
       releaseCriteria = {
         messageCount = 80
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

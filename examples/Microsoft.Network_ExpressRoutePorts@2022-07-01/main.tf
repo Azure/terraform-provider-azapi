@@ -31,7 +31,7 @@ resource "azapi_resource" "ExpressRoutePort" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       billingType     = "MeteredData"
@@ -41,7 +41,7 @@ resource "azapi_resource" "ExpressRoutePort" {
     tags = {
       ENV = "Test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

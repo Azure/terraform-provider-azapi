@@ -45,7 +45,7 @@ resource "azapi_resource" "account" {
     identity_ids = [azapi_resource.userAssignedIdentity.id]
   }
   
-  body = jsonencode({
+  body = {
     kind = "SpeechServices"
     properties = {
       allowedFqdnList = [
@@ -62,7 +62,7 @@ resource "azapi_resource" "account" {
       name = "S0"
       tier = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

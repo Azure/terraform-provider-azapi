@@ -35,12 +35,12 @@ resource "azapi_resource" "cluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     sku = {
       capacity = 1000
       name     = "CapacityReservation"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

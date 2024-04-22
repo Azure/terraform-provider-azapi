@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -65,17 +65,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = "internal"
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.2.0/24"
       delegations = [
@@ -87,7 +89,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -96,13 +98,13 @@ resource "azapi_resource" "credential" {
   type      = "Microsoft.Automation/automationAccounts/credentials@2020-01-13-preview"
   parent_id = azapi_resource.automationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       password    = "test_pwd"
       userName    = "test_user"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -111,11 +113,11 @@ resource "azapi_resource" "hybridRunbookWorkerGroup" {
   type      = "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups@2021-06-22"
   parent_id = azapi_resource.automationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     credential = {
       name = azapi_resource.credential.name
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -125,7 +127,7 @@ resource "azapi_resource" "networkInterface" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       enableAcceleratedNetworking = false
       enableIPForwarding          = false
@@ -143,7 +145,7 @@ resource "azapi_resource" "networkInterface" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -153,7 +155,7 @@ resource "azapi_resource" "virtualMachine" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       additionalCapabilities = {
       }
@@ -222,7 +224,7 @@ resource "azapi_resource" "virtualMachine" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -231,11 +233,11 @@ resource "azapi_resource" "hybridRunbookWorker" {
   type      = "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers@2021-06-22"
   parent_id = azapi_resource.hybridRunbookWorkerGroup.id
   name      = "c7714056-5ba8-4bbe-920e-2993171164eb"
-  body = jsonencode({
+  body = {
     properties = {
       vmResourceId = azapi_resource.virtualMachine.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

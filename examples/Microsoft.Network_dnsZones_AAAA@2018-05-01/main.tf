@@ -39,7 +39,7 @@ resource "azapi_resource" "AAAA" {
   type      = "Microsoft.Network/dnsZones/AAAA@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       AAAARecords = [
         {
@@ -55,7 +55,7 @@ resource "azapi_resource" "AAAA" {
       targetResource = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

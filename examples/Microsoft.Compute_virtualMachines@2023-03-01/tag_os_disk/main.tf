@@ -39,7 +39,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -53,17 +53,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes       = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.2.0/24"
       delegations = [
@@ -75,7 +77,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -85,7 +87,7 @@ resource "azapi_resource" "networkInterface" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       enableAcceleratedNetworking = false
       enableIPForwarding          = false
@@ -103,7 +105,7 @@ resource "azapi_resource" "networkInterface" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -114,7 +116,7 @@ resource "azapi_resource" "virtualMachine" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       hardwareProfile = {
         vmSize = "Standard_F2"
@@ -153,7 +155,7 @@ resource "azapi_resource" "virtualMachine" {
       }
     }
     tags = local.tags
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -171,9 +173,9 @@ resource "azapi_resource_action" "updateTags" {
   resource_id = data.azapi_resource.managedDisk.id
   method      = "PATCH"
 
-  body = jsonencode({
+  body = {
     tags = local.tags
-  })
+  }
 
   depends_on = [azapi_resource.virtualMachine]
 }

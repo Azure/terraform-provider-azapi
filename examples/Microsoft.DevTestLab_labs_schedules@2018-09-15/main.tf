@@ -31,11 +31,11 @@ resource "azapi_resource" "lab" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       labStorageType = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,7 +45,7 @@ resource "azapi_resource" "schedule" {
   parent_id = azapi_resource.lab.id
   name      = "LabVmsShutdown"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       dailyRecurrence = {
         time = "0100"
@@ -62,7 +62,7 @@ resource "azapi_resource" "schedule" {
     tags = {
       environment = "Production"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

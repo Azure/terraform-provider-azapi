@@ -31,7 +31,7 @@ resource "azapi_resource" "namespace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       disableLocalAuth    = false
       publicNetworkAccess = "Enabled"
@@ -42,7 +42,7 @@ resource "azapi_resource" "namespace" {
       name     = "Standard"
       tier     = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,13 +51,13 @@ resource "azapi_resource" "authorizationRule" {
   type      = "Microsoft.ServiceBus/namespaces/authorizationRules@2021-06-01-preview"
   parent_id = azapi_resource.namespace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       rights = [
         "Listen",
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

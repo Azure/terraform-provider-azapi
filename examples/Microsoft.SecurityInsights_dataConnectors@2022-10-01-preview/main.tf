@@ -42,7 +42,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -58,7 +58,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -67,18 +67,18 @@ resource "azapi_resource" "onboardingState" {
   type      = "Microsoft.SecurityInsights/onboardingStates@2023-06-01-preview"
   parent_id = azapi_resource.workspace.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       customerManagedKey = false
     }
-  })
+  }
 }
 
 resource "azapi_resource" "dataConnector" {
   type      = "Microsoft.SecurityInsights/dataConnectors@2022-10-01-preview"
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     kind = "MicrosoftThreatIntelligence"
     properties = {
       dataTypes = {
@@ -93,7 +93,7 @@ resource "azapi_resource" "dataConnector" {
       }
       tenantId = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   depends_on                = [azapi_resource.onboardingState]

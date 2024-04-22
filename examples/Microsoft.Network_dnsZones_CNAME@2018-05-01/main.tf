@@ -39,7 +39,7 @@ resource "azapi_resource" "CNAME" {
   type      = "Microsoft.Network/dnsZones/CNAME@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       CNAMERecord = {
         cname = "${var.resource_name}.webpubsub.azure.com"
@@ -50,7 +50,7 @@ resource "azapi_resource" "CNAME" {
       targetResource = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

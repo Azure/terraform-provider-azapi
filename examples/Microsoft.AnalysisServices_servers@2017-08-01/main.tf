@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       asAdministrators = {
         members = [
@@ -46,7 +46,7 @@ resource "azapi_resource" "server" {
     sku = {
       name = "B1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

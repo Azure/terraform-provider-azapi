@@ -39,7 +39,7 @@ resource "azapi_resource" "CNAME" {
   type      = "Microsoft.Network/privateDnsZones/CNAME@2018-09-01"
   parent_id = azapi_resource.privateDnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       cnameRecord = {
         cname = "contoso.com"
@@ -48,7 +48,7 @@ resource "azapi_resource" "CNAME" {
       }
       ttl = 300
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

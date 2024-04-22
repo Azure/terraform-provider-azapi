@@ -37,7 +37,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       managedResourceGroupId = data.azapi_resource_id.workspace_resource_group.id
       parameters = {
@@ -53,7 +53,7 @@ resource "azapi_resource" "workspace" {
     sku = {
       name = "standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -63,7 +63,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -77,17 +77,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "virtualNetworkPeering" {
   type      = "Microsoft.Databricks/workspaces/virtualNetworkPeerings@2023-02-01"
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       allowForwardedTraffic     = false
       allowGatewayTransit       = false
@@ -107,7 +109,7 @@ resource "azapi_resource" "virtualNetworkPeering" {
       }
       useRemoteGateways = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

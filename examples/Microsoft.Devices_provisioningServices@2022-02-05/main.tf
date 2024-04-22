@@ -31,7 +31,7 @@ resource "azapi_resource" "provisioningService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allocationPolicy    = "Hashed"
       enableDataResidency = false
@@ -43,7 +43,7 @@ resource "azapi_resource" "provisioningService" {
       capacity = 1
       name     = "S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

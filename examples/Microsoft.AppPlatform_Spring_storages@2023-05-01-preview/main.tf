@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "S0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,7 +48,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -80,7 +80,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_GRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -96,13 +96,13 @@ resource "azapi_resource" "storage" {
   type      = "Microsoft.AppPlatform/Spring/storages@2023-05-01-preview"
   parent_id = azapi_resource.Spring.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       accountKey  = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
       accountName = azapi_resource.storageAccount.name
       storageType = "StorageAccount"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "acctestun"
       administratorLoginPassword = "H@Sh1CoR3!"
@@ -53,7 +53,7 @@ resource "azapi_resource" "server" {
       name     = "GP_Gen5_2"
       tier     = "GeneralPurpose"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -62,11 +62,11 @@ resource "azapi_update_resource" "configuration" {
   type      = "Microsoft.DBforMySQL/servers/configurations@2017-12-01"
   parent_id = azapi_resource.server.id
   name      = "character_set_server"
-  body = jsonencode({
+  body = {
     properties = {
       value = "latin1"
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

@@ -50,7 +50,7 @@ resource "azapi_resource" "applicationDefinition" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizations = [
         {
@@ -64,7 +64,7 @@ resource "azapi_resource" "applicationDefinition" {
       lockLevel      = "ReadOnly"
       packageFileUri = "https://github.com/Azure/azure-managedapp-samples/raw/master/Managed Application Sample Packages/201-managed-storage-account/managedstorage.zip"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

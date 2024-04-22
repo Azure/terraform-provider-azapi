@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -51,7 +51,7 @@ resource "azapi_resource" "runbook" {
   parent_id = azapi_resource.automationAccount.id
   name      = "Get-AzureVMTutorial"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = "This is a test runbook for terraform acceptance test"
       draft = {
@@ -61,7 +61,7 @@ resource "azapi_resource" "runbook" {
       logVerbose       = true
       runbookType      = "PowerShell"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -76,9 +76,9 @@ resource "azapi_resource_action" "draft" {
   type        = "Microsoft.Automation/automationAccounts/runbooks/draft@2018-06-30"
   resource_id = data.azapi_resource_id.draft.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     name = "content"
-  })
+  }
   response_export_values = ["*"]
 }
 

@@ -31,14 +31,14 @@ resource "azapi_resource" "mobileNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicLandMobileNetworkIdentifier = {
         mcc = "001"
         mnc = "01"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,12 +48,12 @@ resource "azapi_resource" "dataBoxEdgeDevice" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     sku = {
       name = "EdgeP_Base"
       tier = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -63,10 +63,10 @@ resource "azapi_resource" "site" {
   parent_id = azapi_resource.mobileNetwork.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -76,7 +76,7 @@ resource "azapi_resource" "packetCoreControlPlane" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       controlPlaneAccessInterface = {
       }
@@ -97,7 +97,7 @@ resource "azapi_resource" "packetCoreControlPlane" {
       sku   = "G0"
       ueMtu = 1440
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

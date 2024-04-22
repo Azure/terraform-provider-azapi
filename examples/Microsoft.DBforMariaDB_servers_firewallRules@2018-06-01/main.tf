@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "acctestun"
       administratorLoginPassword = "H@Sh1CoR3!"
@@ -52,7 +52,7 @@ resource "azapi_resource" "server" {
       name     = "GP_Gen5_2"
       tier     = "GeneralPurpose"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,12 +61,12 @@ resource "azapi_resource" "firewallRule" {
   type      = "Microsoft.DBforMariaDB/servers/firewallRules@2018-06-01"
   parent_id = azapi_resource.server.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       endIpAddress   = "255.255.255.255"
       startIpAddress = "0.0.0.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,12 +31,12 @@ resource "azapi_resource" "netAppAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       activeDirectories = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -46,7 +46,7 @@ resource "azapi_resource" "snapshotPolicy" {
   parent_id = azapi_resource.netAppAccount.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       dailySchedule = {
         hour            = 22
@@ -71,7 +71,7 @@ resource "azapi_resource" "snapshotPolicy" {
         snapshotsToKeep = 1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

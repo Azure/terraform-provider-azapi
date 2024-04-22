@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -52,7 +52,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -62,7 +62,7 @@ resource "azapi_resource" "redis" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "eastus"
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         capacity = 2
@@ -72,7 +72,7 @@ resource "azapi_resource" "redis" {
       enableNonSslPort  = true
       minimumTlsVersion = "1.2"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -88,14 +88,16 @@ resource "azapi_resource" "cache" {
   type      = "Microsoft.ApiManagement/service/caches@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       connectionString = "${azapi_resource.redis.name}.redis.cache.windows.net:6380,password=${jsondecode(data.azapi_resource_action.listKeys.output).primaryKey},ssl=true,abortConnect=False"
       useFromLocation  = "default"
     }
-  })
+  }
   schema_validation_enabled = false
-  ignore_body_changes            = ["properties.connectionString"]
   response_export_values    = ["*"]
+  lifecycle {
+    ignore_changes = [body.properties.connectionString]
+  }
 }
 

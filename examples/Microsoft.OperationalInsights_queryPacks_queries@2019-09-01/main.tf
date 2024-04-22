@@ -31,11 +31,11 @@ resource "azapi_resource" "queryPack" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -44,14 +44,14 @@ resource "azapi_resource" "query" {
   type      = "Microsoft.OperationalInsights/queryPacks/queries@2019-09-01"
   parent_id = azapi_resource.queryPack.id
   name      = "aca50e92-d3e6-8f7d-1f70-2ec7adc1a926"
-  body = jsonencode({
+  body = {
     properties = {
       body        = "    let newExceptionsTimeRange = 1d;\n    let timeRangeToCheckBefore = 7d;\n    exceptions\n    | where timestamp < ago(timeRangeToCheckBefore)\n    | summarize count() by problemId\n    | join kind= rightanti (\n        exceptions\n        | where timestamp >= ago(newExceptionsTimeRange)\n        | extend stack = tostring(details[0].rawStack)\n        | summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by problemId\n    ) on problemId\n    | order by count_ desc\n"
       displayName = "Exceptions - New in the last 24 hours"
       related = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

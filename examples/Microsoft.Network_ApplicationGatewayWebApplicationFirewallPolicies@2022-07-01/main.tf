@@ -31,7 +31,7 @@ resource "azapi_resource" "ApplicationGatewayWebApplicationFirewallPolicy" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       customRules = [
       ]
@@ -55,7 +55,7 @@ resource "azapi_resource" "ApplicationGatewayWebApplicationFirewallPolicy" {
         state                  = "Enabled"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

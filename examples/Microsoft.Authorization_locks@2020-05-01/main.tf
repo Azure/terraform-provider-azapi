@@ -31,7 +31,7 @@ resource "azapi_resource" "publicIPAddress" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       ddosSettings = {
         protectionMode = "VirtualNetworkInherited"
@@ -44,7 +44,7 @@ resource "azapi_resource" "publicIPAddress" {
       name = "Basic"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,12 +53,12 @@ resource "azapi_resource" "lock" {
   type      = "Microsoft.Authorization/locks@2020-05-01"
   parent_id = azapi_resource.publicIPAddress.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       level = "CanNotDelete"
       notes = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

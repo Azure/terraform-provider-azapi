@@ -31,11 +31,11 @@ resource "azapi_resource" "gallery" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,7 +45,7 @@ resource "azapi_resource" "image" {
   parent_id = azapi_resource.gallery.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       architecture = "x64"
       description  = ""
@@ -71,7 +71,7 @@ resource "azapi_resource" "image" {
       }
       releaseNoteUri = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

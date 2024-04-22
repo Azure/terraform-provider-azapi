@@ -39,7 +39,7 @@ resource "azapi_resource" "MX" {
   type      = "Microsoft.Network/privateDnsZones/MX@2018-09-01"
   parent_id = azapi_resource.privateDnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       metadata = {
       }
@@ -55,7 +55,7 @@ resource "azapi_resource" "MX" {
       ]
       ttl = 300
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

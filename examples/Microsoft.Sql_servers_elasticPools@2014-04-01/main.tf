@@ -31,13 +31,13 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "4dm1n157r470r"
       administratorLoginPassword = "4-v3ry-53cr37-p455w0rd"
       version                    = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,13 +47,13 @@ resource "azapi_resource" "elasticPool" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       dtu       = 50
       edition   = "Basic"
       storageMB = 5000
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

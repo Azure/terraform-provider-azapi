@@ -42,7 +42,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "fhir"
     properties = {
       accessPolicies = [
@@ -59,7 +59,7 @@ resource "azapi_resource" "service" {
       }
       publicNetworkAccess = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,12 +31,12 @@ resource "azapi_resource" "account" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -46,7 +46,7 @@ resource "azapi_resource" "prometheusRuleGroup" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       clusterName = ""
       description = ""
@@ -66,7 +66,7 @@ resource "azapi_resource" "prometheusRuleGroup" {
       ]
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -42,7 +42,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -74,7 +74,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_GRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -84,7 +84,7 @@ resource "azapi_resource" "logProfile" {
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
   location  = ""
-  body = jsonencode({
+  body = {
     properties = {
       categories = [
         "Action",
@@ -99,7 +99,7 @@ resource "azapi_resource" "logProfile" {
       }
       storageAccountId = azapi_resource.storageAccount.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -47,7 +47,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -57,7 +57,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -92,7 +92,7 @@ resource "azapi_resource" "storageAccount" {
     tags = {
       environment = "accTest"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -109,7 +109,7 @@ resource "azapi_resource" "managedEnvironment" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       appLogsConfiguration = {
         destination = "log-analytics"
@@ -121,7 +121,7 @@ resource "azapi_resource" "managedEnvironment" {
       vnetConfiguration = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -137,7 +137,7 @@ resource "azapi_resource" "storage" {
   type      = "Microsoft.App/managedEnvironments/storages@2022-03-01"
   parent_id = azapi_resource.managedEnvironment.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       azureFile = {
         accessMode  = "ReadWrite"
@@ -146,7 +146,7 @@ resource "azapi_resource" "storage" {
         shareName   = "testsharehkez7"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

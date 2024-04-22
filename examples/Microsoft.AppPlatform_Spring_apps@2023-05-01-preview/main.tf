@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "E0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,14 +48,14 @@ resource "azapi_resource" "app" {
   parent_id = azapi_resource.Spring.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       customPersistentDisks = [
       ]
       enableEndToEndTLS = false
       public            = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

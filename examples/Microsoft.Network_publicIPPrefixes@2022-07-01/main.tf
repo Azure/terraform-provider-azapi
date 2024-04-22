@@ -31,7 +31,7 @@ resource "azapi_resource" "publicIPPrefix" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       prefixLength           = 30
       publicIPAddressVersion = "IPv4"
@@ -42,7 +42,7 @@ resource "azapi_resource" "publicIPPrefix" {
     zones = [
       "1",
     ]
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

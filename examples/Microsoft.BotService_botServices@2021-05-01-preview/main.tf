@@ -42,7 +42,7 @@ resource "azapi_resource" "botService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     kind = "sdk"
     properties = {
       developerAppInsightKey            = ""
@@ -61,7 +61,7 @@ resource "azapi_resource" "botService" {
     tags = {
       environment = "production"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -63,7 +63,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -73,7 +73,7 @@ resource "azapi_resource" "batchAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       autoStorage = {
         authenticationMode = "StorageKeys"
@@ -85,7 +85,7 @@ resource "azapi_resource" "batchAccount" {
       poolAllocationMode  = "BatchService"
       publicNetworkAccess = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -94,13 +94,13 @@ resource "azapi_resource" "application" {
   type      = "Microsoft.Batch/batchAccounts/applications@2022-10-01"
   parent_id = azapi_resource.batchAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       allowUpdates   = true
       defaultVersion = ""
       displayName    = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -40,14 +40,14 @@ resource "azapi_resource" "profile" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       originResponseTimeoutSeconds = 120
     }
     sku = {
       name = "Premium_AzureFrontDoor"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -56,7 +56,7 @@ resource "azapi_resource" "customDomain" {
   type      = "Microsoft.Cdn/profiles/customDomains@2021-06-01"
   parent_id = azapi_resource.profile.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       azureDnsZone = {
         id = azapi_resource.dnsZone.id
@@ -67,7 +67,7 @@ resource "azapi_resource" "customDomain" {
         minimumTlsVersion = "TLS12"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

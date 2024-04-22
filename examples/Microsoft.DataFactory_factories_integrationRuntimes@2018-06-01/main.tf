@@ -31,12 +31,12 @@ resource "azapi_resource" "factory" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
       repoConfiguration   = null
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,12 +45,12 @@ resource "azapi_resource" "integrationRuntime" {
   type      = "Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01"
   parent_id = azapi_resource.factory.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       type        = "SelfHosted"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -52,7 +52,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,7 +61,7 @@ resource "azapi_resource" "authorizationServer" {
   type      = "Microsoft.ApiManagement/service/authorizationServers@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       authorizationEndpoint = "https://azacceptance.hashicorptest.com/client/authorize"
       authorizationMethods = [
@@ -84,7 +84,7 @@ resource "azapi_resource" "authorizationServer" {
       tokenBodyParameters = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -40,7 +40,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -60,10 +60,12 @@ resource "azapi_resource" "virtualNetwork" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "virtualNetworkLink" {
@@ -71,14 +73,14 @@ resource "azapi_resource" "virtualNetworkLink" {
   parent_id = azapi_resource.privateDnsZone.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       registrationEnabled = false
       virtualNetwork = {
         id = azapi_resource.virtualNetwork.id
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

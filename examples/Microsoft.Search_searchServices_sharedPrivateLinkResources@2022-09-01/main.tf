@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -63,7 +63,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -73,7 +73,7 @@ resource "azapi_resource" "searchService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authOptions = {
         apiKeyOnly = {
@@ -98,7 +98,7 @@ resource "azapi_resource" "searchService" {
     tags = {
       environment = "staging"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -107,13 +107,13 @@ resource "azapi_resource" "sharedPrivateLinkResource" {
   type      = "Microsoft.Search/searchServices/sharedPrivateLinkResources@2022-09-01"
   parent_id = azapi_resource.searchService.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       groupId               = "blob"
       privateLinkResourceId = azapi_resource.storageAccount.id
       requestMessage        = "please approve"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

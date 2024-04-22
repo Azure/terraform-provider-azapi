@@ -35,7 +35,7 @@ resource "azapi_resource" "view" {
   type      = "Microsoft.CostManagement/views@2022-10-01"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       accumulated = "False"
       chart       = "StackedColumn"
@@ -90,7 +90,7 @@ resource "azapi_resource" "view" {
         type      = "Usage"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

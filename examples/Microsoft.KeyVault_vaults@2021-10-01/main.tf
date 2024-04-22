@@ -42,7 +42,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [
         {
@@ -77,7 +77,7 @@ resource "azapi_resource" "vault" {
       softDeleteRetentionInDays = 7
       tenantId                  = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

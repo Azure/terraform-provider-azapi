@@ -31,11 +31,11 @@ resource "azapi_resource" "gallery" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,12 +45,12 @@ resource "azapi_resource" "application" {
   parent_id = azapi_resource.gallery.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       supportedOSType = "Linux"
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

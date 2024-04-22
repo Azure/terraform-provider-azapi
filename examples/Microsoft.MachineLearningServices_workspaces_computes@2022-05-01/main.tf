@@ -35,11 +35,11 @@ resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
   location = var.location
-  body = jsonencode({
+  body = {
     tags = {
       stage = "test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -49,12 +49,12 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -64,7 +64,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -76,7 +76,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -86,7 +86,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies               = []
       createMode                   = "default"
@@ -103,10 +103,12 @@ resource "azapi_resource" "vault" {
       }
       tenantId = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.accessPolicies"]
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
 }
 
 resource "azapi_resource" "workspace" {
@@ -118,7 +120,7 @@ resource "azapi_resource" "workspace" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       applicationInsights = azapi_resource.component.id
       keyVault            = azapi_resource.vault.id
@@ -130,7 +132,7 @@ resource "azapi_resource" "workspace" {
       name = "Basic"
       tier = "Basic"
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]
@@ -141,7 +143,7 @@ resource "azapi_resource" "compute" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       computeLocation  = "westeurope"
       computeType      = "ComputeInstance"
@@ -151,7 +153,7 @@ resource "azapi_resource" "compute" {
         vmSize = "STANDARD_D2_V2"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

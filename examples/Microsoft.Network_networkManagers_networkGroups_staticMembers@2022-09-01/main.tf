@@ -48,7 +48,7 @@ resource "azapi_resource" "networkManager" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       networkManagerScopeAccesses = [
@@ -62,7 +62,7 @@ resource "azapi_resource" "networkManager" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -72,7 +72,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -86,20 +86,22 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "networkGroup" {
   type      = "Microsoft.Network/networkManagers/networkGroups@2022-09-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -108,11 +110,11 @@ resource "azapi_resource" "staticMember" {
   type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2022-09-01"
   parent_id = azapi_resource.networkGroup.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       resourceId = azapi_resource.virtualNetwork.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

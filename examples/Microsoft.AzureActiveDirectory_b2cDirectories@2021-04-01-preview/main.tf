@@ -36,7 +36,7 @@ resource "azapi_resource_action" "b2cDirectory" {
   type        = "Microsoft.AzureActiveDirectory/b2cDirectories@2021-04-01-preview"
   resource_id = data.azapi_resource_id.b2cDirectory.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     location = "United States"
     properties = {
       createTenantProperties = {
@@ -49,5 +49,5 @@ resource "azapi_resource_action" "b2cDirectory" {
       tier = "A0"
     }
 
-  })
+  }
 }

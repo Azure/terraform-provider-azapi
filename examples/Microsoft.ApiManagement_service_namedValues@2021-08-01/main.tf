@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -52,7 +52,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,7 +61,7 @@ resource "azapi_resource" "namedValue" {
   type      = "Microsoft.ApiManagement/service/namedValues@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       displayName = "TestProperty230630032559683679"
       secret      = false
@@ -71,7 +71,7 @@ resource "azapi_resource" "namedValue" {
       ]
       value = "Test Value"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

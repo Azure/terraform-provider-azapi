@@ -31,14 +31,14 @@ resource "azapi_resource" "virtualWan" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allowBranchToBranchTraffic     = true
       disableVpnEncryption           = false
       office365LocalBreakoutCategory = "None"
       type                           = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,7 +48,7 @@ resource "azapi_resource" "virtualHub" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix        = "10.0.0.0/24"
       hubRoutingPreference = "ExpressRoute"
@@ -59,7 +59,7 @@ resource "azapi_resource" "virtualHub" {
         id = azapi_resource.virtualWan.id
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -69,7 +69,7 @@ resource "azapi_resource" "vpnGateway" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       enableBgpRouteTranslationForNat = false
       isRoutingPreferenceInternet     = false
@@ -78,7 +78,7 @@ resource "azapi_resource" "vpnGateway" {
       }
       vpnGatewayScaleUnit = 1
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   timeouts {
@@ -92,7 +92,7 @@ resource "azapi_resource" "natRule" {
   type      = "Microsoft.Network/vpnGateways/natRules@2022-07-01"
   parent_id = azapi_resource.vpnGateway.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       externalMappings = [
         {
@@ -107,7 +107,7 @@ resource "azapi_resource" "natRule" {
       mode = "EgressSnat"
       type = "Static"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

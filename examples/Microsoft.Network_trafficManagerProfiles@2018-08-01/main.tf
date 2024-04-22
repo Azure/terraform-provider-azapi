@@ -31,7 +31,7 @@ resource "azapi_resource" "trafficManagerProfile" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       dnsConfig = {
         relativeName = "acctest-tmp-230630034107605443"
@@ -49,7 +49,7 @@ resource "azapi_resource" "trafficManagerProfile" {
       }
       trafficRoutingMethod = "Weighted"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

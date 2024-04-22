@@ -31,7 +31,7 @@ resource "azapi_resource" "actionRule" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       actions = [
         {
@@ -45,7 +45,7 @@ resource "azapi_resource" "actionRule" {
       ]
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

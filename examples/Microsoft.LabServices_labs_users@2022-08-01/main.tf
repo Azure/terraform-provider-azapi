@@ -31,7 +31,7 @@ resource "azapi_resource" "lab" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       autoShutdownProfile = {
         shutdownOnDisconnect     = "Disabled"
@@ -72,7 +72,7 @@ resource "azapi_resource" "lab" {
       }
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -81,12 +81,12 @@ resource "azapi_resource" "user" {
   type      = "Microsoft.LabServices/labs/users@2022-08-01"
   parent_id = azapi_resource.lab.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       additionalUsageQuota = "PT0S"
       email                = "terraform-acctest@hashicorp.com"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

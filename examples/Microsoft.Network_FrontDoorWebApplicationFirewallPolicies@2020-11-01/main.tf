@@ -31,7 +31,7 @@ resource "azapi_resource" "FrontDoorWebApplicationFirewallPolicy" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       customRules = {
         rules = [
@@ -94,7 +94,7 @@ resource "azapi_resource" "FrontDoorWebApplicationFirewallPolicy" {
     sku = {
       name = "Premium_AzureFrontDoor"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,22 +31,24 @@ resource "azapi_resource" "networkSecurityGroup" {
   parent_id = azapi_resource.resourceGroup.id
   name      = "mi-security-group1-230630034008554952"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       securityRules = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
-  ignore_body_changes            = ["properties.securityRules"]
   response_export_values    = ["*"]
+  lifecycle {
+    ignore_changes = [body.properties.securityRules]
+  }
 }
 
 resource "azapi_resource" "securityRule" {
   type      = "Microsoft.Network/networkSecurityGroups/securityRules@2022-09-01"
   parent_id = azapi_resource.networkSecurityGroup.id
   name      = "allow_management_inbound"
-  body = jsonencode({
+  body = {
     properties = {
       access                   = "Allow"
       destinationAddressPrefix = "*"
@@ -64,7 +66,7 @@ resource "azapi_resource" "securityRule" {
       sourceAddressPrefix = "*"
       sourcePortRange     = "*"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

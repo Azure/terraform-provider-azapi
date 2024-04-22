@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -63,7 +63,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -72,7 +72,7 @@ resource "azapi_update_resource" "blobService" {
   type      = "Microsoft.Storage/storageAccounts/blobServices@2021-09-01"
   parent_id = azapi_resource.storageAccount.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       changeFeed = {
         enabled = true
@@ -93,7 +93,7 @@ resource "azapi_update_resource" "blobService" {
         enabled = false
       }
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

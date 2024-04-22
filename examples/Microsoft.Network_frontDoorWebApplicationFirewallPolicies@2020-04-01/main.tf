@@ -31,14 +31,14 @@ resource "azapi_resource" "frontDoorWebApplicationFirewallPolicy" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       policySettings = {
         enabledState = "Enabled"
         mode         = "Prevention"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

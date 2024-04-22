@@ -31,7 +31,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -43,7 +43,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,7 +53,7 @@ resource "azapi_resource" "scheduledQueryRule" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "LogAlert"
     properties = {
       autoMitigate                          = false
@@ -80,7 +80,7 @@ resource "azapi_resource" "scheduledQueryRule" {
       windowSize          = "PT5M"
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,11 +31,11 @@ resource "azapi_resource" "account" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     sku = {
       name = "G2"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,11 +45,11 @@ resource "azapi_resource" "creator" {
   parent_id = azapi_resource.account.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       storageUnits = 1
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

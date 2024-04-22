@@ -31,7 +31,7 @@ resource "azapi_resource" "actionGroup" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       armRoleReceivers = [
       ]
@@ -58,7 +58,7 @@ resource "azapi_resource" "actionGroup" {
       webhookReceivers = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -68,7 +68,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -80,7 +80,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -90,7 +90,7 @@ resource "azapi_resource" "smartDetectorAlertRule" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       actionGroups = {
         customEmailSubject   = ""
@@ -110,7 +110,7 @@ resource "azapi_resource" "smartDetectorAlertRule" {
       severity = "Sev0"
       state    = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

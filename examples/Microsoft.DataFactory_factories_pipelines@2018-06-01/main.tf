@@ -31,12 +31,12 @@ resource "azapi_resource" "factory" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
       repoConfiguration   = null
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -45,7 +45,7 @@ resource "azapi_resource" "pipeline" {
   type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
   parent_id = azapi_resource.factory.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       annotations = [
       ]
@@ -59,7 +59,7 @@ resource "azapi_resource" "pipeline" {
       variables = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

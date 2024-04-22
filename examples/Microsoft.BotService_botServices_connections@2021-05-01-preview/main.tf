@@ -42,7 +42,7 @@ resource "azapi_resource" "botService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     kind = "bot"
     properties = {
       displayName          = var.resource_name
@@ -53,7 +53,7 @@ resource "azapi_resource" "botService" {
     sku = {
       name = "F0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -70,7 +70,7 @@ resource "azapi_resource" "connection" {
   parent_id = azapi_resource.botService.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     kind = "bot"
     properties = {
       clientId          = jsondecode(azapi_resource.botService.output).properties.msaAppId
@@ -78,7 +78,7 @@ resource "azapi_resource" "connection" {
       scopes            = ""
       serviceProviderId = jsondecode(data.azapi_resource_action.listAuthServiceProviders.output).value[36].properties.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
