@@ -226,7 +226,7 @@ func (r *ActionResource) Delete(ctx context.Context, request resource.DeleteRequ
 		return
 	}
 
-	if model.When.ValueString() != "destroy" {
+	if model.When.ValueString() == "destroy" {
 		r.Action(ctx, model, &response.State, &response.Diagnostics)
 	}
 }
