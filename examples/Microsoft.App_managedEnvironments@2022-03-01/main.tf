@@ -69,8 +69,8 @@ resource "azapi_resource" "managedEnvironment" {
       appLogsConfiguration = {
         destination = "log-analytics"
         logAnalyticsConfiguration = {
-          customerId = jsondecode(azapi_resource.workspace.output).properties.customerId
-          sharedKey  = jsondecode(data.azapi_resource_action.sharedKeys.output).primarySharedKey
+          customerId = azapi_resource.workspace.output.properties.customerId
+          sharedKey  = data.azapi_resource_action.sharedKeys.output.primarySharedKey
         }
       }
       vnetConfiguration = {

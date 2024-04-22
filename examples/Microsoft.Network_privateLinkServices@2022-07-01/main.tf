@@ -171,7 +171,7 @@ resource "azapi_resource" "privateLinkService" {
       ]
       loadBalancerFrontendIpConfigurations = [
         {
-          id = jsondecode(azapi_resource.loadBalancer.output).properties.frontendIPConfigurations[0].id
+          id = azapi_resource.loadBalancer.output.properties.frontendIPConfigurations[0].id
         },
       ]
       visibility = {

@@ -74,7 +74,7 @@ resource "azapi_resource" "scopeConnection" {
   body = {
     properties = {
       resourceId = data.azapi_resource.subscription.id
-      tenantId   = jsondecode(data.azapi_resource.subscription.output).tenantId
+      tenantId   = data.azapi_resource.subscription.output.tenantId
     }
   }
   schema_validation_enabled = false

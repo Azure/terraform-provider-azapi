@@ -111,7 +111,7 @@ resource "azapi_resource" "input" {
           consumerGroupName      = "$Default"
           endpoint               = "messages/events"
           iotHubNamespace        = azapi_resource.IotHub.name
-          sharedAccessPolicyKey  = jsondecode(data.azapi_resource_action.listkeys.output).value[0].primaryKey
+          sharedAccessPolicyKey  = data.azapi_resource_action.listkeys.output.value[0].primaryKey
           sharedAccessPolicyName = "iothubowner"
         }
         type = "Microsoft.Devices/IotHubs"

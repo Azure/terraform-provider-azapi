@@ -55,7 +55,7 @@ resource "azapi_resource" "applicationDefinition" {
       authorizations = [
         {
           principalId      = data.azurerm_client_config.current.object_id
-          roleDefinitionId = jsondecode(data.azapi_resource_action.roleDefinitions.output).value[0].name
+          roleDefinitionId = data.azapi_resource_action.roleDefinitions.output.value[0].name
         },
       ]
       description    = "Test Managed App Definition"

@@ -114,8 +114,8 @@ resource "azapi_resource" "managedEnvironment" {
       appLogsConfiguration = {
         destination = "log-analytics"
         logAnalyticsConfiguration = {
-          customerId = jsondecode(azapi_resource.workspace.output).properties.customerId
-          sharedKey  = jsondecode(data.azapi_resource_action.sharedKeys.output).primarySharedKey
+          customerId = azapi_resource.workspace.output.properties.customerId
+          sharedKey  = data.azapi_resource_action.sharedKeys.output.primarySharedKey
         }
       }
       vnetConfiguration = {
@@ -141,8 +141,8 @@ resource "azapi_resource" "storage" {
     properties = {
       azureFile = {
         accessMode  = "ReadWrite"
-        accountKey  = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
-        accountName = jsondecode(azapi_resource.storageAccount.output).name
+        accountKey  = data.azapi_resource_action.listKeys.output.keys[0].value
+        accountName = azapi_resource.storageAccount.output.name
         shareName   = "testsharehkez7"
       }
     }

@@ -116,7 +116,7 @@ resource "azapi_resource" "output" {
     properties = {
       datasource = {
         properties = {
-          accountKey   = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+          accountKey   = data.azapi_resource_action.listKeys.output.keys[0].value
           accountName  = azapi_resource.storageAccount.name
           batchSize    = 100
           partitionKey = "foo"

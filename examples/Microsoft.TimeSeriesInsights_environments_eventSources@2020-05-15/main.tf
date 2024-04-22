@@ -122,7 +122,7 @@ resource "azapi_resource" "environment" {
     properties = {
       storageConfiguration = {
         accountName   = azapi_resource.storageAccount.name
-        managementKey = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+        managementKey = data.azapi_resource_action.listKeys.output.keys[0].value
       }
       timeSeriesIdProperties = [
         {
@@ -159,7 +159,7 @@ resource "azapi_resource" "eventSource" {
       eventSourceResourceId = azapi_resource.IotHub.id
       iotHubName            = azapi_resource.IotHub.name
       keyName               = "iothubowner"
-      sharedAccessKey       = jsondecode(data.azapi_resource_action.listkeys.output).value[0].primaryKey
+      sharedAccessKey       = data.azapi_resource_action.listkeys.output.value[0].primaryKey
       timestampPropertyName = ""
     }
   }

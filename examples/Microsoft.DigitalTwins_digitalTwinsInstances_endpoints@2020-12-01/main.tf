@@ -108,8 +108,8 @@ resource "azapi_resource" "endpoint" {
       authenticationType        = "KeyBased"
       deadLetterSecret          = ""
       endpointType              = "ServiceBus"
-      primaryConnectionString   = jsondecode(data.azapi_resource_action.listKeys.output).primaryConnectionString
-      secondaryConnectionString = jsondecode(data.azapi_resource_action.listKeys.output).secondaryConnectionString
+      primaryConnectionString   = data.azapi_resource_action.listKeys.output.primaryConnectionString
+      secondaryConnectionString = data.azapi_resource_action.listKeys.output.secondaryConnectionString
     }
   }
   schema_validation_enabled = false

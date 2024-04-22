@@ -92,7 +92,7 @@ resource "azapi_resource" "linkedservice" {
       description = ""
       type        = "AzureBlobStorage"
       typeProperties = {
-        serviceEndpoint = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.blob
+        serviceEndpoint = azapi_resource.storageAccount.output.properties.primaryEndpoints.blob
       }
     }
   }

@@ -73,10 +73,10 @@ resource "azapi_resource" "connection" {
   body = {
     kind = "bot"
     properties = {
-      clientId          = jsondecode(azapi_resource.botService.output).properties.msaAppId
+      clientId          = azapi_resource.botService.output.properties.msaAppId
       clientSecret      = "86546868-e7ed-429f-b0e5-3a1caea7db64"
       scopes            = ""
-      serviceProviderId = jsondecode(data.azapi_resource_action.listAuthServiceProviders.output).value[36].properties.id
+      serviceProviderId = data.azapi_resource_action.listAuthServiceProviders.output.value[36].properties.id
     }
   }
   schema_validation_enabled = false

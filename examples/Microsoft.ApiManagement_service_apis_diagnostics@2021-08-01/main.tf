@@ -104,7 +104,7 @@ resource "azapi_resource" "logger" {
   body = {
     properties = {
       credentials = {
-        instrumentationKey = jsondecode(azapi_resource.component.output).properties.InstrumentationKey
+        instrumentationKey = azapi_resource.component.output.properties.InstrumentationKey
       }
       description = ""
       isBuffered  = true

@@ -169,7 +169,7 @@ resource "azapi_resource" "cluster" {
           {
             container  = azapi_resource.container.name
             isDefault  = true
-            key        = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+            key        = data.azapi_resource_action.listKeys.output.keys[0].value
             name       = "${azapi_resource.storageAccount.name}.blob.core.windows.net"
             resourceId = azapi_resource.storageAccount.id
           },

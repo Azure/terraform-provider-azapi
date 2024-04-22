@@ -75,7 +75,7 @@ resource "azapi_resource" "workspace" {
   body = {
     properties = {
       defaultDataLakeStorage = {
-        accountUrl = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.dfs
+        accountUrl = azapi_resource.storageAccount.output.properties.primaryEndpoints.dfs
         filesystem = azapi_resource.container.name
       }
 

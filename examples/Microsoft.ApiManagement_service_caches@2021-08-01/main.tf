@@ -90,7 +90,7 @@ resource "azapi_resource" "cache" {
   name      = var.resource_name
   body = {
     properties = {
-      connectionString = "${azapi_resource.redis.name}.redis.cache.windows.net:6380,password=${jsondecode(data.azapi_resource_action.listKeys.output).primaryKey},ssl=true,abortConnect=False"
+      connectionString = "${azapi_resource.redis.name}.redis.cache.windows.net:6380,password=${data.azapi_resource_action.listKeys.output.primaryKey},ssl=true,abortConnect=False"
       useFromLocation  = "default"
     }
   }

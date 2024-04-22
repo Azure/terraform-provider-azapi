@@ -131,7 +131,7 @@ resource "azapi_resource" "sqlRoleAssignment" {
   name      = "ff419bf7-f8ca-ef51-00d2-3576700c341b"
   body = {
     properties = {
-      principalId      = jsondecode(azapi_resource.cluster.output).identity.principalId
+      principalId      = azapi_resource.cluster.output.identity.principalId
       roleDefinitionId = data.azapi_resource.sqlRoleDefinition.id
       scope            = azapi_resource.databaseAccount.id
     }

@@ -109,7 +109,7 @@ resource "azapi_resource" "storageInsightConfig" {
     properties = {
       storageAccount = {
         id  = azapi_resource.storageAccount.id
-        key = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+        key = data.azapi_resource_action.listKeys.output.keys[0].value
       }
     }
   }

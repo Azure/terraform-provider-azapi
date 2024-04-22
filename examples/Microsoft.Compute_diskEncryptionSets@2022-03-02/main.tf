@@ -92,7 +92,7 @@ resource "azapi_resource" "diskEncryptionSet" {
   body = {
     properties = {
       activeKey = {
-        keyUrl = jsondecode(azapi_resource_action.key.output).properties.keyUriWithVersion
+        keyUrl = azapi_resource_action.key.output.properties.keyUriWithVersion
         sourceVault = {
           id = azapi_resource.vault.id
         }

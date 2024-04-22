@@ -82,7 +82,7 @@ resource "azapi_resource" "workspace" {
   body = {
     properties = {
       defaultDataLakeStorage = {
-        accountUrl = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.dfs
+        accountUrl = azapi_resource.storageAccount.output.properties.primaryEndpoints.dfs
         filesystem = azapi_resource.container.name
       }
 
@@ -103,8 +103,8 @@ resource "azapi_update_resource" "securityAlertPolicy" {
   body = {
     properties = {
       state                   = "Enabled"
-      storageAccountAccessKey = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
-      storageEndpoint         = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.blob
+      storageAccountAccessKey = data.azapi_resource_action.listKeys.output.keys[0].value
+      storageEndpoint         = azapi_resource.storageAccount.output.properties.primaryEndpoints.blob
     }
   }
   response_export_values  = ["*"]

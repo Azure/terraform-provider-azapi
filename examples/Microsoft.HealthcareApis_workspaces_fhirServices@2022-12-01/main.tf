@@ -87,8 +87,8 @@ resource "azapi_resource" "fhirService2" {
       acrConfiguration = {
       }
       authenticationConfiguration = {
-        audience          = jsondecode(azapi_resource.fhirService.output).properties.authenticationConfiguration.audience
-        authority         = jsondecode(azapi_resource.fhirService.output).properties.authenticationConfiguration.authority
+        audience          = azapi_resource.fhirService.output.properties.authenticationConfiguration.audience
+        authority         = azapi_resource.fhirService.output.properties.authenticationConfiguration.authority
         smartProxyEnabled = false
       }
       corsConfiguration = {

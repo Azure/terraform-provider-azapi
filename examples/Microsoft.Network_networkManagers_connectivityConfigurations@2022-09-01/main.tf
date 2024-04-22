@@ -127,7 +127,7 @@ resource "azapi_resource" "connectivityConfiguration" {
       hubs = [
         {
           resourceId   = azapi_resource.virtualNetwork.id
-          resourceType = jsondecode(azapi_resource.virtualNetwork.output).type
+          resourceType = azapi_resource.virtualNetwork.output.type
         },
       ]
       isGlobal = "False"

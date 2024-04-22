@@ -96,7 +96,7 @@ resource "azapi_resource" "binding" {
       bindingParameters = {
         useSsl = "true"
       }
-      key        = jsondecode(data.azapi_resource_action.listKeys.output).primaryKey
+      key        = data.azapi_resource_action.listKeys.output.primaryKey
       resourceId = azapi_resource.redis.id
     }
   }

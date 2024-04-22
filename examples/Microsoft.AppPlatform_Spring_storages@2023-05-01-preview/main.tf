@@ -98,7 +98,7 @@ resource "azapi_resource" "storage" {
   name      = var.resource_name
   body = {
     properties = {
-      accountKey  = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+      accountKey  = data.azapi_resource_action.listKeys.output.keys[0].value
       accountName = azapi_resource.storageAccount.name
       storageType = "StorageAccount"
     }
