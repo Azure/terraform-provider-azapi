@@ -35,11 +35,11 @@ resource "azapi_resource" "account" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     tags = {
       env = "Test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,13 +48,13 @@ resource "azapi_resource" "share" {
   type      = "Microsoft.DataShare/accounts/shares@2019-11-01"
   parent_id = azapi_resource.account.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       shareKind   = "CopyBased"
       terms       = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

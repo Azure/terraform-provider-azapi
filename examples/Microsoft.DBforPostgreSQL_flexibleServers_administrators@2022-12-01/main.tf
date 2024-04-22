@@ -42,7 +42,7 @@ resource "azapi_resource" "flexibleServer" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "adminTerraform"
       administratorLoginPassword = "QAZwsx123"
@@ -69,7 +69,7 @@ resource "azapi_resource" "flexibleServer" {
       name = "Standard_D2s_v3"
       tier = "GeneralPurpose"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -78,12 +78,12 @@ resource "azapi_resource" "administrator" {
   type      = "Microsoft.DBforPostgreSQL/flexibleServers/administrators@2022-12-01"
   parent_id = azapi_resource.flexibleServer.id
   name      = data.azurerm_client_config.current.object_id
-  body = jsonencode({
+  body = {
     properties = {
       principalType = "ServicePrincipal"
       tenantId      = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

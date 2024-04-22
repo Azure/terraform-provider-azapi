@@ -31,7 +31,7 @@ resource "azapi_resource" "flexibleServer" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "adminTerraform"
       administratorLoginPassword = "QAZwsx123"
@@ -53,7 +53,7 @@ resource "azapi_resource" "flexibleServer" {
       name = "Standard_D2s_v3"
       tier = "GeneralPurpose"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -62,12 +62,12 @@ resource "azapi_resource" "firewallRule" {
   type      = "Microsoft.DBforPostgreSQL/flexibleServers/firewallRules@2022-12-01"
   parent_id = azapi_resource.flexibleServer.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       endIpAddress   = "122.122.0.0"
       startIpAddress = "122.122.0.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

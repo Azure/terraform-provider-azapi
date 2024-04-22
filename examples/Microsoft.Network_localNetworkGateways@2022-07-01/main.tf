@@ -31,7 +31,7 @@ resource "azapi_resource" "localNetworkGateway" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       gatewayIpAddress = "168.62.225.23"
       localNetworkAddressSpace = {
@@ -40,7 +40,7 @@ resource "azapi_resource" "localNetworkGateway" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "namespace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -43,7 +43,7 @@ resource "azapi_resource" "namespace" {
       name     = "Standard"
       tier     = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,7 +53,7 @@ resource "azapi_resource" "namespace2" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "westus2"
-  body = jsonencode({
+  body = {
     properties = {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
@@ -65,7 +65,7 @@ resource "azapi_resource" "namespace2" {
       name     = "Standard"
       tier     = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -74,11 +74,11 @@ resource "azapi_resource" "disasterRecoveryConfig" {
   type      = "Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2021-11-01"
   parent_id = azapi_resource.namespace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       partnerNamespace = azapi_resource.namespace2.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

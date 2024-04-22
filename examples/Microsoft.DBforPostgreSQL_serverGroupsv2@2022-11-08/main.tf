@@ -31,7 +31,7 @@ resource "azapi_resource" "serverGroupsv2" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLoginPassword      = "H@Sh1CoR3!"
       coordinatorEnablePublicIpAccess = true
@@ -43,7 +43,7 @@ resource "azapi_resource" "serverGroupsv2" {
       nodeEnablePublicIpAccess        = false
       nodeServerEdition               = "MemoryOptimized"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

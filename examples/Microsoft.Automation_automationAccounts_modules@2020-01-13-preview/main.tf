@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -50,13 +50,13 @@ resource "azapi_resource" "module" {
   type      = "Microsoft.Automation/automationAccounts/modules@2020-01-13-preview"
   parent_id = azapi_resource.automationAccount.id
   name      = "xActiveDirectory"
-  body = jsonencode({
+  body = {
     properties = {
       contentLink = {
         uri = "https://devopsgallerystorage.blob.core.windows.net/packages/xactivedirectory.2.19.0.nupkg"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

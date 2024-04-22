@@ -36,12 +36,12 @@ resource "azapi_resource" "factory" {
     type         = "UserAssigned"
     identity_ids = [azapi_resource.userAssignedIdentity.id]
   }
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
       repoConfiguration   = null
     }
-  })
+  }
 }
 
 resource "azapi_resource" "userAssignedIdentity" {
@@ -55,7 +55,7 @@ resource "azapi_resource" "credential" {
   type      = "Microsoft.DataFactory/factories/credentials@2018-06-01"
   parent_id = azapi_resource.factory.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       type        = "ManagedIdentity"
       annotations = ["test"]
@@ -65,7 +65,7 @@ resource "azapi_resource" "credential" {
       }
     }
 
-  })
+  }
   ignore_casing           = false
   ignore_missing_property = false
 }

@@ -31,12 +31,12 @@ resource "azapi_resource" "networkSecurityGroup" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       securityRules = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

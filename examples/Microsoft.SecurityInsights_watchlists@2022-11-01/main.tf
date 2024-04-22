@@ -31,7 +31,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -47,7 +47,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -56,25 +56,25 @@ resource "azapi_resource" "onboardingState" {
   type      = "Microsoft.SecurityInsights/onboardingStates@2022-11-01"
   parent_id = azapi_resource.workspace.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       customerManagedKey = false
     }
-  })
+  }
 }
 
 resource "azapi_resource" "watchlist" {
   type      = "Microsoft.SecurityInsights/watchlists@2022-11-01"
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       displayName    = "test"
       itemsSearchKey = "k1"
       provider       = "Microsoft"
       source         = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   depends_on                = [azapi_resource.onboardingState]

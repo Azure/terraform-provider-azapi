@@ -31,13 +31,13 @@ resource "azapi_resource" "integrationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
     sku = {
       name = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -46,7 +46,7 @@ resource "azapi_resource" "partner" {
   type      = "Microsoft.Logic/integrationAccounts/partners@2019-05-01"
   parent_id = azapi_resource.integrationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       content = {
         b2b = {
@@ -60,7 +60,7 @@ resource "azapi_resource" "partner" {
       }
       partnerType = "B2B"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -69,7 +69,7 @@ resource "azapi_resource" "partner2" {
   type      = "Microsoft.Logic/integrationAccounts/partners@2019-05-01"
   parent_id = azapi_resource.integrationAccount.id
   name      = "${var.resource_name}another"
-  body = jsonencode({
+  body = {
     properties = {
       content = {
         b2b = {
@@ -83,7 +83,7 @@ resource "azapi_resource" "partner2" {
       }
       partnerType = "B2B"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -92,7 +92,7 @@ resource "azapi_resource" "agreement" {
   type      = "Microsoft.Logic/integrationAccounts/agreements@2019-05-01"
   parent_id = azapi_resource.integrationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       agreementType = "AS2"
       content = {
@@ -240,7 +240,7 @@ resource "azapi_resource" "agreement" {
       }
       hostPartner = azapi_resource.partner.name
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

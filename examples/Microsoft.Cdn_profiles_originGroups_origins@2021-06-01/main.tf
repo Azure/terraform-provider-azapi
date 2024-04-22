@@ -31,14 +31,14 @@ resource "azapi_resource" "profile" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       originResponseTimeoutSeconds = 120
     }
     sku = {
       name = "Standard_AzureFrontDoor"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_resource" "originGroup" {
   type      = "Microsoft.Cdn/profiles/originGroups@2021-06-01"
   parent_id = azapi_resource.profile.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       loadBalancingSettings = {
         additionalLatencyInMilliseconds = 0
@@ -57,7 +57,7 @@ resource "azapi_resource" "originGroup" {
       sessionAffinityState                                  = "Enabled"
       trafficRestorationTimeToHealedOrNewEndpointsInMinutes = 10
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -66,7 +66,7 @@ resource "azapi_resource" "origin" {
   type      = "Microsoft.Cdn/profiles/originGroups/origins@2021-06-01"
   parent_id = azapi_resource.originGroup.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       enabledState                = "Enabled"
       enforceCertificateNameCheck = false
@@ -77,7 +77,7 @@ resource "azapi_resource" "origin" {
       priority                    = 1
       weight                      = 1
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

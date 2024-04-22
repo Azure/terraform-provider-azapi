@@ -31,7 +31,7 @@ resource "azapi_resource" "deploymentScript" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "AzurePowerShell"
     properties = {
       azPowerShellVersion  = "8.3"
@@ -42,7 +42,7 @@ resource "azapi_resource" "deploymentScript" {
       supportingScriptUris = null
       timeout              = "P1D"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

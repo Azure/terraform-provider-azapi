@@ -31,11 +31,11 @@ resource "azapi_resource" "communicationService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       dataLocation = "United States"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

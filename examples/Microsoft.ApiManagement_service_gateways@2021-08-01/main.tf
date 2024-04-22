@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -64,7 +64,7 @@ resource "azapi_resource" "service" {
       capacity = 1
       name     = "Developer"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   timeouts {
@@ -78,7 +78,7 @@ resource "azapi_resource" "gateway" {
   type      = "Microsoft.ApiManagement/service/gateways@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       locationData = {
@@ -88,7 +88,7 @@ resource "azapi_resource" "gateway" {
         name            = "test"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

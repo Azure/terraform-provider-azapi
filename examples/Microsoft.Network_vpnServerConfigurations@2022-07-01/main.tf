@@ -31,7 +31,7 @@ resource "azapi_resource" "vpnServerConfiguration" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       radiusClientRootCertificates = [
       ]
@@ -60,7 +60,7 @@ resource "azapi_resource" "vpnServerConfiguration" {
         "IkeV2",
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,13 +31,13 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "acctestadmin"
       administratorLoginPassword = "t2RX8A76GrnE4EKC"
       version                    = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,7 +47,7 @@ resource "azapi_resource" "database" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       collation                     = "SQL_LATIN1_GENERAL_CP1_CI_AS"
       createMode                    = "Default"
@@ -56,7 +56,7 @@ resource "azapi_resource" "database" {
       requestedServiceObjectiveName = "S0"
       zoneRedundant                 = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -65,11 +65,11 @@ resource "azapi_update_resource" "securityAlertPolicy" {
   type      = "Microsoft.Sql/servers/databases/securityAlertPolicies@2014-04-01"
   parent_id = azapi_resource.database.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       state = "Disabled"
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

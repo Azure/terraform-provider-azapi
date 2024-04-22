@@ -39,7 +39,7 @@ resource "azapi_resource" "PTR" {
   type      = "Microsoft.Network/dnsZones/PTR@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       PTRRecords = [
         {
@@ -53,7 +53,7 @@ resource "azapi_resource" "PTR" {
       metadata = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

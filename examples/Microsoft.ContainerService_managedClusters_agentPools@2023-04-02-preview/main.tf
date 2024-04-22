@@ -35,7 +35,7 @@ resource "azapi_resource" "managedCluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       agentPoolProfiles = [
         {
@@ -47,23 +47,25 @@ resource "azapi_resource" "managedCluster" {
       ]
       dnsPrefix = var.resource_name
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.agentPoolProfiles"]
+  lifecycle {
+    ignore_changes = [body.properties.agentPoolProfiles]
+  }
 }
 
 resource "azapi_resource" "agentPool" {
   type      = "Microsoft.ContainerService/managedClusters/agentPools@2023-04-02-preview"
   parent_id = azapi_resource.managedCluster.id
   name      = "internal"
-  body = jsonencode({
+  body = {
     properties = {
       count  = 1
       mode   = "User"
       vmSize = "Standard_DS2_v2"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

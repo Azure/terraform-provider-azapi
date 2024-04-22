@@ -31,7 +31,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -45,17 +45,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.1.0/24"
       delegations = [
@@ -67,7 +69,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -77,7 +79,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "Cloud"
     properties = {
       virtualSubnetId = azapi_resource.subnet.id
@@ -85,7 +87,7 @@ resource "azapi_resource" "service" {
     sku = {
       name = "Standard_1vCores"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -95,12 +97,12 @@ resource "azapi_resource" "project" {
   parent_id = azapi_resource.service.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       sourcePlatform = "SQL"
       targetPlatform = "SQLDB"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

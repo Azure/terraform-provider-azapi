@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -50,13 +50,13 @@ resource "azapi_resource" "variable" {
   type      = "Microsoft.Automation/automationAccounts/variables@2020-01-13-preview"
   parent_id = azapi_resource.automationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       isEncrypted = false
       value       = "\"Hello, Terraform Basic Test.\""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

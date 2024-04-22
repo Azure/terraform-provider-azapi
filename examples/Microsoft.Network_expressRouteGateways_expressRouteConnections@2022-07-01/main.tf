@@ -31,13 +31,13 @@ resource "azapi_resource" "ExpressRoutePort" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       encapsulation   = "Dot1Q"
       peeringLocation = "CDC-Canberra"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,14 +47,14 @@ resource "azapi_resource" "virtualWan" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allowBranchToBranchTraffic     = true
       disableVpnEncryption           = false
       office365LocalBreakoutCategory = "None"
       type                           = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -64,7 +64,7 @@ resource "azapi_resource" "virtualHub" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix        = "10.0.1.0/24"
       hubRoutingPreference = "ExpressRoute"
@@ -75,7 +75,7 @@ resource "azapi_resource" "virtualHub" {
         id = azapi_resource.virtualWan.id
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -85,7 +85,7 @@ resource "azapi_resource" "expressRouteCircuit" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizationKey = ""
       bandwidthInGbps  = 5
@@ -98,7 +98,7 @@ resource "azapi_resource" "expressRouteCircuit" {
       name   = "Premium_MeteredData"
       tier   = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]
@@ -108,7 +108,7 @@ resource "azapi_resource" "peering" {
   type      = "Microsoft.Network/expressRouteCircuits/peerings@2022-07-01"
   parent_id = azapi_resource.expressRouteCircuit.id
   name      = "AzurePrivatePeering"
-  body = jsonencode({
+  body = {
     properties = {
       azureASN                   = 12076
       gatewayManagerEtag         = ""
@@ -120,7 +120,7 @@ resource "azapi_resource" "peering" {
       state                      = "Enabled"
       vlanId                     = 100
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -130,7 +130,7 @@ resource "azapi_resource" "expressRouteGateway" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allowNonVirtualWanTraffic = false
       autoScaleConfiguration = {
@@ -142,7 +142,7 @@ resource "azapi_resource" "expressRouteGateway" {
         id = azapi_resource.virtualHub.id
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -151,7 +151,7 @@ resource "azapi_resource" "expressRouteConnection" {
   type      = "Microsoft.Network/expressRouteGateways/expressRouteConnections@2022-07-01"
   parent_id = azapi_resource.expressRouteGateway.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       enableInternetSecurity = false
       expressRouteCircuitPeering = {
@@ -162,7 +162,7 @@ resource "azapi_resource" "expressRouteConnection" {
       }
       routingWeight = 0
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

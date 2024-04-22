@@ -39,7 +39,7 @@ resource "azapi_resource" "N" {
   type      = "Microsoft.Network/dnsZones/NS@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       NSRecords = [
         {
@@ -53,7 +53,7 @@ resource "azapi_resource" "N" {
       metadata = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

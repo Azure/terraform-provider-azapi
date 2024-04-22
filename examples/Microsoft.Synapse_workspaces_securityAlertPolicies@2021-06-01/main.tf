@@ -31,14 +31,14 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
     }
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -60,13 +60,13 @@ resource "azapi_resource" "container" {
   type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01"
   name      = var.resource_name
   parent_id = data.azapi_resource.blobService.id
-  body = jsonencode({
+  body = {
     properties = {
       metadata = {
         key = "value"
       }
     }
-  })
+  }
   response_export_values = ["*"]
 }
 
@@ -79,10 +79,10 @@ resource "azapi_resource" "workspace" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       defaultDataLakeStorage = {
-        accountUrl = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.dfs
+        accountUrl = azapi_resource.storageAccount.output.properties.primaryEndpoints.dfs
         filesystem = azapi_resource.container.name
       }
 
@@ -91,7 +91,7 @@ resource "azapi_resource" "workspace" {
       sqlAdministratorLogin         = "sqladminuser"
       sqlAdministratorLoginPassword = "H@Sh1CoR3!"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -100,13 +100,13 @@ resource "azapi_update_resource" "securityAlertPolicy" {
   type      = "Microsoft.Synapse/workspaces/securityAlertPolicies@2021-06-01"
   parent_id = azapi_resource.workspace.id
   name      = "Default"
-  body = jsonencode({
+  body = {
     properties = {
       state                   = "Enabled"
-      storageAccountAccessKey = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
-      storageEndpoint         = jsondecode(azapi_resource.storageAccount.output).properties.primaryEndpoints.blob
+      storageAccountAccessKey = data.azapi_resource_action.listKeys.output.keys[0].value
+      storageEndpoint         = azapi_resource.storageAccount.output.properties.primaryEndpoints.blob
     }
-  })
+  }
   response_export_values  = ["*"]
   ignore_missing_property = true
 }

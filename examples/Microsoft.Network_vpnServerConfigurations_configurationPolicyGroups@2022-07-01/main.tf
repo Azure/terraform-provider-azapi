@@ -31,7 +31,7 @@ resource "azapi_resource" "vpnServerConfiguration" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       radiusClientRootCertificates = [
       ]
@@ -60,7 +60,7 @@ resource "azapi_resource" "vpnServerConfiguration" {
         "IkeV2",
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -69,7 +69,7 @@ resource "azapi_resource" "configurationPolicyGroup" {
   type      = "Microsoft.Network/vpnServerConfigurations/configurationPolicyGroups@2022-07-01"
   parent_id = azapi_resource.vpnServerConfiguration.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       isDefault = false
       policyMembers = [
@@ -81,7 +81,7 @@ resource "azapi_resource" "configurationPolicyGroup" {
       ]
       priority = 0
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

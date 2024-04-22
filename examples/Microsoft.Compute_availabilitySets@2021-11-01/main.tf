@@ -31,7 +31,7 @@ resource "azapi_resource" "availabilitySet" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       platformFaultDomainCount  = 3
       platformUpdateDomainCount = 5
@@ -39,7 +39,7 @@ resource "azapi_resource" "availabilitySet" {
     sku = {
       name = "Aligned"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

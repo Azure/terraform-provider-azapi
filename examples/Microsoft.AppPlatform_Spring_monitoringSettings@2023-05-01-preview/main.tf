@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "S0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,11 +47,11 @@ resource "azapi_update_resource" "monitoringSetting" {
   type      = "Microsoft.AppPlatform/Spring/monitoringSettings@2023-05-01-preview"
   parent_id = azapi_resource.Spring.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       traceEnabled = false
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

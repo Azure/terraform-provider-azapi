@@ -31,14 +31,14 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
     }
     sku = {
       name = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,12 +47,12 @@ resource "azapi_update_resource" "backupStorageConfig" {
   type      = "Microsoft.RecoveryServices/vaults/backupStorageConfig@2023-02-01"
   parent_id = azapi_resource.vault.id
   name      = "vaultStorageConfig"
-  body = jsonencode({
+  body = {
     properties = {
       crossRegionRestoreFlag = false
       storageModelType       = "GeoRedundant"
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

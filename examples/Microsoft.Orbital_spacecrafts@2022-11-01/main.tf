@@ -31,7 +31,7 @@ resource "azapi_resource" "spacecraft" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       links = [
         {
@@ -48,7 +48,7 @@ resource "azapi_resource" "spacecraft" {
       tleLine2  = "2 23455  99.0090 272.6745 0008546 223.1686 136.8816 14.11711747148495"
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "netAppAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       activeDirectories = [
       ]
@@ -39,7 +39,7 @@ resource "azapi_resource" "netAppAccount" {
     tags = {
       SkipASMAzSecPack = "true"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -49,7 +49,7 @@ resource "azapi_resource" "capacityPool" {
   parent_id = azapi_resource.netAppAccount.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       serviceLevel = "Standard"
       size         = 4.398046511104e+12
@@ -57,7 +57,7 @@ resource "azapi_resource" "capacityPool" {
     tags = {
       SkipASMAzSecPack = "true"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

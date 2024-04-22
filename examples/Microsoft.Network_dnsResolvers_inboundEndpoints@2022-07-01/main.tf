@@ -31,7 +31,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -45,17 +45,19 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = "inbounddns"
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.0.0.0/28"
       delegations = [
@@ -73,7 +75,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -83,14 +85,14 @@ resource "azapi_resource" "dnsResolver" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       virtualNetwork = {
         id = azapi_resource.virtualNetwork.id
       }
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -100,7 +102,7 @@ resource "azapi_resource" "inboundEndpoint" {
   parent_id = azapi_resource.dnsResolver.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       ipConfigurations = [
         {
@@ -112,7 +114,7 @@ resource "azapi_resource" "inboundEndpoint" {
       ]
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

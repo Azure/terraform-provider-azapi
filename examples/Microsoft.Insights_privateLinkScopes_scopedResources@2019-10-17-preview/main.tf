@@ -31,7 +31,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -43,7 +43,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,10 +53,10 @@ resource "azapi_resource" "privateLinkScope" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "Global"
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -65,11 +65,11 @@ resource "azapi_resource" "scopedResource" {
   type      = "Microsoft.Insights/privateLinkScopes/scopedResources@2019-10-17-preview"
   parent_id = azapi_resource.privateLinkScope.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       linkedResourceId = azapi_resource.component.id
     }
-  })
+  }
   schema_validation_enabled = false
   ignore_casing             = true
   response_export_values    = ["*"]

@@ -31,11 +31,11 @@ resource "azapi_resource" "firewallPolicy" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       threatIntelMode = "Alert"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

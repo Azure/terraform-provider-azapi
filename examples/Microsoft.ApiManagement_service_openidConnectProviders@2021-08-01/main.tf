@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -52,7 +52,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,7 +61,7 @@ resource "azapi_resource" "openidConnectProvider" {
   type      = "Microsoft.ApiManagement/service/openidConnectProviders@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       clientId         = "00001111-2222-3333-230630032559684401"
       clientSecret     = "230630032559684401-cwdavsxbacsaxZX-230630032559684401"
@@ -69,7 +69,7 @@ resource "azapi_resource" "openidConnectProvider" {
       displayName      = "Initial Name"
       metadataEndpoint = "https://azacceptance.hashicorptest.com/example/foo"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

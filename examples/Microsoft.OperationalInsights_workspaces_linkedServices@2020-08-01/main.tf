@@ -31,7 +31,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -47,7 +47,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -57,7 +57,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -67,7 +67,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -76,11 +76,11 @@ resource "azapi_resource" "linkedService" {
   type      = "Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01"
   parent_id = azapi_resource.workspace.id
   name      = "Automation"
-  body = jsonencode({
+  body = {
     properties = {
       resourceId = azapi_resource.automationAccount.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

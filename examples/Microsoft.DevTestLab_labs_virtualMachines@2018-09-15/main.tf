@@ -31,11 +31,11 @@ resource "azapi_resource" "lab" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       labStorageType = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -56,7 +56,7 @@ resource "azapi_resource" "virtualNetwork" {
   type      = "Microsoft.DevTestLab/labs/virtualNetworks@2018-09-15"
   parent_id = azapi_resource.lab.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       subnetOverrides = [
@@ -68,7 +68,7 @@ resource "azapi_resource" "virtualNetwork" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -78,7 +78,7 @@ resource "azapi_resource" "virtualMachine" {
   parent_id = azapi_resource.lab.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       allowClaim              = true
       disallowPublicIpAddress = false
@@ -101,7 +101,7 @@ resource "azapi_resource" "virtualMachine" {
       storageType = "Standard"
       userName    = "acct5stU5er"
     }
-  })
+  }
   ignore_casing             = true
   schema_validation_enabled = false
   response_export_values    = ["*"]

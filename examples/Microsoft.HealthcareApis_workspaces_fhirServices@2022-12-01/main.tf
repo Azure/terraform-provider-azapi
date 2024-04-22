@@ -51,7 +51,7 @@ resource "azapi_resource" "fhirService" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "fhir-R4"
     properties = {
       acrConfiguration = {
@@ -71,7 +71,7 @@ resource "azapi_resource" "fhirService" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -81,14 +81,14 @@ resource "azapi_resource" "fhirService2" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "fhir-R4"
     properties = {
       acrConfiguration = {
       }
       authenticationConfiguration = {
-        audience          = jsondecode(azapi_resource.fhirService.output).properties.authenticationConfiguration.audience
-        authority         = jsondecode(azapi_resource.fhirService.output).properties.authenticationConfiguration.authority
+        audience          = azapi_resource.fhirService.output.properties.authenticationConfiguration.audience
+        authority         = azapi_resource.fhirService.output.properties.authenticationConfiguration.authority
         smartProxyEnabled = false
       }
       corsConfiguration = {
@@ -101,7 +101,7 @@ resource "azapi_resource" "fhirService2" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -43,7 +43,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -53,7 +53,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -74,7 +74,7 @@ resource "azapi_resource" "service" {
       capacity = 0
       name     = "Consumption"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -83,31 +83,33 @@ resource "azapi_resource" "logger" {
   type      = "Microsoft.ApiManagement/service/loggers@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       credentials = {
-        instrumentationKey = jsondecode(azapi_resource.component.output).properties.InstrumentationKey
+        instrumentationKey = azapi_resource.component.output.properties.InstrumentationKey
       }
       description = ""
       isBuffered  = true
       loggerType  = "applicationInsights"
     }
-  })
+  }
   schema_validation_enabled = false
-  ignore_body_changes            = ["properties.credentials.instrumentationKey"]
   response_export_values    = ["*"]
+  lifecycle {
+    ignore_changes = [body.properties.credentials.instrumentationKey]
+  }
 }
 
 resource "azapi_resource" "diagnostic" {
   type      = "Microsoft.ApiManagement/service/diagnostics@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = "applicationinsights"
-  body = jsonencode({
+  body = {
     properties = {
       loggerId            = azapi_resource.logger.id
       operationNameFormat = "Name"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

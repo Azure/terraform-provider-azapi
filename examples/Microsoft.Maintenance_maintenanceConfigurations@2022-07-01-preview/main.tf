@@ -31,7 +31,7 @@ resource "azapi_resource" "maintenanceConfiguration" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       extensionProperties = {
       }
@@ -39,7 +39,7 @@ resource "azapi_resource" "maintenanceConfiguration" {
       namespace        = "Microsoft.Maintenance"
       visibility       = "Custom"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

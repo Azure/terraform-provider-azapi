@@ -35,8 +35,8 @@ resource "azapi_resource" "digitalTwinsInstance" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
-  })
+  body = {
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

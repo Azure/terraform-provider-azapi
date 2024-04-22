@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin            = "mradministrator"
       administratorLoginPassword    = "thisIsDog11"
@@ -40,7 +40,7 @@ resource "azapi_resource" "server" {
       restrictOutboundNetworkAccess = "Disabled"
       version                       = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -49,11 +49,11 @@ resource "azapi_update_resource" "connectionPolicy" {
   type      = "Microsoft.Sql/servers/connectionPolicies@2014-04-01"
   parent_id = azapi_resource.server.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       connectionType = "Default"
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

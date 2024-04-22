@@ -48,7 +48,7 @@ resource "azapi_resource" "networkManager" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       networkManagerScopeAccesses = [
@@ -62,7 +62,7 @@ resource "azapi_resource" "networkManager" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -71,10 +71,10 @@ resource "azapi_resource" "networkGroup" {
   type      = "Microsoft.Network/networkManagers/networkGroups@2022-09-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

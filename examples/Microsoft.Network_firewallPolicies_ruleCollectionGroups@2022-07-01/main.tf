@@ -31,11 +31,11 @@ resource "azapi_resource" "firewallPolicy" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       threatIntelMode = "Alert"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -44,12 +44,12 @@ resource "azapi_resource" "ruleCollectionGroup" {
   type      = "Microsoft.Network/firewallPolicies/ruleCollectionGroups@2022-07-01"
   parent_id = azapi_resource.firewallPolicy.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       priority        = 500
       ruleCollections = []
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

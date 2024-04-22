@@ -31,7 +31,7 @@ resource "azapi_resource" "ExpressRoutePort" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       billingType     = "MeteredData"
@@ -41,7 +41,7 @@ resource "azapi_resource" "ExpressRoutePort" {
     tags = {
       ENV = "Test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -50,10 +50,10 @@ resource "azapi_resource" "authorization" {
   type      = "Microsoft.Network/expressRoutePorts/authorizations@2022-07-01"
   parent_id = azapi_resource.ExpressRoutePort.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

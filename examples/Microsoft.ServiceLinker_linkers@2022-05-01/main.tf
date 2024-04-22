@@ -31,14 +31,14 @@ resource "azapi_resource" "Spring" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       zoneRedundant = false
     }
     sku = {
       name = "S0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -48,7 +48,7 @@ resource "azapi_resource" "databaseAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "GlobalDocumentDB"
     properties = {
       capabilities = [
@@ -83,7 +83,7 @@ resource "azapi_resource" "databaseAccount" {
       virtualNetworkRules = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -92,7 +92,7 @@ resource "azapi_resource" "sqlDatabase" {
   type      = "Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-10-15"
   parent_id = azapi_resource.databaseAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       options = {
         throughput = 400
@@ -101,7 +101,7 @@ resource "azapi_resource" "sqlDatabase" {
         id = var.resource_name
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -115,14 +115,14 @@ resource "azapi_resource" "app" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       customPersistentDisks = [
       ]
       enableEndToEndTLS = false
       public            = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -131,7 +131,7 @@ resource "azapi_resource" "deployment" {
   type      = "Microsoft.AppPlatform/Spring/apps/deployments@2023-05-01-preview"
   parent_id = azapi_resource.app.id
   name      = "deploy-q4uff"
-  body = jsonencode({
+  body = {
     properties = {
       deploymentSettings = {
         environmentVariables = {
@@ -153,7 +153,7 @@ resource "azapi_resource" "deployment" {
       name     = "S0"
       tier     = "Standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -162,7 +162,7 @@ resource "azapi_resource" "linker" {
   type      = "Microsoft.ServiceLinker/linkers@2022-05-01"
   parent_id = azapi_resource.deployment.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       authInfo = {
         authType = "systemAssignedIdentity"
@@ -174,7 +174,7 @@ resource "azapi_resource" "linker" {
         type               = "AzureResource"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

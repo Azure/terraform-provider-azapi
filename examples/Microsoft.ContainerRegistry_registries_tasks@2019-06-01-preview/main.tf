@@ -31,7 +31,7 @@ resource "azapi_resource" "registry" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       adminUserEnabled     = false
       anonymousPullEnabled = false
@@ -61,7 +61,7 @@ resource "azapi_resource" "registry" {
       name = "Basic"
       tier = "Basic"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -71,7 +71,7 @@ resource "azapi_resource" "task" {
   parent_id = azapi_resource.registry.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       isSystemTask = true
       status       = "Enabled"
@@ -79,7 +79,7 @@ resource "azapi_resource" "task" {
       timeout      = 3600
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

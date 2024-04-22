@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin            = "msincredible"
       administratorLoginPassword    = "P@55W0rD!!y0exn"
@@ -40,7 +40,7 @@ resource "azapi_resource" "server" {
       restrictOutboundNetworkAccess = "Enabled"
       version                       = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -49,10 +49,10 @@ resource "azapi_resource" "outboundFirewallRule" {
   type      = "Microsoft.Sql/servers/outboundFirewallRules@2021-02-01-preview"
   parent_id = azapi_resource.server.id
   name      = "sql230630033612934212.database.windows.net"
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

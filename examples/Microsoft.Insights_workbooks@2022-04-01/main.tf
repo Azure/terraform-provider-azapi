@@ -31,7 +31,7 @@ resource "azapi_resource" "workbook" {
   parent_id = azapi_resource.resourceGroup.id
   name      = "be1ad266-d329-4454-b693-8287e4d3b35d"
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "shared"
     properties = {
       category       = "workbook"
@@ -39,7 +39,7 @@ resource "azapi_resource" "workbook" {
       serializedData = "{\"fallbackResourceIds\":[\"Azure Monitor\"],\"isLocked\":false,\"items\":[{\"content\":{\"json\":\"Test2022\"},\"name\":\"text - 0\",\"type\":1}],\"version\":\"Notebook/1.0\"}"
       sourceId       = "azure monitor"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

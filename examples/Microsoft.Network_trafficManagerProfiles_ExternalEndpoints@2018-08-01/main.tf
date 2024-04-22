@@ -31,7 +31,7 @@ resource "azapi_resource" "trafficManagerProfile" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
-  body = jsonencode({
+  body = {
     properties = {
       dnsConfig = {
         relativeName = "acctest-tmp-230630034107608613"
@@ -49,7 +49,7 @@ resource "azapi_resource" "trafficManagerProfile" {
       }
       trafficRoutingMethod = "Weighted"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -58,7 +58,7 @@ resource "azapi_resource" "ExternalEndpoint" {
   type      = "Microsoft.Network/trafficManagerProfiles/ExternalEndpoints@2018-08-01"
   parent_id = azapi_resource.trafficManagerProfile.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       customHeaders = [
       ]
@@ -68,7 +68,7 @@ resource "azapi_resource" "ExternalEndpoint" {
       target = "www.example.com"
       weight = 3
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

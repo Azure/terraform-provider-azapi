@@ -31,7 +31,7 @@ resource "azapi_resource" "dataCollectionRule" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       dataFlows = [
         {
@@ -50,7 +50,7 @@ resource "azapi_resource" "dataCollectionRule" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

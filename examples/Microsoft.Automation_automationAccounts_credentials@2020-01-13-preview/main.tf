@@ -31,7 +31,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.Automation"
@@ -41,7 +41,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -50,13 +50,13 @@ resource "azapi_resource" "credential" {
   type      = "Microsoft.Automation/automationAccounts/credentials@2020-01-13-preview"
   parent_id = azapi_resource.automationAccount.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       password    = "test_pwd"
       userName    = "test_user"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

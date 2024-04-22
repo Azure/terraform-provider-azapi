@@ -31,7 +31,7 @@ resource "azapi_resource" "databaseAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "GlobalDocumentDB"
     properties = {
       capabilities = [
@@ -66,7 +66,7 @@ resource "azapi_resource" "databaseAccount" {
       virtualNetworkRules = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -75,13 +75,13 @@ resource "azapi_resource" "service" {
   type      = "Microsoft.DocumentDB/databaseAccounts/services@2022-05-15"
   parent_id = azapi_resource.databaseAccount.id
   name      = "SqlDedicatedGateway"
-  body = jsonencode({
+  body = {
     properties = {
       instanceCount = 1
       instanceSize  = "Cosmos.D4s"
       serviceType   = "SqlDedicatedGateway"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

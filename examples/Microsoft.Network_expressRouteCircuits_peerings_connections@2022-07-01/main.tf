@@ -31,13 +31,13 @@ resource "azapi_resource" "ExpressRoutePort" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       encapsulation   = "Dot1Q"
       peeringLocation = "Airtel-Chennai2-CLS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -47,13 +47,13 @@ resource "azapi_resource" "ExpressRoutePort2" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       bandwidthInGbps = 10
       encapsulation   = "Dot1Q"
       peeringLocation = "CDC-Canberra"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -63,7 +63,7 @@ resource "azapi_resource" "expressRouteCircuit" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizationKey = ""
       bandwidthInGbps  = 5
@@ -76,7 +76,7 @@ resource "azapi_resource" "expressRouteCircuit" {
       name   = "Standard_MeteredData"
       tier   = "Standard"
     }
-  })
+  }
   ignore_casing             = true
   schema_validation_enabled = false
   response_export_values    = ["*"]
@@ -87,7 +87,7 @@ resource "azapi_resource" "expressRouteCircuit2" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizationKey = ""
       bandwidthInGbps  = 5
@@ -100,7 +100,7 @@ resource "azapi_resource" "expressRouteCircuit2" {
       name   = "Standard_MeteredData"
       tier   = "Standard"
     }
-  })
+  }
   ignore_casing             = true
   schema_validation_enabled = false
   response_export_values    = ["*"]
@@ -110,7 +110,7 @@ resource "azapi_resource" "peering" {
   type      = "Microsoft.Network/expressRouteCircuits/peerings@2022-07-01"
   parent_id = azapi_resource.expressRouteCircuit.id
   name      = "AzurePrivatePeering"
-  body = jsonencode({
+  body = {
     properties = {
       azureASN                   = 12076
       gatewayManagerEtag         = ""
@@ -122,7 +122,7 @@ resource "azapi_resource" "peering" {
       state                      = "Enabled"
       vlanId                     = 100
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -131,7 +131,7 @@ resource "azapi_resource" "peering2" {
   type      = "Microsoft.Network/expressRouteCircuits/peerings@2022-07-01"
   parent_id = azapi_resource.expressRouteCircuit2.id
   name      = "AzurePrivatePeering"
-  body = jsonencode({
+  body = {
     properties = {
       azureASN                   = 12076
       gatewayManagerEtag         = ""
@@ -143,7 +143,7 @@ resource "azapi_resource" "peering2" {
       state                      = "Enabled"
       vlanId                     = 100
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -152,7 +152,7 @@ resource "azapi_resource" "connection" {
   type      = "Microsoft.Network/expressRouteCircuits/peerings/connections@2022-07-01"
   parent_id = azapi_resource.peering.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "192.169.8.0/29"
       expressRouteCircuitPeering = {
@@ -162,7 +162,7 @@ resource "azapi_resource" "connection" {
         id = azapi_resource.peering2.id
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

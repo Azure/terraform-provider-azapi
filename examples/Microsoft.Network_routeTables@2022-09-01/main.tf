@@ -31,7 +31,7 @@ resource "azapi_resource" "routeTable" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       disableBgpRoutePropagation = false
       routes = [
@@ -45,7 +45,7 @@ resource "azapi_resource" "routeTable" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

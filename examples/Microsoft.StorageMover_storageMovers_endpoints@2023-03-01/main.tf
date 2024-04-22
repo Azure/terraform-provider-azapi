@@ -31,11 +31,11 @@ resource "azapi_resource" "storageMover" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -44,14 +44,14 @@ resource "azapi_resource" "endpoint" {
   type      = "Microsoft.StorageMover/storageMovers/endpoints@2023-03-01"
   parent_id = azapi_resource.storageMover.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       endpointType = "NfsMount"
       export       = ""
       host         = "192.168.0.1"
       nfsVersion   = "NFSauto"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

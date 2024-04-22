@@ -31,7 +31,7 @@ resource "azapi_resource" "expressRouteCircuit" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       authorizationKey = ""
       serviceProviderProperties = {
@@ -49,7 +49,7 @@ resource "azapi_resource" "expressRouteCircuit" {
       Environment = "production"
       Purpose     = "AcceptanceTests"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -58,10 +58,10 @@ resource "azapi_resource" "authorization" {
   type      = "Microsoft.Network/expressRouteCircuits/authorizations@2022-07-01"
   parent_id = azapi_resource.expressRouteCircuit.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

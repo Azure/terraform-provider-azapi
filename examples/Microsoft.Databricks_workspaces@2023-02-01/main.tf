@@ -37,7 +37,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       managedResourceGroupId = data.azapi_resource_id.workspace_resource_group.id
       parameters = {
@@ -53,7 +53,7 @@ resource "azapi_resource" "workspace" {
     sku = {
       name = "premium"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

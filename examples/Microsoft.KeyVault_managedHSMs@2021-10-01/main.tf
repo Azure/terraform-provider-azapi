@@ -42,7 +42,7 @@ resource "azapi_resource" "managedHSM" {
   parent_id = azapi_resource.resourceGroup.id
   name      = "kvHsm230630033342437496"
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       createMode            = "default"
       enablePurgeProtection = false
@@ -58,7 +58,7 @@ resource "azapi_resource" "managedHSM" {
       family = "B"
       name   = "Standard_B1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

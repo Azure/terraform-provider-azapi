@@ -41,7 +41,7 @@ resource "azapi_resource" "roleDefinition" {
   type      = "Microsoft.Authorization/roleDefinitions@2018-01-01-preview"
   parent_id = data.azapi_resource.subscription.id
   name      = "6faae21a-0cd6-4536-8c23-a278823d12ed"
-  body = jsonencode({
+  body = {
     properties = {
       assignableScopes = [
         data.azapi_resource.subscription.id,
@@ -63,7 +63,7 @@ resource "azapi_resource" "roleDefinition" {
       roleName = var.resource_name
       type     = "CustomRole"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

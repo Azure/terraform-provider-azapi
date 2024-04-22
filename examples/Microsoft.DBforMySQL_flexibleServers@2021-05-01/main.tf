@@ -31,7 +31,7 @@ resource "azapi_resource" "flexibleServer" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "adminTerraform"
       administratorLoginPassword = "QAZwsx123"
@@ -53,7 +53,7 @@ resource "azapi_resource" "flexibleServer" {
       name = "Standard_B1s"
       tier = "Burstable"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

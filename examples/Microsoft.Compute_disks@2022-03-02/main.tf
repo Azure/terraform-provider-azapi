@@ -31,7 +31,7 @@ resource "azapi_resource" "disk" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       creationData = {
         createOption = "Empty"
@@ -47,7 +47,7 @@ resource "azapi_resource" "disk" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

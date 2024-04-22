@@ -39,7 +39,7 @@ resource "azapi_resource" "CAA" {
   type      = "Microsoft.Network/dnsZones/CAA@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       TTL = 300
       caaRecords = [
@@ -67,7 +67,7 @@ resource "azapi_resource" "CAA" {
       metadata = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -37,7 +37,7 @@ resource "azapi_resource" "managedCluster" {
     type = "SystemAssigned"
     identity_ids = []
   }
-  body = jsonencode({
+  body = {
     properties = {
       agentPoolProfiles = [
         {
@@ -49,7 +49,7 @@ resource "azapi_resource" "managedCluster" {
       ]
       dnsPrefix = var.resource_name
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

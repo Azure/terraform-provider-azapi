@@ -35,7 +35,7 @@ resource "azapi_resource" "view" {
   type      = "Microsoft.CostManagement/views@2022-10-01"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       accumulated = "False"
       chart       = "StackedColumn"
@@ -90,7 +90,7 @@ resource "azapi_resource" "view" {
         type      = "Usage"
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -99,7 +99,7 @@ resource "azapi_resource" "scheduledAction" {
   type      = "Microsoft.CostManagement/scheduledActions@2022-06-01-preview"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     kind = "InsightAlert"
     properties = {
       displayName = "acctest 230630032939736168"
@@ -123,7 +123,7 @@ resource "azapi_resource" "scheduledAction" {
       status = "Enabled"
       viewId = azapi_resource.view.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

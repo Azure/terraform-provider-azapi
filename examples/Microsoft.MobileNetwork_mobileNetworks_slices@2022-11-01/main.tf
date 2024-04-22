@@ -31,7 +31,7 @@ resource "azapi_resource" "mobileNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicLandMobileNetworkIdentifier = {
         mcc = "001"
@@ -39,7 +39,7 @@ resource "azapi_resource" "mobileNetwork" {
       }
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -49,14 +49,14 @@ resource "azapi_resource" "slice" {
   parent_id = azapi_resource.mobileNetwork.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       snssai = {
         sst = 1
       }
     }
 
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -41,7 +41,7 @@ resource "azapi_resource" "policyDefinition" {
   type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       displayName = "my-policy-definition"
@@ -69,7 +69,7 @@ resource "azapi_resource" "policyDefinition" {
       }
       policyType = "Custom"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -78,7 +78,7 @@ resource "azapi_resource" "policyAssignment" {
   type      = "Microsoft.Authorization/policyAssignments@2022-06-01"
   parent_id = data.azapi_resource.subscription.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       displayName     = ""
       enforcementMode = "Default"
@@ -94,7 +94,7 @@ resource "azapi_resource" "policyAssignment" {
       policyDefinitionId = azapi_resource.policyDefinition.id
       scope              = data.azapi_resource.subscription.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

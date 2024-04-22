@@ -31,7 +31,7 @@ resource "azapi_resource" "redisEnterprise" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       minimumTlsVersion = "1.2"
     }
@@ -39,7 +39,7 @@ resource "azapi_resource" "redisEnterprise" {
       capacity = 2
       name     = "Enterprise_E100"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

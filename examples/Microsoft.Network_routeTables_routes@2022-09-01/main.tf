@@ -31,26 +31,28 @@ resource "azapi_resource" "routeTable" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       disableBgpRoutePropagation = false
     }
-  })
+  }
   schema_validation_enabled = false
-  ignore_body_changes            = ["properties.routes"]
   response_export_values    = ["*"]
+  lifecycle {
+    ignore_changes = [body.properties.routes]
+  }
 }
 
 resource "azapi_resource" "route" {
   type      = "Microsoft.Network/routeTables/routes@2022-09-01"
   parent_id = azapi_resource.routeTable.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.1.0.0/16"
       nextHopType   = "VnetLocal"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

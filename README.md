@@ -58,7 +58,7 @@ resource "azapi_resource" "automationAccount" {
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       disableLocalAuth    = true
       publicNetworkAccess = false
@@ -66,7 +66,7 @@ resource "azapi_resource" "automationAccount" {
         name = "Basic"
       }
     }
-  })
+  }
 }
 
 ```

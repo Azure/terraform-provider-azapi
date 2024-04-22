@@ -31,7 +31,7 @@ resource "azapi_resource" "service" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       certificates = [
       ]
@@ -64,7 +64,7 @@ resource "azapi_resource" "service" {
       capacity = 1
       name     = "Developer"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   timeouts {
@@ -78,13 +78,13 @@ resource "azapi_resource" "user" {
   type      = "Microsoft.ApiManagement/service/users@2021-08-01"
   parent_id = azapi_resource.service.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       email     = "azure-acctest230630032559695401@example.com"
       firstName = "Acceptance"
       lastName  = "Test"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

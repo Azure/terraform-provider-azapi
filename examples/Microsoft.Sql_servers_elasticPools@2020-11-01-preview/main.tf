@@ -42,7 +42,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin            = "4dm1n157r470r"
       administratorLoginPassword    = "4-v3ry-53cr37-p455w0rd"
@@ -51,7 +51,7 @@ resource "azapi_resource" "server" {
       restrictOutboundNetworkAccess = "Disabled"
       version                       = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -67,7 +67,7 @@ resource "azapi_resource" "elasticPool" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       maintenanceConfigurationId = data.azapi_resource_id.publicMaintenanceConfiguration.id
       maxSizeBytes               = 5.24288e+09
@@ -83,7 +83,7 @@ resource "azapi_resource" "elasticPool" {
       name     = "BasicPool"
       tier     = "Basic"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -47,7 +47,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -57,7 +57,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -89,7 +89,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_GRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -98,13 +98,13 @@ resource "azapi_resource" "linkedStorageAccount" {
   type      = "Microsoft.OperationalInsights/workspaces/linkedStorageAccounts@2020-08-01"
   parent_id = azapi_resource.workspace.id
   name      = "CustomLogs"
-  body = jsonencode({
+  body = {
     properties = {
       storageAccountIds = [
         azapi_resource.storageAccount.id,
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

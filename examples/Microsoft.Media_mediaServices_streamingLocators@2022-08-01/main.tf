@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -63,7 +63,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_GRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -73,7 +73,7 @@ resource "azapi_resource" "mediaService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
       storageAccounts = [
@@ -83,7 +83,7 @@ resource "azapi_resource" "mediaService" {
         },
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -92,11 +92,11 @@ resource "azapi_resource" "asset" {
   type      = "Microsoft.Media/mediaServices/assets@2022-08-01"
   parent_id = azapi_resource.mediaService.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -105,12 +105,12 @@ resource "azapi_resource" "streamingLocator" {
   type      = "Microsoft.Media/mediaServices/streamingLocators@2022-08-01"
   parent_id = azapi_resource.mediaService.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       assetName           = azapi_resource.asset.name
       streamingPolicyName = "Predefined_ClearStreamingOnly"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

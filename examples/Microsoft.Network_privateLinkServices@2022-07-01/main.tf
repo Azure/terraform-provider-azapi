@@ -48,7 +48,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = [
@@ -62,10 +62,12 @@ resource "azapi_resource" "virtualNetwork" {
       subnets = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.subnets"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "publicIPAddress" {
@@ -73,7 +75,7 @@ resource "azapi_resource" "publicIPAddress" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       ddosSettings = {
         protectionMode = "VirtualNetworkInherited"
@@ -86,7 +88,7 @@ resource "azapi_resource" "publicIPAddress" {
       name = "Standard"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -96,7 +98,7 @@ resource "azapi_resource" "loadBalancer" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       frontendIPConfigurations = [
         {
@@ -113,7 +115,7 @@ resource "azapi_resource" "loadBalancer" {
       name = "Standard"
       tier = "Regional"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -122,7 +124,7 @@ resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = "10.5.4.0/24"
       delegations = [
@@ -134,7 +136,7 @@ resource "azapi_resource" "subnet" {
       serviceEndpoints = [
       ]
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -144,7 +146,7 @@ resource "azapi_resource" "privateLinkService" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       autoApproval = {
         subscriptions = [
@@ -169,7 +171,7 @@ resource "azapi_resource" "privateLinkService" {
       ]
       loadBalancerFrontendIpConfigurations = [
         {
-          id = jsondecode(azapi_resource.loadBalancer.output).properties.frontendIPConfigurations[0].id
+          id = azapi_resource.loadBalancer.output.properties.frontendIPConfigurations[0].id
         },
       ]
       visibility = {
@@ -177,7 +179,7 @@ resource "azapi_resource" "privateLinkService" {
         ]
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

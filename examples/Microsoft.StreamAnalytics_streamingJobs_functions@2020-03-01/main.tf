@@ -31,7 +31,7 @@ resource "azapi_resource" "streamingJob" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       cluster = {
       }
@@ -54,7 +54,7 @@ resource "azapi_resource" "streamingJob" {
         }
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -63,7 +63,7 @@ resource "azapi_resource" "function" {
   type      = "Microsoft.StreamAnalytics/streamingJobs/functions@2020-03-01"
   parent_id = azapi_resource.streamingJob.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       properties = {
         binding = {
@@ -84,7 +84,7 @@ resource "azapi_resource" "function" {
       }
       type = "Scalar"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

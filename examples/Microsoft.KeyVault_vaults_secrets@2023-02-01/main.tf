@@ -42,7 +42,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         family = "A"
@@ -52,10 +52,12 @@ resource "azapi_resource" "vault" {
       enableSoftDelete = true
       tenantId         = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.accessPolicies"]
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
 }
 
 data "azapi_resource_id" "secret" {
@@ -68,10 +70,10 @@ resource "azapi_resource_action" "put_secret" {
   type        = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
   resource_id = data.azapi_resource_id.secret.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       value = "szechuan"
     }
-  })
+  }
   response_export_values = ["*"]
 }

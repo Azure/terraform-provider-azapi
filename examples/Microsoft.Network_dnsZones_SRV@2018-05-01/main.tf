@@ -39,7 +39,7 @@ resource "azapi_resource" "SRV" {
   type      = "Microsoft.Network/dnsZones/SRV@2018-05-01"
   parent_id = azapi_resource.dnsZone.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       SRVRecords = [
         {
@@ -59,7 +59,7 @@ resource "azapi_resource" "SRV" {
       metadata = {
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

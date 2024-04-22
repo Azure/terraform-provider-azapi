@@ -31,7 +31,7 @@ resource "azapi_resource" "component" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "web"
     properties = {
       Application_Type                = "web"
@@ -43,7 +43,7 @@ resource "azapi_resource" "component" {
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -58,11 +58,11 @@ resource "azapi_resource_action" "analyticsItem" {
   type        = "microsoft.insights/components/analyticsItems@2015-05-01"
   resource_id = data.azapi_resource_id.analyticsItem.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     Content = "requests #test"
     Name    = "testquery"
     Scope   = "shared"
     Type    = "query"
-  })
+  }
 }
 

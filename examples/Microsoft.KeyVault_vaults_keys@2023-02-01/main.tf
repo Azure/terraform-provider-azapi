@@ -42,7 +42,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         family = "A"
@@ -53,17 +53,19 @@ resource "azapi_resource" "vault" {
       enablePurgeProtection = true
       tenantId              = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  ignore_body_changes            = ["properties.accessPolicies"]
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
 }
 
 resource "azapi_resource_action" "put_accessPolicy" {
   type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
   resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [
         {
@@ -85,7 +87,7 @@ resource "azapi_resource_action" "put_accessPolicy" {
         },
       ]
     }
-  })
+  }
   response_export_values = ["*"]
 }
 
@@ -99,13 +101,13 @@ resource "azapi_resource_action" "put_key" {
   type        = "Microsoft.KeyVault/vaults/keys@2023-02-01"
   resource_id = data.azapi_resource_id.key.id
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       keySize = 2048
       kty     = "RSA"
       keyOps  = ["encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"]
     }
-  })
+  }
   response_export_values = ["*"]
   depends_on             = [azapi_resource_action.put_accessPolicy]
 }

@@ -40,11 +40,11 @@ resource "azapi_resource" "dicomService" {
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = "Enabled"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -39,7 +39,7 @@ resource "azapi_resource" "networkSecurityGroup" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = azapi_resource.resourceGroup.location
-  body = jsonencode({
+  body = {
     properties = {
       securityRules = [
         {
@@ -156,7 +156,7 @@ resource "azapi_resource" "networkSecurityGroup" {
         }
       ]
     }
-  })
+  }
 }
 
 resource "azapi_resource" "routeTable" {
@@ -164,11 +164,11 @@ resource "azapi_resource" "routeTable" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = azapi_resource.resourceGroup.location
-  body = jsonencode({
+  body = {
     properties = {
       disableBgpRoutePropagation = false
     }
-  })
+  }
 }
 
 resource "azapi_resource" "virtualNetwork" {
@@ -176,7 +176,7 @@ resource "azapi_resource" "virtualNetwork" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = azapi_resource.resourceGroup.location
-  body = jsonencode({
+  body = {
     properties = {
       addressSpace = {
         addressPrefixes = ["10.0.0.0/16"]
@@ -210,7 +210,7 @@ resource "azapi_resource" "virtualNetwork" {
         }
       ]
     }
-  })
+  }
 }
 
 data "azapi_resource" "subnet" {
@@ -225,7 +225,7 @@ resource "azapi_resource" "instancePool" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = azapi_resource.resourceGroup.location
-  body = jsonencode({
+  body = {
     properties = {
       licenseType = "LicenseIncluded"
       subnetId    = data.azapi_resource.subnet.id
@@ -236,7 +236,7 @@ resource "azapi_resource" "instancePool" {
       name   = "GP_Gen5"
       tier   = "GeneralPurpose"
     }
-  })
+  }
 
   timeouts {
     create = "300m"

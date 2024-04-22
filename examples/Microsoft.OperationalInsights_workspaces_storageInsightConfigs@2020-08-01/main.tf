@@ -31,7 +31,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -47,7 +47,7 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -57,7 +57,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -89,7 +89,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -105,14 +105,14 @@ resource "azapi_resource" "storageInsightConfig" {
   type      = "Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2020-08-01"
   parent_id = azapi_resource.workspace.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       storageAccount = {
         id  = azapi_resource.storageAccount.id
-        key = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+        key = data.azapi_resource_action.listKeys.output.keys[0].value
       }
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

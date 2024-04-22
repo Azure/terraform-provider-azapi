@@ -42,7 +42,7 @@ resource "azapi_resource" "signalR" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       cors = {
       }
@@ -98,7 +98,7 @@ resource "azapi_resource" "signalR" {
       capacity = 1
       name     = "Standard_S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -108,7 +108,7 @@ resource "azapi_resource" "vault" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [
         {
@@ -143,7 +143,7 @@ resource "azapi_resource" "vault" {
       softDeleteRetentionInDays = 7
       tenantId                  = data.azurerm_client_config.current.tenant_id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -152,13 +152,13 @@ resource "azapi_resource" "sharedPrivateLinkResource" {
   type      = "Microsoft.SignalRService/signalR/sharedPrivateLinkResources@2023-02-01"
   parent_id = azapi_resource.signalR.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       groupId               = "vault"
       privateLinkResourceId = azapi_resource.vault.id
       requestMessage        = "please approve"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

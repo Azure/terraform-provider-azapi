@@ -31,7 +31,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin         = "acctestun"
       administratorLoginPassword = "H@Sh1CoR3!"
@@ -52,7 +52,7 @@ resource "azapi_resource" "server" {
       name     = "B_Gen5_2"
       tier     = "Basic"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -61,12 +61,12 @@ resource "azapi_resource" "database" {
   type      = "Microsoft.DBforMariaDB/servers/databases@2018-06-01"
   parent_id = azapi_resource.server.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       charset   = "utf8"
       collation = "utf8_general_ci"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

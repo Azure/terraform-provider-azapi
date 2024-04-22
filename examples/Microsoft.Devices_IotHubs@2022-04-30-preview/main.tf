@@ -31,7 +31,7 @@ resource "azapi_resource" "IotHub" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       cloudToDevice = {
       }
@@ -55,7 +55,7 @@ resource "azapi_resource" "IotHub" {
       capacity = 1
       name     = "S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

@@ -31,7 +31,7 @@ resource "azapi_resource" "registry" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       adminUserEnabled     = false
       anonymousPullEnabled = false
@@ -61,7 +61,7 @@ resource "azapi_resource" "registry" {
       name = "Premium"
       tier = "Premium"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -71,13 +71,13 @@ resource "azapi_resource" "agentPool" {
   parent_id = azapi_resource.registry.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       count = 1
       os    = "Linux"
       tier  = "S1"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

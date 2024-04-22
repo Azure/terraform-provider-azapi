@@ -42,7 +42,7 @@ resource "azapi_resource" "server" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       administratorLogin            = "mradministrator"
       administratorLoginPassword    = "thisIsDog11"
@@ -51,7 +51,7 @@ resource "azapi_resource" "server" {
       restrictOutboundNetworkAccess = "Disabled"
       version                       = "12.0"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -67,7 +67,7 @@ resource "azapi_resource" "database" {
   parent_id = azapi_resource.server.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       autoPauseDelay                   = 0
       createMode                       = "Default"
@@ -81,7 +81,7 @@ resource "azapi_resource" "database" {
       requestedBackupStorageRedundancy = "Geo"
       zoneRedundant                    = false
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -90,11 +90,11 @@ resource "azapi_update_resource" "transparentDataEncryption" {
   type      = "Microsoft.Sql/servers/databases/transparentDataEncryption@2014-04-01"
   parent_id = azapi_resource.database.id
   name      = "current"
-  body = jsonencode({
+  body = {
     properties = {
       status = "Enabled"
     }
-  })
+  }
   response_export_values = ["*"]
 }
 

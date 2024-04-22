@@ -31,7 +31,7 @@ resource "azapi_resource" "storageAccount" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
@@ -63,7 +63,7 @@ resource "azapi_resource" "storageAccount" {
     sku = {
       name = "Standard_LRS"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -85,13 +85,13 @@ resource "azapi_resource" "container" {
   type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01"
   name      = var.resource_name
   parent_id = data.azapi_resource.blobService.id
-  body = jsonencode({
+  body = {
     properties = {
       metadata = {
         key = "value"
       }
     }
-  })
+  }
   response_export_values = ["*"]
 }
 
@@ -100,7 +100,7 @@ resource "azapi_resource" "cluster" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       clusterDefinition = {
         componentVersion = {
@@ -169,7 +169,7 @@ resource "azapi_resource" "cluster" {
           {
             container  = azapi_resource.container.name
             isDefault  = true
-            key        = jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value
+            key        = data.azapi_resource_action.listKeys.output.keys[0].value
             name       = "${azapi_resource.storageAccount.name}.blob.core.windows.net"
             resourceId = azapi_resource.storageAccount.id
           },
@@ -177,7 +177,7 @@ resource "azapi_resource" "cluster" {
       }
       tier = "standard"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
   timeouts {

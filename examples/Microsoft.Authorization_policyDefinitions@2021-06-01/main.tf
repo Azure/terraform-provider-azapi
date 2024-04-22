@@ -35,7 +35,7 @@ resource "azapi_resource" "policyDefinition" {
   type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       description = ""
       displayName = "my-policy-definition"
@@ -63,7 +63,7 @@ resource "azapi_resource" "policyDefinition" {
       }
       policyType = "Custom"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

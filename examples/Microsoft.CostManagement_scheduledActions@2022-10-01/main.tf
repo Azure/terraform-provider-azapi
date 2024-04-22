@@ -47,7 +47,7 @@ resource "azapi_resource" "scheduledAction" {
   type      = "Microsoft.CostManagement/scheduledActions@2022-10-01"
   parent_id = data.azapi_resource.subscription.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     kind = "Email"
     properties = {
       displayName = "CostByServiceViewerz3k"
@@ -76,7 +76,7 @@ resource "azapi_resource" "scheduledAction" {
       status = "Enabled"
       viewId = data.azapi_resource_id.view.id
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }

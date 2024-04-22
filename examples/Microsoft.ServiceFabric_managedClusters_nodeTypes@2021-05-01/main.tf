@@ -31,7 +31,7 @@ resource "azapi_resource" "managedCluster" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-  body = jsonencode({
+  body = {
     properties = {
       addonFeatures = [
         "DnsService",
@@ -79,7 +79,7 @@ resource "azapi_resource" "managedCluster" {
     tags = {
       Test = "value"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -88,7 +88,7 @@ resource "azapi_resource" "nodeType" {
   type      = "Microsoft.ServiceFabric/managedClusters/nodeTypes@2021-05-01"
   parent_id = azapi_resource.managedCluster.id
   name      = var.resource_name
-  body = jsonencode({
+  body = {
     properties = {
       applicationPorts = {
         endPort   = 9000
@@ -116,7 +116,7 @@ resource "azapi_resource" "nodeType" {
       ]
       vmSize = "Standard_DS2_v2"
     }
-  })
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
