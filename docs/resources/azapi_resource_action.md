@@ -101,7 +101,7 @@ data "azapi_resource_action" "test" {
   type        = "Microsoft.ResourceGraph@2020-04-01-preview"
   resource_id = "/providers/Microsoft.ResourceGraph"
   action      = "resources"
-  payload = {
+  body = {
     query = "resources| where name contains \"test\""
   }
   response_export_values = ["*"]
@@ -121,7 +121,7 @@ The following arguments are supported:
 
 ---
 
-* `payload` - (Optional) A dynamic attribute that contains the request body.
+* `body` - (Optional) A dynamic attribute that contains the request body.
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
 
@@ -129,7 +129,7 @@ The following arguments are supported:
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["keys"]`, it will set the following HCL object to computed property `output_payload`.
+  Here's an example. If it sets to `["keys"]`, it will set the following HCL object to computed property `output`.
 
 ```
 {
@@ -156,17 +156,17 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource action.
 
-* `output_payload` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
+* `output` - The HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = azapi_resource_action.test.output_payload.keys.0.Value
+  value = azapi_resource_action.test.output.keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = azapi_resource_action.test.output_payload.keys.1.Value
+  value = azapi_resource_action.test.output.keys.1.Value
 }
 ```
 

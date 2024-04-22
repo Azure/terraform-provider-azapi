@@ -191,7 +191,7 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Cache@2023-04-01"
   resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
   action      = "CheckNameAvailability"
-  payload = {
+  body = {
     type = "Microsoft.Cache/Redis"
     name = "cacheName"
   }

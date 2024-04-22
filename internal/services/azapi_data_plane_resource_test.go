@@ -187,7 +187,7 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
   parent_id = replace(azurerm_purview_account.example.scan_endpoint, "https://", "")
   name      = "acctest%[2]s"
-  payload = {
+  body = {
     kind = "Custom"
     properties = {
       description        = "Let's put a cool desc here"

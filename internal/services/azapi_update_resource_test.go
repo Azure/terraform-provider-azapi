@@ -185,7 +185,7 @@ resource "azurerm_automation_account" "test" {
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azurerm_automation_account.test.id
-  payload = {
+  body = {
     properties = {
       publicNetworkAccess = true
     }

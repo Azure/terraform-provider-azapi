@@ -82,7 +82,7 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Cache@2023-04-01"
   resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache"
   action      = "CheckNameAvailability"
-  payload = {
+  body = {
     type = "Microsoft.Cache/Redis"
     name = "cacheName"
   }
@@ -101,13 +101,13 @@ The following arguments are supported:
 * `action` - (Optional) The name of the resource action. It's also possible to make Http requests towards the resource ID if leave this field empty.
 
 ---
-* `payload` - (Optional) A dynamic attribute that contains the request body.
+* `body` - (Optional) A dynamic attribute that contains the request body.
 
 * `method` - (Optional) Specifies the Http method of the azure resource action. Allowed values are `POST` and `GET`. Defaults to `POST`.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
-  Here's an example. If it sets to `["keys"]`, it will set the following HCL object to computed property `output_payload`.
+  Here's an example. If it sets to `["keys"]`, it will set the following HCL object to computed property `output`.
 ```
 {
   keys = [
@@ -135,12 +135,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = azapi_resource_action.test.output_payload.keys.0.Value
+  value = azapi_resource_action.test.output.keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = azapi_resource_action.test.output_payload.keys.1.Value
+  value = azapi_resource_action.test.output.keys.1.Value
 }
 ```
 
