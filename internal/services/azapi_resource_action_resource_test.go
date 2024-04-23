@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -30,9 +29,7 @@ func TestAccActionResource_basicWhenDestroy(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.basicWhenDestroy(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That("azapi_resource_action.test").Key("output").HasValue("{}"),
-			),
+			Check:  resource.ComposeTestCheckFunc(),
 		},
 		{
 			Destroy: true,

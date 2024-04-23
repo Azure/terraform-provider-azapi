@@ -86,6 +86,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
@@ -97,6 +98,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
@@ -108,6 +110,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.UseStateForUnknown(),
 				},
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
