@@ -3,7 +3,6 @@ package myvalidator
 import (
 	"context"
 	"encoding/json"
-
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -21,7 +20,7 @@ func (v bodyValidator) MarkdownDescription(ctx context.Context) string {
 func (_ bodyValidator) ValidateDynamic(ctx context.Context, req validator.DynamicRequest, resp *validator.DynamicResponse) {
 	raw := req.ConfigValue
 
-	if raw.IsUnknown() || raw.IsNull() {
+	if raw.IsUnknown() || raw.IsNull() || raw.IsUnderlyingValueUnknown() || raw.IsUnderlyingValueNull() {
 		return
 	}
 
