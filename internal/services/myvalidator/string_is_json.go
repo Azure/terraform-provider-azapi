@@ -34,6 +34,6 @@ func (_ stringIsJSON) ValidateString(ctx context.Context, req validator.StringRe
 	}
 }
 
-func StringIsJSON() stringIsJSON {
+func StringIsJSON() validator.String {
 	return stringIsJSON{}
 }

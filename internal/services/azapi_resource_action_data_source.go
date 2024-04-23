@@ -85,6 +85,9 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 			// TODO: Remove the support for JSON string in the next major release
 			"body": schema.DynamicAttribute{
 				Optional: true,
+				Validators: []validator.Dynamic{
+					myvalidator.BodyValidator(),
+				},
 			},
 
 			"response_export_values": schema.ListAttribute{
