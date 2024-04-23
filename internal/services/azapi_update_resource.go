@@ -328,9 +328,20 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		defer locks.UnlockByID(id)
 	}
 
-	responseBody, err := client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
+		return
+	}
+
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	if err != nil {
+		if utils.ResponseErrorWasNotFound(err) {
+			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			state.RemoveResource(ctx)
+			return
+		}
+		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 		return
 	}
 

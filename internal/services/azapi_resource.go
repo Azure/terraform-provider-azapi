@@ -499,9 +499,45 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		defer locks.UnlockByID(lockId)
 	}
 
-	responseBody, err := client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
+		if isNewResource {
+			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion); err == nil {
+				// generate the computed fields
+				plan.ID = types.StringValue(id.ID())
+				if dynamicIsString(plan.Body) {
+					plan.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues))))
+				} else {
+					plan.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(plan.ResponseExportValues)))
+				}
+				if bodyMap, ok := responseBody.(map[string]interface{}); ok {
+					if !plan.Identity.IsNull() {
+						planIdentity := identity.FromList(plan.Identity)
+						if v := identity.FlattenIdentity(bodyMap["identity"]); v != nil {
+							planIdentity.TenantID = v.TenantID
+							planIdentity.PrincipalID = v.PrincipalID
+						} else {
+							planIdentity.TenantID = types.StringNull()
+							planIdentity.PrincipalID = types.StringNull()
+						}
+						plan.Identity = identity.ToList(planIdentity)
+					}
+				}
+				diagnostics.Append(responseState.Set(ctx, plan)...)
+			}
+		}
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
+		return
+	}
+
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	if err != nil {
+		if utils.ResponseErrorWasNotFound(err) {
+			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			responseState.RemoveResource(ctx)
+			return
+		}
+		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 		return
 	}
 
