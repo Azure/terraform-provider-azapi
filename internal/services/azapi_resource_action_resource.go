@@ -118,6 +118,9 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Optional: true,
 				Computed: true,
 				Default:  defaults.DynamicDefault(types.StringValue("{}")),
+				Validators: []validator.Dynamic{
+					myvalidator.BodyValidator(),
+				},
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},

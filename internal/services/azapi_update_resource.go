@@ -128,6 +128,9 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional: true,
 				Computed: true,
 				Default:  defaults.DynamicDefault(types.StringValue("{}")),
+				Validators: []validator.Dynamic{
+					myvalidator.BodyValidator(),
+				},
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},

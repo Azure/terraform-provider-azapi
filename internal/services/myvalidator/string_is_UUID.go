@@ -34,6 +34,6 @@ func (_ stringIsUUID) ValidateString(ctx context.Context, req validator.StringRe
 	}
 }
 
-func StringIsUUID() stringIsUUID {
+func StringIsUUID() validator.String {
 	return stringIsUUID{}
 }

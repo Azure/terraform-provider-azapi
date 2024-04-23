@@ -34,6 +34,6 @@ func (_ stringIsResourceType) ValidateString(ctx context.Context, req validator.
 	}
 }
 
-func StringIsResourceType() stringIsResourceType {
+func StringIsResourceType() validator.String {
 	return stringIsResourceType{}
 }

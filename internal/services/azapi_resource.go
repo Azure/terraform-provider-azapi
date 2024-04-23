@@ -149,6 +149,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional: true,
 				Computed: true,
 				Default:  defaults.DynamicDefault(types.StringValue("{}")),
+				Validators: []validator.Dynamic{
+					myvalidator.BodyValidator(),
+				},
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
@@ -214,6 +217,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
 				NestedObject: schema.NestedBlockObject{
+					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{
 						"type": schema.StringAttribute{
 							Required: true,

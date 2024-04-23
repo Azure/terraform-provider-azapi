@@ -34,6 +34,6 @@ func (_ stringIsResourceID) ValidateString(ctx context.Context, req validator.St
 	}
 }
 
-func StringIsResourceID() stringIsResourceID {
+func StringIsResourceID() validator.String {
 	return stringIsResourceID{}
 }
