@@ -237,9 +237,20 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		defer locks.UnlockByID(id)
 	}
 
-	responseBody, err := client.CreateOrUpdateThenPoll(ctx, id, body)
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body)
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
+		return
+	}
+
+	responseBody, err := client.Get(ctx, id)
+	if err != nil {
+		if utils.ResponseErrorWasNotFound(err) {
+			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			state.RemoveResource(ctx)
+			return
+		}
+		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
 		return
 	}
 
