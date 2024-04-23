@@ -177,8 +177,11 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
-		response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
+	} else {
+		plan.Output = state.Output
 	}
+
+	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 }
 
 func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {

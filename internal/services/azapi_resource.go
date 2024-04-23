@@ -629,9 +629,6 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
 	}
-	d1, _ := json.Marshal(requestBody)
-	d2, _ := json.Marshal(responseBody)
-	tflog.Warn(ctx, fmt.Sprintf("read func, requestBody: %v, responseBody: %v", string(d1), string(d2)))
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
 	data, err := json.Marshal(body)
