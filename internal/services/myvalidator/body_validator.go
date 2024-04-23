@@ -25,8 +25,7 @@ func (_ bodyValidator) ValidateDynamic(ctx context.Context, req validator.Dynami
 		return
 	}
 
-	switch value := raw.UnderlyingValue().(type) {
-	case types.String:
+	if value, ok := raw.UnderlyingValue().(types.String); ok {
 		var out interface{}
 		err := json.Unmarshal([]byte(value.ValueString()), &out)
 		if err != nil {
