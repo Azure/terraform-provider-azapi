@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
 )
 
