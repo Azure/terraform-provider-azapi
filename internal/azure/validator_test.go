@@ -187,7 +187,10 @@ func Test_BodyValidation(t *testing.T) {
     }
 }
 `,
-			Error: true,
+			// TODO: change the error to true once the validation is enabled
+			// the validation is disabled for now, because of the following issue:
+			// the bicep-types-az parses float as integer type and it should be fixed: https://github.com/Azure/bicep-types-az/issues/1404
+			Error: false,
 		},
 	}
 
