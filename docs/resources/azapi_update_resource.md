@@ -131,6 +131,8 @@ The following arguments are supported:
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
+* `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
+
 * `ignore_missing_property` - (Optional) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`.
   It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 

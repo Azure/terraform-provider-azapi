@@ -81,6 +81,22 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 		}
 	case []interface{}:
 		if newArr, ok := new.([]interface{}); ok {
+			if len(oldValue) == 0 {
+				return new
+			}
+
+			hasIdentifier := identifierOfArrayItem(oldValue[0]) != ""
+			if !hasIdentifier {
+				if len(oldValue) != len(newArr) {
+					return newArr
+				}
+				res := make([]interface{}, 0)
+				for index := range oldValue {
+					res = append(res, UpdateObject(oldValue[index], newArr[index], option))
+				}
+				return res
+			}
+
 			res := make([]interface{}, 0)
 			used := make([]bool, len(newArr))
 
