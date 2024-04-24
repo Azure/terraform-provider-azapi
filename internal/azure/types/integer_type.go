@@ -23,7 +23,7 @@ func (t *IntegerType) Validate(body interface{}, path string) []error {
 	switch input := body.(type) {
 	case float64, float32:
 		// TODO: skip validation for now because of the following issue:
-		// the bicep-types-az parses double as integer type and it should be fixed: https://github.com/Azure/bicep-types-az/issues/1404
+		// the bicep-types-az parses float as integer type and it should be fixed: https://github.com/Azure/bicep-types-az/issues/1404
 		return nil
 	case int64:
 		v = int(input)
