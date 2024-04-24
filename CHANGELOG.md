@@ -1,3 +1,8 @@
+## v1.13.1
+
+BUG FIXES:
+- Fix a bug that `azapi_resource` resource cannot handle tags with unknown values.
+
 ## v1.13.0
 BREAKING CHANGES:
 - Provider field `default_naming_prefix` and `default_naming_suffix` are deprecated. It will not work in this release and will be removed in the next major release.
