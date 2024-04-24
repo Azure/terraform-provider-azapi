@@ -1,0 +1,1036 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "[a-zA-Z0-9][a-zA-Z0-9\\.-]+"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DomainRegistration/domains"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DomainRegistration/domains",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Domain resource specific properties"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Kind of resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainProperties",
+    "properties": {
+      "contactAdmin": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 5,
+        "description": "Administrative contact."
+      },
+      "contactBilling": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 5,
+        "description": "Billing contact."
+      },
+      "contactRegistrant": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 5,
+        "description": "Registrant contact."
+      },
+      "contactTech": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 5,
+        "description": "Technical contact."
+      },
+      "registrationStatus": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Domain registration status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 2,
+        "description": "Domain provisioning state."
+      },
+      "nameServers": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Name servers."
+      },
+      "privacy": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "<code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>."
+      },
+      "createdTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Domain creation timestamp."
+      },
+      "expirationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Domain expiration timestamp."
+      },
+      "lastRenewedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Timestamp when the domain was renewed last time."
+      },
+      "autoRenew": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "<code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>."
+      },
+      "readyForDnsRecordManagement": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 2,
+        "description": "<code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and \n it is hosted on name servers Azure has programmatic access to."
+      },
+      "managedHostNames": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "All hostnames derived from the domain and assigned to Azure resources."
+      },
+      "consent": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 5,
+        "description": "Legal agreement consent."
+      },
+      "domainNotRenewableReasons": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "Reasons why domain is not renewable."
+      },
+      "dnsType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Current DNS type"
+      },
+      "dnsZoneId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure DNS Zone to use"
+      },
+      "targetDnsType": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Target DNS type (would be used for migration)"
+      },
+      "authCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Contact",
+    "properties": {
+      "addressMailing": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Mailing address."
+      },
+      "email": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Email address."
+      },
+      "fax": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Fax number."
+      },
+      "jobTitle": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Job title."
+      },
+      "nameFirst": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "First name."
+      },
+      "nameLast": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Last name."
+      },
+      "nameMiddle": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Middle name."
+      },
+      "organization": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Organization contact belongs to."
+      },
+      "phone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Phone number."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Address",
+    "properties": {
+      "address1": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "First line of an Address."
+      },
+      "address2": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The second line of the Address. Optional."
+      },
+      "city": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The city for the address."
+      },
+      "country": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The country for the address."
+      },
+      "postalCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The postal code for the address."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The state or province for the address."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Awaiting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Confiscated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Excluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Held"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Locked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Parked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reserved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reverted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Transferred"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unlocked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unparked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JsonConverterFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HostName",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the hostname."
+      },
+      "siteNames": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic Manager."
+      },
+      "azureResourceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name."
+      },
+      "azureResourceType": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Type of the Azure resource the hostname is assigned to."
+      },
+      "customHostNameDnsRecordType": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Type of the DNS record."
+      },
+      "hostNameType": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "Type of the hostname."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Website"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrafficManager"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "A"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Verified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/38"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainPurchaseConsent",
+    "properties": {
+      "agreementKeys": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under <code>TopLevelDomain</code> resource."
+      },
+      "agreedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client IP address."
+      },
+      "agreedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timestamp when the agreements were accepted."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegistrationStatusNotSupportedForRenewal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ExpirationNotInRenewalTimeRange"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubscriptionNotActive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/55"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureDns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultDomainRegistrarDns"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureDns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultDomainRegistrarDns"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DomainRegistration/domains@2023-12-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DomainRegistration/domains/domainOwnershipIdentifiers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DomainRegistration/domains/domainOwnershipIdentifiers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "DomainOwnershipIdentifier resource specific properties"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Kind of resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainOwnershipIdentifierProperties",
+    "properties": {
+      "ownershipId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Ownership Id."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DomainRegistration/domains/domainOwnershipIdentifiers@2023-12-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/67"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DomainRegistration/topLevelDomains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DomainRegistration/topLevelDomains",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 2,
+        "description": "TopLevelDomain resource specific properties"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Kind of resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TopLevelDomainProperties",
+    "properties": {
+      "privacy": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "If <code>true</code>, then the top level domain supports domain privacy; otherwise, <code>false</code>."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DomainRegistration/topLevelDomains@2023-12-01",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/72"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "renew",
+    "resourceType": "Microsoft.DomainRegistration/domains",
+    "apiVersion": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TopLevelDomainAgreementOption",
+    "properties": {
+      "includePrivacy": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "If <code>true</code>, then the list of agreements will include agreements for domain privacy as well; otherwise, <code>false</code>."
+      },
+      "forTransfer": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "If <code>true</code>, then the list of agreements will include agreements for domain transfer as well; otherwise, <code>false</code>."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TldLegalAgreementCollection",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "Collection of resources."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to next page of resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TldLegalAgreement",
+    "properties": {
+      "agreementKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Unique identifier for the agreement."
+      },
+      "title": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Agreement title."
+      },
+      "content": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Agreement details."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL where a copy of the agreement details is hosted."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/78"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAgreements",
+    "resourceType": "Microsoft.DomainRegistration/topLevelDomains",
+    "apiVersion": "2023-12-01",
+    "output": {
+      "$ref": "#/77"
+    },
+    "input": {
+      "$ref": "#/76"
+    }
+  }
+]

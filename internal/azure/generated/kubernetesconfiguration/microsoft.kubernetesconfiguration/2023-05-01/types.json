@@ -707,7 +707,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.KubernetesConfiguration/fluxConfigurations"
+    "value": "Microsoft.KubernetesConfiguration/sourceControlConfigurations"
   },
   {
     "$type": "StringLiteralType",
@@ -715,7 +715,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations",
+    "name": "Microsoft.KubernetesConfiguration/sourceControlConfigurations",
     "properties": {
       "id": {
         "type": {
@@ -750,6 +750,382 @@
           "$ref": "#/52"
         },
         "flags": 0,
+        "description": "Properties to create a Source Control Configuration resource"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceControlConfigurationProperties",
+    "properties": {
+      "repositoryUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Url of the SourceControl Repository."
+      },
+      "operatorNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only."
+      },
+      "operatorInstanceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Instance name of the operator - identifying the specific configuration."
+      },
+      "operatorType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Type of the operator"
+      },
+      "operatorParams": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Any Parameters for the Operator instance in string format."
+      },
+      "configurationProtectedSettings": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Name-value pairs of protected configuration settings for the configuration"
+      },
+      "operatorScope": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Scope at which the operator will be installed."
+      },
+      "repositoryPublicKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Public Key associated with this SourceControl configuration (either generated within the cluster or provided by the user)."
+      },
+      "sshKnownHostsContents": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Base64-encoded known_hosts contents containing public SSH keys required to access private Git instances"
+      },
+      "enableHelmOperator": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Option to enable Helm Operator for this git configuration."
+      },
+      "helmOperatorProperties": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Properties for Helm operator."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource provider."
+      },
+      "complianceStatus": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Compliance Status of the Configuration"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flux"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationProtectedSettings",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cluster"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "namespace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HelmOperatorProperties",
+    "properties": {
+      "chartVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Version of the operator Helm chart."
+      },
+      "chartValues": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Values override for the operator Helm chart."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ComplianceStatus",
+    "properties": {
+      "complianceState": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 2,
+        "description": "The compliance state of the configuration."
+      },
+      "lastConfigApplied": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Datetime the configuration was last applied."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Message from when the configuration was applied."
+      },
+      "messageLevel": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Level of the message."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Noncompliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Installed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Information"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.KubernetesConfiguration/sourceControlConfigurations@2023-05-01",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/51"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KubernetesConfiguration/fluxConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-05-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
         "description": "Properties to create a Flux Configuration resource"
       },
       "systemData": {
@@ -767,7 +1143,7 @@
     "properties": {
       "scope": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Scope at which the operator will be installed."
@@ -781,7 +1157,7 @@
       },
       "sourceKind": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "Source Kind to pull the configuration data from."
@@ -795,42 +1171,42 @@
       },
       "gitRepository": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "Parameters to reconcile to the GitRepository source kind type."
       },
       "bucket": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/92"
         },
         "flags": 0,
         "description": "Parameters to reconcile to the Bucket source kind type."
       },
       "azureBlob": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Parameters to reconcile to the AzureBlob source kind type."
       },
       "kustomizations": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
       },
       "configurationProtectedSettings": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/104"
         },
         "flags": 0,
         "description": "Key-value pairs of protected configuration settings for the configuration"
       },
       "statuses": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/116"
         },
         "flags": 2,
         "description": "Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects provisioned by the fluxConfiguration."
@@ -879,14 +1255,14 @@
       },
       "complianceState": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/122"
         },
         "flags": 2,
         "description": "Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/129"
         },
         "flags": 2,
         "description": "Status of the creation of the fluxConfiguration."
@@ -912,10 +1288,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/53"
+        "$ref": "#/82"
       },
       {
-        "$ref": "#/54"
+        "$ref": "#/83"
       },
       {
         "$ref": "#/0"
@@ -938,13 +1314,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/56"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/87"
       },
       {
         "$ref": "#/0"
@@ -964,21 +1340,21 @@
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The maximum time to attempt to reconcile the cluster git repository source with the remote."
       },
       "syncIntervalInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The interval at which to re-reconcile the cluster git repository source with the remote."
       },
       "repositoryRef": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "The source reference for the GitRepository object."
@@ -1077,14 +1453,14 @@
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The maximum time to attempt to reconcile the cluster bucket source with the remote."
       },
       "syncIntervalInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The interval at which to re-reconcile the cluster bucket source with the remote."
@@ -1125,42 +1501,42 @@
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The maximum time to attempt to reconcile the cluster Azure Blob source with the remote."
       },
       "syncIntervalInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The interval at which to re-reconcile the cluster Azure Blob source with the remote."
       },
       "servicePrincipal": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Parameters to authenticate using Service Principal."
       },
       "accountKey": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The account key (shared key) to access the storage account"
       },
       "sasToken": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The Shared Access token to access the storage container"
       },
       "managedIdentity": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Parameters to authenticate using a Managed Identity."
@@ -1194,21 +1570,21 @@
       },
       "clientSecret": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The client secret for authenticating a Service Principal"
       },
       "clientCertificate": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "Base64-encoded certificate used to authenticate a Service Principal"
       },
       "clientCertificatePassword": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The password for the certificate used to authenticate a Service Principal"
@@ -1259,28 +1635,28 @@
       },
       "dependsOn": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies have completed their reconciliation."
       },
       "timeoutInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The maximum time to attempt to reconcile the Kustomization on the cluster."
       },
       "syncIntervalInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The interval at which to re-reconcile the Kustomization on the cluster."
       },
       "retryIntervalInSeconds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on reconciliation."
@@ -1308,7 +1684,7 @@
       },
       "postBuild": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "Used for variable substitution for this Kustomization after kustomize build."
@@ -1327,14 +1703,14 @@
     "properties": {
       "substitute": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/100"
         },
         "flags": 0,
         "description": "Key/value pairs holding the variables to be substituted in this Kustomization."
       },
       "substituteFrom": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/102"
         },
         "flags": 0,
         "description": "Array of ConfigMaps/Secrets from which the variables are substituted for this Kustomization."
@@ -1379,7 +1755,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/72"
+      "$ref": "#/101"
     }
   },
   {
@@ -1387,7 +1763,7 @@
     "name": "FluxConfigurationPropertiesKustomizations",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/68"
+      "$ref": "#/97"
     }
   },
   {
@@ -1425,28 +1801,28 @@
       },
       "complianceState": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "Compliance state of the applied object showing whether the applied object has come into a ready state on the cluster."
       },
       "appliedBy": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "Object reference to the Kustomization that applied this object"
       },
       "statusConditions": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/114"
         },
         "flags": 0,
         "description": "List of Kubernetes object status conditions present on the cluster"
       },
       "helmReleaseProperties": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/115"
         },
         "flags": 0,
         "description": "Additional properties that are provided from objects of the HelmRelease kind"
@@ -1477,19 +1853,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/77"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/107"
       },
       {
-        "$ref": "#/79"
+        "$ref": "#/108"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/109"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/110"
       },
       {
         "$ref": "#/0"
@@ -1560,7 +1936,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/84"
+      "$ref": "#/113"
     }
   },
   {
@@ -1569,35 +1945,35 @@
     "properties": {
       "lastRevisionApplied": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The revision number of the last released object change"
       },
       "helmChartRef": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "The reference to the HelmChart object used as the source to this HelmRelease"
       },
       "failureCount": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Total number of times that the HelmRelease failed to install or upgrade"
       },
       "installFailureCount": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Number of times that the HelmRelease failed to install"
       },
       "upgradeFailureCount": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Number of times that the HelmRelease failed to upgrade"
@@ -1607,7 +1983,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/76"
+      "$ref": "#/105"
     }
   },
   {
@@ -1634,19 +2010,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/88"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/89"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/119"
       },
       {
-        "$ref": "#/91"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/92"
+        "$ref": "#/121"
       },
       {
         "$ref": "#/0"
@@ -1681,390 +2057,14 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/94"
-      },
-      {
-        "$ref": "#/95"
-      },
-      {
-        "$ref": "#/96"
-      },
-      {
-        "$ref": "#/97"
-      },
-      {
-        "$ref": "#/98"
-      },
-      {
-        "$ref": "#/99"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01",
-    "scopeType": 16,
-    "body": {
-      "$ref": "#/51"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.KubernetesConfiguration/sourceControlConfigurations"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2023-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.KubernetesConfiguration/sourceControlConfigurations",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/102"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/103"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/105"
-        },
-        "flags": 0,
-        "description": "Properties to create a Source Control Configuration resource"
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 2,
-        "description": "Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SourceControlConfigurationProperties",
-    "properties": {
-      "repositoryUrl": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Url of the SourceControl Repository."
-      },
-      "operatorNamespace": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only."
-      },
-      "operatorInstanceName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Instance name of the operator - identifying the specific configuration."
-      },
-      "operatorType": {
-        "type": {
-          "$ref": "#/107"
-        },
-        "flags": 0,
-        "description": "Type of the operator"
-      },
-      "operatorParams": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Any Parameters for the Operator instance in string format."
-      },
-      "configurationProtectedSettings": {
-        "type": {
-          "$ref": "#/108"
-        },
-        "flags": 0,
-        "description": "Name-value pairs of protected configuration settings for the configuration"
-      },
-      "operatorScope": {
-        "type": {
-          "$ref": "#/111"
-        },
-        "flags": 0,
-        "description": "Scope at which the operator will be installed."
-      },
-      "repositoryPublicKey": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Public Key associated with this SourceControl configuration (either generated within the cluster or provided by the user)."
-      },
-      "sshKnownHostsContents": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Base64-encoded known_hosts contents containing public SSH keys required to access private Git instances"
-      },
-      "enableHelmOperator": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "Option to enable Helm Operator for this git configuration."
-      },
-      "helmOperatorProperties": {
-        "type": {
-          "$ref": "#/112"
-        },
-        "flags": 0,
-        "description": "Properties for Helm operator."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/118"
-        },
-        "flags": 2,
-        "description": "The provisioning state of the resource provider."
-      },
-      "complianceStatus": {
-        "type": {
-          "$ref": "#/119"
-        },
-        "flags": 2,
-        "description": "Compliance Status of the Configuration"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Flux"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/106"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ConfigurationProtectedSettings",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "cluster"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "namespace"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/109"
-      },
-      {
-        "$ref": "#/110"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "HelmOperatorProperties",
-    "properties": {
-      "chartVersion": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Version of the operator Helm chart."
-      },
-      "chartValues": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Values override for the operator Helm chart."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Accepted"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Running"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/113"
-      },
-      {
-        "$ref": "#/114"
-      },
-      {
-        "$ref": "#/115"
-      },
-      {
-        "$ref": "#/116"
-      },
-      {
-        "$ref": "#/117"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ComplianceStatus",
-    "properties": {
-      "complianceState": {
-        "type": {
-          "$ref": "#/125"
-        },
-        "flags": 2,
-        "description": "The compliance state of the configuration."
-      },
-      "lastConfigApplied": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Datetime the configuration was last applied."
-      },
-      "message": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Message from when the configuration was applied."
-      },
-      "messageLevel": {
-        "type": {
-          "$ref": "#/129"
-        },
-        "flags": 0,
-        "description": "Level of the message."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Compliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Noncompliant"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Installed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/120"
-      },
-      {
-        "$ref": "#/121"
-      },
-      {
-        "$ref": "#/122"
-      },
-      {
         "$ref": "#/123"
       },
       {
         "$ref": "#/124"
       },
       {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Error"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Warning"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Information"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
+        "$ref": "#/125"
+      },
       {
         "$ref": "#/126"
       },
@@ -2081,10 +2081,10 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.KubernetesConfiguration/sourceControlConfigurations@2023-05-01",
+    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations@2023-05-01",
     "scopeType": 16,
     "body": {
-      "$ref": "#/104"
+      "$ref": "#/80"
     },
     "flags": 0
   }

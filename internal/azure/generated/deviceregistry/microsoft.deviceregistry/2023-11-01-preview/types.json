@@ -7,7 +7,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.DeviceRegistry/assets"
+    "value": "Microsoft.DeviceRegistry/assetEndpointProfiles"
   },
   {
     "$type": "StringType"
@@ -18,7 +18,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.DeviceRegistry/assets",
+    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles",
     "properties": {
       "id": {
         "type": {
@@ -53,18 +53,18 @@
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "Asset resource properties."
+        "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/21"
         },
         "flags": 1,
         "description": "The extended location."
       },
       "tags": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -78,7 +78,460 @@
       },
       "systemData": {
         "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetEndpointProfileProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "targetAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector type specific configuration."
+      },
+      "userAuthentication": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Defines the client authentication mechanism to the server."
+      },
+      "transportAuthentication": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device."
+      },
+      "additionalConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF)."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAuthentication",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Defines the mode to authenticate the user of the client at the server."
+      },
+      "usernamePasswordCredentials": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Defines the username and password references when UsernamePassword user authentication mode is selected."
+      },
+      "x509Credentials": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Defines the certificate reference when Certificate user authentication mode is selected."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Anonymous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Certificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsernamePassword"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsernamePasswordCredentials",
+    "properties": {
+      "usernameReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A reference to secret containing the username."
+      },
+      "passwordReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A reference to secret containing the password."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "X509Credentials",
+    "properties": {
+      "certificateReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransportAuthentication",
+    "properties": {
+      "ownCertificates": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates and .pfx/.pem for private keys."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OwnCertificate",
+    "properties": {
+      "certThumbprint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Certificate thumbprint."
+      },
+      "certSecretReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secret Reference name (cert and private key)."
+      },
+      "certPasswordReference": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secret Reference Name (Pfx or Pem password)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtendedLocation",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extended location type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extended location name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
           "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles@2023-11-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/assets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/assets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/23"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -105,7 +558,7 @@
       },
       "enabled": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "Enabled/Disabled status of the asset."
@@ -135,12 +588,12 @@
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
+        "flags": 1,
         "description": "A reference to the asset endpoint profile (connection information) used by brokers to connect to an endpoint that provides data points for this asset. Must have the format <ModuleCR.metadata.namespace>/<ModuleCR.metadata.name>."
       },
       "version": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "An integer that is incremented each time the resource is modified."
@@ -203,7 +656,7 @@
       },
       "attributes": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "A set of key-value pairs that contain custom attributes set by the customer."
@@ -224,28 +677,28 @@
       },
       "dataPoints": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data point configuration. See below for more details for the definition of the dataPoints element."
       },
       "events": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/55"
         },
         "flags": 0,
         "description": "Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration. See below for more details about the definition of the events element."
       },
       "status": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for custom resources."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/63"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -266,12 +719,12 @@
     "name": "AssetPropertiesAttributes",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/8"
+      "$ref": "#/41"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "AssetPropertiesDataPointsItem",
+    "name": "DataPoint",
     "properties": {
       "name": {
         "type": {
@@ -296,7 +749,7 @@
       },
       "observabilityMode": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "An indication of how the data point should be mapped to OpenTelemetry."
@@ -334,19 +787,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/11"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/12"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/13"
+        "$ref": "#/46"
       },
       {
-        "$ref": "#/14"
+        "$ref": "#/47"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/48"
       },
       {
         "$ref": "#/2"
@@ -356,12 +809,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/10"
+      "$ref": "#/43"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "AssetPropertiesEventsItem",
+    "name": "Event",
     "properties": {
       "name": {
         "type": {
@@ -386,7 +839,7 @@
       },
       "observabilityMode": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "An indication of how the event should be mapped to OpenTelemetry."
@@ -412,10 +865,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/19"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/53"
       },
       {
         "$ref": "#/2"
@@ -425,23 +878,23 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/18"
+      "$ref": "#/51"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "AssetPropertiesStatus",
+    "name": "AssetStatus",
     "properties": {
       "errors": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/58"
         },
         "flags": 0,
         "description": "Array object to transfer and persist errors that originate from the Edge."
       },
       "version": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "A read only incremental counter indicating the number of times the configuration has been modified from the perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and would sync back up to the cloud. In steady state, this should equal version."
@@ -450,11 +903,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AssetPropertiesStatusErrorsItem",
+    "name": "AssetStatusError",
     "properties": {
       "code": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "Error code for classification of errors (ex: 400, 404, 500, etc.)."
@@ -465,459 +918,6 @@
         },
         "flags": 0,
         "description": "Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”)."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/24"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Accepted"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetExtendedLocation",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The extended location type."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The extended location name."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/43"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/39"
-      },
-      {
-        "$ref": "#/40"
-      },
-      {
-        "$ref": "#/41"
-      },
-      {
-        "$ref": "#/42"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.DeviceRegistry/assets@2023-11-01-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/4"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.DeviceRegistry/assetEndpointProfiles"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2023-11-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/45"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/46"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/48"
-        },
-        "flags": 0,
-        "description": "Asset Endpoint Profile resource properties."
-      },
-      "extendedLocation": {
-        "type": {
-          "$ref": "#/64"
-        },
-        "flags": 1,
-        "description": "The extended location."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/65"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The geo-location where the resource lives"
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfileProperties",
-    "properties": {
-      "uuid": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Globally unique, immutable, non-reusable id."
-      },
-      "targetAddress": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector type specific configuration."
-      },
-      "userAuthentication": {
-        "type": {
-          "$ref": "#/49"
-        },
-        "flags": 0,
-        "description": "Defines the client authentication mechanism to the server."
-      },
-      "transportAuthentication": {
-        "type": {
-          "$ref": "#/56"
-        },
-        "flags": 0,
-        "description": "Defines the authentication mechanism for the southbound connector connecting to the shop floor/OT device."
-      },
-      "additionalConfiguration": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF)."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/63"
-        },
-        "flags": 2,
-        "description": "Provisioning state of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfilePropertiesUserAuthentication",
-    "properties": {
-      "mode": {
-        "type": {
-          "$ref": "#/53"
-        },
-        "flags": 1,
-        "description": "Defines the mode to authenticate the user of the client at the server."
-      },
-      "usernamePasswordCredentials": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 0,
-        "description": "Defines the username and password references when UsernamePassword user authentication mode is selected."
-      },
-      "x509Credentials": {
-        "type": {
-          "$ref": "#/55"
-        },
-        "flags": 0,
-        "description": "Defines the certificate reference when Certificate user authentication mode is selected."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Anonymous"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Certificate"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UsernamePassword"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/50"
-      },
-      {
-        "$ref": "#/51"
-      },
-      {
-        "$ref": "#/52"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfilePropertiesUserAuthenticationUsernamePasswordCredentials",
-    "properties": {
-      "usernameReference": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "A reference to secret containing the username."
-      },
-      "passwordReference": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "A reference to secret containing the password."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfilePropertiesUserAuthenticationX509Credentials",
-    "properties": {
-      "certificateReference": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx)."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfilePropertiesTransportAuthentication",
-    "properties": {
-      "ownCertificates": {
-        "type": {
-          "$ref": "#/58"
-        },
-        "flags": 1,
-        "description": "Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates and .pfx/.pem for private keys."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssetEndpointProfilePropertiesTransportAuthenticationOwnCertificatesItem",
-    "properties": {
-      "certThumbprint": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Certificate thumbprint."
-      },
-      "certSecretReference": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Secret Reference name (cert and private key)."
-      },
-      "certPasswordReference": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Secret Reference Name (Pfx or Pem password)"
       }
     }
   },
@@ -965,26 +965,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AssetEndpointProfileExtendedLocation",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The extended location type."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The extended location name."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
@@ -993,10 +973,10 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles@2023-11-01-preview",
+    "name": "Microsoft.DeviceRegistry/assets@2023-11-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/47"
+      "$ref": "#/37"
     },
     "flags": 0
   }

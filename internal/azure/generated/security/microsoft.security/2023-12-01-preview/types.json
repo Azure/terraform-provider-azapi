@@ -1,0 +1,1015 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/1"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/securityContacts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/securityContacts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Security contact data"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityContactProperties",
+    "properties": {
+      "emails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in this security contact."
+      },
+      "phone": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The security contact's phone number"
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether the security contact is enabled."
+      },
+      "notificationsSources": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "A collection of sources types which evaluate the email notification."
+      },
+      "notificationsByRole": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "NotificationsSource",
+    "discriminator": "sourceType",
+    "baseProperties": {},
+    "elements": {
+      "Alert": {
+        "$ref": "#/9"
+      },
+      "AttackPath": {
+        "$ref": "#/15"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NotificationsSourceAlert",
+    "properties": {
+      "minimalSeverity": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Defines the minimal alert severity which will be sent as email notifications"
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The source type that will trigger the notification"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Alert"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NotificationsSourceAttackPath",
+    "properties": {
+      "minimalRiskLevel": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Defines the minimal attach path risk level which will be sent as email notifications"
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The source type that will trigger the notification"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AttackPath"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityContactPropertiesNotificationsByRole",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the subscription."
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "On"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Off"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AccountAdmin"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceAdmin"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Owner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contributor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/securityContacts@2023-12-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/5"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/automations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/automations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Security automation data"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Location where the resource is stored"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kind of the resource"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Entity tag is used for comparing two or more entities from the same requested resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "A list of key value pairs that describe the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The security automation description."
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether the security automation is enabled."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes."
+      },
+      "sources": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "A collection of the source event types which evaluate the security automation set of rules."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationScope",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resources scope description."
+      },
+      "scopePath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/38"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationSource",
+    "properties": {
+      "eventSource": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "A valid event source type."
+      },
+      "ruleSets": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or')."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AssessmentsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubAssessments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubAssessmentsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Alerts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScores"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoresSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoreControls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureScoreControlsSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegulatoryComplianceAssessment"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegulatoryComplianceAssessmentSnapshot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AttackPaths"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AttackPathsSnapshot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationRuleSet",
+    "properties": {
+      "rules": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationTriggeringRule",
+    "properties": {
+      "propertyJPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The JPath of the entity model property that should be checked."
+      },
+      "propertyType": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]"
+      },
+      "expectedValue": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The expected value."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "String"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Integer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Number"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Boolean"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqualTo"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LesserThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LesserThanOrEqualTo"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEquals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EndsWith"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/56"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/55"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AutomationAction",
+    "discriminator": "actionType",
+    "baseProperties": {},
+    "elements": {
+      "EventHub": {
+        "$ref": "#/76"
+      },
+      "LogicApp": {
+        "$ref": "#/78"
+      },
+      "Workspace": {
+        "$ref": "#/80"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionEventHub",
+    "properties": {
+      "eventHubResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The target Event Hub Azure Resource ID."
+      },
+      "sasPolicyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The target Event Hub SAS policy name."
+      },
+      "connectionString": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The target Event Hub connection string (it will not be included in any response)."
+      },
+      "isTrustedServiceEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether the trusted service is enabled or not."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EventHub"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionLogicApp",
+    "properties": {
+      "logicAppResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App"
+      },
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Logic App trigger URI endpoint (it will not be included in any response)."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogicApp"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationActionWorkspace",
+    "properties": {
+      "workspaceResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The fully qualified Log Analytics Workspace Azure Resource ID."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "The type of the action that will be triggered by the Automation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Workspace"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/75"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/automations@2023-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/36"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Automation",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Security automation data"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Location where the resource is stored"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kind of the resource"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Entity tag is used for comparing two or more entities from the same requested resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "A list of key value pairs that describe the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationValidationStatus",
+    "properties": {
+      "isValid": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether the model is valid or not."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The validation message."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validate",
+    "resourceType": "Microsoft.Security/automations",
+    "apiVersion": "2023-12-01-preview",
+    "output": {
+      "$ref": "#/87"
+    },
+    "input": {
+      "$ref": "#/85"
+    }
+  }
+]

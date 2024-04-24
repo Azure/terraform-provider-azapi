@@ -1,0 +1,2717 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceLinker/locations/dryruns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceLinker/locations/dryruns",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties of the dryrun job."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DryrunProperties",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The parameters of the dryrun"
+      },
+      "prerequisiteResults": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 2,
+        "description": "the result of the dryrun"
+      },
+      "operationPreviews": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 2,
+        "description": "the preview of the operations for creation"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "DryrunParameters",
+    "discriminator": "actionName",
+    "baseProperties": {},
+    "elements": {
+      "createOrUpdate": {
+        "$ref": "#/6"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateOrUpdateDryrunParameters",
+    "properties": {
+      "targetService": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The target service properties"
+      },
+      "authInfo": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The authentication type."
+      },
+      "clientType": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "The application client type"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The provisioning state."
+      },
+      "vNetSolution": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The VNet solution."
+      },
+      "secretStore": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "An option to store secret value in secure place"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "connection scope in source service."
+      },
+      "publicNetworkSolution": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The network solution."
+      },
+      "configurationInfo": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "The connection information consumed by applications, including secrets, connection strings."
+      },
+      "actionName": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 1,
+        "description": "The name of action for you dryrun job."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "TargetServiceBase",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "AzureResource": {
+        "$ref": "#/8"
+      },
+      "ConfluentBootstrapServer": {
+        "$ref": "#/14"
+      },
+      "ConfluentSchemaRegistry": {
+        "$ref": "#/16"
+      },
+      "SelfHostedServer": {
+        "$ref": "#/18"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Id of azure resource."
+      },
+      "resourceProperties": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "The azure resource connection related properties."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The target service type."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AzureResourcePropertiesBase",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "KeyVault": {
+        "$ref": "#/10"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureKeyVaultProperties",
+    "properties": {
+      "connectAsKubernetesCsiDriver": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "True if connect via Kubernetes CSI Driver."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "The azure resource type."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "KeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureResource"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfluentBootstrapServer",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint of service."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "The target service type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConfluentBootstrapServer"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfluentSchemaRegistry",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint of service."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "The target service type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConfluentSchemaRegistry"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SelfHostedServer",
+    "properties": {
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint of service."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "The target service type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SelfHostedServer"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AuthInfoBase",
+    "discriminator": "authType",
+    "baseProperties": {
+      "authMode": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Optional. Indicates how to configure authentication. If optInAllAuth, service linker configures authentication such as enabling identity on source resource and granting RBAC roles. If optOutAllAuth, opt out authentication setup. Default is optInAllAuth."
+      }
+    },
+    "elements": {
+      "accessKey": {
+        "$ref": "#/24"
+      },
+      "easyAuthMicrosoftEntraID": {
+        "$ref": "#/33"
+      },
+      "secret": {
+        "$ref": "#/39"
+      },
+      "servicePrincipalCertificate": {
+        "$ref": "#/48"
+      },
+      "servicePrincipalSecret": {
+        "$ref": "#/54"
+      },
+      "systemAssignedIdentity": {
+        "$ref": "#/60"
+      },
+      "userAccount": {
+        "$ref": "#/66"
+      },
+      "userAssignedIdentity": {
+        "$ref": "#/72"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "optInAllAuth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "optOutAllAuth"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessKeyInfoBase",
+    "properties": {
+      "permissions": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Permissions of the accessKey. `Read` and `Write` are for Azure Cosmos DB and Azure App Configuration, `Listen`, `Send` and `Manage` are for Azure Event Hub and Azure Service Bus."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Read"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Write"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Listen"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Send"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/30"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "accessKey"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EasyAuthMicrosoftEntraIDAuthInfo",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Application clientId for EasyAuth Microsoft Entra ID."
+      },
+      "secret": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Application Secret for EasyAuth Microsoft Entra ID."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "easyAuthMicrosoftEntraID"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretAuthInfo",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Username or account name for secret auth."
+      },
+      "secretInfo": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Password or key vault secret for secret auth."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SecretInfoBase",
+    "discriminator": "secretType",
+    "baseProperties": {},
+    "elements": {
+      "keyVaultSecretReference": {
+        "$ref": "#/41"
+      },
+      "keyVaultSecretUri": {
+        "$ref": "#/43"
+      },
+      "rawValue": {
+        "$ref": "#/45"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultSecretReferenceSecretInfo",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the Key Vault secret."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Version of the Key Vault secret."
+      },
+      "secretType": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "The secret type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "keyVaultSecretReference"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultSecretUriSecretInfo",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "URI to the keyvault secret"
+      },
+      "secretType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "The secret type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "keyVaultSecretUri"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValueSecretInfo",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The actual value of the secret."
+      },
+      "secretType": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "The secret type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rawValue"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "secret"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePrincipalCertificateAuthInfo",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Application clientId for servicePrincipal auth."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Principal Id for servicePrincipal auth."
+      },
+      "certificate": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "ServicePrincipal certificate for servicePrincipal auth."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Optional, this value specifies the Azure roles to be assigned. Automatically"
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipalCertificate"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePrincipalSecretAuthInfo",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "ServicePrincipal application clientId for servicePrincipal auth."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Principal Id for servicePrincipal auth."
+      },
+      "secret": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "Secret for servicePrincipal auth."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Optional, this value specifies the Azure roles to be assigned. Automatically"
+      },
+      "userName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Username created in the database which is mapped to a user in AAD."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipalSecret"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedIdentityAuthInfo",
+    "properties": {
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Optional, this value specifies the Azure role to be assigned"
+      },
+      "userName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Username created in the database which is mapped to a user in AAD."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "systemAssignedIdentity"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAccountAuthInfo",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Principal Id for user account."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "Optional, this value specifies the Azure roles to be assigned. Automatically"
+      },
+      "userName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Username created in the database which is mapped to a user in AAD."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAccount"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentityAuthInfo",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Client Id for userAssignedIdentity."
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Subscription id for userAssignedIdentity."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Optional, this value specifies the Azure role to be assigned"
+      },
+      "userName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Username created in the database which is mapped to a user in AAD."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 1,
+        "description": "The authentication type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAssignedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dotnet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "java"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "python"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "go"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "php"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ruby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "django"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nodejs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kafka-springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "jms-springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dapr"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VNetSolution",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "Type of VNet solution."
+      },
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "serviceEndpoint"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "privateLink"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretStore",
+    "properties": {
+      "keyVaultId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The key vault id to store secret"
+      },
+      "keyVaultSecretName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The key vault secret name to store secret, only valid when storing one secret"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicNetworkSolution",
+    "properties": {
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation(such as firewall rules) when Linker is updating or deleting"
+      },
+      "action": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "Optional. Indicates public network solution. If enable, enable public network access of target service with best try. Default is enable. If optOut, opt out public network access configuration."
+      },
+      "firewallRules": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "Describe firewall rules of target service to make sure source application could connect to the target."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Internal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "optOut"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FirewallRules",
+    "properties": {
+      "ipRanges": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IPs for a given database account."
+      },
+      "azureServices": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Allow Azure services to access the target service if true."
+      },
+      "callerClientIP": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Allow caller client IP to access the target service if true. the property is used when connecting local application to target service."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "true"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "false"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "true"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "false"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationInfo",
+    "properties": {
+      "deleteOrUpdateBehavior": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Indicates whether to clean up previous operation when Linker is updating or deleting"
+      },
+      "action": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Optional, indicate whether to apply configurations on source application. If enable, generate configurations and applied to the source application. Default is enable. If optOut, no configuration change will be made on source."
+      },
+      "customizedKeys": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "Optional. A dictionary of default key name and customized key name mapping. If not specified, default key name will be used for generate configurations"
+      },
+      "daprProperties": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Indicates some additional properties for dapr client type"
+      },
+      "additionalConfigurations": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "A dictionary of additional configurations to be added. Service will auto generate a set of basic configurations and this property is to full fill more customized configurations"
+      },
+      "additionalConnectionStringProperties": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "A dictionary of additional properties to be added in the end of connection string."
+      },
+      "configurationStore": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "An option to store configuration into different place"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ForcedCleanup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Internal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "optOut"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationInfoCustomizedKeys",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprProperties",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dapr component version"
+      },
+      "componentType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dapr component type"
+      },
+      "secretStoreComponent": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of a secret store dapr to retrieve secret"
+      },
+      "metadata": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Additional dapr metadata"
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The dapr component scopes"
+      },
+      "runtimeVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The runtime version supported by the properties"
+      },
+      "bindingComponentDirection": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "The direction supported by the dapr binding component"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DaprMetadata",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Metadata property name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Metadata property value."
+      },
+      "secretRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The secret name where dapr could get value"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description of the metadata, returned from configuration api"
+      },
+      "required": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "The value indicating whether the metadata is required or not"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "true"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "false"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/126"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "input"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "output"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationInfoAdditionalConfigurations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationInfoAdditionalConnectionStringProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationStore",
+    "properties": {
+      "appConfigurationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The app configuration id to store configuration"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "createOrUpdate"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "DryrunPrerequisiteResult",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "basicError": {
+        "$ref": "#/140"
+      },
+      "permissionsMissing": {
+        "$ref": "#/142"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BasicErrorDryrunPrerequisiteResult",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The error message."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 1,
+        "description": "The type of dryrun result."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "basicError"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PermissionsMissingDryrunPrerequisiteResult",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The permission scope"
+      },
+      "permissions": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "The permission list"
+      },
+      "recommendedRole": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The recommended role to resolve permissions missing"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 1,
+        "description": "The type of dryrun result."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "permissionsMissing"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/139"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DryrunOperationPreview",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The operation name"
+      },
+      "operationType": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "The operation type"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description of the operation"
+      },
+      "action": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The action defined by RBAC, refer https://docs.microsoft.com/azure/role-based-access-control/role-definitions#actions-format"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The scope of the operation, refer https://docs.microsoft.com/azure/role-based-access-control/scope-overview"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "configConnection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "configNetwork"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "configAuth"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/146"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceLinker/locations/dryruns@2023-04-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceLinker/locations/connectors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceLinker/locations/connectors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 1,
+        "description": "The properties of the Linker."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinkerProperties",
+    "properties": {
+      "targetService": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The target service properties"
+      },
+      "authInfo": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The authentication type."
+      },
+      "clientType": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "The application client type"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The provisioning state."
+      },
+      "vNetSolution": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The VNet solution."
+      },
+      "secretStore": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "An option to store secret value in secure place"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "connection scope in source service."
+      },
+      "publicNetworkSolution": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The network solution."
+      },
+      "configurationInfo": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "The connection information consumed by applications, including secrets, connection strings."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dotnet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "java"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "python"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "go"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "php"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ruby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "django"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nodejs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kafka-springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "jms-springBoot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dapr"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceLinker/locations/connectors@2023-04-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/166"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceLinker/linkers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceLinker/linkers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 1,
+        "description": "The properties of the Linker."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceLinker/linkers@2023-04-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/185"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceLinker/dryruns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-04-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceLinker/dryruns",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties of the dryrun job."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceLinker/dryruns@2023-04-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/189"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValidateOperationResult",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "The validation result detail."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Validated Linker id."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Validation operation status."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValidateResult",
+    "properties": {
+      "linkerName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The linker name."
+      },
+      "isConnectionAvailable": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "A boolean value indicating whether the connection is available or not"
+      },
+      "reportStartTimeUtc": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The start time of the validation report."
+      },
+      "reportEndTimeUtc": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end time of the validation report."
+      },
+      "sourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource id of the Linker source application."
+      },
+      "targetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource Id of target service."
+      },
+      "authType": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "The authentication type."
+      },
+      "validationDetail": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "The detail of validation result"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "systemAssignedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAssignedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipalSecret"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "servicePrincipalCertificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "secret"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "accessKey"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAccount"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "easyAuthMicrosoftEntraID"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValidationResultItem",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The validation item name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The display name of validation item"
+      },
+      "result": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 0,
+        "description": "The result of validation"
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The error message of validation result"
+      },
+      "errorCode": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The error code of validation result"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "success"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "warning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/202"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validate",
+    "resourceType": "Microsoft.ServiceLinker/locations/connectors",
+    "apiVersion": "2023-04-01-preview",
+    "output": {
+      "$ref": "#/191"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigurationResult",
+    "properties": {
+      "configurations": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "The configuration properties for source resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of setting."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The value of setting"
+      },
+      "configType": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 2,
+        "description": "The type of setting"
+      },
+      "keyVaultReferenceIdentity": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity for key vault reference, system or user-assigned managed identity ID"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Descriptive information for the configuration"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "KeyVaultSecret"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/210"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateConfigurations",
+    "resourceType": "Microsoft.ServiceLinker/locations/connectors",
+    "apiVersion": "2023-04-01-preview",
+    "output": {
+      "$ref": "#/209"
+    },
+    "input": {
+      "$ref": "#/116"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validateLinker",
+    "resourceType": "Microsoft.ServiceLinker/linkers",
+    "apiVersion": "2023-04-01-preview",
+    "output": {
+      "$ref": "#/191"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listConfigurations",
+    "resourceType": "Microsoft.ServiceLinker/linkers",
+    "apiVersion": "2023-04-01-preview",
+    "output": {
+      "$ref": "#/209"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateConfigurations",
+    "resourceType": "Microsoft.ServiceLinker/linkers",
+    "apiVersion": "2023-04-01-preview",
+    "output": {
+      "$ref": "#/209"
+    },
+    "input": {
+      "$ref": "#/116"
+    }
+  }
+]

@@ -80,7 +80,7 @@
           "$ref": "#/6"
         },
         "flags": 0,
-        "description": "Additional attributes to allow subscription, which can be added to the subscriptionIds."
+        "description": "Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds."
       },
       "provisioningState": {
         "type": {
@@ -100,7 +100,7 @@
           "$ref": "#/7"
         },
         "flags": 1,
-        "description": "The grouping Id for the group quota. It can be management Group Id or ServiceTreeId if applicable."
+        "description": "The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable."
       },
       "environment": {
         "type": {
@@ -120,14 +120,14 @@
           "$ref": "#/10"
         },
         "flags": 0,
-        "description": "GroupingId type. It is a required property. More types of groupIds can be supported in future. MGID is already in the URI, so it's not needed.'"
+        "description": "GroupingId type. It is a required property. More types of groupIds can be supported in future."
       },
       "value": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "GroupId value based on the groupingType selected - management Group Id or ServiceTreeId."
+        "description": "GroupId value based on the groupingType selected - Billing Id or ServiceTreeId."
       }
     }
   },
@@ -510,7 +510,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Quota/groupQuotas/groupQuotaLimits"
+    "value": "Microsoft.Quota/groupQuotas/resourceProviders/groupQuotaRequests"
   },
   {
     "$type": "StringLiteralType",
@@ -518,7 +518,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Quota/groupQuotas/groupQuotaLimits",
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/groupQuotaRequests",
     "properties": {
       "id": {
         "type": {
@@ -552,8 +552,7 @@
         "type": {
           "$ref": "#/51"
         },
-        "flags": 0,
-        "description": "Group Quota properties for the specified resource."
+        "flags": 0
       },
       "systemData": {
         "type": {
@@ -566,49 +565,21 @@
   },
   {
     "$type": "ObjectType",
-    "name": "GroupQuotaDetails",
+    "name": "SubmittedResourceRequestStatusProperties",
     "properties": {
-      "limit": {
+      "requestedResource": {
         "type": {
           "$ref": "#/52"
         },
         "flags": 0,
-        "description": "The current Group Quota Limit at the parentId level."
+        "description": "Requested Resource."
       },
-      "comment": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Any comment related to quota request."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/53"
-        },
-        "flags": 0,
-        "description": "Name of the resource provided by the resource Provider. This property is already included in the request URI, so it is a readonly property returned in the response."
-      },
-      "unit": {
+      "requestSubmitTime": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The usages units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation."
-      },
-      "availableLimit": {
-        "type": {
-          "$ref": "#/52"
-        },
-        "flags": 2,
-        "description": "The available Group Quota Limit at the MG level. This Group quota can be assigned to subscription(s)."
-      },
-      "assignedToSubscriptions": {
-        "type": {
-          "$ref": "#/55"
-        },
-        "flags": 2,
-        "description": "Assigned Group Quota to subscriptions."
+        "description": "The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ"
       },
       "provisioningState": {
         "type": {
@@ -616,6 +587,59 @@
         },
         "flags": 2,
         "description": "Request status."
+      },
+      "faultCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Details of the failure."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GroupQuotaRequestBase",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GroupQuotaRequestBaseProperties",
+    "properties": {
+      "limit": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response."
+      },
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Location/Azure region for the quota requested for resource."
+      },
+      "comments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "GroupQuota Request comments and details for request. This is optional paramter to provide more details related to the requested resource."
       }
     }
   },
@@ -624,7 +648,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "GroupQuotaDetailsName",
+    "name": "GroupQuotaRequestBasePropertiesName",
     "properties": {
       "value": {
         "type": {
@@ -640,32 +664,6 @@
         "flags": 2,
         "description": "Resource display name."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AssignedToSubscription",
-    "properties": {
-      "subscriptionId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "An Azure subscriptionId."
-      },
-      "quotaAllocated": {
-        "type": {
-          "$ref": "#/52"
-        },
-        "flags": 0,
-        "description": "The amount of quota allocated to this subscriptionId from the GroupQuotasEntity."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/54"
     }
   },
   {
@@ -727,8 +725,8 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Quota/groupQuotas/groupQuotaLimits@2023-06-01-preview",
-    "scopeType": 16,
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/groupQuotaRequests@2023-06-01-preview",
+    "scopeType": 2,
     "body": {
       "$ref": "#/50"
     },
@@ -736,7 +734,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Quota/groupQuotas/quotaAllocations"
+    "value": "Microsoft.Quota/groupQuotas/resourceProviders/quotaAllocationRequests"
   },
   {
     "$type": "StringLiteralType",
@@ -744,7 +742,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Quota/groupQuotas/quotaAllocations",
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/quotaAllocationRequests",
     "properties": {
       "id": {
         "type": {
@@ -778,8 +776,7 @@
         "type": {
           "$ref": "#/68"
         },
-        "flags": 0,
-        "description": "Quota properties for the specified resource."
+        "flags": 0
       },
       "systemData": {
         "type": {
@@ -792,35 +789,94 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SubscriptionQuotaDetails",
+    "name": "QuotaAllocationRequestStatusProperties",
     "properties": {
-      "limit": {
+      "requestedResource": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/69"
         },
-        "flags": 2,
-        "description": "The total quota limit for the subscription."
+        "flags": 0,
+        "description": "The new quota request allocated to subscription."
       },
-      "nonShareableQuota": {
+      "requestSubmitTime": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The non shareable quota for the subscription."
+        "description": "The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/79"
         },
         "flags": 2,
         "description": "Request status."
       },
-      "quotaSources": {
+      "faultCode": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Details of the failure."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaAllocationRequestBase",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaAllocationRequestBaseProperties",
+    "properties": {
+      "limit": {
+        "type": {
+          "$ref": "#/54"
         },
         "flags": 0,
-        "description": "Assigned Group Quota to subscriptions."
+        "description": "The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 2,
+        "description": "Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response."
+      },
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location for which the subscription is allocated"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaAllocationRequestBasePropertiesName",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      },
+      "localizedValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource display name."
       }
     }
   },
@@ -856,15 +912,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
-      },
-      {
-        "$ref": "#/70"
-      },
-      {
-        "$ref": "#/71"
-      },
-      {
         "$ref": "#/72"
       },
       {
@@ -877,42 +924,409 @@
         "$ref": "#/75"
       },
       {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
         "$ref": "#/2"
       }
     ]
   },
   {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/quotaAllocationRequests@2023-06-01-preview",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/67"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quota/groupQuotas/resourceProviders/locationSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-06-01-preview"
+  },
+  {
     "$type": "ObjectType",
-    "name": "SubscriptionGroupQuotaAssignment",
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/locationSettings",
     "properties": {
-      "managementGroupId": {
+      "id": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "The management group id of the quota source."
+        "flags": 10,
+        "description": "The resource id"
       },
-      "quotaAllocated": {
+      "name": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/81"
         },
-        "flags": 0,
-        "description": "The amount of quota allocated to this subscriptionId from the quota source."
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/77"
+    "$type": "ObjectType",
+    "name": "GroupQuotasEnforcementResponseProperties",
+    "properties": {
+      "enforcementEnabled": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "Is the GroupQuota Enforcement enabled for the Azure region."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Request status."
+      },
+      "faultCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Details of the failure."
+      }
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotAvailable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
-    "name": "Microsoft.Quota/groupQuotas/quotaAllocations@2023-06-01-preview",
-    "scopeType": 16,
+    "name": "Microsoft.Quota/groupQuotas/resourceProviders/locationSettings@2023-06-01-preview",
+    "scopeType": 2,
     "body": {
-      "$ref": "#/67"
+      "$ref": "#/84"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quota/quotas"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Quota/quotas",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Quota properties for the specified resource, based on the API called, Quotas or Usages."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaProperties",
+    "properties": {
+      "limit": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Resource quota limit properties."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The quota units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Resource name provided by the resource provider. Use this property name when requesting quota."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the resource type. Optional field."
+      },
+      "quotaPeriod": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time period over which the quota usage values are summarized. For example:\r\n*P1D (per one day)\n*PT1M (per one minute)\n*PT1S (per one second).\r\nThis parameter is optional because, for some resources like compute, the period is irrelevant."
+      },
+      "isQuotaApplicable": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "States if quota can be requested for this resource."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Additional properties for the specific resource provider."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "LimitJsonObject",
+    "discriminator": "limitObjectType",
+    "baseProperties": {},
+    "elements": {
+      "LimitValue": {
+        "$ref": "#/104"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LimitObject",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "The quota/limit value"
+      },
+      "limitType": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "The quota or usages limit types."
+      },
+      "limitObjectType": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 1,
+        "description": "The limit object type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Independent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Shared"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LimitValue"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceName",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "localizedValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource display name."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quota/quotas@2023-06-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/101"
     },
     "flags": 0
   },
@@ -944,21 +1358,169 @@
       },
       "type": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/113"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/114"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/116"
+        },
+        "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GroupQuotaSubscriptionRequestStatusProperties",
+    "properties": {
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The subscription Id"
+      },
+      "requestSubmitTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 2,
+        "description": "Status of this subscriptionId being associated with the GroupQuotasEntity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quota/groupQuotas/subscriptionRequests@2023-06-01-preview",
+    "scopeType": 2,
+    "body": {
+      "$ref": "#/115"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quota/groupQuotas/groupQuotaRequests"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Quota/groupQuotas/groupQuotaRequests",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/51"
         },
         "flags": 2
       },
@@ -973,10 +1535,229 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Quota/groupQuotas/subscriptionRequests@2023-06-01-preview",
+    "name": "Microsoft.Quota/groupQuotas/groupQuotaRequests@2023-06-01-preview",
     "scopeType": 2,
     "body": {
-      "$ref": "#/82"
+      "$ref": "#/128"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quota/groupQuotas/quotaAllocationRequests"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Quota/groupQuotas/quotaAllocationRequests",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quota/groupQuotas/quotaAllocationRequests@2023-06-01-preview",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/132"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Quota/usages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Quota/usages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 2,
+        "description": "Usage properties for the specified resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsagesProperties",
+    "properties": {
+      "usages": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "The quota limit properties for this resource."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The units for the quota usage, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Resource name provided by the resource provider. Use this property name when requesting quota."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the resource type. Optional field."
+      },
+      "quotaPeriod": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time period for the summary of the quota usage values. For example:\r\n*P1D (per one day)\n*PT1M (per one minute)\n*PT1S (per one second).\r\nThis parameter is optional because it is not relevant for all resources such as compute."
+      },
+      "isQuotaApplicable": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "States if quota can be requested for this resource."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Additional properties for the specific resource provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsagesObject",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "The usages value."
+      },
+      "usagesType": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "The quota or usages limit types."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Individual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Combined"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Quota/usages@2023-06-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/136"
     },
     "flags": 1
   }

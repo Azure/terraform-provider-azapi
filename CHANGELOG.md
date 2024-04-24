@@ -1,4 +1,4 @@
-## v1.13.0 (unreleased)
+## v1.13.0
 BREAKING CHANGES:
 - Provider field `default_naming_prefix` and `default_naming_suffix` are deprecated. It will not work in this release and will be removed in the next major release.
   Please specify the naming prefix and suffix in the resource's `name` field instead.
@@ -15,6 +15,7 @@ ENHANCEMENTS:
 - `azapi` provider: Support `client_id_file_path`and `client_secret_file_path` fields, which are used to specify the file path of the client id and client secret.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Synapse/workspaces/databases` type.
 - `azapi_resource` resource, `azapi_update_resource` resource: Ignore the order of the elements in a list if the element has a `name` field as identifier.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/48ce933ad85391b60ee02cf83e17c9b28d31a7b1
 
 BUG FIXES:
 - Fix a bug that `azapi_resource_action` doesn't support 204 status code as a success response.
