@@ -216,23 +216,30 @@
         "flags": 0,
         "description": "File workspace name."
       },
+      "isTemporaryTicket": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "This property indicates if support ticket is a temporary ticket."
+      },
       "technicalTicketDetails": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "Additional ticket details associated with a technical support ticket request."
       },
       "quotaTicketDetails": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Additional ticket details associated with a quota support ticket request."
       },
       "secondaryConsent": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "This property indicates secondary consents for the support ticket"
@@ -441,6 +448,28 @@
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ObjectType",
     "name": "TechnicalTicketDetails",
     "properties": {
@@ -473,7 +502,7 @@
       },
       "quotaChangeRequests": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "This property is required for providing the region and new quota limits."
@@ -503,7 +532,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/24"
+      "$ref": "#/27"
     }
   },
   {
@@ -512,7 +541,7 @@
     "properties": {
       "userConsent": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "User consent value provided"
@@ -538,10 +567,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/27"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/28"
+        "$ref": "#/31"
       },
       {
         "$ref": "#/0"
@@ -551,7 +580,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/26"
+      "$ref": "#/29"
     }
   },
   {
@@ -591,21 +620,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/35"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Properties of the resource."
@@ -618,14 +647,14 @@
     "properties": {
       "communicationType": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/41"
         },
         "flags": 2,
         "description": "Communication type."
       },
       "communicationDirection": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/44"
         },
         "flags": 2,
         "description": "Direction of communication."
@@ -672,10 +701,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/36"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/40"
       },
       {
         "$ref": "#/0"
@@ -694,10 +723,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/43"
       },
       {
         "$ref": "#/0"
@@ -709,7 +738,7 @@
     "name": "Microsoft.Support/supportTickets/communications@2022-09-01-preview",
     "scopeType": 5,
     "body": {
-      "$ref": "#/34"
+      "$ref": "#/37"
     },
     "flags": 0
   },
@@ -738,35 +767,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/46"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/47"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/48"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/50"
         },
         "flags": 2,
         "description": "Properties of the resource"
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/51"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -806,7 +835,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -827,7 +856,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -861,16 +890,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/49"
-      },
-      {
-        "$ref": "#/50"
-      },
-      {
-        "$ref": "#/51"
-      },
-      {
         "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
       },
       {
         "$ref": "#/0"
@@ -897,16 +926,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/54"
-      },
-      {
-        "$ref": "#/55"
-      },
-      {
-        "$ref": "#/56"
-      },
-      {
         "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
       },
       {
         "$ref": "#/0"
@@ -918,7 +947,7 @@
     "name": "Microsoft.Support/fileWorkspaces@2022-09-01-preview",
     "scopeType": 5,
     "body": {
-      "$ref": "#/46"
+      "$ref": "#/49"
     },
     "flags": 0
   },
@@ -950,28 +979,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/63"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/64"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "Properties of the resource"
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/51"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1017,7 +1046,7 @@
     "name": "Microsoft.Support/fileWorkspaces/files@2022-09-01-preview",
     "scopeType": 5,
     "body": {
-      "$ref": "#/62"
+      "$ref": "#/65"
     },
     "flags": 0
   },
@@ -1049,28 +1078,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/69"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/71"
         },
         "flags": 2,
         "description": "Properties of the resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/51"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1083,7 +1112,7 @@
     "properties": {
       "messages": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "List of chat transcript communication resources."
@@ -1110,7 +1139,7 @@
       },
       "communicationDirection": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/75"
         },
         "flags": 2,
         "description": "Direction of communication."
@@ -1150,10 +1179,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/70"
+        "$ref": "#/73"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/74"
       },
       {
         "$ref": "#/0"
@@ -1163,7 +1192,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/69"
+      "$ref": "#/72"
     }
   },
   {
@@ -1171,7 +1200,7 @@
     "name": "Microsoft.Support/supportTickets/chatTranscripts@2022-09-01-preview",
     "scopeType": 5,
     "body": {
-      "$ref": "#/67"
+      "$ref": "#/70"
     },
     "flags": 1
   },
@@ -1188,7 +1217,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/81"
         },
         "flags": 1,
         "description": "The type of resource."
@@ -1207,10 +1236,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/76"
+        "$ref": "#/79"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/80"
       }
     ]
   },
@@ -1247,10 +1276,10 @@
     "resourceType": "Microsoft.Support/supportTickets",
     "apiVersion": "2022-09-01-preview",
     "output": {
-      "$ref": "#/79"
+      "$ref": "#/82"
     },
     "input": {
-      "$ref": "#/75"
+      "$ref": "#/78"
     }
   },
   {
@@ -1279,7 +1308,7 @@
     "resourceType": "Microsoft.Support/fileWorkspaces/files",
     "apiVersion": "2022-09-01-preview",
     "input": {
-      "$ref": "#/81"
+      "$ref": "#/84"
     }
   }
 ]

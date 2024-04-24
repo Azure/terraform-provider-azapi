@@ -71,21 +71,21 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/125"
         },
         "flags": 0,
         "description": "Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\"."
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "The system meta data relating to this resource."
@@ -421,7 +421,7 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/124"
         },
         "flags": 2,
         "description": "List of Private Endpoint Connections configured for the Cosmos DB account."
@@ -1478,7 +1478,7 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
@@ -1493,6 +1493,13 @@
         },
         "flags": 2,
         "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1571,115 +1578,6 @@
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/109"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Tags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedServiceIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal id of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant id of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/120"
-        },
-        "flags": 0,
-        "description": "The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the service."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/122"
-        },
-        "flags": 0,
-        "description": "The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned,UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/116"
-      },
-      {
-        "$ref": "#/117"
-      },
-      {
-        "$ref": "#/118"
-      },
-      {
-        "$ref": "#/119"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal id of user assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The client id of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedServiceIdentityUserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/121"
-    }
-  },
-  {
     "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
@@ -1692,7 +1590,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/118"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -1713,7 +1611,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/133"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -1747,16 +1645,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/124"
+        "$ref": "#/114"
       },
       {
-        "$ref": "#/125"
+        "$ref": "#/115"
       },
       {
-        "$ref": "#/126"
+        "$ref": "#/116"
       },
       {
-        "$ref": "#/127"
+        "$ref": "#/117"
       },
       {
         "$ref": "#/2"
@@ -1783,21 +1681,130 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/129"
+        "$ref": "#/119"
       },
       {
-        "$ref": "#/130"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/131"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/132"
+        "$ref": "#/122"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/109"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant id of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the service."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/132"
+    }
   },
   {
     "$type": "ResourceType",
@@ -1871,7 +1878,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -2027,7 +2034,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -2276,7 +2283,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -2668,7 +2675,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -3569,7 +3576,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -3656,7 +3663,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -3824,7 +3831,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -3972,7 +3979,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -4439,7 +4446,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -4647,7 +4654,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -4734,7 +4741,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5036,7 +5043,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5431,7 +5438,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5639,7 +5646,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5726,7 +5733,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5891,7 +5898,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -5978,7 +5985,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6262,7 +6269,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6349,7 +6356,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6521,7 +6528,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6608,7 +6615,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6816,7 +6823,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -6903,7 +6910,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -7153,7 +7160,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -8528,7 +8535,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -8902,7 +8909,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -9138,6 +9145,13 @@
         },
         "flags": 0,
         "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -9392,7 +9406,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -9556,7 +9570,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -10392,7 +10406,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -10554,7 +10568,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -10662,7 +10676,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."
@@ -10789,7 +10803,7 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Identity for the resource."

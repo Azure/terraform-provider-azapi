@@ -42,7 +42,7 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 
 data "azapi_resource_list" "test" {
-  type                   = "Microsoft.Resources/resourceGroups@2023-07-01"
+  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
   parent_id              = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   response_export_values = ["*"]
 }
