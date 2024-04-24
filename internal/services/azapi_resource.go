@@ -909,7 +909,7 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 	if body["location"] == nil && !model.Location.IsNull() && !model.Location.IsUnknown() {
 		body["location"] = model.Location.ValueString()
 	}
-	if body["tags"] == nil && !model.Tags.IsNull() && !model.Tags.IsUnknown() {
+	if body["tags"] == nil && !model.Tags.IsNull() && !model.Tags.IsUnknown() && len(model.Tags.Elements()) != 0 {
 		body["tags"] = tags.ExpandTags(model.Tags)
 	}
 	if body["identity"] == nil && !model.Identity.IsNull() && !model.Identity.IsUnknown() {
