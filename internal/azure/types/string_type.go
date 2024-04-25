@@ -24,6 +24,9 @@ func (s *StringType) AsTypeBase() *TypeBase {
 }
 
 func (s *StringType) Validate(body interface{}, path string) []error {
+	if body == nil {
+		return nil
+	}
 	v, ok := body.(string)
 	if !ok {
 		return []error{utils.ErrorMismatch(path, "string", fmt.Sprintf("%T", body))}
