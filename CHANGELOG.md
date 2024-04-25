@@ -2,6 +2,8 @@
 
 BUG FIXES:
 - Fix a bug when upgrading from previous provider `azapi_resource` resource will set `tags` for resources that don't have `tags` in the configuration.
+- Fix a bug that `azapi_resource` resource cannot handle tags with unknown values.
+- Fix a bug that `null` value can't pass the schema validation.
 
 ## v1.13.0
 BREAKING CHANGES:
