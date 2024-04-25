@@ -20,6 +20,9 @@ func (t *IntegerType) AsTypeBase() *TypeBase {
 }
 
 func (t *IntegerType) Validate(body interface{}, path string) []error {
+	if body == nil {
+		return nil
+	}
 	var v int
 	switch input := body.(type) {
 	case float64, float32:

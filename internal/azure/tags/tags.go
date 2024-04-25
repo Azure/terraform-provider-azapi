@@ -11,11 +11,20 @@ import (
 )
 
 func ExpandTags(input types.Map) map[string]string {
-	output := make(map[string]string)
+	output := make(map[string]types.String)
 	if diags := input.ElementsAs(context.Background(), &output, false); diags.HasError() {
 		return nil
 	}
-	return output
+	tags := make(map[string]string)
+	for k, v := range output {
+		// TODO: improve the validation based on the attr.Value
+		if v.IsUnknown() || v.IsNull() {
+			tags[k] = ""
+		} else {
+			tags[k] = v.ValueString()
+		}
+	}
+	return tags
 }
 
 func FlattenTags(input interface{}) types.Map {
@@ -49,7 +58,7 @@ func (v tagsValidator) ValidateMap(ctx context.Context, request validator.MapReq
 		return
 	}
 
-	tagsMap := make(map[string]string)
+	tagsMap := make(map[string]types.String)
 	if response.Diagnostics.Append(input.ElementsAs(context.Background(), &tagsMap, false)...); response.Diagnostics.HasError() {
 		return
 	}
@@ -63,8 +72,12 @@ func (v tagsValidator) ValidateMap(ctx context.Context, request validator.MapReq
 			response.Diagnostics.AddError("Invalid tags", fmt.Errorf("the maximum length for a tag key is 512 characters: %q is %d characters", k, len(k)).Error())
 		}
 
-		if len(v) > 256 {
-			response.Diagnostics.AddError("Invalid tags", fmt.Errorf("the maximum length for a tag value is 256 characters: the value for %q is %d characters", k, len(v)).Error())
+		if v.IsUnknown() || v.IsNull() {
+			continue
+		}
+
+		if len(v.ValueString()) > 256 {
+			response.Diagnostics.AddError("Invalid tags", fmt.Errorf("the maximum length for a tag value is 256 characters: the value for %q is %d characters", k, len(v.ValueString())).Error())
 		}
 	}
 
