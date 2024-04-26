@@ -1,10 +1,10 @@
 package services_test
 
 import (
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
