@@ -182,7 +182,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) dynamicSchema(data acceptance.TestData) string {
@@ -205,7 +205,7 @@ resource "azapi_update_resource" "test" {
     }
   }
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) automationAccountWithNameParentId(data acceptance.TestData) string {
@@ -229,7 +229,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) siteConfigSlotConfigNames(data acceptance.TestData) string {
@@ -281,7 +281,7 @@ resource "azapi_update_resource" "test" {
     }
   })
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) locks(data acceptance.TestData) string {
@@ -316,7 +316,7 @@ resource "azapi_update_resource" "test" {
   })
   locks = [azurerm_automation_account.test.id]
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) ignoreChanges(data acceptance.TestData) string {
@@ -343,7 +343,7 @@ resource "azapi_update_resource" "test" {
 
   ignore_body_changes = ["properties.sku.name"]
 }
-`, r.template(data), data.RandomStringOfLength(5))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) ignoreChangesArray(data acceptance.TestData) string {
@@ -383,7 +383,7 @@ resource "azapi_update_resource" "test" {
   ignore_body_changes = ["properties.subnets"]
   depends_on          = [azurerm_subnet.test]
 }
-`, r.template(data), data.RandomInt())
+`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) string {
@@ -446,20 +446,11 @@ resource "azapi_update_resource" "test" {
     }
   }
 }
-`, r.template(data), data.RandomInt())
+`, r.template(data), data.RandomInteger)
 }
 
 func (GenericUpdateResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-terraform {
-  required_providers {
-    azurerm = {
-      version = "= 3.90.0"
-      source  = "hashicorp/azurerm"
-    }
-  }
-}
-
 provider "azurerm" {
   features {}
 }
@@ -468,5 +459,5 @@ resource "azurerm_resource_group" "test" {
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
-`, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }

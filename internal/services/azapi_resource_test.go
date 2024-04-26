@@ -282,7 +282,7 @@ func TestAccGenericResource_defaultParentId(t *testing.T) {
 				check.That(data.ResourceName).Key("parent_id").HasValue(fmt.Sprintf("/subscriptions/%s", subscriptionId)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -338,7 +338,7 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -370,7 +370,7 @@ func TestAccGenericResource_ignoreMissingProperty(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -415,7 +415,7 @@ func TestAccGenericResource_locks(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -962,7 +962,7 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type     = "Microsoft.Resources/resourceGroups@2024-03-01"
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
   name     = "acctest-%[2]d"
   location = "%[1]s"
 }
@@ -1080,7 +1080,7 @@ provider "azurerm" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
+  type      = "Microsoft.Resources/resourceGroups@2023-07-01"
   name      = "acctestRG-%[1]d"
   parent_id = "/subscriptions/%[2]s"
 
@@ -1094,7 +1094,7 @@ func (r GenericResource) extensionScope(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azapi_resource" "locks" {
+resource "azapi_resource" "test" {
   type      = "Microsoft.Authorization/locks@2015-01-01"
   name      = "acctest-%[2]d"
   parent_id = azurerm_resource_group.test.id
@@ -1127,7 +1127,7 @@ resource "azurerm_spring_cloud_service" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2024-05-01-preview"
+  type      = "Microsoft.AppPlatform/spring/storages@2023-12-01"
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
@@ -1141,7 +1141,7 @@ resource "azapi_resource" "test" {
 
   ignore_missing_property = true
 }
-`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+`, r.template(data), data.RandomInteger, data.RandomString)
 }
 
 func (r GenericResource) ignoreCasing(data acceptance.TestData) string {
@@ -1179,7 +1179,7 @@ resource "azapi_resource" "test" {
   ignore_casing             = true
   ignore_missing_property   = true
 }
-`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+`, r.template(data), data.RandomInteger, data.RandomString)
 }
 
 func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData) string {
@@ -1198,7 +1198,7 @@ resource "azapi_resource" "test" {
   })
 }
 
-`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+`, r.template(data), data.RandomInteger, data.RandomString)
 }
 
 func (r GenericResource) locks(data acceptance.TestData) string {
@@ -1213,7 +1213,7 @@ resource "azurerm_route_table" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/routeTables/routes@2023-11-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1227,7 +1227,7 @@ resource "azapi_resource" "test" {
 }
 
 resource "azapi_resource" "test2" {
-  type      = "Microsoft.Network/routeTables/routes@2023-11-01"
+  type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
   body = jsonencode({
@@ -1239,7 +1239,7 @@ resource "azapi_resource" "test2" {
 
   locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
 }
-`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10))
+`, r.template(data), data.RandomInteger, data.RandomString)
 }
 
 func (r GenericResource) secretsInAsterisks(data acceptance.TestData, clientId, clientSecret string) string {
@@ -1280,7 +1280,7 @@ resource "azapi_resource" "test" {
   })
   ignore_casing = true
 }
-`, r.template(data), data.RandomInteger, data.RandomStringOfLength(10), clientId, clientSecret)
+`, r.template(data), data.RandomInteger, data.RandomString, clientId, clientSecret)
 }
 
 func (r GenericResource) ignoreChanges(data acceptance.TestData) string {
@@ -1304,7 +1304,7 @@ resource "azapi_resource" "test" {
 }
 
 
-`, r.template(data), data.RandomInt())
+`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericResource) ignoreChangesArray(data acceptance.TestData) string {
@@ -1350,7 +1350,7 @@ resource "azapi_resource" "subnet" {
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
-`, r.template(data), data.RandomInt())
+`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericResource) nonstandardLRO(data acceptance.TestData) string {
@@ -1401,7 +1401,7 @@ resource "azapi_resource" "test" {
     }
   })
 }
-`, r.template(data), data.RandomStringOfLength(10))
+`, r.template(data), data.RandomString)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {
@@ -1414,5 +1414,5 @@ resource "azurerm_resource_group" "test" {
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
-`, data.RandomInteger, data.LocationPrimary, data.RandomStringOfLength(10))
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }

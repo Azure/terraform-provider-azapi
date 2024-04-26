@@ -72,6 +72,40 @@ func (td *TestData) RandomStringOfLength(len int) string {
 	return acctest.RandStringFromCharSet(len, charSetAlphaNum)
 }
 
+// UpgradeTestDeployStep returns a test step used to deploy the configuration with previous version
+func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom string) resource.TestStep {
+	step.ExternalProviders = td.externalProviders()
+	step.ExternalProviders["azapi"] = resource.ExternalProvider{
+		Source:            "registry.terraform.io/azure/azapi",
+		VersionConstraint: fmt.Sprintf("= %s", upgradeFrom),
+	}
+	step.ProtoV6ProviderFactories = nil
+	return step
+}
+
+// UpgradeTestPlanStep returns a test step used to run terraform plan with the development version to check if there's any changes
+func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.TestStep {
+	planStep.PlanOnly = true
+	planStep.ExternalProviders = td.externalProviders()
+	planStep.ProtoV6ProviderFactories = td.providers()
+	return planStep
+}
+
+func (td TestData) UpgradeTest(t *testing.T, testResource TestResource, steps []resource.TestStep) {
+	testCase := resource.TestCase{
+		PreCheck: func() { PreCheck(t) },
+		CheckDestroy: func(s *terraform.State) error {
+			client, err := BuildTestClient()
+			if err != nil {
+				return fmt.Errorf("building client: %+v", err)
+			}
+			return CheckDestroyedFunc(client, testResource, td.ResourceType, td.ResourceName)(s)
+		},
+		Steps: steps,
+	}
+	resource.ParallelTest(t, testCase)
+}
+
 // lintignore:AT001
 func (td TestData) DataSourceTest(t *testing.T, steps []resource.TestStep) {
 	// DataSources don't need a check destroy - however since this is a wrapper function

@@ -99,14 +99,24 @@ func AzapiResourceActionMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				return
 			}
 
+			when := oldState.When
+			if when.IsNull() {
+				when = types.StringValue("apply")
+			}
+
+			body := types.DynamicNull()
+			if !oldState.Body.IsNull() && oldState.Body.ValueString() != "" {
+				body = types.DynamicValue(types.StringValue(oldState.Body.ValueString()))
+			}
+
 			newState := newModel{
 				ID:                   oldState.ID,
 				Type:                 oldState.Type,
 				ResourceId:           oldState.ResourceId,
 				Action:               oldState.Action,
 				Method:               oldState.Method,
-				Body:                 types.DynamicValue(types.StringValue(oldState.Body.ValueString())),
-				When:                 oldState.When,
+				Body:                 body,
+				When:                 when,
 				Locks:                oldState.Locks,
 				ResponseExportValues: oldState.ResponseExportValues,
 				Output:               types.DynamicValue(types.StringValue(oldState.Output.ValueString())),

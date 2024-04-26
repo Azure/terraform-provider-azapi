@@ -897,6 +897,10 @@ func (r *AzapiResource) locationWithDefaultLocation(config types.String, body ma
 					return state.Location
 				}
 			}
+		// To suppress the diff of config: location = null and state: location = ""
+		// This case happens when upgrading resources which doesn't support location from terraform-plugin-sdk built azapi provider
+		case state != nil && !state.Location.IsUnknown() && state.Location.ValueString() == "":
+			return state.Location
 		}
 	}
 	return config
@@ -906,7 +910,7 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 	if body == nil {
 		return diag.Diagnostics{}
 	}
-	if body["location"] == nil && !model.Location.IsNull() && !model.Location.IsUnknown() {
+	if body["location"] == nil && !model.Location.IsNull() && !model.Location.IsUnknown() && len(model.Location.ValueString()) != 0 {
 		body["location"] = model.Location.ValueString()
 	}
 	if body["tags"] == nil && !model.Tags.IsNull() && !model.Tags.IsUnknown() && len(model.Tags.Elements()) != 0 {

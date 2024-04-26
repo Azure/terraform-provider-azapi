@@ -30,6 +30,25 @@ func (td TestData) ImportStep(ignore ...string) resource.TestStep {
 	return td.ImportStepFor(td.ResourceName, ignore...)
 }
 
+// ImportStep returns a Test Step which Imports the Resource, optionally
+// ignoring any fields which may not be imported (for example, as they're
+// not returned from the API)
+func (td TestData) ImportStepWithImportStateIdFunc(importStateIdFunc resource.ImportStateIdFunc, ignore ...string) resource.TestStep {
+	resourceName := td.ResourceName
+	step := resource.TestStep{
+		ResourceName:      resourceName,
+		ImportState:       true,
+		ImportStateVerify: true,
+		ImportStateIdFunc: importStateIdFunc,
+	}
+
+	if len(ignore) > 0 {
+		step.ImportStateVerifyIgnore = ignore
+	}
+
+	return step
+}
+
 // ImportStepFor returns a Test Step which Imports a given resource by name,
 // optionally ignoring any fields which may not be imported (for example, as they're
 // not returned from the API)
