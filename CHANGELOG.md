@@ -9,7 +9,8 @@ ENHANCEMENTS:
 BUG FIXES:
 - Fix a bug when upgrading from previous provider `azapi_resource` resource will set `tags` for resources that don't have `tags` in the configuration.
 - Fix a bug that `azapi_resource` resource cannot handle tags with unknown values.
-- Fix a bug that `null` value can't pass the schema validation.
+- Fix a bug that `null` string value can't pass the schema validation.
+- Fix a bug that required fields which have `null` value can't pass the schema validation.
 - Fix a bug that schema validation fails to validate the float number in the body.
 - Fix a bug that client certificate authentication doesn't work.
 - Fix a bug that auxiliary tenant ids are not passed to the client.

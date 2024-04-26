@@ -94,7 +94,10 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 
 	// check required base properties
 	for key, value := range t.BaseProperties {
-		if value.IsRequired() && bodyMap[key] == nil {
+		if !value.IsRequired() {
+			continue
+		}
+		if _, ok := bodyMap[key]; !ok {
 			errors = append(errors, utils.ErrorShouldDefine(path+"."+key))
 		}
 	}

@@ -85,7 +85,10 @@ func (t *ObjectType) Validate(body interface{}, path string) []error {
 
 	// check properties required in schema, but not in body
 	for key, value := range t.Properties {
-		if value.IsRequired() && bodyMap[key] == nil {
+		if !value.IsRequired() {
+			continue
+		}
+		if _, ok := bodyMap[key]; !ok {
 			// skip name in body
 			if path == "" && key == "name" {
 				continue
