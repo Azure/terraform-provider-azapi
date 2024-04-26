@@ -24,6 +24,7 @@ terraform {
 }
 
 provider "azapi" {
+  enable_hcl_output_for_data_source = true
 }
 
 provider "azurerm" {
@@ -53,8 +54,20 @@ data "azapi_resource_action" "example" {
 Here's an example to use the `azapi_resource_action` data source to get a provider's permissions.
 
 ```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
+}
+
+provider "azapi" {
+  enable_hcl_output_for_data_source = true
 }
 
 data "azurerm_client_config" "current" {}
@@ -76,6 +89,10 @@ terraform {
       source = "Azure/azapi"
     }
   }
+}
+
+provider "azapi" {
+  enable_hcl_output_for_data_source = true
 }
 
 resource "azapi_resource_action" "test" {
@@ -131,7 +148,9 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource action.
 
-* `output` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
+* `output` - The output containing the properties specified in `response_export_values`. It supports both JSON and HCL object. By default, it will be in JSON format.
+  If specifying `enable_hcl_output_for_data_source` to `true` in the provider block, it will be in HCL format.
+  Here are some examples to use the values in HCL format:
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {

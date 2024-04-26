@@ -28,6 +28,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 				check.That(data.ResourceName).Key("identity.0.tenant_id").Exists(),
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
+				check.That(data.ResourceName).Key("output").IsJson(),
 			),
 		},
 	})
@@ -48,6 +49,7 @@ func TestAccGenericDataSource_withResourceId(t *testing.T) {
 				check.That(data.ResourceName).Key("identity.0.tenant_id").Exists(),
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
+				check.That(data.ResourceName).Key("output").IsJson(),
 			),
 		},
 	})
@@ -63,6 +65,21 @@ func TestAccGenericDataSource_defaultParentId(t *testing.T) {
 			Config: r.defaultParentId(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).Key("parent_id").HasValue(fmt.Sprintf("/subscriptions/%s", subscriptionId)),
+				check.That(data.ResourceName).Key("output").IsJson(),
+			),
+		},
+	})
+}
+
+func TestAccGenericDataSource_hclOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.hclOutput(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("output.properties.%").Exists(),
 			),
 		},
 	})
@@ -73,9 +90,10 @@ func (r GenericDataSource) basic(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  type      = azapi_resource.test.type
+  name                   = azapi_resource.test.name
+  parent_id              = azapi_resource.test.parent_id
+  type                   = azapi_resource.test.type
+  response_export_values = ["*"]
 }
 `, GenericResource{}.complete(data))
 }
@@ -85,8 +103,9 @@ func (r GenericDataSource) defaultParentId(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  type = "Microsoft.Resources/resourceGroups@2024-03-01"
-  name = azapi_resource.test.name
+  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name                   = azapi_resource.test.name
+  response_export_values = ["*"]
 }
 `, GenericResource{}.defaultParentId(data))
 }
@@ -96,8 +115,25 @@ func (r GenericDataSource) withResourceId(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  type        = azapi_resource.test.type
-  resource_id = azapi_resource.test.id
+  type                   = azapi_resource.test.type
+  resource_id            = azapi_resource.test.id
+  response_export_values = ["*"]
+}
+`, GenericResource{}.complete(data))
+}
+
+func (r GenericDataSource) hclOutput(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azapi" {
+  enable_hcl_output_for_data_source = true
+}
+
+data "azapi_resource" "test" {
+  type                   = azapi_resource.test.type
+  resource_id            = azapi_resource.test.id
+  response_export_values = ["*"]
 }
 `, GenericResource{}.complete(data))
 }

@@ -100,6 +100,31 @@ func (t thatWithKeyType) ContainsJsonValue(assertion JsonAssertionFunc) resource
 	}
 }
 
+func (t thatWithKeyType) IsJson() resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		rs, exists := s.RootModule().Resources[t.resourceName]
+		if !exists {
+			return fmt.Errorf("%q was not found in the state", t.resourceName)
+		}
+
+		value, exists := rs.Primary.Attributes[t.key]
+		if !exists {
+			return fmt.Errorf("the value %q does not exist within %q", t.key, t.resourceName)
+		}
+
+		if value == "" {
+			return fmt.Errorf("the value for %q was empty", t.key)
+		}
+
+		var out interface{}
+		if err := json.Unmarshal([]byte(value), &out); err != nil {
+			return fmt.Errorf("deserializing the value for %q (%q) to json: %+v", t.key, value, err)
+		}
+
+		return nil
+	}
+}
+
 // DoesNotExist returns a TestCheckFunc which validates that the specific key
 // does not exist on the resource
 func (t thatWithKeyType) DoesNotExist() resource.TestCheckFunc {

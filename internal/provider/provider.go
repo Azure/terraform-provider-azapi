@@ -38,34 +38,35 @@ type Provider struct {
 }
 
 type providerData struct {
-	SubscriptionID              types.String `tfsdk:"subscription_id"`
-	ClientID                    types.String `tfsdk:"client_id"`
-	ClientIDFilePath            types.String `tfsdk:"client_id_file_path"`
-	TenantID                    types.String `tfsdk:"tenant_id"`
-	AuxiliaryTenantIDs          types.List   `tfsdk:"auxiliary_tenant_ids"`
-	Endpoint                    types.List   `tfsdk:"endpoint"`
-	Environment                 types.String `tfsdk:"environment"`
-	ClientCertificatePath       types.String `tfsdk:"client_certificate_path"`
-	ClientCertificatePassword   types.String `tfsdk:"client_certificate_password"`
-	ClientSecret                types.String `tfsdk:"client_secret"`
-	ClientSecretFilePath        types.String `tfsdk:"client_secret_file_path"`
-	SkipProviderRegistration    types.Bool   `tfsdk:"skip_provider_registration"`
-	OIDCRequestToken            types.String `tfsdk:"oidc_request_token"`
-	OIDCRequestURL              types.String `tfsdk:"oidc_request_url"`
-	OIDCToken                   types.String `tfsdk:"oidc_token"`
-	OIDCTokenFilePath           types.String `tfsdk:"oidc_token_file_path"`
-	UseOIDC                     types.Bool   `tfsdk:"use_oidc"`
-	UseCLI                      types.Bool   `tfsdk:"use_cli"`
-	UseMSI                      types.Bool   `tfsdk:"use_msi"`
-	PartnerID                   types.String `tfsdk:"partner_id"`
-	CustomCorrelationRequestID  types.String `tfsdk:"custom_correlation_request_id"`
-	DisableCorrelationRequestID types.Bool   `tfsdk:"disable_correlation_request_id"`
-	DisableTerraformPartnerID   types.Bool   `tfsdk:"disable_terraform_partner_id"`
-	DefaultName                 types.String `tfsdk:"default_name"`
-	DefaultNamingPrefix         types.String `tfsdk:"default_naming_prefix"`
-	DefaultNamingSuffix         types.String `tfsdk:"default_naming_suffix"`
-	DefaultLocation             types.String `tfsdk:"default_location"`
-	DefaultTags                 types.Map    `tfsdk:"default_tags"`
+	SubscriptionID               types.String `tfsdk:"subscription_id"`
+	ClientID                     types.String `tfsdk:"client_id"`
+	ClientIDFilePath             types.String `tfsdk:"client_id_file_path"`
+	TenantID                     types.String `tfsdk:"tenant_id"`
+	AuxiliaryTenantIDs           types.List   `tfsdk:"auxiliary_tenant_ids"`
+	Endpoint                     types.List   `tfsdk:"endpoint"`
+	Environment                  types.String `tfsdk:"environment"`
+	ClientCertificatePath        types.String `tfsdk:"client_certificate_path"`
+	ClientCertificatePassword    types.String `tfsdk:"client_certificate_password"`
+	ClientSecret                 types.String `tfsdk:"client_secret"`
+	ClientSecretFilePath         types.String `tfsdk:"client_secret_file_path"`
+	SkipProviderRegistration     types.Bool   `tfsdk:"skip_provider_registration"`
+	OIDCRequestToken             types.String `tfsdk:"oidc_request_token"`
+	OIDCRequestURL               types.String `tfsdk:"oidc_request_url"`
+	OIDCToken                    types.String `tfsdk:"oidc_token"`
+	OIDCTokenFilePath            types.String `tfsdk:"oidc_token_file_path"`
+	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
+	UseCLI                       types.Bool   `tfsdk:"use_cli"`
+	UseMSI                       types.Bool   `tfsdk:"use_msi"`
+	PartnerID                    types.String `tfsdk:"partner_id"`
+	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
+	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
+	DisableTerraformPartnerID    types.Bool   `tfsdk:"disable_terraform_partner_id"`
+	DefaultName                  types.String `tfsdk:"default_name"`
+	DefaultNamingPrefix          types.String `tfsdk:"default_naming_prefix"`
+	DefaultNamingSuffix          types.String `tfsdk:"default_naming_suffix"`
+	DefaultLocation              types.String `tfsdk:"default_location"`
+	DefaultTags                  types.Map    `tfsdk:"default_tags"`
+	EnableHCLOutputForDataSource types.Bool   `tfsdk:"enable_hcl_output_for_data_source"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -321,6 +322,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				},
 				Description: "The default tags which should be used for resources.",
 			},
+
+			"enable_hcl_output_for_data_source": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Enable HCL output for data sources. The default is false. When set to true, the provider will return HCL output for data sources. When set to false, the provider will return JSON output for data sources.",
+			},
 		},
 	}
 }
@@ -508,6 +514,10 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.EnableHCLOutputForDataSource.IsNull() {
+		model.EnableHCLOutputForDataSource = types.BoolValue(false)
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -598,11 +608,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		CloudCfg:             cloudConfig,
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		Features: features.UserFeatures{
-			DefaultTags:         tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:     location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:       model.DefaultName.ValueString(),
-			DefaultNamingPrefix: model.DefaultNamingPrefix.ValueString(),
-			DefaultNamingSuffix: model.DefaultNamingSuffix.ValueString(),
+			DefaultTags:                  tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:              location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:                model.DefaultName.ValueString(),
+			DefaultNamingPrefix:          model.DefaultNamingPrefix.ValueString(),
+			DefaultNamingSuffix:          model.DefaultNamingSuffix.ValueString(),
+			EnableHCLOutputForDataSource: model.EnableHCLOutputForDataSource.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
