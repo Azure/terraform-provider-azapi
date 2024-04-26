@@ -192,6 +192,114 @@ func Test_BodyValidation(t *testing.T) {
 			// the bicep-types-az parses float as integer type and it should be fixed: https://github.com/Azure/bicep-types-az/issues/1404
 			Error: false,
 		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.Consumption/budgets/mybudget",
+			ApiVersion: "2021-10-01",
+			Body: `
+{
+	"properties": {
+		"amount": 10,
+		"category": "Cost",
+		"notifications": {
+			"notification1": {
+				"enabled": true,	
+				"operator": "GreaterThanOrEqualTo",	
+				"threshold": 50,
+				"thresholdType": "Actual",	
+				"contactEmails": [],
+				"contactGroups": []
+			}
+		},
+		"timeGrain": "Annually",
+		"timePeriod": {
+			"endDate": "foo",
+			"startDate": "bar"
+		}
+	}
+}
+`,
+			Error: false,
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myresourcegroup/providers/Microsoft.Consumption/budgets/mybudget",
+			ApiVersion: "2021-10-01",
+			Body: `
+{
+	"properties": {
+		"amount": 10,
+		"category": "Cost",
+		"notifications": {
+			"notification1": {
+				"enabled": true,	
+				"operator": "GreaterThanOrEqualTo",	
+				"threshold": 50,
+				"thresholdType": "Actual",	
+				"contactEmails": nil,
+				"contactGroups": []
+			}
+		},
+		"timeGrain": "Annually",
+		"timePeriod": {
+			"endDate": "foo",
+			"startDate": "bar"
+		}
+	}
+}
+`,
+			Error: false,
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Subscription/aliases/alias1",
+			ApiVersion: "2021-10-01",
+			Body: `
+{
+	"properties": {
+		"displayName": "My Subscription",
+		"workload": "Production",
+		"billingScope": "Shared",
+		"additionalProperties": {
+			"managementGroupId": nil,
+			"tags": {
+				"key1": "value1",
+				"key2": "value2"
+            }
+		}
+	}
+}`,
+			Error: false,
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.App/containerApps/containerApp",
+			ApiVersion: "2022-03-01",
+			Body: `
+{
+    "location": "westus",
+	"properties": {
+		"configuration": {
+			"activeRevisionsMode": "Single"
+		},
+		"managedEnvironmentId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.App/managedEnvironments/managedEnv1",
+		"template": {
+			"containers": [
+				{
+					"env": [],
+					"image": "jackofallops/azure-containerapps-python-acctest:v0.0.1",	
+					"name": "first",	
+					"probes": [],	
+					"resources": {
+						"cpu": 0.25,	
+						"memory": "0.5Gi"	
+					}
+				}
+			],	
+			"scale": {
+				"maxReplicas": 10
+			}
+		}
+	}
+}`,
+			Error: false,
+		},
 	}
 
 	for index, data := range testData {
