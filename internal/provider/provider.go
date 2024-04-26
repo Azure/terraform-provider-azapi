@@ -576,7 +576,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		for _, element := range elements {
 			auxTenants = append(auxTenants, element.(basetypes.StringValue).ValueString())
 		}
-		_ = os.Setenv("AZURE_AUXILIARY_TENANT_IDS", strings.Join(auxTenants, ";"))
+		_ = os.Setenv("AZURE_ADDITIONALLY_ALLOWED_TENANTS", strings.Join(auxTenants, ";"))
 	}
 
 	option := &azidentity.DefaultAzureCredentialOptions{

@@ -6,6 +6,7 @@ BUG FIXES:
 - Fix a bug that `null` value can't pass the schema validation.
 - Fix a bug that schema validation fails to validate the float number in the body.
 - Fix a bug that client certificate authentication doesn't work.
+- Fix a bug that auxiliary tenant ids are not passed to the client.
 
 ## v1.13.0
 BREAKING CHANGES:
