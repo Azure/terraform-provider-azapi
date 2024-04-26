@@ -1,14 +1,22 @@
 package services_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 type ActionResource struct{}
+
+func (r ActionResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
+	out := false
+	return &out, nil
+}
 
 func TestAccActionResource_basic(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
@@ -109,7 +117,7 @@ resource "azapi_resource_action" "test" {
     data.azapi_resource_action.list
   ]
 }
-`, GenericResource{}.defaultTag(data))
+`, GenericResource{}.identityNone(data))
 }
 
 func (r ActionResource) basicWhenDestroy(data acceptance.TestData) string {
@@ -136,7 +144,7 @@ resource "azapi_resource_action" "test" {
   ]
   response_export_values = ["*"]
 }
-`, GenericResource{}.defaultTag(data))
+`, GenericResource{}.identityNone(data))
 }
 
 func (r ActionResource) registerResourceProvider() string {
@@ -262,9 +270,5 @@ resource "azapi_resource_action" "test" {
     }
   })
 }
-
-
-
-
-`, data.LocationPrimary, data.RandomStringOfLength(10))
+`, data.LocationPrimary, data.RandomString)
 }

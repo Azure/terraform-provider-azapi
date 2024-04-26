@@ -116,8 +116,6 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 			// TODO: Remove the support for JSON string in the next major release
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Computed: true,
-				Default:  defaults.DynamicDefault(types.StringValue("{}")),
 				Validators: []validator.Dynamic{
 					myvalidator.BodyValidator(),
 				},
@@ -238,7 +236,16 @@ func (r *ActionResource) Delete(ctx context.Context, request resource.DeleteRequ
 }
 
 func (r *ActionResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
+	var state ActionResourceModel
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
 
+	if state.When.IsNull() {
+		state.When = basetypes.NewStringValue("apply")
+	}
+
+	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
 func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, state *tfsdk.State, diagnostics *diag.Diagnostics) {

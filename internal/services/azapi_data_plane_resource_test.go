@@ -134,6 +134,7 @@ resource "azurerm_app_configuration" "appconf" {
   name                = "acctest%[2]s"
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
+  sku                 = "standard"
 }
 
 data "azurerm_client_config" "current" {}

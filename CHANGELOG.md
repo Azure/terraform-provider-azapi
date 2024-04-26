@@ -13,6 +13,7 @@ BUG FIXES:
 - Fix a bug that schema validation fails to validate the float number in the body.
 - Fix a bug that client certificate authentication doesn't work.
 - Fix a bug that auxiliary tenant ids are not passed to the client.
+- Fix a bug that `azapi_resource_action` resource shows the plan diff when upgrading from the previous provider.
 
 ## v1.13.0
 BREAKING CHANGES:
