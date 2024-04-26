@@ -52,6 +52,21 @@ func TestAccAzapiActionResourceUpgrade_registerResourceProvider(t *testing.T) {
 	})
 }
 
+func TestAccAzapiActionResourceUpgrade_upgradeFromVeryOldVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.registerResourceProvider(),
+			Check:  resource.ComposeTestCheckFunc(),
+		}, "1.8.0"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.registerResourceProvider(),
+		}),
+	})
+}
+
 func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
