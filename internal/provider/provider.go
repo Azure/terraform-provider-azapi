@@ -566,17 +566,17 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		_ = os.Setenv("AZURE_CLIENT_SECRET", *v)
 	}
 	if v := model.ClientCertificatePath.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CERTIFICATE_PATH", v)
+		_ = os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
 	}
 	if v := model.ClientCertificatePassword.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CERTIFICATE_PASSWORD", v)
+		_ = os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
 	}
 	var auxTenants []string
 	if elements := model.AuxiliaryTenantIDs.Elements(); len(elements) != 0 {
 		for _, element := range elements {
 			auxTenants = append(auxTenants, element.(basetypes.StringValue).ValueString())
 		}
-		_ = os.Setenv("AZURE_AUXILIARY_TENANT_IDS", strings.Join(auxTenants, ";"))
+		_ = os.Setenv("AZURE_ADDITIONALLY_ALLOWED_TENANTS", strings.Join(auxTenants, ";"))
 	}
 
 	option := &azidentity.DefaultAzureCredentialOptions{
