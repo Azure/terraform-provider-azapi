@@ -1,4 +1,10 @@
-## v1.13.1
+## v1.13.1 (Unreleased)
+
+ENHANCEMENTS:
+- `azapi` provider: Support `enable_hcl_output_for_data_source` field, which is used to enable the HCL output for the data source, the default value is `false`.
+  This could resolve the following breaking changes in the previous release:
+  - `azapi_resource` data source: The `output` field changes from JSON string to HCL object. Users can use access the fields in the output as an HCL object. Please remove the `jsondecode` function when using the `output` field.
+  - `azapi_resource_list` data source: The `output` field changes from JSON string to HCL object. Users can use access the fields in the output as an HCL object. Please remove the `jsondecode` function when using the `output` field.
 
 BUG FIXES:
 - Fix a bug when upgrading from previous provider `azapi_resource` resource will set `tags` for resources that don't have `tags` in the configuration.
