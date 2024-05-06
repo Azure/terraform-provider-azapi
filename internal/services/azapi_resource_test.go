@@ -493,6 +493,19 @@ func TestAccGenericResource_nonstandardLRO(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_nullLocation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.nullLocation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1404,10 +1417,81 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString)
 }
 
+func (r GenericResource) nullLocation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_application_insights" "test" {
+  name                = "accappinsights%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  application_type    = "web"
+}
+
+resource "azurerm_key_vault" "test" {
+  name                = "acckeyvault%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "premium"
+}
+
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[2]s"
+  location                 = azurerm_resource_group.test.location
+  resource_group_name      = azurerm_resource_group.test.name
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+
+resource "azurerm_machine_learning_workspace" "test" {
+  name                    = "acctestmlws%[2]s"
+  location                = azurerm_resource_group.test.location
+  resource_group_name     = azurerm_resource_group.test.name
+  application_insights_id = azurerm_application_insights.test.id
+  key_vault_id            = azurerm_key_vault.test.id
+  storage_account_id      = azurerm_storage_account.test.id
+
+  identity {
+    type = "SystemAssigned"
+  }
+  public_network_access_enabled = true
+  managed_network {
+    isolation_mode = "AllowOnlyApprovedOutbound"
+  }
+}
+
+resource "azapi_resource" "test" {
+  type = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
+  name = "acctest%[2]s"
+  parent_id = azurerm_machine_learning_workspace.test.id
+  body = jsonencode({
+    properties = {
+      category = "UserDefined"
+      status = "Active"
+      type = "FQDN"
+      destination = "example.org"
+    }
+  })
+  locks = [azurerm_machine_learning_workspace.test.id]
+}
+`, r.template(data), data.RandomString)
+}
+
 func (GenericResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
+    }
+  }
 }
 
 resource "azurerm_resource_group" "test" {
