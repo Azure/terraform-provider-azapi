@@ -1464,14 +1464,14 @@ resource "azurerm_machine_learning_workspace" "test" {
 }
 
 resource "azapi_resource" "test" {
-  type = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
-  name = "acctest%[2]s"
+  type      = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
+  name      = "acctest%[2]s"
   parent_id = azurerm_machine_learning_workspace.test.id
   body = jsonencode({
     properties = {
-      category = "UserDefined"
-      status = "Active"
-      type = "FQDN"
+      category    = "UserDefined"
+      status      = "Active"
+      type        = "FQDN"
       destination = "example.org"
     }
   })
