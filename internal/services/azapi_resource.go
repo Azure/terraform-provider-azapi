@@ -613,7 +613,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
-		if v, ok := bodyMap["location"]; ok && location.Normalize(v.(string)) != location.Normalize(model.Location.ValueString()) {
+		if v, ok := bodyMap["location"]; ok && v != nil && location.Normalize(v.(string)) != location.Normalize(model.Location.ValueString()) {
 			state.Location = types.StringValue(v.(string))
 		}
 		if output := tags.FlattenTags(bodyMap["tags"]); len(output.Elements()) != 0 || len(state.Tags.Elements()) != 0 {
@@ -829,7 +829,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		state.Body = payload
 	}
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
-		if v, ok := bodyMap["location"]; ok {
+		if v, ok := bodyMap["location"]; ok && v != nil {
 			state.Location = types.StringValue(location.Normalize(v.(string)))
 		}
 		if output := tags.FlattenTags(bodyMap["tags"]); len(output.Elements()) != 0 {

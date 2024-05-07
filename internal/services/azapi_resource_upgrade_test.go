@@ -480,3 +480,20 @@ func TestAccAzapiResourceUpgrade_ignoreChangesArray(t *testing.T) {
 		}),
 	})
 }
+
+func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.nullLocation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, PreviousVersion),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.nullLocation(data),
+		}),
+	})
+}

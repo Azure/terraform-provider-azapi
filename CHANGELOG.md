@@ -1,4 +1,9 @@
-## v1.13.1 (Unreleased)
+## v1.14.0 (unreleased)
+
+BUG FIXES:
+- Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
+
+## v1.13.1
 
 ENHANCEMENTS:
 - `azapi` provider: Support `enable_hcl_output_for_data_source` field, which is used to enable the HCL output for the data source, the default value is `false`.
