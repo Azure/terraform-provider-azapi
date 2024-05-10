@@ -1522,23 +1522,23 @@ resource "azapi_resource" "test" {
 
 func (r GenericResource) disablePreflightValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-  provider "azurerm" {
-    features {
-      resource_group {
-        prevent_deletion_if_contains_resources = false
-      }
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
     }
   }
+}
 
-  provider "azapi" {
-    enable_preflight = false
-  }
-  
-  
-  resource "azurerm_resource_group" "test" {
-    name     = "acctestRG-%[1]d"
-    location = "%[2]s"
-  }
+provider "azapi" {
+  enable_preflight = false
+}
+
+
+resource "azurerm_resource_group" "test" {
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+}
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Storage/storageAccounts@2021-09-01"
