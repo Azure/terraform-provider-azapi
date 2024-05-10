@@ -502,6 +502,15 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		defer locks.UnlockByID(lockId)
 	}
 
+	// preflight validation: currently only supports the subscription scope validation
+	if r.ProviderData.Features.EnablePreflight && isNewResource && strings.Contains(strings.ToLower(plan.ParentID.ValueString()), "/subscriptions/") {
+		err := preflightValidation(ctx, client, plan, body)
+		if err != nil {
+			diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
+			return
+		}
+	}
+
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
 	if err != nil {
 		if isNewResource {
@@ -927,6 +936,40 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 		body["identity"] = out
 	}
 	return diag.Diagnostics{}
+}
+
+func preflightValidation(ctx context.Context, client *clients.ResourceClient, requestPlan *AzapiResourceModel, body map[string]interface{}) error {
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(requestPlan.Type.ValueString())
+	if err != nil {
+		return err
+	}
+
+	if !utils.IsTopLevelResourceType(azureResourceType) {
+		return nil
+	}
+
+	resourceBody := make(map[string]interface{})
+	for k, v := range body {
+		resourceBody[k] = v
+	}
+
+	resourceBody["name"] = requestPlan.Name.ValueString()
+	resourceBody["apiVersion"] = apiVersion
+	requestBody := make(map[string]interface{})
+	requestBody["provider"], requestBody["type"], _ = strings.Cut(azureResourceType, "/")
+	if locationValue, ok := resourceBody["location"]; ok {
+		requestBody["location"] = locationValue
+	}
+
+	requestBody["scope"] = requestPlan.ParentID.ValueString()
+	requestBody["resources"] = []map[string]interface{}{resourceBody}
+
+	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]interface{}) diag.Diagnostics {

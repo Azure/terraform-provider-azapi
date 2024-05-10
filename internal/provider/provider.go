@@ -67,6 +67,7 @@ type providerData struct {
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnableHCLOutputForDataSource types.Bool   `tfsdk:"enable_hcl_output_for_data_source"`
+	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -327,6 +328,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Optional:    true,
 				Description: "Enable HCL output for data sources. The default is false. When set to true, the provider will return HCL output for data sources. When set to false, the provider will return JSON output for data sources.",
 			},
+
+			"enable_preflight": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Enable Preflight Validation. The default is true. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.",
+			},
 		},
 	}
 }
@@ -518,6 +524,10 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		model.EnableHCLOutputForDataSource = types.BoolValue(false)
 	}
 
+	if model.EnablePreflight.IsNull() {
+		model.EnablePreflight = types.BoolValue(true)
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -614,6 +624,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			DefaultNamingPrefix:          model.DefaultNamingPrefix.ValueString(),
 			DefaultNamingSuffix:          model.DefaultNamingSuffix.ValueString(),
 			EnableHCLOutputForDataSource: model.EnableHCLOutputForDataSource.ValueBool(),
+			EnablePreflight:              model.EnablePreflight.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),

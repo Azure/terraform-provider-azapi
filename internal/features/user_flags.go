@@ -8,6 +8,7 @@ type UserFeatures struct {
 	DefaultNamingSuffix          string
 	CafEnabled                   bool
 	EnableHCLOutputForDataSource bool
+	EnablePreflight              bool
 }
 
 func Default() UserFeatures {
@@ -19,5 +20,6 @@ func Default() UserFeatures {
 		DefaultNamingSuffix:          "",
 		CafEnabled:                   false,
 		EnableHCLOutputForDataSource: false,
+		EnablePreflight:              true,
 	}
 }

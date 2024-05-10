@@ -506,6 +506,28 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_preflightResourceGroupLevelValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.preflightResourceGroupLevelValidation(data),
+			ExpectError: regexp.MustCompile("Preflight Validation: Invalid configuration"),
+		},
+	})
+}
+
+func TestAccGenericResource_disablePreflightValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.disablePreflightValidation(data),
+			ExpectError: regexp.MustCompile("Failed to create/update resource"),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1478,6 +1500,58 @@ resource "azapi_resource" "test" {
   locks = [azurerm_machine_learning_workspace.test.id]
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) preflightResourceGroupLevelValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2021-09-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctestsa%[2]s"
+  location  = azurerm_resource_group.test.location
+  body = {
+    kind = "StorageV2"
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) disablePreflightValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+  provider "azurerm" {
+    features {
+      resource_group {
+        prevent_deletion_if_contains_resources = false
+      }
+    }
+  }
+
+  provider "azapi" {
+    enable_preflight = false
+  }
+  
+  
+  resource "azurerm_resource_group" "test" {
+    name     = "acctestRG-%[1]d"
+    location = "%[2]s"
+  }
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2021-09-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctestsa%[3]s"
+  location  = azurerm_resource_group.test.location
+  body = {
+    kind = "StorageV2"
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

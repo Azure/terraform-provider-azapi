@@ -1,5 +1,8 @@
 ## v1.14.0 (unreleased)
 
+ENHANCEMENTS:
+- `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `true`.
+
 BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
 
