@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
@@ -71,12 +72,14 @@ func (r *DataPlaneResource) UpgradeState(ctx context.Context) map[int64]resource
 
 func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can manage some Azure data plane resources.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"name": schema.StringAttribute{
@@ -84,6 +87,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: "Specifies the name of the Azure resource. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -94,6 +98,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
 				},
+				MarkdownDescription: "The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.",
 			},
 
 			"type": schema.StringAttribute{
@@ -101,6 +106,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
@@ -116,18 +122,21 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -136,6 +145,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"locks": schema.ListAttribute{
@@ -144,10 +154,12 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("azapi_data_plane_resource"),
 			},
 		},
 

@@ -107,32 +107,12 @@ acctests: fmtcheck
 debugacc: fmtcheck
 	TF_ACC=1 dlv test $(TEST) --headless --listen=:2345 --api-version=2 -- -test.v $(TESTARGS)
 
-website-lint:
-	@echo "==> Checking documentation for .html.markdown extension present"
-	@if ! find website/docs -type f -not -name "*.html.markdown" -print -exec false {} +; then \
-		echo "ERROR: file extension should be .html.markdown"; \
-		exit 1; \
-	fi
-	@echo "==> Checking documentation spelling..."
-	@misspell -error -source=text -i hdinsight,exportfs website/
-	@echo "==> Checking documentation for errors..."
-	@tfproviderdocs check -provider-name=azapi -require-resource-subcategory \
-		-allowed-resource-subcategories-file website/allowed-subcategories
-	@sh -c "'$(CURDIR)/scripts/terrafmt-website.sh'"
-
-website:
-ifeq (,$(wildcard $(GOPATH)/src/$(WEBSITE_REPO)))
-	echo "$(WEBSITE_REPO) not found in your GOPATH (necessary for layouts and assets), get-ting..."
-	git clone https://$(WEBSITE_REPO) $(GOPATH)/src/$(WEBSITE_REPO)
-endif
-	@$(MAKE) -C $(GOPATH)/src/$(WEBSITE_REPO) website-provider PROVIDER_PATH=$(shell pwd) PROVIDER_NAME=$(PKG_NAME)
-
-scaffold-website:
-	./scripts/scaffold-website.sh
+docs:
+	go generate
 
 teamcity-test:
 	@$(MAKE) -C .teamcity tools
 	@$(MAKE) -C .teamcity test
 
 
-.PHONY: build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website test-compile website website-test
+.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website test-compile website website-test
