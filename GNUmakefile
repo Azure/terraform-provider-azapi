@@ -115,4 +115,4 @@ teamcity-test:
 	@$(MAKE) -C .teamcity test
 
 
-.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website test-compile website website-test
+.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test
