@@ -1,8 +1,6 @@
 ---
 page_title: "azapi_data_plane_resource (Resource)"
 subcategory: ""
-aliases:
-- azapi_data_plane_resource
 description: |-
   This resource can manage some Azure data plane resources.
 ---
