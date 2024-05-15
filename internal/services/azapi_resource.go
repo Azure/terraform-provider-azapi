@@ -62,6 +62,14 @@ type AzapiResourceModel struct {
 	Timeouts                timeouts.Value `tfsdk:"timeouts"`
 }
 
+type PreflightValidateResourcesModel struct {
+	Provider  string                   `json:"provider"`
+	Type      string                   `json:"type"`
+	Location  string                   `json:"location"`
+	Scope     string                   `json:"scope"`
+	Resources []map[string]interface{} `json:"resources"`
+}
+
 var _ resource.Resource = &AzapiResource{}
 var _ resource.ResourceWithConfigure = &AzapiResource{}
 var _ resource.ResourceWithModifyPlan = &AzapiResource{}
@@ -503,8 +511,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	}
 
 	// preflight validation: currently only supports the subscription scope validation
-	if r.ProviderData.Features.EnablePreflight && isNewResource && strings.Contains(strings.ToLower(plan.ParentID.ValueString()), "/subscriptions/") {
-		err := preflightValidation(ctx, client, plan, body)
+	if r.ProviderData.Features.EnablePreflight && isNewResource && strings.HasPrefix(strings.ToLower(plan.ParentID.ValueString()), "/subscriptions/") {
+		err := preflightValidation(ctx, client, id, body)
 		if err != nil {
 			diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
 			return
@@ -938,14 +946,16 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 	return diag.Diagnostics{}
 }
 
-func preflightValidation(ctx context.Context, client *clients.ResourceClient, requestPlan *AzapiResourceModel, body map[string]interface{}) error {
-	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(requestPlan.Type.ValueString())
-	if err != nil {
-		return err
+func preflightValidation(ctx context.Context, client *clients.ResourceClient, id parse.ResourceId, body map[string]interface{}) error {
+	if !utils.IsTopLevelResourceType(id.AzureResourceType) {
+		return nil
 	}
 
-	if !utils.IsTopLevelResourceType(azureResourceType) {
-		return nil
+	requestBody := PreflightValidateResourcesModel{}
+	requestBody.Provider, requestBody.Type, _ = strings.Cut(id.AzureResourceType, "/")
+	requestBody.Scope = id.ParentId
+	if locationValue, ok := body["location"]; ok {
+		requestBody.Location = locationValue.(string)
 	}
 
 	resourceBody := make(map[string]interface{})
@@ -953,18 +963,12 @@ func preflightValidation(ctx context.Context, client *clients.ResourceClient, re
 		resourceBody[k] = v
 	}
 
-	resourceBody["name"] = requestPlan.Name.ValueString()
-	resourceBody["apiVersion"] = apiVersion
-	requestBody := make(map[string]interface{})
-	requestBody["provider"], requestBody["type"], _ = strings.Cut(azureResourceType, "/")
-	if locationValue, ok := resourceBody["location"]; ok {
-		requestBody["location"] = locationValue
-	}
+	resourceBody["name"] = id.Name
+	resourceBody["apiVersion"] = id.ApiVersion
 
-	requestBody["scope"] = requestPlan.ParentID.ValueString()
-	requestBody["resources"] = []map[string]interface{}{resourceBody}
+	requestBody.Resources = []map[string]interface{}{resourceBody}
 
-	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
+	_, err := client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
 	if err != nil {
 		return err
 	}
