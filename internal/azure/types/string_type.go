@@ -31,6 +31,10 @@ func (s *StringType) Validate(body interface{}, path string) []error {
 	if !ok {
 		return []error{utils.ErrorMismatch(path, "string", fmt.Sprintf("%T", body))}
 	}
+	if v == "" {
+		// TODO: improve the validation to support unknown values
+		return nil
+	}
 	if s.MinLength != nil && len(v) < *s.MinLength {
 		return []error{utils.ErrorCommon(path, fmt.Sprintf("string length is less than %d", *s.MinLength))}
 	}
