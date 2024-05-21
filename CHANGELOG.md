@@ -2,6 +2,7 @@
 
 BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
+- Fix a bug that schema validation fails to validate unknown string values.
 
 ## v1.13.1
 

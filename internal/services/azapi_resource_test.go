@@ -506,6 +506,19 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_unknownName(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.unknownName(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1478,6 +1491,46 @@ resource "azapi_resource" "test" {
   locks = [azurerm_machine_learning_workspace.test.id]
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) unknownName(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {}
+
+resource "random_string" "suffix" {
+  length  = 3
+  special = false
+  upper   = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctest${random_string.suffix.result}"
+  location  = azurerm_resource_group.test.location
+  body = {
+    properties = {
+      accessPolicies = [
+      ]
+      createMode                   = "default"
+      enableRbacAuthorization      = false
+      enableSoftDelete             = true
+      enabledForDeployment         = false
+      enabledForDiskEncryption     = false
+      enabledForTemplateDeployment = false
+      publicNetworkAccess          = "Enabled"
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      softDeleteRetentionInDays = 7
+      tenantId                  = data.azurerm_client_config.current.tenant_id
+    }
+  }
+}
+`, r.template(data))
 }
 
 func (GenericResource) template(data acceptance.TestData) string {
