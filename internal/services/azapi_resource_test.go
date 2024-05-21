@@ -1554,7 +1554,7 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  location = azurerm_resource_group.test.location
+  location  = azurerm_resource_group.test.location
   body = jsonencode({
     properties = {
       sku = {
@@ -1563,10 +1563,10 @@ resource "azapi_resource" "test" {
     }
   })
   timeouts {
-	create = "10m"
-	update = "10m"
-	delete = "10m"
-	read   = "10m"
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
   }
 }
 `, r.template(data), data.RandomString)

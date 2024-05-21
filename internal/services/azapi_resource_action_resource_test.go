@@ -307,10 +307,10 @@ resource "azapi_resource_action" "test" {
     data.azapi_resource_action.list
   ]
   timeouts {
-	create = "10m"
-	update = "10m"
-	delete = "10m"
-	read   = "10m"
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
   }
 }
 `, GenericResource{}.identityNone(data))

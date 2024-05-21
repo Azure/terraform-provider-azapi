@@ -455,10 +455,10 @@ resource "azapi_data_plane_resource" "test" {
   ]
 
   timeouts {
-	create = "10m"
-	update = "10m"
-	delete = "10m"
-	read   = "10m"
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
   }
 }
 `, data.LocationPrimary, data.RandomString)

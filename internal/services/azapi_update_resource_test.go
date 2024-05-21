@@ -496,10 +496,10 @@ resource "azapi_update_resource" "test" {
     }
   })
   timeouts {
-	create = "10m"
-	update = "10m"
-	delete = "10m"
-	read   = "10m"
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
   }
 }
 `, r.template(data), data.RandomString)
