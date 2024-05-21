@@ -249,6 +249,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{
 				Create: true,
+				Update: true,
 				Read:   true,
 				Delete: true,
 			}),
@@ -425,15 +426,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	createUpdateTimeout, diags := plan.Timeouts.Create(ctx, 30*time.Minute)
-	diagnostics.Append(diags...)
-	if diagnostics.HasError() {
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
-	defer cancel()
-
 	id, err := parse.NewResourceID(plan.Name.ValueString(), plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
@@ -442,6 +434,23 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	client := r.ProviderData.ResourceClient
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
+
+	var timeout time.Duration
+	var diags diag.Diagnostics
+	if isNewResource {
+		timeout, diags = plan.Timeouts.Create(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	} else {
+		timeout, diags = plan.Timeouts.Update(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
 	if isNewResource {
 		// check if the resource already exists
 		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion)
@@ -777,6 +786,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Timeouts: timeouts.Value{
 			Object: types.ObjectNull(map[string]attr.Type{
 				"create": types.StringType,
+				"update": types.StringType,
 				"read":   types.StringType,
 				"delete": types.StringType,
 			}),

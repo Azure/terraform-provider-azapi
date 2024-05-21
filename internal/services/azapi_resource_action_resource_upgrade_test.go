@@ -1,9 +1,11 @@
 package services_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -93,6 +95,41 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.nonstandardLRO(data),
+		}),
+	})
+}
+
+func TestAccAzapiActionResourceUpgrade_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, PreviousVersion),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiActionResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: strings.ReplaceAll(r.timeouts(data), `update = "10m"`, ""),
+			Check:  resource.ComposeTestCheckFunc(),
+		}, "1.13.1"),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
 		}),
 	})
 }

@@ -111,6 +111,7 @@ func AzapiResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgrader {
 
 				"timeouts": timeouts.Block(ctx, timeouts.Opts{
 					Create: true,
+					Update: true,
 					Read:   true,
 					Delete: true,
 				}),

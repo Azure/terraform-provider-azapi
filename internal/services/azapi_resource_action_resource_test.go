@@ -95,6 +95,18 @@ func TestAccActionResource_nonstandardLRO(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.timeouts(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -271,4 +283,35 @@ resource "azapi_resource_action" "test" {
   })
 }
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r ActionResource) timeouts(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_resource_action" "list" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = azapi_resource.test.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  action      = "agentRegistrationInformation/regenerateKey"
+  body = jsonencode({
+    keyName = "primary"
+  })
+  depends_on = [
+    data.azapi_resource_action.list
+  ]
+  timeouts {
+	create = "10m"
+	update = "10m"
+	delete = "10m"
+	read   = "10m"
+  }
+}
+`, GenericResource{}.identityNone(data))
 }

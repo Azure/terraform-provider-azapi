@@ -83,6 +83,13 @@ func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom str
 	return step
 }
 
+// UpgradeTestApplyStep returns a test step used to run terraform apply with the development version
+func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.TestStep {
+	applyStep.ExternalProviders = td.externalProviders()
+	applyStep.ProtoV6ProviderFactories = td.providers()
+	return applyStep
+}
+
 // UpgradeTestPlanStep returns a test step used to run terraform plan with the development version to check if there's any changes
 func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.TestStep {
 	planStep.PlanOnly = true

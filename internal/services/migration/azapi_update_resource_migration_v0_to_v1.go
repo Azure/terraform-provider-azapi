@@ -74,6 +74,7 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 			Blocks: map[string]schema.Block{
 				"timeouts": timeouts.Block(ctx, timeouts.Opts{
 					Create: true,
+					Update: true,
 					Read:   true,
 					Delete: true,
 				}),

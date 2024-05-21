@@ -177,6 +177,7 @@ A `identity` block exports the following:
 The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/docs/configuration/resources.html#timeouts) for certain actions:
 
 * `create` - (Defaults to 30 minutes) Used when creating the azure resource.
+* `update` - (Defaults to 30 minutes) Used when updating the azure resource.
 * `read` - (Defaults to 5 minutes) Used when retrieving the azure resource.
 * `delete` - (Defaults to 30 minutes) Used when deleting the azure resource.
 
