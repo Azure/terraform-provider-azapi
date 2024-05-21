@@ -175,6 +175,6 @@ output "secondary_key" {
 The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/docs/configuration/resources.html#timeouts) for certain actions:
 
 * `create` - (Defaults to 30 minutes) Used when creating the azure resource action.
-* `updating` - (Defaults to 30 minutes) Used when updating the azure resource action.
+* `update` - (Defaults to 30 minutes) Used when updating the azure resource action.
 * `read` - (Defaults to 5 minutes) Used when retrieving the azure resource action.
 * `delete` - (Defaults to 30 minutes) Used when deleting the azure resource action.
