@@ -32,6 +32,7 @@ func (s *StringType) Validate(body interface{}, path string) []error {
 		return []error{utils.ErrorMismatch(path, "string", fmt.Sprintf("%T", body))}
 	}
 	if v == "" {
+		// unknown values will be converted to "", skip validation for now
 		// TODO: improve the validation to support unknown values
 		return nil
 	}
