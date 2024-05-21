@@ -21,9 +21,9 @@ variable "location" {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "lab" {
@@ -41,15 +41,15 @@ resource "azapi_resource" "lab" {
 }
 
 data "azapi_resource_id" "virtualNetwork" {
-  type = "Microsoft.Network/virtualNetworks@2023-04-01"
+  type      = "Microsoft.Network/virtualNetworks@2023-04-01"
   parent_id = azapi_resource.resourceGroup.id
-  name = var.resource_name
+  name      = var.resource_name
 }
 
 data "azapi_resource_id" "subnet" {
-  type = "Microsoft.Network/virtualNetworks/subnets@2023-04-01"
+  type      = "Microsoft.Network/virtualNetworks/subnets@2023-04-01"
   parent_id = data.azapi_resource_id.virtualNetwork.id
-  name = "${var.resource_name}Subnet"
+  name      = "${var.resource_name}Subnet"
 }
 
 resource "azapi_resource" "virtualNetwork" {

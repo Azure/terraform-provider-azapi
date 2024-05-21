@@ -80,7 +80,7 @@ resource "azapi_resource" "policyAssignment" {
   name      = var.resource_name
   location  = "westeurope"
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
     identity_ids = []
   }
   body = {

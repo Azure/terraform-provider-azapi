@@ -158,7 +158,7 @@ resource "azapi_resource" "workspace" {
   name      = var.resource_name
   location  = var.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
     identity_ids = []
   }
   body = {

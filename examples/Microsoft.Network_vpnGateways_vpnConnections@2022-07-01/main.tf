@@ -21,9 +21,9 @@ variable "location" {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "virtualWan" {
@@ -110,15 +110,15 @@ resource "azapi_resource" "vpnSite" {
 }
 
 data "azapi_resource_id" "link1" {
-  type = "Microsoft.Network/vpnSites/vpnSiteLinks@2022-07-01"
+  type      = "Microsoft.Network/vpnSites/vpnSiteLinks@2022-07-01"
   parent_id = azapi_resource.vpnSite.id
-  name = "link1"
+  name      = "link1"
 }
 
 data "azapi_resource_id" "link2" {
-  type = "Microsoft.Network/vpnSites/vpnSiteLinks@2022-07-01"
+  type      = "Microsoft.Network/vpnSites/vpnSiteLinks@2022-07-01"
   parent_id = azapi_resource.vpnSite.id
-  name = "link2"
+  name      = "link2"
 }
 
 resource "azapi_resource" "vpnGateway" {

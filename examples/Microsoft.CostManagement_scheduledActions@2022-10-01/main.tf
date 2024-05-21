@@ -38,9 +38,9 @@ data "azapi_resource" "subscription" {
 }
 
 data "azapi_resource_id" "view" {
-  type = "Microsoft.CostManagement/views@2023-04-01-preview"
+  type      = "Microsoft.CostManagement/views@2023-04-01-preview"
   parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  name = "ms:CostByService"
+  name      = "ms:CostByService"
 }
 
 resource "azapi_resource" "scheduledAction" {

@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
@@ -91,12 +92,14 @@ func (r *AzapiResource) UpgradeState(ctx context.Context) map[int64]resource.Sta
 
 func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can manage any Azure Resource Manager resource.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"name": schema.StringAttribute{
@@ -105,13 +108,15 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
 			},
 
 			"removing_special_chars": schema.BoolAttribute{
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
-				Optional:           true,
-				Computed:           true,
-				Default:            defaults.BoolDefault(false),
+				DeprecationMessage:  "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: "Whether to remove special characters in resource name. Defaults to `false`.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -123,6 +128,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -130,6 +136,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"location": schema.StringAttribute{
@@ -140,6 +147,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 						return location.Normalize(a.ValueString()) == location.Normalize(b.ValueString())
 					}),
 				},
+				MarkdownDescription: docstrings.Location(),
 			},
 
 			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
@@ -155,6 +163,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_body_changes": schema.ListAttribute{
@@ -167,15 +176,17 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.IgnoreCasing(),
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -184,6 +195,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"locks": schema.ListAttribute{
@@ -192,16 +204,19 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"schema_validation_enabled": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.SchemaValidationEnabled(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("azapi_resource"),
 			},
 
 			"tags": schema.MapAttribute{
@@ -211,6 +226,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
+				MarkdownDescription: "A mapping of tags which should be assigned to the Azure resource.",
 			},
 		},
 		Blocks: map[string]schema.Block{
@@ -226,6 +242,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 								string(identity.SystemAssigned),
 								string(identity.None),
 							)},
+							MarkdownDescription: docstrings.IdentityType(),
 						},
 
 						"identity_ids": schema.ListAttribute{
@@ -234,14 +251,17 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 							Validators: []validator.List{
 								listvalidator.ValueStringsAre(myvalidator.StringIsUserAssignedIdentityID()),
 							},
+							MarkdownDescription: docstrings.IdentityIds(),
 						},
 
 						"principal_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityPrincipalID(),
 						},
 
 						"tenant_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityTenantID(),
 						},
 					},
 				},
