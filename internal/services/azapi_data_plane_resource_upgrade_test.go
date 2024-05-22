@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -89,6 +90,43 @@ func TestAccAzapiDataPlaneResourceUpgrade_iotAppsUser(t *testing.T) {
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.iotAppsUser(data),
+		}),
+	})
+}
+
+func TestAccAzapiDataPlaneResourceUpgrade_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, PreviousVersion),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiDataPlaneResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: strings.ReplaceAll(r.timeouts(data), `update = "10m"`, ""),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.13.1"),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
 		}),
 	})
 }

@@ -519,6 +519,19 @@ func TestAccGenericResource_unknownName(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1531,6 +1544,32 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data))
+}
+
+func (r GenericResource) timeouts(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+  timeouts {
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
+  }
+}
+`, r.template(data), data.RandomString)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {

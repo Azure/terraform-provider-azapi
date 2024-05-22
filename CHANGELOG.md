@@ -1,5 +1,8 @@
 ## v1.14.0 (unreleased)
 
+ENHANCEMENTS:
+- `azapi_resource`, `azapi_update_resource`, `azapi_resource_action`, `azapi_data_plane_resource` resources: Support `timeouts.update` field, which is used to specify the timeout for the update operation.
+
 BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
 - Fix a bug that schema validation fails to validate unknown string values.
