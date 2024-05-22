@@ -247,7 +247,7 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example",
 			ResourceDefExist: true,
 			Expected: &ResourceId{
-				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/henglu522/providers/Microsoft.Web/serverFarms/example",
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example",
 				ApiVersion:        "2022-09-01",
 				AzureResourceType: "Microsoft.Web/serverfarms",
 				Name:              "example",
