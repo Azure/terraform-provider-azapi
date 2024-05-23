@@ -724,7 +724,7 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 
 	if model.UseCLI.ValueBool() {
 		log.Printf("[DEBUG] cli credential enabled")
-		if cred, err := buildAzureCLICredential(model, options); err == nil {
+		if cred, err := buildAzureCLICredential(options); err == nil {
 			creds = append(creds, cred)
 		} else {
 			log.Printf("[DEBUG] failed to initialize cli credential: %v", err)
@@ -829,7 +829,7 @@ func buildManagedIdentityCredential(model providerData, options azidentity.Defau
 	return NewManagedIdentityCredential(o)
 }
 
-func buildAzureCLICredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+func buildAzureCLICredential(options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
 	log.Printf("[DEBUG] building azure cli credential")
 	o := &azidentity.AzureCLICredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
