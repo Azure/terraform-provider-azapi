@@ -55,3 +55,19 @@ func TestAccAuth_oidc(t *testing.T) {
 		},
 	})
 }
+
+func TestAccAuth_azcli(t *testing.T) {
+	if ok := os.Getenv("ARM_USE_CLI"); ok == "" {
+		t.Skip("Skipping as `ARM_USE_CLI` is not specified")
+	}
+
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.providerAction(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}

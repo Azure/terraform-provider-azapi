@@ -766,6 +766,7 @@ func buildClientCertificateCredential(model providerData, options azidentity.Def
 	var certData []byte
 	if certPath := model.ClientCertificatePath.ValueString(); certPath != "" {
 		log.Printf("[DEBUG] reading certificate from file %s", certPath)
+		// #nosec G304
 		certData, err = os.ReadFile(certPath)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
