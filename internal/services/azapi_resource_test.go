@@ -343,7 +343,6 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 }
 
 func TestAccGenericResource_extensionScope(t *testing.T) {
-	t.Skip(`The service principle does not have authorization to perform action 'Microsoft.Authorization/locks/write'`)
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
