@@ -1159,7 +1159,7 @@ resource "azapi_resource" "test" {
       source         = ""
     }
   })
-  depends_on                = [azapi_resource.onboardingState]
+  depends_on = [azapi_resource.onboardingState]
 }
 `, r.template(data), data.RandomInteger)
 }
