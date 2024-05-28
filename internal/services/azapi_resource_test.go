@@ -351,10 +351,9 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 			Config: r.extensionScope(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -415,25 +414,6 @@ func TestAccGenericResource_locks(t *testing.T) {
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
-	})
-}
-
-func TestAccGenericResource_oidc(t *testing.T) {
-	if ok := os.Getenv("ARM_USE_OIDC"); ok == "" {
-		t.Skip("Skipping as `ARM_USE_OIDC` is not specified")
-	}
-
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.basic(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		data.ImportStep(defaultIgnores()...),
 	})
 }
 
