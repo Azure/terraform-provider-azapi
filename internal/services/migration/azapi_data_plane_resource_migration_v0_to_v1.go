@@ -61,6 +61,7 @@ func AzapiDataPlaneResourceMigrationV0ToV1(ctx context.Context) resource.StateUp
 			Blocks: map[string]schema.Block{
 				"timeouts": timeouts.Block(ctx, timeouts.Opts{
 					Create: true,
+					Update: true,
 					Read:   true,
 					Delete: true,
 				}),

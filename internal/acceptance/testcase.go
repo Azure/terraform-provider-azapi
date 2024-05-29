@@ -83,6 +83,13 @@ func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom str
 	return step
 }
 
+// UpgradeTestApplyStep returns a test step used to run terraform apply with the development version
+func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.TestStep {
+	applyStep.ExternalProviders = td.externalProviders()
+	applyStep.ProtoV6ProviderFactories = td.providers()
+	return applyStep
+}
+
 // UpgradeTestPlanStep returns a test step used to run terraform plan with the development version to check if there's any changes
 func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.TestStep {
 	planStep.PlanOnly = true
@@ -151,25 +158,41 @@ func (td TestData) externalProviders() map[string]resource.ExternalProvider {
 			Source:            "registry.terraform.io/hashicorp/azurerm",
 			VersionConstraint: "= 3.100.0",
 		},
+		"random": {
+			Source:            "registry.terraform.io/hashicorp/random",
+			VersionConstraint: "= 3.6.1",
+		},
 	}
 }
 
 func PreCheck(t *testing.T) {
-	variables := []string{
-		"ARM_CLIENT_ID",
-		"ARM_CLIENT_SECRET",
-		"ARM_SUBSCRIPTION_ID",
-		"ARM_TENANT_ID",
-		"ARM_TEST_LOCATION",
-		"ARM_TEST_LOCATION_ALT",
-		"ARM_TEST_LOCATION_ALT2",
-	}
+	if v := os.Getenv("TF_ACC"); v == "" {
+		t.Fatalf(`TF_ACC must be set for acceptance tests!
+For tests that authenticate with Azure by using a Service Principal, the following environment variables must be set:
+- ARM_CLIENT_ID
+- ARM_CLIENT_SECRET
+- ARM_SUBSCRIPTION_ID
+- ARM_TENANT_ID
+- ARM_TEST_LOCATION
+- ARM_TEST_LOCATION_ALT
+- ARM_TEST_LOCATION_ALT2
 
-	for _, variable := range variables {
-		value := os.Getenv(variable)
-		if value == "" {
-			t.Fatalf("`%s` must be set for acceptance tests!", variable)
-		}
+For tests that authenticate with Azure by OIDC in github action, the following environment variables must be set:
+- ARM_CLIENT_ID
+- ARM_TENANT_ID
+- ARM_TEST_LOCATION
+- ARM_TEST_LOCATION_ALT
+- ARM_TEST_LOCATION_ALT2
+
+For tests that authenticate with Azure by using a Service Principal with Certificate, the following environment variables must be set:
+- ARM_CLIENT_ID
+- ARM_CLIENT_CERTIFICATE_PATH
+- ARM_SUBSCRIPTION_ID
+- ARM_TENANT_ID
+- ARM_TEST_LOCATION
+- ARM_TEST_LOCATION_ALT
+- ARM_TEST_LOCATION_ALT2
+`)
 	}
 }
 

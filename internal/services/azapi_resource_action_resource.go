@@ -157,6 +157,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{
 				Create: true,
+				Update: true,
 				Read:   true,
 				Delete: true,
 			}),
@@ -195,6 +196,13 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		return
 	}
 
+	timeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
+	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
+		return
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
 	if model.When.ValueString() == "apply" {
 		r.Action(ctx, model, &response.State, &response.Diagnostics)
 	} else {
@@ -218,6 +226,13 @@ func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequ
 	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	timeout, diags := model.Timeouts.Update(ctx, 30*time.Minute)
+	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
+		return
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
 
 	if model.When.ValueString() == "apply" {
 		r.Action(ctx, model, &response.State, &response.Diagnostics)

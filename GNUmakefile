@@ -1,7 +1,7 @@
 TEST?=$$(go list ./... |grep -v 'vendor'|grep -v 'examples')
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 PKG_NAME=azapi
-TESTTIMEOUT=180m
+TESTTIMEOUT=300m
 
 .EXPORT_ALL_VARIABLES:
   TF_SCHEMA_PANIC_ON_ERROR=1

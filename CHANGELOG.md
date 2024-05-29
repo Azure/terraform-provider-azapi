@@ -2,9 +2,13 @@
 
 ENHANCEMENTS:
 - `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `false`.
+- `azapi` provider: Support `client_certificate` field, which specifies base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
+- `azapi_resource`, `azapi_update_resource`, `azapi_resource_action`, `azapi_data_plane_resource` resources: Support `timeouts.update` field, which is used to specify the timeout for the update operation.
+- `azapi_update_resource` resource: Improve the id build logic to honor user's input.
 
 BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
+- Fix a bug that schema validation fails to validate unknown string values.
 
 ## v1.13.1
 

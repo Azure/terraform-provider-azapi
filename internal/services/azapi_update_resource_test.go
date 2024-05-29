@@ -143,6 +143,20 @@ func TestAccGenericUpdateResource_ignoreOrderInArray(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -460,4 +474,33 @@ resource "azurerm_resource_group" "test" {
   location = "%[2]s"
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericUpdateResource) timeouts(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azurerm_automation_account.test.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
+  timeouts {
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
+  }
+}
+`, r.template(data), data.RandomString)
 }
