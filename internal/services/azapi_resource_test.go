@@ -1112,16 +1112,54 @@ func (r GenericResource) extensionScope(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Authorization/locks@2015-01-01"
-  name      = "acctest-%[2]d"
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
   parent_id = azurerm_resource_group.test.id
-
+  name      = "acctest-oi-%[2]d"
+  location  = azurerm_resource_group.test.location
   body = jsonencode({
     properties = {
-      level = "CanNotDelete"
+      features = {
+        disableLocalAuth                            = false
+        enableLogAccessUsingOnlyResourcePermissions = true
+      }
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+      retentionInDays                 = 30
+      sku = {
+        name = "PerGB2018"
+      }
+      workspaceCapping = {
+        dailyQuotaGb = -1
+      }
     }
   })
+}
+
+resource "azapi_resource" "onboardingState" {
+  type      = "Microsoft.SecurityInsights/onboardingStates@2022-11-01"
+  parent_id = azapi_resource.workspace.id
+  name      = "default"
+  body = jsonencode({
+    properties = {
+      customerManagedKey = false
+    }
+  })
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.SecurityInsights/watchlists@2022-11-01"
+  parent_id = azapi_resource.workspace.id
+  name      = "acctest-wl-%[2]d"
+  body = jsonencode({
+    properties = {
+      displayName    = "test"
+      itemsSearchKey = "k1"
+      provider       = "Microsoft"
+      source         = ""
+    }
+  })
+  depends_on = [azapi_resource.onboardingState]
 }
 `, r.template(data), data.RandomInteger)
 }
