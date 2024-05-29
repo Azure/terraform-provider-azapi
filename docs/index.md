@@ -164,4 +164,4 @@ For some advanced scenarios, such as where more granular permissions are necessa
 
 * `enable_hcl_output_for_data_source` - (Optional) Should the provider return the output in HCL format for data sources? Defaults to `false`. When set to `true`, the provider will return HCL output for data sources. When set to `false`, the provider will return JSON output for data sources.
 
-* `enable_preflight` - (Optional) Whether to enable Preflight Validation or not. Defaults to `true`. When set to `true`, the provider will use Preflight to do static validation before really deploying a new resource. When set to `false`, the provider will disable this validation.
+* `enable_preflight` - (Optional) Whether to enable Preflight Validation or not. Defaults to `false`. When set to `true`, the provider will use Preflight to do static validation before really deploying a new resource. When set to `false`, the provider will disable this validation.

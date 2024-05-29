@@ -20,6 +20,6 @@ func Default() UserFeatures {
 		DefaultNamingSuffix:          "",
 		CafEnabled:                   false,
 		EnableHCLOutputForDataSource: false,
-		EnablePreflight:              true,
+		EnablePreflight:              false,
 	}
 }

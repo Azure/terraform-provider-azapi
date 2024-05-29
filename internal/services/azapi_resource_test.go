@@ -1504,24 +1504,6 @@ resource "azapi_resource" "test" {
 
 func (r GenericResource) preflightResourceGroupLevelValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-%[1]s
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Storage/storageAccounts@2021-09-01"
-  parent_id = azurerm_resource_group.test.id
-  name      = "acctestsa%[2]s"
-  location  = azurerm_resource_group.test.location
-  body = {
-    kind = "StorageV2"
-  }
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
-}
-`, r.template(data), data.RandomString)
-}
-
-func (r GenericResource) disablePreflightValidation(data acceptance.TestData) string {
-	return fmt.Sprintf(`
 provider "azurerm" {
   features {
     resource_group {
@@ -1531,7 +1513,7 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  enable_preflight = false
+  enable_preflight = true
 }
 
 
@@ -1552,6 +1534,24 @@ resource "azapi_resource" "test" {
   response_export_values    = ["*"]
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) disablePreflightValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts@2021-09-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctestsa%[2]s"
+  location  = azurerm_resource_group.test.location
+  body = {
+    kind = "StorageV2"
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+`, r.template(data), data.RandomString)
 }
 
 func (GenericResource) template(data acceptance.TestData) string {
