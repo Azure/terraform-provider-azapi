@@ -1,4 +1,6 @@
 ## v1.14.0 (unreleased)
+FEATURES:
+- **New Data Source**: azapi_client_config
 
 ENHANCEMENTS:
 - `azapi` provider: Support `client_certificate` field, which specifies base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
