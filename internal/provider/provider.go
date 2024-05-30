@@ -609,6 +609,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
 		CustomCorrelationRequestID:  model.CustomCorrelationRequestID.ValueString(),
 		SubscriptionId:              model.SubscriptionID.ValueString(),
+		TenantId:                    model.TenantID.ValueString(),
 	}
 
 	client := &clients.Client{}
@@ -637,6 +638,9 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 		},
 		func() datasource.DataSource {
 			return &services.AzapiResourceDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.ClientConfigDataSource{}
 		},
 	}
 

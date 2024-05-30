@@ -53,6 +53,8 @@ func BuildTestClient() (*clients.Client, error) {
 			CloudCfg:                 cloudConfig,
 			Features:                 features.Default(),
 			SkipProviderRegistration: true,
+			TenantId:                 os.Getenv("ARM_TENANT_ID"),
+			SubscriptionId:           os.Getenv("ARM_SUBSCRIPTION_ID"),
 		}
 
 		client := &clients.Client{}
