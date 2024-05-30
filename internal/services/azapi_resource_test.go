@@ -496,6 +496,19 @@ func TestAccGenericResource_preflightResourceGroupLevelValidation(t *testing.T) 
 	})
 }
 
+func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightExtensionResourceValidation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_disablePreflightValidation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1572,6 +1585,53 @@ resource "azapi_resource" "test" {
   location  = azurerm_resource_group.test.location
   body = {
     kind = "StorageV2"
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) preflightExtensionResourceValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+provider "azapi" {
+  enable_preflight = true
+}
+
+
+resource "azurerm_resource_group" "test" {
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+}
+
+resource "azurerm_public_ip" "test" {
+  name                = "acctestPI-%[1]d"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Authorization/locks@2020-05-01"
+  parent_id = azurerm_public_ip.test.id
+  name      = "acctestLock-%[1]d"
+  body = {
+    properties = {
+      level = "CanNotDelete"
+      notes = ""
+    }
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
