@@ -150,8 +150,12 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
 
-* `output` - The output HCL object containing the properties specified in `response_export_values`. Here are some examples use the values.
-```
+* `output` - The output containing the properties specified in `response_export_values`.It supports both JSON and HCL object. 
+    It will be the same format as the `body`. For example, if specifying `body` in HCL format, the `output` will be in HCL format.
+
+
+  *Examples to use the values in HCL format:*
+```hcl
 // it will output "registry1.azurecr.io"
 output "login_server" {
   value = azapi_resource.example.output.properties.loginServer
@@ -162,7 +166,20 @@ output "quarantine_policy" {
   value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
 }
 ```
+  *Examples to use the values in JSON format:*
+```hcl
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = jsondecode(azapi_resource.example.output).properties.loginServer
+}
 
+// it will output "disabled"
+output "quarantine_policy" {
+  value = jsondecode(azapi_resource.example.output).properties.policies.quarantinePolicy.status
+}
+```
+
+~> **NOTE:** Azure Blueprints are in Preview and potentially subject to breaking change without notice.
 
 ---
 

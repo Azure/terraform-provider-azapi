@@ -150,16 +150,30 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `output` - The output containing the properties specified in `response_export_values`. It supports both JSON and HCL object. By default, it will be in JSON format.
   If specifying `enable_hcl_output_for_data_source` to `true` in the provider block, it will be in HCL format.
-  Here are some examples to use the values in HCL format:
+
+
+*Examples to use the values in HCL format:*
 ```hcl
 // it will output "nHGYNd******i4wdug=="
 output "primary_key" {
-  value = azapi_resource_action.test.output.keys.0.Value
+  value = data.azapi_resource_action.example.output.keys.0.Value
 }
 
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
-  value = azapi_resource_action.test.output.keys.1.Value
+  value = data.azapi_resource_action.example.output.keys.1.Value
+}
+```
+*Examples to use the values in JSON format:*
+```hcl
+// it will output "nHGYNd******i4wdug=="
+output "primary_key" {
+  value = jsondecode(data.azapi_resource.example.output).keys.0.Value
+}
+
+// it will output "6yoCad******SLzKzg=="
+output "secondary_key" {
+  value = jsondecode(data.azapi_resource.example.output).keys.1.Value
 }
 ```
 
