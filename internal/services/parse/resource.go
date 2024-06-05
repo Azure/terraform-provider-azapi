@@ -191,10 +191,8 @@ func validateParentIdScope(resourceDef *types.ResourceType, parentId string) err
 						matchedScope = scope
 					}
 				case types.Extension:
-					// only supports extension on a resource group scope resource
-					if parentIdScope == types.ResourceGroup {
-						matchedScope = scope
-					}
+					// skip checking the parent Id's scope because extension resource could be applied to any scope
+					matchedScope = scope
 				case types.Unknown:
 				}
 			}

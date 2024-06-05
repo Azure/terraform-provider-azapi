@@ -10,6 +10,7 @@ ENHANCEMENTS:
 BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
 - Fix a bug that schema validation fails to validate unknown string values.
+- Fix a bug that `azapi_resource` only supports extension resource on a resource group scoped resource.
 
 ## v1.13.1
 
