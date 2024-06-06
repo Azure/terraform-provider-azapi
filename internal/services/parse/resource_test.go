@@ -522,6 +522,31 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
+
+		{
+			Name:             "test",
+			ParentId:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet",
+			ResourceType:     "Microsoft.Authorization/locks@2020-05-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-05-01",
+				AzureResourceType: "Microsoft.Authorization/locks",
+				AzureResourceId:   "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/providers/Microsoft.Authorization/locks/test",
+			},
+		},
+
+		{
+			Name:             "test",
+			ParentId:         "/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000",
+			ResourceType:     "Microsoft.CostManagement/costAllocationRules@2023-11-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2023-11-01",
+				AzureResourceType: "Microsoft.CostManagement/costAllocationRules",
+				AzureResourceId:   "/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/costAllocationRules/test",
+			},
+		},
+
 		{
 			Name:             "",
 			ParentId:         "",
