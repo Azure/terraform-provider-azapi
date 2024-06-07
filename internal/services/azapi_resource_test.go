@@ -1599,94 +1599,94 @@ resource "azapi_resource" "test" {
 
 func (r GenericResource) preflightManagementGroupScopeValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-  provider "azurerm" {
-    features {
-      resource_group {
-        prevent_deletion_if_contains_resources = false
-      }
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
     }
   }
-  
-  provider "azapi" {
-    enable_preflight = true
-  }
+}
 
-  data "azurerm_client_config" "current" {}
+provider "azapi" {
+  enable_preflight = true
+}
 
-  resource "azurerm_management_group" "test" {
-  }
-  
-  resource "azapi_resource" "test" {
-    type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
-    parent_id = azurerm_management_group.test.id
-    name      = "acctestPD-%[1]d"
-    body = {
-      properties = {
-        description = ""
-        displayName = "my-policy-definition"
-        mode        = "All"
-        parameters = {
-          allowedLocations = {
-            metadata = {
-              description = "The list of allowed locations for resources."
-              displayName = "Allowed locations"
-              strongType  = "location"
-            }
-            type = "Array"
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_management_group" "test" {
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
+  parent_id = azurerm_management_group.test.id
+  name      = "acctestPD-%[1]d"
+  body = {
+    properties = {
+      description = ""
+      displayName = "my-policy-definition"
+      mode        = "All"
+      parameters = {
+        allowedLocations = {
+          metadata = {
+            description = "The list of allowed locations for resources."
+            displayName = "Allowed locations"
+            strongType  = "location"
           }
+          type = "Array"
         }
-        policyRule = {
-          if = {
-            not = {
-              field = "location"
-              in    = "[parameters('allowedLocations')]"
-            }
-          }
-          then = {
-            effect = "audit"
-          }
-        }
-        policyType = "Custom"
       }
+      policyRule = {
+        if = {
+          not = {
+            field = "location"
+            in    = "[parameters('allowedLocations')]"
+          }
+        }
+        then = {
+          effect = "audit"
+        }
+      }
+      policyType = "Custom"
     }
-    schema_validation_enabled = false
-    response_export_values    = ["*"]
   }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
   `, data.RandomInteger)
 }
 
 func (r GenericResource) preflightTenantScopeValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-  provider "azurerm" {
-    features {
-      resource_group {
-        prevent_deletion_if_contains_resources = false
-      }
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
     }
   }
-  
-  provider "azapi" {
-    enable_preflight = true
-  }
+}
 
-  data "azurerm_client_config" "current" {}
-  
-  resource "azapi_resource" "test" {
-    type                      = "Microsoft.Management/managementGroups@2020-05-01"
-    name                      = "acctestMG-%[1]d"
-    parent_id = "/"
-    body = jsonencode({
-      properties = {
-        details = {
-          parent = {
-            id = "/providers/Microsoft.Management/managementGroups/${data.azurerm_client_config.current.tenant_id}"
-          }
+provider "azapi" {
+  enable_preflight = true
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Management/managementGroups@2020-05-01"
+  name      = "acctestMG-%[1]d"
+  parent_id = "/"
+  body = jsonencode({
+    properties = {
+      details = {
+        parent = {
+          id = "/providers/Microsoft.Management/managementGroups/${data.azurerm_client_config.current.tenant_id}"
         }
       }
-    })
+    }
+  })
 
 
-  }
+}
   `, data.RandomInteger)
 }
 
@@ -1705,9 +1705,9 @@ provider "azapi" {
 }
 
 resource "azapi_resource" "test" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = "acctestRG-%[1]d"
-  location                  = "%[2]s"
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
 }
 `, data.RandomInteger, data.LocationPrimary)
 }
