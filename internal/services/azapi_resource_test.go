@@ -485,12 +485,51 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_preflightResourceGroupLevelValidation(t *testing.T) {
+func TestAccGenericResource_preflightManagementGroupScopeValidation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:      r.preflightResourceGroupLevelValidation(data),
+			Config: r.preflightManagementGroupScopeValidation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_preflightTenantScopeValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightTenantScopeValidation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_preflightSubscriptionScopeValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.preflightSubscriptionScopeValidation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_preflightResourceGroupScopeValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.preflightResourceGroupScopeValidation(data),
 			ExpectError: regexp.MustCompile("Preflight Validation: Invalid configuration"),
 		},
 	})
@@ -509,12 +548,12 @@ func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_disablePreflightValidation(t *testing.T) {
+func TestAccGenericResource_preflightDisableValidation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:      r.disablePreflightValidation(data),
+			Config:      r.preflightDisableValidation(data),
 			ExpectError: regexp.MustCompile("Failed to create/update resource"),
 		},
 	})
@@ -1558,7 +1597,122 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString)
 }
 
-func (r GenericResource) preflightResourceGroupLevelValidation(data acceptance.TestData) string {
+func (r GenericResource) preflightManagementGroupScopeValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+  provider "azurerm" {
+    features {
+      resource_group {
+        prevent_deletion_if_contains_resources = false
+      }
+    }
+  }
+  
+  provider "azapi" {
+    enable_preflight = true
+  }
+
+  data "azurerm_client_config" "current" {}
+
+  resource "azurerm_management_group" "test" {
+  }
+  
+  resource "azapi_resource" "test" {
+    type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
+    parent_id = azurerm_management_group.test.id
+    name      = "acctestPD-%[1]d"
+    body = {
+      properties = {
+        description = ""
+        displayName = "my-policy-definition"
+        mode        = "All"
+        parameters = {
+          allowedLocations = {
+            metadata = {
+              description = "The list of allowed locations for resources."
+              displayName = "Allowed locations"
+              strongType  = "location"
+            }
+            type = "Array"
+          }
+        }
+        policyRule = {
+          if = {
+            not = {
+              field = "location"
+              in    = "[parameters('allowedLocations')]"
+            }
+          }
+          then = {
+            effect = "audit"
+          }
+        }
+        policyType = "Custom"
+      }
+    }
+    schema_validation_enabled = false
+    response_export_values    = ["*"]
+  }
+  `, data.RandomInteger)
+}
+
+func (r GenericResource) preflightTenantScopeValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+  provider "azurerm" {
+    features {
+      resource_group {
+        prevent_deletion_if_contains_resources = false
+      }
+    }
+  }
+  
+  provider "azapi" {
+    enable_preflight = true
+  }
+
+  data "azurerm_client_config" "current" {}
+  
+  resource "azapi_resource" "test" {
+    type                      = "Microsoft.Management/managementGroups@2020-05-01"
+    name                      = "acctestMG-%[1]d"
+    parent_id = "/"
+    body = jsonencode({
+      properties = {
+        details = {
+          parent = {
+            id = "/providers/Microsoft.Management/managementGroups/${data.azurerm_client_config.current.tenant_id}"
+          }
+        }
+      }
+    })
+
+
+  }
+  `, data.RandomInteger)
+}
+
+func (r GenericResource) preflightSubscriptionScopeValidation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+provider "azapi" {
+  enable_preflight = true
+}
+
+resource "azapi_resource" "test" {
+  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name                      = "acctestRG-%[1]d"
+  location                  = "%[2]s"
+}
+`, data.RandomInteger, data.LocationPrimary)
+}
+
+func (r GenericResource) preflightResourceGroupScopeValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {
@@ -1639,7 +1793,7 @@ resource "azapi_resource" "test" {
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }
 
-func (r GenericResource) disablePreflightValidation(data acceptance.TestData) string {
+func (r GenericResource) preflightDisableValidation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 

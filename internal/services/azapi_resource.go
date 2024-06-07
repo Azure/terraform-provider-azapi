@@ -466,7 +466,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
 		}
-		if !utils.ResponseErrorWasNotFound(err) {
+
+		// 403 is returned if group does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
+		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && strings.EqualFold("Microsoft.Management/managementGroups", id.AzureResourceType)) {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -519,8 +521,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		defer locks.UnlockByID(lockId)
 	}
 
-	// preflight validation: currently only supports the subscription scope validation
-	if r.ProviderData.Features.EnablePreflight && isNewResource && strings.HasPrefix(strings.ToLower(plan.ParentID.ValueString()), "/subscriptions/") {
+	if r.isPreflightSupported(isNewResource, plan.ParentID.ValueString()) {
 		err := preflightValidation(ctx, client, id, body)
 		if err != nil {
 			diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
@@ -868,6 +869,18 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
+}
+
+func (r *AzapiResource) isPreflightSupported(isNewResource bool, parentID string) bool {
+	// currently, parentID must be one of resource group, subscription, management group or tenant('/'). extension resources and nested resources are not supported by Preflight.
+	resourceType := utils.GetResourceType(parentID)
+
+	isSupportedParentID := strings.EqualFold(arm.ResourceGroupResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.SubscriptionResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.TenantResourceType.String(), resourceType) ||
+		strings.EqualFold("Microsoft.Management/managementGroups", resourceType)
+
+	return r.ProviderData.Features.EnablePreflight && isNewResource && isSupportedParentID
 }
 
 func (r *AzapiResource) nameWithDefaultNaming(config types.String) (types.String, diag.Diagnostics) {
