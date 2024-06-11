@@ -59,6 +59,7 @@ type providerData struct {
 	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
 	UseCLI                       types.Bool   `tfsdk:"use_cli"`
 	UseMSI                       types.Bool   `tfsdk:"use_msi"`
+	UseAKSWorkloadIdentity       types.Bool   `tfsdk:"use_aks_workload_identity"`
 	PartnerID                    types.String `tfsdk:"partner_id"`
 	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
 	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
@@ -115,6 +116,18 @@ func (model providerData) GetClientSecret() (*string, error) {
 	}
 
 	return &clientSecret, nil
+}
+
+func (model providerData) GetOIDCTokenFilePath() string {
+	if !model.OIDCTokenFilePath.IsNull() && model.OIDCTokenFilePath.ValueString() != "" {
+		return model.OIDCTokenFilePath.ValueString()
+	}
+
+	if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_FEDERATED_TOKEN_FILE") != "" {
+		return os.Getenv("AZURE_FEDERATED_TOKEN_FILE")
+	}
+
+	return ""
 }
 
 type providerEndpointData struct {
@@ -265,6 +278,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"use_msi": schema.BoolAttribute{
 				Optional:    true,
 				Description: "Allow Managed Service Identity to be used for Authentication.",
+			},
+
+			"use_aks_workload_identity": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified.",
 			},
 
 			// TODO@mgd: azidentity doesn't support msi_endpoint
@@ -483,6 +501,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.UseAKSWorkloadIdentity.IsNull() {
+		if v := os.Getenv("ARM_USE_AKS_WORKLOAD_IDENTITY"); v != "" {
+			model.UseAKSWorkloadIdentity = types.BoolValue(v == "true")
+		} else {
+			model.UseAKSWorkloadIdentity = types.BoolValue(false)
+		}
+	}
+
 	if model.UseCLI.IsNull() {
 		if v := os.Getenv("ARM_USE_CLI"); v != "" {
 			model.UseCLI = types.BoolValue(v == "true")
@@ -696,8 +722,8 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 	log.Printf("[DEBUG] building chained token credential")
 	var creds []azcore.TokenCredential
 
-	if model.UseOIDC.ValueBool() {
-		log.Printf("[DEBUG] oidc credential enabled")
+	if model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool() {
+		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
 		if cred, err := buildOidcCredential(model, options); err == nil {
 			creds = append(creds, cred)
 		} else {
@@ -816,7 +842,7 @@ func buildOidcCredential(model providerData, options azidentity.DefaultAzureCred
 		RequestToken:               model.OIDCRequestToken.ValueString(),
 		RequestUrl:                 model.OIDCRequestURL.ValueString(),
 		Token:                      model.OIDCToken.ValueString(),
-		TokenFilePath:              model.OIDCTokenFilePath.ValueString(),
+		TokenFilePath:              model.GetOIDCTokenFilePath(),
 	}
 	return NewOidcCredential(o)
 }

@@ -140,6 +140,12 @@ More information on [how to authenticate to Azure using Managed Identity can be 
 
 ---
 
+When authenticating using AKS Managed Identity, the following fields can be set:
+
+* `use_aks_workload_identity` - (Optional) Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified. Defaults to `false`.
+
+---
+
 For Azure CLI authentication, the following fields can be set:
 
 * `use_cli` - (Optional) Should Azure CLI be used for authentication? This can also be sourced from the `ARM_USE_CLI` environment variable. Defaults to `true`.
