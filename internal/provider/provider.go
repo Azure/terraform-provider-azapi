@@ -23,6 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,6 +31,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
+
+var _ provider.Provider = &Provider{}
+var _ provider.ProviderWithFunctions = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -649,6 +653,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 
 	response.ResourceData = client
 	response.DataSourceData = client
+}
+
+func (p Provider) Functions(ctx context.Context) []func() function.Function {
+	return []func() function.Function{
+		func() function.Function {
+			return &services.ParseResourceIdFunction{}
+		},
+	}
 }
 
 func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSource {
