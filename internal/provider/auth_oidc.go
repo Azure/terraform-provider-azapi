@@ -56,11 +56,7 @@ func NewOidcCredential(options *OidcCredentialOptions) (*OidcCredential, error) 
 }
 
 func (w *OidcCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	token, err := w.cred.GetToken(ctx, opts)
-	if err != nil {
-		err = azidentity.NewCredentialUnavailableError(err.Error())
-	}
-	return token, err
+	return w.cred.GetToken(ctx, opts)
 }
 
 func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {

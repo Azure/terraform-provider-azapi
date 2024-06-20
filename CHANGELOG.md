@@ -12,7 +12,6 @@ BUG FIXES:
 - Fix a bug that `azapi_resource` will crash when the `location` in GET response is null.
 - Fix a bug that schema validation fails to validate unknown string values.
 - Fix a bug that `azapi_resource` only supports extension resource on a resource group scoped resource.
-- Fix a bug when OIDC authentication failed, the provider doesn't try other authentication methods.
 
 ## v1.13.1
 
