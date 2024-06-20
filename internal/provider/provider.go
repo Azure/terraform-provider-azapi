@@ -832,6 +832,9 @@ func buildOidcCredential(model providerData, options azidentity.DefaultAzureCred
 	if err != nil {
 		return nil, err
 	}
+	if model.OIDCToken.ValueString() == "" && model.GetOIDCTokenFilePath() == "" && model.OIDCRequestToken.ValueString() == "" && model.OIDCRequestURL.ValueString() == "" {
+		return nil, fmt.Errorf("missing required OIDC configuration")
+	}
 	o := &OidcCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: options.Cloud,
