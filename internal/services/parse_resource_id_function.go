@@ -82,7 +82,7 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 		return
 	}
 
-	id, err := parse.ResourceIDWithResourceType(resourceType, resourceId.ValueString())
+	id, err := parse.ResourceIDWithResourceType(resourceId.ValueString(), resourceType)
 	if err != nil {
 		response.Error = function.NewFuncError(fmt.Errorf("failed to parse resource ID(resourceType: %s, resourceId: %s): %w", resourceType, resourceId.ValueString(), err).Error())
 		return
