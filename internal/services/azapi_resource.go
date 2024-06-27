@@ -62,6 +62,14 @@ type AzapiResourceModel struct {
 	Timeouts                timeouts.Value `tfsdk:"timeouts"`
 }
 
+type PreflightValidateResourcesModel struct {
+	Provider  string                   `json:"provider"`
+	Type      string                   `json:"type"`
+	Location  string                   `json:"location"`
+	Scope     string                   `json:"scope"`
+	Resources []map[string]interface{} `json:"resources"`
+}
+
 var _ resource.Resource = &AzapiResource{}
 var _ resource.ResourceWithConfigure = &AzapiResource{}
 var _ resource.ResourceWithModifyPlan = &AzapiResource{}
@@ -458,7 +466,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
 		}
-		if !utils.ResponseErrorWasNotFound(err) {
+
+		// 403 is returned if group does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
+		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && strings.EqualFold("Microsoft.Management/managementGroups", id.AzureResourceType)) {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -509,6 +519,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	for _, lockId := range AsStringList(plan.Locks) {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
+	}
+
+	if r.isPreflightSupported(isNewResource, plan.ParentID.ValueString()) {
+		err := preflightValidation(ctx, client, id, body)
+		if err != nil {
+			diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
+			return
+		}
 	}
 
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
@@ -853,6 +871,18 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
+func (r *AzapiResource) isPreflightSupported(isNewResource bool, parentID string) bool {
+	// currently, parentID must be one of resource group, subscription, management group or tenant('/'). extension resources and nested resources are not supported by Preflight.
+	resourceType := utils.GetResourceType(parentID)
+
+	isSupportedParentID := strings.EqualFold(arm.ResourceGroupResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.SubscriptionResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.TenantResourceType.String(), resourceType) ||
+		strings.EqualFold("Microsoft.Management/managementGroups", resourceType)
+
+	return r.ProviderData.Features.EnablePreflight && isNewResource && isSupportedParentID
+}
+
 func (r *AzapiResource) nameWithDefaultNaming(config types.String) (types.String, diag.Diagnostics) {
 	if !config.IsNull() {
 		return config, diag.Diagnostics{}
@@ -937,6 +967,36 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 		body["identity"] = out
 	}
 	return diag.Diagnostics{}
+}
+
+func preflightValidation(ctx context.Context, client *clients.ResourceClient, id parse.ResourceId, body map[string]interface{}) error {
+	if !utils.IsTopLevelResourceType(id.AzureResourceType) {
+		return nil
+	}
+
+	requestBody := PreflightValidateResourcesModel{}
+	requestBody.Provider, requestBody.Type, _ = strings.Cut(id.AzureResourceType, "/")
+	requestBody.Scope = id.ParentId
+	if locationValue, ok := body["location"]; ok {
+		requestBody.Location = locationValue.(string)
+	}
+
+	resourceBody := make(map[string]interface{})
+	for k, v := range body {
+		resourceBody[k] = v
+	}
+
+	resourceBody["name"] = id.Name
+	resourceBody["apiVersion"] = id.ApiVersion
+
+	requestBody.Resources = []map[string]interface{}{resourceBody}
+
+	_, err := client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]interface{}) diag.Diagnostics {
