@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -164,6 +165,14 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
 				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `body` to ignore.",
+			},
+
+			"replace_triggered_by": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: "Placing values into this field will trigger a replace of the resource when the values change. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine.",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplace(),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{
