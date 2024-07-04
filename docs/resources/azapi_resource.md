@@ -124,7 +124,7 @@ The following arguments are supported:
 }
 ```
 
-* `replace_triggered_by` = (Optional) A dynamic input that
+* `replace_triggered_by` = (Optional) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine.
 
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
