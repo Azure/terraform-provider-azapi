@@ -2038,12 +2038,12 @@
         "flags": 0,
         "description": "Event Hub retention settings"
       },
-      "messageTimestampType": {
+      "messageTimestampDescription": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/180"
         },
         "flags": 0,
-        "description": "Denotes the type of timestamp the message will hold. Two types of timestamp types AppendTime, CreateTime. AppendTime refers the time in which message got appended inside broker log. CreateTime refers to the time in which the message was generated on source side and producers can set this timestamp while sending the message. Default value is AppendTime. If you are using AMQP protocol, CreateTime equals AppendTime for now and will full have runtime support later."
+        "description": "Properties of MessageTimestamp Description"
       },
       "identifier": {
         "type": {
@@ -2338,21 +2338,21 @@
           "$ref": "#/87"
         },
         "flags": 0,
-        "description": "Number of hours to retain the events for this Event Hub. If cleanupPolicy is Compact the returned value of this property is Long.MaxValue"
+        "description": "Number of hours to retain the events for this Event Hub. This should be positive value upto namespace SKU max. -1 is a special case where retention time is infinite, but the size of an entity is restricted and its size depends on namespace SKU type."
       },
       "minCompactionLagInMins": {
         "type": {
           "$ref": "#/87"
         },
         "flags": 0,
-        "description": "The minimum time a message will remain ineligible for compaction in the log. Only applicable for logs that are being compacted."
+        "description": "The minimum time a message will remain ineligible for compaction in the log. This value is used when cleanupPolicy is Compact or DeleteOrCompact."
       },
       "tombstoneRetentionTimeInHours": {
         "type": {
           "$ref": "#/87"
         },
         "flags": 0,
-        "description": "Number of hours to retain the tombstone markers of a compacted Event Hub. This value is only used when cleanupPolicy is Compact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub"
+        "description": "Number of hours to retain the tombstone markers of a compacted Event Hub. This value is used when cleanupPolicy is Compact or DeleteOrCompact. Consumer must complete reading the tombstone marker within this specified amount of time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described by the tombstone marker within the compacted Event Hub"
       }
     }
   },
@@ -2366,7 +2366,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Delete,Compact"
+    "value": "DeleteOrCompact"
   },
   {
     "$type": "UnionType",
@@ -2386,21 +2386,34 @@
     ]
   },
   {
-    "$type": "StringLiteralType",
-    "value": "AppendTime"
+    "$type": "ObjectType",
+    "name": "MessageTimestampDescription",
+    "properties": {
+      "timestampType": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
+        "description": "Denotes the type of timestamp the message will hold.Two types of timestamp types - \"AppendTime\" and \"CreateTime\". AppendTime refers the time in which message got appended inside broker log. CreateTime refers to the time in which the message was generated on source side and producers can set this timestamp while sending the message. Default value is AppendTime. If you are using AMQP protocol, CreateTime equals AppendTime and its behavior remains the same."
+      }
+    }
   },
   {
     "$type": "StringLiteralType",
-    "value": "CreateTime"
+    "value": "LogAppend"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Create"
   },
   {
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/180"
+        "$ref": "#/181"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/182"
       },
       {
         "$ref": "#/2"
@@ -2444,21 +2457,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/185"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/185"
+          "$ref": "#/186"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/187"
+          "$ref": "#/188"
         },
         "flags": 0,
         "description": "Single item in List or Get Consumer group operation"
@@ -2511,7 +2524,7 @@
     "name": "Microsoft.EventHub/namespaces/eventhubs/consumergroups@2024-05-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/186"
+      "$ref": "#/187"
     },
     "flags": 0
   },
@@ -2543,21 +2556,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/190"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/191"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/193"
         },
         "flags": 0
       },
@@ -2604,20 +2617,20 @@
       },
       "groupProperties": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/194"
         },
         "flags": 0,
         "description": "dictionary object for SchemaGroup group properties"
       },
       "schemaCompatibility": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/198"
         },
         "flags": 0
       },
       "schemaType": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/203"
         },
         "flags": 0
       }
@@ -2647,13 +2660,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/194"
-      },
-      {
         "$ref": "#/195"
       },
       {
         "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
       },
       {
         "$ref": "#/2"
@@ -2680,9 +2693,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/198"
-      },
-      {
         "$ref": "#/199"
       },
       {
@@ -2690,6 +2700,9 @@
       },
       {
         "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
       },
       {
         "$ref": "#/2"
@@ -2701,7 +2714,7 @@
     "name": "Microsoft.EventHub/namespaces/schemagroups@2024-05-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/191"
+      "$ref": "#/192"
     },
     "flags": 0
   },
@@ -2733,21 +2746,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/204"
+          "$ref": "#/205"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/205"
+          "$ref": "#/206"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/208"
         },
         "flags": 0
       },
@@ -2787,7 +2800,7 @@
       },
       "policies": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/217"
         },
         "flags": 0,
         "description": "List of group policies that define the behavior of application group. The policies can support resource governance scenarios such as limiting ingress or egress traffic."
@@ -2809,7 +2822,7 @@
     },
     "elements": {
       "ThrottlingPolicy": {
-        "$ref": "#/209"
+        "$ref": "#/210"
       }
     }
   },
@@ -2826,14 +2839,14 @@
       },
       "metricId": {
         "type": {
-          "$ref": "#/214"
+          "$ref": "#/215"
         },
         "flags": 1,
         "description": "Metric Id on which the throttle limit should be set, MetricId can be discovered by hovering over Metric in the Metrics section of Event Hub Namespace inside Azure Portal"
       },
       "type": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/216"
         },
         "flags": 1,
         "description": "Application Group Policy types"
@@ -2860,9 +2873,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/210"
-      },
-      {
         "$ref": "#/211"
       },
       {
@@ -2870,6 +2880,9 @@
       },
       {
         "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
       },
       {
         "$ref": "#/2"
@@ -2883,7 +2896,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/208"
+      "$ref": "#/209"
     }
   },
   {
@@ -2891,7 +2904,7 @@
     "name": "Microsoft.EventHub/namespaces/applicationGroups@2024-05-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/206"
+      "$ref": "#/207"
     },
     "flags": 0
   },
@@ -2923,14 +2936,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/218"
+          "$ref": "#/219"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/219"
+          "$ref": "#/220"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -2963,7 +2976,7 @@
     "name": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs/authorizationRules@2024-05-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/220"
+      "$ref": "#/221"
     },
     "flags": 1
   },
@@ -2973,7 +2986,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/224"
         },
         "flags": 0
       }
@@ -2990,12 +3003,12 @@
         "flags": 0,
         "description": "Query parameter for the new primary location after failover."
       },
-      "maximumGracePeriodInMins": {
+      "force": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/30"
         },
         "flags": 0,
-        "description": "Maximum time duration allowed complete data replication from primary to secondary. Use maximumGracePeriodInMins = 0: For Unplanned Geo-Failover, which switches the role between primary and secondary immediately. The data that is not being replicated yet will be discarded. Use maximumGracePeriodInMins > 0: For Planned Geo-Failover/DR Drill, continue replicating data until grace period expires.  Any data that is not replicated during the grace period will be discarded. During the replication the namespace stops accepting any new publishing requests"
+        "description": "If Force is false then graceful failover is attempted after ensuring no data loss. If Force flag is set to true, Forced failover is attempted with possible data loss."
       }
     }
   },
@@ -3005,7 +3018,7 @@
     "resourceType": "Microsoft.EventHub/namespaces",
     "apiVersion": "2024-05-01-preview",
     "input": {
-      "$ref": "#/222"
+      "$ref": "#/223"
     }
   },
   {
@@ -3069,7 +3082,7 @@
     "resourceType": "Microsoft.EventHub/namespaces/authorizationRules",
     "apiVersion": "2024-05-01-preview",
     "output": {
-      "$ref": "#/225"
+      "$ref": "#/226"
     }
   },
   {
@@ -3078,7 +3091,7 @@
     "properties": {
       "keyType": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/231"
         },
         "flags": 1,
         "description": "The access key to regenerate."
@@ -3104,10 +3117,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/228"
+        "$ref": "#/229"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/230"
       },
       {
         "$ref": "#/2"
@@ -3120,10 +3133,10 @@
     "resourceType": "Microsoft.EventHub/namespaces/authorizationRules",
     "apiVersion": "2024-05-01-preview",
     "output": {
-      "$ref": "#/225"
+      "$ref": "#/226"
     },
     "input": {
-      "$ref": "#/227"
+      "$ref": "#/228"
     }
   },
   {
@@ -3138,7 +3151,7 @@
     "resourceType": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs/authorizationRules",
     "apiVersion": "2024-05-01-preview",
     "output": {
-      "$ref": "#/225"
+      "$ref": "#/226"
     }
   },
   {
@@ -3159,7 +3172,7 @@
     "resourceType": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
     "apiVersion": "2024-05-01-preview",
     "output": {
-      "$ref": "#/225"
+      "$ref": "#/226"
     }
   },
   {
@@ -3168,10 +3181,10 @@
     "resourceType": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
     "apiVersion": "2024-05-01-preview",
     "output": {
-      "$ref": "#/225"
+      "$ref": "#/226"
     },
     "input": {
-      "$ref": "#/227"
+      "$ref": "#/228"
     }
   }
 ]
