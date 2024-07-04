@@ -1650,9 +1650,9 @@ resource "azapi_resource" "test" {
       }
     }
   })
-	replace_triggered_by = [
-	  "value1"
-	]
+  replace_triggered_by = [
+    "value1"
+  ]
 }
 `, r.template(data), data.RandomString)
 }
@@ -1673,9 +1673,9 @@ resource "azapi_resource" "test" {
       }
     }
   })
-	replace_triggered_by = [
-	  "value2"
-	]
+  replace_triggered_by = [
+    "value2"
+  ]
 }
 `, r.template(data), data.RandomString)
 }
@@ -1696,7 +1696,7 @@ resource "azapi_resource" "test" {
       }
     }
   })
-	replace_triggered_by = null
+  replace_triggered_by = null
 }
 `, r.template(data), data.RandomString)
 }
