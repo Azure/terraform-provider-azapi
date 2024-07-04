@@ -81,8 +81,8 @@ output "quarantine_policy" {
 ## Arguments Reference
 
 The following arguments are supported:
-* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created. 
-* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources: 
+* `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
+* `parent_id` - (Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for **top level** resources:
     - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group).
     - management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by [azurerm_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group).
     - extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
@@ -90,23 +90,23 @@ The following arguments are supported:
     - tenant scope: `parent_id` should be `/`
 
   For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
-  
+
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription(You could check the default subscription by azure cli command: `az account show`).
 
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `body` - (Required) A dynamic attribute that contains the request body used to create and update azure resource. 
+* `body` - (Required) A dynamic attribute that contains the request body used to create and update azure resource.
 
 * `removing_special_chars` - (Optional) Whether to remove special characters in resource name. Defaults to `false`.
 
 ---
-  
-* `location` - (Optional) The Azure Region where the azure resource should exist. 
- 
-* `identity` - (Optional) A `identity` block as defined below. 
 
-* `tags` - (Optional) A mapping of tags which should be assigned to the azure resource. 
+* `location` - (Optional) The Azure Region where the azure resource should exist.
+
+* `identity` - (Optional) A `identity` block as defined below.
+
+* `tags` - (Optional) A mapping of tags which should be assigned to the azure resource.
 
 * `response_export_values` - (Optional) A list of path that needs to be exported from response body.
   Setting it to `["*"]` will export the full response body.
@@ -124,6 +124,8 @@ The following arguments are supported:
 }
 ```
 
+* `replace_triggered_by` = (Optional) A dynamic input that
+
 * `locks` - (Optional) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 * `ignore_casing` - (Optional) Whether ignore incorrect casing returned in `body` to suppress plan-diff. Defaults to `false`.
@@ -137,9 +139,9 @@ The following arguments are supported:
 
 A `identity` block supports the following:
 
-* `type` - (Required) The Type of Identity which should be used for this azure resource. Possible values are `SystemAssigned`, `UserAssigned` and `SystemAssigned,UserAssigned`. 
+* `type` - (Required) The Type of Identity which should be used for this azure resource. Possible values are `SystemAssigned`, `UserAssigned` and `SystemAssigned,UserAssigned`.
 
-* `identity_ids` - (Optional) A list of User Managed Identity ID's which should be assigned to the azure resource. 
+* `identity_ids` - (Optional) A list of User Managed Identity ID's which should be assigned to the azure resource.
 
 
 ## Attributes Reference
@@ -150,7 +152,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `identity` - An `identity` block as defined below, which contains the Managed Service Identity information for this azure resource.
 
-* `output` - The output containing the properties specified in `response_export_values`.It supports both JSON and HCL object. 
+* `output` - The output containing the properties specified in `response_export_values`.It supports both JSON and HCL object.
     It will be the same format as the `body`. For example, if specifying `body` in HCL format, the `output` will be in HCL format.
 
 

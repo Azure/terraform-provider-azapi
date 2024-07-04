@@ -21,6 +21,20 @@ func RequiresReplace() planmodifier.Dynamic {
 	)
 }
 
+func RequiresReplaceIfNotNull() planmodifier.Dynamic {
+	return RequiresReplaceIf(
+		func(_ context.Context, req planmodifier.DynamicRequest, resp *RequiresReplaceIfFuncResponse) {
+			if req.PlanValue.IsNull() {
+				resp.RequiresReplace = false
+				return
+			}
+			resp.RequiresReplace = true
+		},
+		"If the value of this attribute changes and is not null, Terraform will destroy and recreate the resource.",
+		"If the value of this attribute changes and is not null, Terraform will destroy and recreate the resource.",
+	)
+}
+
 // RequiresReplaceIfFuncResponse is the response type for a RequiresReplaceIfFunc.
 type RequiresReplaceIfFuncResponse struct {
 	// Diagnostics report errors or warnings related to this logic. An empty
