@@ -1,0 +1,5416 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 64,
+    "pattern": "^[A-Za-z0-9@.\\-_ ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/workspaces"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Detailed properties for Workspace"
+      },
+      "managedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of Workspace. (internal use)"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of Workspace."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of Workspace."
+      },
+      "applicationGroupReferences": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "List of applicationGroup resource Ids."
+      },
+      "cloudPcResource": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Is cloud pc resource."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only be accessed via private endpoints"
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "List of private endpoint connection associated with the specified resource"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/11"
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[-\\w\\._,\\(\\)]+$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceModelWithAllowedPropertySetIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity. The value must be an UUID."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource. The value must be an UUID."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceModelWithAllowedPropertySetSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. E.g. P3. It is typically a letter+number code"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If the service has different generations of hardware, for the same SKU, then that can be captured here."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceModelWithAllowedPropertySetPlan",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A user defined name of the 3rd Party Artifact that is being procured."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic"
+      },
+      "product": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding."
+      },
+      "promotionCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A publisher provided promotion code as provisioned in Data Market for the said product/artifact."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the desired product/artifact."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/workspaces@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/workspaces/privateEndpointConnections@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/53"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/hostPools/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/privateEndpointConnections@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/57"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/scalingPlans"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 1,
+        "description": "Detailed properties for scaling plan."
+      },
+      "managedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingPlanProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of scaling plan. (internal use)"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of scaling plan."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly name of scaling plan."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Timezone of the scaling plan."
+      },
+      "hostPoolType": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "HostPool type for desktop."
+      },
+      "exclusionTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Exclusion tag for scaling plan."
+      },
+      "schedules": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "List of ScalingPlanPooledSchedule definitions."
+      },
+      "hostPoolReferences": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "List of ScalingHostPoolReference definitions."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pooled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingSchedule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the ScalingPlanPooledSchedule."
+      },
+      "daysOfWeek": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Set of days of the week on which this schedule is active."
+      },
+      "rampUpStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp up period."
+      },
+      "rampUpLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for ramp up period."
+      },
+      "rampUpMinimumHostsPct": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Minimum host percentage for ramp up period."
+      },
+      "rampUpCapacityThresholdPct": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Capacity threshold for ramp up period."
+      },
+      "peakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for peak period."
+      },
+      "peakLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for peak period."
+      },
+      "rampDownStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp down period."
+      },
+      "rampDownLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for ramp down period."
+      },
+      "rampDownMinimumHostsPct": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Minimum host percentage for ramp down period."
+      },
+      "rampDownCapacityThresholdPct": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Capacity threshold for ramp down period."
+      },
+      "rampDownForceLogoffUsers": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Should users be logged off forcefully from hosts."
+      },
+      "rampDownStopHostsWhen": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Specifies when to stop hosts during ramp down period."
+      },
+      "rampDownWaitTimeMinutes": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Number of minutes to wait to stop hosts during ramp down period."
+      },
+      "rampDownNotificationMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Notification message for users during ramp down period."
+      },
+      "offPeakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for off-peak period."
+      },
+      "offPeakLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for off-peak period."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/73"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Time",
+    "properties": {
+      "hour": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "The hour."
+      },
+      "minute": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 1,
+        "description": "The minute."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 23
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 59
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 100
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZeroSessions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZeroActiveSessions"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingHostPoolReference",
+    "properties": {
+      "hostPoolArmPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Arm path of referenced hostpool."
+      },
+      "scalingPlanEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Is the scaling plan enabled for this hostpool."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/96"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/61"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64,
+    "pattern": "^[A-Za-z0-9@.\\-_ ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 1,
+        "description": "Detailed properties for ScalingPlanPooledSchedule"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingPlanPooledScheduleProperties",
+    "properties": {
+      "daysOfWeek": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Set of days of the week on which this schedule is active."
+      },
+      "rampUpStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp up period."
+      },
+      "rampUpLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for ramp up period."
+      },
+      "rampUpMinimumHostsPct": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Minimum host percentage for ramp up period."
+      },
+      "rampUpCapacityThresholdPct": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Capacity threshold for ramp up period."
+      },
+      "peakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for peak period."
+      },
+      "peakLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for peak period."
+      },
+      "rampDownStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp down period."
+      },
+      "rampDownLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for ramp down period."
+      },
+      "rampDownMinimumHostsPct": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Minimum host percentage for ramp down period."
+      },
+      "rampDownCapacityThresholdPct": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Capacity threshold for ramp down period."
+      },
+      "rampDownForceLogoffUsers": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Should users be logged off forcefully from hosts."
+      },
+      "rampDownStopHostsWhen": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Specifies when to stop hosts during ramp down period."
+      },
+      "rampDownWaitTimeMinutes": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Number of minutes to wait to stop hosts during ramp down period."
+      },
+      "rampDownNotificationMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Notification message for users during ramp down period."
+      },
+      "offPeakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for off-peak period."
+      },
+      "offPeakLoadBalancingAlgorithm": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 0,
+        "description": "Load balancing algorithm for off-peak period."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/112"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZeroSessions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZeroActiveSessions"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans/pooledSchedules@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/103"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/scalingPlans/personalSchedules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans/personalSchedules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 1,
+        "description": "Detailed properties for ScalingPlanPersonalSchedule"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingPlanPersonalScheduleProperties",
+    "properties": {
+      "daysOfWeek": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Set of days of the week on which this schedule is active."
+      },
+      "rampUpStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp up period."
+      },
+      "rampUpAutoStartHosts": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "The desired startup behavior during the ramp up period for personal vms in the hostpool."
+      },
+      "rampUpStartVMOnConnect": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "The desired configuration of Start VM On Connect for the hostpool during the ramp up phase. If this is disabled, session hosts must be turned on using rampUpAutoStartHosts or by turning them on manually."
+      },
+      "rampUpActionOnDisconnect": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a user disconnect during the ramp up period."
+      },
+      "rampUpMinutesToWaitOnDisconnect": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user disconnects during the ramp up period."
+      },
+      "rampUpActionOnLogoff": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a logoff during the ramp up period."
+      },
+      "rampUpMinutesToWaitOnLogoff": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user logs off during the ramp up period."
+      },
+      "peakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for peak period."
+      },
+      "peakStartVMOnConnect": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "The desired configuration of Start VM On Connect for the hostpool during the peak phase."
+      },
+      "peakActionOnDisconnect": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a user disconnect during the peak period."
+      },
+      "peakMinutesToWaitOnDisconnect": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user disconnects during the peak period."
+      },
+      "peakActionOnLogoff": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a logoff during the peak period."
+      },
+      "peakMinutesToWaitOnLogoff": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user logs off during the peak period."
+      },
+      "rampDownStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for ramp down period."
+      },
+      "rampDownStartVMOnConnect": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "The desired configuration of Start VM On Connect for the hostpool during the ramp down phase."
+      },
+      "rampDownActionOnDisconnect": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a user disconnect during the ramp down period."
+      },
+      "rampDownMinutesToWaitOnDisconnect": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user disconnects during the ramp down period."
+      },
+      "rampDownActionOnLogoff": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a logoff during the ramp down period."
+      },
+      "rampDownMinutesToWaitOnLogoff": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user logs off during the ramp down period."
+      },
+      "offPeakStartTime": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "Starting time for off-peak period."
+      },
+      "offPeakStartVMOnConnect": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
+        "description": "The desired configuration of Start VM On Connect for the hostpool during the off-peak phase."
+      },
+      "offPeakActionOnDisconnect": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a user disconnect during the off-peak period."
+      },
+      "offPeakMinutesToWaitOnDisconnect": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user disconnects during the off-peak period."
+      },
+      "offPeakActionOnLogoff": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 0,
+        "description": "Action to be taken after a logoff during the off-peak period."
+      },
+      "offPeakMinutesToWaitOnLogoff": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "The time in minutes to wait before performing the desired session handling action when a user logs off during the off-peak period."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/141"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WithAssignedUser"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hibernate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/scalingPlans/personalSchedules@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/132"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/applicationGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 1,
+        "description": "Detailed properties for ApplicationGroup"
+      },
+      "managedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationGroupProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of ApplicationGroup. (internal use)"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of ApplicationGroup."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of ApplicationGroup."
+      },
+      "hostPoolArmPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "HostPool arm path of ApplicationGroup."
+      },
+      "workspaceArmPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Workspace arm path of ApplicationGroup."
+      },
+      "applicationGroupType": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 1,
+        "description": "Resource Type of ApplicationGroup."
+      },
+      "cloudPcResource": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Is cloud pc resource."
+      },
+      "showInFeed": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Boolean representing whether the applicationGroup is show in the feed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoteApp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Desktop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/195"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 24,
+    "pattern": "^[A-Za-z0-9@.\\-_ ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/applicationGroups/applications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups/applications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 1,
+        "description": "Detailed properties for Application"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of Application. (internal use)"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of Application."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of Application."
+      },
+      "filePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies a path for the executable file for the application."
+      },
+      "msixPackageFamilyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the package family name for MSIX applications"
+      },
+      "msixPackageApplicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the package application Id for MSIX applications"
+      },
+      "applicationType": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 0,
+        "description": "Resource Type of Application."
+      },
+      "commandLineSetting": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 1,
+        "description": "Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments specified at publish time, or no command line arguments at all."
+      },
+      "commandLineArguments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Command Line Arguments for Application."
+      },
+      "showInPortal": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Specifies whether to show the RemoteApp program in the RD Web Access server."
+      },
+      "iconPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to icon."
+      },
+      "iconIndex": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Index of the icon."
+      },
+      "iconHash": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Hash of the icon."
+      },
+      "iconContent": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 2,
+        "description": "the icon a 64 bit string as a byte array."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InBuilt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MsixApplication"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DoNotAllow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Require"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups/applications@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/205"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/hostPools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/hostPools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 1,
+        "description": "Detailed properties for HostPool"
+      },
+      "managedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type. E.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HostPoolProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of HostPool. (internal use)"
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of HostPool."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of HostPool."
+      },
+      "hostPoolType": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 1,
+        "description": "HostPool type for desktop."
+      },
+      "personalDesktopAssignmentType": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 0,
+        "description": "PersonalDesktopAssignment type for HostPool."
+      },
+      "customRdpProperty": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Custom rdp property of HostPool."
+      },
+      "maxSessionLimit": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The max session limit of HostPool."
+      },
+      "loadBalancerType": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 1,
+        "description": "The type of the load balancer."
+      },
+      "ring": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The ring number of HostPool."
+      },
+      "validationEnvironment": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Is validation environment."
+      },
+      "registrationInfo": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 0,
+        "description": "The registration info of HostPool."
+      },
+      "vmTemplate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VM template for sessionhosts configuration within hostpool."
+      },
+      "applicationGroupReferences": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 2,
+        "description": "List of applicationGroup links."
+      },
+      "appAttachPackageReferences": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 2,
+        "description": "List of App Attach Package links."
+      },
+      "ssoadfsAuthority": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL to customer ADFS server for signing WVD SSO certificates."
+      },
+      "ssoClientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ClientId for the registered Relying Party used to issue WVD SSO certificates."
+      },
+      "ssoClientSecretKeyVaultPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to Azure KeyVault storing the secret used for communication to ADFS."
+      },
+      "ssoSecretType": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "The type of single sign on Secret Type."
+      },
+      "preferredAppGroupType": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 1,
+        "description": "The type of preferred application group type, default to Desktop Application Group"
+      },
+      "startVMOnConnect": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The flag to turn on/off StartVMOnConnect feature."
+      },
+      "cloudPcResource": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Is cloud pc resource."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only be accessed via private endpoints"
+      },
+      "agentUpdate": {
+        "type": {
+          "$ref": "#/252"
+        },
+        "flags": 0,
+        "description": "The session host configuration for updating agent, monitoring agent, and stack component."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 2,
+        "description": "List of private endpoint connection associated with the specified resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Personal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pooled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BYODesktop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Direct"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BreadthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DepthFirst"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Persistent"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegistrationInfo",
+    "properties": {
+      "expirationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Expiration time of registration token."
+      },
+      "token": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The registration token base64 encoded string."
+      },
+      "registrationTokenOperation": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 0,
+        "description": "The type of resetting the token."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Update"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SharedKey"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Certificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SharedKeyInKeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CertificateInKeyVault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Desktop"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RailApplications"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnabledForSessionHostsOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnabledForClientsOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentUpdateProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "The type of maintenance for session host components."
+      },
+      "useSessionHostLocalTime": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Whether to use localTime of the virtual machine."
+      },
+      "maintenanceWindowTimeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time zone for maintenance as defined in https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0. Must be set if useLocalTime is true."
+      },
+      "maintenanceWindows": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 0,
+        "description": "List of maintenance windows. Maintenance windows are 2 hours long."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceWindowProperties",
+    "properties": {
+      "hour": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The update start hour of the day. (0 - 23)"
+      },
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 0,
+        "description": "Day of the week."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/256"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/11"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/hostPools@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/218"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 100,
+    "pattern": "^[A-Za-z0-9@.\\-_ ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/hostPools/msixPackages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/msixPackages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 1,
+        "description": "Detailed properties for MSIX Package"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MsixPackageProperties",
+    "properties": {
+      "imagePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VHD/CIM image path on Network Share."
+      },
+      "packageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Name from appxmanifest.xml."
+      },
+      "packageFamilyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly Name to be displayed in the portal."
+      },
+      "packageRelativePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relative Path to the package inside the image."
+      },
+      "isRegularRegistration": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Specifies how to register Package in feed."
+      },
+      "isActive": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Make this version of the package the active one across the hostpool."
+      },
+      "packageDependencies": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "List of package dependencies."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package version found in the appxmanifest.xml."
+      },
+      "lastUpdated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date Package was last updated, found in the appxmanifest.xml."
+      },
+      "packageApplications": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "List of package applications."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MsixPackageDependencies",
+    "properties": {
+      "dependencyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of package dependency."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of dependency publisher."
+      },
+      "minVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Dependency version required."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MsixPackageApplications",
+    "properties": {
+      "appId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Application Id, found in appxmanifest.xml."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of Package Application."
+      },
+      "appUserModelID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Used to activate Package Application. Consists of Package Name and ApplicationID. Found in appxmanifest.xml."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly name."
+      },
+      "iconImageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly name."
+      },
+      "rawIcon": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "the icon a 64 bit string as a byte array."
+      },
+      "rawPng": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "the icon a 64 bit string as a byte array."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/276"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/msixPackages@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/272"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 100,
+    "pattern": "^[a-z0-9]([a-z0-9]|(-(?!-))){1,61}[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/appAttachPackages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/appAttachPackages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 1,
+        "description": "Detailed properties for App Attach Package"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppAttachPackageProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the App Attach Package."
+      },
+      "image": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Detailed properties for App Attach Package"
+      },
+      "hostPoolReferences": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 0,
+        "description": "List of Hostpool resource Ids."
+      },
+      "keyVaultURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL path to certificate name located in keyVault"
+      },
+      "failHealthCheckOnStagingFailure": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Parameter indicating how the health check should behave if this package fails staging"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppAttachPackageInfoProperties",
+    "properties": {
+      "packageAlias": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Alias of App Attach Package. Assigned at import time"
+      },
+      "imagePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VHD/CIM image path on Network Share."
+      },
+      "packageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Name from appxmanifest.xml."
+      },
+      "packageFamilyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name."
+      },
+      "packageFullName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Full Name from appxmanifest.xml."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly Name to be displayed in the portal."
+      },
+      "packageRelativePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relative Path to the package inside the image."
+      },
+      "isRegularRegistration": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Specifies how to register Package in feed."
+      },
+      "isActive": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Make this version of the package the active one across the hostpool."
+      },
+      "packageDependencies": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 0,
+        "description": "List of package dependencies."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package version found in the appxmanifest.xml."
+      },
+      "lastUpdated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date Package was last updated, found in the appxmanifest.xml."
+      },
+      "packageApplications": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 0,
+        "description": "List of package applications."
+      },
+      "certificateName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Certificate name found in the appxmanifest.xml."
+      },
+      "certificateExpiry": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date certificate expires, found in the appxmanifest.xml."
+      },
+      "isPackageTimestamped": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 0,
+        "description": "Is package timestamped so it can ignore the certificate expiry date"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/276"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Timestamped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotTimestamped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unhealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NeedsAssistance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DoNotFail"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/appAttachPackages@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/282"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/applicationGroups/desktops"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups/desktops",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 2,
+        "description": "Detailed properties for Desktop"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DesktopProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of Desktop. (internal use)"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of Desktop."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of Desktop."
+      },
+      "iconHash": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Hash of the icon."
+      },
+      "iconContent": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 2,
+        "description": "The icon a 64 bit string as a byte array."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/applicationGroups/desktops@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/304"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 24
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 2,
+        "description": "Detailed properties for UserSession"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserSessionProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of user session. (internal use)"
+      },
+      "userPrincipalName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user principal name."
+      },
+      "applicationType": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 0,
+        "description": "Application type of application."
+      },
+      "sessionState": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "State of user session."
+      },
+      "activeDirectoryUserName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The active directory user name."
+      },
+      "createTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of the user session create."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoteApp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Desktop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogOff"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserProfileDiskMounted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/320"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/310"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 48,
+    "pattern": "^[A-Za-z0-9@.\\-_ ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DesktopVirtualization/hostPools/sessionHosts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/sessionHosts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/327"
+        },
+        "flags": 2,
+        "description": "Detailed properties for SessionHost"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SessionHostProperties",
+    "properties": {
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ObjectId of SessionHost. (internal use)"
+      },
+      "lastHeartBeat": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Last heart beat from SessionHost."
+      },
+      "sessions": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Number of sessions on SessionHost."
+      },
+      "agentVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Version of agent on SessionHost."
+      },
+      "allowNewSession": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Allow a new session."
+      },
+      "virtualMachineId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Virtual Machine Id of SessionHost's underlying virtual machine."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource Id of SessionHost's underlying virtual machine."
+      },
+      "assignedUser": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User assigned to SessionHost."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Friendly name of SessionHost"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 0,
+        "description": "Status for a SessionHost."
+      },
+      "statusTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the status."
+      },
+      "osVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the OS on the session host."
+      },
+      "sxSStackVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the side by side stack on the session host."
+      },
+      "updateState": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 0,
+        "description": "Update state of a SessionHost."
+      },
+      "lastUpdateTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last update."
+      },
+      "updateErrorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The error message."
+      },
+      "sessionHostHealthCheckResults": {
+        "type": {
+          "$ref": "#/366"
+        },
+        "flags": 2,
+        "description": "List of SessionHostHealthCheckReports"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Shutdown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpgradeFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoHeartbeat"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotJoinedToDomain"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainTrustRelationshipLost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SxSStackListenerNotReady"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FSLogixNotHealthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NeedsAssistance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Started"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/344"
+      },
+      {
+        "$ref": "#/345"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SessionHostHealthCheckReport",
+    "properties": {
+      "healthCheckName": {
+        "type": {
+          "$ref": "#/359"
+        },
+        "flags": 2,
+        "description": "Represents the name of the health check operation performed."
+      },
+      "healthCheckResult": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 2,
+        "description": "Represents the Health state of the health check we performed."
+      },
+      "additionalFailureDetails": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 2,
+        "description": "Additional detailed information on the failure."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainJoinedCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainTrustCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FSLogixHealthCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SxSStackListenerCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UrlsAccessibleCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MonitoringAgentCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainReachable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WebRTCRedirectorCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SupportedEncryptionCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MetaDataServiceCheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppAttachHealthCheck"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/348"
+      },
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HealthCheckSucceeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HealthCheckFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SessionHostShutdown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SessionHostHealthCheckFailureDetails",
+    "properties": {
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Failure message: hints on what is wrong and how to recover."
+      },
+      "errorCode": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Error code corresponding for the failure."
+      },
+      "lastHealthCheckDateTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last update."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/347"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DesktopVirtualization/hostPools/sessionHosts@2024-04-03",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/326"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "retrieveRegistrationToken",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools",
+    "apiVersion": "2024-04-03",
+    "output": {
+      "$ref": "#/231"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImportPackageInfoRequest",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI to Image"
+      },
+      "packageArchitecture": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 0,
+        "description": "Possible device architectures that an app attach package can be configured for"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ARM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ARM64"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "x86"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "x64"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Neutral"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "x86a64"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ALL"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppAttachPackageList",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/381"
+        },
+        "flags": 0,
+        "description": "List of App Attach Package definitions."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to the next page of results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AppAttachPackage",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 1,
+        "description": "Detailed properties for App Attach Package"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/379"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "importAppAttachPackageInfo",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools",
+    "apiVersion": "2024-04-03",
+    "output": {
+      "$ref": "#/378"
+    },
+    "input": {
+      "$ref": "#/369"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MsixImageURI",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI to Image"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpandMsixImageList",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 0,
+        "description": "List of MSIX package properties from give MSIX Image."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to the next page of results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpandMsixImage",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 0,
+        "description": "Detailed properties for ExpandMsixImage"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpandMsixImageProperties",
+    "properties": {
+      "packageAlias": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Alias of MSIX Package."
+      },
+      "imagePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VHD/CIM image path on Network Share."
+      },
+      "packageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Name from appxmanifest.xml."
+      },
+      "packageFamilyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name."
+      },
+      "packageFullName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package Full Name from appxmanifest.xml."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User friendly Name to be displayed in the portal."
+      },
+      "packageRelativePath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relative Path to the package inside the image."
+      },
+      "isRegularRegistration": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Specifies how to register Package in feed."
+      },
+      "isActive": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Make this version of the package the active one across the hostpool."
+      },
+      "packageDependencies": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 0,
+        "description": "List of package dependencies."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Package version found in the appxmanifest.xml."
+      },
+      "lastUpdated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date Package was last updated, found in the appxmanifest.xml."
+      },
+      "packageApplications": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 0,
+        "description": "List of package applications."
+      },
+      "certificateName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Certificate name found in the appxmanifest.xml."
+      },
+      "certificateExpiry": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Date certificate expires, found in the appxmanifest.xml."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/276"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/385"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "expandMsixImage",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools",
+    "apiVersion": "2024-04-03",
+    "output": {
+      "$ref": "#/384"
+    },
+    "input": {
+      "$ref": "#/383"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "disconnect",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions",
+    "apiVersion": "2024-04-03"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SendMessage",
+    "properties": {
+      "messageTitle": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Title of message."
+      },
+      "messageBody": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Body of message."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "sendMessage",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions",
+    "apiVersion": "2024-04-03",
+    "input": {
+      "$ref": "#/392"
+    }
+  }
+]

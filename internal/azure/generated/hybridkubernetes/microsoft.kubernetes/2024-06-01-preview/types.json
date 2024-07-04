@@ -1,0 +1,964 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Kubernetes/connectedClusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Kubernetes/connectedClusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 1,
+        "description": "The identity of the connected cluster."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "The kind of connected cluster."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Describes the connected cluster resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Metadata pertaining to creation and last modification of the resource"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectedClusterIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of connected cluster identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant id associated with the connected cluster. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity. The type 'None' means no identity is assigned to the connected cluster."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProvisionedCluster"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectedClusterProperties",
+    "properties": {
+      "agentPublicKeyCertificate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure."
+      },
+      "kubernetesVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Kubernetes version of the connected cluster resource"
+      },
+      "totalNodeCount": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Number of nodes present in the connected cluster resource"
+      },
+      "totalCoreCount": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Number of CPU cores present in the connected cluster resource"
+      },
+      "agentVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Version of the agent running on the connected cluster resource"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Provisioning state of the connected cluster resource."
+      },
+      "distribution": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Kubernetes distribution running on this connected cluster."
+      },
+      "distributionVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Kubernetes distribution version on this connected cluster."
+      },
+      "infrastructure": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The infrastructure on which the Kubernetes cluster represented by this connected cluster is running on."
+      },
+      "offering": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Connected cluster offering"
+      },
+      "managedIdentityCertificateExpirationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Expiration time of the managed identity certificate"
+      },
+      "lastConnectivityTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Time representing the last instance when heart beat was received from the cluster"
+      },
+      "connectivityStatus": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Represents the connectivity status of the connected cluster."
+      },
+      "privateLinkState": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Property which describes the state of private link on a connected cluster resource."
+      },
+      "privateLinkScopeResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "This is populated only if privateLinkState is enabled. The resource id of the private link scope this connected cluster is assigned to, if any."
+      },
+      "azureHybridBenefit": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Indicates whether Azure Hybrid Benefit is opted in"
+      },
+      "aadProfile": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "AAD profile for the connected cluster."
+      },
+      "arcAgentProfile": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Arc agentry configuration for the provisioned cluster."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Security profile for the connected cluster."
+      },
+      "oidcIssuerProfile": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Open ID Connect (OIDC) Issuer Profile for the connected cluster."
+      },
+      "miscellaneousProperties": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "More properties related to the Connected Cluster"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connecting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "True"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "False"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AadProfile",
+    "properties": {
+      "enableAzureRBAC": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Whether to enable Azure RBAC for Kubernetes authorization."
+      },
+      "adminGroupObjectIDs": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The list of AAD group object IDs that will have admin role of the cluster."
+      },
+      "tenantID": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment subscription."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ArcAgentProfile",
+    "properties": {
+      "desiredAgentVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Version of the Arc agents to be installed on the cluster resource"
+      },
+      "agentAutoUpgrade": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Indicates whether the Arc agents on the be upgraded automatically to the latest version. Defaults to Enabled."
+      },
+      "systemComponents": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "List of system extensions that are installed on the cluster resource."
+      },
+      "agentErrors": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "List of arc agentry and system components errors on the cluster resource."
+      },
+      "agentState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Represents the current state of the Arc agentry and its dependent components."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemComponent",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Type of the system extension"
+      },
+      "userSpecifiedVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Version of the system extension to be installed on the cluster resource."
+      },
+      "majorVersion": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Major Version of the system extension that is currently installed on the cluster resource."
+      },
+      "currentVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Version of the system extension that is currently installed on the cluster resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentError",
+    "properties": {
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Agent error message."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Severity of the error message."
+      },
+      "component": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Agent component where error message occured."
+      },
+      "time": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The timestamp of error occured (UTC)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/41"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityProfile",
+    "properties": {
+      "workloadIdentity": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The workload identity feature webhook."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityProfileWorkloadIdentity",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Whether to enable or disable the workload identity Webhook"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OidcIssuerProfile",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Whether to enable oidc issuer for workload identity integration."
+      },
+      "issuerUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The issuer url for hybrid clusters connected to Arc used for the workload identity feature."
+      },
+      "selfHostedIssuerUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The issuer url for public cloud clusters - AKS, EKS, GKE - used for the workload identity feature."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectedClusterPropertiesMiscellaneousProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource modification (UTC)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Kubernetes/connectedClusters@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListClusterUserCredentialProperties",
+    "properties": {
+      "authenticationMethod": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "The mode of client authentication."
+      },
+      "clientProxy": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "Boolean value to indicate whether the request is for client side proxy or not"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Token"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AAD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResults",
+    "properties": {
+      "hybridConnectionConfig": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 2,
+        "description": "Contains the REP (rendezvous endpoint) and “Sender” access token."
+      },
+      "kubeconfigs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HybridConnectionConfig",
+    "properties": {
+      "expirationTime": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Timestamp when this token will be expired."
+      },
+      "hybridConnectionName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the connection"
+      },
+      "relay": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the relay."
+      },
+      "token": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Sender access token"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResult",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the credential."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/66"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listClusterUserCredential",
+    "resourceType": "Microsoft.Kubernetes/connectedClusters",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/64"
+    },
+    "input": {
+      "$ref": "#/60"
+    }
+  }
+]
