@@ -55,9 +55,16 @@
         "flags": 0,
         "description": "Properties of the cluster."
       },
+      "identity": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Describes the identity of the cluster."
+      },
       "tags": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/58"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -71,7 +78,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -82,6 +89,13 @@
     "$type": "ObjectType",
     "name": "ClusterProperties",
     "properties": {
+      "aadAuthEnabled": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "Indicates whether the cluster was created using AAD authentication."
+      },
       "administratorLogin": {
         "type": {
           "$ref": "#/2"
@@ -91,10 +105,17 @@
       },
       "administratorLoginPassword": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/9"
         },
         "flags": 4,
         "description": "The password of the administrator login. Required for creation."
+      },
+      "dataEncryption": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The data encryption properties of a cluster."
       },
       "provisioningState": {
         "type": {
@@ -126,7 +147,7 @@
       },
       "maintenanceWindow": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "Maintenance window of a cluster."
@@ -140,14 +161,14 @@
       },
       "enableShardsOnCoordinator": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters. Requires shard rebalancing after value is changed."
       },
       "enableHa": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If high availability (HA) is enabled or not for the cluster."
@@ -161,21 +182,21 @@
       },
       "coordinatorStorageQuotaInMb": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The storage of a server in MB. Required for creation. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information."
       },
       "coordinatorVCores": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The vCores count of a server (max: 96). Required for creation. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information."
       },
       "coordinatorEnablePublicIpAccess": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If public access is enabled on coordinator."
@@ -189,35 +210,35 @@
       },
       "nodeCount": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Worker node count of the cluster. When node count is 0, it represents a single node configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent multi-node configuration. Node count value cannot be 1. Required for creation."
       },
       "nodeStorageQuotaInMb": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The storage in MB on each worker node. See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information."
       },
       "nodeVCores": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The compute in vCores on each worker node (max: 104). See https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information."
       },
       "nodeEnablePublicIpAccess": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If public access is enabled on worker nodes."
       },
       "serverNames": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/18"
         },
         "flags": 2,
         "description": "The list of server names in the cluster"
@@ -236,6 +257,13 @@
         "flags": 0,
         "description": "The Azure region of source cluster for read replica clusters."
       },
+      "passwordEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Indicates whether the cluster was created with a password or using AAD authentication."
+      },
       "pointInTimeUTC": {
         "type": {
           "$ref": "#/2"
@@ -245,7 +273,7 @@
       },
       "readReplicas": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/22"
         },
         "flags": 2,
         "description": "The array of read replica clusters."
@@ -259,7 +287,7 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/43"
         },
         "flags": 2,
         "description": "The private endpoint connections for a cluster."
@@ -273,14 +301,14 @@
       },
       "enableGeoBackup": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If cluster backup is stored in another Azure region in addition to the copy of the backup stored in the cluster's region. Enabled only at the time of cluster creation."
       },
       "authConfig": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/44"
         },
         "flags": 0,
         "description": "Authentication configuration of a cluster."
@@ -288,8 +316,78 @@
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "StringType",
     "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataEncryption",
+    "properties": {
+      "primaryKeyUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI for the key in keyvault for data encryption of the primary server."
+      },
+      "primaryUserAssignedIdentityId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource Id for the User assigned identity to be used for data encryption of the primary server."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureKeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ObjectType",
@@ -304,21 +402,21 @@
       },
       "startHour": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Start hour within preferred day of the week for maintenance window."
       },
       "startMinute": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Start minute within the start hour for maintenance window."
       },
       "dayOfWeek": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Preferred day of the week for maintenance window."
@@ -354,8 +452,30 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/10"
+      "$ref": "#/17"
     }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ArrayType",
@@ -369,7 +489,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Properties of the private endpoint connection."
@@ -397,7 +517,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -410,21 +530,21 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "Private endpoint which the connection belongs to."
       },
       "groupIds": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Group ids of the private endpoint connection."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "A collection of information about the state of the connection between service consumer and provider."
@@ -456,7 +576,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
@@ -493,13 +613,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/18"
+        "$ref": "#/28"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/29"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/30"
       },
       {
         "$ref": "#/2"
@@ -519,7 +639,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -540,7 +660,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -574,16 +694,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/23"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/25"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/26"
+        "$ref": "#/36"
       },
       {
         "$ref": "#/2"
@@ -610,16 +730,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/28"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/29"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/30"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/41"
       },
       {
         "$ref": "#/2"
@@ -629,7 +749,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/13"
+      "$ref": "#/23"
     }
   },
   {
@@ -638,13 +758,13 @@
     "properties": {
       "activeDirectoryAuth": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/47"
         },
         "flags": 0
       },
       "passwordAuth": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/50"
         },
         "flags": 0
       }
@@ -662,10 +782,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/35"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/36"
+        "$ref": "#/46"
       },
       {
         "$ref": "#/2"
@@ -684,15 +804,90 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/38"
+        "$ref": "#/48"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/49"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/55"
+    }
   },
   {
     "$type": "ObjectType",
@@ -738,35 +933,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/60"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/61"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/62"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties of a configuration."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -807,7 +1002,7 @@
       },
       "dataType": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/69"
         },
         "flags": 2,
         "description": "Data type of the configuration."
@@ -821,14 +1016,14 @@
       },
       "requiresRestart": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "If configuration change requires restart."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/74"
         },
         "flags": 2,
         "description": "Provisioning state of the configuration."
@@ -855,16 +1050,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/48"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/68"
       },
       {
         "$ref": "#/2"
@@ -891,16 +1086,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/53"
+        "$ref": "#/70"
       },
       {
-        "$ref": "#/54"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/55"
+        "$ref": "#/72"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/73"
       },
       {
         "$ref": "#/2"
@@ -912,7 +1107,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/coordinatorConfigurations@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/46"
+      "$ref": "#/63"
     },
     "flags": 0
   },
@@ -937,35 +1132,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/60"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/76"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/77"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties of a configuration."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -977,7 +1172,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/nodeConfigurations@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/61"
+      "$ref": "#/78"
     },
     "flags": 0
   },
@@ -1006,35 +1201,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/80"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/81"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/82"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/84"
         },
         "flags": 1,
         "description": "The properties of a firewall rule."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1047,21 +1242,21 @@
     "properties": {
       "startIpAddress": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/85"
         },
         "flags": 1,
         "description": "The start IP address of the cluster firewall rule. Must be IPv4 format."
       },
       "endIpAddress": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/85"
         },
         "flags": 1,
         "description": "The end IP address of the cluster firewall rule. Must be IPv4 format."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Provisioning state of the firewall rule."
@@ -1092,16 +1287,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/88"
       },
       {
-        "$ref": "#/72"
+        "$ref": "#/89"
       },
       {
         "$ref": "#/2"
@@ -1113,7 +1308,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/firewallRules@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/66"
+      "$ref": "#/83"
     },
     "flags": 0
   },
@@ -1138,35 +1333,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/80"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/92"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/93"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/95"
         },
         "flags": 1,
         "description": "The properties of a role."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1179,26 +1374,26 @@
     "properties": {
       "roleType": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/98"
         },
         "flags": 0
       },
       "password": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/9"
         },
         "flags": 4,
         "description": "The password of the cluster role. If an identity is used, password will not be required."
       },
       "externalIdentity": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/99"
         },
         "flags": 0
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/108"
         },
         "flags": 2,
         "description": "Provisioning state of the role"
@@ -1217,10 +1412,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/96"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/97"
       },
       {
         "$ref": "#/2"
@@ -1239,7 +1434,7 @@
       },
       "principalType": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/103"
         },
         "flags": 1
       },
@@ -1267,13 +1462,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/83"
+        "$ref": "#/100"
       },
       {
-        "$ref": "#/84"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/102"
       },
       {
         "$ref": "#/2"
@@ -1300,16 +1495,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/87"
+        "$ref": "#/104"
       },
       {
-        "$ref": "#/88"
+        "$ref": "#/105"
       },
       {
-        "$ref": "#/89"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/107"
       },
       {
         "$ref": "#/2"
@@ -1321,7 +1516,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/roles@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/77"
+      "$ref": "#/94"
     },
     "flags": 0
   },
@@ -1346,35 +1541,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/80"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/110"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/111"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/113"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1387,28 +1582,28 @@
     "properties": {
       "groupIds": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/114"
         },
         "flags": 2,
         "description": "The group ids for the private endpoint resource."
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/115"
         },
         "flags": 0,
         "description": "The private endpoint resource."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/27"
         },
         "flags": 1,
         "description": "A collection of information about the state of the connection between service consumer and provider."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/103"
+          "$ref": "#/120"
         },
         "flags": 2,
         "description": "The provisioning state of the private endpoint connection resource."
@@ -1454,16 +1649,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/99"
+        "$ref": "#/116"
       },
       {
-        "$ref": "#/100"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/101"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/102"
+        "$ref": "#/119"
       },
       {
         "$ref": "#/2"
@@ -1475,7 +1670,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/privateEndpointConnections@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/95"
+      "$ref": "#/112"
     },
     "flags": 0
   },
@@ -1500,35 +1695,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/60"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/122"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/123"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/125"
         },
         "flags": 2,
         "description": "The properties of a server in a cluster."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1548,7 +1743,7 @@
       },
       "role": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The role of server in the cluster."
@@ -1597,35 +1792,35 @@
       },
       "storageQuotaInMb": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The storage of a server in MB."
       },
       "vCores": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The vCores count of a server."
       },
       "enableHa": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If high availability (HA) is enabled or not for the server."
       },
       "enablePublicIpAccess": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "If public access is enabled on server."
       },
       "isReadOnly": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "If server database is set to read-only by system maintenance depending on high disk space usage."
@@ -1651,10 +1846,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/109"
+        "$ref": "#/126"
       },
       {
-        "$ref": "#/110"
+        "$ref": "#/127"
       },
       {
         "$ref": "#/2"
@@ -1666,7 +1861,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/servers@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/107"
+      "$ref": "#/124"
     },
     "flags": 1
   },
@@ -1691,35 +1886,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/60"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/130"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/131"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/133"
         },
         "flags": 2,
         "description": "The properties of configuration."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1739,7 +1934,7 @@
       },
       "dataType": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/138"
         },
         "flags": 2,
         "description": "Data type of the configuration."
@@ -1753,21 +1948,21 @@
       },
       "requiresRestart": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "If configuration change requires restart."
       },
       "serverRoleGroupConfigurations": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/143"
         },
         "flags": 1,
         "description": "The list of server role group configuration values."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/148"
         },
         "flags": 2,
         "description": "Provisioning state of the configuration"
@@ -1794,16 +1989,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/117"
+        "$ref": "#/134"
       },
       {
-        "$ref": "#/118"
+        "$ref": "#/135"
       },
       {
-        "$ref": "#/119"
+        "$ref": "#/136"
       },
       {
-        "$ref": "#/120"
+        "$ref": "#/137"
       },
       {
         "$ref": "#/2"
@@ -1816,7 +2011,7 @@
     "properties": {
       "role": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/142"
         },
         "flags": 1,
         "description": "The role of servers in the server role group."
@@ -1856,10 +2051,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/123"
+        "$ref": "#/140"
       },
       {
-        "$ref": "#/124"
+        "$ref": "#/141"
       },
       {
         "$ref": "#/2"
@@ -1869,7 +2064,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/122"
+      "$ref": "#/139"
     }
   },
   {
@@ -1892,16 +2087,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/127"
+        "$ref": "#/144"
       },
       {
-        "$ref": "#/128"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/130"
+        "$ref": "#/147"
       },
       {
         "$ref": "#/2"
@@ -1913,7 +2108,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/configurations@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/115"
+      "$ref": "#/132"
     },
     "flags": 1
   },
@@ -1938,35 +2133,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/80"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/133"
+          "$ref": "#/150"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/151"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/153"
         },
         "flags": 2,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1986,14 +2181,14 @@
       },
       "requiredMembers": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/154"
         },
         "flags": 2,
         "description": "The private link resource required member names."
       },
       "requiredZoneNames": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/155"
         },
         "flags": 0,
         "description": "The private link resource private link DNS zone name."
@@ -2017,7 +2212,7 @@
     "name": "Microsoft.DBforPostgreSQL/serverGroupsv2/privateLinkResources@2023-03-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/135"
+      "$ref": "#/152"
     },
     "flags": 1
   },
@@ -2045,10 +2240,10 @@
     "properties": {
       "enableGeoBackup": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/16"
         },
         "flags": 0,
-        "description": "Cluster name to verify."
+        "description": "Boolean property to enable geo-redundant replica promotion."
       }
     }
   },
@@ -2058,7 +2253,7 @@
     "resourceType": "Microsoft.DBforPostgreSQL/serverGroupsv2",
     "apiVersion": "2023-03-02-preview",
     "input": {
-      "$ref": "#/143"
+      "$ref": "#/160"
     }
   }
 ]

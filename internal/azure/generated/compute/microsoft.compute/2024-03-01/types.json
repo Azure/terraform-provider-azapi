@@ -65,21 +65,21 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/261"
+          "$ref": "#/249"
         },
         "flags": 0,
         "description": "The identity of the virtual machine scale set, if configured."
       },
       "zones": {
         "type": {
-          "$ref": "#/269"
+          "$ref": "#/257"
         },
         "flags": 0,
         "description": "The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set"
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/258"
         },
         "flags": 0,
         "description": "The extended location of the Virtual Machine Scale Set."
@@ -100,7 +100,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/273"
+          "$ref": "#/261"
         },
         "flags": 0,
         "description": "Resource tags"
@@ -268,35 +268,35 @@
       },
       "additionalCapabilities": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/233"
         },
         "flags": 0,
         "description": "Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to support attaching managed data disks with UltraSSD_LRS storage account type."
       },
       "scaleInPolicy": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/234"
         },
         "flags": 0,
         "description": "Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set."
       },
       "orchestrationMode": {
         "type": {
-          "$ref": "#/254"
+          "$ref": "#/242"
         },
         "flags": 0,
         "description": "Specifies the orchestration mode for the virtual machine scale set."
       },
       "spotRestorePolicy": {
         "type": {
-          "$ref": "#/255"
+          "$ref": "#/243"
         },
         "flags": 0,
         "description": "Specifies the Spot Restore properties for the virtual machine scale set."
       },
       "priorityMixPolicy": {
         "type": {
-          "$ref": "#/256"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance."
@@ -317,7 +317,7 @@
       },
       "resiliencyPolicy": {
         "type": {
-          "$ref": "#/258"
+          "$ref": "#/246"
         },
         "flags": 0,
         "description": "Policy for Resiliency"
@@ -742,7 +742,7 @@
           "$ref": "#/231"
         },
         "flags": 0,
-        "description": "Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version: 2023-03-01"
+        "description": "Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01"
       },
       "timeCreated": {
         "type": {
@@ -3400,63 +3400,482 @@
         "type": {
           "$ref": "#/0"
         },
-        "flags": 0,
-        "description": "The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"
+        "flags": 1,
+        "description": "The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest"
       },
       "excludeExtensions": {
         "type": {
-          "$ref": "#/244"
+          "$ref": "#/232"
         },
         "flags": 0,
-        "description": "List of virtual machine extensions to exclude when applying the Security Posture."
+        "description": "The list of virtual machine extension names to exclude when applying the security posture."
+      },
+      "isOverridable": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Whether the security posture can be overridden by the user."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdditionalCapabilities",
+    "properties": {
+      "ultraSSDEnabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled."
+      },
+      "hibernationEnabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The flag that enables or disables hibernation capability on the VM."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "VirtualMachineExtension",
+    "name": "ScaleInPolicy",
     "properties": {
-      "properties": {
+      "rules": {
         "type": {
-          "$ref": "#/233"
+          "$ref": "#/239"
         },
         "flags": 0,
-        "description": "Describes the properties of a Virtual Machine Extension."
+        "description": "The rules to be followed when scaling-in a virtual machine scale set. <br><br> Possible values are: <br><br> **Default** When a virtual machine scale set is scaled in, the scale set will first be balanced across zones if it is a zonal scale set. Then, it will be balanced across Fault Domains as far as possible. Within each Fault Domain, the virtual machines chosen for removal will be the newest ones that are not protected from scale-in. <br><br> **OldestVM** When a virtual machine scale set is being scaled-in, the oldest virtual machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets, the scale set will first be balanced across zones. Within each zone, the oldest virtual machines that are not protected will be chosen for removal. <br><br> **NewestVM** When a virtual machine scale set is being scaled-in, the newest virtual machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets, the scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not protected will be chosen for removal. <br><br>"
+      },
+      "forceDeletion": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "This property allows you to specify if virtual machines chosen for removal have to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OldestVM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NewestVM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/238"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uniform"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flexible"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SpotRestorePolicy",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored opportunistically based on capacity availability and pricing constraints"
+      },
+      "restoreTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS SPOT instances"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PriorityMixPolicy",
+    "properties": {
+      "baseRegularPriorityCount": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 0,
+        "description": "The base number of regular priority VMs that will be created in this scale set as it scales out."
+      },
+      "regularPriorityPercentageAboveBase": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The percentage of VM instances, after the base regular priority count has been reached, that are expected to use regular priority."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResiliencyPolicy",
+    "properties": {
+      "resilientVMCreationPolicy": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while performing resilient VM creation."
+      },
+      "resilientVMDeletionPolicy": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "The configuration parameters used while performing resilient VM deletion."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResilientVMCreationPolicy",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResilientVMDeletionPolicy",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Specifies whether resilient VM deletion should be enabled on the virtual machine scale set. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineScaleSetIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of virtual machine scale set identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant id associated with the virtual machine scale set. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesValue",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/255"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtendedLocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of the extended location."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 0,
+        "description": "The type of the extended location."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EdgeZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/virtualMachineScaleSets@2024-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/virtualMachineScaleSets/extensions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 0,
+        "description": "Describes the properties of a Virtual Machine Scale Set Extension."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/extensions@2024-03-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/265"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 10,
+        "description": "The resource api version"
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Resource location"
+        "description": "The location of the extension."
       },
-      "id": {
+      "properties": {
         "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource Id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Resource type"
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/243"
+          "$ref": "#/270"
         },
         "flags": 0,
-        "description": "Resource tags"
+        "description": "Describes the properties of a Virtual Machine Extension."
       }
     }
   },
@@ -3529,7 +3948,7 @@
       },
       "instanceView": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/271"
         },
         "flags": 0,
         "description": "The virtual machine extension instance view."
@@ -3550,7 +3969,7 @@
       },
       "provisionAfterExtensions": {
         "type": {
-          "$ref": "#/242"
+          "$ref": "#/279"
         },
         "flags": 0,
         "description": "Collection of extension names after which this extension needs to be provisioned."
@@ -3584,14 +4003,14 @@
       },
       "substatuses": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/277"
         },
         "flags": 0,
         "description": "The resource status information."
       },
       "statuses": {
         "type": {
-          "$ref": "#/241"
+          "$ref": "#/278"
         },
         "flags": 0,
         "description": "The resource status information."
@@ -3611,7 +4030,7 @@
       },
       "level": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/276"
         },
         "flags": 0,
         "description": "The level code."
@@ -3655,500 +4074,32 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/236"
+        "$ref": "#/273"
       },
       {
-        "$ref": "#/237"
+        "$ref": "#/274"
       },
       {
-        "$ref": "#/238"
+        "$ref": "#/275"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
       "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceWithOptionalLocationTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/232"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AdditionalCapabilities",
-    "properties": {
-      "ultraSSDEnabled": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled."
-      },
-      "hibernationEnabled": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "The flag that enables or disables hibernation capability on the VM."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ScaleInPolicy",
-    "properties": {
-      "rules": {
-        "type": {
-          "$ref": "#/251"
-        },
-        "flags": 0,
-        "description": "The rules to be followed when scaling-in a virtual machine scale set. <br><br> Possible values are: <br><br> **Default** When a virtual machine scale set is scaled in, the scale set will first be balanced across zones if it is a zonal scale set. Then, it will be balanced across Fault Domains as far as possible. Within each Fault Domain, the virtual machines chosen for removal will be the newest ones that are not protected from scale-in. <br><br> **OldestVM** When a virtual machine scale set is being scaled-in, the oldest virtual machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets, the scale set will first be balanced across zones. Within each zone, the oldest virtual machines that are not protected will be chosen for removal. <br><br> **NewestVM** When a virtual machine scale set is being scaled-in, the newest virtual machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets, the scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not protected will be chosen for removal. <br><br>"
-      },
-      "forceDeletion": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "This property allows you to specify if virtual machines chosen for removal have to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Default"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "OldestVM"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NewestVM"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/247"
-      },
-      {
-        "$ref": "#/248"
-      },
-      {
-        "$ref": "#/249"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/250"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Uniform"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Flexible"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/252"
-      },
-      {
-        "$ref": "#/253"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SpotRestorePolicy",
-    "properties": {
-      "enabled": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored opportunistically based on capacity availability and pricing constraints"
-      },
-      "restoreTimeout": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS SPOT instances"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PriorityMixPolicy",
-    "properties": {
-      "baseRegularPriorityCount": {
-        "type": {
-          "$ref": "#/257"
-        },
-        "flags": 0,
-        "description": "The base number of regular priority VMs that will be created in this scale set as it scales out."
-      },
-      "regularPriorityPercentageAboveBase": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 0,
-        "description": "The percentage of VM instances, after the base regular priority count has been reached, that are expected to use regular priority."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType",
-    "minValue": 0
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResiliencyPolicy",
-    "properties": {
-      "resilientVMCreationPolicy": {
-        "type": {
-          "$ref": "#/259"
-        },
-        "flags": 0,
-        "description": "The configuration parameters used while performing resilient VM creation."
-      },
-      "resilientVMDeletionPolicy": {
-        "type": {
-          "$ref": "#/260"
-        },
-        "flags": 0,
-        "description": "The configuration parameters used while performing resilient VM deletion."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResilientVMCreationPolicy",
-    "properties": {
-      "enabled": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is false."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResilientVMDeletionPolicy",
-    "properties": {
-      "enabled": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 0,
-        "description": "Specifies whether resilient VM deletion should be enabled on the virtual machine scale set. The default value is false."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "VirtualMachineScaleSetIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The principal id of virtual machine scale set identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The tenant id associated with the virtual machine scale set. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/266"
-        },
-        "flags": 0,
-        "description": "The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/268"
-        },
-        "flags": 0,
-        "description": "The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/262"
-      },
-      {
-        "$ref": "#/263"
-      },
-      {
-        "$ref": "#/264"
-      },
-      {
-        "$ref": "#/265"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentitiesValue",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The principal id of user assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The client id of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/267"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ExtendedLocation",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the extended location."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/272"
-        },
-        "flags": 0,
-        "description": "The type of the extended location."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "EdgeZone"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/271"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets@2024-03-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Compute/virtualMachineScaleSets/extensions"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-03-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/extensions",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/275"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/276"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/208"
-        },
-        "flags": 0,
-        "description": "Describes the properties of a Virtual Machine Scale Set Extension."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/extensions@2024-03-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/277"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-03-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/279"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/280"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The location of the extension."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/233"
-        },
-        "flags": 0,
-        "description": "Describes the properties of a Virtual Machine Extension."
-      }
     }
   },
   {
@@ -4156,7 +4107,7 @@
     "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/extensions@2024-03-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/281"
+      "$ref": "#/269"
     },
     "flags": 0
   },
@@ -4188,14 +4139,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/281"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/284"
+          "$ref": "#/282"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -4216,7 +4167,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/284"
         },
         "flags": 0,
         "description": "Describes the properties of a virtual machine scale set virtual machine."
@@ -4292,35 +4243,35 @@
       },
       "instanceView": {
         "type": {
-          "$ref": "#/287"
+          "$ref": "#/285"
         },
         "flags": 2,
         "description": "The virtual machine instance view."
       },
       "hardwareProfile": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/309"
         },
         "flags": 0,
         "description": "Specifies the hardware settings for the virtual machine."
       },
       "storageProfile": {
         "type": {
-          "$ref": "#/479"
+          "$ref": "#/477"
         },
         "flags": 0,
         "description": "Specifies the storage settings for the virtual machine disks."
       },
       "additionalCapabilities": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/233"
         },
         "flags": 0,
         "description": "Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance: whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage account type."
       },
       "osProfile": {
         "type": {
-          "$ref": "#/526"
+          "$ref": "#/524"
         },
         "flags": 0,
         "description": "Specifies the operating system settings for the virtual machine."
@@ -4334,14 +4285,14 @@
       },
       "networkProfile": {
         "type": {
-          "$ref": "#/528"
+          "$ref": "#/526"
         },
         "flags": 0,
         "description": "Specifies the network interfaces of the virtual machine."
       },
       "networkProfileConfiguration": {
         "type": {
-          "$ref": "#/583"
+          "$ref": "#/581"
         },
         "flags": 0,
         "description": "Specifies the network profile configuration of the virtual machine."
@@ -4383,7 +4334,7 @@
       },
       "protectionPolicy": {
         "type": {
-          "$ref": "#/585"
+          "$ref": "#/583"
         },
         "flags": 0,
         "description": "Specifies the protection policy of the virtual machine."
@@ -4431,49 +4382,49 @@
       },
       "vmAgent": {
         "type": {
-          "$ref": "#/288"
+          "$ref": "#/286"
         },
         "flags": 0,
         "description": "The VM Agent running on the virtual machine."
       },
       "maintenanceRedeployStatus": {
         "type": {
-          "$ref": "#/292"
+          "$ref": "#/290"
         },
         "flags": 0,
         "description": "The Maintenance Operation status on the virtual machine."
       },
       "disks": {
         "type": {
-          "$ref": "#/303"
+          "$ref": "#/301"
         },
         "flags": 0,
         "description": "The disks information."
       },
       "extensions": {
         "type": {
-          "$ref": "#/304"
+          "$ref": "#/302"
         },
         "flags": 0,
         "description": "The extensions information."
       },
       "vmHealth": {
         "type": {
-          "$ref": "#/305"
+          "$ref": "#/303"
         },
         "flags": 2,
         "description": "The health status for the VM."
       },
       "bootDiagnostics": {
         "type": {
-          "$ref": "#/306"
+          "$ref": "#/304"
         },
         "flags": 0,
         "description": "Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from the hypervisor."
       },
       "statuses": {
         "type": {
-          "$ref": "#/307"
+          "$ref": "#/305"
         },
         "flags": 0,
         "description": "The resource status information."
@@ -4515,7 +4466,7 @@
       },
       "hyperVGeneration": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/308"
         },
         "flags": 0,
         "description": "The hypervisor generation of the Virtual Machine [V1, V2]"
@@ -4535,14 +4486,14 @@
       },
       "extensionHandlers": {
         "type": {
-          "$ref": "#/290"
+          "$ref": "#/288"
         },
         "flags": 0,
         "description": "The virtual machine extension handler instance view."
       },
       "statuses": {
         "type": {
-          "$ref": "#/291"
+          "$ref": "#/289"
         },
         "flags": 0,
         "description": "The resource status information."
@@ -4569,7 +4520,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 0,
         "description": "The extension handler status."
@@ -4579,13 +4530,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/289"
+      "$ref": "#/287"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -4629,7 +4580,7 @@
       },
       "lastOperationResultCode": {
         "type": {
-          "$ref": "#/297"
+          "$ref": "#/295"
         },
         "flags": 0,
         "description": "The Last Maintenance Operation Result Code."
@@ -4663,16 +4614,16 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
         "$ref": "#/293"
       },
       {
         "$ref": "#/294"
-      },
-      {
-        "$ref": "#/295"
-      },
-      {
-        "$ref": "#/296"
       }
     ]
   },
@@ -4689,14 +4640,14 @@
       },
       "encryptionSettings": {
         "type": {
-          "$ref": "#/301"
+          "$ref": "#/299"
         },
         "flags": 0,
         "description": "Specifies the encryption settings for the OS Disk. <br><br> Minimum api-version: 2015-06-15"
       },
       "statuses": {
         "type": {
-          "$ref": "#/302"
+          "$ref": "#/300"
         },
         "flags": 0,
         "description": "The resource status information."
@@ -4716,7 +4667,7 @@
       },
       "keyEncryptionKey": {
         "type": {
-          "$ref": "#/300"
+          "$ref": "#/298"
         },
         "flags": 0,
         "description": "Specifies the location of the key encryption key in Key Vault."
@@ -4753,25 +4704,25 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/299"
+      "$ref": "#/297"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/298"
+      "$ref": "#/296"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/234"
+      "$ref": "#/271"
     }
   },
   {
@@ -4780,7 +4731,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 2,
         "description": "The health status information for the VM."
@@ -4807,7 +4758,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 2,
         "description": "The boot diagnostics status information for the VM. **Note:** It will be set only if there are errors encountered in enabling boot diagnostics."
@@ -4817,7 +4768,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -4832,10 +4783,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/308"
+        "$ref": "#/306"
       },
       {
-        "$ref": "#/309"
+        "$ref": "#/307"
       },
       {
         "$ref": "#/0"
@@ -4848,7 +4799,7 @@
     "properties": {
       "vmSize": {
         "type": {
-          "$ref": "#/478"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "Specifies the size of the virtual machine. The enum data type is currently deprecated and will be removed by December 23rd 2023. The recommended way to get the list of available sizes is using these APIs: [List all available virtual machine sizes in an availability set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes), [List all available virtual machine sizes in a region]( https://docs.microsoft.com/rest/api/compute/resourceskus/list), [List all available virtual machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For more information about virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/sizes). The available VM sizes depend on region and availability set."
@@ -5530,6 +5481,12 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
         "$ref": "#/312"
       },
       {
@@ -6022,12 +5979,6 @@
         "$ref": "#/475"
       },
       {
-        "$ref": "#/476"
-      },
-      {
-        "$ref": "#/477"
-      },
-      {
         "$ref": "#/0"
       }
     ]
@@ -6045,21 +5996,21 @@
       },
       "osDisk": {
         "type": {
-          "$ref": "#/480"
+          "$ref": "#/478"
         },
         "flags": 0,
         "description": "Specifies information about the operating system disk used by the virtual machine. For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview)."
       },
       "dataDisks": {
         "type": {
-          "$ref": "#/522"
+          "$ref": "#/520"
         },
         "flags": 0,
         "description": "Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview)."
       },
       "diskControllerType": {
         "type": {
-          "$ref": "#/525"
+          "$ref": "#/523"
         },
         "flags": 0,
         "description": "Specifies the disk controller type configured for the VM. **Note:** This property will be set to the default disk controller type if not specified provided virtual machine is being created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from the the specified minimum api version. You need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM. Minimum api-version: 2022-08-01."
@@ -6072,14 +6023,14 @@
     "properties": {
       "osType": {
         "type": {
-          "$ref": "#/483"
+          "$ref": "#/481"
         },
         "flags": 0,
         "description": "This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**"
       },
       "encryptionSettings": {
         "type": {
-          "$ref": "#/299"
+          "$ref": "#/297"
         },
         "flags": 0,
         "description": "Specifies the encryption settings for the OS Disk. Minimum api-version: 2015-06-15."
@@ -6107,7 +6058,7 @@
       },
       "caching": {
         "type": {
-          "$ref": "#/487"
+          "$ref": "#/485"
         },
         "flags": 0,
         "description": "Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**"
@@ -6128,7 +6079,7 @@
       },
       "createOption": {
         "type": {
-          "$ref": "#/493"
+          "$ref": "#/491"
         },
         "flags": 1,
         "description": "Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference element described above. If you are using a marketplace image, you should also use the plan element previously described."
@@ -6142,14 +6093,14 @@
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/494"
+          "$ref": "#/492"
         },
         "flags": 0,
         "description": "The managed disk parameters."
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/505"
+          "$ref": "#/503"
         },
         "flags": 0,
         "description": "Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an ephemeral OS Disk."
@@ -6168,10 +6119,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/481"
+        "$ref": "#/479"
       },
       {
-        "$ref": "#/482"
+        "$ref": "#/480"
       }
     ]
   },
@@ -6191,13 +6142,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/482"
+      },
+      {
+        "$ref": "#/483"
+      },
+      {
         "$ref": "#/484"
-      },
-      {
-        "$ref": "#/485"
-      },
-      {
-        "$ref": "#/486"
       }
     ]
   },
@@ -6225,6 +6176,12 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/486"
+      },
+      {
+        "$ref": "#/487"
+      },
+      {
         "$ref": "#/488"
       },
       {
@@ -6232,12 +6189,6 @@
       },
       {
         "$ref": "#/490"
-      },
-      {
-        "$ref": "#/491"
-      },
-      {
-        "$ref": "#/492"
       },
       {
         "$ref": "#/0"
@@ -6250,7 +6201,7 @@
     "properties": {
       "storageAccountType": {
         "type": {
-          "$ref": "#/502"
+          "$ref": "#/500"
         },
         "flags": 0,
         "description": "Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk."
@@ -6310,6 +6261,12 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/493"
+      },
+      {
+        "$ref": "#/494"
+      },
+      {
         "$ref": "#/495"
       },
       {
@@ -6323,12 +6280,6 @@
       },
       {
         "$ref": "#/499"
-      },
-      {
-        "$ref": "#/500"
-      },
-      {
-        "$ref": "#/501"
       },
       {
         "$ref": "#/0"
@@ -6347,10 +6298,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/503"
+        "$ref": "#/501"
       },
       {
-        "$ref": "#/504"
+        "$ref": "#/502"
       },
       {
         "$ref": "#/0"
@@ -6391,7 +6342,7 @@
       },
       "caching": {
         "type": {
-          "$ref": "#/510"
+          "$ref": "#/508"
         },
         "flags": 0,
         "description": "Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**"
@@ -6405,7 +6356,7 @@
       },
       "createOption": {
         "type": {
-          "$ref": "#/516"
+          "$ref": "#/514"
         },
         "flags": 1,
         "description": "Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you are using an image to create the virtual machine data disk. If you are using a platform image, you should also use the imageReference element described above. If you are using a marketplace image, you should also use the plan element previously described. **Empty:** This value is used when creating an empty data disk. **Copy:** This value is used to create a data disk from a snapshot or another disk. **Restore:** This value is used to create a data disk from a disk restore point."
@@ -6419,7 +6370,7 @@
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/494"
+          "$ref": "#/492"
         },
         "flags": 0,
         "description": "The managed disk parameters."
@@ -6454,14 +6405,14 @@
       },
       "detachOption": {
         "type": {
-          "$ref": "#/518"
+          "$ref": "#/516"
         },
         "flags": 0,
         "description": "Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the virtual machine. Supported values: **ForceDetach.** detachOption: **ForceDetach** is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed when using this detach behavior. **This feature is still in preview** mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'."
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/521"
+          "$ref": "#/519"
         },
         "flags": 0,
         "description": "Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**."
@@ -6484,13 +6435,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/505"
+      },
+      {
+        "$ref": "#/506"
+      },
+      {
         "$ref": "#/507"
-      },
-      {
-        "$ref": "#/508"
-      },
-      {
-        "$ref": "#/509"
       }
     ]
   },
@@ -6518,6 +6469,12 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/509"
+      },
+      {
+        "$ref": "#/510"
+      },
+      {
         "$ref": "#/511"
       },
       {
@@ -6525,12 +6482,6 @@
       },
       {
         "$ref": "#/513"
-      },
-      {
-        "$ref": "#/514"
-      },
-      {
-        "$ref": "#/515"
       },
       {
         "$ref": "#/0"
@@ -6545,7 +6496,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/517"
+        "$ref": "#/515"
       },
       {
         "$ref": "#/0"
@@ -6564,10 +6515,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/519"
+        "$ref": "#/517"
       },
       {
-        "$ref": "#/520"
+        "$ref": "#/518"
       },
       {
         "$ref": "#/0"
@@ -6577,7 +6528,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/506"
+      "$ref": "#/504"
     }
   },
   {
@@ -6592,10 +6543,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/523"
+        "$ref": "#/521"
       },
       {
-        "$ref": "#/524"
+        "$ref": "#/522"
       },
       {
         "$ref": "#/0"
@@ -6650,7 +6601,7 @@
       },
       "secrets": {
         "type": {
-          "$ref": "#/527"
+          "$ref": "#/525"
         },
         "flags": 0,
         "description": "Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault virtual machine extension for Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows)."
@@ -6683,21 +6634,21 @@
     "properties": {
       "networkInterfaces": {
         "type": {
-          "$ref": "#/534"
+          "$ref": "#/532"
         },
         "flags": 0,
         "description": "Specifies the list of resource Ids for the network interfaces associated with the virtual machine."
       },
       "networkApiVersion": {
         "type": {
-          "$ref": "#/536"
+          "$ref": "#/534"
         },
         "flags": 0,
         "description": "specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations"
       },
       "networkInterfaceConfigurations": {
         "type": {
-          "$ref": "#/582"
+          "$ref": "#/580"
         },
         "flags": 0,
         "description": "Specifies the networking configurations that will be used to create the virtual machine networking resources."
@@ -6710,7 +6661,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/530"
+          "$ref": "#/528"
         },
         "flags": 0,
         "description": "Describes a network interface reference properties."
@@ -6737,7 +6688,7 @@
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/533"
+          "$ref": "#/531"
         },
         "flags": 0,
         "description": "Specify what happens to the network interface when the VM is deleted"
@@ -6756,10 +6707,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/531"
+        "$ref": "#/529"
       },
       {
-        "$ref": "#/532"
+        "$ref": "#/530"
       },
       {
         "$ref": "#/0"
@@ -6769,7 +6720,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/529"
+      "$ref": "#/527"
     }
   },
   {
@@ -6780,7 +6731,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/535"
+        "$ref": "#/533"
       },
       {
         "$ref": "#/0"
@@ -6800,7 +6751,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/538"
+          "$ref": "#/536"
         },
         "flags": 0,
         "description": "Describes a virtual machine network profile's IP configuration."
@@ -6820,7 +6771,7 @@
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/541"
+          "$ref": "#/539"
         },
         "flags": 0,
         "description": "Specify what happens to the network interface when the VM is deleted"
@@ -6862,14 +6813,14 @@
       },
       "dnsSettings": {
         "type": {
-          "$ref": "#/542"
+          "$ref": "#/540"
         },
         "flags": 0,
         "description": "The dns settings to be applied on the network interfaces."
       },
       "ipConfigurations": {
         "type": {
-          "$ref": "#/571"
+          "$ref": "#/569"
         },
         "flags": 1,
         "description": "Specifies the IP configurations of the network interface."
@@ -6882,14 +6833,14 @@
       },
       "auxiliaryMode": {
         "type": {
-          "$ref": "#/575"
+          "$ref": "#/573"
         },
         "flags": 0,
         "description": "Specifies whether the Auxiliary mode is enabled for the Network Interface resource."
       },
       "auxiliarySku": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/579"
         },
         "flags": 0,
         "description": "Specifies whether the Auxiliary sku is enabled for the Network Interface resource."
@@ -6908,10 +6859,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/539"
+        "$ref": "#/537"
       },
       {
-        "$ref": "#/540"
+        "$ref": "#/538"
       },
       {
         "$ref": "#/0"
@@ -6924,7 +6875,7 @@
     "properties": {
       "dnsServers": {
         "type": {
-          "$ref": "#/543"
+          "$ref": "#/541"
         },
         "flags": 0,
         "description": "List of DNS servers IP addresses"
@@ -6950,7 +6901,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/545"
+          "$ref": "#/543"
         },
         "flags": 0,
         "description": "Describes a virtual machine network interface IP configuration properties."
@@ -6977,35 +6928,35 @@
       },
       "publicIPAddressConfiguration": {
         "type": {
-          "$ref": "#/546"
+          "$ref": "#/544"
         },
         "flags": 0,
         "description": "The publicIPAddressConfiguration."
       },
       "privateIPAddressVersion": {
         "type": {
-          "$ref": "#/567"
+          "$ref": "#/565"
         },
         "flags": 0,
         "description": "Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'."
       },
       "applicationSecurityGroups": {
         "type": {
-          "$ref": "#/568"
+          "$ref": "#/566"
         },
         "flags": 0,
         "description": "Specifies an array of references to application security group."
       },
       "applicationGatewayBackendAddressPools": {
         "type": {
-          "$ref": "#/569"
+          "$ref": "#/567"
         },
         "flags": 0,
         "description": "Specifies an array of references to backend address pools of application gateways. A virtual machine can reference backend address pools of multiple application gateways. Multiple virtual machines cannot use the same application gateway."
       },
       "loadBalancerBackendAddressPools": {
         "type": {
-          "$ref": "#/570"
+          "$ref": "#/568"
         },
         "flags": 0,
         "description": "Specifies an array of references to backend address pools of load balancers. A virtual machine can reference backend address pools of one public and one internal load balancer. [Multiple virtual machines cannot use the same basic sku load balancer]."
@@ -7025,7 +6976,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/547"
+          "$ref": "#/545"
         },
         "flags": 0,
         "description": "Describes a virtual machines IP Configuration's PublicIPAddress configuration"
@@ -7052,21 +7003,21 @@
       },
       "deleteOption": {
         "type": {
-          "$ref": "#/550"
+          "$ref": "#/548"
         },
         "flags": 0,
         "description": "Specify what happens to the public IP address when the VM is deleted"
       },
       "dnsSettings": {
         "type": {
-          "$ref": "#/551"
+          "$ref": "#/549"
         },
         "flags": 0,
         "description": "The dns settings to be applied on the publicIP addresses ."
       },
       "ipTags": {
         "type": {
-          "$ref": "#/558"
+          "$ref": "#/556"
         },
         "flags": 0,
         "description": "The list of IP tags associated with the public IP address."
@@ -7080,14 +7031,14 @@
       },
       "publicIPAddressVersion": {
         "type": {
-          "$ref": "#/561"
+          "$ref": "#/559"
         },
         "flags": 0,
         "description": "Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'."
       },
       "publicIPAllocationMethod": {
         "type": {
-          "$ref": "#/564"
+          "$ref": "#/562"
         },
         "flags": 0,
         "description": "Specify the public IP allocation type"
@@ -7106,10 +7057,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/548"
+        "$ref": "#/546"
       },
       {
-        "$ref": "#/549"
+        "$ref": "#/547"
       },
       {
         "$ref": "#/0"
@@ -7129,7 +7080,7 @@
       },
       "domainNameLabelScope": {
         "type": {
-          "$ref": "#/556"
+          "$ref": "#/554"
         },
         "flags": 0,
         "description": "The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is the concatenation of the hashed domain name label with policy according to the domain name label scope and vm network profile unique ID."
@@ -7156,16 +7107,16 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/550"
+      },
+      {
+        "$ref": "#/551"
+      },
+      {
         "$ref": "#/552"
       },
       {
         "$ref": "#/553"
-      },
-      {
-        "$ref": "#/554"
-      },
-      {
-        "$ref": "#/555"
       },
       {
         "$ref": "#/0"
@@ -7195,7 +7146,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/557"
+      "$ref": "#/555"
     }
   },
   {
@@ -7210,10 +7161,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/559"
+        "$ref": "#/557"
       },
       {
-        "$ref": "#/560"
+        "$ref": "#/558"
       },
       {
         "$ref": "#/0"
@@ -7232,10 +7183,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/562"
+        "$ref": "#/560"
       },
       {
-        "$ref": "#/563"
+        "$ref": "#/561"
       },
       {
         "$ref": "#/0"
@@ -7254,10 +7205,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/565"
+        "$ref": "#/563"
       },
       {
-        "$ref": "#/566"
+        "$ref": "#/564"
       },
       {
         "$ref": "#/0"
@@ -7285,7 +7236,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/544"
+      "$ref": "#/542"
     }
   },
   {
@@ -7304,13 +7255,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/570"
+      },
+      {
+        "$ref": "#/571"
+      },
+      {
         "$ref": "#/572"
-      },
-      {
-        "$ref": "#/573"
-      },
-      {
-        "$ref": "#/574"
       },
       {
         "$ref": "#/0"
@@ -7341,6 +7292,12 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
         "$ref": "#/576"
       },
       {
@@ -7350,12 +7307,6 @@
         "$ref": "#/578"
       },
       {
-        "$ref": "#/579"
-      },
-      {
-        "$ref": "#/580"
-      },
-      {
         "$ref": "#/0"
       }
     ]
@@ -7363,7 +7314,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/537"
+      "$ref": "#/535"
     }
   },
   {
@@ -7372,7 +7323,7 @@
     "properties": {
       "networkInterfaceConfigurations": {
         "type": {
-          "$ref": "#/584"
+          "$ref": "#/582"
         },
         "flags": 0,
         "description": "The list of network configurations."
@@ -7406,9 +7357,65 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "VirtualMachineExtension",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 0,
+        "description": "Describes the properties of a Virtual Machine Extension."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource location"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/585"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceWithOptionalLocationTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/232"
+      "$ref": "#/584"
     }
   },
   {
@@ -7489,7 +7496,7 @@
     "name": "UserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/267"
+      "$ref": "#/255"
     }
   },
   {
@@ -7505,7 +7512,7 @@
     "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines@2024-03-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/285"
+      "$ref": "#/283"
     },
     "flags": 0
   },
@@ -7551,7 +7558,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/233"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "Describes the properties of a Virtual Machine Extension."
@@ -7666,7 +7673,7 @@
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/258"
         },
         "flags": 0,
         "description": "The extended location of the Virtual Machine."
@@ -7707,7 +7714,7 @@
     "properties": {
       "hardwareProfile": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/309"
         },
         "flags": 0,
         "description": "Specifies the hardware settings for the virtual machine."
@@ -7721,28 +7728,28 @@
       },
       "storageProfile": {
         "type": {
-          "$ref": "#/479"
+          "$ref": "#/477"
         },
         "flags": 0,
         "description": "Specifies the storage settings for the virtual machine disks."
       },
       "additionalCapabilities": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/233"
         },
         "flags": 0,
         "description": "Specifies additional capabilities enabled or disabled on the virtual machine."
       },
       "osProfile": {
         "type": {
-          "$ref": "#/526"
+          "$ref": "#/524"
         },
         "flags": 0,
         "description": "Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be changed once VM is provisioned."
       },
       "networkProfile": {
         "type": {
-          "$ref": "#/528"
+          "$ref": "#/526"
         },
         "flags": 0,
         "description": "Specifies the network interfaces of the virtual machine."
@@ -8002,14 +8009,14 @@
       },
       "vmAgent": {
         "type": {
-          "$ref": "#/288"
+          "$ref": "#/286"
         },
         "flags": 0,
         "description": "The VM Agent running on the virtual machine."
       },
       "maintenanceRedeployStatus": {
         "type": {
-          "$ref": "#/292"
+          "$ref": "#/290"
         },
         "flags": 0,
         "description": "The Maintenance Operation status on the virtual machine."
@@ -8030,14 +8037,14 @@
       },
       "vmHealth": {
         "type": {
-          "$ref": "#/305"
+          "$ref": "#/303"
         },
         "flags": 2,
         "description": "The health status for the VM."
       },
       "bootDiagnostics": {
         "type": {
-          "$ref": "#/306"
+          "$ref": "#/304"
         },
         "flags": 0,
         "description": "Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from the hypervisor."
@@ -8097,19 +8104,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/298"
+      "$ref": "#/296"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/234"
+      "$ref": "#/271"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -8467,13 +8474,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/232"
+      "$ref": "#/584"
     }
   },
   {
@@ -8619,7 +8626,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -8743,7 +8750,7 @@
       },
       "colocationStatus": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 0,
         "description": "Describes colocation status of the Proximity Placement Group."
@@ -8785,7 +8792,7 @@
     "properties": {
       "colocationStatus": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 0,
         "description": "Describes colocation status of a resource in the Proximity Placement Group."
@@ -9082,7 +9089,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -9203,7 +9210,7 @@
     "properties": {
       "platformFaultDomain": {
         "type": {
-          "$ref": "#/257"
+          "$ref": "#/245"
         },
         "flags": 0,
         "description": "Fault domain of the dedicated host within a dedicated host group."
@@ -9328,7 +9335,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -9490,7 +9497,7 @@
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/270"
+          "$ref": "#/258"
         },
         "flags": 0,
         "description": "The extended location of the Image."
@@ -10170,7 +10177,7 @@
     "properties": {
       "hardwareProfile": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/309"
         },
         "flags": 2,
         "description": "Gets the hardware profile."
@@ -10184,7 +10191,7 @@
       },
       "osProfile": {
         "type": {
-          "$ref": "#/526"
+          "$ref": "#/524"
         },
         "flags": 2,
         "description": "Gets the OS profile."
@@ -10280,7 +10287,7 @@
       },
       "encryptionSettings": {
         "type": {
-          "$ref": "#/299"
+          "$ref": "#/297"
         },
         "flags": 2,
         "description": "Gets the disk encryption settings."
@@ -10308,7 +10315,7 @@
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/494"
+          "$ref": "#/492"
         },
         "flags": 0,
         "description": "Gets the managed disk details"
@@ -10487,7 +10494,7 @@
       },
       "managedDisk": {
         "type": {
-          "$ref": "#/494"
+          "$ref": "#/492"
         },
         "flags": 0,
         "description": "Contains the managed disk details."
@@ -10659,7 +10666,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/272"
         },
         "flags": 0,
         "description": "The resource status information."
@@ -10682,7 +10689,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -10958,7 +10965,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -11176,7 +11183,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -11577,7 +11584,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -12643,7 +12650,7 @@
     "resourceType": "Microsoft.Compute/virtualMachineScaleSets/virtualmachines",
     "apiVersion": "2024-03-01",
     "output": {
-      "$ref": "#/479"
+      "$ref": "#/477"
     },
     "input": {
       "$ref": "#/920"
@@ -12704,7 +12711,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/235"
+      "$ref": "#/272"
     }
   },
   {
@@ -13748,7 +13755,7 @@
     "resourceType": "Microsoft.Compute/virtualMachines",
     "apiVersion": "2024-03-01",
     "output": {
-      "$ref": "#/479"
+      "$ref": "#/477"
     },
     "input": {
       "$ref": "#/920"
