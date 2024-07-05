@@ -574,3 +574,259 @@ func Test_OverrideWithPaths(t *testing.T) {
 		}
 	}
 }
+
+func Test_UpdateObjectPolicyDefinition(t *testing.T) {
+	OldJson := `
+{
+	"properties": {
+    "description": "Deploys the diagnostic settings for Database for PostgreSQL to stream to a Log Analytics workspace when any Database for PostgreSQL which is missing this diagnostic settings is created or updated. This policy is superseded by built-in initiative https://www.azadvertizer.net/azpolicyinitiativesadvertizer/0884adba-2312-4468-abeb-5422caed1038.html.",
+    "displayName": "[Deprecated]: Deploy Diagnostic Settings for Database for PostgreSQL to Log Analytics workspace",
+    "metadata": {
+      "alzCloudEnvironments": [
+        "AzureCloud",
+        "AzureChinaCloud",
+        "AzureUSGovernment"
+      ],
+      "category": "Monitoring",
+      "deprecated": true,
+      "source": "https://github.com/Azure/Enterprise-Scale/",
+      "version": "2.0.0-deprecated"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "effect": {
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "DeployIfNotExists",
+        "metadata": {
+          "description": "Enable or disable the execution of the policy",
+          "displayName": "Effect"
+        },
+        "type": "String"
+      },
+      "logAnalytics": {
+        "metadata": {
+          "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+          "displayName": "Log Analytics workspace",
+          "strongType": "omsWorkspace"
+        },
+        "type": "String"
+      },
+      "logsEnabled": {
+        "allowedValues": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "True",
+        "metadata": {
+          "description": "Whether to enable logs stream to the Log Analytics workspace - True or False",
+          "displayName": "Enable logs"
+        },
+        "type": "String"
+      },
+      "metricsEnabled": {
+        "allowedValues": [
+          "True",
+          "False"
+        ],
+        "defaultValue": "True",
+        "metadata": {
+          "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False",
+          "displayName": "Enable metrics"
+        },
+        "type": "String"
+      },
+      "profileName": {
+        "defaultValue": "setbypolicy",
+        "metadata": {
+          "description": "The diagnostic settings profile name",
+          "displayName": "Profile name"
+        },
+        "type": "String"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "anyOf": [
+          {
+            "equals": "Microsoft.DBforPostgreSQL/flexibleServers",
+            "field": "type"
+          },
+          {
+            "equals": "Microsoft.DBforPostgreSQL/servers",
+            "field": "type"
+          }
+        ]
+      },
+      "then": {
+        "details": {
+          "deployment": {
+            "properties": {
+              "mode": "Incremental",
+              "parameters": {
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "logAnalytics": {
+                  "value": "[parameters('logAnalytics')]"
+                },
+                "logsEnabled": {
+                  "value": "[parameters('logsEnabled')]"
+                },
+                "metricsEnabled": {
+                  "value": "[parameters('metricsEnabled')]"
+                },
+                "profileName": {
+                  "value": "[parameters('profileName')]"
+                },
+                "resourceName": {
+                  "value": "[field('name')]"
+                },
+                "resourceType": {
+                  "value": "[field('type')]"
+                }
+              },
+              "template": {
+                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "outputs": {},
+                "parameters": {
+                  "location": {
+                    "type": "String"
+                  },
+                  "logAnalytics": {
+                    "type": "String"
+                  },
+                  "logsEnabled": {
+                    "type": "String"
+                  },
+                  "metricsEnabled": {
+                    "type": "String"
+                  },
+                  "profileName": {
+                    "type": "String"
+                  },
+                  "resourceName": {
+                    "type": "String"
+                  },
+                  "resourceType": {
+                    "type": "String"
+                  }
+                },
+                "resources": [
+                  {
+                    "apiVersion": "2021-05-01-preview",
+                    "condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/flexibleServers')]",
+                    "dependsOn": [],
+                    "location": "[parameters('location')]",
+                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                    "properties": {
+                      "logs": [
+                        {
+                          "category": "PostgreSQLLogs",
+                          "enabled": "[parameters('logsEnabled')]"
+                        }
+                      ],
+                      "metrics": [
+                        {
+                          "category": "AllMetrics",
+                          "enabled": "[parameters('metricsEnabled')]",
+                          "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                          },
+                          "timeGrain": null
+                        }
+                      ],
+                      "workspaceId": "[parameters('logAnalytics')]"
+                    },
+                    "type": "Microsoft.DBforPostgreSQL/flexibleServers/providers/diagnosticSettings"
+                  },
+                  {
+                    "apiVersion": "2021-05-01-preview",
+                    "condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/servers')]",
+                    "dependsOn": [],
+                    "location": "[parameters('location')]",
+                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                    "properties": {
+                      "logs": [
+                        {
+                          "category": "PostgreSQLLogs",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "QueryStoreRuntimeStatistics",
+                          "enabled": "[parameters('logsEnabled')]"
+                        },
+                        {
+                          "category": "QueryStoreWaitStatistics",
+                          "enabled": "[parameters('logsEnabled')]"
+                        }
+                      ],
+                      "metrics": [
+                        {
+                          "category": "AllMetrics",
+                          "enabled": "[parameters('metricsEnabled')]",
+                          "retentionPolicy": {
+                            "days": 0,
+                            "enabled": false
+                          },
+                          "timeGrain": null
+                        }
+                      ],
+                      "workspaceId": "[parameters('logAnalytics')]"
+                    },
+                    "type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings"
+                  }
+                ],
+                "variables": {}
+              }
+            }
+          },
+          "existenceCondition": {
+            "allOf": [
+              {
+                "equals": "true",
+                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled"
+              },
+              {
+                "equals": "true",
+                "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled"
+              },
+              {
+                "equals": "[parameters('logAnalytics')]",
+                "field": "Microsoft.Insights/diagnosticSettings/workspaceId"
+              }
+            ]
+          },
+          "name": "[parameters('profileName')]",
+          "roleDefinitionIds": [
+            "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+            "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+          ],
+          "type": "Microsoft.Insights/diagnosticSettings"
+        },
+        "effect": "[parameters('effect')]"
+      }
+    },
+    "policyType": "Custom"
+  }
+}
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(OldJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
