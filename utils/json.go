@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -65,6 +66,9 @@ type UpdateJsonOption struct {
 
 // UpdateObject is used to get an updated object which has same schema as old, but with new value
 func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) interface{} {
+	if reflect.DeepEqual(old, new) {
+		return old
+	}
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
