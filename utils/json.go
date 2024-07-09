@@ -134,15 +134,6 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 	return new
 }
 
-func areSameArrayItems(a, b interface{}) bool {
-	aId := identifierOfArrayItem(a)
-	bId := identifierOfArrayItem(b)
-	if aId == "" || bId == "" {
-		return false
-	}
-	return aId == bId
-}
-
 func identifierOfArrayItem(input interface{}) string {
 	inputMap, ok := input.(map[string]interface{})
 	if !ok {
