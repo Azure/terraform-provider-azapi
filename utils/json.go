@@ -106,7 +106,7 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 
 			for _, oldItem := range oldValue {
 				for index, newItem := range newArr {
-					if areSameArrayItems(oldItem, newItem) {
+					if reflect.DeepEqual(oldItem, newItem) && !used[index] {
 						res = append(res, UpdateObject(oldItem, newItem, option))
 						used[index] = true
 						break
