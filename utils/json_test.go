@@ -474,6 +474,20 @@ func Test_ExtractObject(t *testing.T) {
 		resultJson, _ := json.Marshal(result)
 		t.Fatalf("Expected nil but got %s", resultJson)
 	}
+
+	// JMESPath
+	expectedJsonJMES := `
+{
+  "properties.consumerGroup": "acctesteventhubcg"
+}
+`
+	_ = json.Unmarshal([]byte(expectedJsonJMES), &expected)
+	result = utils.ExtractObject(old, "jmes:properties.consumerGroup")
+	if !reflect.DeepEqual(result, expected) {
+		expectedJson, _ := json.Marshal(expected)
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected %s but got %s", string(expectedJson), string(resultJson))
+	}
 }
 
 func Test_OverrideWithPaths(t *testing.T) {
@@ -572,5 +586,53 @@ func Test_OverrideWithPaths(t *testing.T) {
 			resultJson, _ := json.Marshal(result)
 			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
 		}
+	}
+}
+
+func Test_ExtractObjectJMES(t *testing.T) {
+	inputJson := `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`
+	expectedJson := `
+{ "values[*].name":["test1","test2"] }
+`
+	var input, expected interface{}
+	_ = json.Unmarshal([]byte(inputJson), &input)
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
+
+	result := utils.ExtractObjectJMES(input, "values[*].name")
+	if !reflect.DeepEqual(result, expected) {
+		expectedJson, _ := json.Marshal(expected)
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected %s but got %s", string(expectedJson), string(resultJson))
+	}
+
+	// Test with incorrect JMESPath
+	result = utils.ExtractObjectJMES(input, "values[*].incorrect")
+	expectedJson = `
+{ "values[*].incorrect":[] }
+`
+	_ = json.Unmarshal([]byte(expectedJson), &expected)
+	if !reflect.DeepEqual(result, expected) {
+		expectedJson, _ := json.Marshal(expected)
+		resultJson, _ := json.Marshal(result)
+		t.Fatalf("Expected %s but got %s", string(expectedJson), string(resultJson))
 	}
 }
