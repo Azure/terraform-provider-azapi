@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/internal/services/functions"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
@@ -658,7 +659,22 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 func (p Provider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
 		func() function.Function {
-			return &services.ParseResourceIdFunction{}
+			return &functions.ParseResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.BuildResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.BuildManagementGroupScopeResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.BuildSubscriptionScopeResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.BuildResourceGroupScopeResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.BuildTenantScopeResourceIdFunction{}
 		},
 	}
 }
