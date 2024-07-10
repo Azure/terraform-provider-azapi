@@ -659,3 +659,60 @@ func Test_UpdateObjectDuplicateIdentifiers(t *testing.T) {
 		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
 	}
 }
+
+func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T) {
+	OldJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Prompt"
+		},
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+		}
+  ]
+}
+`
+	NewJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+			},
+			{
+				"name": "Hate",
+				"allowedContentLevel": "Medium",
+				"blocking": true,
+				"enabled": true,
+				"source": "Prompt"
+			}
+  ]
+}
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(NewJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
