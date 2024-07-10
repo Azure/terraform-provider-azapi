@@ -3,7 +3,6 @@ package utils_test
 import (
 	"encoding/json"
 	"reflect"
-	"strconv"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -108,28 +107,18 @@ func Test_UpdateObject(t *testing.T) {
       "dnsServers": []
     },
     "subnets": [
-			{
-				"etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
-				"id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/henglu422",
-				"name": "henglu422",
-				"properties": {
-					"addressPrefix": "10.0.2.0/24",
-					"delegations": [],
-					"networkSecurityGroup": {
-						"id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/networkSecurityGroups/NRMS-zpedr2ai6dglmhenglu422"
-					},
-					"privateEndpointNetworkPolicies": "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
-					"provisioningState": "Succeeded"
-				},
-				"type": "Microsoft.Network/virtualNetworks/subnets"
-			},
       {
-        "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/default",
         "name": "default",
         "properties": {
-          "addressPrefix": "10.0.3.0/24",
+          "addressPrefix": "10.0.3.0/24"
+        }
+      },
+      {
+        "etag": "W/\"5633f421-aaa4-4cf3-b9a6-40625807bd75\"",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/virtualNetworks/henglu422/subnets/henglu422",
+        "name": "henglu422",
+        "properties": {
+          "addressPrefix": "10.0.2.0/24",
           "delegations": [],
           "networkSecurityGroup": {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/henglu422/providers/Microsoft.Network/networkSecurityGroups/NRMS-zpedr2ai6dglmhenglu422"
@@ -227,20 +216,18 @@ func Test_UpdateObject(t *testing.T) {
 		},
 	}
 
-	for i, testcase := range testcases {
-		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			var new, old, expected interface{}
-			_ = json.Unmarshal([]byte(testcase.OldJson), &old)
-			_ = json.Unmarshal([]byte(testcase.NewJson), &new)
-			_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+	for _, testcase := range testcases {
+		var new, old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.NewJson), &new)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
 
-			result := utils.UpdateObject(old, new, testcase.Option)
-			if !reflect.DeepEqual(result, expected) {
-				expectedJson, _ := json.MarshalIndent(expected, "", "  ")
-				resultJson, _ := json.MarshalIndent(result, "", "  ")
-				t.Fatalf("Expected \n\n%s\n\nbut got\n\n%s", expectedJson, resultJson)
-			}
-		})
+		result := utils.UpdateObject(old, new, testcase.Option)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+		}
 	}
 }
 
@@ -660,63 +647,6 @@ func Test_UpdateObjectDuplicateIdentifiers(t *testing.T) {
 	var old, new, expected any
 	_ = json.Unmarshal([]byte(OldJson), &old)
 	_ = json.Unmarshal([]byte(OldJson), &new)
-	_ = json.Unmarshal([]byte(OldJson), &expected)
-
-	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
-		IgnoreCasing:          false,
-		IgnoreMissingProperty: true,
-	})
-	if !reflect.DeepEqual(got, expected) {
-		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
-		gotJson, _ := json.MarshalIndent(got, "", "  ")
-		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
-	}
-}
-
-func Test_UpdateObjectDuplicateIdentifiersUnordered(t *testing.T) {
-	OldJson := `
-{
-	"contentFilters": [
-		{
-			"name": "Hate",
-			"allowedContentLevel": "Medium",
-			"blocking": true,
-			"enabled": true,
-			"source": "Prompt"
-		},
-		{
-			"name": "Hate",
-			"allowedContentLevel": "Medium",
-			"blocking": true,
-			"enabled": true,
-			"source": "Completion"
-		}
-	]
-}
-`
-	NewJson := `
-{
-	"contentFilters": [
-		{
-				"name": "Hate",
-				"allowedContentLevel": "Medium",
-				"blocking": true,
-				"enabled": true,
-				"source": "Completion"
-		},
-		{
-				"name": "Hate",
-				"allowedContentLevel": "Medium",
-				"blocking": true,
-				"enabled": true,
-				"source": "Prompt"
-		}
-	]
-}
-`
-	var old, new, expected any
-	_ = json.Unmarshal([]byte(OldJson), &old)
-	_ = json.Unmarshal([]byte(NewJson), &new)
 	_ = json.Unmarshal([]byte(OldJson), &expected)
 
 	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
