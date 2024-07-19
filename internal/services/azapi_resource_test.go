@@ -548,6 +548,17 @@ func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_preflightMockPropertyValue(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:      r.preflightMockPropertyValue(data),
+			ExpectError: regexp.MustCompile("Could not cast or convert from System.String"),
+		},
+	})
+}
+
 func TestAccGenericResource_preflightDisableValidation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1675,7 +1686,7 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.Management/managementGroups@2020-05-01"
   name      = "acctestMG-%[1]d"
   parent_id = "/"
-  body = jsonencode({
+  body = {
     properties = {
       details = {
         parent = {
@@ -1683,7 +1694,7 @@ resource "azapi_resource" "test" {
         }
       }
     }
-  })
+  }
 
 
 }
@@ -1785,6 +1796,42 @@ resource "azapi_resource" "test" {
     properties = {
       level = "CanNotDelete"
       notes = ""
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) preflightMockPropertyValue(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+provider "azapi" {
+  enable_preflight = true
+}
+
+
+resource "azurerm_resource_group" "test" {
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+}
+
+resource "azapi_resource" "test" {
+  type      = "MICROSOFT.NETWORK/APPLICATIONGATEWAYS@2023-09-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctestsa%[3]s"
+  location  = azurerm_resource_group.test.location
+  body = {
+    properties = {
+      sku = azurerm_resource_group.test.id
     }
   }
   schema_validation_enabled = false
