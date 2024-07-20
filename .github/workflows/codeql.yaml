@@ -1,96 +1,46 @@
----
-name: update-locations
+name: "CodeQL"
 
 on:
-  schedule:
-    - cron: '15 4 * * 0'
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
 
 jobs:
-  update:
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'go' ]
+        
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
 
-      - name: install jd
-        run: |
-          go install github.com/josephburnett/jd@v1.7.1
+    - name: Set up Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.21
 
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ vars.AZURE_CLIENT_ID }}
-          tenant-id: ${{ vars.AZURE_TENANT_ID }}
-          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+    - name: Build 
+      run: |
+        go build
 
-      - name: generate token
-        uses: tibdex/github-app-token@v2
-        id: generate-token
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
-
-      - name: checkout branch
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git checkout -b update${{ github.run_id }}
-
-      - name: update locations data
-        run: |
-          cp locations.tf.json locations.tf.json.original
-          az rest --method GET --uri /locations?api-version=2023-07-01 | jq '{ "locals": { "locations_cached": {"value": .value }}}' > locations.tf.json
-        working-directory: ${{ github.workspace }}
-
-      - name: update compute provider data
-        run: |
-          cp microsoft.compute_resourceTypes.tf.json microsoft.compute_resourceTypes.tf.json.original
-          az rest --method GET --uri /subscriptions/${{ vars.AZURE_SUBSCRIPTION_ID }}/providers/Microsoft.Compute?api-version=2022-12-01 | jq '{ "locals": { "regions_zonemappings_cached": {"resourceTypes": .resourceTypes }}}' > microsoft.compute_resourceTypes.tf.json
-        working-directory: ${{ github.workspace }}
-
-      - name: deep compare locations data
-        run: |
-          if ! jd -set locations.tf.json.original locations.tf.json; then
-            echo "locations.tf.json has changed"
-            git add locations.tf.json
-            echo UPDATED=1 >> "$GITHUB_ENV"
-          fi
-        working-directory: ${{ github.workspace }}
-
-      - name: deep compare compute provider data
-        run: |
-          if ! jd -set microsoft.compute_resourceTypes.tf.json.original microsoft.compute_resourceTypes.tf.json; then
-            echo "microsoft.compute_resourceTypes.tf.json has changed"
-            git add microsoft.compute_resourceTypes.tf.json
-            echo UPDATED=1 >> "$GITHUB_ENV"
-          fi
-        working-directory: ${{ github.workspace }}
-
-      - name: commit changes & create PR
-        id: pr
-        if: env.UPDATED == '1'
-        run: |
-          if [[ -n $(git status -suno) ]]; then
-            git commit -m "feat: update data from Azure"
-            git push origin update${{ github.run_id }}
-            PR_URL=$(gh pr create --title "feat: update data from Azure" --body "Updated from GH run id: ${{ github.run_id }}" --base main --head update${{ github.run_id }})
-            echo pull-request-number=$(gh pr view $PR_URL --json number | jq -r '.number') >> "$GITHUB_OUTPUT"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-
-      - name: close and comment out of date prs
-        if: env.UPDATED == '1'
-        run: |
-          PULL_REQUESTS=$(gh pr list --search "feat: update data from Azure" --json number,headRefName)
-          echo "$PULL_REQUESTS" | jq -r '.[] | select(.number != ${{ steps.pr.outputs.pull-request-number }}) | .number' | xargs -I {} gh pr close {} --delete-branch --comment "Supersceeded by #${{ steps.pr.outputs.pull-request-number }}"
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
