@@ -21,22 +21,12 @@ jobs:
         with:
           go-version: 'stable'
 
+      - name: Azure CLI login
+        run: az login --output none --username="${{ secrets.AZCLI_USERNAME }}" --password="${{ secrets.AZCLI_PASSWORD }}"
+
       - name: install jd
         run: |
           go install github.com/josephburnett/jd@v1.7.1
-
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ vars.AZURE_CLIENT_ID }}
-          tenant-id: ${{ vars.AZURE_TENANT_ID }}
-          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-
-      - name: generate token
-        uses: tibdex/github-app-token@v2
-        id: generate-token
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
 
       - name: checkout branch
         run: |
@@ -46,32 +36,12 @@ jobs:
 
       - name: update locations data
         run: |
-          cp locations.tf.json locations.tf.json.original
           az rest --method GET --uri /locations?api-version=2023-07-01 | jq '{ "locals": { "locations_cached": {"value": .value }}}' > locations.tf.json
         working-directory: ${{ github.workspace }}
 
       - name: update compute provider data
         run: |
-          cp microsoft.compute_resourceTypes.tf.json microsoft.compute_resourceTypes.tf.json.original
-          az rest --method GET --uri /subscriptions/${{ vars.AZURE_SUBSCRIPTION_ID }}/providers/Microsoft.Compute?api-version=2022-12-01 | jq '{ "locals": { "regions_zonemappings_cached": {"resourceTypes": .resourceTypes }}}' > microsoft.compute_resourceTypes.tf.json
-        working-directory: ${{ github.workspace }}
-
-      - name: deep compare locations data
-        run: |
-          if ! jd -set locations.tf.json.original locations.tf.json; then
-            echo "locations.tf.json has changed"
-            git add locations.tf.json
-            echo UPDATED=1 >> "$GITHUB_ENV"
-          fi
-        working-directory: ${{ github.workspace }}
-
-      - name: deep compare compute provider data
-        run: |
-          if ! jd -set microsoft.compute_resourceTypes.tf.json.original microsoft.compute_resourceTypes.tf.json; then
-            echo "microsoft.compute_resourceTypes.tf.json has changed"
-            git add microsoft.compute_resourceTypes.tf.json
-            echo UPDATED=1 >> "$GITHUB_ENV"
-          fi
+          az rest --method GET --uri /subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/providers/Microsoft.Compute?api-version=2022-12-01 | jq '{ "locals": { "regions_zonemappings_cached": {"resourceTypes": .resourceTypes }}}' > microsoft.compute_resourceTypes.tf.json
         working-directory: ${{ github.workspace }}
 
       - name: commit changes & create PR
