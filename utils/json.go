@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	jmes "github.com/jmespath/go-jmespath"
 )
 
 func NormalizeJson(jsonString interface{}) string {
@@ -160,6 +162,11 @@ func ExtractObject(old interface{}, path string) interface{} {
 	if len(path) == 0 {
 		return old
 	}
+
+	if strings.HasPrefix(path, "jmes:") {
+		return ExtractObjectJMES(old, path[5:])
+	}
+
 	if oldMap, ok := old.(map[string]interface{}); ok {
 		index := strings.Index(path, ".")
 		if index != -1 {
@@ -183,6 +190,17 @@ func ExtractObject(old interface{}, path string) interface{} {
 		}
 	}
 	return nil
+}
+
+// ExtractObjectJMES is used to extract object from old using JMES path
+func ExtractObjectJMES(old interface{}, path string) interface{} {
+	result := make(map[string]interface{}, 1)
+	value, err := jmes.Search(path, old)
+	if err != nil {
+		return nil
+	}
+	result[path] = value
+	return result
 }
 
 // OverrideWithPaths is used to override old object with new object for specific paths
