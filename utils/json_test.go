@@ -574,3 +574,145 @@ func Test_OverrideWithPaths(t *testing.T) {
 		}
 	}
 }
+
+func Test_UpdateObjectDuplicateIdentifiers(t *testing.T) {
+	OldJson := `
+[
+	{
+		"apiVersion": "2021-05-01-preview",
+		"condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/flexibleServers')]",
+		"dependsOn": [],
+		"location": "[parameters('location')]",
+		"name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+		"properties": {
+			"logs": [
+				{
+					"category": "PostgreSQLLogs",
+					"enabled": "[parameters('logsEnabled')]"
+				}
+			],
+			"metrics": [
+				{
+					"category": "AllMetrics",
+					"enabled": "[parameters('metricsEnabled')]",
+					"retentionPolicy": {
+						"days": 0,
+						"enabled": false
+					},
+					"timeGrain": null
+				}
+			],
+			"workspaceId": "[parameters('logAnalytics')]"
+		},
+		"type": "Microsoft.DBforPostgreSQL/flexibleServers/providers/diagnosticSettings"
+	},
+	{
+		"apiVersion": "2021-05-01-preview",
+		"condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/servers')]",
+		"dependsOn": [],
+		"location": "[parameters('location')]",
+		"name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+		"properties": {
+			"logs": [
+				{
+					"category": "PostgreSQLLogs",
+					"enabled": "[parameters('logsEnabled')]"
+				},
+				{
+					"category": "QueryStoreRuntimeStatistics",
+					"enabled": "[parameters('logsEnabled')]"
+				},
+				{
+					"category": "QueryStoreWaitStatistics",
+					"enabled": "[parameters('logsEnabled')]"
+				}
+			],
+			"metrics": [
+				{
+					"category": "AllMetrics",
+					"enabled": "[parameters('metricsEnabled')]",
+					"retentionPolicy": {
+						"days": 0,
+						"enabled": false
+					},
+					"timeGrain": null
+				}
+			],
+			"workspaceId": "[parameters('logAnalytics')]"
+		},
+		"type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings"
+	}
+]
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(OldJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
+
+func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T) {
+	OldJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Prompt"
+		},
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+		}
+  ]
+}
+`
+	NewJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+			},
+			{
+				"name": "Hate",
+				"allowedContentLevel": "Medium",
+				"blocking": true,
+				"enabled": true,
+				"source": "Prompt"
+			}
+  ]
+}
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(NewJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
