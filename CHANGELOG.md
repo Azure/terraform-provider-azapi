@@ -1,3 +1,8 @@
+## v1.15.0
+
+BUG FIXES:
+- Fix a bug that differences in a list of objects are not detected correctly.
+
 ## v1.14.0
 FEATURES:
 - **New Data Source**: azapi_client_config
