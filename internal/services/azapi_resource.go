@@ -894,7 +894,6 @@ func (r *AzapiResource) preflightValidation(ctx context.Context, request resourc
 
 	var plan *AzapiResourceModel
 	request.Plan.Get(ctx, &plan)
-	//response.Diagnostics.Append(request.State.Get(ctx, &state)...)
 
 	// Preflight validation happens only when deploying a new resource
 	if !request.State.Raw.IsNull() {
