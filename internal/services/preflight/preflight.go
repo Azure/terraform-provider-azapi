@@ -29,11 +29,12 @@ func attrListToJSON(isPropertyValue bool, in []attr.Value) (bool, []json.RawMess
 func attrMapToJSON(isPropertyValue bool, in map[string]attr.Value) (bool, map[string]json.RawMessage, error) {
 	m := map[string]json.RawMessage{}
 	for k, v := range in {
+		underProperties := isPropertyValue
 		// preflight can only mock attributes under 'properties'.
 		if k == "properties" {
-			isPropertyValue = true
+			underProperties = true
 		}
-		ok, vv, err := attrValueToJSON(isPropertyValue, v)
+		ok, vv, err := attrValueToJSON(underProperties, v)
 		if err != nil {
 			return false, nil, err
 		}
