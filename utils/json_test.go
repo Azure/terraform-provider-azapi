@@ -192,6 +192,198 @@ func Test_UpdateObject(t *testing.T) {
 			OldJson: `
 {
   "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}
+`,
+			NewJson: `
+{
+  "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}`,
+			ExpectJson: `
+{
+  "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}`,
+		},
+		{
+			OldJson: `
+{
+  "properties": {
     "sshPrivateKey": "asdf"
   }
 }`,
