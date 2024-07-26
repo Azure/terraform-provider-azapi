@@ -157,6 +157,26 @@ func TestAccGenericUpdateResource_timeouts(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_ignoreIDCasing(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreIDCasing(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.ignoreIDCasingUpdated(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -463,6 +483,58 @@ resource "azapi_update_resource" "test" {
 `, r.template(data), data.RandomInteger)
 }
 
+func (r GenericUpdateResource) ignoreIDCasing(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.SignalRService/WebPubSub@2024-04-01-preview"
+  resource_id = azurerm_web_pubsub.test.id
+
+  body = {
+    properties = {
+      networkACLs = {
+        defaultAction = "Deny"
+        publicNetwork = {
+          allow = ["ClientConnection"]
+        }
+        ipRules = [{
+          value  = "0.0.0.0/0"
+          action = "Allow"
+        }]
+      }
+    }
+  }
+}
+`, r.templateForIDCasing(data))
+}
+
+func (r GenericUpdateResource) ignoreIDCasingUpdated(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.SignalRService/WebPubSub@2024-04-01-preview"
+  resource_id = azurerm_web_pubsub.test.id
+
+  body = {
+    properties = {
+      networkACLs = {
+        defaultAction = "Deny"
+        publicNetwork = {
+          allow = ["ClientConnection", "RESTAPI"]
+        }
+        ipRules = [{
+          value  = "0.0.0.0/0"
+          action = "Allow"
+        }]
+      }
+    }
+  }
+}
+`, r.templateForIDCasing(data))
+}
+
 func (GenericUpdateResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
@@ -474,6 +546,33 @@ resource "azurerm_resource_group" "test" {
   location = "%[2]s"
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericUpdateResource) templateForIDCasing(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_web_pubsub" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+
+  sku      = "Standard_S1"
+  capacity = 1
+
+  public_network_access_enabled = false
+
+  live_trace {
+    enabled                   = true
+    messaging_logs_enabled    = true
+    connectivity_logs_enabled = false
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericUpdateResource) timeouts(data acceptance.TestData) string {

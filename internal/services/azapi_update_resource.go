@@ -291,15 +291,18 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	defer cancel()
 
 	var id parse.ResourceId
-	if name := model.Name.ValueString(); len(name) != 0 {
-		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
+	// We need to ensure that the ID parsed in create and update is the same to produce consistent results.
+	// In update, all these fields are set, using resource_id and type is able to parse the parent_id and name which are used to build it.
+	// But using parent_id, name and type is not able to parse the original resource_id, because the last resource type segment comes from the type instead of the resource_id.
+	if resourceId := model.ResourceID.ValueString(); len(resourceId) != 0 {
+		buildId, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
 		if err != nil {
 			diagnostics.AddError("Invalid configuration", err.Error())
 			return
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
+		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 		if err != nil {
 			diagnostics.AddError("Invalid configuration", err.Error())
 			return
