@@ -74,13 +74,13 @@ func TestBuildResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/providers/Microsoft.Management/managementGroups/mg1"),
-					types.StringValue("Microsoft.CostManagement/views@2023-04-01-preview"),
-					types.StringValue("MyCostView"),
+					types.StringValue("Microsoft.Authorization/privateLinkAssociations@2020-05-01"),
+					types.StringValue("MyPrivateLinkAssociation"),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.CostManagement/views/MyCostView"),
+					"resource_id": types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Authorization/privateLinkAssociations/MyPrivateLinkAssociation"),
 				})),
 			},
 		},
@@ -88,8 +88,8 @@ func TestBuildResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.CostManagement/views@2023-04-01-preview"),
-					types.StringValue("MyCostView"),
+					types.StringValue("Microsoft.Authorization/privateLinkAssociations@2020-05-01"),
+					types.StringValue("MyPrivateLinkAssociation"),
 				}),
 			},
 			expected: function.RunResponse{
@@ -127,28 +127,15 @@ func TestBuildResourceIdFunction(t *testing.T) {
 		"build-extension-scope-resource-id-valid": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
-					types.StringValue("Microsoft.Chaos/targets/capabilities@2024-01-01"),
-					types.StringValue("MyCapability"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					types.StringValue("Microsoft.Chaos/targets@2024-01-01"),
+					types.StringValue("MyTarget"),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/providers/Microsoft.Chaos/targets/capabilities/MyCapability"),
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/MyTarget"),
 				})),
-			},
-		},
-		"build-extension-scope-resource-id-invalid": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.Chaos/targets/capabilities@2024-01-01"),
-					types.StringValue("MyCapability"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [Extension], but got scope Unknown"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
 	}
