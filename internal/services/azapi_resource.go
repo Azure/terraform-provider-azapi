@@ -929,7 +929,7 @@ func (r *AzapiResource) preflightValidation(ctx context.Context, request resourc
 		resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
 
 		// since the parentID is faked, there should exist only one scope type
-		if len(resourceDef.ScopeTypes) != 1 {
+		if resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
 			return nil
 		}
 
