@@ -27,14 +27,14 @@ type ResourceDefinition struct {
 	Definition *types.ResourceType
 	Location   TypeLocation
 	ApiVersion string
-	mutex      *sync.Mutex
+	mutex      sync.Mutex
 }
 
 type FunctionDefinition struct {
 	Definition *types.ResourceFunctionType
 	Location   TypeLocation
 	ApiVersion string
-	mutex      *sync.Mutex
+	mutex      sync.Mutex
 }
 
 type TypeLocation struct {
@@ -139,7 +139,6 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 			Definition: nil,
 			Location:   v,
 			ApiVersion: k[index+1:],
-			mutex:      &sync.Mutex{},
 		})
 	}
 	for k, v := range m.Functions {
@@ -156,7 +155,6 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 					Definition: nil,
 					Location:   item,
 					ApiVersion: apiVersion,
-					mutex:      &sync.Mutex{},
 				})
 			}
 		}
