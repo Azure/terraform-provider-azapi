@@ -56,6 +56,10 @@ func (account *ResourceManagerAccount) GetSubscriptionId() string {
 		log.Printf("[DEBUG] Error getting default subscription ID: %s", err)
 	}
 
+	if account.subscriptionId == nil {
+		log.Printf("[DEBUG] No default subscription ID found")
+		return ""
+	}
 	return *account.subscriptionId
 }
 
