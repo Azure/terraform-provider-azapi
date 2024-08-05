@@ -164,11 +164,11 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 }
 
 func (o *ResourceDefinition) GetDefinition() (*types.ResourceType, error) {
-	o.mutex.Lock()
-	defer o.mutex.Unlock()
 	if o == nil {
 		return nil, nil
 	}
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
 	if o.Definition != nil {
 		return o.Definition, nil
 	}
@@ -181,11 +181,11 @@ func (o *ResourceDefinition) GetDefinition() (*types.ResourceType, error) {
 }
 
 func (o *FunctionDefinition) GetDefinition() (*types.ResourceFunctionType, error) {
-	o.mutex.Lock()
-	defer o.mutex.Unlock()
 	if o == nil {
 		return nil, nil
 	}
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
 	if o.Definition != nil {
 		return o.Definition, nil
 	}
