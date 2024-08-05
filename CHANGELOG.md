@@ -3,6 +3,7 @@
 BUG FIXES:
 - Fix a bug that differences in a list of objects are not detected correctly.
 - Fix a bug that azapi_update_resource produced inconsistent results when the case of the `resource_id` and `type` fields are different.
+- Fix a bug that provider will crash when there's no default subscription configured in azure cli.
 
 ## v1.14.0
 FEATURES:
