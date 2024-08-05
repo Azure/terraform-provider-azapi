@@ -15,11 +15,11 @@ type Schema struct {
 }
 
 type Resource struct {
-	Definitions []ResourceDefinition
+	Definitions []*ResourceDefinition
 }
 
 type Function struct {
-	Definitions []FunctionDefinition
+	Definitions []*FunctionDefinition
 }
 
 type ResourceDefinition struct {
@@ -128,11 +128,11 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 		resource := o.Resources[resourceType]
 		if resource == nil {
 			o.Resources[resourceType] = &Resource{
-				Definitions: make([]ResourceDefinition, 0),
+				Definitions: make([]*ResourceDefinition, 0),
 			}
 			resource = o.Resources[resourceType]
 		}
-		resource.Definitions = append(resource.Definitions, ResourceDefinition{
+		resource.Definitions = append(resource.Definitions, &ResourceDefinition{
 			Definition: nil,
 			Location:   v,
 			ApiVersion: k[index+1:],
@@ -143,12 +143,12 @@ func (o *Schema) UnmarshalJSON(body []byte) error {
 			function := o.Functions[k]
 			if function == nil {
 				o.Functions[k] = &Function{
-					Definitions: make([]FunctionDefinition, 0),
+					Definitions: make([]*FunctionDefinition, 0),
 				}
 				function = o.Functions[k]
 			}
 			for _, item := range arr {
-				function.Definitions = append(function.Definitions, FunctionDefinition{
+				function.Definitions = append(function.Definitions, &FunctionDefinition{
 					Definition: nil,
 					Location:   item,
 					ApiVersion: apiVersion,
