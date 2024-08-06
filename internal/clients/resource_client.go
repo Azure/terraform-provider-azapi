@@ -97,16 +97,18 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	if err != nil {
 		return nil, err
 	}
-	ptresp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
-		Frequency: 10 * time.Second,
-	})
 	if err == nil {
+		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
+			Frequency: 10 * time.Second,
+		})
+		if err == nil {
+			return resp, nil
+		}
+		if !client.shouldIgnorePollingError(err) {
+			return nil, err
+		}
 		return ptresp, nil
 	}
-	if !client.shouldIgnorePollingError(err) {
-		return nil, err
-	}
-
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
 	}
