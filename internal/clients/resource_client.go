@@ -94,9 +94,6 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	}
 	var responseBody interface{}
 	pt, err := runtime.NewPoller[interface{}](resp, client.pl, nil)
-	if err != nil {
-		return nil, err
-	}
 	if err == nil {
 		resp, err := pt.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{
 			Frequency: 10 * time.Second,
@@ -107,7 +104,6 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 		if !client.shouldIgnorePollingError(err) {
 			return nil, err
 		}
-		return ptresp, nil
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &responseBody); err != nil {
 		return nil, err
