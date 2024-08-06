@@ -1,5 +1,8 @@
 ## v1.15.0
 
+ENHANCEMENTS:
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/5ccee7fe1b353e40ed86bfc530ee185faa43a288
+
 BUG FIXES:
 - Fix a bug that differences in a list of objects are not detected correctly.
 - Fix a bug that azapi_update_resource produced inconsistent results when the case of the `resource_id` and `type` fields are different.
