@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -30,19 +31,20 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String   `tfsdk:"id"`
-	Name                  types.String   `tfsdk:"name"`
-	ParentID              types.String   `tfsdk:"parent_id"`
-	ResourceID            types.String   `tfsdk:"resource_id"`
-	Type                  types.String   `tfsdk:"type"`
-	Body                  types.Dynamic  `tfsdk:"body"`
-	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
-	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-	Locks                 types.List     `tfsdk:"locks"`
-	Output                types.Dynamic  `tfsdk:"output"`
-	Timeouts              timeouts.Value `tfsdk:"timeouts"`
+	ID                    types.String               `tfsdk:"id"`
+	Name                  types.String               `tfsdk:"name"`
+	ParentID              types.String               `tfsdk:"parent_id"`
+	ResourceID            types.String               `tfsdk:"resource_id"`
+	Type                  types.String               `tfsdk:"type"`
+	Body                  types.Dynamic              `tfsdk:"body"`
+	IgnoreCasing          types.Bool                 `tfsdk:"ignore_casing"`
+	IgnoreBodyChanges     types.List                 `tfsdk:"ignore_body_changes"`
+	IgnoreMissingProperty types.Bool                 `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List                 `tfsdk:"response_export_values"`
+	Locks                 types.List                 `tfsdk:"locks"`
+	Output                types.Dynamic              `tfsdk:"output"`
+	Timeouts              timeouts.Value             `tfsdk:"timeouts"`
+	RetryableErrors       retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
 }
 
 type AzapiUpdateResource struct {
@@ -179,6 +181,8 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 			"output": schema.DynamicAttribute{
 				Computed: true,
 			},
+
+			"retryable_errors": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -307,7 +311,18 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
 	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
@@ -393,7 +408,19 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {

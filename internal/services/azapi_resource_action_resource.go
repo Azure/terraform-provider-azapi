@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
@@ -27,17 +28,18 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Type                 types.String   `tfsdk:"type"`
-	ResourceId           types.String   `tfsdk:"resource_id"`
-	Action               types.String   `tfsdk:"action"`
-	Method               types.String   `tfsdk:"method"`
-	Body                 types.Dynamic  `tfsdk:"body"`
-	When                 types.String   `tfsdk:"when"`
-	Locks                types.List     `tfsdk:"locks"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String               `tfsdk:"id"`
+	Type                 types.String               `tfsdk:"type"`
+	ResourceId           types.String               `tfsdk:"resource_id"`
+	Action               types.String               `tfsdk:"action"`
+	Method               types.String               `tfsdk:"method"`
+	Body                 types.Dynamic              `tfsdk:"body"`
+	When                 types.String               `tfsdk:"when"`
+	Locks                types.List                 `tfsdk:"locks"`
+	ResponseExportValues types.List                 `tfsdk:"response_export_values"`
+	Output               types.Dynamic              `tfsdk:"output"`
+	Timeouts             timeouts.Value             `tfsdk:"timeouts"`
+	RetryableErrors      retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
 }
 
 type ActionResource struct {
@@ -152,6 +154,8 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 			"output": schema.DynamicAttribute{
 				Computed: true,
 			},
+
+			"retryable_errors": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -290,7 +294,19 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		defer locks.UnlockByID(id)
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())

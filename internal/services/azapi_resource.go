@@ -17,6 +17,7 @@ import (
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -43,23 +44,24 @@ import (
 )
 
 type AzapiResourceModel struct {
-	ID                      types.String   `tfsdk:"id"`
-	Name                    types.String   `tfsdk:"name"`
-	ParentID                types.String   `tfsdk:"parent_id"`
-	Type                    types.String   `tfsdk:"type"`
-	Location                types.String   `tfsdk:"location"`
-	Identity                types.List     `tfsdk:"identity"`
-	Body                    types.Dynamic  `tfsdk:"body"`
-	Locks                   types.List     `tfsdk:"locks"`
-	RemovingSpecialChars    types.Bool     `tfsdk:"removing_special_chars"`
-	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
-	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
-	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues    types.List     `tfsdk:"response_export_values"`
-	Output                  types.Dynamic  `tfsdk:"output"`
-	Tags                    types.Map      `tfsdk:"tags"`
-	Timeouts                timeouts.Value `tfsdk:"timeouts"`
+	ID                      types.String               `tfsdk:"id"`
+	Name                    types.String               `tfsdk:"name"`
+	ParentID                types.String               `tfsdk:"parent_id"`
+	Type                    types.String               `tfsdk:"type"`
+	Location                types.String               `tfsdk:"location"`
+	Identity                types.List                 `tfsdk:"identity"`
+	Body                    types.Dynamic              `tfsdk:"body"`
+	Locks                   types.List                 `tfsdk:"locks"`
+	RemovingSpecialChars    types.Bool                 `tfsdk:"removing_special_chars"`
+	SchemaValidationEnabled types.Bool                 `tfsdk:"schema_validation_enabled"`
+	IgnoreBodyChanges       types.List                 `tfsdk:"ignore_body_changes"`
+	IgnoreCasing            types.Bool                 `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty   types.Bool                 `tfsdk:"ignore_missing_property"`
+	ResponseExportValues    types.List                 `tfsdk:"response_export_values"`
+	Output                  types.Dynamic              `tfsdk:"output"`
+	Tags                    types.Map                  `tfsdk:"tags"`
+	Timeouts                timeouts.Value             `tfsdk:"timeouts"`
+	RetryableErrors         retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -212,6 +214,8 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					tags.Validator(),
 				},
 			},
+
+			"retryable_errors": retry.SingleNestedAttribute(ctx),
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
@@ -432,7 +436,18 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !plan.RetryableErrors.IsNull() {
+		bkof, regexps := clients.NewRetryableErrors(
+			plan.RetryableErrors.GetIntervalSeconds(),
+			plan.RetryableErrors.GetMaxIntervalSeconds(),
+			plan.RetryableErrors.GetMultiplier(),
+			plan.RetryableErrors.GetRandomizationFactor(),
+			plan.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
 	var timeout time.Duration
@@ -598,7 +613,19 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -708,11 +735,22 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
-	client := r.ProviderData.ResourceClient
-
 	var model *AzapiResourceModel
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
+	}
+
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
