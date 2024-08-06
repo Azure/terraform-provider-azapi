@@ -3,8 +3,6 @@ module github.com/Azure/terraform-provider-azapi
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.1
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/hashicorp/go-azure-helpers v0.19.0
 	github.com/hashicorp/go-uuid v1.0.3
