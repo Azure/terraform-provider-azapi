@@ -151,11 +151,7 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	if dynamicIsString(model.Body) || !r.ProviderData.Features.EnableHCLOutputForDataSource {
-		model.Output = types.DynamicValue(basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	}
+	model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

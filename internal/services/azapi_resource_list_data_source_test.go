@@ -73,7 +73,6 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azurerm_client_config" "current" {}

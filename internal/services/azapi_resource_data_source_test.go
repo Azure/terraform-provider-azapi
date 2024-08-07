@@ -127,7 +127,6 @@ func (r GenericDataSource) hclOutput(data acceptance.TestData) string {
 %s
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azapi_resource" "test" {

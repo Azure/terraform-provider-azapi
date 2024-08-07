@@ -165,5 +165,3 @@ For some advanced scenarios, such as where more granular permissions are necessa
 * `skip_provider_registration` - (Optional) Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.
 
 -> By default, Terraform will attempt to register the Resource Providers that the provisioning resources belong to. If you're running in an environment with restricted permissions, or wish to manage Resource Provider Registration outside of Terraform you may wish to disable this flag; however, please note that the error messages returned from Azure may be confusing as a result (example: `API version 2019-01-01 was not found for Microsoft.Foo`).
-
-* `enable_hcl_output_for_data_source` - (Optional) Should the provider return the output in HCL format for data sources? Defaults to `false`. When set to `true`, the provider will return HCL output for data sources. When set to `false`, the provider will return JSON output for data sources.
