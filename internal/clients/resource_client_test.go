@@ -28,6 +28,15 @@ func TestRetryClientRegexp(t *testing.T) {
 	assert.Equal(t, 3, mock.RequestCount())
 }
 
+func TestRetryClientMultiRegexp(t *testing.T) {
+	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
+	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 1.5, []string{"nomatch", "^retry"})
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	_, err := retryClient.Get(context.Background(), "", "")
+	assert.NoError(t, err)
+	assert.Equal(t, 3, mock.RequestCount())
+}
+
 func TestRetryClientContextDeadline(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(60, 60, 1.5, 1.5, []string{"^retry"})
