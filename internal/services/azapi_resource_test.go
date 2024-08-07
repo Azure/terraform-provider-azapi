@@ -595,9 +595,9 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-	retryable_errors = {
-		error_message_regex = ["test error"]
-	}
+  retryable_errors = {
+    error_message_regex = ["test error"]
+  }
 
   body = jsonencode({
     properties = {
