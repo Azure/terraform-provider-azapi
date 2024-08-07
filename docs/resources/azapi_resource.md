@@ -96,9 +96,7 @@ The following arguments are supported:
 * `type` - (Required) It is in a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`.
   `<api-version>` is version of the API used to manage this azure resource.
 
-* `body` - (Required) A dynamic attribute that contains the request body used to create and update azure resource. 
-
-* `removing_special_chars` - (Optional) Whether to remove special characters in resource name. Defaults to `false`.
+* `body` - (Required) A dynamic attribute that contains the request body used to create and update azure resource.
 
 ---
   

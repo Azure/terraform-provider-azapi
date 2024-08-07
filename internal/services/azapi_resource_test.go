@@ -22,7 +22,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "removing_special_chars", "output"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "output"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
