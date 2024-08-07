@@ -25,7 +25,7 @@ func TestRetryClientRegexp(t *testing.T) {
 	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.NoError(t, err)
-	assert.Equal(t, 3, mock.requestCount)
+	assert.Equal(t, 3, mock.RequestCount())
 }
 
 func TestRetryClientContextDeadline(t *testing.T) {

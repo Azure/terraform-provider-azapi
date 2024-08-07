@@ -65,6 +65,6 @@ func (m *MockResourceClient) respond() (interface{}, error) {
 	return m.response, m.err
 }
 
-func (m *MockResourceClient) RetryCount() int {
+func (m *MockResourceClient) RequestCount() int {
 	return m.requestCount
 }
