@@ -35,8 +35,9 @@ func TestRetryClientContextDeadline(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	start := time.Now()
-	retryClient.Get(ctx, "", "") // nolint: errcheck
+	_, err := retryClient.Get(ctx, "", "")
 	elapsed := time.Since(start)
+	assert.ErrorIs(t, err, context.DeadlineExceeded)
 	assert.True(t, elapsed < 15*time.Second)
 	// Test that the context was cancelled
 	_, ok := <-ctx.Done()

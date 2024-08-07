@@ -35,34 +35,40 @@ func NewMockResourceClient(t *testing.T, resp interface{}, err error, retries in
 }
 
 func (m *MockResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
-	return m.respond()
+	return m.respond(ctx)
 }
 
 func (m *MockResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
-	return m.respond()
+	return m.respond(ctx)
 }
 
 func (m *MockResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
-	return m.respond()
+	return m.respond(ctx)
 }
 
 func (m *MockResourceClient) List(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
-	return m.respond()
+	return m.respond(ctx)
 }
 
 func (m *MockResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
-	return m.respond()
+	return m.respond(ctx)
 }
 
-func (m *MockResourceClient) respond() (interface{}, error) {
-	m.t.Logf("request: %d", m.requestCount)
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if m.requestCount < m.retries && m.retryErr != nil {
-		m.requestCount++
-		return nil, m.retryErr
+func (m *MockResourceClient) respond(ctx context.Context) (interface{}, error) {
+	select {
+	case <-ctx.Done():
+		m.t.Logf("context cancelled")
+		return nil, ctx.Err()
+	default:
+		m.t.Logf("request: %d", m.requestCount)
+		m.mu.Lock()
+		defer m.mu.Unlock()
+		if m.requestCount < m.retries && m.retryErr != nil {
+			m.requestCount++
+			return nil, m.retryErr
+		}
+		return m.response, m.err
 	}
-	return m.response, m.err
 }
 
 func (m *MockResourceClient) RequestCount() int {
