@@ -27,10 +27,20 @@ type ResourceClient struct {
 	pl   runtime.Pipeline
 }
 
+// ResourceClientRetryableErrors is a wrapper around ResourceClient that allows for retrying on specific errors.
 type ResourceClientRetryableErrors struct {
-	client  *ResourceClient
-	backoff *backoff.ExponentialBackOff
-	errors  []regexp.Regexp
+	client  Requester                   // client is a Requester interface to allow mocking
+	backoff *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
+	errors  []regexp.Regexp             // errors is the list of errors regexp to retry on
+}
+
+// NewResourceClientRetryableErrors creates a new ResourceClientRetryableErrors.
+func NewResourceClientRetryableErrors(client Requester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *ResourceClientRetryableErrors {
+	return &ResourceClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
 }
 
 // Requester is the interface for HTTP operations, meaning we can supply a ResourceClient or a ResourceClientRetryableErrors.
