@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
@@ -53,6 +54,7 @@ type AzapiResourceModel struct {
 	Locks                   types.List     `tfsdk:"locks"`
 	RemovingSpecialChars    types.Bool     `tfsdk:"removing_special_chars"`
 	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
+	ReplaceTriggeredBy      types.Dynamic  `tfsdk:"replace_triggered_by"`
 	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
 	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
@@ -164,6 +166,14 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
 				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `body` to ignore.",
+			},
+
+			"replace_triggered_by": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine.",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{
