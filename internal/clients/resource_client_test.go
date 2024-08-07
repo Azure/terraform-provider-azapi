@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/stretchr/testify/assert"
@@ -25,4 +26,19 @@ func TestRetryClientRegexp(t *testing.T) {
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.requestCount)
+}
+
+func TestRetryClientContextDeadline(t *testing.T) {
+	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
+	bkof, errRegExps := clients.NewRetryableErrors(60, 60, 1.5, 1.5, []string{"^retry"})
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	start := time.Now()
+	retryClient.Get(ctx, "", "")
+	elapsed := time.Since(start)
+	assert.True(t, elapsed < 15*time.Second)
+	// Test that the context was cancelled
+	_, ok := <-ctx.Done()
+	assert.False(t, ok)
 }
