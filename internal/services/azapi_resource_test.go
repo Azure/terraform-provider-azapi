@@ -310,22 +310,6 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_defaultsNamingPrefixAndSuffix(t *testing.T) {
-	t.Skip(`The default naming prefix and suffix are not compatible with the framework, because the computed name is not the same as the config name, the framework will fail as it's an invalid plan'`)
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.defaultNamingWithPrefixAndSuffix(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		data.ImportStep(defaultIgnores()...),
-	})
-}
-
 func TestAccGenericResource_subscriptionScope(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1032,31 +1016,6 @@ resource "azapi_resource" "test" {
   })
 }
 `, r.template(data))
-}
-
-func (r GenericResource) defaultNamingWithPrefixAndSuffix(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-provider "azapi" {
-  default_naming_prefix = "p%[2]s-"
-  default_naming_suffix = "-s%[2]s"
-}
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "acc"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
-  body = jsonencode({
-    properties = {
-      sku = {
-        name = "Basic"
-      }
-    }
-  })
-}
-`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {

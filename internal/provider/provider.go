@@ -65,8 +65,6 @@ type providerData struct {
 	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
 	DisableTerraformPartnerID    types.Bool   `tfsdk:"disable_terraform_partner_id"`
 	DefaultName                  types.String `tfsdk:"default_name"`
-	DefaultNamingPrefix          types.String `tfsdk:"default_naming_prefix"`
-	DefaultNamingSuffix          types.String `tfsdk:"default_naming_suffix"`
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnableHCLOutputForDataSource types.Bool   `tfsdk:"enable_hcl_output_for_data_source"`
@@ -322,18 +320,6 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Description: "The default name which should be used for resources.",
 			},
 
-			"default_naming_prefix": schema.StringAttribute{
-				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
-				Optional:           true,
-				Description:        "The default prefix which should be used for resources.",
-			},
-
-			"default_naming_suffix": schema.StringAttribute{
-				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
-				Optional:           true,
-				Description:        "The default suffix which should be used for resources.",
-			},
-
 			"default_location": schema.StringAttribute{
 				Optional:    true,
 				Description: "The default location which should be used for resources.",
@@ -359,11 +345,6 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 func (p Provider) Configure(ctx context.Context, request provider.ConfigureRequest, response *provider.ConfigureResponse) {
 	var model providerData
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
-		return
-	}
-
-	if !model.DefaultName.IsNull() && (!model.DefaultNamingPrefix.IsNull() || !model.DefaultNamingSuffix.IsNull()) {
-		response.Diagnostics.AddError("Invalid `default_name` value.", "The `default_name` value cannot be used with `default_naming_prefix` or `default_naming_suffix`.")
 		return
 	}
 
@@ -627,8 +608,6 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			DefaultTags:                  tags.ExpandTags(model.DefaultTags),
 			DefaultLocation:              location.Normalize(model.DefaultLocation.ValueString()),
 			DefaultNaming:                model.DefaultName.ValueString(),
-			DefaultNamingPrefix:          model.DefaultNamingPrefix.ValueString(),
-			DefaultNamingSuffix:          model.DefaultNamingSuffix.ValueString(),
 			EnableHCLOutputForDataSource: model.EnableHCLOutputForDataSource.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
