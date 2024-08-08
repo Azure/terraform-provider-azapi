@@ -11,35 +11,72 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func TestBuildSubscriptionScopeResourceIdFunction(t *testing.T) {
+func Test_SubscriptionResourceIdFunction(t *testing.T) {
 	testCases := map[string]struct {
 		request  function.RunRequest
 		expected function.RunResponse
 	}{
-		"subscription-scope-valid": {
+		"subscription-scope-valid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Resources/resourceGroups@2021-04-01"),
-					types.StringValue("myResourceGroup"),
+					types.StringValue("Microsoft.Sql/locations@2015-05-01-preview"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("loc1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"),
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1"),
 				})),
 			},
 		},
-		"subscription-scope-invalid-empty-subscription-id": {
+		"subscription-scope-valid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue(""),
-					types.StringValue("Microsoft.Resources/resourceGroups@2021-04-01"),
-					types.StringValue("myResourceGroup"),
+					types.StringValue("00000000-0000-0000-0000-000000000000"),
+					types.StringValue("Microsoft.Sql/locations/usages@2015-05-01-preview"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("loc1"),
+						types.StringValue("usage1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("subscription_id cannot be empty"),
+				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1/usages/usage1"),
+				})),
+			},
+		},
+		"subscription-scope-invalid-single": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.StringValue("00000000-0000-0000-0000-000000000000"),
+					types.StringValue("Microsoft.Sql/locations@2015-05-01-preview"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("loc1"),
+						types.StringValue("usage1"),
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 1, got 2"),
+				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+			},
+		},
+		"subscription-scope-invalid-double": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.StringValue("00000000-0000-0000-0000-000000000000"),
+					types.StringValue("Microsoft.Sql/locations/usages@2015-05-01-preview"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("loc1"),
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 2, got 1"),
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
@@ -48,7 +85,9 @@ func TestBuildSubscriptionScopeResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue(""),
-					types.StringValue("myResourceGroup"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("rg1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
@@ -61,7 +100,9 @@ func TestBuildSubscriptionScopeResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue("Invalid/ResourceType"),
-					types.StringValue("myResourceGroup"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("rg1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
@@ -77,8 +118,8 @@ func TestBuildSubscriptionScopeResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			}
 
-			subscriptionScopeResourceIdFunction := functions.BuildSubscriptionScopeResourceIdFunction{}
-			subscriptionScopeResourceIdFunction.Run(context.Background(), testCase.request, &got)
+			subscriptionResourceIdFunction := functions.SubscriptionResourceIdFunction{}
+			subscriptionResourceIdFunction.Run(context.Background(), testCase.request, &got)
 
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)

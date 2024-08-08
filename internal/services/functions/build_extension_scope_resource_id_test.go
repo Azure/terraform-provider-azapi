@@ -11,52 +11,52 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func Test_ManagementGroupResourceIdFunction(t *testing.T) {
+func Test_ExtensionResourceIdFunction(t *testing.T) {
 	testCases := map[string]struct {
 		request  function.RunRequest
 		expected function.RunResponse
 	}{
-		"management-group-scope-valid-single": {
+		"extension-scope-valid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints@2017-11-11-preview"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					types.StringValue("Microsoft.Chaos/targets@2021-09-15-preview"),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("bp1"),
+						types.StringValue("t1"),
 					}),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Blueprint/blueprints/bp1"),
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/t1"),
 				})),
 			},
 		},
-		"management-group-scope-valid-double": {
+		"extension-scope-valid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints/artifacts@2017-11-11-preview"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					types.StringValue("Microsoft.Chaos/targets/capabilities@2023-04-01-preview"),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("bp1"),
-						types.StringValue("a1"),
+						types.StringValue("t1"),
+						types.StringValue("c1"),
 					}),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Blueprint/blueprints/bp1/artifacts/a1"),
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/t1/capabilities/c1"),
 				})),
 			},
 		},
-		"management-group-scope-invalid-single": {
+		"extension-scope-invalid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints@2017-11-11-preview"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					types.StringValue("Microsoft.Chaos/targets@2021-09-15-preview"),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("bp1"),
-						types.StringValue("a1"),
+						types.StringValue("t1"),
+						types.StringValue("c1"),
 					}),
 				}),
 			},
@@ -65,13 +65,13 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
-		"management-group-scope-invalid-double": {
+		"extension-scope-invalid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints/artifacts@2017-11-11-preview"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					types.StringValue("Microsoft.Chaos/targets/capabilities@2023-04-01-preview"),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("bp1"),
+						types.StringValue("t1"),
 					}),
 				}),
 			},
@@ -80,14 +80,13 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
-		"management-group-scope-invalid-empty-type": {
+		"extension-scope-invalid-empty-type": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 					types.StringValue(""),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("ba1"),
-						types.StringValue("bp1"),
+						types.StringValue("mylock"),
 					}),
 				}),
 			},
@@ -96,14 +95,13 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
-		"management-group-scope-invalid-type": {
+		"extension-scope-invalid-type": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
+					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 					types.StringValue("Invalid/ResourceType"),
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("ba1"),
-						types.StringValue("bp1"),
+						types.StringValue("mylock"),
 					}),
 				}),
 			},
@@ -120,8 +118,8 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			}
 
-			managementGroupResourceIdFunction := functions.ManagementGroupResourceIdFunction{}
-			managementGroupResourceIdFunction.Run(context.Background(), testCase.request, &got)
+			extensionResourceIdFunction := functions.ExtensionResourceIdFunction{}
+			extensionResourceIdFunction.Run(context.Background(), testCase.request, &got)
 
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)
