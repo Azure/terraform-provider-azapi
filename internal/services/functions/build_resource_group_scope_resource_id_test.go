@@ -11,51 +11,76 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func TestBuildResourceGroupScopeResourceIdFunction(t *testing.T) {
+func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 	testCases := map[string]struct {
 		request  function.RunRequest
 		expected function.RunResponse
 	}{
-		"resource-group-scope-valid": {
+		"resource-group-scope-valid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("myResourceGroup"),
-					types.StringValue("Microsoft.Automation/automationAccounts@2021-06-22"),
-					types.StringValue("myAutomationAccount"),
+					types.StringValue("rg1"),
+					types.StringValue("Microsoft.Network/virtualNetworks@2021-02-01"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Automation/automationAccounts/myAutomationAccount"),
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 				})),
 			},
 		},
-		"resource-group-scope-invalid-empty-subscription-id": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue(""),
-					types.StringValue("myResourceGroup"),
-					types.StringValue("Microsoft.Automation/automationAccounts@2021-06-22"),
-					types.StringValue("myAutomationAccount"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("subscription_id cannot be empty"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
-			},
-		},
-		"resource-group-scope-invalid-empty-resource-group-name": {
+		"resource-group-scope-valid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue(""),
-					types.StringValue("Microsoft.Automation/automationAccounts@2021-06-22"),
-					types.StringValue("myAutomationAccount"),
+					types.StringValue("rg1"),
+					types.StringValue("Microsoft.Network/virtualNetworks/subnets@2021-02-01"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+						types.StringValue("subnet1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("resource_group_name cannot be empty"),
+				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
+					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+				})),
+			},
+		},
+		"resource-group-scope-invalid-single": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.StringValue("00000000-0000-0000-0000-000000000000"),
+					types.StringValue("rg1"),
+					types.StringValue("Microsoft.Network/virtualNetworks@2021-02-01"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+						types.StringValue("subnet1"),
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 1, got 2"),
+				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+			},
+		},
+		"resource-group-scope-invalid-double": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.StringValue("00000000-0000-0000-0000-000000000000"),
+					types.StringValue("rg1"),
+					types.StringValue("Microsoft.Network/virtualNetworks/subnets@2021-02-01"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 2, got 1"),
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			},
 		},
@@ -63,9 +88,12 @@ func TestBuildResourceGroupScopeResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("myResourceGroup"),
+					types.StringValue("rg1"),
 					types.StringValue(""),
-					types.StringValue("myAutomationAccount"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+						types.StringValue("subnet1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
@@ -77,9 +105,12 @@ func TestBuildResourceGroupScopeResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("myResourceGroup"),
+					types.StringValue("rg1"),
 					types.StringValue("Invalid/ResourceType"),
-					types.StringValue("myAutomationAccount"),
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("vnet1"),
+						types.StringValue("subnet1"),
+					}),
 				}),
 			},
 			expected: function.RunResponse{
@@ -95,8 +126,8 @@ func TestBuildResourceGroupScopeResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
 			}
 
-			resourceGroupScopeResourceIdFunction := functions.BuildResourceGroupScopeResourceIdFunction{}
-			resourceGroupScopeResourceIdFunction.Run(context.Background(), testCase.request, &got)
+			resourceGroupResourceIdFunction := functions.ResourceGroupResourceIdFunction{}
+			resourceGroupResourceIdFunction.Run(context.Background(), testCase.request, &got)
 
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)
