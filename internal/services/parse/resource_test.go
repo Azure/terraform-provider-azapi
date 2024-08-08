@@ -2,6 +2,8 @@ package parse
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_ResourceIDWithResourceType(t *testing.T) {
@@ -522,7 +524,6 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
-
 		{
 			Name:             "test",
 			ParentId:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet",
@@ -844,5 +845,77 @@ func Test_NewResourceID(t *testing.T) {
 		if v.ResourceDefExist && actual.ResourceDef == nil {
 			t.Fatal("Expected a resource def but got nil")
 		}
+	}
+}
+
+func Test_NewResourceIDWithNestedResourceNames(t *testing.T) {
+	tests := []struct {
+		name          string
+		resourceNames []string
+		parentId      string
+		resourceType  string
+		expected      string
+		expectError   bool
+	}{
+		{
+			name:          "Top-Level Resource",
+			resourceNames: []string{"vnet1"},
+			parentId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1",
+			resourceType:  "Microsoft.Network/virtualNetworks@2021-02-01",
+			expected:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1",
+			expectError:   false,
+		},
+		{
+			name:          "Tenant Scope",
+			resourceNames: []string{"ba1", "bp1"},
+			parentId:      "/",
+			resourceType:  "Microsoft.Billing/billingAccounts/billingProfiles@2018-11-01-preview",
+			expected:      "/providers/Microsoft.Billing/billingAccounts/ba1/billingProfiles/bp1",
+			expectError:   false,
+		},
+		{
+			name:          "Subscription Scope",
+			resourceNames: []string{"rg1"},
+			parentId:      "/subscriptions/00000000-0000-0000-0000-000000000000",
+			resourceType:  "Microsoft.Resources/resourceGroups@2020-06-01",
+			expected:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1",
+			expectError:   false,
+		},
+		{
+			name:          "Management Group Scope",
+			resourceNames: []string{"gq1", "s1"},
+			parentId:      "/providers/Microsoft.Management/managementGroups/mg1",
+			resourceType:  "Microsoft.Quota/groupQuotas/subscriptions@2023-06-01-preview",
+			expected:      "/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Quota/groupQuotas/gq1/subscriptions/s1",
+			expectError:   false,
+		},
+		{
+			name:          "Extension Resource",
+			resourceNames: []string{"mylock"},
+			parentId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1",
+			resourceType:  "Microsoft.Authorization/locks@2020-05-01",
+			expected:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/providers/Microsoft.Authorization/locks/mylock",
+			expectError:   false,
+		},
+		{
+			name:          "Resource Group Scope",
+			resourceNames: []string{"vnet1", "subnet1"},
+			parentId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1",
+			resourceType:  "Microsoft.Network/virtualNetworks/subnets@2022-07-0",
+			expected:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1",
+			expectError:   false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resourceId, err := NewResourceIDWithNestedResourceNames(tt.resourceNames, tt.parentId, tt.resourceType)
+			if tt.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.expected, resourceId.AzureResourceId)
+			}
+		})
 	}
 }

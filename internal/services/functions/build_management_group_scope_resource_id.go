@@ -4,69 +4,71 @@ import (
 	"context"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BuildManagementGroupScopeResourceIdFunction struct{}
+// ManagementGroupResourceIdFunction builds resource IDs for management group scope
+type ManagementGroupResourceIdFunction struct{}
 
-func (m *BuildManagementGroupScopeResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
-	response.Name = "build_management_group_scope_resource_id"
+func (f *ManagementGroupResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
+	response.Name = "management_group_resource_id"
 }
 
-func (m *BuildManagementGroupScopeResourceIdFunction) Definition(ctx context.Context, request function.DefinitionRequest, response *function.DefinitionResponse) {
+func (f *ManagementGroupResourceIdFunction) Definition(ctx context.Context, request function.DefinitionRequest, response *function.DefinitionResponse) {
 	response.Definition = function.Definition{
 		Parameters: []function.Parameter{
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Name:               "management_group_id",
+				Name:               "management_group_name",
 			},
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Name:               "type",
+				Name:               "resource_type",
 			},
-			function.StringParameter{
+			function.ListParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Name:               "name",
+				Name:               "resource_names",
+				ElementType:        types.StringType,
 			},
 		},
 		Return: function.ObjectReturn{
 			AttributeTypes: BuildResourceIdResultAttrTypes,
 		},
+		Summary:             "Builds a management group scope resource ID.",
+		Description:         "This function constructs an Azure management group scope resource ID given the management group name, resource type, and resource names.",
+		MarkdownDescription: "This function constructs an Azure management group scope resource ID given the management group name, resource type, and resource names.",
+		DeprecationMessage:  "",
 	}
 }
 
-func (m *BuildManagementGroupScopeResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
-	var mgID types.String
+func (f *ManagementGroupResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
+	var managementGroupName types.String
 	var resourceType types.String
-	var name types.String
+	var resourceNamesParam types.List
 
-	if response.Error = request.Arguments.Get(ctx, &mgID, &resourceType, &name); response.Error != nil {
+	if response.Error = request.Arguments.Get(ctx, &managementGroupName, &resourceType, &resourceNamesParam); response.Error != nil {
 		return
 	}
 
-	if mgID.ValueString() == "" {
-		response.Error = function.NewFuncError("management_group_id cannot be empty")
-		return
-	}
+	resourceNames := utils.ParseResourceNames(resourceNamesParam)
 
-	parentID := "/providers/Microsoft.Management/managementGroups/" + mgID.ValueString()
-
-	resourceID, err := parse.NewResourceID(name.ValueString(), parentID, resourceType.ValueString())
+	resourceID, err := parse.NewResourceIDWithNestedResourceNames(resourceNames, "/providers/Microsoft.Management/managementGroups/"+managementGroupName.ValueString(), resourceType.ValueString())
 	if err != nil {
 		response.Error = function.NewFuncError(err.Error())
 		return
 	}
 
 	result := map[string]attr.Value{
-		"resource_id": types.StringValue(resourceID.ID()),
+		"resource_id": types.StringValue(resourceID.AzureResourceId),
 	}
 
 	response.Error = response.Result.Set(ctx, types.ObjectValueMust(BuildResourceIdResultAttrTypes, result))
 }
 
-var _ function.Function = &BuildManagementGroupScopeResourceIdFunction{}
+var _ function.Function = &ManagementGroupResourceIdFunction{}

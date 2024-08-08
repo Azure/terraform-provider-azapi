@@ -2,20 +2,23 @@ package functions
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BuildResourceGroupScopeResourceIdFunction struct{}
+// ResourceGroupResourceIdFunction builds resource IDs for resource group scope
+type ResourceGroupResourceIdFunction struct{}
 
-func (r *BuildResourceGroupScopeResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
-	response.Name = "build_resource_group_scope_resource_id"
+func (f *ResourceGroupResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
+	response.Name = "resource_group_resource_id"
 }
 
-func (r *BuildResourceGroupScopeResourceIdFunction) Definition(ctx context.Context, request function.DefinitionRequest, response *function.DefinitionResponse) {
+func (f *ResourceGroupResourceIdFunction) Definition(ctx context.Context, request function.DefinitionRequest, response *function.DefinitionResponse) {
 	response.Definition = function.Definition{
 		Parameters: []function.Parameter{
 			function.StringParameter{
@@ -31,53 +34,52 @@ func (r *BuildResourceGroupScopeResourceIdFunction) Definition(ctx context.Conte
 			function.StringParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Name:               "type",
+				Name:               "resource_type",
 			},
-			function.StringParameter{
+			function.ListParameter{
 				AllowNullValue:     false,
 				AllowUnknownValues: false,
-				Name:               "name",
+				Name:               "resource_names",
+				ElementType:        types.StringType,
 			},
 		},
 		Return: function.ObjectReturn{
 			AttributeTypes: BuildResourceIdResultAttrTypes,
 		},
+		Summary:             "Builds a resource group scope resource ID.",
+		Description:         "This function constructs an Azure resource group scope resource ID given the subscription ID, resource group name, resource type, and resource names.",
+		MarkdownDescription: "This function constructs an Azure resource group scope resource ID given the subscription ID, resource group name, resource type, and resource names.",
+		DeprecationMessage:  "",
 	}
 }
 
-func (r *BuildResourceGroupScopeResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
-	var subID types.String
-	var rgName types.String
+func (f *ResourceGroupResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
+	var subscriptionID types.String
+	var resourceGroupName types.String
 	var resourceType types.String
-	var name types.String
+	var resourceNamesParam types.List
 
-	if response.Error = request.Arguments.Get(ctx, &subID, &rgName, &resourceType, &name); response.Error != nil {
+	if response.Error = request.Arguments.Get(ctx, &subscriptionID, &resourceGroupName, &resourceType, &resourceNamesParam); response.Error != nil {
 		return
 	}
 
-	if subID.ValueString() == "" {
-		response.Error = function.NewFuncError("subscription_id cannot be empty")
-		return
-	}
+	resourceNames := utils.ParseResourceNames(resourceNamesParam)
 
-	if rgName.ValueString() == "" {
-		response.Error = function.NewFuncError("resource_group_name cannot be empty")
-		return
-	}
-
-	parentID := "/subscriptions/" + subID.ValueString() + "/resourceGroups/" + rgName.ValueString()
-
-	resourceID, err := parse.NewResourceID(name.ValueString(), parentID, resourceType.ValueString())
+	resourceID, err := parse.NewResourceIDWithNestedResourceNames(
+		resourceNames,
+		fmt.Sprintf("/subscriptions/%s/resourceGroups/%s", subscriptionID.ValueString(), resourceGroupName.ValueString()),
+		resourceType.ValueString(),
+	)
 	if err != nil {
 		response.Error = function.NewFuncError(err.Error())
 		return
 	}
 
 	result := map[string]attr.Value{
-		"resource_id": types.StringValue(resourceID.ID()),
+		"resource_id": types.StringValue(resourceID.AzureResourceId),
 	}
 
 	response.Error = response.Result.Set(ctx, types.ObjectValueMust(BuildResourceIdResultAttrTypes, result))
 }
 
-var _ function.Function = &BuildResourceGroupScopeResourceIdFunction{}
+var _ function.Function = &ResourceGroupResourceIdFunction{}

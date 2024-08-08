@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func TestBuildResourceIdFunction(t *testing.T) {
+func Test_BuildResourceIdFunction(t *testing.T) {
 	testCases := map[string]struct {
 		request  function.RunRequest
 		expected function.RunResponse
