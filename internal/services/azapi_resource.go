@@ -51,7 +51,6 @@ type AzapiResourceModel struct {
 	Identity                types.List     `tfsdk:"identity"`
 	Body                    types.Dynamic  `tfsdk:"body"`
 	Locks                   types.List     `tfsdk:"locks"`
-	RemovingSpecialChars    types.Bool     `tfsdk:"removing_special_chars"`
 	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
 	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
 	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
@@ -105,13 +104,6 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-			},
-
-			"removing_special_chars": schema.BoolAttribute{
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
-				Optional:           true,
-				Computed:           true,
-				Default:            defaults.BoolDefault(false),
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -775,7 +767,6 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Locks:                   types.ListNull(types.StringType),
 		Identity:                types.ListNull(identity.Model{}.ModelType()),
 		Body:                    types.DynamicNull(),
-		RemovingSpecialChars:    types.BoolValue(false),
 		SchemaValidationEnabled: types.BoolValue(true),
 		IgnoreBodyChanges:       types.ListNull(types.StringType),
 		IgnoreCasing:            types.BoolValue(false),

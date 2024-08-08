@@ -22,7 +22,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 provider "azurerm" {
@@ -111,8 +110,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `location` - The Azure Region where the azure resource should exist.
 
-* `output` - The output containing the properties specified in `response_export_values`. It supports both JSON and HCL object. By default, it will be in JSON format.
-  If specifying `enable_hcl_output_for_data_source` to `true` in the provider block, it will be in HCL format.
+* `output` - The output containing the properties specified in `response_export_values`. It is stored in HCL format.
 
 
   *Examples to use the values in HCL format:*
@@ -125,18 +123,6 @@ output "login_server" {
 // it will output "disabled"
 output "quarantine_policy" {
   value = data.azapi_resource.example.output.properties.policies.quarantinePolicy.status
-}
-```
-*Examples to use the values in JSON format:*
-```hcl
-// it will output "registry1.azurecr.io"
-output "login_server" {
-  value = jsondecode(data.azapi_resource.example.output).properties.loginServer
-}
-
-// it will output "disabled"
-output "quarantine_policy" {
-  value = jsondecode(data.azapi_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 

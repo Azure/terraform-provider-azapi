@@ -24,7 +24,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 provider "azurerm" {
@@ -67,7 +66,6 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azurerm_client_config" "current" {}
@@ -92,7 +90,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 resource "azapi_resource_action" "test" {
@@ -148,8 +145,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource action.
 
-* `output` - The output containing the properties specified in `response_export_values`. It supports both JSON and HCL object. By default, it will be in JSON format.
-  If specifying `enable_hcl_output_for_data_source` to `true` in the provider block, it will be in HCL format.
+* `output` - The output containing the properties specified in `response_export_values`. It is stored in HCL format.
 
 
 *Examples to use the values in HCL format:*
@@ -162,18 +158,6 @@ output "primary_key" {
 // it will output "6yoCad******SLzKzg=="
 output "secondary_key" {
   value = data.azapi_resource_action.example.output.keys.1.Value
-}
-```
-*Examples to use the values in JSON format:*
-```hcl
-// it will output "nHGYNd******i4wdug=="
-output "primary_key" {
-  value = jsondecode(data.azapi_resource.example.output).keys.0.Value
-}
-
-// it will output "6yoCad******SLzKzg=="
-output "secondary_key" {
-  value = jsondecode(data.azapi_resource.example.output).keys.1.Value
 }
 ```
 

@@ -142,7 +142,6 @@ data "azapi_resource_action" "test" {
 func (r ActionDataSource) dynamicSchemaHclOutput() string {
 	return `
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azapi_resource_action" "test" {

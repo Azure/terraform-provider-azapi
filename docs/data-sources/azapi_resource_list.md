@@ -22,7 +22,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azapi_resource_list" "listBySubscription" {
@@ -80,20 +79,13 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource list.
 
-* `output` - The output containing the properties specified in `response_export_values`. It supports both JSON and HCL object. By default, it will be in JSON format.
-  If specifying `enable_hcl_output_for_data_source` to `true` in the provider block, it will be in HCL format.
+* `output` - The output containing the properties specified in `response_export_values`. It is stored in HCL format.
 
 
 *Examples to use the values in HCL format:*
 ```hcl
 output "value" {
   value = data.azapi_resource_list.example.output.value
-}
-```
-*Examples to use the values in JSON format:*
-```hcl
-output "value" {
-  value = jsondecode(data.azapi_resource_list.example.output).value
 }
 ```
 
