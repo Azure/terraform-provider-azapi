@@ -17,12 +17,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/internal/services/functions"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,6 +32,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
+
+var _ provider.Provider = &Provider{}
+var _ provider.ProviderWithFunctions = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -617,6 +622,24 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 
 	response.ResourceData = client
 	response.DataSourceData = client
+}
+
+func (p Provider) Functions(ctx context.Context) []func() function.Function {
+	return []func() function.Function{
+		func() function.Function {
+			return &functions.ParseResourceIdFunction{}
+		},
+		func() function.Function { return &functions.BuildResourceIdFunction{} },
+		func() function.Function {
+			return &functions.TenantResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.SubscriptionResourceIdFunction{}
+		},
+		func() function.Function { return &functions.ResourceGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ManagementGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ExtensionResourceIdFunction{} },
+	}
 }
 
 func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSource {
