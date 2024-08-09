@@ -128,9 +128,6 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	req.Raw().Header.Set("Accept", "application/json")
 
 	// send request
-	if err != nil {
-		return nil, err
-	}
 	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err
@@ -164,9 +161,6 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	req.Raw().Header.Set("Accept", "application/json")
 
 	// send request
-	if err != nil {
-		return nil, err
-	}
 	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err

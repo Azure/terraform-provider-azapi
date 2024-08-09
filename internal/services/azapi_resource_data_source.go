@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -24,17 +25,18 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Name                 types.String   `tfsdk:"name"`
-	ParentID             types.String   `tfsdk:"parent_id"`
-	ResourceID           types.String   `tfsdk:"resource_id"`
-	Type                 types.String   `tfsdk:"type"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Location             types.String   `tfsdk:"location"`
-	Identity             types.List     `tfsdk:"identity"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Tags                 types.Map      `tfsdk:"tags"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String               `tfsdk:"id"`
+	Name                 types.String               `tfsdk:"name"`
+	ParentID             types.String               `tfsdk:"parent_id"`
+	ResourceID           types.String               `tfsdk:"resource_id"`
+	Type                 types.String               `tfsdk:"type"`
+	ResponseExportValues types.List                 `tfsdk:"response_export_values"`
+	Location             types.String               `tfsdk:"location"`
+	Identity             types.List                 `tfsdk:"identity"`
+	Output               types.Dynamic              `tfsdk:"output"`
+	Tags                 types.Map                  `tfsdk:"tags"`
+	Timeouts             timeouts.Value             `tfsdk:"timeouts"`
+	RetryableErrors      retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
 }
 
 type AzapiResourceDataSource struct {
@@ -136,6 +138,8 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Computed:    true,
 				ElementType: types.StringType,
 			},
+
+			"retryable_errors": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -188,7 +192,18 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.RetryableErrors.GetIntervalSeconds(),
+			model.RetryableErrors.GetMaxIntervalSeconds(),
+			model.RetryableErrors.GetMultiplier(),
+			model.RetryableErrors.GetRandomizationFactor(),
+			model.RetryableErrors.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
