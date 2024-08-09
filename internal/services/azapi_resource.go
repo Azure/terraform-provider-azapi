@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/preflight"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -60,6 +61,14 @@ type AzapiResourceModel struct {
 	Output                  types.Dynamic  `tfsdk:"output"`
 	Tags                    types.Map      `tfsdk:"tags"`
 	Timeouts                timeouts.Value `tfsdk:"timeouts"`
+}
+
+type PreflightValidateResourcesModel struct {
+	Provider  string                   `json:"provider"`
+	Type      string                   `json:"type"`
+	Location  string                   `json:"location"`
+	Scope     string                   `json:"scope"`
+	Resources []map[string]interface{} `json:"resources"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -297,117 +306,14 @@ func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.Val
 }
 
 func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) {
-	var config, state, plan *AzapiResourceModel
-	response.Diagnostics.Append(request.Config.Get(ctx, &config)...)
-	response.Diagnostics.Append(request.State.Get(ctx, &state)...)
-	response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...)
-	if response.Diagnostics.HasError() {
-		return
-	}
+	r.modifyPlan(ctx, request, response)
 
-	// destroy doesn't need to modify plan
-	if config == nil {
-		return
-	}
-
-	defer func() {
-		response.Plan.Set(ctx, plan)
-	}()
-
-	// Output is a computed field, it defaults to unknown if there's any plan change
-	// It sets to the state if the state exists, and will set to unknown if the output needs to be updated
-	if state != nil {
-		plan.Output = state.Output
-	}
-	resourceType := config.Type.ValueString()
-
-	// for resource group, if parent_id is not specified, set it to subscription id
-	if config.ParentID.IsNull() {
-		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
-		if strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
-			plan.ParentID = types.StringValue(fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId()))
-		}
-	}
-
-	if name, diags := r.nameWithDefaultNaming(config.Name); !diags.HasError() {
-		plan.Name = name
-		// replace the resource if the name is changed
-		if state != nil && !state.Name.Equal(plan.Name) {
-			response.RequiresReplace.Append(path.Root("name"))
-		}
-	} else {
-		response.Diagnostics.Append(diags...)
-		return
-	}
-
-	// if the config identity type and identity ids are not changed, use the state identity
-	if !config.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
-		configIdentity := identity.FromList(config.Identity)
-		stateIdentity := identity.FromList(state.Identity)
-		if configIdentity.Type.Equal(stateIdentity.Type) && configIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
-			plan.Identity = state.Identity
-		}
-	}
-
-	if !dynamic.IsFullyKnown(plan.Body) {
-		if config.Tags.IsNull() {
-			plan.Tags = basetypes.NewMapUnknown(types.StringType)
-		}
-		if config.Location.IsNull() {
-			plan.Location = basetypes.NewStringUnknown()
-		}
-		plan.Output = basetypes.NewDynamicUnknown()
-		return
-	}
-
-	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) ||
-		!bodySemanticallyEqual(plan.Body, state.Body) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	}
-
-	body := make(map[string]interface{})
-	if err := unmarshalBody(config.Body, &body); err != nil {
-		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
-		return
-	}
-
-	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	err := r.preflightValidation(ctx, request, response)
 	if err != nil {
-		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
+		response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
 		return
 	}
-	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
 
-	plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
-	if state == nil || !state.Tags.Equal(plan.Tags) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	}
-
-	// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
-	locationValue := plan.Location
-	// For the following cases, we need to use the location in config as the specified location
-	// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
-	// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
-	if locationValue.IsUnknown() || config.Location.IsNull() {
-		locationValue = config.Location
-	}
-	// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
-	plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
-	if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
-		// if the location is changed, replace the resource
-		response.RequiresReplace.Append(path.Root("location"))
-	}
-	if plan.SchemaValidationEnabled.ValueBool() {
-		if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
-			return
-		}
-		body["name"] = plan.Name.ValueString()
-		err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid configuration", err.Error())
-			return
-		}
-	}
 }
 
 func (r *AzapiResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
@@ -458,7 +364,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
 		}
-		if !utils.ResponseErrorWasNotFound(err) {
+
+		// 403 is returned if group does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
+		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && strings.EqualFold("Microsoft.Management/managementGroups", id.AzureResourceType)) {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -853,6 +761,229 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
+func (r *AzapiResource) modifyPlan(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) {
+	var config, state, plan *AzapiResourceModel
+	response.Diagnostics.Append(request.Config.Get(ctx, &config)...)
+	response.Diagnostics.Append(request.State.Get(ctx, &state)...)
+	response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+
+	// destroy doesn't need to modify plan
+	if config == nil {
+		return
+	}
+
+	defer func() {
+		response.Plan.Set(ctx, plan)
+	}()
+
+	// Output is a computed field, it defaults to unknown if there's any plan change
+	// It sets to the state if the state exists, and will set to unknown if the output needs to be updated
+	if state != nil {
+		plan.Output = state.Output
+	}
+	resourceType := config.Type.ValueString()
+
+	// for resource group, if parent_id is not specified, set it to subscription id
+	if config.ParentID.IsNull() {
+		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+		if strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+			plan.ParentID = types.StringValue(fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId()))
+		}
+	}
+
+	if name, diags := r.nameWithDefaultNaming(config.Name); !diags.HasError() {
+		plan.Name = name
+		// replace the resource if the name is changed
+		if state != nil && !state.Name.Equal(plan.Name) {
+			response.RequiresReplace.Append(path.Root("name"))
+		}
+	} else {
+		response.Diagnostics.Append(diags...)
+		return
+	}
+
+	// if the config identity type and identity ids are not changed, use the state identity
+	if !config.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
+		configIdentity := identity.FromList(config.Identity)
+		stateIdentity := identity.FromList(state.Identity)
+		if configIdentity.Type.Equal(stateIdentity.Type) && configIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
+			plan.Identity = state.Identity
+		}
+	}
+
+	if !dynamic.IsFullyKnown(plan.Body) {
+		if config.Tags.IsNull() {
+			plan.Tags = basetypes.NewMapUnknown(types.StringType)
+		}
+		if config.Location.IsNull() {
+			plan.Location = basetypes.NewStringUnknown()
+		}
+		plan.Output = basetypes.NewDynamicUnknown()
+		return
+	}
+
+	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) ||
+		!bodySemanticallyEqual(plan.Body, state.Body) {
+		plan.Output = basetypes.NewDynamicUnknown()
+	}
+
+	body := make(map[string]interface{})
+	if err := unmarshalBody(config.Body, &body); err != nil {
+		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+		return
+	}
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
+		return
+	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
+
+	plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
+	if state == nil || !state.Tags.Equal(plan.Tags) {
+		plan.Output = basetypes.NewDynamicUnknown()
+	}
+
+	// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
+	locationValue := plan.Location
+	// For the following cases, we need to use the location in config as the specified location
+	// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
+	// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
+	if locationValue.IsUnknown() || config.Location.IsNull() {
+		locationValue = config.Location
+	}
+	// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
+	plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
+	if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
+		// if the location is changed, replace the resource
+		response.RequiresReplace.Append(path.Root("location"))
+	}
+	if plan.SchemaValidationEnabled.ValueBool() {
+		if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
+			return
+		}
+		body["name"] = plan.Name.ValueString()
+		err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
+	}
+}
+
+func (r *AzapiResource) isPreflightSupported(parentID string) bool {
+	// currently, parentID must be one of resource group, subscription, management group or tenant('/'). extension resources and nested resources are not supported by Preflight.
+	resourceType := utils.GetResourceType(parentID)
+
+	isSupportedParentID := strings.EqualFold(arm.ResourceGroupResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.SubscriptionResourceType.String(), resourceType) ||
+		strings.EqualFold(arm.TenantResourceType.String(), resourceType) ||
+		strings.EqualFold("Microsoft.Management/managementGroups", resourceType)
+
+	return r.ProviderData.Features.EnablePreflight && isSupportedParentID
+}
+
+func (r *AzapiResource) preflightValidation(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) error {
+	if response.Diagnostics.HasError() {
+		return nil
+	}
+
+	var plan *AzapiResourceModel
+	request.Plan.Get(ctx, &plan)
+
+	// Preflight validation happens only when deploying a new resource
+	if !request.State.Raw.IsNull() {
+		return nil
+	}
+
+	// Preflight validation is not supported for JSON string body
+	if plan.Body.UnderlyingValue().Type(ctx).Equal(types.StringType) {
+		return nil
+	}
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(plan.Type.ValueString())
+	if err != nil {
+		return err
+	}
+
+	// Preflight validation is supported only for top-level resources
+	if !utils.IsTopLevelResourceType(azureResourceType) {
+		return nil
+	}
+
+	// Preflight validation is supported only for resource types that have a parent
+	if plan.ParentID.IsNull() {
+		return nil
+	}
+
+	if plan.Name.IsNull() || plan.Name.IsUnknown() {
+		return nil
+	}
+
+	parentId := plan.ParentID.ValueString()
+	if plan.ParentID.IsUnknown() {
+		resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
+
+		// since the parentID is faked, there should exist only one scope type
+		if resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
+			return nil
+		}
+
+		switch resourceDef.ScopeTypes[0] {
+		case aztypes.Tenant:
+			parentId = "/"
+		case aztypes.ManagementGroup:
+			parentId = "/providers/Microsoft.Management/managementGroups/azapifakemg"
+		case aztypes.Subscription:
+			parentId = fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId())
+		case aztypes.ResourceGroup:
+			parentId = fmt.Sprintf("/subscriptions/%s/resourceGroups/azapifakerg", r.ProviderData.Account.GetSubscriptionId())
+		default:
+			return nil
+		}
+	}
+
+	if !r.isPreflightSupported(parentId) {
+		return nil
+	}
+
+	requestBody := PreflightValidateResourcesModel{}
+	requestBody.Provider, requestBody.Type, _ = strings.Cut(azureResourceType, "/")
+	requestBody.Scope = parentId
+
+	if !plan.Location.IsNull() && !plan.Location.IsUnknown() {
+		requestBody.Location = plan.Location.ValueString()
+
+	}
+
+	resourceBody := make(map[string]interface{})
+	ok, err := unmarshalPreflightBody(plan.Body, &resourceBody)
+	if err != nil {
+		return err
+	}
+
+	if !ok {
+		return nil
+	}
+
+	resourceBody["name"] = plan.Name.ValueString()
+	resourceBody["apiVersion"] = apiVersion
+
+	requestBody.Resources = []map[string]interface{}{resourceBody}
+
+	client := r.ProviderData.ResourceClient
+	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *AzapiResource) nameWithDefaultNaming(config types.String) (types.String, diag.Diagnostics) {
 	if !config.IsNull() {
 		return config, diag.Diagnostics{}
@@ -937,6 +1068,27 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 		body["identity"] = out
 	}
 	return diag.Diagnostics{}
+}
+
+func unmarshalPreflightBody(input types.Dynamic, out interface{}) (bool, error) {
+	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
+		return false, nil
+	}
+
+	ok, data, err := preflight.ToJSON(input)
+	if err != nil {
+		return false, fmt.Errorf(`invalid dynamic value: value: %s, err: %+v`, input.String(), err)
+	}
+
+	if !ok {
+		return false, nil
+	}
+
+	if err = json.Unmarshal(data, &out); err != nil {
+		return false, fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
+	}
+
+	return true, nil
 }
 
 func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]interface{}) diag.Diagnostics {

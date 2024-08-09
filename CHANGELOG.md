@@ -14,6 +14,7 @@ FEATURES:
 - **New Data Source**: azapi_client_config
 
 ENHANCEMENTS:
+- `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `false`.
 - `azapi` provider: Support `client_certificate` field, which specifies base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
 - `azapi` provider: Support `use_aks_workload_identity` field to enable AKS workload identity.
 - `azapi_resource`, `azapi_update_resource`, `azapi_resource_action`, `azapi_data_plane_resource` resources: Support `timeouts.update` field, which is used to specify the timeout for the update operation.
