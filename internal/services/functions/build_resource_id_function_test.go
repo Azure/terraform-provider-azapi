@@ -25,9 +25,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"),
-				})),
+				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup")),
 			},
 		},
 		"build-subscription-scope-resource-id-invalid": {
@@ -40,7 +38,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [Subscription], but got scope Unknown"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"build-resource-group-scope-resource-id-valid": {
@@ -52,9 +50,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Automation/automationAccounts/myAutomationAccount"),
-				})),
+				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Automation/automationAccounts/myAutomationAccount")),
 			},
 		},
 		"build-resource-group-scope-resource-id-invalid": {
@@ -67,7 +63,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [ResourceGroup], but got scope Unknown"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"build-management-group-scope-resource-id-valid": {
@@ -79,9 +75,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Authorization/privateLinkAssociations/MyPrivateLinkAssociation"),
-				})),
+				Result: function.NewResultData(types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Authorization/privateLinkAssociations/MyPrivateLinkAssociation")),
 			},
 		},
 		"build-management-group-scope-resource-id-invalid": {
@@ -94,7 +88,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [ManagementGroup], but got scope Unknown"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"build-tenant-scope-resource-id-valid": {
@@ -106,9 +100,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/providers/Microsoft.Billing/billingAccounts/MyInvoice"),
-				})),
+				Result: function.NewResultData(types.StringValue("/providers/Microsoft.Billing/billingAccounts/MyInvoice")),
 			},
 		},
 		"build-tenant-scope-resource-id-invalid": {
@@ -121,7 +113,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [Tenant], but got scope Unknown"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"build-extension-scope-resource-id-valid": {
@@ -133,9 +125,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/MyTarget"),
-				})),
+				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/providers/Microsoft.Chaos/targets/MyTarget")),
 			},
 		},
 	}
@@ -143,7 +133,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 	for name, testCase := range testCases {
 		t.Run(name, func(t *testing.T) {
 			got := function.RunResponse{
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			}
 
 			buildResourceIdFunction := functions.BuildResourceIdFunction{}

@@ -2,9 +2,9 @@ package functions
 
 import (
 	"context"
+
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -20,29 +20,32 @@ func (f *ExtensionResourceIdFunction) Definition(ctx context.Context, request fu
 	response.Definition = function.Definition{
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "base_resource_id",
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "base_resource_id",
+				Description:         "The base resource ID of the Azure resource.",
+				MarkdownDescription: "The base resource ID of the Azure resource.",
 			},
 			function.StringParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "resource type",
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "extension_name",
+				Description:         "The name of the extension resource.",
+				MarkdownDescription: "The name of the extension resource.",
 			},
 			function.ListParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "resource_names",
-				ElementType:        types.StringType,
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "resource_names",
+				ElementType:         types.StringType,
+				Description:         "The list of resource names to construct the extension resource ID.",
+				MarkdownDescription: "The list of resource names to construct the extension resource ID.",
 			},
 		},
-		Return: function.ObjectReturn{
-			AttributeTypes: BuildResourceIdResultAttrTypes,
-		},
+		Return:              function.StringReturn{},
 		Summary:             "Builds an extension resource ID.",
 		Description:         "This function constructs an Azure extension resource ID given the base resource ID, resource type, and additional resource names.",
 		MarkdownDescription: "This function constructs an Azure extension resource ID given the base resource ID, resource type, and additional resource names.",
-		DeprecationMessage:  "",
 	}
 }
 
@@ -67,11 +70,7 @@ func (f *ExtensionResourceIdFunction) Run(ctx context.Context, request function.
 		return
 	}
 
-	result := map[string]attr.Value{
-		"resource_id": types.StringValue(resourceID.AzureResourceId),
-	}
-
-	response.Error = response.Result.Set(ctx, types.ObjectValueMust(BuildResourceIdResultAttrTypes, result))
+	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
 var _ function.Function = &ExtensionResourceIdFunction{}

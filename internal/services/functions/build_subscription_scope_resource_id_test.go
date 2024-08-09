@@ -27,9 +27,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1"),
-				})),
+				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1")),
 			},
 		},
 		"subscription-scope-valid-double": {
@@ -44,9 +42,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectValueMust(functions.BuildResourceIdResultAttrTypes, map[string]attr.Value{
-					"resource_id": types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1/usages/usage1"),
-				})),
+				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Sql/locations/loc1/usages/usage1")),
 			},
 		},
 		"subscription-scope-invalid-single": {
@@ -62,7 +58,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 1, got 2"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"subscription-scope-invalid-double": {
@@ -77,7 +73,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("number of resource names does not match the number of resource type parts, expected 2, got 1"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"subscription-scope-invalid-empty-type": {
@@ -92,7 +88,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 		"subscription-scope-invalid-type": {
@@ -107,7 +103,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			},
 			expected: function.RunResponse{
 				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
 	}
@@ -115,7 +111,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 	for name, testCase := range testCases {
 		t.Run(name, func(t *testing.T) {
 			got := function.RunResponse{
-				Result: function.NewResultData(types.ObjectUnknown(functions.BuildResourceIdResultAttrTypes)),
+				Result: function.NewResultData(types.StringUnknown()),
 			}
 
 			subscriptionResourceIdFunction := functions.SubscriptionResourceIdFunction{}

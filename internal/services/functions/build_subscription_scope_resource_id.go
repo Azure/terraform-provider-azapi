@@ -5,7 +5,6 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -21,29 +20,32 @@ func (f *SubscriptionResourceIdFunction) Definition(ctx context.Context, request
 	response.Definition = function.Definition{
 		Parameters: []function.Parameter{
 			function.StringParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "subscription_id",
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "subscription_id",
+				Description:         "The subscription ID of the Azure resource.",
+				MarkdownDescription: "The subscription ID of the Azure resource.",
 			},
 			function.StringParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "resource_type",
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "resource_type",
+				Description:         "The resource type of the Azure resource.",
+				MarkdownDescription: "The resource type of the Azure resource.",
 			},
 			function.ListParameter{
-				AllowNullValue:     false,
-				AllowUnknownValues: false,
-				Name:               "resource_names",
-				ElementType:        types.StringType,
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
+				Name:                "resource_names",
+				ElementType:         types.StringType,
+				Description:         "The list of resource names to construct the resource ID.",
+				MarkdownDescription: "The list of resource names to construct the resource ID.",
 			},
 		},
-		Return: function.ObjectReturn{
-			AttributeTypes: BuildResourceIdResultAttrTypes,
-		},
+		Return:              function.StringReturn{},
 		Summary:             "Builds a subscription scope resource ID.",
 		Description:         "This function constructs an Azure subscription scope resource ID given the subscription ID, resource type, and resource names.",
 		MarkdownDescription: "This function constructs an Azure subscription scope resource ID given the subscription ID, resource type, and resource names.",
-		DeprecationMessage:  "",
 	}
 }
 
@@ -64,11 +66,7 @@ func (f *SubscriptionResourceIdFunction) Run(ctx context.Context, request functi
 		return
 	}
 
-	result := map[string]attr.Value{
-		"resource_id": types.StringValue(resourceID.AzureResourceId),
-	}
-
-	response.Error = response.Result.Set(ctx, types.ObjectValueMust(BuildResourceIdResultAttrTypes, result))
+	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
 var _ function.Function = &SubscriptionResourceIdFunction{}
