@@ -442,10 +442,10 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
   parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
   name      = "mykey"
-  body =  {
-      content_type = ""
-      value        = "myvalue"
-    }
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
 
   depends_on = [
     azurerm_role_assignment.test,
