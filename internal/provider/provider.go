@@ -661,21 +661,16 @@ func (p Provider) Functions(ctx context.Context) []func() function.Function {
 		func() function.Function {
 			return &functions.ParseResourceIdFunction{}
 		},
+		func() function.Function { return &functions.BuildResourceIdFunction{} },
 		func() function.Function {
-			return &functions.BuildResourceIdFunction{}
+			return &functions.TenantResourceIdFunction{}
 		},
 		func() function.Function {
-			return &functions.BuildManagementGroupScopeResourceIdFunction{}
+			return &functions.SubscriptionResourceIdFunction{}
 		},
-		func() function.Function {
-			return &functions.BuildSubscriptionScopeResourceIdFunction{}
-		},
-		func() function.Function {
-			return &functions.BuildResourceGroupScopeResourceIdFunction{}
-		},
-		func() function.Function {
-			return &functions.BuildTenantScopeResourceIdFunction{}
-		},
+		func() function.Function { return &functions.ResourceGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ManagementGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ExtensionResourceIdFunction{} },
 	}
 }
 
