@@ -214,6 +214,6 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Identity = identity.ToList(*v)
 		}
 	}
-	model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

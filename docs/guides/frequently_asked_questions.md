@@ -39,7 +39,7 @@ Similarly, values in incorrect casing might be returned and cause a diff. Please
 
 For example, `Microsoft.Network/virtualNetworks/subnets` has its own API and it can also be managed by `Microsoft.Network/virtualNetworks` API.
 
-It's recommendded to manage `Microsoft.Network/virtualNetworks/subnets` in `Microsoft.Network/virtualNetworks` instead of using its own API.
+It's recommended to manage `Microsoft.Network/virtualNetworks/subnets` in `Microsoft.Network/virtualNetworks` instead of using its own API.
 
 The reason is, if subnets are defined separately, when update the vnet which has no definition of its subnets, 
 its request body won't contain any subnets definitions, so existing subnets will be removed.

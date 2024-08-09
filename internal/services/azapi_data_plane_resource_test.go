@@ -163,12 +163,11 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
   parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
   name      = "mykey"
-  body = jsonencode(
-    {
-      content_type = ""
-      value        = "myvalue"
-    }
-  )
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+
 
   depends_on = [
     azurerm_role_assignment.test,
@@ -252,7 +251,7 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
   parent_id = replace(azurerm_purview_account.example.scan_endpoint, "https://", "")
   name      = "acctest%[2]s"
-  body = jsonencode({
+  body = {
     kind = "Custom"
     properties = {
       description        = "Let's put a cool desc here"
@@ -272,7 +271,7 @@ resource "azapi_data_plane_resource" "test" {
       minimumPercentageMatch = 60
       ruleStatus             = "Enabled"
     }
-  })
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
@@ -302,9 +301,9 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
   parent_id = "${azurerm_purview_account.example.name}.purview.azure.com"
   name      = "defaultResourceSetRuleConfig"
-  body = jsonencode({
+  body = {
     friendlyName = "Finance"
-  })
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
@@ -338,7 +337,7 @@ resource "azapi_resource_action" "add_accesspolicy" {
   type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
   resource_id = "${azurerm_key_vault.example.id}/accessPolicies/add"
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [{
         tenantId = data.azurerm_client_config.current.tenant_id
@@ -348,14 +347,14 @@ resource "azapi_resource_action" "add_accesspolicy" {
         }
       }]
     }
-  })
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.KeyVault/vaults/certificates/issuers@7.4"
   parent_id = replace(azurerm_key_vault.example.vault_uri, "https://", "")
   name      = "acctest%[2]s"
-  body = jsonencode({
+  body = {
     provider = "Test"
     credentials = {
       account_id = "keyvaultuser"
@@ -370,7 +369,7 @@ resource "azapi_data_plane_resource" "test" {
         }
       ]
     }
-  })
+  }
   depends_on = [
     azapi_resource_action.add_accesspolicy
   ]
@@ -399,7 +398,7 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.IoTCentral/IoTApps/users@2022-07-31"
   parent_id = "${azurerm_iotcentral_application.example.sub_domain}.azureiotcentral.com"
   name      = "acctest%[2]s"
-  body = jsonencode({
+  body = {
     type = "email"
     roles = [
       {
@@ -407,7 +406,7 @@ resource "azapi_data_plane_resource" "test" {
       }
     ]
     email = "user5@contoso.com"
-  })
+  }
 }
 
 `, data.LocationPrimary, data.RandomString)
@@ -443,12 +442,10 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
   parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
   name      = "mykey"
-  body = jsonencode(
-    {
+  body =  {
       content_type = ""
       value        = "myvalue"
     }
-  )
 
   depends_on = [
     azurerm_role_assignment.test,
