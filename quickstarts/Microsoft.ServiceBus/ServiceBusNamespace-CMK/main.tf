@@ -37,11 +37,11 @@ resource "azapi_resource" "test" {
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
 
-  body = jsonencode({
+  body = {
     sku = {
       name = "Premium"
     }
-  })
+  }
 }
 
 resource "azurerm_key_vault" "test" {
@@ -100,7 +100,7 @@ resource "azapi_update_resource" "test" {
   resource_id = azapi_resource.test.resource_id
   type        = "Microsoft.ServiceBus/namespaces@2021-06-01-preview"
 
-  body = jsonencode({
+  body = {
     properties = {
       encryption = {
         keySource = "Microsoft.KeyVault"
@@ -116,5 +116,5 @@ resource "azapi_update_resource" "test" {
         ]
       }
     }
-  })
+  }
 }

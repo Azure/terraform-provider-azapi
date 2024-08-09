@@ -71,18 +71,6 @@ func TestAccActionResource_providerAction(t *testing.T) {
 	})
 }
 
-func TestAccActionResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
-	r := ActionResource{}
-
-	data.DataSourceTest(t, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(),
-			Check:  resource.ComposeTestCheckFunc(),
-		},
-	})
-}
-
 func TestAccActionResource_nonstandardLRO(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
@@ -122,9 +110,9 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]
@@ -148,9 +136,9 @@ resource "azapi_resource_action" "test" {
   resource_id = azapi_resource.test.id
   when        = "destroy"
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]
@@ -177,26 +165,6 @@ resource "azapi_resource_action" "test" {
 }
 
 func (r ActionResource) providerAction() string {
-	return `
-provider "azurerm" {
-  features {}
-}
-
-data "azurerm_client_config" "current" {}
-
-resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Cache@2023-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
-  action      = "CheckNameAvailability"
-  body = jsonencode({
-    type = "Microsoft.Cache/Redis"
-    name = "cacheName"
-  })
-}
-`
-}
-
-func (r ActionResource) dynamicSchema() string {
 	return `
 provider "azurerm" {
   features {}
@@ -275,12 +243,12 @@ resource "azapi_resource_action" "test" {
   resource_id            = data.azapi_resource_id.functionKey.id
   method                 = "PUT"
   response_export_values = ["*"]
-  body = jsonencode({
+  body = {
     properties = {
       name  = "test_key"
       value = "test_value"
     }
-  })
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
@@ -300,9 +268,9 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]

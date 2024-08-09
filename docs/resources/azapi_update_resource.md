@@ -142,8 +142,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource.
 
-* `output` - The HCL object containing the properties specified in `response_export_values`. HIt supports both JSON and HCL object.
-  It will be the same format as the `body`. For example, if specifying `body` in HCL format, the `output` will be in HCL format.
+* `output` - The HCL object containing the properties specified in `response_export_values`. It is stored in HCL format.
 
 
 *Examples to use the values in HCL format:*
@@ -156,18 +155,6 @@ output "login_server" {
 // it will output "disabled"
 output "quarantine_policy" {
   value = azapi_update_resource.example.output.properties.policies.quarantinePolicy.status
-}
-```
-*Examples to use the values in JSON format:*
-```hcl
-// it will output "registry1.azurecr.io"
-output "login_server" {
-  value = jsondecode(azapi_update_resource.example.output).properties.loginServer
-}
-
-// it will output "disabled"
-output "quarantine_policy" {
-  value = jsondecode(azapi_update_resource.example.output).properties.policies.quarantinePolicy.status
 }
 ```
 

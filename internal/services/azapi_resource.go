@@ -52,7 +52,6 @@ type AzapiResourceModel struct {
 	Body                    types.Dynamic  `tfsdk:"body"`
 	Locks                   types.List     `tfsdk:"locks"`
 	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
-	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
 	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
 	ResponseExportValues    types.List     `tfsdk:"response_export_values"`
@@ -134,28 +133,12 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				},
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Computed: true,
-				Default:  defaults.DynamicDefault(types.StringValue("{}")),
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
-			},
-
-			"ignore_body_changes": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `body` to ignore.",
 			},
 
 			"ignore_casing": schema.BoolAttribute{
@@ -352,8 +335,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		return
 	}
 
-	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) ||
-		!bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	}
 
@@ -473,28 +455,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			out, _ := identity.ExpandIdentity(noneIdentity)
 			body["identity"] = out
 		}
-
-		// handle the case that `ignore_body_changes` is set
-		if ignoreChanges := AsStringList(plan.IgnoreBodyChanges); len(ignoreChanges) != 0 {
-			// retrieve the existing resource
-			existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
-			if err != nil {
-				diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
-				return
-			}
-
-			merged, err := overrideWithPaths(body, existing, ignoreChanges)
-			if err != nil {
-				diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: value: %s, err: %+v`, plan.IgnoreBodyChanges.String(), err))
-				return
-			}
-
-			if id.ResourceDef != nil {
-				merged = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(merged))
-			}
-
-			body = merged.(map[string]interface{})
-		}
 	}
 
 	// create/update the resource
@@ -509,11 +469,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
-				if dynamicIsString(plan.Body) {
-					plan.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues))))
-				} else {
-					plan.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(plan.ResponseExportValues)))
-				}
+				plan.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
 				if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 					if !plan.Identity.IsNull() {
 						planIdentity := identity.FromList(plan.Identity)
@@ -547,11 +503,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	// generate the computed fields
 	plan.ID = types.StringValue(id.ID())
-	if dynamicIsString(plan.Body) {
-		plan.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues))))
-	} else {
-		plan.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(plan.ResponseExportValues)))
-	}
+	plan.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 		if !plan.Identity.IsNull() {
 			planIdentity := identity.FromList(plan.Identity)
@@ -656,15 +608,6 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		}
 	}
 
-	if ignoreBodyChanges := AsStringList(model.IgnoreBodyChanges); len(ignoreBodyChanges) != 0 {
-		if out, err := overrideWithPaths(responseBody, requestBody, ignoreBodyChanges); err == nil {
-			responseBody = out
-		} else {
-			response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid: value: %s, err: %+v`, model.IgnoreBodyChanges.String(), err))
-			return
-		}
-	}
-
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
@@ -677,23 +620,18 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	if dynamicIsString(model.Body) {
-		state.Body = types.DynamicValue(types.StringValue(string(data)))
-		state.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		state.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-		if !model.Body.IsNull() {
-			payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+	state.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	if !model.Body.IsNull() {
+		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
 			if err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
-				payload, err = dynamic.FromJSONImplied(data)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid payload", err.Error())
-					return
-				}
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
 			}
-			state.Body = payload
 		}
+		state.Body = payload
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
@@ -768,7 +706,6 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		Identity:                types.ListNull(identity.Model{}.ModelType()),
 		Body:                    types.DynamicNull(),
 		SchemaValidationEnabled: types.BoolValue(true),
-		IgnoreBodyChanges:       types.ListNull(types.StringType),
 		IgnoreCasing:            types.BoolValue(false),
 		IgnoreMissingProperty:   types.BoolValue(true),
 		ResponseExportValues:    types.ListNull(types.StringType),

@@ -117,6 +117,6 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	}
 
 	model.ID = basetypes.NewStringValue(listUrl)
-	model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

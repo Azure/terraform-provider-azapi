@@ -156,8 +156,7 @@ In addition to the Arguments listed above - the following Attributes are exporte
 
 * `id` - The ID of the azure resource action.
 
-* `output` - The HCL object containing the properties specified in `response_export_values`. It supports both JSON and HCL object.
-  It will be the same format as the `body`. For example, if specifying `body` in HCL format, the `output` will be in HCL format.
+* `output` - The HCL object containing the properties specified in `response_export_values`. It is stored in HCL format.
 
 
 *Examples to use the values in HCL format:*
@@ -172,18 +171,7 @@ output "secondary_key" {
   value = azapi_resource_action.example.output.keys.1.Value
 }
 ```
-*Examples to use the values in JSON format:*
-```hcl
-// it will output "nHGYNd******i4wdug=="
-output "primary_key" {
-  value = jsondecode(azapi_resource_action.example.output).keys.0.Value
-}
 
-// it will output "6yoCad******SLzKzg=="
-output "secondary_key" {
-  value = jsondecode(azapi_resource_action.example.output).keys.1.Value
-}
-```
 ## Timeouts
 
 The `timeouts` block allows you to specify [timeouts](https://www.terraform.io/docs/configuration/resources.html#timeouts) for certain actions:

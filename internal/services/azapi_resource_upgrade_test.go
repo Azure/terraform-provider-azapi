@@ -447,40 +447,6 @@ func TestAccAzapiResourceUpgrade_secretsInAsterisks(t *testing.T) {
 	})
 }
 
-func TestAccAzapiResourceUpgrade_ignoreChanges(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.UpgradeTest(t, r, []resource.TestStep{
-		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.ignoreChanges(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.ignoreChanges(data),
-		}),
-	})
-}
-
-func TestAccAzapiResourceUpgrade_ignoreChangesArray(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.UpgradeTest(t, r, []resource.TestStep{
-		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.ignoreChangesArray(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.ignoreChangesArray(data),
-		}),
-	})
-}
-
 func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}

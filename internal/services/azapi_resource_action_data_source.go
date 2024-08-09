@@ -80,14 +80,9 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				},
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -151,7 +146,7 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

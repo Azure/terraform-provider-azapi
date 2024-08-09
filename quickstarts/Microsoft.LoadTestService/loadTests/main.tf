@@ -78,7 +78,7 @@ resource "azapi_resource" "loadTest" {
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       description = "This is new load test"
       encryption = {
@@ -89,7 +89,7 @@ resource "azapi_resource" "loadTest" {
         keyUrl = azurerm_key_vault_key.example.versionless_id
       }
     }
-  })
+  }
 
   tags = {
     Team = "Dev Exp"

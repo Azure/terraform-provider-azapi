@@ -48,7 +48,7 @@ resource "azapi_update_resource" "test" {
   name      = "default"
   parent_id = azurerm_eventhub_namespace.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       defaultAction       = "Deny"
       publicNetworkAccess = "Enabled"
@@ -68,6 +68,6 @@ resource "azapi_update_resource" "test" {
         }
       ]
     }
-  })
+  }
 
 }
