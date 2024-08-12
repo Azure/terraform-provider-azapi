@@ -81,7 +81,7 @@ resource "azapi_resource" "test" {
   name = "myPolicy"
   // `Microsoft.Security/locations` is not a valid resource type to be managed, so we must build its id like the following
   parent_id = "${azurerm_resource_group.test.id}/providers/Microsoft.Security/locations/westeurope"
-  body = jsonencode({
+  body = {
     properties = {
       virtualMachines = [
         {
@@ -98,5 +98,5 @@ resource "azapi_resource" "test" {
       ]
     }
     kind = "Basic"
-  })
+  }
 }

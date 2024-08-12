@@ -103,18 +103,11 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				},
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Computed: true,
-				Default:  defaults.DynamicDefault(types.StringValue("{}")),
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 			},
 
@@ -178,7 +171,7 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
@@ -267,11 +260,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	if dynamicIsString(model.Body) {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
@@ -326,23 +315,18 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	if dynamicIsString(model.Body) {
-		model.Body = types.DynamicValue(types.StringValue(string(data)))
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-		if !model.Body.IsNull() {
-			payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	if !model.Body.IsNull() {
+		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
 			if err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
-				payload, err = dynamic.FromJSONImplied(data)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid payload", err.Error())
-					return
-				}
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
 			}
-			model.Body = payload
 		}
+		model.Body = payload
 	}
 
 	model.Name = basetypes.NewStringValue(id.Name)

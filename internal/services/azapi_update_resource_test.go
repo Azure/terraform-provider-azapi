@@ -33,23 +33,6 @@ func TestAccGenericUpdateResource_automationAccount(t *testing.T) {
 	})
 }
 
-func TestAccGenericUpdateResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("resource_id").Exists(),
-				check.That(data.ResourceName).Key("parent_id").Exists(),
-				check.That(data.ResourceName).Key("name").Exists(),
-			),
-		},
-	})
-}
-
 func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -96,34 +79,6 @@ func TestAccGenericUpdateResource_locks(t *testing.T) {
 				check.That(data.ResourceName).Key("resource_id").Exists(),
 				check.That(data.ResourceName).Key("parent_id").Exists(),
 				check.That(data.ResourceName).Key("name").Exists(),
-			),
-		},
-	})
-}
-
-func TestAccGenericUpdateResource_ignoreChanges(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChanges(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
-func TestAccGenericUpdateResource_ignoreChangesArray(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChangesArray(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
 	})
@@ -210,29 +165,6 @@ resource "azurerm_automation_account" "test" {
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
-    properties = {
-      publicNetworkAccess = true
-    }
-  })
-}
-`, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) dynamicSchema(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
   body = {
     properties = {
       publicNetworkAccess = true
@@ -257,11 +189,11 @@ resource "azapi_update_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = azurerm_automation_account.test.name
   parent_id = azurerm_resource_group.test.id
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -307,13 +239,13 @@ resource "azapi_update_resource" "test" {
   type      = "Microsoft.Web/sites/config@2021-03-01"
   name      = "slotConfigNames"
   parent_id = azurerm_app_service.test.id
-  body = jsonencode({
+  body = {
     properties = {
       connectionStringNames   = ["test1", "test2"]
       appSettingNames         = ["test3"]
       azureStorageConfigNames = ["test4"]
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -332,92 +264,25 @@ resource "azurerm_automation_account" "test" {
 resource "azapi_update_resource" "test1" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
   locks = [azurerm_automation_account.test.id]
 }
 
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
   locks = [azurerm_automation_account.test.id]
 }
 `, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) ignoreChanges(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
-    properties = {
-      sku = {
-        name = "Free"
-      }
-    }
-  })
-
-  ignore_body_changes = ["properties.sku.name"]
-}
-`, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) ignoreChangesArray(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_virtual_network" "test" {
-  name                = "acctest%[2]d"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-}
-
-resource "azurerm_subnet" "test" {
-  name                 = "default"
-  resource_group_name  = azurerm_resource_group.test.name
-  virtual_network_name = azurerm_virtual_network.test.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
-  resource_id = azurerm_virtual_network.test.id
-  body = jsonencode({
-    properties = {
-      subnets = [
-        {
-          name = "second"
-          properties = {
-            addressPrefix = "10.0.2.0/24"
-          }
-        }
-      ]
-    }
-  })
-
-  ignore_body_changes = ["properties.subnets"]
-  depends_on          = [azurerm_subnet.test]
-}
-`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) string {
@@ -589,11 +454,11 @@ resource "azurerm_automation_account" "test" {
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
   timeouts {
     create = "10m"
     update = "10m"
