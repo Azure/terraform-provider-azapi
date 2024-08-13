@@ -199,6 +199,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{
 				Create: true,
+				Update: true,
 				Read:   true,
 				Delete: true,
 			}),
@@ -286,13 +287,22 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		return
 	}
 
-	createUpdateTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
-	diagnostics.Append(diags...)
-	if diagnostics.HasError() {
-		return
-	}
+	isNewResource := state == nil || state.Raw.IsNull()
 
-	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
+	var timeout time.Duration
+	var diags diag.Diagnostics
+	if isNewResource {
+		timeout, diags = model.Timeouts.Create(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	} else {
+		timeout, diags = model.Timeouts.Update(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	var id parse.ResourceId

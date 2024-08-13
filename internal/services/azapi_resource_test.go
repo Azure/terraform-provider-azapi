@@ -343,7 +343,6 @@ func TestAccGenericResource_subscriptionScope(t *testing.T) {
 }
 
 func TestAccGenericResource_extensionScope(t *testing.T) {
-	t.Skip(`The service principle does not have authorization to perform action 'Microsoft.Authorization/locks/write'`)
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
@@ -352,10 +351,9 @@ func TestAccGenericResource_extensionScope(t *testing.T) {
 			Config: r.extensionScope(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -416,25 +414,6 @@ func TestAccGenericResource_locks(t *testing.T) {
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
-	})
-}
-
-func TestAccGenericResource_oidc(t *testing.T) {
-	if ok := os.Getenv("ARM_USE_OIDC"); ok == "" {
-		t.Skip("Skipping as `ARM_USE_OIDC` is not specified")
-	}
-
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.basic(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		data.ImportStep(defaultIgnores()...),
 	})
 }
 
@@ -499,6 +478,32 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.nullLocation(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_unknownName(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.unknownName(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.timeouts(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -1107,16 +1112,54 @@ func (r GenericResource) extensionScope(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Authorization/locks@2015-01-01"
-  name      = "acctest-%[2]d"
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
   parent_id = azurerm_resource_group.test.id
-
+  name      = "acctest-oi-%[2]d"
+  location  = azurerm_resource_group.test.location
   body = jsonencode({
     properties = {
-      level = "CanNotDelete"
+      features = {
+        disableLocalAuth                            = false
+        enableLogAccessUsingOnlyResourcePermissions = true
+      }
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+      retentionInDays                 = 30
+      sku = {
+        name = "PerGB2018"
+      }
+      workspaceCapping = {
+        dailyQuotaGb = -1
+      }
     }
   })
+}
+
+resource "azapi_resource" "onboardingState" {
+  type      = "Microsoft.SecurityInsights/onboardingStates@2022-11-01"
+  parent_id = azapi_resource.workspace.id
+  name      = "default"
+  body = jsonencode({
+    properties = {
+      customerManagedKey = false
+    }
+  })
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.SecurityInsights/watchlists@2022-11-01"
+  parent_id = azapi_resource.workspace.id
+  name      = "acctest-wl-%[2]d"
+  body = jsonencode({
+    properties = {
+      displayName    = "test"
+      itemsSearchKey = "k1"
+      provider       = "Microsoft"
+      source         = ""
+    }
+  })
+  depends_on = [azapi_resource.onboardingState]
 }
 `, r.template(data), data.RandomInteger)
 }
@@ -1476,6 +1519,72 @@ resource "azapi_resource" "test" {
     }
   })
   locks = [azurerm_machine_learning_workspace.test.id]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) unknownName(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {}
+
+resource "random_string" "suffix" {
+  length  = 3
+  special = false
+  upper   = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  parent_id = azurerm_resource_group.test.id
+  name      = "acctest${random_string.suffix.result}"
+  location  = azurerm_resource_group.test.location
+  body = {
+    properties = {
+      accessPolicies = [
+      ]
+      createMode                   = "default"
+      enableRbacAuthorization      = false
+      enableSoftDelete             = true
+      enabledForDeployment         = false
+      enabledForDiskEncryption     = false
+      enabledForTemplateDeployment = false
+      publicNetworkAccess          = "Enabled"
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      softDeleteRetentionInDays = 7
+      tenantId                  = data.azurerm_client_config.current.tenant_id
+    }
+  }
+}
+`, r.template(data))
+}
+
+func (r GenericResource) timeouts(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+  timeouts {
+    create = "10m"
+    update = "10m"
+    delete = "10m"
+    read   = "10m"
+  }
 }
 `, r.template(data), data.RandomString)
 }

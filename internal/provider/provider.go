@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"os"
@@ -45,6 +46,7 @@ type providerData struct {
 	AuxiliaryTenantIDs           types.List   `tfsdk:"auxiliary_tenant_ids"`
 	Endpoint                     types.List   `tfsdk:"endpoint"`
 	Environment                  types.String `tfsdk:"environment"`
+	ClientCertificate            types.String `tfsdk:"client_certificate"`
 	ClientCertificatePath        types.String `tfsdk:"client_certificate_path"`
 	ClientCertificatePassword    types.String `tfsdk:"client_certificate_password"`
 	ClientSecret                 types.String `tfsdk:"client_secret"`
@@ -57,6 +59,7 @@ type providerData struct {
 	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
 	UseCLI                       types.Bool   `tfsdk:"use_cli"`
 	UseMSI                       types.Bool   `tfsdk:"use_msi"`
+	UseAKSWorkloadIdentity       types.Bool   `tfsdk:"use_aks_workload_identity"`
 	PartnerID                    types.String `tfsdk:"partner_id"`
 	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
 	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
@@ -113,6 +116,18 @@ func (model providerData) GetClientSecret() (*string, error) {
 	}
 
 	return &clientSecret, nil
+}
+
+func (model providerData) GetOIDCTokenFilePath() string {
+	if !model.OIDCTokenFilePath.IsNull() && model.OIDCTokenFilePath.ValueString() != "" {
+		return model.OIDCTokenFilePath.ValueString()
+	}
+
+	if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_FEDERATED_TOKEN_FILE") != "" {
+		return os.Getenv("AZURE_FEDERATED_TOKEN_FILE")
+	}
+
+	return ""
 }
 
 type providerEndpointData struct {
@@ -201,6 +216,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Description: "The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.",
 			},
 
+			"client_certificate": schema.StringAttribute{
+				Optional:    true,
+				Description: "A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.",
+			},
+
 			"client_certificate_password": schema.StringAttribute{
 				Optional:    true,
 				Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
@@ -258,6 +278,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"use_msi": schema.BoolAttribute{
 				Optional:    true,
 				Description: "Allow Managed Service Identity to be used for Authentication.",
+			},
+
+			"use_aks_workload_identity": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified.",
 			},
 
 			// TODO@mgd: azidentity doesn't support msi_endpoint
@@ -402,6 +427,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.ClientCertificate.IsNull() {
+		if v := os.Getenv("ARM_CLIENT_CERTIFICATE"); v != "" {
+			model.ClientCertificate = types.StringValue(v)
+		}
+	}
+
 	if model.ClientCertificatePath.IsNull() {
 		if v := os.Getenv("ARM_CLIENT_CERTIFICATE_PATH"); v != "" {
 			model.ClientCertificatePath = types.StringValue(v)
@@ -467,6 +498,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.UseOIDC = types.BoolValue(v == "true")
 		} else {
 			model.UseOIDC = types.BoolValue(false)
+		}
+	}
+
+	if model.UseAKSWorkloadIdentity.IsNull() {
+		if v := os.Getenv("ARM_USE_AKS_WORKLOAD_IDENTITY"); v != "" {
+			model.UseAKSWorkloadIdentity = types.BoolValue(v == "true")
+		} else {
+			model.UseAKSWorkloadIdentity = types.BoolValue(false)
 		}
 	}
 
@@ -559,37 +598,14 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
-	// Maps the auth related environment variables used in the provider to what azidentity honors.
-	if v := model.TenantID.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_TENANT_ID", v)
-	}
-	if v, err := model.GetClientId(); err != nil {
-		response.Diagnostics.AddError("Failed to obtain a Client ID.", err.Error())
-		return
-	} else if v != nil && *v != "" {
-		_ = os.Setenv("AZURE_CLIENT_ID", *v)
-	}
-	if v, err := model.GetClientSecret(); err != nil {
-		response.Diagnostics.AddError("Failed to obtain a Client Secret.", err.Error())
-		return
-	} else if v != nil && *v != "" {
-		_ = os.Setenv("AZURE_CLIENT_SECRET", *v)
-	}
-	if v := model.ClientCertificatePath.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", v)
-	}
-	if v := model.ClientCertificatePassword.ValueString(); v != "" {
-		_ = os.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", v)
-	}
 	var auxTenants []string
 	if elements := model.AuxiliaryTenantIDs.Elements(); len(elements) != 0 {
 		for _, element := range elements {
 			auxTenants = append(auxTenants, element.(basetypes.StringValue).ValueString())
 		}
-		_ = os.Setenv("AZURE_ADDITIONALLY_ALLOWED_TENANTS", strings.Join(auxTenants, ";"))
 	}
 
-	option := &azidentity.DefaultAzureCredentialOptions{
+	option := azidentity.DefaultAzureCredentialOptions{
 		AdditionallyAllowedTenants: auxTenants,
 		ClientOptions: azcore.ClientOptions{
 			Cloud: cloudConfig,
@@ -597,7 +613,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		TenantID: model.TenantID.ValueString(),
 	}
 
-	cred, err := newDefaultAzureCredential(model, option)
+	cred, err := buildChainedTokenCredential(model, option)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
 		return
@@ -619,6 +635,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
 		CustomCorrelationRequestID:  model.CustomCorrelationRequestID.ValueString(),
 		SubscriptionId:              model.SubscriptionID.ValueString(),
+		TenantId:                    model.TenantID.ValueString(),
 	}
 
 	client := &clients.Client{}
@@ -647,6 +664,9 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 		},
 		func() datasource.DataSource {
 			return &services.AzapiResourceDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.ClientConfigDataSource{}
 		},
 	}
 
@@ -698,70 +718,46 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 	return userAgent
 }
 
-func newDefaultAzureCredential(model providerData, options *azidentity.DefaultAzureCredentialOptions) (*azidentity.ChainedTokenCredential, error) {
+func buildChainedTokenCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (*azidentity.ChainedTokenCredential, error) {
+	log.Printf("[DEBUG] building chained token credential")
 	var creds []azcore.TokenCredential
 
-	if options == nil {
-		options = &azidentity.DefaultAzureCredentialOptions{}
-	}
-
-	clientId, err := model.GetClientId()
-	if err != nil {
-		return nil, err
-	}
-
-	if model.UseOIDC.ValueBool() {
-		oidcCred, err := NewOidcCredential(&OidcCredentialOptions{
-			ClientOptions: azcore.ClientOptions{
-				Cloud: options.Cloud,
-			},
-			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-			TenantID:                   model.TenantID.ValueString(),
-			ClientID:                   *clientId,
-			RequestToken:               model.OIDCRequestToken.ValueString(),
-			RequestUrl:                 model.OIDCRequestURL.ValueString(),
-			Token:                      model.OIDCToken.ValueString(),
-			TokenFilePath:              model.OIDCTokenFilePath.ValueString(),
-		})
-
-		if err == nil {
-			creds = append(creds, oidcCred)
+	if model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool() {
+		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
+		if cred, err := buildOidcCredential(model, options); err == nil {
+			creds = append(creds, cred)
 		} else {
-			log.Printf("newDefaultAzureCredential failed to initialize oidc credential:\n\t%s", err.Error())
+			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
 		}
 	}
 
-	envCred, err := azidentity.NewEnvironmentCredential(&azidentity.EnvironmentCredentialOptions{
-		ClientOptions:            options.ClientOptions,
-		DisableInstanceDiscovery: options.DisableInstanceDiscovery,
-	})
-	if err == nil {
-		creds = append(creds, envCred)
+	if cred, err := buildClientSecretCredential(model, options); err == nil {
+		creds = append(creds, cred)
 	} else {
-		log.Printf("newDefaultAzureCredential failed to initialize environment credential:\n\t%s", err.Error())
+		log.Printf("[DEBUG] failed to initialize client secret credential: %v", err)
+	}
+
+	if cred, err := buildClientCertificateCredential(model, options); err == nil {
+		creds = append(creds, cred)
+	} else {
+		log.Printf("[DEBUG] failed to initialize client certificate credential: %v", err)
 	}
 
 	if model.UseMSI.ValueBool() {
-		o := &azidentity.ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
-		if ID, ok := os.LookupEnv("AZURE_CLIENT_ID"); ok {
-			o.ID = azidentity.ClientID(ID)
-		}
-		miCred, err := NewManagedIdentityCredential(o)
-		if err == nil {
-			creds = append(creds, miCred)
+		log.Printf("[DEBUG] msi credential enabled")
+		if cred, err := buildManagedIdentityCredential(model, options); err == nil {
+			creds = append(creds, cred)
 		} else {
-			log.Printf("newDefaultAzureCredential failed to initialize msi credential:\n\t%s", err.Error())
+			log.Printf("[DEBUG] failed to initialize msi credential: %v", err)
 		}
 	}
 
 	if model.UseCLI.ValueBool() {
-		cliCred, err := azidentity.NewAzureCLICredential(&azidentity.AzureCLICredentialOptions{
-			AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
-			TenantID:                   options.TenantID})
-		if err == nil {
-			creds = append(creds, cliCred)
+		log.Printf("[DEBUG] cli credential enabled")
+		if cred, err := buildAzureCLICredential(options); err == nil {
+			creds = append(creds, cred)
 		} else {
-			log.Printf("newDefaultAzureCredential failed to initialize cli credential:\n\t%s", err.Error())
+			log.Printf("[DEBUG] failed to initialize cli credential: %v", err)
 		}
 	}
 
@@ -769,10 +765,122 @@ func newDefaultAzureCredential(model providerData, options *azidentity.DefaultAz
 		return nil, fmt.Errorf("no credentials were successfully initialized")
 	}
 
-	chain, err := azidentity.NewChainedTokenCredential(creds, nil)
+	return azidentity.NewChainedTokenCredential(creds, nil)
+}
+
+func buildClientSecretCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building client secret credential")
+	clientID, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+	clientSecret, err := model.GetClientSecret()
+	if err != nil {
+		return nil, err
+	}
+	o := &azidentity.ClientSecretCredentialOptions{
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	}
+	return azidentity.NewClientSecretCredential(options.TenantID, *clientID, *clientSecret, o)
+}
+
+func buildClientCertificateCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building client certificate credential")
+	clientID, err := model.GetClientId()
 	if err != nil {
 		return nil, err
 	}
 
-	return chain, nil
+	var certData []byte
+	if certPath := model.ClientCertificatePath.ValueString(); certPath != "" {
+		log.Printf("[DEBUG] reading certificate from file %s", certPath)
+		// #nosec G304
+		certData, err = os.ReadFile(certPath)
+		if err != nil {
+			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
+		}
+	}
+	if certBase64 := model.ClientCertificate.ValueString(); certBase64 != "" {
+		log.Printf("[DEBUG] decoding certificate from base64")
+		certData, err = decodeCertificate(certBase64)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var password []byte
+	if v := model.ClientCertificatePassword.ValueString(); v != "" {
+		password = []byte(v)
+	}
+	certs, key, err := azidentity.ParseCertificates(certData, password)
+	if err != nil {
+		return nil, fmt.Errorf(`failed to load certificate": %v`, err)
+	}
+	o := &azidentity.ClientCertificateCredentialOptions{
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	}
+	return azidentity.NewClientCertificateCredential(options.TenantID, *clientID, certs, key, o)
+}
+
+func buildOidcCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building oidc credential")
+	clientId, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+	if model.OIDCToken.ValueString() == "" && model.GetOIDCTokenFilePath() == "" && (model.OIDCRequestToken.ValueString() == "" || model.OIDCRequestURL.ValueString() == "") {
+		return nil, fmt.Errorf("missing required OIDC configuration")
+	}
+	o := &OidcCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Cloud: options.Cloud,
+		},
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		TenantID:                   options.TenantID,
+		ClientID:                   *clientId,
+		RequestToken:               model.OIDCRequestToken.ValueString(),
+		RequestUrl:                 model.OIDCRequestURL.ValueString(),
+		Token:                      model.OIDCToken.ValueString(),
+		TokenFilePath:              model.GetOIDCTokenFilePath(),
+	}
+	return NewOidcCredential(o)
+}
+
+func buildManagedIdentityCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building managed identity credential")
+	clientId, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+	o := &azidentity.ManagedIdentityCredentialOptions{
+		ClientOptions: options.ClientOptions,
+		ID:            azidentity.ClientID(*clientId),
+	}
+	return NewManagedIdentityCredential(o)
+}
+
+func buildAzureCLICredential(options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building azure cli credential")
+	o := &azidentity.AzureCLICredentialOptions{
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		TenantID:                   options.TenantID,
+	}
+	return azidentity.NewAzureCLICredential(o)
+}
+
+func decodeCertificate(clientCertificate string) ([]byte, error) {
+	var pfx []byte
+	if clientCertificate != "" {
+		out := make([]byte, base64.StdEncoding.DecodedLen(len(clientCertificate)))
+		n, err := base64.StdEncoding.Decode(out, []byte(clientCertificate))
+		if err != nil {
+			return pfx, fmt.Errorf("could not decode client certificate data: %v", err)
+		}
+		pfx = out[:n]
+	}
+	return pfx, nil
 }

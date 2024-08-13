@@ -55,6 +55,7 @@ provider "azapi" {
 ### Optional
 
 - `auxiliary_tenant_ids` (List of String) The Auxiliary Tenant IDs which should be used.
+- `client_certificate` (String) A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
 - `client_certificate_password` (String) The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate
 - `client_certificate_path` (String) The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.
 - `client_id` (String) The Client ID which should be used.
@@ -80,6 +81,7 @@ provider "azapi" {
 - `skip_provider_registration` (Boolean) Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?
 - `subscription_id` (String) The Subscription ID which should be used.
 - `tenant_id` (String) The Tenant ID which should be used.
+- `use_aks_workload_identity` (Boolean) Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified.
 - `use_cli` (Boolean) Allow Azure CLI to be used for Authentication.
 - `use_msi` (Boolean) Allow Managed Service Identity to be used for Authentication.
 - `use_oidc` (Boolean) Allow OpenID Connect to be used for authentication

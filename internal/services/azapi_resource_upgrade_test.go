@@ -497,3 +497,40 @@ func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
 		}),
 	})
 }
+
+func TestAccAzapiResourceUpgrade_timeouts(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, PreviousVersion),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: strings.ReplaceAll(r.timeouts(data), `update = "10m"`, ""),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.13.1"),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+	})
+}

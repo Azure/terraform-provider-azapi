@@ -121,7 +121,14 @@ func ResourceIDWithResourceType(azureResourceId, resourceType string) (ResourceI
 
 	name := utils.GetName(azureResourceId)
 	parentId := utils.GetParentId(azureResourceId)
-	return NewResourceID(name, parentId, resourceType)
+	id, err := NewResourceID(name, parentId, resourceType)
+	if err != nil {
+		return ResourceId{}, err
+	}
+	// The generated resource id is based on the resource type whose case might be different from the input resource id.
+	// So we set the generated resource id to the input value.
+	id.AzureResourceId = azureResourceId
+	return id, nil
 }
 
 // ResourceIDWithApiVersion parses a Resource ID which contains api-version into an ResourceId struct
@@ -184,10 +191,8 @@ func validateParentIdScope(resourceDef *types.ResourceType, parentId string) err
 						matchedScope = scope
 					}
 				case types.Extension:
-					// only supports extension on a resource group scope resource
-					if parentIdScope == types.ResourceGroup {
-						matchedScope = scope
-					}
+					// skip checking the parent Id's scope because extension resource could be applied to any scope
+					matchedScope = scope
 				case types.Unknown:
 				}
 			}

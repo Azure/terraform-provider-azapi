@@ -166,6 +166,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{
 				Create: true,
+				Update: true,
 				Read:   true,
 				Delete: true,
 			}),
@@ -212,15 +213,6 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	createUpdateTimeout, diags := model.Timeouts.Create(ctx, 30*time.Minute)
-	diagnostics.Append(diags...)
-	if diagnostics.HasError() {
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, createUpdateTimeout)
-	defer cancel()
-
 	id, err := parse.NewDataPlaneResourceId(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
@@ -228,7 +220,25 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	client := r.ProviderData.DataPlaneClient
-	if isNewResource := state == nil || state.Raw.IsNull(); isNewResource {
+	isNewResource := state == nil || state.Raw.IsNull()
+
+	var timeout time.Duration
+	var diags diag.Diagnostics
+	if isNewResource {
+		timeout, diags = model.Timeouts.Create(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	} else {
+		timeout, diags = model.Timeouts.Update(ctx, 30*time.Minute)
+		if diagnostics.Append(diags...); diagnostics.HasError() {
+			return
+		}
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	if isNewResource {
 		_, err = client.Get(ctx, id)
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_data_plane_resource", id.ID()).Error())

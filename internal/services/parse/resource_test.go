@@ -241,6 +241,20 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 			ResourceDefExist: false,
 			Error:            true,
 		},
+
+		{
+			ResourceType:     "Microsoft.Web/serverfarms@2022-09-01",
+			ResourceId:       "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example",
+				ApiVersion:        "2022-09-01",
+				AzureResourceType: "Microsoft.Web/serverfarms",
+				Name:              "example",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example",
+				ResourceDef:       nil,
+			},
+		},
 	}
 
 	for _, v := range testData {
@@ -451,6 +465,19 @@ func Test_ResourceIDWithApiVersion(t *testing.T) {
 			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1",
 			Error: true,
 		},
+
+		{
+			Input:            "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example?api-version=2022-09-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				AzureResourceId:   "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example/providers/Microsoft.Web/serverFarms/example",
+				ApiVersion:        "2022-09-01",
+				AzureResourceType: "Microsoft.Web/serverFarms",
+				Name:              "example",
+				ParentId:          "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/example",
+				ResourceDef:       nil,
+			},
+		},
 	}
 
 	for _, v := range testData {
@@ -495,6 +522,31 @@ func Test_NewResourceID(t *testing.T) {
 		Error            bool
 		Expected         *ResourceId
 	}{
+
+		{
+			Name:             "test",
+			ParentId:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet",
+			ResourceType:     "Microsoft.Authorization/locks@2020-05-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2020-05-01",
+				AzureResourceType: "Microsoft.Authorization/locks",
+				AzureResourceId:   "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/providers/Microsoft.Authorization/locks/test",
+			},
+		},
+
+		{
+			Name:             "test",
+			ParentId:         "/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000",
+			ResourceType:     "Microsoft.CostManagement/costAllocationRules@2023-11-01",
+			ResourceDefExist: true,
+			Expected: &ResourceId{
+				ApiVersion:        "2023-11-01",
+				AzureResourceType: "Microsoft.CostManagement/costAllocationRules",
+				AzureResourceId:   "/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/costAllocationRules/test",
+			},
+		},
+
 		{
 			Name:             "",
 			ParentId:         "",
