@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 )
@@ -20,6 +21,7 @@ type MockResourceClient struct {
 	requestCount int
 	retryErr     error
 	mu           sync.Mutex
+	requestTimes []time.Time
 }
 
 func NewMockResourceClient(t *testing.T, resp interface{}, err error, retries int, retryErr error) *MockResourceClient {
@@ -31,6 +33,7 @@ func NewMockResourceClient(t *testing.T, resp interface{}, err error, retries in
 		retries:      retries,
 		requestCount: 0,
 		mu:           sync.Mutex{},
+		requestTimes: make([]time.Time, 0, 10),
 	}
 }
 
@@ -60,9 +63,14 @@ func (m *MockResourceClient) respond(ctx context.Context) (interface{}, error) {
 		m.t.Logf("context cancelled")
 		return nil, ctx.Err()
 	default:
-		m.t.Logf("request: %d", m.requestCount)
 		m.mu.Lock()
 		defer m.mu.Unlock()
+		timeSinceLastRequest := time.Duration(0)
+		if len(m.requestTimes) != 0 {
+			timeSinceLastRequest = time.Since(m.requestTimes[len(m.requestTimes)-1])
+		}
+		m.t.Logf("request: %d, time since last: %s", m.requestCount, timeSinceLastRequest)
+		m.requestTimes = append(m.requestTimes, time.Now())
 		if m.requestCount < m.retries && m.retryErr != nil {
 			m.requestCount++
 			return nil, m.retryErr
@@ -73,4 +81,8 @@ func (m *MockResourceClient) respond(ctx context.Context) (interface{}, error) {
 
 func (m *MockResourceClient) RequestCount() int {
 	return m.requestCount
+}
+
+func (m *MockResourceClient) RequestTimes() []time.Time {
+	return m.requestTimes
 }

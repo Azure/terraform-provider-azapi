@@ -24,7 +24,7 @@ const (
 
 func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 	return schema.SingleNestedAttribute{
-		MarkdownDescription: "The retryable_errors block supports the following arguments:",
+		MarkdownDescription: "The retry block supports the following arguments:",
 		Optional:            true,
 		Attributes: map[string]schema.Attribute{
 
@@ -61,7 +61,7 @@ func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 				Optional:            true,
 				Computed:            true,
 				Default:             numberdefault.StaticBigFloat(big.NewFloat(float64(0.5))),
-				MarkdownDescription: "The randomization factor to apply to the interval between retries. Default is `0.5`.",
+				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
 			},
 
 			errorMessageRegexAttributeName: schema.ListAttribute{

@@ -36,11 +36,13 @@ type ResourceClientRetryableErrors struct {
 
 // NewResourceClientRetryableErrors creates a new ResourceClientRetryableErrors.
 func NewResourceClientRetryableErrors(client Requester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *ResourceClientRetryableErrors {
-	return &ResourceClientRetryableErrors{
+	rcre := &ResourceClientRetryableErrors{
 		client:  client,
 		backoff: bkof,
 		errors:  errRegExps,
 	}
+	rcre.backoff.Reset()
+	return rcre
 }
 
 // Requester is the interface for HTTP operations, meaning we can supply a ResourceClient or a ResourceClientRetryableErrors.
@@ -98,6 +100,7 @@ func (client *ResourceClient) WithRetry(bkof *backoff.ExponentialBackOff, errReg
 		backoff: bkof,
 		errors:  errRegExps,
 	}
+	rcre.backoff.Reset()
 	return rcre
 }
 
