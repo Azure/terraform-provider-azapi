@@ -74,7 +74,7 @@ At this point the newly created Azure Active Directory Application should be ass
 
 As we've obtained the credentials for this Service Principal - it's possible to configure them in a few different ways.
 
-*Reading the certificate bundle from the filesystem*
+When storing the credentials as Environment Variables, for example:
 
 ```bash
 export ARM_CLIENT_ID="00000000-0000-0000-0000-000000000000"
@@ -82,15 +82,6 @@ export ARM_CLIENT_CERTIFICATE_PATH="/path/to/my/client/certificate.pfx"
 export ARM_CLIENT_CERTIFICATE_PASSWORD="Pa55w0rd123"
 export ARM_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000"
 export ARM_TENANT_ID="00000000-0000-0000-0000-000000000000"
-```
-
-*Passing the encoded certificate bundle directly*
-```bash
-$ export ARM_CLIENT_ID="00000000-0000-0000-0000-000000000000"
-$ export ARM_CLIENT_CERTIFICATE="$(base64 /path/to/my/client/certificate.pfx)"
-$ export ARM_CLIENT_CERTIFICATE_PASSWORD="Pa55w0rd123"
-$ export ARM_TENANT_ID="10000000-0000-0000-0000-000000000000"
-$ export ARM_SUBSCRIPTION_ID="20000000-0000-0000-0000-000000000000"
 ```
 
 The following Terraform and Provider blocks can be specified - where `0.1.0` is the version of the Azure Provider that you'd like to use:
@@ -119,7 +110,6 @@ It's also possible to configure these variables either in-line or from using var
 
 ~> **NOTE:** We'd recommend not defining these variables in-line since they could easily be checked into Source Control.
 
-*Reading the certificate bundle from the filesystem*
 ```hcl
 variable "client_certificate_path" {}
 variable "client_certificate_password" {}
@@ -139,30 +129,6 @@ provider "azapi" {
   client_certificate_path     = var.client_certificate_path
   client_certificate_password = var.client_certificate_password
   tenant_id                   = "00000000-0000-0000-0000-000000000000"
-}
-```
-
-*Passing the encoded certificate bundle directly*
-
-```hcl
-variable "client_certificate" {}
-variable "client_certificate_password" {}
-
-terraform {
-  required_providers {
-    azapi = {
-      source  = "azure/azapi"
-      version = "=0.1.0"
-    }
-  }
-}
-
-provider "azapi" {
-  client_id                   = "00000000-0000-0000-0000-000000000000"
-  client_certificate          = var.client_certificate
-  client_certificate_password = var.client_certificate_password
-  tenant_id                   = "10000000-0000-0000-0000-000000000000"
-  subscription_id             = "20000000-0000-0000-0000-000000000000"
 }
 ```
 
