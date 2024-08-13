@@ -65,7 +65,7 @@ func TestAccActionResource_providerAction(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.providerAction(),
+			Config: r.providerAction(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -164,8 +164,8 @@ resource "azapi_resource_action" "test" {
 `
 }
 
-func (r ActionResource) providerAction() string {
-	return `
+func (r ActionResource) providerAction(data acceptance.TestData) string {
+	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
 }
@@ -178,10 +178,10 @@ resource "azapi_resource_action" "test" {
   action      = "CheckNameAvailability"
   body = {
     type = "Microsoft.Cache/Redis"
-    name = "cacheName"
+    name = "%s"
   }
 }
-`
+`, data.RandomStringOfLength(8))
 }
 
 func (r ActionResource) nonstandardLRO(data acceptance.TestData) string {

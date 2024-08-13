@@ -40,7 +40,7 @@ func attrMapToJSON(in map[string]attr.Value) (map[string]json.RawMessage, error)
 }
 
 func attrValueToJSON(val attr.Value) ([]byte, error) {
-	if val.IsNull() {
+	if val == nil || val.IsNull() {
 		return json.Marshal(nil)
 	}
 	switch value := val.(type) {

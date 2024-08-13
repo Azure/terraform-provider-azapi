@@ -84,6 +84,7 @@ func (r *AzapiResource) Metadata(_ context.Context, request resource.MetadataReq
 func (r *AzapiResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{
 		0: migration.AzapiResourceMigrationV0ToV1(ctx),
+		1: migration.AzapiResourceMigrationV1ToV2(ctx),
 	}
 }
 
@@ -230,7 +231,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			}),
 		},
 
-		Version: 1,
+		Version: 2,
 	}
 }
 
