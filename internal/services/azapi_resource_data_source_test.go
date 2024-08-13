@@ -85,6 +85,26 @@ func TestAccGenericDataSource_hclOutput(t *testing.T) {
 	})
 }
 
+func TestAccGenericDataSource_withRetry(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.withRetry(data),
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"time": {
+					Source:            "hashicorp/time",
+					VersionConstraint: "0.12.0",
+				},
+			},
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("location").Exists(),
+			),
+		},
+	})
+}
+
 func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -136,4 +156,40 @@ data "azapi_resource" "test" {
   response_export_values = ["*"]
 }
 `, GenericResource{}.complete(data))
+}
+
+func (r GenericDataSource) withRetry(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "time_sleep" "wait_30_seconds" {
+  create_duration = "30s"
+}
+
+data "azapi_client_config" "this" {}
+
+resource "azapi_resource" "test" {
+  name     = "acctestRG-%[1]d"
+	type     = "Microsoft.Resources/resourceGroups@2024-03-01"
+	parent_id = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+  location = "%[2]s"
+	depends_on = [ time_sleep.wait_30_seconds ]
+}
+
+resource "terraform_data" "read_data_source_during_apply" {
+  input = "acctestRG-%[1]d"
+}
+
+data "azapi_resource" "test" {
+  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name      = terraform_data.read_data_source_during_apply.output
+	parent_id = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+
+  retry = {
+    error_message_regex = [ "ResourceGroupNotFound" ]
+  }
+
+	timeouts {
+	  read = "2m"
+	}
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomInteger)
 }

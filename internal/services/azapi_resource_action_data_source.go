@@ -121,6 +121,8 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 		return
 	}
 
+	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
+
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {

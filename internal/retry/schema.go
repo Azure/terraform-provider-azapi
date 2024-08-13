@@ -32,7 +32,7 @@ func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 				MarkdownDescription: "The base number of seconds to wait between retries. Default is `10`.",
 				Optional:            true,
 				Computed:            true,
-				Default:             int64default.StaticInt64(10),
+				Default:             int64default.StaticInt64(defaultIntervalSeconds),
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(120),
@@ -43,7 +43,7 @@ func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 				MarkdownDescription: "The maximum number of seconds to wait between retries. Default is `180`.",
 				Optional:            true,
 				Computed:            true,
-				Default:             int64default.StaticInt64(180),
+				Default:             int64default.StaticInt64(defaultMaxIntervalSeconds),
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(300),
@@ -54,13 +54,13 @@ func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 				MarkdownDescription: "The multiplier to apply to the interval between retries. Default is `1.5`.",
 				Optional:            true,
 				Computed:            true,
-				Default:             numberdefault.StaticBigFloat(big.NewFloat(float64(1.5))),
+				Default:             numberdefault.StaticBigFloat(big.NewFloat(float64(defaultMultiplier))),
 			},
 
 			randomizationFactorAttributeName: schema.NumberAttribute{
 				Optional:            true,
 				Computed:            true,
-				Default:             numberdefault.StaticBigFloat(big.NewFloat(float64(0.5))),
+				Default:             numberdefault.StaticBigFloat(big.NewFloat(float64(defaultRandomizationFactor))),
 				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
 			},
 

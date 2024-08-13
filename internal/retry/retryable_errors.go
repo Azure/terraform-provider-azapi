@@ -18,6 +18,13 @@ var (
 	_ basetypes.ObjectValuable = RetryValue{}
 )
 
+const (
+	defaultIntervalSeconds     = 10
+	defaultMaxIntervalSeconds  = 180
+	defaultMultiplier          = 1.5
+	defaultRandomizationFactor = 0.5
+)
+
 type RetryType struct {
 	basetypes.ObjectType
 }
@@ -623,4 +630,20 @@ func (v RetryValue) getInt64AttrValue(name string) int {
 	default:
 		return 0
 	}
+}
+
+func (v RetryValue) AddDefaultValuesIfUnknownOrNull() RetryValue {
+	if v.IntervalSeconds.IsUnknown() || v.IntervalSeconds.IsNull() {
+		v.IntervalSeconds = basetypes.NewInt64Value(defaultIntervalSeconds)
+	}
+	if v.MaxIntervalSeconds.IsUnknown() || v.MaxIntervalSeconds.IsNull() {
+		v.MaxIntervalSeconds = basetypes.NewInt64Value(defaultMaxIntervalSeconds)
+	}
+	if v.Multiplier.IsUnknown() || v.Multiplier.IsNull() {
+		v.Multiplier = basetypes.NewNumberValue(big.NewFloat(defaultMultiplier))
+	}
+	if v.RandomizationFactor.IsUnknown() || v.RandomizationFactor.IsNull() {
+		v.RandomizationFactor = basetypes.NewNumberValue(big.NewFloat(defaultRandomizationFactor))
+	}
+	return v
 }
