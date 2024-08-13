@@ -62,7 +62,7 @@ Using managed identity for Azure resources as authentication is enabled in `azap
 
 By default, Terraform will use the system assigned identity for authentication. To use a user assigned identity instead, you will need to specify the `ARM_CLIENT_ID` environment variable (equivalent to provider block argument [`client_id`](https://registry.terraform.io/providers/azure/azapi/latest/docs#client_id)) to the [client id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity#client_id) of the identity.
 
-By default, Terraform will use a well-known MSI endpoint to get the authentication token, which covers most use cases. 
+By default, Terraform will use a well-known MSI endpoint to get the authentication token, which covers most use cases.
 
 !> **Note:** we recommend against running Terraform inside of a Function App as the low memory ceiling can lead to Terraform being terminated and data (including the State File) being lost. Instead we’d recommend considering triggering an external process, such as Terraform Cloud or a CI System to run these longer-running more intensive processes - see [Terraform in Automation](https://learn.hashicorp.com/tutorials/terraform/automate-terraform) for more details.
 
