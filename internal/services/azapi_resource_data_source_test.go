@@ -167,11 +167,11 @@ resource "time_sleep" "wait_30_seconds" {
 data "azapi_client_config" "this" {}
 
 resource "azapi_resource" "test" {
-  name     = "acctestRG-%[1]d"
-	type     = "Microsoft.Resources/resourceGroups@2024-03-01"
-	parent_id = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
-  location = "%[2]s"
-	depends_on = [ time_sleep.wait_30_seconds ]
+  name       = "acctestRG-%[1]d"
+  type       = "Microsoft.Resources/resourceGroups@2024-03-01"
+  parent_id  = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+  location   = "%[2]s"
+  depends_on = [time_sleep.wait_30_seconds]
 }
 
 resource "terraform_data" "read_data_source_during_apply" {
@@ -181,15 +181,15 @@ resource "terraform_data" "read_data_source_during_apply" {
 data "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2024-03-01"
   name      = terraform_data.read_data_source_during_apply.output
-	parent_id = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+  parent_id = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
 
   retry = {
-    error_message_regex = [ "ResourceGroupNotFound" ]
+    error_message_regex = ["ResourceGroupNotFound"]
   }
 
-	timeouts {
-	  read = "2m"
-	}
+  timeouts {
+    read = "2m"
+  }
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomInteger)
 }
