@@ -14,23 +14,23 @@ import (
 )
 
 var (
-	_ basetypes.ObjectTypable  = RetryableErrorsType{}
-	_ basetypes.ObjectValuable = RetryableErrorsValue{}
+	_ basetypes.ObjectTypable  = RetryType{}
+	_ basetypes.ObjectValuable = RetryValue{}
 )
 
-type RetryableErrorsType struct {
+type RetryType struct {
 	basetypes.ObjectType
 }
 
-func (t RetryableErrorsType) ValueType(ctx context.Context) attr.Value {
-	return RetryableErrorsValue{}
+func (t RetryType) ValueType(ctx context.Context) attr.Value {
+	return RetryValue{}
 }
 
-func (t RetryableErrorsType) String() string {
+func (t RetryType) String() string {
 	return "retry.RetryableErrorsType"
 }
 
-func (t RetryableErrorsType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue) (basetypes.ObjectValuable, diag.Diagnostics) {
+func (t RetryType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue) (basetypes.ObjectValuable, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	attributes := in.Attributes()
@@ -129,7 +129,7 @@ func (t RetryableErrorsType) ValueFromObject(ctx context.Context, in basetypes.O
 		return nil, diags
 	}
 
-	return RetryableErrorsValue{
+	return RetryValue{
 		ErrorMessageRegex:   errorMessageRegexVal,
 		IntervalSeconds:     intervalSecondsVal,
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
@@ -139,19 +139,19 @@ func (t RetryableErrorsType) ValueFromObject(ctx context.Context, in basetypes.O
 	}, diags
 }
 
-func NewRetryableErrorsValueNull() RetryableErrorsValue {
-	return RetryableErrorsValue{
+func NewRetryValueNull() RetryValue {
+	return RetryValue{
 		state: attr.ValueStateNull,
 	}
 }
 
-func NewRetryableErrorsValueUnknown() RetryableErrorsValue {
-	return RetryableErrorsValue{
+func NewRetryValueUnknown() RetryValue {
+	return RetryValue{
 		state: attr.ValueStateUnknown,
 	}
 }
 
-func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) (RetryableErrorsValue, diag.Diagnostics) {
+func NewRetryValue(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) (RetryValue, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/521
@@ -199,7 +199,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 	}
 
 	if diags.HasError() {
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	errorMessageRegexAttribute, ok := attributes[errorMessageRegexAttributeName]
@@ -209,7 +209,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 			"Attribute Missing",
 			`error_message_regex is missing from object`)
 
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	errorMessageRegexVal, ok := errorMessageRegexAttribute.(basetypes.ListValue)
@@ -227,7 +227,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 			"Attribute Missing",
 			`interval_seconds is missing from object`)
 
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	intervalSecondsVal, ok := intervalSecondsAttribute.(basetypes.Int64Value)
@@ -245,7 +245,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 			"Attribute Missing",
 			`max_interval_seconds is missing from object`)
 
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	maxIntervalSecondsVal, ok := maxIntervalSecondsAttribute.(basetypes.Int64Value)
@@ -263,7 +263,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 			"Attribute Missing",
 			`multiplier is missing from object`)
 
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	multiplierVal, ok := multiplierAttribute.(basetypes.NumberValue)
@@ -281,7 +281,7 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 			"Attribute Missing",
 			`randomization_factor is missing from object`)
 
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
 	randomizationFactorVal, ok := randomizationFactorAttribute.(basetypes.NumberValue)
@@ -293,10 +293,10 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 	}
 
 	if diags.HasError() {
-		return NewRetryableErrorsValueUnknown(), diags
+		return NewRetryValueUnknown(), diags
 	}
 
-	return RetryableErrorsValue{
+	return RetryValue{
 		ErrorMessageRegex:   errorMessageRegexVal,
 		IntervalSeconds:     intervalSecondsVal,
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
@@ -306,8 +306,8 @@ func NewRetryableErrorsValue(attributeTypes map[string]attr.Type, attributes map
 	}, diags
 }
 
-func NewRetryableErrorsValueMust(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) RetryableErrorsValue {
-	object, diags := NewRetryableErrorsValue(attributeTypes, attributes)
+func NewRetryableErrorsValueMust(attributeTypes map[string]attr.Type, attributes map[string]attr.Value) RetryValue {
+	object, diags := NewRetryValue(attributeTypes, attributes)
 
 	if diags.HasError() {
 		// This could potentially be added to the diag package.
@@ -327,9 +327,9 @@ func NewRetryableErrorsValueMust(attributeTypes map[string]attr.Type, attributes
 	return object
 }
 
-func (t RetryableErrorsType) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
+func (t RetryType) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
 	if in.Type() == nil {
-		return NewRetryableErrorsValueNull(), nil
+		return NewRetryValueNull(), nil
 	}
 
 	if !in.Type().Equal(t.TerraformType(ctx)) {
@@ -337,11 +337,11 @@ func (t RetryableErrorsType) ValueFromTerraform(ctx context.Context, in tftypes.
 	}
 
 	if !in.IsKnown() {
-		return NewRetryableErrorsValueUnknown(), nil
+		return NewRetryValueUnknown(), nil
 	}
 
 	if in.IsNull() {
-		return NewRetryableErrorsValueNull(), nil
+		return NewRetryValueNull(), nil
 	}
 
 	attributes := map[string]attr.Value{}
@@ -364,10 +364,10 @@ func (t RetryableErrorsType) ValueFromTerraform(ctx context.Context, in tftypes.
 		attributes[k] = a
 	}
 
-	return NewRetryableErrorsValueMust(RetryableErrorsValue{}.AttributeTypes(ctx), attributes), nil
+	return NewRetryableErrorsValueMust(RetryValue{}.AttributeTypes(ctx), attributes), nil
 }
 
-type RetryableErrorsValue struct {
+type RetryValue struct {
 	ErrorMessageRegex   types.List   `tfsdk:"error_message_regex"`
 	IntervalSeconds     types.Int64  `tfsdk:"interval_seconds"`
 	MaxIntervalSeconds  types.Int64  `tfsdk:"max_interval_seconds"`
@@ -376,7 +376,7 @@ type RetryableErrorsValue struct {
 	state               attr.ValueState
 }
 
-func (v RetryableErrorsValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
+func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
 	attrTypes := make(map[string]tftypes.Type, 5)
 
 	var val tftypes.Value
@@ -450,19 +450,19 @@ func (v RetryableErrorsValue) ToTerraformValue(ctx context.Context) (tftypes.Val
 	}
 }
 
-func (v RetryableErrorsValue) IsNull() bool {
+func (v RetryValue) IsNull() bool {
 	return v.state == attr.ValueStateNull
 }
 
-func (v RetryableErrorsValue) IsUnknown() bool {
+func (v RetryValue) IsUnknown() bool {
 	return v.state == attr.ValueStateUnknown
 }
 
-func (v RetryableErrorsValue) String() string {
+func (v RetryValue) String() string {
 	return "retry.RetryableErrorsValue"
 }
 
-func (v RetryableErrorsValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
+func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	errorMessageRegexVal, d := types.ListValue(types.StringType, v.ErrorMessageRegex.Elements())
@@ -512,8 +512,8 @@ func (v RetryableErrorsValue) ToObjectValue(ctx context.Context) (basetypes.Obje
 	return objVal, diags
 }
 
-func (v RetryableErrorsValue) Equal(o attr.Value) bool {
-	other, ok := o.(RetryableErrorsValue)
+func (v RetryValue) Equal(o attr.Value) bool {
+	other, ok := o.(RetryValue)
 
 	if !ok {
 		return false
@@ -550,13 +550,13 @@ func (v RetryableErrorsValue) Equal(o attr.Value) bool {
 	return true
 }
 
-func (v RetryableErrorsValue) Type(ctx context.Context) attr.Type {
+func (v RetryValue) Type(ctx context.Context) attr.Type {
 	return basetypes.ObjectType{
 		AttrTypes: v.AttributeTypes(ctx),
 	}
 }
 
-func (v RetryableErrorsValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
+func (v RetryValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 	return map[string]attr.Type{
 		errorMessageRegexAttributeName: basetypes.ListType{
 			ElemType: types.StringType,
@@ -568,7 +568,7 @@ func (v RetryableErrorsValue) AttributeTypes(ctx context.Context) map[string]att
 	}
 }
 
-func (v RetryableErrorsValue) GetErrorMessageRegex() []string {
+func (v RetryValue) GetErrorMessageRegex() []string {
 	if v.IsNull() {
 		return nil
 	}
@@ -582,23 +582,23 @@ func (v RetryableErrorsValue) GetErrorMessageRegex() []string {
 	return res
 }
 
-func (v RetryableErrorsValue) GetIntervalSeconds() int {
+func (v RetryValue) GetIntervalSeconds() int {
 	return v.getInt64AttrValue(intervalSecondsAttributeName)
 }
 
-func (v RetryableErrorsValue) GetMaxIntervalSeconds() int {
+func (v RetryValue) GetMaxIntervalSeconds() int {
 	return v.getInt64AttrValue(maxIntervalSecondsAttributeName)
 }
 
-func (v RetryableErrorsValue) GetMultiplier() float64 {
+func (v RetryValue) GetMultiplier() float64 {
 	return v.getNumberAttrValue(multiplierAttributeName)
 }
 
-func (v RetryableErrorsValue) GetRandomizationFactor() float64 {
+func (v RetryValue) GetRandomizationFactor() float64 {
 	return v.getNumberAttrValue(randomizationFactorAttributeName)
 }
 
-func (v RetryableErrorsValue) getNumberAttrValue(name string) float64 {
+func (v RetryValue) getNumberAttrValue(name string) float64 {
 	switch name {
 	case multiplierAttributeName:
 		return bigFloat2Float64(v.Multiplier.ValueBigFloat())
@@ -614,7 +614,7 @@ func bigFloat2Float64(bf *big.Float) float64 {
 	return f
 }
 
-func (v RetryableErrorsValue) getInt64AttrValue(name string) int {
+func (v RetryValue) getInt64AttrValue(name string) int {
 	switch name {
 	case intervalSecondsAttributeName:
 		return int(v.IntervalSeconds.ValueInt64())

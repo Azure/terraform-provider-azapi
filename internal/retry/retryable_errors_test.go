@@ -10,7 +10,7 @@ import (
 
 func TestValueType(t *testing.T) {
 	ctx := context.Background()
-	v := RetryableErrorsValue{}
+	v := RetryValue{}
 	ty := v.Type(ctx)
 	_, ok := ty.(basetypes.ObjectType)
 	assert.True(t, ok)

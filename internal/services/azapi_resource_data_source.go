@@ -25,18 +25,18 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String               `tfsdk:"id"`
-	Name                 types.String               `tfsdk:"name"`
-	ParentID             types.String               `tfsdk:"parent_id"`
-	ResourceID           types.String               `tfsdk:"resource_id"`
-	Type                 types.String               `tfsdk:"type"`
-	ResponseExportValues types.List                 `tfsdk:"response_export_values"`
-	Location             types.String               `tfsdk:"location"`
-	Identity             types.List                 `tfsdk:"identity"`
-	Output               types.Dynamic              `tfsdk:"output"`
-	Tags                 types.Map                  `tfsdk:"tags"`
-	Timeouts             timeouts.Value             `tfsdk:"timeouts"`
-	RetryableErrors      retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
+	ID                   types.String     `tfsdk:"id"`
+	Name                 types.String     `tfsdk:"name"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResourceID           types.String     `tfsdk:"resource_id"`
+	Type                 types.String     `tfsdk:"type"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Location             types.String     `tfsdk:"location"`
+	Identity             types.List       `tfsdk:"identity"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Tags                 types.Map        `tfsdk:"tags"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type AzapiResourceDataSource struct {
@@ -139,7 +139,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				ElementType: types.StringType,
 			},
 
-			"retryable_errors": retry.SingleNestedAttribute(ctx),
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -194,13 +194,13 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
-	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
 		bkof, regexps := clients.NewRetryableErrors(
-			model.RetryableErrors.GetIntervalSeconds(),
-			model.RetryableErrors.GetMaxIntervalSeconds(),
-			model.RetryableErrors.GetMultiplier(),
-			model.RetryableErrors.GetRandomizationFactor(),
-			model.RetryableErrors.GetErrorMessageRegex(),
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}

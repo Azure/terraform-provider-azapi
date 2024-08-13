@@ -20,13 +20,13 @@ import (
 )
 
 type ResourceListDataSourceModel struct {
-	ID                   types.String               `tfsdk:"id"`
-	Type                 types.String               `tfsdk:"type"`
-	ParentID             types.String               `tfsdk:"parent_id"`
-	ResponseExportValues types.List                 `tfsdk:"response_export_values"`
-	Output               types.Dynamic              `tfsdk:"output"`
-	Timeouts             timeouts.Value             `tfsdk:"timeouts"`
-	RetryableErrors      retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
+	ID                   types.String     `tfsdk:"id"`
+	Type                 types.String     `tfsdk:"type"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type ResourceListDataSource struct {
@@ -79,7 +79,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Computed: true,
 			},
 
-			"retryable_errors": retry.SingleNestedAttribute(ctx),
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -115,13 +115,13 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
-	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
 		bkof, regexps := clients.NewRetryableErrors(
-			model.RetryableErrors.GetIntervalSeconds(),
-			model.RetryableErrors.GetMaxIntervalSeconds(),
-			model.RetryableErrors.GetMultiplier(),
-			model.RetryableErrors.GetRandomizationFactor(),
-			model.RetryableErrors.GetErrorMessageRegex(),
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}

@@ -28,18 +28,18 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String               `tfsdk:"id"`
-	Type                 types.String               `tfsdk:"type"`
-	ResourceId           types.String               `tfsdk:"resource_id"`
-	Action               types.String               `tfsdk:"action"`
-	Method               types.String               `tfsdk:"method"`
-	Body                 types.Dynamic              `tfsdk:"body"`
-	When                 types.String               `tfsdk:"when"`
-	Locks                types.List                 `tfsdk:"locks"`
-	ResponseExportValues types.List                 `tfsdk:"response_export_values"`
-	Output               types.Dynamic              `tfsdk:"output"`
-	Timeouts             timeouts.Value             `tfsdk:"timeouts"`
-	RetryableErrors      retry.RetryableErrorsValue `tfsdk:"retryable_errors"`
+	ID                   types.String     `tfsdk:"id"`
+	Type                 types.String     `tfsdk:"type"`
+	ResourceId           types.String     `tfsdk:"resource_id"`
+	Action               types.String     `tfsdk:"action"`
+	Method               types.String     `tfsdk:"method"`
+	Body                 types.Dynamic    `tfsdk:"body"`
+	When                 types.String     `tfsdk:"when"`
+	Locks                types.List       `tfsdk:"locks"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type ActionResource struct {
@@ -155,7 +155,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Computed: true,
 			},
 
-			"retryable_errors": retry.SingleNestedAttribute(ctx),
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -296,13 +296,13 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
-	if !model.RetryableErrors.IsNull() && !model.RetryableErrors.IsUnknown() {
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
 		bkof, regexps := clients.NewRetryableErrors(
-			model.RetryableErrors.GetIntervalSeconds(),
-			model.RetryableErrors.GetMaxIntervalSeconds(),
-			model.RetryableErrors.GetMultiplier(),
-			model.RetryableErrors.GetRandomizationFactor(),
-			model.RetryableErrors.GetErrorMessageRegex(),
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}

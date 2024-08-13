@@ -75,9 +75,9 @@ func SingleNestedAttribute(ctx context.Context) schema.Attribute {
 				},
 			},
 		},
-		CustomType: RetryableErrorsType{
+		CustomType: RetryType{
 			ObjectType: types.ObjectType{
-				AttrTypes: RetryableErrorsValue{}.AttributeTypes(ctx),
+				AttrTypes: RetryValue{}.AttributeTypes(ctx),
 			},
 		},
 	}
