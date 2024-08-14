@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -47,15 +48,17 @@ func (b *BuildResourceIdFunction) Definition(ctx context.Context, request functi
 }
 
 func (b *BuildResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
-	var resourceType types.String
+	var resourceTypeParam types.String
 	var parentId types.String
 	var name types.String
 
-	if response.Error = request.Arguments.Get(ctx, &parentId, &resourceType, &name); response.Error != nil {
+	if response.Error = request.Arguments.Get(ctx, &parentId, &resourceTypeParam, &name); response.Error != nil {
 		return
 	}
 
-	resourceID, err := parse.NewResourceID(name.ValueString(), parentId.ValueString(), resourceType.ValueString())
+	resourceType := utils.TryAppendDefaultApiVersion(resourceTypeParam.ValueString())
+
+	resourceID, err := parse.NewResourceIDSkipScopeValidation(name.ValueString(), parentId.ValueString(), resourceType)
 	if err != nil {
 		response.Error = function.NewFuncError(err.Error())
 		return

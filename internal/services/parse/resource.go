@@ -27,6 +27,9 @@ func NewResourceIDWithNestedResourceNames(resourceNames []string, parentId, reso
 		return ResourceId{}, fmt.Errorf("resource names cannot be empty")
 	}
 
+	// Append default "@latest" api version if not provided
+	resourceType = utils.TryAppendDefaultApiVersion(resourceType)
+
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return ResourceId{}, err
@@ -54,7 +57,7 @@ func NewResourceIDWithNestedResourceNames(resourceNames []string, parentId, reso
 		// Intermediate resource type part
 		currentResourceType += "/" + resourceTypePart
 
-		parentResourceID, err := NewResourceID(resourceNames[i], parentId, utils.GetAzureResourceType(currentResourceType, apiVersion))
+		parentResourceID, err := NewResourceIDSkipScopeValidation(resourceNames[i], parentId, utils.GetAzureResourceType(currentResourceType, apiVersion))
 		if err != nil {
 			return ResourceId{}, err
 		}

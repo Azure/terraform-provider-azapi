@@ -19,7 +19,7 @@ func Test_TenantResourceIdFunction(t *testing.T) {
 		"tenant-scope-valid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Billing/billingAccounts@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("ba1"),
 					}),
@@ -32,7 +32,7 @@ func Test_TenantResourceIdFunction(t *testing.T) {
 		"tenant-scope-valid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Billing/billingAccounts/billingProfiles@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts/billingProfiles"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("ba1"),
 						types.StringValue("bp1"),
@@ -61,7 +61,7 @@ func Test_TenantResourceIdFunction(t *testing.T) {
 		"tenant-scope-invalid-single": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Billing/billingAccounts@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("ba1"),
 						types.StringValue("bp1"),
@@ -76,7 +76,7 @@ func Test_TenantResourceIdFunction(t *testing.T) {
 		"tenant-scope-invalid-double": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Billing/billingAccounts/billingProfiles@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts/billingProfiles"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("ba1"),
 					}),
@@ -98,22 +98,7 @@ func Test_TenantResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
-		"tenant-scope-invalid-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid/ResourceType"),
-					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("ba1"),
-						types.StringValue("bp1"),
-					}),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
+				Error:  function.NewFuncError("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`"),
 				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},

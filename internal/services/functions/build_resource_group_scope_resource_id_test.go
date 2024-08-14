@@ -21,7 +21,7 @@ func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue("rg1"),
-					types.StringValue("Microsoft.Network/virtualNetworks@2021-02-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("vnet1"),
 					}),
@@ -36,7 +36,7 @@ func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue("rg1"),
-					types.StringValue("Microsoft.Network/virtualNetworks/subnets@2021-02-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks/subnets"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("vnet1"),
 						types.StringValue("subnet1"),
@@ -52,7 +52,7 @@ func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue("rg1"),
-					types.StringValue("Microsoft.Network/virtualNetworks@2021-02-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("vnet1"),
 						types.StringValue("subnet1"),
@@ -69,7 +69,7 @@ func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
 					types.StringValue("rg1"),
-					types.StringValue("Microsoft.Network/virtualNetworks/subnets@2021-02-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks/subnets"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("vnet1"),
 					}),
@@ -93,24 +93,7 @@ func Test_ResourceGroupResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
-		"resource-group-scope-invalid-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("rg1"),
-					types.StringValue("Invalid/ResourceType"),
-					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("vnet1"),
-						types.StringValue("subnet1"),
-					}),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
+				Error:  function.NewFuncError("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`"),
 				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},

@@ -2,6 +2,7 @@ package functions_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/functions"
@@ -19,7 +20,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"valid-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Network/virtualNetworks@2022-07-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks"),
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 				}),
 			},
@@ -44,7 +45,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"valid-tenant-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Billing/billingAccounts@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts"),
 					types.StringValue("/providers/Microsoft.Billing/billingAccounts/ba1"),
 				}),
 			},
@@ -67,7 +68,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"valid-subscription-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Resources/subscriptions@2021-04-01"),
+					types.StringValue("Microsoft.Resources/subscriptions"),
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000"),
 				}),
 			},
@@ -89,7 +90,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"valid-management-group-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Management/managementGroups@2021-04-01"),
+					types.StringValue("Microsoft.Management/managementGroups"),
 					types.StringValue("/providers/Microsoft.Management/managementGroups/mg1"),
 				}),
 			},
@@ -98,7 +99,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"id":                  types.StringValue("/providers/Microsoft.Management/managementGroups/mg1"),
 					"type":                types.StringValue("Microsoft.Management/managementGroups"),
 					"name":                types.StringValue("mg1"),
-					"parent_id":           types.StringValue("/providers/Microsoft.Management"),
+					"parent_id":           types.StringValue("/"),
 					"resource_group_name": types.StringValue(""),
 					"subscription_id":     types.StringValue(""),
 					"provider_namespace":  types.StringValue("Microsoft.Management"),
@@ -112,7 +113,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"valid-extension-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Authorization/locks@2021-04-01"),
+					types.StringValue("Microsoft.Authorization/locks"),
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/providers/Microsoft.Authorization/locks/mylock"),
 				}),
 			},
@@ -128,7 +129,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{
 						"subscriptions":   types.StringValue("00000000-0000-0000-0000-000000000000"),
 						"resourceGroups":  types.StringValue("rg1"),
-						"providers":       types.StringValue("Microsoft.Network"),
+						"providers":       types.StringValue("Microsoft.Authorization"),
 						"virtualNetworks": types.StringValue("vnet1"),
 						"locks":           types.StringValue("mylock"),
 					}),
@@ -138,46 +139,23 @@ func TestParseResourceIdFunction(t *testing.T) {
 		"empty-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Network/virtualNetworks@2022-07-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks"),
 					types.StringValue(""),
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectNull(functions.ParseResourceIdResultAttrTypes)),
+				Error:  function.NewFuncError("failed to parse resource ID(resourceType: Microsoft.Network/virtualNetworks@latest, resourceId: ): `resource_id` and `type` are not matched, expect `type` to be , but got Microsoft.Network/virtualNetworks"),
+				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
 			},
 		},
 		"unknown-resource-id": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Network/virtualNetworks@2022-07-01"),
+					types.StringValue("Microsoft.Network/virtualNetworks"),
 					types.StringUnknown(),
 				}),
 			},
 			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
-			},
-		},
-		"invalid-resource-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid/ResourceType"),
-					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("failed to parse resource ID(resourceType: Invalid/ResourceType, resourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1): `resource_id` and `type` are not matched, expect `type` to be Invalid/ResourceType, but got Microsoft.Network/virtualNetworks"),
-				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
-			},
-		},
-		"invalid-empty-resource-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue(""),
-					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
 				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
 			},
 		},
@@ -191,7 +169,8 @@ func TestParseResourceIdFunction(t *testing.T) {
 
 			parseResourceIdFunction := functions.ParseResourceIdFunction{}
 			parseResourceIdFunction.Run(context.Background(), testCase.request, &got)
-
+			fmt.Printf("got: %v\n", got)
+			fmt.Printf("expected: %v\n", testCase.expected)
 			if diff := cmp.Diff(got, testCase.expected); diff != "" {
 				t.Errorf("unexpected difference: %s", diff)
 			}

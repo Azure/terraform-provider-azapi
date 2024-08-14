@@ -20,7 +20,7 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Resources/resourceGroups@2021-04-01"),
+					types.StringValue("Microsoft.Resources/resourceGroups"),
 					types.StringValue("myResourceGroup"),
 				}),
 			},
@@ -28,24 +28,11 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup")),
 			},
 		},
-		"build-subscription-scope-resource-id-invalid": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.Resources/resourceGroups@2021-04-01"),
-					types.StringValue("myResourceGroup"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [Subscription], but got scope Unknown"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
 		"build-resource-group-scope-resource-id-valid": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"),
-					types.StringValue("Microsoft.Automation/automationAccounts@2021-06-22"),
+					types.StringValue("Microsoft.Automation/automationAccounts"),
 					types.StringValue("myAutomationAccount"),
 				}),
 			},
@@ -53,24 +40,11 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Automation/automationAccounts/myAutomationAccount")),
 			},
 		},
-		"build-resource-group-scope-resource-id-invalid": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.Automation/automationAccounts@2021-06-22"),
-					types.StringValue("myAutomationAccount"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [ResourceGroup], but got scope Unknown"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
 		"build-management-group-scope-resource-id-valid": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/providers/Microsoft.Management/managementGroups/mg1"),
-					types.StringValue("Microsoft.Authorization/privateLinkAssociations@2020-05-01"),
+					types.StringValue("Microsoft.Authorization/privateLinkAssociations"),
 					types.StringValue("MyPrivateLinkAssociation"),
 				}),
 			},
@@ -78,24 +52,11 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.StringValue("/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Authorization/privateLinkAssociations/MyPrivateLinkAssociation")),
 			},
 		},
-		"build-management-group-scope-resource-id-invalid": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.Authorization/privateLinkAssociations@2020-05-01"),
-					types.StringValue("MyPrivateLinkAssociation"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [ManagementGroup], but got scope Unknown"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
 		"build-tenant-scope-resource-id-valid": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/"),
-					types.StringValue("Microsoft.Billing/billingAccounts@2018-11-01-preview"),
+					types.StringValue("Microsoft.Billing/billingAccounts"),
 					types.StringValue("MyInvoice"),
 				}),
 			},
@@ -103,24 +64,11 @@ func Test_BuildResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.StringValue("/providers/Microsoft.Billing/billingAccounts/MyInvoice")),
 			},
 		},
-		"build-tenant-scope-resource-id-invalid": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Invalid"),
-					types.StringValue("Microsoft.Billing/billingAccounts@2018-11-01-preview"),
-					types.StringValue("MyInvoice"),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`parent_id is invalid`: expect ID of resource whose scope is [Tenant], but got scope Unknown"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
 		"build-extension-scope-resource-id-valid": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-					types.StringValue("Microsoft.Chaos/targets@2024-01-01"),
+					types.StringValue("Microsoft.Chaos/targets"),
 					types.StringValue("MyTarget"),
 				}),
 			},

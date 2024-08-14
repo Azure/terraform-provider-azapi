@@ -3,6 +3,7 @@ package functions
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -62,10 +63,10 @@ func (p *ParseResourceIdFunction) Definition(ctx context.Context, request functi
 }
 
 func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunRequest, response *function.RunResponse) {
-	var resourceType string
+	var resourceTypeParam string
 	var resourceId types.String
 
-	if response.Error = request.Arguments.Get(ctx, &resourceType, &resourceId); response.Error != nil {
+	if response.Error = request.Arguments.Get(ctx, &resourceTypeParam, &resourceId); response.Error != nil {
 		return
 	}
 
@@ -78,6 +79,8 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 		response.Error = response.Result.Set(ctx, types.ObjectUnknown(ParseResourceIdResultAttrTypes))
 		return
 	}
+
+	resourceType := utils.TryAppendDefaultApiVersion(resourceTypeParam)
 
 	id, err := parse.ResourceIDWithResourceType(resourceId.ValueString(), resourceType)
 	if err != nil {
