@@ -102,19 +102,15 @@ func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
-	updatedConfig := r.completeBody(data)
-	updatedConfig = strings.ReplaceAll(updatedConfig, "jsonencode({", "{")
-	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
-
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.completeBody(data),
+			Config: r.completeJsonBody(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.completeBody(data),
 		}),
 	})
 }

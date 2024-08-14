@@ -181,7 +181,7 @@ resource "azapi_resource_action" "test" {
     name = "%s"
   }
 }
-`, data.RandomStringOfLength(8))
+`, data.RandomString)
 }
 
 func (r ActionResource) nonstandardLRO(data acceptance.TestData) string {

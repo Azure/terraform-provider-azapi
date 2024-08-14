@@ -611,7 +611,7 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
 
-func (r GenericResource) completeBody(data acceptance.TestData) string {
+func (r GenericResource) completeJsonBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
@@ -646,6 +646,45 @@ resource "azapi_resource" "test" {
       "Key" = "Value"
     }
   })
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) completeBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azapi" {
+}
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+}
+
+resource "azapi_resource" "test" {
+  name                      = "acctest%[2]s"
+  parent_id                 = azurerm_resource_group.test.id
+  type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  schema_validation_enabled = false
+  body = {
+    location = azurerm_resource_group.test.location
+    identity = {
+      type = "SystemAssigned, UserAssigned"
+      userAssignedIdentities = {
+        (azurerm_user_assigned_identity.test.id) = {}
+      }
+    }
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+    tags = {
+      "Key" = "Value"
+    }
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }

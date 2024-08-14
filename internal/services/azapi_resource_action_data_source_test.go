@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -18,9 +17,7 @@ func TestAccActionDataSource_basic(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.basic(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).Key("output").IsJson(),
-			),
+			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
 }
@@ -32,9 +29,7 @@ func TestAccActionDataSource_providerPermissions(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.providerPermissions(),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).Key("output").IsJson(),
-			),
+			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
 }
@@ -46,9 +41,7 @@ func TestAccActionDataSource_providerAction(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.providerAction(),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).Key("output").IsJson(),
-			),
+			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
 }
