@@ -74,7 +74,7 @@ At this point the newly created Azure Active Directory Application should be ass
 
 As we've obtained the credentials for this Service Principal - it's possible to configure them in a few different ways.
 
-When storing the credentials as Environment Variables, for example:
+*Reading the certificate bundle from the filesystem*
 
 ```bash
 export ARM_CLIENT_ID="00000000-0000-0000-0000-000000000000"
@@ -82,6 +82,16 @@ export ARM_CLIENT_CERTIFICATE_PATH="/path/to/my/client/certificate.pfx"
 export ARM_CLIENT_CERTIFICATE_PASSWORD="Pa55w0rd123"
 export ARM_SUBSCRIPTION_ID="00000000-0000-0000-0000-000000000000"
 export ARM_TENANT_ID="00000000-0000-0000-0000-000000000000"
+```
+
+*Passing the encoded certificate bundle diorectly*
+
+```bash
+export ARM_CLIENT_ID="00000000-0000-0000-0000-000000000000"
+export ARM_CLIENT_CERTIFICATE="$(base64 /path/to/my/client/certificate.pfx)"
+export ARM_CLIENT_CERTIFICATE_PASSWORD="Pa55w0rd123"
+export ARM_TENANT_ID="10000000-0000-0000-0000-000000000000"
+export ARM_SUBSCRIPTION_ID="20000000-0000-0000-0000-000000000000"
 ```
 
 The following Terraform and Provider blocks can be specified - where `0.1.0` is the version of the Azure Provider that you'd like to use:
