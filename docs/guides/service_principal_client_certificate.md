@@ -120,6 +120,8 @@ It's also possible to configure these variables either in-line or from using var
 
 ~> **NOTE:** We'd recommend not defining these variables in-line since they could easily be checked into Source Control.
 
+*Reading the certificate bundle from the filesystem*
+
 ```hcl
 variable "client_certificate_path" {}
 variable "client_certificate_password" {}
@@ -139,6 +141,30 @@ provider "azapi" {
   client_certificate_path     = var.client_certificate_path
   client_certificate_password = var.client_certificate_password
   tenant_id                   = "00000000-0000-0000-0000-000000000000"
+}
+```
+
+*Passing the encoded certificate bundle directly*
+
+```hcl
+variable "client_certificate" {}
+variable "client_certificate_password" {}
+
+terraform {
+  required_providers {
+    azapi = {
+      source  = "azure/azapi"
+      version = "=0.1.0"
+    }
+  }
+}
+
+provider "azapi" {
+  client_id                   = "00000000-0000-0000-0000-000000000000"
+  client_certificate          = var.client_certificate
+  client_certificate_password = var.client_certificate_password
+  tenant_id                   = "10000000-0000-0000-0000-000000000000"
+  subscription_id             = "20000000-0000-0000-0000-000000000000"
 }
 ```
 
