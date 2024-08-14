@@ -20,7 +20,7 @@ func Test_ExtensionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-					types.StringValue("Microsoft.Chaos/targets@2021-09-15-preview"),
+					types.StringValue("Microsoft.Chaos/targets"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("t1"),
 					}),
@@ -34,7 +34,7 @@ func Test_ExtensionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-					types.StringValue("Microsoft.Chaos/targets/capabilities@2023-04-01-preview"),
+					types.StringValue("Microsoft.Chaos/targets/capabilities"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("t1"),
 						types.StringValue("c1"),
@@ -49,7 +49,7 @@ func Test_ExtensionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-					types.StringValue("Microsoft.Chaos/targets@2021-09-15-preview"),
+					types.StringValue("Microsoft.Chaos/targets"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("t1"),
 						types.StringValue("c1"),
@@ -65,7 +65,7 @@ func Test_ExtensionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-					types.StringValue("Microsoft.Chaos/targets/capabilities@2023-04-01-preview"),
+					types.StringValue("Microsoft.Chaos/targets/capabilities"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("t1"),
 					}),
@@ -87,22 +87,7 @@ func Test_ExtensionResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
-		"extension-scope-invalid-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
-					types.StringValue("Invalid/ResourceType"),
-					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("mylock"),
-					}),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
+				Error:  function.NewFuncError("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`"),
 				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},

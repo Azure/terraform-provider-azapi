@@ -20,7 +20,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Sql/locations@2015-05-01-preview"),
+					types.StringValue("Microsoft.Sql/locations"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("loc1"),
 					}),
@@ -34,7 +34,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Sql/locations/usages@2015-05-01-preview"),
+					types.StringValue("Microsoft.Sql/locations/usages"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("loc1"),
 						types.StringValue("usage1"),
@@ -49,7 +49,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Sql/locations@2015-05-01-preview"),
+					types.StringValue("Microsoft.Sql/locations"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("loc1"),
 						types.StringValue("usage1"),
@@ -65,7 +65,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Microsoft.Sql/locations/usages@2015-05-01-preview"),
+					types.StringValue("Microsoft.Sql/locations/usages"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("loc1"),
 					}),
@@ -87,22 +87,7 @@ func Test_SubscriptionResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
-		"subscription-scope-invalid-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("00000000-0000-0000-0000-000000000000"),
-					types.StringValue("Invalid/ResourceType"),
-					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("rg1"),
-					}),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
+				Error:  function.NewFuncError("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`"),
 				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},

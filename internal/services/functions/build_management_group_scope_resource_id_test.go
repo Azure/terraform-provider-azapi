@@ -20,7 +20,7 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints@2017-11-11-preview"),
+					types.StringValue("Microsoft.Blueprint/blueprints"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("bp1"),
 					}),
@@ -34,7 +34,7 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints/artifacts@2017-11-11-preview"),
+					types.StringValue("Microsoft.Blueprint/blueprints/artifacts"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("bp1"),
 						types.StringValue("a1"),
@@ -49,7 +49,7 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints@2017-11-11-preview"),
+					types.StringValue("Microsoft.Blueprint/blueprints"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("bp1"),
 						types.StringValue("a1"),
@@ -65,7 +65,7 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.StringValue("mg1"),
-					types.StringValue("Microsoft.Blueprint/blueprints/artifacts@2017-11-11-preview"),
+					types.StringValue("Microsoft.Blueprint/blueprints/artifacts"),
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("bp1"),
 					}),
@@ -88,23 +88,7 @@ func Test_ManagementGroupResourceIdFunction(t *testing.T) {
 				}),
 			},
 			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
-				Result: function.NewResultData(types.StringUnknown()),
-			},
-		},
-		"management-group-scope-invalid-type": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("mg1"),
-					types.StringValue("Invalid/ResourceType"),
-					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("ba1"),
-						types.StringValue("bp1"),
-					}),
-				}),
-			},
-			expected: function.RunResponse{
-				Error:  function.NewFuncError("`type` is invalid, it should be like `ResourceProvider/resourceTypes@ApiVersion`"),
+				Error:  function.NewFuncError("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`"),
 				Result: function.NewResultData(types.StringUnknown()),
 			},
 		},
