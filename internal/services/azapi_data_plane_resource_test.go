@@ -311,7 +311,12 @@ resource "azapi_data_plane_resource" "test" {
 func (r DataPlaneResource) keyVaultIssuer(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
+    }
+  }
 }
 
 data "azurerm_client_config" "current" {}

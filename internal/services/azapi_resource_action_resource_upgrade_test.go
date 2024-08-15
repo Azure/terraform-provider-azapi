@@ -74,11 +74,11 @@ func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.providerAction(),
+			Config: r.providerAction(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.providerAction(),
+			Config: r.providerAction(data),
 		}),
 	})
 }
