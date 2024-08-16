@@ -106,6 +106,28 @@ This resource can manage any Azure Resource Manager resource.
 
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 - `removing_special_chars` (Boolean, Deprecated) Whether to remove special characters in resource name. Defaults to `false`.
+- `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
+If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. 
+Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
+
+e.g. to replace a resource when either the SKU or os_type attributes change:
+
+```hcl
+resource "azapi_resource" "example" {
+  name      = var.name
+  type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
+  body      = properties = {
+    sku   = var.sku
+    zones = var.zones
+  }
+
+  replace_triggers_external_values = [
+    var.sku,
+    var.zones,
+  ]
+}
+```
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
 
 	```text
