@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -19,12 +21,13 @@ import (
 )
 
 type ResourceListDataSourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Type                 types.String   `tfsdk:"type"`
-	ParentID             types.String   `tfsdk:"parent_id"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String     `tfsdk:"id"`
+	Type                 types.String     `tfsdk:"type"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type ResourceListDataSource struct {
@@ -48,7 +51,8 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 	response.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -56,6 +60,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -63,6 +68,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -71,11 +77,15 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("data.azapi_resource_list"),
 			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -91,6 +101,8 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
@@ -109,7 +121,19 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.List(ctx, listUrl, id.ApiVersion)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))

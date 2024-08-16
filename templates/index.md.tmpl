@@ -1,0 +1,52 @@
+---
+layout: "azapi"
+page_title: "Provider: Azure API"
+description: |-
+  The AzAPI Provider is used to interact with the many resources supported by Azure Resource Manager through its APIs.
+---
+
+# AzAPI Provider
+
+The AzAPI provider is a very thin layer on top of the Azure ARM REST APIs. This provider compliments the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
+
+Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
+
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/main/CHANGELOG.md) for version information and release notes.
+
+Strongly recommended to install [AzApi VSCode Extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi), it provides a rich authoring experience to help you use the AzApi provider.
+
+Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
+
+## Authenticating to Azure
+
+Terraform supports a number of different methods for authenticating to Azure:
+
+* [Authenticating to Azure using the Azure CLI](guides/azure_cli.html)
+* [Authenticating to Azure using Managed Service Identity](guides/managed_service_identity.html)
+* [Authenticating to Azure using a Service Principal and a Client Certificate](guides/service_principal_client_certificate.html)
+* [Authenticating to Azure using a Service Principal and a Client Secret](guides/service_principal_client_secret.html)
+* [Authenticating to Azure using OpenID Connect](guides/service_principal_oidc.html)
+
+---
+
+We recommend using either a Service Principal or Managed Service Identity when running Terraform non-interactively (such as when running Terraform in a CI server) - and authenticating using the Azure CLI when running Terraform locally.
+
+## Example Usage
+
+```hcl
+# We strongly recommend using the required_providers block to set the
+# Azure Provider source and version being used
+terraform {
+  required_providers {
+    azapi = {
+      source = "azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+```
+
+{{ .SchemaMarkdown | trimspace }}

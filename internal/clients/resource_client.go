@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/cenkalti/backoff/v4"
 )
 
 const (
@@ -24,6 +26,38 @@ type ResourceClient struct {
 	host string
 	pl   runtime.Pipeline
 }
+
+// ResourceClientRetryableErrors is a wrapper around ResourceClient that allows for retrying on specific errors.
+type ResourceClientRetryableErrors struct {
+	client  Requester                   // client is a Requester interface to allow mocking
+	backoff *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
+	errors  []regexp.Regexp             // errors is the list of errors regexp to retry on
+}
+
+// NewResourceClientRetryableErrors creates a new ResourceClientRetryableErrors.
+func NewResourceClientRetryableErrors(client Requester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *ResourceClientRetryableErrors {
+	rcre := &ResourceClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
+}
+
+// Requester is the interface for HTTP operations, meaning we can supply a ResourceClient or a ResourceClientRetryableErrors.
+type Requester interface {
+	Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error)
+	CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error)
+	Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error)
+	Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error)
+	List(ctx context.Context, url string, apiVersion string) (interface{}, error)
+}
+
+var (
+	_ Requester = &ResourceClient{}
+	_ Requester = &ResourceClientRetryableErrors{}
+)
 
 func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*ResourceClient, error) {
 	if opt == nil {
@@ -41,6 +75,58 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 		host: ep,
 		pl:   pl,
 	}, nil
+}
+
+// NewRetryableErrors creates the backoff and error regexs for retryable errors.
+func NewRetryableErrors(intervalSeconds, maxIntervalSeconds int, multiplier, randomizationFactor float64, errorRegexs []string) (*backoff.ExponentialBackOff, []regexp.Regexp) {
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(time.Duration(intervalSeconds)*time.Second),
+		backoff.WithRandomizationFactor(randomizationFactor),
+		backoff.WithMaxInterval(time.Duration(maxIntervalSeconds)*time.Second),
+		backoff.WithRandomizationFactor(randomizationFactor),
+		backoff.WithMultiplier(multiplier),
+	)
+	res := make([]regexp.Regexp, len(errorRegexs))
+	for i, e := range errorRegexs {
+		res[i] = *regexp.MustCompile(e) // MustCompile as schema has custom validation so we know it's valid
+	}
+	return bkof, res
+}
+
+// WithRetry configures the retryable errors for the client.
+func (client *ResourceClient) WithRetry(bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *ResourceClientRetryableErrors {
+	rcre := &ResourceClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
+}
+
+// CreateOrUpdate configures the retryable errors for the client.
+// It calls CreateOrUpdate, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.CreateOrUpdate(ctx, resourceID, apiVersion, body)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
@@ -95,6 +181,31 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
+// Get configures the retryable errors for the client.
+// It calls Get, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Get(ctx, resourceID, apiVersion)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
 func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, apiVersion)
 	if err != nil {
@@ -126,6 +237,31 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID s
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
+}
+
+// Delete configures the retryable errors for the client.
+// It calls Delete, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Delete(ctx, resourceID, apiVersion)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
@@ -178,6 +314,31 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
+}
+
+// Action configures the retryable errors for the client.
+// It calls Action, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
@@ -248,6 +409,31 @@ func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceI
 		err = runtime.MarshalAsJSON(req, body)
 	}
 	return req, err
+}
+
+// List configures the retryable errors for the client.
+// It calls Get, then checks if the error is contained in the retryable errors list.
+// If it is, it will retry the operation with the configured backoff.
+// If it is not, it will return the error as a backoff.PermanentError{}.
+func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url string, apiVersion string) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.List(ctx, url, apiVersion)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
 
 func (client *ResourceClient) List(ctx context.Context, url string, apiVersion string) (interface{}, error) {
