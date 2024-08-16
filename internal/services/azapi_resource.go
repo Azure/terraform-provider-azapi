@@ -16,7 +16,9 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -44,24 +46,25 @@ import (
 )
 
 type AzapiResourceModel struct {
-	ID                      types.String   `tfsdk:"id"`
-	Name                    types.String   `tfsdk:"name"`
-	ParentID                types.String   `tfsdk:"parent_id"`
-	Type                    types.String   `tfsdk:"type"`
-	Location                types.String   `tfsdk:"location"`
-	Identity                types.List     `tfsdk:"identity"`
-	Body                    types.Dynamic  `tfsdk:"body"`
-	Locks                   types.List     `tfsdk:"locks"`
-	RemovingSpecialChars    types.Bool     `tfsdk:"removing_special_chars"`
-	SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
-	ReplaceTriggeredBy      types.Dynamic  `tfsdk:"replace_triggered_by"`
-	IgnoreBodyChanges       types.List     `tfsdk:"ignore_body_changes"`
-	IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues    types.List     `tfsdk:"response_export_values"`
-	Output                  types.Dynamic  `tfsdk:"output"`
-	Tags                    types.Map      `tfsdk:"tags"`
-	Timeouts                timeouts.Value `tfsdk:"timeouts"`
+	Body                    types.Dynamic    `tfsdk:"body"`
+	ID                      types.String     `tfsdk:"id"`
+	Identity                types.List       `tfsdk:"identity"`
+	IgnoreBodyChanges       types.List       `tfsdk:"ignore_body_changes"`
+	IgnoreCasing            types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty   types.Bool       `tfsdk:"ignore_missing_property"`
+	Location                types.String     `tfsdk:"location"`
+	Locks                   types.List       `tfsdk:"locks"`
+	Name                    types.String     `tfsdk:"name"`
+	Output                  types.Dynamic    `tfsdk:"output"`
+	ParentID                types.String     `tfsdk:"parent_id"`
+	RemovingSpecialChars    types.Bool       `tfsdk:"removing_special_chars"`
+	ReplaceTriggeredBy      types.Dynamic    `tfsdk:"replace_triggered_by"`
+	ResponseExportValues    types.List       `tfsdk:"response_export_values"`
+	Retry                   retry.RetryValue `tfsdk:"retry"`
+	SchemaValidationEnabled types.Bool       `tfsdk:"schema_validation_enabled"`
+	Tags                    types.Map        `tfsdk:"tags"`
+	Timeouts                timeouts.Value   `tfsdk:"timeouts"`
+	Type                    types.String     `tfsdk:"type"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -93,12 +96,14 @@ func (r *AzapiResource) UpgradeState(ctx context.Context) map[int64]resource.Sta
 
 func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can manage any Azure Resource Manager resource.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"name": schema.StringAttribute{
@@ -107,13 +112,15 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
 			},
 
 			"removing_special_chars": schema.BoolAttribute{
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
-				Optional:           true,
-				Computed:           true,
-				Default:            defaults.BoolDefault(false),
+				DeprecationMessage:  "This feature is deprecated and will be removed in a major release. Please use the `name` argument to specify the name of the resource.",
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: "Whether to remove special characters in resource name. Defaults to `false`.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -125,6 +132,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -132,6 +140,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"location": schema.StringAttribute{
@@ -142,6 +151,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 						return location.Normalize(a.ValueString()) == location.Normalize(b.ValueString())
 					}),
 				},
+				MarkdownDescription: docstrings.Location(),
 			},
 
 			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
@@ -157,6 +167,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_body_changes": schema.ListAttribute{
@@ -177,15 +188,17 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.IgnoreCasing(),
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -194,6 +207,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"locks": schema.ListAttribute{
@@ -202,16 +216,19 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"schema_validation_enabled": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.SchemaValidationEnabled(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("azapi_resource"),
 			},
 
 			"tags": schema.MapAttribute{
@@ -221,7 +238,10 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
+				MarkdownDescription: "A mapping of tags which should be assigned to the Azure resource.",
 			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
@@ -236,6 +256,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 								string(identity.SystemAssigned),
 								string(identity.None),
 							)},
+							MarkdownDescription: docstrings.IdentityType(),
 						},
 
 						"identity_ids": schema.ListAttribute{
@@ -244,14 +265,17 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 							Validators: []validator.List{
 								listvalidator.ValueStringsAre(myvalidator.StringIsUserAssignedIdentityID()),
 							},
+							MarkdownDescription: docstrings.IdentityIds(),
 						},
 
 						"principal_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityPrincipalID(),
 						},
 
 						"tenant_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityTenantID(),
 						},
 					},
 				},
@@ -442,7 +466,18 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !plan.Retry.IsNull() {
+		bkof, regexps := clients.NewRetryableErrors(
+			plan.Retry.GetIntervalSeconds(),
+			plan.Retry.GetMaxIntervalSeconds(),
+			plan.Retry.GetMultiplier(),
+			plan.Retry.GetRandomizationFactor(),
+			plan.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
 	var timeout time.Duration
@@ -608,7 +643,19 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -718,11 +765,22 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
-	client := r.ProviderData.ResourceClient
-
 	var model *AzapiResourceModel
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
+	}
+
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)

@@ -26,8 +26,8 @@ resource "azapi_update_resource" "sourcecontrol" {
   name      = "GitHub"
   body = {
     properties = {
-      token       = "6mb7ploznwolt38scl2h31b00dppgaxgc8l8denep"
-      tokenSecret = "u1komhavcqvu3qe6aedsvm9u33hlvb9qs9mfl6zr9"
+      token       = "abcdefghijklmnopqrstuvwxyz"
+      tokenSecret = "abcdefghijklmnopqrstuvwxyz"
     }
   }
   response_export_values = ["*"]

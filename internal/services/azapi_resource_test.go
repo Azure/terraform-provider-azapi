@@ -383,7 +383,7 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -564,6 +564,20 @@ func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {
 	return fmt.Sprintf("%s?api-version=%s", id.AzureResourceId, id.ApiVersion), nil
 }
 
+func TestAccGenericResource_withRetry(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.withRetry(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -579,6 +593,35 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
+
+  body = jsonencode({
+    properties = {
+      base64Value = "%[3]s"
+    }
+  })
+}
+`, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) withRetry(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_automation_account.test.id
+
+  retryable_errors = {
+    error_message_regex = ["test error"]
+  }
 
   body = jsonencode({
     properties = {

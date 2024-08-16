@@ -21,9 +21,9 @@ variable "location" {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name     = var.resource_name
-  location = var.location
+  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name                      = var.resource_name
+  location                  = var.location
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
@@ -34,7 +34,7 @@ resource "azapi_resource" "managedCluster" {
   name      = var.resource_name
   location  = var.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
     identity_ids = []
   }
   body = {

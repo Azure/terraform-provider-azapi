@@ -21,9 +21,9 @@ variable "location" {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type                      = "Microsoft.Resources/resourceGroups@2020-06-01"
-  name                      = var.resource_name
-  location                  = var.location
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "registry" {
@@ -67,9 +67,9 @@ resource "azapi_resource" "registry" {
 }
 
 data "azapi_resource_id" "scopeMap" {
-  type                   = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-08-01-preview"
-  parent_id              = azapi_resource.registry.id
-  name                   = "_repositories_pull"
+  type      = "Microsoft.ContainerRegistry/registries/scopeMaps@2021-08-01-preview"
+  parent_id = azapi_resource.registry.id
+  name      = "_repositories_pull"
 }
 
 resource "azapi_resource" "token" {

@@ -141,7 +141,19 @@ func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps [
 
 func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 	testCase.ExternalProviders = td.externalProviders()
-	testCase.ProtoV6ProviderFactories = td.providers()
+	// If any test steps require their own external providers, then we need to clear the global list
+	providersInTestStep := false
+	for i, step := range testCase.Steps {
+		if step.ExternalProviders != nil {
+			testCase.ExternalProviders = nil
+			step.ProtoV6ProviderFactories = td.providers()
+			testCase.Steps[i] = step
+			providersInTestStep = true
+		}
+	}
+	if !providersInTestStep {
+		testCase.ProtoV6ProviderFactories = td.providers()
+	}
 
 	resource.ParallelTest(t, testCase)
 }
