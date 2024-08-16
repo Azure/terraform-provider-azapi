@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
@@ -50,7 +51,8 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 	response.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -58,6 +60,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -65,6 +68,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -73,10 +77,12 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("data.azapi_resource_list"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),

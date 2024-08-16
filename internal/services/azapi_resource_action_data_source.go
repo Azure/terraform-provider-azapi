@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
@@ -53,7 +54,8 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 	response.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -61,6 +63,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -68,10 +71,12 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of the Azure resource to perform the action on.",
 			},
 
 			"action": schema.StringAttribute{
-				Optional: true,
+				Optional:            true,
+				MarkdownDescription: docstrings.ResourceAction(),
 			},
 
 			"method": schema.StringAttribute{
@@ -80,6 +85,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "GET"),
 				},
+				MarkdownDescription: "The HTTP method to use when performing the action. Must be one of `POST`, `GET`. Defaults to `POST`.",
 			},
 
 			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
@@ -90,6 +96,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.Dynamic{
 					myvalidator.BodyValidator(),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -98,10 +105,12 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("data.azapi_resource_action"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),

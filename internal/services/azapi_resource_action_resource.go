@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
@@ -75,6 +76,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -85,6 +87,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -95,6 +98,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of an existing Azure source.",
 			},
 
 			"action": schema.StringAttribute{
@@ -102,6 +106,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: docstrings.ResourceAction(),
 			},
 
 			"method": schema.StringAttribute{
@@ -111,6 +116,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
 				},
+				MarkdownDescription: "Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.",
 			},
 
 			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
@@ -124,6 +130,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"when": schema.StringAttribute{
@@ -133,6 +140,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("apply", "destroy"),
 				},
+				MarkdownDescription: "When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.",
 			},
 
 			"locks": schema.ListAttribute{
@@ -141,6 +149,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -149,10 +158,12 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
