@@ -120,6 +120,7 @@ This resource can manage any Azure Resource Manager resource.
 		}
 	}
 	```
+- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
@@ -156,6 +157,21 @@ Read-Only:
 
 - `principal_id` (String) The Principal ID for the Service Principal associated with the Managed Service Identity of this Azure resource.
 - `tenant_id` (String) The Tenant ID for the Service Principal associated with the Managed Service Identity of this Azure resource.
+
+
+<a id="nestedatt--retry"></a>
+### Nested Schema for `retry`
+
+Required:
+
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
+
+Optional:
+
+- `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
+- `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
+- `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
+- `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
 
 
 <a id="nestedblock--timeouts"></a>

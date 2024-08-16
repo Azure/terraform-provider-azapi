@@ -126,6 +126,7 @@ This resource can manage a subset of any existing Azure resource manager resourc
 		}
 	}
 	```
+- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 
 ### Read-Only
@@ -144,6 +145,21 @@ This resource can manage a subset of any existing Azure resource manager resourc
 		value = azapi_update_resource.example.output.properties.policies.quarantinePolicy.status
 	}
 	```
+
+<a id="nestedatt--retry"></a>
+### Nested Schema for `retry`
+
+Required:
+
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
+
+Optional:
+
+- `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
+- `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
+- `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
+- `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`
