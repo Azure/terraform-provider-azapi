@@ -127,22 +127,6 @@ data "azapi_resource" "test" {
 `, GenericResource{}.complete(data))
 }
 
-func (r GenericDataSource) hclOutput(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-provider "azapi" {
-  enable_hcl_output_for_data_source = true
-}
-
-data "azapi_resource" "test" {
-  type                   = azapi_resource.test.type
-  resource_id            = azapi_resource.test.id
-  response_export_values = ["*"]
-}
-`, GenericResource{}.complete(data))
-}
-
 func (r GenericDataSource) withRetry(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 resource "time_sleep" "wait_30_seconds" {
