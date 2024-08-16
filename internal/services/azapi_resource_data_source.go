@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -25,17 +26,18 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Name                 types.String   `tfsdk:"name"`
-	ParentID             types.String   `tfsdk:"parent_id"`
-	ResourceID           types.String   `tfsdk:"resource_id"`
-	Type                 types.String   `tfsdk:"type"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Location             types.String   `tfsdk:"location"`
-	Identity             types.List     `tfsdk:"identity"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Tags                 types.Map      `tfsdk:"tags"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String     `tfsdk:"id"`
+	Name                 types.String     `tfsdk:"name"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResourceID           types.String     `tfsdk:"resource_id"`
+	Type                 types.String     `tfsdk:"type"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Location             types.String     `tfsdk:"location"`
+	Identity             types.List       `tfsdk:"identity"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Tags                 types.Map        `tfsdk:"tags"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type AzapiResourceDataSource struct {
@@ -151,6 +153,8 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				ElementType:         types.StringType,
 				MarkdownDescription: "A mapping of tags which are assigned to the Azure resource.",
 			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -166,6 +170,8 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
@@ -203,7 +209,18 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {

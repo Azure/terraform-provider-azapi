@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -20,15 +21,16 @@ import (
 )
 
 type ResourceActionDataSourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	ResourceID           types.String   `tfsdk:"resource_id"`
-	Type                 types.String   `tfsdk:"type"`
-	Action               types.String   `tfsdk:"action"`
-	Method               types.String   `tfsdk:"method"`
-	Body                 types.Dynamic  `tfsdk:"body"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String     `tfsdk:"id"`
+	ResourceID           types.String     `tfsdk:"resource_id"`
+	Type                 types.String     `tfsdk:"type"`
+	Action               types.String     `tfsdk:"action"`
+	Method               types.String     `tfsdk:"method"`
+	Body                 types.Dynamic    `tfsdk:"body"`
+	ResponseExportValues types.List       `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
 }
 
 type ResourceActionDataSource struct {
@@ -110,6 +112,8 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Computed:            true,
 				MarkdownDescription: docstrings.Output("data.azapi_resource_action"),
 			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
 		},
 
 		Blocks: map[string]schema.Block{
@@ -125,6 +129,8 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
@@ -152,7 +158,19 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 		method = "POST"
 	}
 
-	client := r.ProviderData.ResourceClient
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
