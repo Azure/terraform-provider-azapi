@@ -2,6 +2,7 @@ package migration
 
 import (
 	"context"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -98,18 +99,19 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Timeouts              timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                    types.String   `tfsdk:"id"`
-				Name                  types.String   `tfsdk:"name"`
-				ParentID              types.String   `tfsdk:"parent_id"`
-				ResourceID            types.String   `tfsdk:"resource_id"`
-				Type                  types.String   `tfsdk:"type"`
-				Body                  types.Dynamic  `tfsdk:"body"`
-				IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-				ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-				Locks                 types.List     `tfsdk:"locks"`
-				Output                types.Dynamic  `tfsdk:"output"`
-				Timeouts              timeouts.Value `tfsdk:"timeouts"`
+				ID                    types.String     `tfsdk:"id"`
+				Name                  types.String     `tfsdk:"name"`
+				ParentID              types.String     `tfsdk:"parent_id"`
+				ResourceID            types.String     `tfsdk:"resource_id"`
+				Type                  types.String     `tfsdk:"type"`
+				Body                  types.Dynamic    `tfsdk:"body"`
+				IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
+				ResponseExportValues  types.List       `tfsdk:"response_export_values"`
+				Locks                 types.List       `tfsdk:"locks"`
+				Output                types.Dynamic    `tfsdk:"output"`
+				Timeouts              timeouts.Value   `tfsdk:"timeouts"`
+				Retry                 retry.RetryValue `tfsdk:"retry"`
 			}
 
 			var oldState OldModel
@@ -142,6 +144,7 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				ResponseExportValues:  oldState.ResponseExportValues,
 				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,
+				Retry:                 retry.NewRetryValueNull(),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

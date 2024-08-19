@@ -2,6 +2,7 @@ package migration
 
 import (
 	"context"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -83,17 +84,18 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Timeouts             timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                   types.String   `tfsdk:"id"`
-				Type                 types.String   `tfsdk:"type"`
-				ResourceId           types.String   `tfsdk:"resource_id"`
-				Action               types.String   `tfsdk:"action"`
-				Method               types.String   `tfsdk:"method"`
-				Body                 types.Dynamic  `tfsdk:"body"`
-				When                 types.String   `tfsdk:"when"`
-				Locks                types.List     `tfsdk:"locks"`
-				ResponseExportValues types.List     `tfsdk:"response_export_values"`
-				Output               types.Dynamic  `tfsdk:"output"`
-				Timeouts             timeouts.Value `tfsdk:"timeouts"`
+				ID                   types.String     `tfsdk:"id"`
+				Type                 types.String     `tfsdk:"type"`
+				ResourceId           types.String     `tfsdk:"resource_id"`
+				Action               types.String     `tfsdk:"action"`
+				Method               types.String     `tfsdk:"method"`
+				Body                 types.Dynamic    `tfsdk:"body"`
+				When                 types.String     `tfsdk:"when"`
+				Locks                types.List       `tfsdk:"locks"`
+				ResponseExportValues types.List       `tfsdk:"response_export_values"`
+				Output               types.Dynamic    `tfsdk:"output"`
+				Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+				Retry                retry.RetryValue `tfsdk:"retry"`
 			}
 
 			var oldState OldModel
@@ -124,6 +126,7 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				ResponseExportValues: oldState.ResponseExportValues,
 				Output:               outputVal,
 				Timeouts:             oldState.Timeouts,
+				Retry:                retry.NewRetryValueNull(),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

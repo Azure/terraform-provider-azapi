@@ -2,6 +2,7 @@ package migration
 
 import (
 	"context"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -140,21 +141,23 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				Timeouts                timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                      types.String   `tfsdk:"id"`
-				Name                    types.String   `tfsdk:"name"`
-				ParentID                types.String   `tfsdk:"parent_id"`
-				Type                    types.String   `tfsdk:"type"`
-				Location                types.String   `tfsdk:"location"`
-				Identity                types.List     `tfsdk:"identity"`
-				Body                    types.Dynamic  `tfsdk:"body"`
-				Locks                   types.List     `tfsdk:"locks"`
-				SchemaValidationEnabled types.Bool     `tfsdk:"schema_validation_enabled"`
-				IgnoreCasing            types.Bool     `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty   types.Bool     `tfsdk:"ignore_missing_property"`
-				ResponseExportValues    types.List     `tfsdk:"response_export_values"`
-				Output                  types.Dynamic  `tfsdk:"output"`
-				Tags                    types.Map      `tfsdk:"tags"`
-				Timeouts                timeouts.Value `tfsdk:"timeouts"`
+				ID                            types.String     `tfsdk:"id"`
+				Name                          types.String     `tfsdk:"name"`
+				ParentID                      types.String     `tfsdk:"parent_id"`
+				Type                          types.String     `tfsdk:"type"`
+				Location                      types.String     `tfsdk:"location"`
+				Identity                      types.List       `tfsdk:"identity"`
+				Body                          types.Dynamic    `tfsdk:"body"`
+				Locks                         types.List       `tfsdk:"locks"`
+				SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
+				IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+				ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
+				ResponseExportValues          types.List       `tfsdk:"response_export_values"`
+				Retry                         retry.RetryValue `tfsdk:"retry"`
+				Output                        types.Dynamic    `tfsdk:"output"`
+				Tags                          types.Map        `tfsdk:"tags"`
+				Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
 			}
 
 			var oldState OldModel
@@ -175,21 +178,23 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 			}
 
 			newState := newModel{
-				ID:                      oldState.ID,
-				Name:                    oldState.Name,
-				ParentID:                oldState.ParentID,
-				Type:                    oldState.Type,
-				Location:                oldState.Location,
-				Identity:                oldState.Identity,
-				Body:                    bodyVal,
-				Locks:                   oldState.Locks,
-				SchemaValidationEnabled: oldState.SchemaValidationEnabled,
-				IgnoreCasing:            oldState.IgnoreCasing,
-				IgnoreMissingProperty:   oldState.IgnoreMissingProperty,
-				ResponseExportValues:    oldState.ResponseExportValues,
-				Output:                  outputVal,
-				Tags:                    oldState.Tags,
-				Timeouts:                oldState.Timeouts,
+				ID:                            oldState.ID,
+				Name:                          oldState.Name,
+				ParentID:                      oldState.ParentID,
+				Type:                          oldState.Type,
+				Location:                      oldState.Location,
+				Identity:                      oldState.Identity,
+				Body:                          bodyVal,
+				Locks:                         oldState.Locks,
+				SchemaValidationEnabled:       oldState.SchemaValidationEnabled,
+				IgnoreCasing:                  oldState.IgnoreCasing,
+				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
+				ReplaceTriggersExternalValues: types.DynamicNull(),
+				ResponseExportValues:          oldState.ResponseExportValues,
+				Retry:                         retry.NewRetryValueNull(),
+				Output:                        outputVal,
+				Tags:                          oldState.Tags,
+				Timeouts:                      oldState.Timeouts,
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)
