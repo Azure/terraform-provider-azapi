@@ -56,7 +56,6 @@ type AzapiResourceModel struct {
 	Name                          types.String     `tfsdk:"name"`
 	Output                        types.Dynamic    `tfsdk:"output"`
 	ParentID                      types.String     `tfsdk:"parent_id"`
-	RemovingSpecialChars          types.Bool       `tfsdk:"removing_special_chars"`
 	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
 	ResponseExportValues          types.List       `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue `tfsdk:"retry"`

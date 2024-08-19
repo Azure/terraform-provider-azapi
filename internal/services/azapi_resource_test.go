@@ -562,7 +562,7 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  retryable_errors = {
+  retry = {
     error_message_regex = ["test error"]
   }
 
@@ -1546,14 +1546,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = [
+  }
+  replace_triggers_external_values = [
     "value1"
   ]
 }
@@ -1569,14 +1569,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = [
+  }
+  replace_triggers_external_values = [
     "value2"
   ]
 }
@@ -1592,14 +1592,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = null
+  }
+  replace_triggers_external_values = null
 }
 `, r.template(data), data.RandomString)
 }
