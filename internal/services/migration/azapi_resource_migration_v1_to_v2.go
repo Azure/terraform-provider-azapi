@@ -2,8 +2,8 @@ package migration
 
 import (
 	"context"
-	"github.com/Azure/terraform-provider-azapi/internal/retry"
 
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
