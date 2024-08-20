@@ -468,3 +468,27 @@ resource "azapi_update_resource" "test" {
 }
 `, r.template(data), data.RandomString)
 }
+
+func (r GenericUpdateResource) oldConfig(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azurerm_automation_account" "test" {
+  name                = "acctest-%[2]s"
+  location            = azurerm_resource_group.test.location
+  resource_group_name = azurerm_resource_group.test.name
+  sku_name            = "Basic"
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azurerm_automation_account.test.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
+  response_export_values = ["properties"]
+}
+`, r.template(data), data.RandomString)
+}

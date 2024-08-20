@@ -66,7 +66,7 @@ func (r *DataPlaneResource) Metadata(ctx context.Context, request resource.Metad
 
 func (r *DataPlaneResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{
-		0: migration.AzapiDataPlaneResourceMigrationV0ToV1(ctx),
+		0: migration.AzapiDataPlaneResourceMigrationV0ToV2(ctx),
 		1: migration.AzapiDataPlaneResourceMigrationV1ToV2(ctx),
 	}
 }

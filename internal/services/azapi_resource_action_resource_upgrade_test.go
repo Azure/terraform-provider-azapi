@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
+	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -127,6 +128,27 @@ func TestAccAzapiActionResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 		}),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiActionResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	updatedConfig := r.oldConfig(data)
+	updatedConfig = strings.ReplaceAll(r.oldConfig(data), "jsonencode({", "{")
+	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.oldConfig(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
 		}),
 	})
 }

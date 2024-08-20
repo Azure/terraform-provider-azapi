@@ -160,6 +160,7 @@ resource "azapi_resource_action" "test" {
   resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
   action      = "register"
   method      = "POST"
+  response_export_values = ["*"]
 }
 `
 }
@@ -282,4 +283,25 @@ resource "azapi_resource_action" "test" {
   }
 }
 `, GenericResource{}.identityNone(data))
+}
+
+func (r ActionResource) oldConfig(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@2023-04-01"
+  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = jsonencode({
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  })
+  response_export_values = ["*"]
+}
+`, data.RandomString)
 }
