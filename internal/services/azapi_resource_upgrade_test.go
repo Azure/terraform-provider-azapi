@@ -507,7 +507,7 @@ func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 	r := GenericResource{}
 
 	updatedConfig := r.oldConfig(data)
-	updatedConfig = strings.ReplaceAll(r.oldConfig(data), "jsonencode({", "{")
+	updatedConfig = strings.ReplaceAll(updatedConfig, "jsonencode({", "{")
 	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
 
 	data.UpgradeTest(t, r, []resource.TestStep{
