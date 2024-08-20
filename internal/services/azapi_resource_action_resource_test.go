@@ -156,10 +156,10 @@ provider "azurerm" {
 data "azurerm_client_config" "current" {}
 
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Resources/providers@2021-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
-  action      = "register"
-  method      = "POST"
+  type                   = "Microsoft.Resources/providers@2021-04-01"
+  resource_id            = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
+  action                 = "register"
+  method                 = "POST"
   response_export_values = ["*"]
 }
 `
