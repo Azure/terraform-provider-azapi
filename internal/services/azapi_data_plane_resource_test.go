@@ -30,20 +30,6 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 	})
 }
 
-func TestAccDataPlaneResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
-	r := DataPlaneResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
 func TestAccDataPlaneResource_purviewClassification(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -163,12 +149,11 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
   parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
   name      = "mykey"
-  body = jsonencode(
-    {
-      content_type = ""
-      value        = "myvalue"
-    }
-  )
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+
 
   depends_on = [
     azurerm_role_assignment.test,
@@ -177,7 +162,7 @@ resource "azapi_data_plane_resource" "test" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) dynamicSchema(data acceptance.TestData) string {
+func (r DataPlaneResource) purviewClassification(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
   features {}
@@ -227,56 +212,6 @@ resource "azapi_data_plane_resource" "test" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) purviewClassification(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
-  name     = "acctest%[2]s"
-  location = "%[1]s"
-}
-
-resource "azurerm_purview_account" "example" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
-resource "azapi_data_plane_resource" "test" {
-  type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
-  parent_id = replace(azurerm_purview_account.example.scan_endpoint, "https://", "")
-  name      = "acctest%[2]s"
-  body = jsonencode({
-    kind = "Custom"
-    properties = {
-      description        = "Let's put a cool desc here"
-      classificationName = "MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER"
-      columnPatterns = [
-        {
-          pattern = "^data$"
-          kind    = "Regex"
-        }
-      ]
-      dataPatterns = [
-        {
-          pattern = "^[0-9]{2}-[0-9]{4}-[0-9]{6}-[0-9]{3}$"
-          kind    = "Regex"
-        }
-      ]
-      minimumPercentageMatch = 60
-      ruleStatus             = "Enabled"
-    }
-  })
-}
-`, data.LocationPrimary, data.RandomString)
-}
-
 func (r DataPlaneResource) purviewCollection(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
@@ -302,9 +237,9 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
   parent_id = "${azurerm_purview_account.example.name}.purview.azure.com"
   name      = "defaultResourceSetRuleConfig"
-  body = jsonencode({
+  body = {
     friendlyName = "Finance"
-  })
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
@@ -312,7 +247,12 @@ resource "azapi_data_plane_resource" "test" {
 func (r DataPlaneResource) keyVaultIssuer(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
+    }
+  }
 }
 
 data "azurerm_client_config" "current" {}
@@ -338,7 +278,7 @@ resource "azapi_resource_action" "add_accesspolicy" {
   type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
   resource_id = "${azurerm_key_vault.example.id}/accessPolicies/add"
   method      = "PUT"
-  body = jsonencode({
+  body = {
     properties = {
       accessPolicies = [{
         tenantId = data.azurerm_client_config.current.tenant_id
@@ -348,14 +288,14 @@ resource "azapi_resource_action" "add_accesspolicy" {
         }
       }]
     }
-  })
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.KeyVault/vaults/certificates/issuers@7.4"
   parent_id = replace(azurerm_key_vault.example.vault_uri, "https://", "")
   name      = "acctest%[2]s"
-  body = jsonencode({
+  body = {
     provider = "Test"
     credentials = {
       account_id = "keyvaultuser"
@@ -370,7 +310,7 @@ resource "azapi_data_plane_resource" "test" {
         }
       ]
     }
-  })
+  }
   depends_on = [
     azapi_resource_action.add_accesspolicy
   ]
@@ -399,7 +339,7 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.IoTCentral/IoTApps/users@2022-07-31"
   parent_id = "${azurerm_iotcentral_application.example.sub_domain}.azureiotcentral.com"
   name      = "acctest%[2]s"
-  body = jsonencode({
+  body = {
     type = "email"
     roles = [
       {
@@ -407,7 +347,7 @@ resource "azapi_data_plane_resource" "test" {
       }
     ]
     email = "user5@contoso.com"
-  })
+  }
 }
 
 `, data.LocationPrimary, data.RandomString)
@@ -443,12 +383,10 @@ resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
   parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
   name      = "mykey"
-  body = jsonencode(
-    {
-      content_type = ""
-      value        = "myvalue"
-    }
-  )
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
 
   depends_on = [
     azurerm_role_assignment.test,

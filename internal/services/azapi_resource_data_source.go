@@ -246,10 +246,6 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Identity = identity.ToList(*v)
 		}
 	}
-	if r.ProviderData.Features.EnableHCLOutputForDataSource {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	} else {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

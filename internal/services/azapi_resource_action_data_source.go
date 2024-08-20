@@ -88,15 +88,9 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				MarkdownDescription: "The HTTP method to use when performing the action. Must be one of `POST`, `GET`. Defaults to `POST`.",
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
-				MarkdownDescription: docstrings.Body(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -178,11 +172,7 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	if dynamicIsString(model.Body) || !r.ProviderData.Features.EnableHCLOutputForDataSource {
-		model.Output = types.DynamicValue(basetypes.NewStringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

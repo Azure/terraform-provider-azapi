@@ -56,7 +56,7 @@ data "azapi_resource_action" "example" {
 ### Optional
 
 - `action` (String) The name of the resource action. It's also possible to make HTTP requests towards the resource ID if leave this field empty.
-- `body` (Dynamic) A dynamic attribute that contains the request body.
+- `body` (Dynamic)
 - `method` (String) The HTTP method to use when performing the action. Must be one of `POST`, `GET`. Defaults to `POST`.
 - `resource_id` (String) The ID of the Azure resource to perform the action on.
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.

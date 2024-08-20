@@ -22,7 +22,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "removing_special_chars", "output"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "output"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
@@ -36,21 +36,6 @@ func TestAccGenericResource_basic(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.basic(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		data.ImportStep(defaultIgnores()...),
-	})
-}
-
-func TestAccGenericResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -310,22 +295,6 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_defaultsNamingPrefixAndSuffix(t *testing.T) {
-	t.Skip(`The default naming prefix and suffix are not compatible with the framework, because the computed name is not the same as the config name, the framework will fail as it's an invalid plan'`)
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.defaultNamingWithPrefixAndSuffix(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-		data.ImportStep(defaultIgnores()...),
-	})
-}
-
 func TestAccGenericResource_subscriptionScope(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -398,7 +367,7 @@ func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -425,32 +394,6 @@ func TestAccGenericResource_secretsInAsterisks(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.secretsInAsterisks(data, clientId, clientSecret),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
-func TestAccGenericResource_ignoreChanges(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChanges(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
-func TestAccGenericResource_ignoreChangesArray(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChangesArray(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -594,11 +537,11 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       base64Value = "%[3]s"
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, testCertBase64)
 }
@@ -619,34 +562,9 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  retryable_errors = {
+  retry = {
     error_message_regex = ["test error"]
   }
-
-  body = jsonencode({
-    properties = {
-      base64Value = "%[3]s"
-    }
-  })
-}
-`, r.template(data), data.RandomString, testCertBase64)
-}
-
-func (r GenericResource) dynamicSchema(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
-}
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
-  name      = "acctest%[2]s"
-  parent_id = azurerm_automation_account.test.id
 
   body = {
     properties = {
@@ -673,11 +591,11 @@ resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
   parent_id                 = azurerm_automation_account.test.id
   schema_validation_enabled = false
-  body = jsonencode({
+  body = {
     properties = {
       base64Value = "%[3]s"
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, testCertBase64)
 }
@@ -690,11 +608,11 @@ resource "azapi_resource" "import" {
   type      = azapi_resource.test.type
   name      = azapi_resource.test.name
   parent_id = azapi_resource.test.parent_id
-  body = jsonencode({
+  body = {
     properties = {
       base64Value = "%s"
     }
-  })
+  }
 }
 `, r.basic(data), testCertBase64)
 }
@@ -715,11 +633,11 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       base64Value = "%[3]s"
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, testCertBase64)
 }
@@ -745,17 +663,56 @@ resource "azapi_resource" "test" {
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 
   tags = {
     "Key" = "Value"
   }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary)
+}
+
+func (r GenericResource) completeJsonBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azapi" {
+}
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+}
+
+resource "azapi_resource" "test" {
+  name                      = "acctest%[2]s"
+  parent_id                 = azurerm_resource_group.test.id
+  type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  schema_validation_enabled = false
+  body = jsonencode({
+    location = azurerm_resource_group.test.location
+    identity = {
+      type = "SystemAssigned, UserAssigned"
+      userAssignedIdentities = {
+        (azurerm_user_assigned_identity.test.id) = {}
+      }
+    }
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+    tags = {
+      "Key" = "Value"
+    }
+  })
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -778,25 +735,23 @@ resource "azapi_resource" "test" {
   parent_id                 = azurerm_resource_group.test.id
   type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
   schema_validation_enabled = false
-  body                      = <<BODY
-    {
-      "location": "${azurerm_resource_group.test.location}",
-      "identity": {
-		"type": "SystemAssigned, UserAssigned",
-        "userAssignedIdentities": {
-          "${azurerm_user_assigned_identity.test.id}": {}
-        }
-      },
-      "properties": {
-        "sku": {
-          "name": "Basic"
-        }
-      },
-      "tags": {
-        "key":"value"
+  body = {
+    location = azurerm_resource_group.test.location
+    identity = {
+      type = "SystemAssigned, UserAssigned"
+      userAssignedIdentities = {
+        (azurerm_user_assigned_identity.test.id) = {}
       }
     }
-  BODY
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+    tags = {
+      "Key" = "Value"
+    }
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -812,13 +767,13 @@ resource "azapi_resource" "test" {
 
   location = "%[3]s"
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -836,13 +791,13 @@ resource "azapi_resource" "test" {
   identity {
     type = "SystemAssigned"
   }
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -868,13 +823,13 @@ resource "azapi_resource" "test" {
     identity_ids = [azurerm_user_assigned_identity.test.id]
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 
   tags = {
     "Key" = "Value"
@@ -902,13 +857,13 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
@@ -933,7 +888,7 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
@@ -942,7 +897,7 @@ resource "azapi_resource" "test" {
     tags = {
       key = "override"
     }
-  })
+  }
 
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
@@ -967,13 +922,13 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 
   tags = {
     key = "override"
@@ -998,13 +953,13 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary)
 }
@@ -1026,7 +981,7 @@ resource "azapi_resource" "test" {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
@@ -1035,7 +990,7 @@ resource "azapi_resource" "test" {
     tags = {
       key = "override"
     }
-  })
+  }
 
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, data.LocationSecondary)
@@ -1066,13 +1021,13 @@ resource "azapi_resource" "test" {
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 }
 `, r.template(data))
 }
@@ -1090,40 +1045,15 @@ resource "azapi_resource" "test" {
   parent_id = azurerm_resource_group.test.id
 
   location = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
 }
 `, r.template(data))
-}
-
-func (r GenericResource) defaultNamingWithPrefixAndSuffix(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-provider "azapi" {
-  default_naming_prefix = "p%[2]s-"
-  default_naming_suffix = "-s%[2]s"
-}
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "acc"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
-  body = jsonencode({
-    properties = {
-      sku = {
-        name = "Basic"
-      }
-    }
-  })
-}
-`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {
@@ -1149,11 +1079,11 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_automation_account.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       base64Value = "%[4]s"
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, testCertBase64)
 }
@@ -1184,7 +1114,7 @@ resource "azapi_resource" "workspace" {
   parent_id = azurerm_resource_group.test.id
   name      = "acctest-oi-%[2]d"
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       features = {
         disableLocalAuth                            = false
@@ -1200,32 +1130,32 @@ resource "azapi_resource" "workspace" {
         dailyQuotaGb = -1
       }
     }
-  })
+  }
 }
 
 resource "azapi_resource" "onboardingState" {
   type      = "Microsoft.SecurityInsights/onboardingStates@2022-11-01"
   parent_id = azapi_resource.workspace.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       customerManagedKey = false
     }
-  })
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.SecurityInsights/watchlists@2022-11-01"
   parent_id = azapi_resource.workspace.id
   name      = "acctest-wl-%[2]d"
-  body = jsonencode({
+  body = {
     properties = {
       displayName    = "test"
       itemsSearchKey = "k1"
       provider       = "Microsoft"
       source         = ""
     }
-  })
+  }
   depends_on = [azapi_resource.onboardingState]
 }
 `, r.template(data), data.RandomInteger)
@@ -1254,13 +1184,13 @@ resource "azapi_resource" "test" {
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       accountKey  = azurerm_storage_account.test.primary_access_key
       accountName = azurerm_storage_account.test.name
       storageType = "StorageAccount"
     }
-  })
+  }
 
   ignore_missing_property = true
 }
@@ -1290,13 +1220,13 @@ resource "azapi_resource" "test" {
   name      = "acctest-ss-%[2]d"
   parent_id = azurerm_spring_cloud_service.test.id
 
-  body = jsonencode({
+  body = {
     properties = {
       accountKey  = azurerm_storage_account.test.primary_access_key
       accountName = azurerm_storage_account.test.name
       storageType = "storageaccount"
     }
-  })
+  }
 
   schema_validation_enabled = false
   ignore_casing             = true
@@ -1314,11 +1244,11 @@ resource "azapi_resource" "test" {
   name      = "acctest-sb-%[2]d"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     sku = {
       name = "Premium"
     }
-  })
+  }
 }
 
 `, r.template(data), data.RandomInteger, data.RandomString)
@@ -1339,12 +1269,12 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "first%[2]d"
   parent_id = azurerm_route_table.test.id
-  body = jsonencode({
+  body = {
     properties = {
       nextHopType   = "VnetLocal"
       addressPrefix = "10.1.0.0/16"
     }
-  })
+  }
 
   locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
 }
@@ -1353,12 +1283,12 @@ resource "azapi_resource" "test2" {
   type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "second%[2]d"
   parent_id = azurerm_route_table.test.id
-  body = jsonencode({
+  body = {
     properties = {
       nextHopType   = "VnetLocal"
       addressPrefix = "10.3.0.0/16"
     }
-  })
+  }
 
   locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
 }
@@ -1388,7 +1318,7 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.AppPlatform/Spring/apiPortals@2022-12-01"
   parent_id = azurerm_spring_cloud_service.test.id
   name      = "default"
-  body = jsonencode({
+  body = {
     properties = {
       gatewayIds = [azurerm_spring_cloud_gateway.test.id]
       httpsOnly  = false
@@ -1400,80 +1330,10 @@ resource "azapi_resource" "test" {
         scope        = ["read"]
       }
     }
-  })
+  }
   ignore_casing = true
 }
 `, r.template(data), data.RandomInteger, data.RandomString, clientId, clientSecret)
-}
-
-func (r GenericResource) ignoreChanges(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "acctest%[2]d"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
-  body = jsonencode({
-    properties = {
-      sku = {
-        name = "Free"
-      }
-    }
-  })
-
-  ignore_body_changes = ["properties.sku.name"]
-}
-
-
-`, r.template(data), data.RandomInteger)
-}
-
-func (r GenericResource) ignoreChangesArray(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azapi_resource" "test" {
-  type      = "Microsoft.Network/virtualNetworks@2022-07-01"
-  parent_id = azurerm_resource_group.test.id
-  name      = "acctest%[2]d"
-  location  = azurerm_resource_group.test.location
-  body = jsonencode({
-    properties = {
-      addressSpace = {
-        addressPrefixes = [
-          "10.0.0.0/16",
-        ]
-      }
-      subnets = [
-        {
-          name = "first"
-          properties = {
-            addressPrefix = "10.0.1.0/24"
-          }
-        }
-      ]
-    }
-  })
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
-  ignore_body_changes       = ["properties.subnets"]
-}
-
-resource "azapi_resource" "subnet" {
-  type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
-  parent_id = azapi_resource.test.id
-  name      = "second"
-  body = jsonencode({
-    properties = {
-      addressPrefix = "10.0.2.0/24"
-    }
-  })
-  schema_validation_enabled = false
-  response_export_values    = ["*"]
-}
-`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericResource) nonstandardLRO(data acceptance.TestData) string {
@@ -1498,7 +1358,7 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.CostManagement/exports@2022-10-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
-  body = jsonencode({
+  body = {
     properties = {
       schedule = {
         recurrence = "Monthly"
@@ -1522,7 +1382,7 @@ resource "azapi_resource" "test" {
         }
       }
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -1577,14 +1437,14 @@ resource "azapi_resource" "test" {
   type      = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
   name      = "acctest%[2]s"
   parent_id = azurerm_machine_learning_workspace.test.id
-  body = jsonencode({
+  body = {
     properties = {
       category    = "UserDefined"
       status      = "Active"
       type        = "FQDN"
       destination = "example.org"
     }
-  })
+  }
   locks = [azurerm_machine_learning_workspace.test.id]
 }
 `, r.template(data), data.RandomString)
@@ -1639,13 +1499,13 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
+  }
   timeouts {
     create = "10m"
     update = "10m"
@@ -1686,14 +1546,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = [
+  }
+  replace_triggers_external_values = [
     "value1"
   ]
 }
@@ -1709,14 +1569,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = [
+  }
+  replace_triggers_external_values = [
     "value2"
   ]
 }
@@ -1732,14 +1592,14 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azurerm_resource_group.test.id
   location  = azurerm_resource_group.test.location
-  body = jsonencode({
+  body = {
     properties = {
       sku = {
         name = "Basic"
       }
     }
-  })
-  replace_triggered_by = null
+  }
+  replace_triggers_external_values = null
 }
 `, r.template(data), data.RandomString)
 }
