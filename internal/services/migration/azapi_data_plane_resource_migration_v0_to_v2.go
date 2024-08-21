@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgrader {
+func AzapiDataPlaneResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 	return resource.StateUpgrader{
 		PriorSchema: &schema.Schema{
 			Attributes: map[string]schema.Attribute{
@@ -18,18 +18,11 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				},
 
 				"name": schema.StringAttribute{
-					Optional: true,
-					Computed: true,
+					Required: true,
 				},
 
 				"parent_id": schema.StringAttribute{
-					Optional: true,
-					Computed: true,
-				},
-
-				"resource_id": schema.StringAttribute{
-					Optional: true,
-					Computed: true,
+					Required: true,
 				},
 
 				"type": schema.StringAttribute{
@@ -41,15 +34,9 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 					Computed: true,
 				},
 
-				"ignore_body_changes": schema.ListAttribute{
-					ElementType: types.StringType,
-					Optional:    true,
-				},
-
 				"ignore_casing": schema.BoolAttribute{
 					Optional: true,
-					Computed: true,
-				},
+					Computed: true},
 
 				"ignore_missing_property": schema.BoolAttribute{
 					Optional: true,
@@ -79,6 +66,7 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 					Delete: true,
 				}),
 			},
+
 			Version: 0,
 		},
 		StateUpgrader: func(ctx context.Context, request resource.UpgradeStateRequest, response *resource.UpgradeStateResponse) {
@@ -86,11 +74,9 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				ID                    types.String   `tfsdk:"id"`
 				Name                  types.String   `tfsdk:"name"`
 				ParentID              types.String   `tfsdk:"parent_id"`
-				ResourceID            types.String   `tfsdk:"resource_id"`
 				Type                  types.String   `tfsdk:"type"`
 				Body                  types.String   `tfsdk:"body"`
 				IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-				IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
 				IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
 				ResponseExportValues  types.List     `tfsdk:"response_export_values"`
 				Locks                 types.List     `tfsdk:"locks"`
@@ -101,11 +87,9 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				ID                    types.String   `tfsdk:"id"`
 				Name                  types.String   `tfsdk:"name"`
 				ParentID              types.String   `tfsdk:"parent_id"`
-				ResourceID            types.String   `tfsdk:"resource_id"`
 				Type                  types.String   `tfsdk:"type"`
 				Body                  types.Dynamic  `tfsdk:"body"`
 				IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-				IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
 				IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
 				ResponseExportValues  types.List     `tfsdk:"response_export_values"`
 				Locks                 types.List     `tfsdk:"locks"`
@@ -118,19 +102,31 @@ func AzapiUpdateResourceMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				return
 			}
 
+			oldBody := types.DynamicValue(types.StringValue(oldState.Body.ValueString()))
+			bodyVal, err := migrateToDynamicValue(oldBody)
+			if err != nil {
+				response.Diagnostics.AddError("failed to migrate body to dynamic value", err.Error())
+				return
+			}
+
+			oldOutput := types.DynamicValue(types.StringValue(oldState.Output.ValueString()))
+			outputVal, err := migrateToDynamicValue(oldOutput)
+			if err != nil {
+				response.Diagnostics.AddError("failed to migrate output to dynamic value", err.Error())
+				return
+			}
+
 			newState := newModel{
 				ID:                    oldState.ID,
 				Name:                  oldState.Name,
 				ParentID:              oldState.ParentID,
-				ResourceID:            oldState.ResourceID,
 				Type:                  oldState.Type,
-				Body:                  types.DynamicValue(types.StringValue(oldState.Body.ValueString())),
+				Body:                  bodyVal,
 				Locks:                 oldState.Locks,
-				IgnoreBodyChanges:     oldState.IgnoreBodyChanges,
 				IgnoreCasing:          oldState.IgnoreCasing,
 				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
 				ResponseExportValues:  oldState.ResponseExportValues,
-				Output:                types.DynamicValue(types.StringValue(oldState.Output.ValueString())),
+				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,
 			}
 

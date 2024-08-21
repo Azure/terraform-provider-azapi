@@ -476,3 +476,49 @@ func TestAccAzapiResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 		}),
 	})
 }
+
+func TestAccAzapiResourceUpgrade_completeBody_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.completeJsonBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.completeBody(data),
+			// It's a known breaking change that identity in the body will not be synced to the top-level identity block
+			ExpectNonEmptyPlan: true,
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.completeBody(data),
+		}),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.completeBody(data),
+		}),
+	})
+}
+
+func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	updatedConfig := r.oldConfig(data)
+	updatedConfig = strings.ReplaceAll(updatedConfig, "jsonencode({", "{")
+	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.oldConfig(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
+	})
+}

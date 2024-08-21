@@ -401,3 +401,36 @@ resource "azapi_data_plane_resource" "test" {
 }
 `, data.LocationPrimary, data.RandomString)
 }
+
+func (r DataPlaneResource) oldConfig(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_purview_account" "example" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
+  parent_id = "${azurerm_purview_account.example.name}.purview.azure.com"
+  name      = "defaultResourceSetRuleConfig"
+  body = jsonencode({
+    friendlyName = "Finance"
+  })
+  response_export_values = ["*"]
+}
+`, data.LocationPrimary, data.RandomString)
+}

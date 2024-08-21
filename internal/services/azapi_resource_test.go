@@ -1603,3 +1603,27 @@ resource "azapi_resource" "test" {
 }
 `, r.template(data), data.RandomString)
 }
+
+func (r GenericResource) oldConfig(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azurerm_resource_group.test.id
+  location  = azurerm_resource_group.test.location
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+  tags = {
+    env = "prod"
+  }
+  response_export_values = ["properties"]
+}
+`, r.template(data), data.RandomString)
+}

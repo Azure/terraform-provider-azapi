@@ -3,13 +3,14 @@ package migration
 import (
 	"context"
 
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func AzapiResourceActionMigrationV0ToV1(ctx context.Context) resource.StateUpgrader {
+func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 	return resource.StateUpgrader{
 		PriorSchema: &schema.Schema{
 			Attributes: map[string]schema.Attribute{
@@ -82,17 +83,18 @@ func AzapiResourceActionMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				Timeouts             timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                   types.String   `tfsdk:"id"`
-				Type                 types.String   `tfsdk:"type"`
-				ResourceId           types.String   `tfsdk:"resource_id"`
-				Action               types.String   `tfsdk:"action"`
-				Method               types.String   `tfsdk:"method"`
-				Body                 types.Dynamic  `tfsdk:"body"`
-				When                 types.String   `tfsdk:"when"`
-				Locks                types.List     `tfsdk:"locks"`
-				ResponseExportValues types.List     `tfsdk:"response_export_values"`
-				Output               types.Dynamic  `tfsdk:"output"`
-				Timeouts             timeouts.Value `tfsdk:"timeouts"`
+				ID                   types.String     `tfsdk:"id"`
+				Type                 types.String     `tfsdk:"type"`
+				ResourceId           types.String     `tfsdk:"resource_id"`
+				Action               types.String     `tfsdk:"action"`
+				Method               types.String     `tfsdk:"method"`
+				Body                 types.Dynamic    `tfsdk:"body"`
+				When                 types.String     `tfsdk:"when"`
+				Locks                types.List       `tfsdk:"locks"`
+				ResponseExportValues types.List       `tfsdk:"response_export_values"`
+				Output               types.Dynamic    `tfsdk:"output"`
+				Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+				Retry                retry.RetryValue `tfsdk:"retry"`
 			}
 
 			var oldState OldModel
@@ -110,18 +112,36 @@ func AzapiResourceActionMigrationV0ToV1(ctx context.Context) resource.StateUpgra
 				body = types.DynamicValue(types.StringValue(oldState.Body.ValueString()))
 			}
 
+			bodyVal, err := migrateToDynamicValue(body)
+			if err != nil {
+				response.Diagnostics.AddError("failed to migrate body to dynamic value", err.Error())
+				return
+			}
+
+			output := types.DynamicNull()
+			if !oldState.Output.IsNull() && oldState.Output.ValueString() != "" {
+				output = types.DynamicValue(types.StringValue(oldState.Output.ValueString()))
+			}
+
+			outputVal, err := migrateToDynamicValue(output)
+			if err != nil {
+				response.Diagnostics.AddError("failed to migrate output to dynamic value", err.Error())
+				return
+			}
+
 			newState := newModel{
 				ID:                   oldState.ID,
 				Type:                 oldState.Type,
 				ResourceId:           oldState.ResourceId,
 				Action:               oldState.Action,
 				Method:               oldState.Method,
-				Body:                 body,
+				Body:                 bodyVal,
 				When:                 when,
 				Locks:                oldState.Locks,
 				ResponseExportValues: oldState.ResponseExportValues,
-				Output:               types.DynamicValue(types.StringValue(oldState.Output.ValueString())),
+				Output:               outputVal,
 				Timeouts:             oldState.Timeouts,
+				Retry:                retry.NewRetryValueNull(),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)
