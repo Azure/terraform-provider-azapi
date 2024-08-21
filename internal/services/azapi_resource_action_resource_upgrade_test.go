@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
-	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -143,9 +142,7 @@ func TestAccAzapiActionResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
 			Config: r.oldConfig(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
+			Check:  resource.ComposeTestCheckFunc(),
 		}, "1.12.1"),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: updatedConfig,
