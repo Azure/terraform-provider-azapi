@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -32,17 +33,18 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                    types.String   `tfsdk:"id"`
-	Name                  types.String   `tfsdk:"name"`
-	ParentID              types.String   `tfsdk:"parent_id"`
-	Type                  types.String   `tfsdk:"type"`
-	Body                  types.Dynamic  `tfsdk:"body"`
-	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-	Locks                 types.List     `tfsdk:"locks"`
-	Output                types.Dynamic  `tfsdk:"output"`
-	Timeouts              timeouts.Value `tfsdk:"timeouts"`
+	ID                    types.String     `tfsdk:"id"`
+	Name                  types.String     `tfsdk:"name"`
+	ParentID              types.String     `tfsdk:"parent_id"`
+	Type                  types.String     `tfsdk:"type"`
+	Body                  types.Dynamic    `tfsdk:"body"`
+	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List       `tfsdk:"response_export_values"`
+	Retry                 retry.RetryValue `tfsdk:"retry"`
+	Locks                 types.List       `tfsdk:"locks"`
+	Output                types.Dynamic    `tfsdk:"output"`
+	Timeouts              timeouts.Value   `tfsdk:"timeouts"`
 }
 
 type DataPlaneResource struct {
@@ -142,6 +144,8 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
+			"retry": retry.SingleNestedAttribute(ctx),
+
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
 				Optional:    true,
@@ -213,7 +217,18 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	client := r.ProviderData.DataPlaneClient
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+	}
 	isNewResource := state == nil || state.Raw.IsNull()
 
 	var timeout time.Duration
@@ -299,7 +314,18 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	client := r.ProviderData.DataPlaneClient
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+	}
 	responseBody, err := client.Get(ctx, id)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -350,12 +376,23 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 }
 
 func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
-	client := r.ProviderData.DataPlaneClient
-
 	var model *DataPlaneResourceModel
 	response.Diagnostics.Append(request.State.Get(ctx, &model)...)
 	if response.Diagnostics.HasError() {
 		return
+	}
+
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)

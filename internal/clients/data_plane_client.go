@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/cenkalti/backoff/v4"
 )
 
 type DataPlaneClient struct {
@@ -23,6 +25,35 @@ type DataPlaneClient struct {
 	clientOptions   *arm.ClientOptions
 	cachedPipelines map[string]runtime.Pipeline
 	syncMux         sync.Mutex
+}
+
+type DataPlaneClientRetryableErrors struct {
+	client  DataPlaneRequester          // client is a DataPlaneRequester interface to allow mocking
+	backoff *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
+	errors  []regexp.Regexp             // errors is the list of errors regexp to retry on
+}
+
+type DataPlaneRequester interface {
+	CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}) (interface{}, error)
+	Get(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error)
+	DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error)
+	Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error)
+}
+
+var (
+	_ DataPlaneRequester = &DataPlaneClient{}
+	_ DataPlaneRequester = &DataPlaneClientRetryableErrors{}
+)
+
+// NewDataPlaneClientRetryableErrors creates a new ResourceClientRetryableErrors.
+func NewDataPlaneClientRetryableErrors(client DataPlaneRequester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+	rcre := &DataPlaneClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
 }
 
 func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*DataPlaneClient, error) {
@@ -35,6 +66,17 @@ func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOption
 		cachedPipelines: make(map[string]runtime.Pipeline),
 		syncMux:         sync.Mutex{},
 	}, nil
+}
+
+// WithRetry configures the retryable errors for the client.
+func (client *DataPlaneClient) WithRetry(bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+	rcre := &DataPlaneClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
 }
 
 func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, error) {
@@ -250,4 +292,88 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	default:
 	}
 	return responseBody, nil
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.CreateOrUpdateThenPoll(ctx, id, body)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Get(ctx, id)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.DeleteThenPoll(ctx, id)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }
