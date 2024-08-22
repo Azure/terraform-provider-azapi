@@ -493,7 +493,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	if isNewResource {
 		// check if the resource already exists
-		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
