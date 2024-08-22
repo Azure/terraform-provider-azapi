@@ -3,6 +3,7 @@ package migration
 import (
 	"context"
 
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -84,17 +85,18 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				Timeouts              timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                    types.String   `tfsdk:"id"`
-				Name                  types.String   `tfsdk:"name"`
-				ParentID              types.String   `tfsdk:"parent_id"`
-				Type                  types.String   `tfsdk:"type"`
-				Body                  types.Dynamic  `tfsdk:"body"`
-				IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-				ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-				Locks                 types.List     `tfsdk:"locks"`
-				Output                types.Dynamic  `tfsdk:"output"`
-				Timeouts              timeouts.Value `tfsdk:"timeouts"`
+				ID                    types.String     `tfsdk:"id"`
+				Name                  types.String     `tfsdk:"name"`
+				ParentID              types.String     `tfsdk:"parent_id"`
+				Type                  types.String     `tfsdk:"type"`
+				Body                  types.Dynamic    `tfsdk:"body"`
+				IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
+				ResponseExportValues  types.List       `tfsdk:"response_export_values"`
+				Retry                 retry.RetryValue `tfsdk:"retry"`
+				Locks                 types.List       `tfsdk:"locks"`
+				Output                types.Dynamic    `tfsdk:"output"`
+				Timeouts              timeouts.Value   `tfsdk:"timeouts"`
 			}
 
 			var oldState OldModel
@@ -123,6 +125,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				IgnoreCasing:          oldState.IgnoreCasing,
 				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
 				ResponseExportValues:  oldState.ResponseExportValues,
+				Retry:                 retry.NewRetryValueNull(),
 				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,
 			}
