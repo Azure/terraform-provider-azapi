@@ -1328,7 +1328,7 @@ resource "azapi_resource" "test" {
 
   body = {
     properties = {
-      accountKey  = data.azapi_resource_action.listKeys.output.keys[0].value
+      accountKey  = try(data.azapi_resource_action.listKeys.output.keys[0].value, jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value)
       accountName = azapi_resource.storageAccount.name
       storageType = "storageaccount"
     }

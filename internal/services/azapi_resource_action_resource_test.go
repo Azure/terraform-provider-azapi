@@ -180,6 +180,9 @@ resource "azapi_resource_action" "test" {
 
 func (r ActionResource) nonstandardLRO(data acceptance.TestData) string {
 	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
 
 resource "azurerm_resource_group" "test" {
   name     = "acctestrg-%[2]s"

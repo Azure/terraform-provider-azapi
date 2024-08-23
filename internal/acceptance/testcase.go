@@ -74,7 +74,9 @@ func (td *TestData) RandomStringOfLength(len int) string {
 
 // UpgradeTestDeployStep returns a test step used to deploy the configuration with previous version
 func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom string) resource.TestStep {
-	step.ExternalProviders = td.externalProviders()
+	if step.ExternalProviders == nil {
+		step.ExternalProviders = td.externalProviders()
+	}
 	step.ExternalProviders["azapi"] = resource.ExternalProvider{
 		Source:            "registry.terraform.io/azure/azapi",
 		VersionConstraint: fmt.Sprintf("= %s", upgradeFrom),
@@ -85,7 +87,9 @@ func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom str
 
 // UpgradeTestApplyStep returns a test step used to run terraform apply with the development version
 func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.TestStep {
-	applyStep.ExternalProviders = td.externalProviders()
+	if applyStep.ExternalProviders == nil {
+		applyStep.ExternalProviders = td.externalProviders()
+	}
 	applyStep.ProtoV6ProviderFactories = td.providers()
 	return applyStep
 }
@@ -93,7 +97,9 @@ func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.Te
 // UpgradeTestPlanStep returns a test step used to run terraform plan with the development version to check if there's any changes
 func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.TestStep {
 	planStep.PlanOnly = true
-	planStep.ExternalProviders = td.externalProviders()
+	if planStep.ExternalProviders == nil {
+		planStep.ExternalProviders = td.externalProviders()
+	}
 	planStep.ProtoV6ProviderFactories = td.providers()
 	return planStep
 }

@@ -92,11 +92,13 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.nonstandardLRO(data),
-			Check:  resource.ComposeTestCheckFunc(),
+			Config:            r.nonstandardLRO(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check:             resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.nonstandardLRO(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Config:            r.nonstandardLRO(data),
 		}),
 	})
 }
