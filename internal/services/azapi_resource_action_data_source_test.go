@@ -61,15 +61,12 @@ data "azapi_resource_action" "test" {
 
 func (r ActionDataSource) providerPermissions() string {
 	return `
-provider "azurerm" {
-  features {}
-}
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
 data "azapi_resource_action" "test" {
   type        = "Microsoft.Resources/providers@2021-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Network"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Network"
   action      = "providerPermissions"
   method      = "GET"
 }
