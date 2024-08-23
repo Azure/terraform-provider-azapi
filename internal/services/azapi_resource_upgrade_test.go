@@ -289,10 +289,6 @@ func TestAccAzapiResourceUpgrade_subscriptionScope(t *testing.T) {
 	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 
 	updatedConfig := fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
 resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2023-07-01"
   name      = "acctestRG-%[1]d"

@@ -148,6 +148,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
+				Computed: true,
+				// in the previous version, the default value is string "{}", now it's a dynamic value {}
+				Default: defaults.DynamicDefault(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})),
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},

@@ -165,16 +165,7 @@ func (td TestData) providers() map[string]func() (tfprotov6.ProviderServer, erro
 }
 
 func (td TestData) externalProviders() map[string]resource.ExternalProvider {
-	return map[string]resource.ExternalProvider{
-		"azurerm": {
-			Source:            "registry.terraform.io/hashicorp/azurerm",
-			VersionConstraint: "= 3.100.0",
-		},
-		"random": {
-			Source:            "registry.terraform.io/hashicorp/random",
-			VersionConstraint: "= 3.6.1",
-		},
-	}
+	return map[string]resource.ExternalProvider{}
 }
 
 func PreCheck(t *testing.T) {

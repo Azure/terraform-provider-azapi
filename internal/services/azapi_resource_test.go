@@ -434,6 +434,12 @@ func TestAccGenericResource_unknownName(t *testing.T) {
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
 			Config: r.unknownName(data),
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"random": {
+					Source:            "registry.terraform.io/hashicorp/random",
+					VersionConstraint: "= 3.6.1",
+				},
+			},
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -525,17 +531,24 @@ func (r GenericResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_automation_account.test.id
+  parent_id = azapi_resource.automationAccount.id
 
   body = {
     properties = {
@@ -550,17 +563,24 @@ func (r GenericResource) withRetry(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_automation_account.test.id
+  parent_id = azapi_resource.automationAccount.id
 
   retry = {
     error_message_regex = ["test error"]
@@ -579,17 +599,25 @@ func (r GenericResource) basicInvalidVersion(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
+
 
 resource "azapi_resource" "test" {
   type                      = "Microsoft.Automation/automationAccounts/certificates@1999-01-01"
   name                      = "acctest%[2]s"
-  parent_id                 = azurerm_automation_account.test.id
+  parent_id                 = azapi_resource.automationAccount.id
   schema_validation_enabled = false
   body = {
     properties = {
@@ -621,17 +649,24 @@ func (r GenericResource) importWithApiVersion(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts/certificates@2020-01-13-preview"
   name      = "acctest%[2]s"
-  parent_id = azurerm_automation_account.test.id
+  parent_id = azapi_resource.automationAccount.id
 
   body = {
     properties = {
@@ -646,21 +681,22 @@ func (r GenericResource) complete(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_user_assigned_identity" "test" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+resource "azapi_resource" "userAssignedIdentity" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   location = "%[3]s"
   identity {
     type         = "SystemAssigned, UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.test.id]
+    identity_ids = [azapi_resource.userAssignedIdentity.id]
   }
 
   body = {
@@ -682,26 +718,24 @@ func (r GenericResource) completeJsonBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-provider "azapi" {
-}
-
-resource "azurerm_user_assigned_identity" "test" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+resource "azapi_resource" "userAssignedIdentity" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
 }
 
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
-  parent_id                 = azurerm_resource_group.test.id
+  parent_id                 = azapi_resource.resourceGroup.id
   type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
   schema_validation_enabled = false
   body = jsonencode({
-    location = azurerm_resource_group.test.location
+    location = azapi_resource.resourceGroup.location
     identity = {
       type = "SystemAssigned, UserAssigned"
       userAssignedIdentities = {
-        (azurerm_user_assigned_identity.test.id) = {}
+        (azapi_resource.userAssignedIdentity.id) = {}
       }
     }
     properties = {
@@ -721,26 +755,24 @@ func (r GenericResource) completeBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-provider "azapi" {
-}
-
-resource "azurerm_user_assigned_identity" "test" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+resource "azapi_resource" "userAssignedIdentity" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
 }
 
 resource "azapi_resource" "test" {
   name                      = "acctest%[2]s"
-  parent_id                 = azurerm_resource_group.test.id
+  parent_id                 = azapi_resource.resourceGroup.id
   type                      = "Microsoft.Automation/automationAccounts@2023-11-01"
   schema_validation_enabled = false
   body = {
-    location = azurerm_resource_group.test.location
+    location = azapi_resource.resourceGroup.location
     identity = {
       type = "SystemAssigned, UserAssigned"
       userAssignedIdentities = {
-        (azurerm_user_assigned_identity.test.id) = {}
+        (azapi_resource.userAssignedIdentity.id) = {}
       }
     }
     properties = {
@@ -763,7 +795,7 @@ func (r GenericResource) identityNone(data acceptance.TestData) string {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   location = "%[3]s"
 
@@ -785,7 +817,7 @@ func (r GenericResource) identitySystemAssigned(data acceptance.TestData) string
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   location = "%[3]s"
   identity {
@@ -806,21 +838,22 @@ func (r GenericResource) identityUserAssigned(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
-resource "azurerm_user_assigned_identity" "test" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.test.name
-  location            = azurerm_resource_group.test.location
+resource "azapi_resource" "userAssignedIdentity" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   location = "%[3]s"
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.test.id]
+    identity_ids = [azapi_resource.userAssignedIdentity.id]
   }
 
   body = {
@@ -850,9 +883,8 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   identity {
     type = "SystemAssigned"
   }
@@ -881,9 +913,8 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   identity {
     type = "SystemAssigned"
   }
@@ -915,9 +946,8 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   identity {
     type = "SystemAssigned"
   }
@@ -947,7 +977,7 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   identity {
     type = "SystemAssigned"
@@ -974,7 +1004,7 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
 
   location = "%[4]s"
   identity {
@@ -1018,9 +1048,8 @@ provider "azapi" {
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1042,9 +1071,8 @@ provider "azapi" {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "hclNaming"
-  parent_id = azurerm_resource_group.test.id
-
-  location = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1067,17 +1095,24 @@ provider "azapi" {
   default_location = "%[3]s"
 }
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts/certificates@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_automation_account.test.id
+  parent_id = azapi_resource.automationAccount.id
 
   body = {
     properties = {
@@ -1090,9 +1125,6 @@ resource "azapi_resource" "test" {
 
 func (GenericResource) subscriptionScope(data acceptance.TestData, subscriptionId string) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2023-07-01"
@@ -1111,9 +1143,9 @@ func (r GenericResource) extensionScope(data acceptance.TestData) string {
 
 resource "azapi_resource" "workspace" {
   type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
-  parent_id = azurerm_resource_group.test.id
   name      = "acctest-oi-%[2]d"
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       features = {
@@ -1165,29 +1197,66 @@ func (r GenericResource) ignoreMissingProperty(data acceptance.TestData) string 
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_storage_account" "test" {
-  name                     = "acctestsa%[3]s"
-  resource_group_name      = azurerm_resource_group.test.name
-  location                 = azurerm_resource_group.test.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier                   = "Hot"
+      allowBlobPublicAccess        = true
+      allowCrossTenantReplication  = true
+      allowSharedKeyAccess         = true
+      defaultToOAuthAuthentication = false
+      isHnsEnabled                 = false
+      isNfsV3Enabled               = false
+      isSftpEnabled                = false
+      minimumTlsVersion            = "TLS1_2"
+      networkAcls = {
+        defaultAction = "Allow"
+      }
+      publicNetworkAccess      = "Enabled"
+      supportsHttpsTrafficOnly = true
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
 }
 
-resource "azurerm_spring_cloud_service" "test" {
-  name                = "acctest-sc-%[2]d"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-05-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "Spring" {
+  type      = "Microsoft.AppPlatform/Spring@2024-05-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-sc-%[2]d"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      zoneRedundant = false
+    }
+    sku = {
+      name = "S0"
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2023-12-01"
+  type      = "Microsoft.AppPlatform/Spring/storages@2023-12-01"
   name      = "acctest-ss-%[2]d"
-  parent_id = azurerm_spring_cloud_service.test.id
+  parent_id = azapi_resource.Spring.id
 
   body = {
     properties = {
-      accountKey  = azurerm_storage_account.test.primary_access_key
-      accountName = azurerm_storage_account.test.name
+      accountKey  = try(data.azapi_resource_action.listKeys.output.keys[0].value, jsondecode(data.azapi_resource_action.listKeys.output).keys[0].value)
+      accountName = azapi_resource.storageAccount.name
       storageType = "StorageAccount"
     }
   }
@@ -1201,29 +1270,66 @@ func (r GenericResource) ignoreCasing(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_storage_account" "test" {
-  name                     = "acctestsa%[3]s"
-  resource_group_name      = azurerm_resource_group.test.name
-  location                 = azurerm_resource_group.test.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier                   = "Hot"
+      allowBlobPublicAccess        = true
+      allowCrossTenantReplication  = true
+      allowSharedKeyAccess         = true
+      defaultToOAuthAuthentication = false
+      isHnsEnabled                 = false
+      isNfsV3Enabled               = false
+      isSftpEnabled                = false
+      minimumTlsVersion            = "TLS1_2"
+      networkAcls = {
+        defaultAction = "Allow"
+      }
+      publicNetworkAccess      = "Enabled"
+      supportsHttpsTrafficOnly = true
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
 }
 
-resource "azurerm_spring_cloud_service" "test" {
-  name                = "acctest-sc-%[2]d"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-05-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "Spring" {
+  type      = "Microsoft.AppPlatform/Spring@2024-05-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-sc-%[2]d"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      zoneRedundant = false
+    }
+    sku = {
+      name = "S0"
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
-  type      = "Microsoft.AppPlatform/spring/storages@2024-05-01-preview"
+  type      = "Microsoft.AppPlatform/Spring/storages@2024-05-01-preview"
   name      = "acctest-ss-%[2]d"
-  parent_id = azurerm_spring_cloud_service.test.id
+  parent_id = azapi_resource.Spring.id
 
   body = {
     properties = {
-      accountKey  = azurerm_storage_account.test.primary_access_key
-      accountName = azurerm_storage_account.test.name
+      accountKey  = data.azapi_resource_action.listKeys.output.keys[0].value
+      accountName = azapi_resource.storageAccount.name
       storageType = "storageaccount"
     }
   }
@@ -1242,8 +1348,8 @@ func (r GenericResource) deleteLROEndsWithNotFoundError(data acceptance.TestData
 resource "azapi_resource" "test" {
   type      = "Microsoft.ServiceBus/namespaces@2022-10-01-preview"
   name      = "acctest-sb-%[2]d"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     sku = {
       name = "Premium"
@@ -1258,17 +1364,25 @@ func (r GenericResource) locks(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-
-resource "azurerm_route_table" "test" {
-  name                = "acctestrt%[2]d"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
+resource "azapi_resource" "routeTable" {
+  type      = "Microsoft.Network/routeTables@2024-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestrt%[2]d"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      disableBgpRoutePropagation = false
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.routes]
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "first%[2]d"
-  parent_id = azurerm_route_table.test.id
+  parent_id = azapi_resource.routeTable.id
   body = {
     properties = {
       nextHopType   = "VnetLocal"
@@ -1276,13 +1390,13 @@ resource "azapi_resource" "test" {
     }
   }
 
-  locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
+  locks = [azapi_resource.routeTable.id, azapi_resource.resourceGroup.id]
 }
 
 resource "azapi_resource" "test2" {
   type      = "Microsoft.Network/routeTables/routes@2023-09-01"
   name      = "second%[2]d"
-  parent_id = azurerm_route_table.test.id
+  parent_id = azapi_resource.routeTable.id
   body = {
     properties = {
       nextHopType   = "VnetLocal"
@@ -1290,7 +1404,7 @@ resource "azapi_resource" "test2" {
     }
   }
 
-  locks = [azurerm_route_table.test.id, azurerm_resource_group.test.id]
+  locks = [azapi_resource.routeTable.id, azapi_resource.resourceGroup.id]
 }
 `, r.template(data), data.RandomInteger, data.RandomString)
 }
@@ -1299,34 +1413,54 @@ func (r GenericResource) secretsInAsterisks(data acceptance.TestData, clientId, 
 	return fmt.Sprintf(`
 %[1]s
 
-data "azurerm_client_config" "current" {
+data "azapi_client_config" "current" {
 }
 
-resource "azurerm_spring_cloud_service" "test" {
-  name                = "acctest-sc-%[2]d"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "E0"
+resource "azapi_resource" "Spring" {
+  type      = "Microsoft.AppPlatform/Spring@2024-05-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-sc-%[2]d"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      zoneRedundant = false
+    }
+    sku = {
+      name = "E0"
+    }
+  }
 }
 
-resource "azurerm_spring_cloud_gateway" "test" {
-  name                    = "default"
-  spring_cloud_service_id = azurerm_spring_cloud_service.test.id
+resource "azapi_resource" "gateway" {
+  type      = "Microsoft.AppPlatform/Spring/gateways@2024-05-01-preview"
+  parent_id = azapi_resource.Spring.id
+  name      = "default"
+  body = {
+    properties = {
+      httpsOnly = false
+      public    = false
+    }
+    sku = {
+      capacity = 1
+      name     = "E0"
+      tier     = "Enterprise"
+    }
+  }
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.AppPlatform/Spring/apiPortals@2022-12-01"
-  parent_id = azurerm_spring_cloud_service.test.id
+  parent_id = azapi_resource.Spring.id
   name      = "default"
   body = {
     properties = {
-      gatewayIds = [azurerm_spring_cloud_gateway.test.id]
+      gatewayIds = [azapi_resource.gateway.id]
       httpsOnly  = false
       public     = false
       ssoProperties = {
         clientId     = "%[4]s"
         clientSecret = "%[5]s"
-        issuerUri    = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+        issuerUri    = "https://login.microsoftonline.com/${data.azapi_client_config.current.tenant_id}/v2.0"
         scope        = ["read"]
       }
     }
@@ -1340,24 +1474,56 @@ func (r GenericResource) nonstandardLRO(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_storage_account" "test" {
-  name                     = "acctestsa%[2]s"
-  resource_group_name      = azurerm_resource_group.test.name
-  location                 = azurerm_resource_group.test.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier                   = "Hot"
+      allowBlobPublicAccess        = true
+      allowCrossTenantReplication  = true
+      allowSharedKeyAccess         = true
+      defaultToOAuthAuthentication = false
+      isHnsEnabled                 = false
+      isNfsV3Enabled               = false
+      isSftpEnabled                = false
+      minimumTlsVersion            = "TLS1_2"
+      networkAcls = {
+        defaultAction = "Allow"
+      }
+      publicNetworkAccess      = "Enabled"
+      supportsHttpsTrafficOnly = true
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
 }
 
-resource "azurerm_storage_container" "test" {
-  name                 = "acctestsc%[2]s"
-  storage_account_name = azurerm_storage_account.test.name
+data "azapi_resource_id" "blobService" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices@2023-05-01"
+  parent_id = azapi_resource.storageAccount.id
+  name      = "default"
+}
+
+resource "azapi_resource" "container" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01"
+  parent_id = data.azapi_resource_id.blobService.id
+  name      = "acctestsc%[2]s"
+  body = {
+    properties = {
+    }
+  }
 }
 
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.CostManagement/exports@2022-10-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
   body = {
     properties = {
       schedule = {
@@ -1377,8 +1543,8 @@ resource "azapi_resource" "test" {
       deliveryInfo = {
         destination = {
           rootFolderPath = "test"
-          container      = azurerm_storage_container.test.name
-          resourceId     = azurerm_storage_account.test.id
+          container      = azapi_resource.container.name
+          resourceId     = azapi_resource.storageAccount.id
         }
       }
     }
@@ -1391,52 +1557,117 @@ func (r GenericResource) nullLocation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_application_insights" "test" {
-  name                = "accappinsights%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  application_type    = "web"
+resource "azapi_resource" "component" {
+  type      = "Microsoft.Insights/components@2020-02-02-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "accappinsights%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "web"
+    properties = {
+      Application_Type                = "web"
+      DisableIpMasking                = false
+      DisableLocalAuth                = false
+      ForceCustomerStorageForProfiler = false
+      SamplingPercentage              = 100
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
 }
 
-resource "azurerm_key_vault" "test" {
-  name                = "acckeyvault%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  sku_name            = "premium"
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2024-04-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acckeyvault%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      accessPolicies               = []
+      createMode                   = "default"
+      enableRbacAuthorization      = false
+      enableSoftDelete             = true
+      enabledForDeployment         = false
+      enabledForDiskEncryption     = false
+      enabledForTemplateDeployment = false
+      publicNetworkAccess          = "Enabled"
+      sku = {
+        family = "A"
+        name   = "premium"
+      }
+      softDeleteRetentionInDays = 7
+      tenantId                  = data.azapi_client_config.current.tenant_id
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
 }
 
-resource "azurerm_storage_account" "test" {
-  name                     = "acctestsa%[2]s"
-  location                 = azurerm_resource_group.test.location
-  resource_group_name      = azurerm_resource_group.test.name
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestsa%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier                   = "Hot"
+      allowBlobPublicAccess        = true
+      allowCrossTenantReplication  = true
+      allowSharedKeyAccess         = true
+      defaultToOAuthAuthentication = false
+      isHnsEnabled                 = false
+      isNfsV3Enabled               = false
+      isSftpEnabled                = false
+      minimumTlsVersion            = "TLS1_2"
+      networkAcls = {
+        defaultAction = "Allow"
+      }
+      publicNetworkAccess      = "Enabled"
+      supportsHttpsTrafficOnly = true
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
 }
 
-resource "azurerm_machine_learning_workspace" "test" {
-  name                    = "acctestmlws%[2]s"
-  location                = azurerm_resource_group.test.location
-  resource_group_name     = azurerm_resource_group.test.name
-  application_insights_id = azurerm_application_insights.test.id
-  key_vault_id            = azurerm_key_vault.test.id
-  storage_account_id      = azurerm_storage_account.test.id
-
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.MachineLearningServices/workspaces@2024-04-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestmlws%[2]s"
+  location  = azapi_resource.resourceGroup.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
+    identity_ids = []
   }
-  public_network_access_enabled = true
-  managed_network {
-    isolation_mode = "AllowOnlyApprovedOutbound"
+  body = {
+    properties = {
+      applicationInsights = azapi_resource.component.id
+      keyVault            = azapi_resource.vault.id
+      publicNetworkAccess = "Enabled"
+      storageAccount      = azapi_resource.storageAccount.id
+      v1LegacyMode        = false
+      managedNetwork = {
+        isolationMode = "AllowOnlyApprovedOutbound"
+      }
+    }
+    sku = {
+      name = "Basic"
+      tier = "Basic"
+    }
   }
+  ignore_casing = true
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_machine_learning_workspace.test.id
+  parent_id = azapi_resource.workspace.id
   body = {
     properties = {
       category    = "UserDefined"
@@ -1445,7 +1676,7 @@ resource "azapi_resource" "test" {
       destination = "example.org"
     }
   }
-  locks = [azurerm_machine_learning_workspace.test.id]
+  locks = [azapi_resource.workspace.id]
 }
 `, r.template(data), data.RandomString)
 }
@@ -1454,7 +1685,7 @@ func (r GenericResource) unknownName(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
 resource "random_string" "suffix" {
   length  = 3
@@ -1464,9 +1695,9 @@ resource "random_string" "suffix" {
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.KeyVault/vaults@2023-07-01"
-  parent_id = azurerm_resource_group.test.id
   name      = "acctest${random_string.suffix.result}"
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       accessPolicies = [
@@ -1483,7 +1714,7 @@ resource "azapi_resource" "test" {
         name   = "standard"
       }
       softDeleteRetentionInDays = 7
-      tenantId                  = data.azurerm_client_config.current.tenant_id
+      tenantId                  = data.azapi_client_config.current.tenant_id
     }
   }
 }
@@ -1497,8 +1728,8 @@ func (r GenericResource) timeouts(data acceptance.TestData) string {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1518,19 +1749,8 @@ resource "azapi_resource" "test" {
 
 func (GenericResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-    key_vault {
-      purge_soft_delete_on_destroy       = false
-      purge_soft_deleted_keys_on_destroy = false
-    }
-  }
-}
-
-resource "azurerm_resource_group" "test" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
@@ -1544,8 +1764,8 @@ func (r GenericResource) replaceTriggeredByValue1(data acceptance.TestData) stri
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1567,8 +1787,8 @@ func (r GenericResource) replaceTriggeredByValue2(data acceptance.TestData) stri
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1590,8 +1810,8 @@ func (r GenericResource) replaceTriggeredByValueNull(data acceptance.TestData) s
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       sku = {
@@ -1611,8 +1831,8 @@ func (r GenericResource) oldConfig(data acceptance.TestData) string {
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
-  parent_id = azurerm_resource_group.test.id
-  location  = azurerm_resource_group.test.location
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
   body = jsonencode({
     properties = {
       sku = {

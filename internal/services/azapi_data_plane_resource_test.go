@@ -22,7 +22,8 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.appConfigKeyValues(data),
+			Config:            r.appConfigKeyValues(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -64,7 +65,8 @@ func TestAccDataPlaneResource_keyVaultIssuer(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.keyVaultIssuer(data),
+			Config:            r.keyVaultIssuer(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -78,7 +80,8 @@ func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.iotAppsUser(data),
+			Config:            r.iotAppsUser(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -92,7 +95,8 @@ func TestAccDataPlaneResource_timeouts(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.timeouts(data),
+			Config:            r.timeouts(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -164,28 +168,32 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) purviewClassification(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_purview_account" "example" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-
+resource "azapi_resource" "account" {
+  type      = "Microsoft.Purview/accounts@2021-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
+    identity_ids = []
   }
+  body = {
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+  }
+  response_export_values = ["*"]
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
-  parent_id = replace(azurerm_purview_account.example.scan_endpoint, "https://", "")
+  parent_id = replace(azapi_resource.account.output.properties.endpoints.scan, "https://", "")
   name      = "acctest%[2]s"
   body = {
     kind = "Custom"
@@ -214,28 +222,32 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) purviewCollection(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_purview_account" "example" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-
+resource "azapi_resource" "account" {
+  type      = "Microsoft.Purview/accounts@2021-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
+    identity_ids = []
   }
+  body = {
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+  }
+  response_export_values = ["*"]
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
-  parent_id = "${azurerm_purview_account.example.name}.purview.azure.com"
+  parent_id = "${azapi_resource.account.name}.purview.azure.com"
   name      = "defaultResourceSetRuleConfig"
   body = {
     friendlyName = "Finance"
@@ -404,28 +416,31 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) oldConfig(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_purview_account" "example" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-
+resource "azapi_resource" "account" {
+  type      = "Microsoft.Purview/accounts@2021-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
+    identity_ids = []
   }
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+  })
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
-  parent_id = "${azurerm_purview_account.example.name}.purview.azure.com"
+  parent_id = "${azapi_resource.account.name}.purview.azure.com"
   name      = "defaultResourceSetRuleConfig"
   body = jsonencode({
     friendlyName = "Finance"
