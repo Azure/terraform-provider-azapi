@@ -150,7 +150,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	model.ID = basetypes.NewStringValue(listUrl)
 
-	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

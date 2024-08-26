@@ -1,7 +1,6 @@
 package services
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
@@ -22,7 +21,7 @@ func CommonAttributeResponseExportValues() schema.DynamicAttribute {
 	}
 }
 
-func buildOutputFromBody(ctx context.Context, responseBody interface{}, modelResponseExportValues types.Dynamic) (types.Dynamic, error) {
+func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic) (types.Dynamic, error) {
 	if modelResponseExportValues.IsNull() {
 		return types.DynamicNull(), nil
 	}

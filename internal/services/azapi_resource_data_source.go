@@ -255,7 +255,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		}
 	}
 
-	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

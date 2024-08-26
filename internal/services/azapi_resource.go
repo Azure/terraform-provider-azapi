@@ -601,7 +601,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 
-				output, err := buildOutputFromBody(ctx, responseBody, plan.ResponseExportValues)
+				output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues)
 				if err != nil {
 					diagnostics.AddError("Failed to build output", err.Error())
 					return
@@ -642,7 +642,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	// generate the computed fields
 	plan.ID = types.StringValue(id.ID())
 
-	output, err := buildOutputFromBody(ctx, responseBody, plan.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -777,7 +777,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return
