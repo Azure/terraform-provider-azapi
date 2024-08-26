@@ -35,10 +35,10 @@ resource "azapi_resource" "hierarchy_settings" {
   type      = "Microsoft.Management/managementGroups/settings@2021-04-01"
   name      = "default"
   parent_id = data.azurerm_management_group.tenant_root.id
-  body = jsonencode({
+  body = {
     properties = {
       defaultManagementGroup               = data.azurerm_management_group.default.id
       requireAuthorizationForGroupCreation = true
     }
-  })
+  }
 }

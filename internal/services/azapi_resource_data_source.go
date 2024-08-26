@@ -11,6 +11,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -24,17 +26,20 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Name                 types.String   `tfsdk:"name"`
-	ParentID             types.String   `tfsdk:"parent_id"`
-	ResourceID           types.String   `tfsdk:"resource_id"`
-	Type                 types.String   `tfsdk:"type"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Location             types.String   `tfsdk:"location"`
-	Identity             types.List     `tfsdk:"identity"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Tags                 types.Map      `tfsdk:"tags"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String        `tfsdk:"id"`
+	Name                 types.String        `tfsdk:"name"`
+	ParentID             types.String        `tfsdk:"parent_id"`
+	ResourceID           types.String        `tfsdk:"resource_id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	Location             types.String        `tfsdk:"location"`
+	Identity             types.List          `tfsdk:"identity"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Tags                 types.Map           `tfsdk:"tags"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type AzapiResourceDataSource struct {
@@ -56,9 +61,11 @@ func (r *AzapiResourceDataSource) Metadata(ctx context.Context, request datasour
 
 func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can access any existing Azure resource manager resource.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -66,6 +73,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			`name`: schema.StringAttribute{
@@ -74,6 +82,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
 				},
+				MarkdownDescription: "Specifies the name of the Azure resource.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -82,6 +91,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -90,10 +100,12 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of the Azure resource to retrieve.",
 			},
 
 			"location": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Location(),
 			},
 
 			"identity": schema.ListNestedAttribute{
@@ -101,20 +113,24 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"type": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityType(),
 						},
 
 						"principal_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityPrincipalID(),
 						},
 
 						"tenant_id": schema.StringAttribute{
-							Computed: true,
+							Computed:            true,
+							MarkdownDescription: docstrings.IdentityTenantID(),
 						},
 
 						"identity_ids": schema.ListAttribute{
-							Computed:    true,
-							ElementType: types.StringType,
+							Computed:            true,
+							ElementType:         types.StringType,
+							MarkdownDescription: docstrings.IdentityIds(),
 						},
 					},
 				},
@@ -126,15 +142,34 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("data.azapi_resource"),
 			},
 
 			"tags": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
+				Computed:            true,
+				ElementType:         types.StringType,
+				MarkdownDescription: "A mapping of tags which are assigned to the Azure resource.",
+			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
 			},
 		},
 
@@ -151,6 +186,8 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+
+	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
@@ -188,8 +225,19 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
@@ -214,10 +262,6 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Identity = identity.ToList(*v)
 		}
 	}
-	if r.ProviderData.Features.EnableHCLOutputForDataSource {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	} else {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

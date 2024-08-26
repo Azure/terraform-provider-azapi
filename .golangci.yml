@@ -1,12 +1,11 @@
 run:
   timeout: 60m
   go: 1.21
-  modules-download-mode: vendor
+  modules-download-mode: mod
   skip-dirs:
     - /sdk/ # Excluding sdk folders as these are externally generated
 
 issues:
-  max-per-linter: 0
   max-same-issues: 0
 
 linters:
@@ -38,7 +37,8 @@ linters:
 
 linters-settings:
   errcheck:
-    ignore: github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema:ForceNew|Set,fmt:.*,io:Close
+    exclude-functions:
+      - github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema:ForceNew|Set,fmt:.*,io:Close
   misspell:
     ignore-words:
       - hdinsight

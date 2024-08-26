@@ -6,8 +6,11 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
+	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
@@ -27,17 +30,20 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Type                 types.String   `tfsdk:"type"`
-	ResourceId           types.String   `tfsdk:"resource_id"`
-	Action               types.String   `tfsdk:"action"`
-	Method               types.String   `tfsdk:"method"`
-	Body                 types.Dynamic  `tfsdk:"body"`
-	When                 types.String   `tfsdk:"when"`
-	Locks                types.List     `tfsdk:"locks"`
-	ResponseExportValues types.List     `tfsdk:"response_export_values"`
-	Output               types.Dynamic  `tfsdk:"output"`
-	Timeouts             timeouts.Value `tfsdk:"timeouts"`
+	ID                   types.String        `tfsdk:"id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResourceId           types.String        `tfsdk:"resource_id"`
+	Action               types.String        `tfsdk:"action"`
+	Method               types.String        `tfsdk:"method"`
+	Body                 types.Dynamic       `tfsdk:"body"`
+	When                 types.String        `tfsdk:"when"`
+	Locks                types.List          `tfsdk:"locks"`
+	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -61,7 +67,8 @@ func (r *ActionResource) Metadata(ctx context.Context, request resource.Metadata
 
 func (r *ActionResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{
-		0: migration.AzapiResourceActionMigrationV0ToV1(ctx),
+		0: migration.AzapiResourceActionMigrationV0ToV2(ctx),
+		1: migration.AzapiResourceActionMigrationV1ToV2(ctx),
 	}
 }
 
@@ -73,6 +80,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -83,6 +91,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -93,6 +102,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of an existing Azure source.",
 			},
 
 			"action": schema.StringAttribute{
@@ -100,6 +110,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: docstrings.ResourceAction(),
 			},
 
 			"method": schema.StringAttribute{
@@ -109,19 +120,16 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
 				},
+				MarkdownDescription: "Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.",
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"when": schema.StringAttribute{
@@ -131,6 +139,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("apply", "destroy"),
 				},
+				MarkdownDescription: "When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.",
 			},
 
 			"locks": schema.ListAttribute{
@@ -139,6 +148,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -147,10 +157,28 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
 			},
 		},
 
@@ -163,7 +191,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 			}),
 		},
 
-		Version: 1,
+		Version: 2,
 	}
 }
 
@@ -181,7 +209,7 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
@@ -290,8 +318,20 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		defer locks.UnlockByID(id)
 	}
 
-	client := r.ProviderData.ResourceClient
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
@@ -302,10 +342,6 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
-	if dynamicIsString(model.Body) {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 	diagnostics.Append(state.Set(ctx, model)...)
 }

@@ -37,9 +37,21 @@ func BuildTestClient() (*clients.Client, error) {
 			cloudConfig = cloud.AzurePublic
 		}
 
-		cred, err := azidentity.NewClientSecretCredential(
-			os.Getenv("ARM_TENANT_ID"), os.Getenv("ARM_CLIENT_ID"), os.Getenv("ARM_CLIENT_SECRET"),
-			&azidentity.ClientSecretCredentialOptions{
+		if v := os.Getenv("ARM_TENANT_ID"); len(v) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_TENANT_ID", v)
+		}
+		if v := os.Getenv("ARM_CLIENT_ID"); len(v) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_CLIENT_ID", v)
+		}
+		if v := os.Getenv("ARM_CLIENT_SECRET"); len(v) != 0 {
+			// #nosec G104
+			os.Setenv("AZURE_CLIENT_SECRET", v)
+		}
+
+		cred, err := azidentity.NewDefaultAzureCredential(
+			&azidentity.DefaultAzureCredentialOptions{
 				ClientOptions: azcore.ClientOptions{
 					Cloud: cloudConfig,
 				},

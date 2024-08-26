@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -10,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-const PreviousVersion = "1.12.0"
+const PreviousVersion = "1.14.0"
 
 func TestAccAzapiResourceUpgrade_basic(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
@@ -67,15 +68,6 @@ func TestAccAzapiResourceUpgrade_identitySystemAssigned(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
-	updatedConfig := strings.ReplaceAll(r.identitySystemAssigned(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
-
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
 			Config: r.identitySystemAssigned(data),
@@ -84,7 +76,7 @@ func TestAccAzapiResourceUpgrade_identitySystemAssigned(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.identitySystemAssigned(data),
 		}),
 	})
 }
@@ -112,15 +104,13 @@ func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.completeBody(data),
+			Config: r.completeJsonBody(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.completeBody(data),
-			// It's a known breaking change that identity in the body will not be synced to the top-level identity block
-			ExpectNonEmptyPlan: true,
 		}),
 	})
 }
@@ -128,15 +118,6 @@ func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
-
-	updatedConfig := strings.ReplaceAll(r.defaultTag(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -146,7 +127,7 @@ func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.defaultTag(data),
 		}),
 	})
 }
@@ -154,15 +135,6 @@ func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
-
-	updatedConfig := strings.ReplaceAll(r.defaultTagOverrideInBody(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -172,7 +144,7 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.defaultTagOverrideInBody(data),
 		}),
 	})
 }
@@ -180,15 +152,6 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
-
-	updatedConfig := strings.ReplaceAll(r.defaultTagOverrideInHcl(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -198,7 +161,7 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.defaultTagOverrideInHcl(data),
 		}),
 	})
 }
@@ -206,15 +169,6 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
-
-	updatedConfig := strings.ReplaceAll(r.defaultLocation(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -224,7 +178,7 @@ func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.defaultLocation(data),
 		}),
 	})
 }
@@ -232,15 +186,6 @@ func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultLocationOverrideInHcl(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
-
-	updatedConfig := strings.ReplaceAll(r.defaultLocationOverrideInHcl(data),
-		`  identity {
-    type = "SystemAssigned"
-  }`,
-		`  identity {
-    type = "SystemAssigned"
-    identity_ids = []
-  }`)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -250,7 +195,7 @@ func TestAccAzapiResourceUpgrade_defaultLocationOverrideInHcl(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: updatedConfig,
+			Config: r.defaultLocationOverrideInHcl(data),
 		}),
 	})
 }
@@ -258,6 +203,20 @@ func TestAccAzapiResourceUpgrade_defaultLocationOverrideInHcl(t *testing.T) {
 func TestAccAzapiResourceUpgrade_defaultParentId(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
+
+	updatedConfig := fmt.Sprintf(`
+provider "azapi" {
+}
+
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctest-%[2]d"
+  location = "%[1]s"
+
+  // add the below config to make the config match the migrated state
+  body = {}
+}
+`, data.LocationPrimary, data.RandomInteger)
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
@@ -267,7 +226,7 @@ func TestAccAzapiResourceUpgrade_defaultParentId(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.defaultParentId(data),
+			Config: updatedConfig,
 		}),
 	})
 }
@@ -329,6 +288,19 @@ func TestAccAzapiResourceUpgrade_subscriptionScope(t *testing.T) {
 
 	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 
+	updatedConfig := fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name      = "acctestRG-%[1]d"
+  parent_id = "/subscriptions/%[2]s"
+
+  location = "%[3]s"
+
+  // add the below config to make the config match the migrated state
+  body = {}
+}
+`, data.RandomInteger, subscriptionId, data.LocationPrimary)
+
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
 			Config: r.subscriptionScope(data, subscriptionId),
@@ -337,7 +309,7 @@ func TestAccAzapiResourceUpgrade_subscriptionScope(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.subscriptionScope(data, subscriptionId),
+			Config: updatedConfig,
 		}),
 	})
 }
@@ -447,40 +419,6 @@ func TestAccAzapiResourceUpgrade_secretsInAsterisks(t *testing.T) {
 	})
 }
 
-func TestAccAzapiResourceUpgrade_ignoreChanges(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.UpgradeTest(t, r, []resource.TestStep{
-		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.ignoreChanges(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.ignoreChanges(data),
-		}),
-	})
-}
-
-func TestAccAzapiResourceUpgrade_ignoreChangesArray(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.UpgradeTest(t, r, []resource.TestStep{
-		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.ignoreChangesArray(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.ignoreChangesArray(data),
-		}),
-	})
-}
-
 func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -531,6 +469,52 @@ func TestAccAzapiResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 		}),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiResourceUpgrade_completeBody_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.completeJsonBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.completeBody(data),
+			// It's a known breaking change that identity in the body will not be synced to the top-level identity block
+			ExpectNonEmptyPlan: true,
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.completeBody(data),
+		}),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.completeBody(data),
+		}),
+	})
+}
+
+func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	updatedConfig := r.oldConfig(data)
+	updatedConfig = strings.ReplaceAll(updatedConfig, "jsonencode({", "{")
+	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.oldConfig(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
 		}),
 	})
 }

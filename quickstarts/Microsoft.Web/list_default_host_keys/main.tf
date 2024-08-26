@@ -60,5 +60,5 @@ data "azapi_resource_action" "test" {
 }
 
 output "output1" {
-  value = jsondecode(data.azapi_resource_action.test.output)
+  value = data.azapi_resource_action.test.output
 }

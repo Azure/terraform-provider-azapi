@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -44,7 +45,8 @@ func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.Sc
 	response.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"type": schema.StringAttribute{
@@ -52,6 +54,7 @@ func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.Sc
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -60,11 +63,13 @@ func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.Sc
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"name": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				Optional:            true,
+				Computed:            true,
+				MarkdownDescription: "The name of the Azure resource.",
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -73,23 +78,28 @@ func (r *ResourceIdDataSource) Schema(ctx context.Context, request datasource.Sc
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of an existing Azure source.",
 			},
 
 			"resource_group_name": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The resource group name of the Azure resource.",
 			},
 
 			"subscription_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The subscription ID of the Azure resource.",
 			},
 
 			"provider_namespace": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The Azure resource provider namespace of the Azure resource.",
 			},
 
 			"parts": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
+				Computed:            true,
+				ElementType:         types.StringType,
+				MarkdownDescription: "A map of the resource ID parts, where the key is the part name and the value is the part value. e.g. `virtualNetworks=myVnet`.",
 			},
 		},
 

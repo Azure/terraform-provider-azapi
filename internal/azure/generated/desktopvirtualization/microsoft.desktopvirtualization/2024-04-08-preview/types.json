@@ -6211,6 +6211,65 @@
   },
   {
     "$type": "ObjectType",
+    "name": "RegistrationTokenList",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 0,
+        "description": "List of RegistrationToken definitions."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to the next page of results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegistrationTokenMinimal",
+    "properties": {
+      "expirationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Expiration time of registration token."
+      },
+      "token": {
+        "type": {
+          "$ref": "#/454"
+        },
+        "flags": 0,
+        "description": "The registration token base64 encoded string."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/453"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listRegistrationTokens",
+    "resourceType": "Microsoft.DesktopVirtualization/hostPools",
+    "apiVersion": "2024-04-08-preview",
+    "output": {
+      "$ref": "#/452"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "ImportPackageInfoRequest",
     "properties": {
       "path": {
@@ -6222,7 +6281,7 @@
       },
       "packageArchitecture": {
         "type": {
-          "$ref": "#/460"
+          "$ref": "#/465"
         },
         "flags": 0,
         "description": "Possible device architectures that an app attach package can be configured for"
@@ -6261,25 +6320,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/453"
-      },
-      {
-        "$ref": "#/454"
-      },
-      {
-        "$ref": "#/455"
-      },
-      {
-        "$ref": "#/456"
-      },
-      {
-        "$ref": "#/457"
-      },
-      {
         "$ref": "#/458"
       },
       {
         "$ref": "#/459"
+      },
+      {
+        "$ref": "#/460"
+      },
+      {
+        "$ref": "#/461"
+      },
+      {
+        "$ref": "#/462"
+      },
+      {
+        "$ref": "#/463"
+      },
+      {
+        "$ref": "#/464"
       },
       {
         "$ref": "#/2"
@@ -6292,7 +6351,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/464"
+          "$ref": "#/469"
         },
         "flags": 0,
         "description": "List of App Attach Package definitions."
@@ -6319,7 +6378,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/463"
+          "$ref": "#/468"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -6372,7 +6431,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/462"
+      "$ref": "#/467"
     }
   },
   {
@@ -6381,10 +6440,10 @@
     "resourceType": "Microsoft.DesktopVirtualization/hostPools",
     "apiVersion": "2024-04-08-preview",
     "output": {
-      "$ref": "#/461"
+      "$ref": "#/466"
     },
     "input": {
-      "$ref": "#/452"
+      "$ref": "#/457"
     }
   },
   {
@@ -6406,7 +6465,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/472"
+          "$ref": "#/477"
         },
         "flags": 0,
         "description": "List of MSIX package properties from give MSIX Image."
@@ -6426,7 +6485,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/469"
+          "$ref": "#/474"
         },
         "flags": 0,
         "description": "Detailed properties for ExpandMsixImage"
@@ -6530,7 +6589,7 @@
       },
       "packageDependencies": {
         "type": {
-          "$ref": "#/470"
+          "$ref": "#/475"
         },
         "flags": 0,
         "description": "List of package dependencies."
@@ -6551,7 +6610,7 @@
       },
       "packageApplications": {
         "type": {
-          "$ref": "#/471"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "List of package applications."
@@ -6587,7 +6646,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/468"
+      "$ref": "#/473"
     }
   },
   {
@@ -6596,10 +6655,10 @@
     "resourceType": "Microsoft.DesktopVirtualization/hostPools",
     "apiVersion": "2024-04-08-preview",
     "output": {
-      "$ref": "#/467"
+      "$ref": "#/472"
     },
     "input": {
-      "$ref": "#/466"
+      "$ref": "#/471"
     }
   },
   {
@@ -6622,7 +6681,7 @@
       },
       "update": {
         "type": {
-          "$ref": "#/475"
+          "$ref": "#/480"
         },
         "flags": 0,
         "description": "settings for management information for the hostpool update operation. If none is provided the update will use the settings saved in the sessionHostManagement object."
@@ -6669,7 +6728,7 @@
     "resourceType": "Microsoft.DesktopVirtualization/hostPools/sessionHostManagements",
     "apiVersion": "2024-04-08-preview",
     "input": {
-      "$ref": "#/474"
+      "$ref": "#/479"
     }
   },
   {
@@ -6678,7 +6737,7 @@
     "properties": {
       "action": {
         "type": {
-          "$ref": "#/483"
+          "$ref": "#/488"
         },
         "flags": 1,
         "description": "Action types for controlling hostpool update."
@@ -6716,19 +6775,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/478"
+        "$ref": "#/483"
       },
       {
-        "$ref": "#/479"
+        "$ref": "#/484"
       },
       {
-        "$ref": "#/480"
+        "$ref": "#/485"
       },
       {
-        "$ref": "#/481"
+        "$ref": "#/486"
       },
       {
-        "$ref": "#/482"
+        "$ref": "#/487"
       },
       {
         "$ref": "#/2"
@@ -6741,7 +6800,7 @@
     "resourceType": "Microsoft.DesktopVirtualization/hostPools/sessionHostManagements",
     "apiVersion": "2024-04-08-preview",
     "input": {
-      "$ref": "#/477"
+      "$ref": "#/482"
     }
   },
   {
@@ -6776,7 +6835,7 @@
     "resourceType": "Microsoft.DesktopVirtualization/hostPools/sessionHosts/userSessions",
     "apiVersion": "2024-04-08-preview",
     "input": {
-      "$ref": "#/486"
+      "$ref": "#/491"
     }
   },
   {
