@@ -40,7 +40,7 @@ type AzapiUpdateResourceModel struct {
 	Body                  types.Dynamic       `tfsdk:"body"`
 	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List          `tfsdk:"response_export_values"`
+	ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
 	Locks                 types.List          `tfsdk:"locks"`
 	Output                types.Dynamic       `tfsdk:"output"`
 	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
@@ -162,14 +162,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -405,7 +398,14 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	diagnostics.Append(state.Set(ctx, model)...)
 }
 
@@ -479,7 +479,13 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	state.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	state.Output = output
+
 	if !model.Body.IsNull() {
 		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
 		if err != nil {

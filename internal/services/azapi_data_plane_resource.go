@@ -147,14 +147,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"retry": retry.SingleNestedAttribute(ctx),
 
@@ -358,7 +351,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
@@ -424,7 +423,14 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	if !model.Body.IsNull() {
 		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
 		if err != nil {

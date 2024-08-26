@@ -13,6 +13,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
+	github.com/jmespath/go-jmespath v0.4.0
 	github.com/stretchr/testify v1.9.0
 )
 

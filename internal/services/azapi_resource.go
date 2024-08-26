@@ -57,7 +57,7 @@ type AzapiResourceModel struct {
 	Output                        types.Dynamic       `tfsdk:"output"`
 	ParentID                      types.String        `tfsdk:"parent_id"`
 	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
-	ResponseExportValues          types.List          `tfsdk:"response_export_values"`
+	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue    `tfsdk:"retry"`
 	SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 	Tags                          types.Map           `tfsdk:"tags"`
@@ -208,14 +208,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -607,7 +600,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters)); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
-				plan.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
+
+				output, err := buildOutputFromBody(ctx, responseBody, plan.ResponseExportValues)
+				if err != nil {
+					diagnostics.AddError("Failed to build output", err.Error())
+					return
+				}
+				plan.Output = output
+
 				if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 					if !plan.Identity.IsNull() {
 						planIdentity := identity.FromList(plan.Identity)
@@ -641,7 +641,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	// generate the computed fields
 	plan.ID = types.StringValue(id.ID())
-	plan.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(ctx, responseBody, plan.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	plan.Output = output
+
 	if bodyMap, ok := responseBody.(map[string]interface{}); ok {
 		if !plan.Identity.IsNull() {
 			planIdentity := identity.FromList(plan.Identity)
@@ -770,7 +777,13 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
-	state.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	state.Output = output
+
 	if !model.Body.IsNull() {
 		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
 		if err != nil {
@@ -869,7 +882,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		SchemaValidationEnabled: types.BoolValue(true),
 		IgnoreCasing:            types.BoolValue(false),
 		IgnoreMissingProperty:   types.BoolValue(true),
-		ResponseExportValues:    types.ListNull(types.StringType),
+		ResponseExportValues:    types.DynamicNull(),
 		Output:                  types.DynamicNull(),
 		Tags:                    types.MapNull(types.StringType),
 		Timeouts: timeouts.Value{

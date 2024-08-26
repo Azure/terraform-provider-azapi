@@ -38,7 +38,7 @@ type ActionResourceModel struct {
 	Body                 types.Dynamic       `tfsdk:"body"`
 	When                 types.String        `tfsdk:"when"`
 	Locks                types.List          `tfsdk:"locks"`
-	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
 	Output               types.Dynamic       `tfsdk:"output"`
 	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
 	Retry                retry.RetryValue    `tfsdk:"retry"`
@@ -151,18 +151,11 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.Locks(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
-				MarkdownDescription: docstrings.ResponseExportValues(),
+				MarkdownDescription: docstrings.Output("azapi_resource_action"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
@@ -342,6 +335,13 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(ctx, responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	diagnostics.Append(state.Set(ctx, model)...)
 }

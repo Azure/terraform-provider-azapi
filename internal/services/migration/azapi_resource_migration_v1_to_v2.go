@@ -153,7 +153,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
 				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
-				ResponseExportValues          types.List          `tfsdk:"response_export_values"`
+				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
 				Retry                         retry.RetryValue    `tfsdk:"retry"`
 				Output                        types.Dynamic       `tfsdk:"output"`
 				Tags                          types.Map           `tfsdk:"tags"`
@@ -198,7 +198,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
 				ReplaceTriggersExternalValues: types.DynamicNull(),
-				ResponseExportValues:          oldState.ResponseExportValues,
+				ResponseExportValues:          types.DynamicValue(oldState.ResponseExportValues),
 				Retry:                         retry.NewRetryValueNull(),
 				Output:                        outputVal,
 				Tags:                          oldState.Tags,
