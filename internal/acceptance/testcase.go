@@ -74,7 +74,9 @@ func (td *TestData) RandomStringOfLength(len int) string {
 
 // UpgradeTestDeployStep returns a test step used to deploy the configuration with previous version
 func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom string) resource.TestStep {
-	step.ExternalProviders = td.externalProviders()
+	if step.ExternalProviders == nil {
+		step.ExternalProviders = td.externalProviders()
+	}
 	step.ExternalProviders["azapi"] = resource.ExternalProvider{
 		Source:            "registry.terraform.io/azure/azapi",
 		VersionConstraint: fmt.Sprintf("= %s", upgradeFrom),
@@ -85,7 +87,9 @@ func (td TestData) UpgradeTestDeployStep(step resource.TestStep, upgradeFrom str
 
 // UpgradeTestApplyStep returns a test step used to run terraform apply with the development version
 func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.TestStep {
-	applyStep.ExternalProviders = td.externalProviders()
+	if applyStep.ExternalProviders == nil {
+		applyStep.ExternalProviders = td.externalProviders()
+	}
 	applyStep.ProtoV6ProviderFactories = td.providers()
 	return applyStep
 }
@@ -93,7 +97,9 @@ func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.Te
 // UpgradeTestPlanStep returns a test step used to run terraform plan with the development version to check if there's any changes
 func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.TestStep {
 	planStep.PlanOnly = true
-	planStep.ExternalProviders = td.externalProviders()
+	if planStep.ExternalProviders == nil {
+		planStep.ExternalProviders = td.externalProviders()
+	}
 	planStep.ProtoV6ProviderFactories = td.providers()
 	return planStep
 }
@@ -141,7 +147,19 @@ func (td TestData) ResourceTest(t *testing.T, testResource TestResource, steps [
 
 func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 	testCase.ExternalProviders = td.externalProviders()
-	testCase.ProtoV6ProviderFactories = td.providers()
+	// If any test steps require their own external providers, then we need to clear the global list
+	providersInTestStep := false
+	for i, step := range testCase.Steps {
+		if step.ExternalProviders != nil {
+			testCase.ExternalProviders = nil
+			step.ProtoV6ProviderFactories = td.providers()
+			testCase.Steps[i] = step
+			providersInTestStep = true
+		}
+	}
+	if !providersInTestStep {
+		testCase.ProtoV6ProviderFactories = td.providers()
+	}
 
 	resource.ParallelTest(t, testCase)
 }
@@ -153,16 +171,7 @@ func (td TestData) providers() map[string]func() (tfprotov6.ProviderServer, erro
 }
 
 func (td TestData) externalProviders() map[string]resource.ExternalProvider {
-	return map[string]resource.ExternalProvider{
-		"azurerm": {
-			Source:            "registry.terraform.io/hashicorp/azurerm",
-			VersionConstraint: "= 3.100.0",
-		},
-		"random": {
-			Source:            "registry.terraform.io/hashicorp/random",
-			VersionConstraint: "= 3.6.1",
-		},
-	}
+	return map[string]resource.ExternalProvider{}
 }
 
 func PreCheck(t *testing.T) {

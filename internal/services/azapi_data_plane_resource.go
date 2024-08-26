@@ -7,7 +7,9 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -18,6 +20,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -31,17 +34,26 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                    types.String   `tfsdk:"id"`
-	Name                  types.String   `tfsdk:"name"`
-	ParentID              types.String   `tfsdk:"parent_id"`
-	Type                  types.String   `tfsdk:"type"`
-	Body                  types.Dynamic  `tfsdk:"body"`
-	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-	Locks                 types.List     `tfsdk:"locks"`
-	Output                types.Dynamic  `tfsdk:"output"`
-	Timeouts              timeouts.Value `tfsdk:"timeouts"`
+	ID                    types.String        `tfsdk:"id"`
+	Name                  types.String        `tfsdk:"name"`
+	ParentID              types.String        `tfsdk:"parent_id"`
+	Type                  types.String        `tfsdk:"type"`
+	Body                  types.Dynamic       `tfsdk:"body"`
+	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List          `tfsdk:"response_export_values"`
+	Retry                 retry.RetryValue    `tfsdk:"retry"`
+	Locks                 types.List          `tfsdk:"locks"`
+	Output                types.Dynamic       `tfsdk:"output"`
+	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
+	CreateHeaders         map[string]string   `tfsdk:"create_headers"`
+	CreateQueryParameters map[string][]string `tfsdk:"create_query_parameters"`
+	UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
+	DeleteHeaders         map[string]string   `tfsdk:"delete_headers"`
+	DeleteQueryParameters map[string][]string `tfsdk:"delete_query_parameters"`
+	ReadHeaders           map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 type DataPlaneResource struct {
@@ -65,18 +77,21 @@ func (r *DataPlaneResource) Metadata(ctx context.Context, request resource.Metad
 
 func (r *DataPlaneResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{
-		0: migration.AzapiDataPlaneResourceMigrationV0ToV1(ctx),
+		0: migration.AzapiDataPlaneResourceMigrationV0ToV2(ctx),
+		1: migration.AzapiDataPlaneResourceMigrationV1ToV2(ctx),
 	}
 }
 
 func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can manage some Azure data plane resources.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"name": schema.StringAttribute{
@@ -84,6 +99,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+				MarkdownDescription: "Specifies the name of the Azure resource. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -94,6 +110,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
 				},
+				MarkdownDescription: "The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.",
 			},
 
 			"type": schema.StringAttribute{
@@ -101,33 +118,33 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
 				Computed: true,
-				Default:  defaults.DynamicDefault(types.StringValue("{}")),
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
+				// in the previous version, the default value is string "{}", now it's a dynamic value {}
+				Default: defaults.DynamicDefault(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})),
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
 			"response_export_values": schema.ListAttribute{
@@ -136,7 +153,10 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -144,10 +164,68 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("azapi_data_plane_resource"),
+			},
+
+			"create_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the create request.",
+			},
+
+			"create_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the create request.",
+			},
+
+			"update_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the update request.",
+			},
+
+			"update_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the update request.",
+			},
+
+			"delete_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the delete request.",
+			},
+
+			"delete_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the delete request.",
+			},
+
+			"read_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the read request.",
+			},
+
+			"read_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
 		},
 
@@ -160,7 +238,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			}),
 		},
 
-		Version: 1,
+		Version: 2,
 	}
 }
 
@@ -178,7 +256,7 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
@@ -207,7 +285,18 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	client := r.ProviderData.DataPlaneClient
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+	}
 	isNewResource := state == nil || state.Raw.IsNull()
 
 	var timeout time.Duration
@@ -227,7 +316,9 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	defer cancel()
 
 	if isNewResource {
-		_, err = client.Get(ctx, id)
+		// check if the resource already exists using the non-retry client to avoid issue where user specifies
+		// a FooResourceNotFound error as a retryable error
+		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_data_plane_resource", id.ID()).Error())
 			return
@@ -249,13 +340,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		defer locks.UnlockByID(id)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, id, body)
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(model.CreateHeaders, model.CreateQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id)
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -267,11 +358,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	if dynamicIsString(model.Body) {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-	}
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
@@ -297,8 +384,19 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	client := r.ProviderData.DataPlaneClient
-	responseBody, err := client.Get(ctx, id)
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+	}
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -326,23 +424,18 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	if dynamicIsString(model.Body) {
-		model.Body = types.DynamicValue(types.StringValue(string(data)))
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-		if !model.Body.IsNull() {
-			payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+	if !model.Body.IsNull() {
+		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
 			if err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
-				payload, err = dynamic.FromJSONImplied(data)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid payload", err.Error())
-					return
-				}
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
 			}
-			model.Body = payload
 		}
+		model.Body = payload
 	}
 
 	model.Name = basetypes.NewStringValue(id.Name)
@@ -353,12 +446,23 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 }
 
 func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
-	client := r.ProviderData.DataPlaneClient
-
 	var model *DataPlaneResourceModel
 	response.Diagnostics.Append(request.State.Get(ctx, &model)...)
 	if response.Diagnostics.HasError() {
 		return
+	}
+
+	var client clients.DataPlaneRequester
+	client = r.ProviderData.DataPlaneClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
@@ -381,7 +485,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.DeleteThenPoll(ctx, id)
+	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(model.DeleteHeaders, model.DeleteQueryParameters))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

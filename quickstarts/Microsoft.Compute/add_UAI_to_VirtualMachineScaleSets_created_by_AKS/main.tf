@@ -51,12 +51,12 @@ resource "azapi_resource_action" "test" {
   resource_id = data.azurerm_virtual_machine_scale_set.test.id
   // omit `action` field or set it to empty string like `action = ""`, to make request towards the resource
   method    = "PATCH"
-  body = jsonencode({
+  body = {
     identity = {
       type = "UserAssigned"
       userAssignedIdentities = {
         (azurerm_user_assigned_identity.test.id) = {}
       }
     }
-  })
+  }
 }

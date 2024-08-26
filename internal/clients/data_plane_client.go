@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/cenkalti/backoff/v4"
 )
 
 type DataPlaneClient struct {
@@ -23,6 +25,35 @@ type DataPlaneClient struct {
 	clientOptions   *arm.ClientOptions
 	cachedPipelines map[string]runtime.Pipeline
 	syncMux         sync.Mutex
+}
+
+type DataPlaneClientRetryableErrors struct {
+	client  DataPlaneRequester          // client is a DataPlaneRequester interface to allow mocking
+	backoff *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
+	errors  []regexp.Regexp             // errors is the list of errors regexp to retry on
+}
+
+type DataPlaneRequester interface {
+	CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error)
+	Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error)
+	DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error)
+	Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error)
+}
+
+var (
+	_ DataPlaneRequester = &DataPlaneClient{}
+	_ DataPlaneRequester = &DataPlaneClientRetryableErrors{}
+)
+
+// NewDataPlaneClientRetryableErrors creates a new ResourceClientRetryableErrors.
+func NewDataPlaneClientRetryableErrors(client DataPlaneRequester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+	rcre := &DataPlaneClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
 }
 
 func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOptions) (*DataPlaneClient, error) {
@@ -35,6 +66,17 @@ func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOption
 		cachedPipelines: make(map[string]runtime.Pipeline),
 		syncMux:         sync.Mutex{},
 	}, nil
+}
+
+// WithRetry configures the retryable errors for the client.
+func (client *DataPlaneClient) WithRetry(bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+	rcre := &DataPlaneClientRetryableErrors{
+		client:  client,
+		backoff: bkof,
+		errors:  errRegExps,
+	}
+	rcre.backoff.Reset()
+	return rcre
 }
 
 func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, error) {
@@ -69,7 +111,7 @@ func (client *DataPlaneClient) cachedPipeline(rawUrl string) (runtime.Pipeline, 
 	return pl, nil
 }
 
-func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}) (interface{}, error) {
+func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error) {
 	// build request
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, urlPath)
@@ -78,8 +120,14 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 	err = runtime.MarshalAsJSON(req, body)
 	if err != nil {
 		return nil, err
@@ -115,7 +163,7 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	return responseBody, nil
 }
 
-func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
 	// build request
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, urlPath)
@@ -124,13 +172,16 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 
 	// send request
-	if err != nil {
-		return nil, err
-	}
 	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err
@@ -151,7 +202,7 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	return responseBody, nil
 }
 
-func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
 	// build request
 	urlPath := fmt.Sprintf("https://%s", id.AzureResourceId)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, urlPath)
@@ -160,13 +211,16 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", id.ApiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 
 	// send request
-	if err != nil {
-		return nil, err
-	}
 	pipeline, err := client.cachedPipeline(urlPath)
 	if err != nil {
 		return nil, err
@@ -196,7 +250,7 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	return responseBody, nil
 }
 
-func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
 	// build request
 	urlPath := fmt.Sprintf("https://%s", resourceID)
 	if action != "" {
@@ -208,8 +262,14 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
+	for key, value := range options.QueryParameters {
+		reqQP.Set(key, value)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
+	for key, value := range options.Headers {
+		req.Raw().Header.Set(key, value)
+	}
 	if method != "GET" && body != nil {
 		err = runtime.MarshalAsJSON(req, body)
 	}
@@ -256,4 +316,88 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	default:
 	}
 	return responseBody, nil
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.CreateOrUpdateThenPoll(ctx, id, body, options)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Get(ctx, id, options)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.DeleteThenPoll(ctx, id, options)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
+	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
+		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	}
+	op := backoff.OperationWithData[interface{}](
+		func() (interface{}, error) {
+			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body, options)
+			if err != nil {
+				for _, e := range retryclient.errors {
+					if e.MatchString(err.Error()) {
+						return data, err
+					}
+				}
+				return nil, &backoff.PermanentError{Err: err}
+			}
+			return data, err
+		})
+	exbo := backoff.WithContext(retryclient.backoff, ctx)
+	return backoff.RetryWithData[interface{}](op, exbo)
 }

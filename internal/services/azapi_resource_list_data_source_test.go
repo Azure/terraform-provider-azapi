@@ -18,20 +18,6 @@ func TestAccListDataSource_basic(t *testing.T) {
 		{
 			Config: r.basic(),
 			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).Key("output").IsJson(),
-			),
-		},
-	})
-}
-
-func TestAccListDataSource_hclOutput(t *testing.T) {
-	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
-	r := ListDataSource{}
-
-	data.DataSourceTest(t, []resource.TestStep{
-		{
-			Config: r.hclOutput(),
-			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).Key("output.value.#").Exists(),
 			),
 		},
@@ -50,37 +36,37 @@ func TestAccListDataSource_paging(t *testing.T) {
 	})
 }
 
+func TestAccListDataSource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
+	r := ListDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.headers(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccListDataSource_queryParameter(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
+	r := ListDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.queryParameter(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ListDataSource) basic() string {
 	return `
-provider "azurerm" {
-  features {}
-}
-
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
 data "azapi_resource_list" "test" {
   type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
-  parent_id              = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  response_export_values = ["*"]
-}
-`
-}
-
-func (r ListDataSource) hclOutput() string {
-	return `
-provider "azurerm" {
-  features {}
-}
-
-provider "azapi" {
-  enable_hcl_output_for_data_source = true
-}
-
-data "azurerm_client_config" "current" {}
-
-data "azapi_resource_list" "test" {
-  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
-  parent_id              = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
   response_export_values = ["*"]
 }
 `
@@ -88,15 +74,41 @@ data "azapi_resource_list" "test" {
 
 func (r ListDataSource) paging() string {
 	return `
-provider "azurerm" {
-  features {}
-}
-
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
 data "azapi_resource_list" "test" {
   type                   = "Microsoft.Authorization/policyDefinitions@2021-06-01"
-  parent_id              = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = ["*"]
+}
+`
+}
+
+func (r ListDataSource) headers() string {
+	return `
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "test" {
+  type                   = "Microsoft.Authorization/policyDefinitions@2021-06-01"
+  parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = ["*"]
+  headers = {
+    "header1" = "value1"
+  }
+}
+`
+}
+
+func (r ListDataSource) queryParameter() string {
+	return `
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "test" {
+  type      = "Microsoft.Authorization/policyDefinitions@2021-06-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  query_parameters = {
+    "$filter" = ["policyType eq 'BuiltIn'"]
+  }
   response_export_values = ["*"]
 }
 `

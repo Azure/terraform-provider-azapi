@@ -1,23 +1,15 @@
 package features
 
 type UserFeatures struct {
-	DefaultTags                  map[string]string
-	DefaultLocation              string
-	DefaultNaming                string
-	DefaultNamingPrefix          string
-	DefaultNamingSuffix          string
-	CafEnabled                   bool
-	EnableHCLOutputForDataSource bool
+	DefaultTags     map[string]string
+	DefaultLocation string
+	DefaultNaming   string
 }
 
 func Default() UserFeatures {
 	return UserFeatures{
-		DefaultTags:                  nil,
-		DefaultLocation:              "",
-		DefaultNaming:                "",
-		DefaultNamingPrefix:          "",
-		DefaultNamingSuffix:          "",
-		CafEnabled:                   false,
-		EnableHCLOutputForDataSource: false,
+		DefaultTags:     nil,
+		DefaultLocation: "",
+		DefaultNaming:   "",
 	}
 }
