@@ -22,7 +22,7 @@ import (
 type GenericResource struct{}
 
 func defaultIgnores() []string {
-	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "output"}
+	return []string{"ignore_casing", "ignore_missing_property", "schema_validation_enabled", "body", "locks", "output", "create_", "delete_", "update_", "read_"}
 }
 
 var testCertRaw, _ = os.ReadFile(filepath.Join("testdata", "automation_certificate_test.pfx"))
@@ -459,6 +459,7 @@ func TestAccGenericResource_timeouts(t *testing.T) {
 		},
 	})
 }
+
 func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -484,6 +485,46 @@ func TestAccGenericResource_replaceTriggeredBy(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_withRetry(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.withRetry(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericResource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.queryParameters(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -491,7 +532,7 @@ func (GenericResource) Exists(ctx context.Context, client *clients.Client, state
 		return nil, err
 	}
 
-	_, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	_, err = client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
 	if err == nil {
 		b := true
 		return &b, nil
@@ -511,20 +552,6 @@ func (GenericResource) ImportIdFunc(tfState *terraform.State) (string, error) {
 		return "", err
 	}
 	return fmt.Sprintf("%s?api-version=%s", id.AzureResourceId, id.ApiVersion), nil
-}
-
-func TestAccGenericResource_withRetry(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.withRetry(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
 }
 
 func (r GenericResource) basic(data acceptance.TestData) string {
@@ -1822,6 +1849,48 @@ resource "azapi_resource" "test" {
   replace_triggers_external_values = null
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+  create_headers = {
+    "header1" = "create-value"
+  }
+  update_headers = {
+    "header2" = "update-value"
+  }
+  delete_headers = {
+    "header3" = "delete-value"
+  }
+  read_headers = {
+    "header4" = "read-value"
+  }
+}`, data.RandomInteger, data.LocationPrimary)
+}
+
+func (r GenericResource) queryParameters(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+  create_query_parameters = {
+    "query1" = ["create-value"]
+  }
+  update_query_parameters = {
+    "query1" = ["update-value"]
+  }
+  delete_query_parameters = {
+    "query1" = ["delete-value"]
+  }
+  read_query_parameters = {
+    "query1" = ["read-value"]
+  }
+}`, data.RandomInteger, data.LocationPrimary)
 }
 
 func (r GenericResource) oldConfig(data acceptance.TestData) string {

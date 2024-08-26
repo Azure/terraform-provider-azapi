@@ -26,18 +26,20 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Name                 types.String     `tfsdk:"name"`
-	ParentID             types.String     `tfsdk:"parent_id"`
-	ResourceID           types.String     `tfsdk:"resource_id"`
-	Type                 types.String     `tfsdk:"type"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Location             types.String     `tfsdk:"location"`
-	Identity             types.List       `tfsdk:"identity"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Tags                 types.Map        `tfsdk:"tags"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	Name                 types.String        `tfsdk:"name"`
+	ParentID             types.String        `tfsdk:"parent_id"`
+	ResourceID           types.String        `tfsdk:"resource_id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	Location             types.String        `tfsdk:"location"`
+	Identity             types.List          `tfsdk:"identity"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Tags                 types.Map           `tfsdk:"tags"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type AzapiResourceDataSource struct {
@@ -155,6 +157,20 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -221,7 +237,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())

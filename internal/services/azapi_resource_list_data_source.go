@@ -21,13 +21,15 @@ import (
 )
 
 type ResourceListDataSourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Type                 types.String     `tfsdk:"type"`
-	ParentID             types.String     `tfsdk:"parent_id"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	Type                 types.String        `tfsdk:"type"`
+	ParentID             types.String        `tfsdk:"parent_id"`
+	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ResourceListDataSource struct {
@@ -86,6 +88,20 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -134,7 +150,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
-	responseBody, err := client.List(ctx, listUrl, id.ApiVersion)
+	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
 		return

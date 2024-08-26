@@ -97,6 +97,30 @@ func TestAccActionResource_timeouts(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.queryParameters(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -292,4 +316,48 @@ resource "azapi_resource_action" "test" {
   response_export_values = ["*"]
 }
 `, subscriptionId, data.RandomString)
+}
+
+func (r ActionResource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_resource_action" "list" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = azapi_resource.test.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  action      = "agentRegistrationInformation/regenerateKey"
+  body = {
+    keyName = "primary"
+  }
+  headers = {
+    "header1" = "value1"
+  }
+  depends_on = [
+    data.azapi_resource_action.list
+  ]
+}
+`, GenericResource{}.identityNone(data))
+}
+
+func (r ActionResource) queryParameters() string {
+	return `
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Authorization@2021-06-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization"
+  action      = "policyDefinitions"
+  method      = "GET"
+  query_parameters = {
+    "$filter" = ["policyType eq 'BuiltIn'"]
+  }
+  response_export_values = ["*"]
+}`
 }

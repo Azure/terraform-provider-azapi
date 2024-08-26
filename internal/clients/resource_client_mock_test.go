@@ -37,23 +37,23 @@ func NewMockResourceClient(t *testing.T, resp interface{}, err error, retries in
 	}
 }
 
-func (m *MockResourceClient) Get(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
+func (m *MockResourceClient) Get(ctx context.Context, resourceID string, apiVersion string, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}) (interface{}, error) {
+func (m *MockResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
+func (m *MockResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockResourceClient) List(ctx context.Context, resourceID string, apiVersion string) (interface{}, error) {
+func (m *MockResourceClient) List(ctx context.Context, resourceID string, apiVersion string, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+func (m *MockResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 

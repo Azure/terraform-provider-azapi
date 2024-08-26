@@ -30,18 +30,20 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Type                 types.String     `tfsdk:"type"`
-	ResourceId           types.String     `tfsdk:"resource_id"`
-	Action               types.String     `tfsdk:"action"`
-	Method               types.String     `tfsdk:"method"`
-	Body                 types.Dynamic    `tfsdk:"body"`
-	When                 types.String     `tfsdk:"when"`
-	Locks                types.List       `tfsdk:"locks"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResourceId           types.String        `tfsdk:"resource_id"`
+	Action               types.String        `tfsdk:"action"`
+	Method               types.String        `tfsdk:"method"`
+	Body                 types.Dynamic       `tfsdk:"body"`
+	When                 types.String        `tfsdk:"when"`
+	Locks                types.List          `tfsdk:"locks"`
+	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -164,6 +166,20 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -315,7 +331,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
