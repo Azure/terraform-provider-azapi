@@ -134,8 +134,8 @@ This resource can manage a subset of any existing Azure resource manager resourc
 
 	```text
 	{
-		login_server = "registry1.azurecr.io"
-		quarantine_status = "disabled"
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
 	}
 	```
 

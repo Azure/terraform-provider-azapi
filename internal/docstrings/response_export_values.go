@@ -22,8 +22,8 @@ const (
 
 	%s%s%stext
 	{
-		login_server = "registry1.azurecr.io"
-		quarantine_status = "disabled"
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
 	}
 	%s%s%s
 

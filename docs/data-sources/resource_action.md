@@ -82,8 +82,8 @@ data "azapi_resource_action" "example" {
 
 	```text
 	{
-		login_server = "registry1.azurecr.io"
-		quarantine_status = "disabled"
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
 	}
 	```
 

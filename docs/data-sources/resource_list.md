@@ -84,8 +84,8 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 	```text
 	{
-		login_server = "registry1.azurecr.io"
-		quarantine_status = "disabled"
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
 	}
 	```
 
