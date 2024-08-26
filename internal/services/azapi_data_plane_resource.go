@@ -41,7 +41,7 @@ type DataPlaneResourceModel struct {
 	Body                  types.Dynamic       `tfsdk:"body"`
 	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List          `tfsdk:"response_export_values"`
+	ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
 	Retry                 retry.RetryValue    `tfsdk:"retry"`
 	Locks                 types.List          `tfsdk:"locks"`
 	Output                types.Dynamic       `tfsdk:"output"`
