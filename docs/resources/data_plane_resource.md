@@ -77,9 +77,15 @@ resource "azapi_data_plane_resource" "dataset" {
 ### Optional
 
 - `body` (Dynamic) A dynamic attribute that contains the request body.
+- `create_headers` (Map of String) A mapping of headers to be sent with the create request.
+- `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
+- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
+- `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
 - `ignore_casing` (Boolean) A dynamic attribute that contains the request body.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
 
 	```text
@@ -96,6 +102,8 @@ resource "azapi_data_plane_resource" "dataset" {
 	```
 - `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only
 

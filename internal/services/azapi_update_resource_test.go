@@ -132,6 +132,34 @@ func TestAccGenericUpdateResource_ignoreIDCasing(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericUpdateResource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.queryParameters(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -139,7 +167,7 @@ func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Clien
 		return nil, err
 	}
 
-	resp, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	resp, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			exist := false
@@ -545,6 +573,78 @@ resource "azapi_update_resource" "test" {
     }
   })
   response_export_values = ["properties"]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.automationAccount.id
+  body = {
+    properties = {
+      publicNetworkAccess = true
+    }
+  }
+  update_headers = {
+    "header2" = "update-value"
+  }
+  read_headers = {
+    "header4" = "read-value"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) queryParameters(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.automationAccount.id
+  body = {
+    properties = {
+      publicNetworkAccess = true
+    }
+  }
+  update_query_parameters = {
+    "query1" = ["update-value"]
+  }
+  read_query_parameters = {
+    "query1" = ["read-value"]
+  }
 }
 `, r.template(data), data.RandomString)
 }

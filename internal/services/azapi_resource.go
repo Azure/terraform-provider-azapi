@@ -46,23 +46,31 @@ import (
 )
 
 type AzapiResourceModel struct {
-	Body                          types.Dynamic    `tfsdk:"body"`
-	ID                            types.String     `tfsdk:"id"`
-	Identity                      types.List       `tfsdk:"identity"`
-	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
-	Location                      types.String     `tfsdk:"location"`
-	Locks                         types.List       `tfsdk:"locks"`
-	Name                          types.String     `tfsdk:"name"`
-	Output                        types.Dynamic    `tfsdk:"output"`
-	ParentID                      types.String     `tfsdk:"parent_id"`
-	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
-	ResponseExportValues          types.List       `tfsdk:"response_export_values"`
-	Retry                         retry.RetryValue `tfsdk:"retry"`
-	SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
-	Tags                          types.Map        `tfsdk:"tags"`
-	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
-	Type                          types.String     `tfsdk:"type"`
+	Body                          types.Dynamic       `tfsdk:"body"`
+	ID                            types.String        `tfsdk:"id"`
+	Identity                      types.List          `tfsdk:"identity"`
+	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+	Location                      types.String        `tfsdk:"location"`
+	Locks                         types.List          `tfsdk:"locks"`
+	Name                          types.String        `tfsdk:"name"`
+	Output                        types.Dynamic       `tfsdk:"output"`
+	ParentID                      types.String        `tfsdk:"parent_id"`
+	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+	ResponseExportValues          types.List          `tfsdk:"response_export_values"`
+	Retry                         retry.RetryValue    `tfsdk:"retry"`
+	SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
+	Tags                          types.Map           `tfsdk:"tags"`
+	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+	Type                          types.String        `tfsdk:"type"`
+	CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
+	CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
+	UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
+	DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
+	DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
+	ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -241,6 +249,62 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"create_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the create request.",
+			},
+
+			"create_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the create request.",
+			},
+
+			"update_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the update request.",
+			},
+
+			"update_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the update request.",
+			},
+
+			"delete_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the delete request.",
+			},
+
+			"delete_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the delete request.",
+			},
+
+			"read_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the read request.",
+			},
+
+			"read_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
+			},
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
@@ -497,7 +561,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
-		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
@@ -533,10 +597,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body)
+	options := clients.NewRequestOptions(plan.CreateHeaders, plan.CreateQueryParameters)
+	if !isNewResource {
+		options = clients.NewRequestOptions(plan.UpdateHeaders, plan.UpdateQueryParameters)
+	}
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, options)
 	if err != nil {
 		if isNewResource {
-			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion); err == nil {
+			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters)); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 				plan.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(plan.ResponseExportValues)))
@@ -560,7 +628,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -625,7 +693,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -758,7 +826,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion)
+	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.DeleteHeaders, model.DeleteQueryParameters))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}
@@ -814,7 +882,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 		},
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(state.ReadHeaders, state.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))

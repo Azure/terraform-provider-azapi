@@ -32,19 +32,23 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String     `tfsdk:"id"`
-	Name                  types.String     `tfsdk:"name"`
-	ParentID              types.String     `tfsdk:"parent_id"`
-	ResourceID            types.String     `tfsdk:"resource_id"`
-	Type                  types.String     `tfsdk:"type"`
-	Body                  types.Dynamic    `tfsdk:"body"`
-	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List       `tfsdk:"response_export_values"`
-	Locks                 types.List       `tfsdk:"locks"`
-	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts"`
-	Retry                 retry.RetryValue `tfsdk:"retry"`
+	ID                    types.String        `tfsdk:"id"`
+	Name                  types.String        `tfsdk:"name"`
+	ParentID              types.String        `tfsdk:"parent_id"`
+	ResourceID            types.String        `tfsdk:"resource_id"`
+	Type                  types.String        `tfsdk:"type"`
+	Body                  types.Dynamic       `tfsdk:"body"`
+	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.List          `tfsdk:"response_export_values"`
+	Locks                 types.List          `tfsdk:"locks"`
+	Output                types.Dynamic       `tfsdk:"output"`
+	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
+	Retry                 retry.RetryValue    `tfsdk:"retry"`
+	UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
+	ReadHeaders           map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 type AzapiUpdateResource struct {
@@ -182,6 +186,34 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"update_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the update request.",
+			},
+
+			"update_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the update request.",
+			},
+
+			"read_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the read request.",
+			},
+
+			"read_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -325,7 +357,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -352,13 +384,13 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		defer locks.UnlockByID(id)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(model.UpdateHeaders, model.UpdateQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -411,7 +443,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))

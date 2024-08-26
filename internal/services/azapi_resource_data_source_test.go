@@ -90,6 +90,30 @@ func TestAccGenericDataSource_withRetry(t *testing.T) {
 	})
 }
 
+func TestAccGenericDataSource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccGenericDataSource_queryParameter(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.queryParameter(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -161,4 +185,36 @@ data "azapi_resource" "test" {
   }
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomInteger)
+}
+
+func (r GenericDataSource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource" "test" {
+  name                   = azapi_resource.test.name
+  parent_id              = azapi_resource.test.parent_id
+  type                   = azapi_resource.test.type
+  response_export_values = ["*"]
+  headers = {
+    "header1" = "value1"
+  }
+}
+`, GenericResource{}.complete(data))
+}
+
+func (r GenericDataSource) queryParameter(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource" "test" {
+  name                   = azapi_resource.test.name
+  parent_id              = azapi_resource.test.parent_id
+  type                   = azapi_resource.test.type
+  response_export_values = ["*"]
+  query_parameters = {
+    "query1" = ["value1"]
+  }
+}
+`, GenericResource{}.complete(data))
 }

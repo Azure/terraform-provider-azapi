@@ -87,6 +87,10 @@ This resource can manage any Azure Resource Manager resource.
 ### Optional
 
 - `body` (Dynamic) A dynamic attribute that contains the request body.
+- `create_headers` (Map of String) A mapping of headers to be sent with the create request.
+- `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
+- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
+- `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
 - `identity` (Block List) (see [below for nested schema](#nestedblock--identity))
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
@@ -104,6 +108,8 @@ This resource can manage any Azure Resource Manager resource.
   For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
 If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. 
 Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
@@ -144,6 +150,8 @@ resource "azapi_resource" "example" {
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only
 

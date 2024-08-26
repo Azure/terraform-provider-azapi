@@ -110,6 +110,8 @@ This resource can manage a subset of any existing Azure resource manager resourc
   For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `resource_id` (String) The ID of an existing Azure source.
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
 
@@ -127,6 +129,8 @@ This resource can manage a subset of any existing Azure resource manager resourc
 	```
 - `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only
 

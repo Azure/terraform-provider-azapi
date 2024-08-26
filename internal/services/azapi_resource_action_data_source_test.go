@@ -46,6 +46,30 @@ func TestAccActionDataSource_providerAction(t *testing.T) {
 	})
 }
 
+func TestAccActionDataSource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionDataSource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.queryParameters(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -85,4 +109,36 @@ data "azapi_resource_action" "test" {
   response_export_values = ["*"]
 }
 `
+}
+
+func (r ActionDataSource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.test.id
+  action      = "listKeys"
+  headers = {
+    "header1" = "value1"
+  }
+  response_export_values = ["*"]
+}
+`, GenericResource{}.defaultTag(data))
+}
+
+func (r ActionDataSource) queryParameters() string {
+	return `
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_action" "test" {
+  type        = "Microsoft.Authorization@2021-06-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization"
+  action      = "policyDefinitions"
+  method      = "GET"
+  query_parameters = {
+    "$filter" = ["policyType eq 'BuiltIn'"]
+  }
+  response_export_values = ["*"]
+}`
 }

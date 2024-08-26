@@ -76,8 +76,10 @@ description: |-
 
 - `action` (String) The name of the resource action. It's also possible to make HTTP requests towards the resource ID if leave this field empty.
 - `body` (Dynamic) A dynamic attribute that contains the request body.
+- `headers` (Map of String) A map of headers to include in the request
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `method` (String) Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
 
 	```text

@@ -61,6 +61,8 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 ### Optional
 
+- `headers` (Map of String) A map of headers to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
 
 	```text
