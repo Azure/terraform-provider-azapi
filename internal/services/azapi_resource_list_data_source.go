@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -24,7 +23,7 @@ type ResourceListDataSourceModel struct {
 	ID                   types.String        `tfsdk:"id"`
 	Type                 types.String        `tfsdk:"type"`
 	ParentID             types.String        `tfsdk:"parent_id"`
-	ResponseExportValues types.List          `tfsdk:"response_export_values"`
+	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
 	Output               types.Dynamic       `tfsdk:"output"`
 	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
 	Retry                retry.RetryValue    `tfsdk:"retry"`
@@ -73,14 +72,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				MarkdownDescription: docstrings.ParentID(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
@@ -157,6 +149,13 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	}
 
 	model.ID = basetypes.NewStringValue(listUrl)
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

@@ -107,6 +107,27 @@ func flattenOutput(responseBody interface{}, paths []string) attr.Value {
 	return out
 }
 
+func flattenOutputJMES(responseBody interface{}, paths map[string]string) attr.Value {
+	var output interface{}
+	output = make(map[string]interface{})
+	for pathKey, path := range paths {
+		part := utils.ExtractObjectJMES(responseBody, pathKey, path)
+		if part == nil {
+			continue
+		}
+		output = utils.MergeObject(output, part)
+	}
+	data, err := json.Marshal(output)
+	if err != nil {
+		return nil
+	}
+	out, err := dynamic.FromJSONImplied(data)
+	if err != nil {
+		return nil
+	}
+	return out
+}
+
 func AsStringList(input types.List) []string {
 	var result []string
 	diags := input.ElementsAs(context.Background(), &result, false)

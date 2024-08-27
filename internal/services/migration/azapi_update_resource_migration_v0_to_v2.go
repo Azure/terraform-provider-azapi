@@ -107,7 +107,7 @@ func AzapiUpdateResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Body                  types.Dynamic       `tfsdk:"body"`
 				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-				ResponseExportValues  types.List          `tfsdk:"response_export_values"`
+				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
 				Locks                 types.List          `tfsdk:"locks"`
 				Output                types.Dynamic       `tfsdk:"output"`
 				Timeouts              timeouts.Value      `tfsdk:"timeouts"`
@@ -147,7 +147,7 @@ func AzapiUpdateResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Locks:                 oldState.Locks,
 				IgnoreCasing:          oldState.IgnoreCasing,
 				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
-				ResponseExportValues:  oldState.ResponseExportValues,
+				ResponseExportValues:  types.DynamicValue(oldState.ResponseExportValues),
 				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,
 				Retry:                 retry.NewRetryValueNull(),

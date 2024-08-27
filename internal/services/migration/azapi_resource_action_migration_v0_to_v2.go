@@ -91,7 +91,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Body                 types.Dynamic       `tfsdk:"body"`
 				When                 types.String        `tfsdk:"when"`
 				Locks                types.List          `tfsdk:"locks"`
-				ResponseExportValues types.List          `tfsdk:"response_export_values"`
+				ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
 				Output               types.Dynamic       `tfsdk:"output"`
 				Timeouts             timeouts.Value      `tfsdk:"timeouts"`
 				Retry                retry.RetryValue    `tfsdk:"retry"`
@@ -140,7 +140,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Body:                 bodyVal,
 				When:                 when,
 				Locks:                oldState.Locks,
-				ResponseExportValues: oldState.ResponseExportValues,
+				ResponseExportValues: types.DynamicValue(oldState.ResponseExportValues),
 				Output:               outputVal,
 				Timeouts:             oldState.Timeouts,
 				Retry:                retry.NewRetryValueNull(),
