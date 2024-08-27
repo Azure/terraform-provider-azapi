@@ -131,6 +131,11 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				return
 			}
 
+			responseExportValues := types.DynamicNull()
+			if !oldState.ResponseExportValues.IsNull() {
+				responseExportValues = types.DynamicValue(oldState.ResponseExportValues)
+			}
+
 			newState := newModel{
 				ID:                   oldState.ID,
 				Type:                 oldState.Type,
@@ -140,7 +145,7 @@ func AzapiResourceActionMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Body:                 bodyVal,
 				When:                 when,
 				Locks:                oldState.Locks,
-				ResponseExportValues: types.DynamicValue(oldState.ResponseExportValues),
+				ResponseExportValues: responseExportValues,
 				Output:               outputVal,
 				Timeouts:             oldState.Timeouts,
 				Retry:                retry.NewRetryValueNull(),
