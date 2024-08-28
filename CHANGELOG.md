@@ -11,6 +11,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
+- `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
 
 ## v1.15.0
 

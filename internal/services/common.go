@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -24,11 +25,7 @@ func CommonAttributeResponseExportValues() schema.DynamicAttribute {
 
 func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic) (types.Dynamic, error) {
 	if modelResponseExportValues.IsNull() {
-		return types.DynamicNull(), nil
-	}
-
-	if modelResponseExportValues.IsUnknown() {
-		return types.DynamicUnknown(), nil
+		return types.DynamicValue(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})), nil
 	}
 
 	data, err := dynamic.ToJSON(modelResponseExportValues)
