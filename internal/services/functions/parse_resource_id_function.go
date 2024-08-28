@@ -45,8 +45,8 @@ func (p *ParseResourceIdFunction) Definition(ctx context.Context, request functi
 				MarkdownDescription: "The resource type of the Azure resource.",
 			},
 			function.StringParameter{
-				AllowNullValue:      true,
-				AllowUnknownValues:  true,
+				AllowNullValue:      false,
+				AllowUnknownValues:  false,
 				Name:                "resource_id",
 				Description:         "The resource ID of the Azure resource to parse.",
 				MarkdownDescription: "The resource ID of the Azure resource to parse.",
@@ -67,16 +67,6 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 	var resourceId types.String
 
 	if response.Error = request.Arguments.Get(ctx, &resourceTypeParam, &resourceId); response.Error != nil {
-		return
-	}
-
-	if resourceId.IsNull() {
-		response.Error = response.Result.Set(ctx, types.ObjectNull(ParseResourceIdResultAttrTypes))
-		return
-	}
-
-	if resourceId.IsUnknown() {
-		response.Error = response.Result.Set(ctx, types.ObjectUnknown(ParseResourceIdResultAttrTypes))
 		return
 	}
 

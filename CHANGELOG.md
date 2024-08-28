@@ -7,6 +7,15 @@ BREAKING CHANGES:
 - The `body` field now only accepts an HCL object. Please remove the `jsondecode` function when using the `body` field.
 - The `output` field now only exports an HCL object. Please remove the `jsondecode` function when using the `output` field.
 
+FEATURES:
+- **New Provider Function**: build_resource_id
+- **New Provider Function**: parse_resource_id
+- **New Provider Function**: subscription_resource_id
+- **New Provider Function**: tenant_resource_id
+- **New Provider Function**: management_group_resource_id
+- **New Provider Function**: resource_group_resource_id
+- **New Provider Function**: extension_resource_id
+
 ENHANCEMENTS:
 - `azapi_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
