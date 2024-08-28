@@ -121,9 +121,11 @@ resource "azapi_resource" "example" {
   name      = var.name
   type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
-  body      = properties = {
-    sku   = var.sku
-    zones = var.zones
+  body      = {
+    properties = {
+      sku   = var.sku
+      zones = var.zones
+    }
   }
 
   replace_triggers_external_values = [
@@ -132,7 +134,9 @@ resource "azapi_resource" "example" {
   ]
 }
 ```
-- `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
+- `response_export_values` (Dynamic) The attribute can accept either a list or a map.
+
+- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
 	```text
 	{
@@ -146,6 +150,17 @@ resource "azapi_resource" "example" {
 		}
 	}
 	```
+
+- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+
+	```text
+	{
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
+	}
+	```
+
+To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.

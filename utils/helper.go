@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
+	tf_types "github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 func GetId(resource interface{}) *string {
@@ -124,4 +125,35 @@ func GetAzureResourceTypeApiVersion(resourceType string) (string, string, error)
 
 func IsTopLevelResourceType(resourceType string) bool {
 	return len(strings.Split(resourceType, "/")) == 2
+}
+
+func GetAzureResourceType(resourceType string, apiVersion string) string {
+	return fmt.Sprintf("%s@%s", resourceType, apiVersion)
+}
+
+func GetAzureResourceTypeParts(azureResourceType string) (resourceProvider string, parts []string, err error) {
+	parts = strings.Split(azureResourceType, "/")
+	if len(parts) < 2 {
+		return "", nil, fmt.Errorf("invalid azure resource type, it should be like `ResourceProvider/resourceTypes`")
+	}
+	return parts[0], parts[1:], nil
+}
+
+func ParseResourceNames(resourceNamesParam tf_types.List) []string {
+	resourceNamesList := resourceNamesParam.Elements()
+
+	resourceNames := make([]string, len(resourceNamesList))
+	for i, element := range resourceNamesList {
+		resourceNames[i] = element.(tf_types.String).ValueString()
+	}
+
+	return resourceNames
+}
+
+// TryAppendDefaultApiVersion appends the default api version to the resource type if it is not already present.
+func TryAppendDefaultApiVersion(resourceType string) string {
+	if !strings.Contains(resourceType, "@") {
+		resourceType += "@latest"
+	}
+	return resourceType
 }

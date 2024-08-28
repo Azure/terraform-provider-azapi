@@ -767,6 +767,116 @@ func Test_OverrideWithPaths(t *testing.T) {
 	}
 }
 
+func Test_ExtractObjectJMES(t *testing.T) {
+	testcases := []struct {
+		InputJson  string
+		PathKey    string
+		Path       string
+		ExpectJson string
+	}{
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].name",
+			Path:    "values[*].name",
+			ExpectJson: `
+{
+  "values[*].name": ["test1", "test2"]
+}
+`,
+		},
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].status",
+			Path:    "values[*].properties.status",
+			ExpectJson: `
+{
+  "values[*].status": ["active", "inactive"]
+}
+`,
+		},
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].nonexistent",
+			Path:    "values[*].nonexistent",
+			ExpectJson: `
+{
+  "values[*].nonexistent": []
+}
+`,
+		},
+	}
+
+	for _, testcase := range testcases {
+		var input, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.InputJson), &input)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.ExtractObjectJMES(input, testcase.PathKey, testcase.Path)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", string(expectedJson), string(resultJson))
+		}
+	}
+}
+
 func Test_UpdateObjectDuplicateIdentifiers(t *testing.T) {
 	OldJson := `
 [
