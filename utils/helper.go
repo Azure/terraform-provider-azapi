@@ -153,7 +153,7 @@ func ParseResourceNames(resourceNamesParam tf_types.List) []string {
 // TryAppendDefaultApiVersion appends the default api version to the resource type if it is not already present.
 func TryAppendDefaultApiVersion(resourceType string) string {
 	if !strings.Contains(resourceType, "@") {
-		resourceType = resourceType + "@latest"
+		resourceType += "@latest"
 	}
 	return resourceType
 }
