@@ -29,9 +29,9 @@ func (f *ExtensionResourceIdFunction) Definition(ctx context.Context, request fu
 			function.StringParameter{
 				AllowNullValue:      false,
 				AllowUnknownValues:  false,
-				Name:                "extension_name",
-				Description:         "The name of the extension resource.",
-				MarkdownDescription: "The name of the extension resource.",
+				Name:                "resource_type",
+				Description:         "The resource type of the Azure resource.",
+				MarkdownDescription: "The resource type of the Azure resource.",
 			},
 			function.ListParameter{
 				AllowNullValue:      false,
