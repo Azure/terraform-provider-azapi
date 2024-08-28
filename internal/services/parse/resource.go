@@ -21,6 +21,53 @@ type ResourceId struct {
 	ResourceDef       *types.ResourceType
 }
 
+// NewResourceIDWithNestedResourceNames constructs a nested resource ID from the given resource names, parent ID, and resource type.
+func NewResourceIDWithNestedResourceNames(resourceNames []string, parentId, resourceType string) (ResourceId, error) {
+	if len(resourceNames) == 0 {
+		return ResourceId{}, fmt.Errorf("resource names cannot be empty")
+	}
+
+	// Append default "@latest" api version if not provided
+	resourceType = utils.TryAppendDefaultApiVersion(resourceType)
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
+	if err != nil {
+		return ResourceId{}, err
+	}
+
+	resourceProvider, resourceTypeParts, err := utils.GetAzureResourceTypeParts(azureResourceType)
+	if err != nil {
+		return ResourceId{}, err
+	}
+
+	// Ensure the number of resource names matches the number of resource type parts
+	if len(resourceNames) != len(resourceTypeParts) {
+		return ResourceId{}, fmt.Errorf("number of resource names does not match the number of resource type parts, expected %d, got %d", len(resourceTypeParts), len(resourceNames))
+	}
+
+	currentResourceType := resourceProvider
+
+	// Build resource ID for each nested resource
+	for i, resourceTypePart := range resourceTypeParts {
+		// Final resource type part
+		if i == len(resourceTypeParts)-1 {
+			return NewResourceID(resourceNames[i], parentId, resourceType)
+		}
+
+		// Intermediate resource type part
+		currentResourceType += "/" + resourceTypePart
+
+		parentResourceID, err := NewResourceIDSkipScopeValidation(resourceNames[i], parentId, utils.GetAzureResourceType(currentResourceType, apiVersion))
+		if err != nil {
+			return ResourceId{}, err
+		}
+
+		parentId = parentResourceID.AzureResourceId
+	}
+
+	return ResourceId{}, fmt.Errorf("failed to build resource id for nested resources")
+}
+
 func NewResourceID(name, parentId, resourceType string) (ResourceId, error) {
 	return newResourceID(name, parentId, resourceType, false)
 }
