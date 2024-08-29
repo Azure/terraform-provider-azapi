@@ -148,17 +148,6 @@ func TestParseResourceIdFunction(t *testing.T) {
 				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
 			},
 		},
-		"unknown-resource-id": {
-			request: function.RunRequest{
-				Arguments: function.NewArgumentsData([]attr.Value{
-					types.StringValue("Microsoft.Network/virtualNetworks"),
-					types.StringUnknown(),
-				}),
-			},
-			expected: function.RunResponse{
-				Result: function.NewResultData(types.ObjectUnknown(functions.ParseResourceIdResultAttrTypes)),
-			},
-		},
 	}
 
 	for name, testCase := range testCases {

@@ -15,7 +15,7 @@ locals {
 #     "virtualNetworks" = "myVNet"
 #   })
 #   "provider_namespace" = "Microsoft.Network"
-#   "resource_gr  oup_name" = "myResourceGroup"
+#   "resource_group_name" = "myResourceGroup"
 #   "subscription_id" = "00000000-0000-0000-0000-000000000000"
 #   "type" = "Microsoft.Network/virtualNetworks"
 # }
