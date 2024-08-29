@@ -6,6 +6,7 @@ BREAKING CHANGES:
 - The `ignore_body_changes` field is removed. Please use the `lifecyle.ignore_changes` to ignore some properties when comparing the resource with its current state.
 - The `body` field now only accepts an HCL object. Please remove the `jsondecode` function when using the `body` field.
 - The `output` field now only exports an HCL object. Please remove the `jsondecode` function when using the `output` field.
+- The `use_msi` field now defaults to `false`, please set it to `true` explicitly if you want to authenticate using Managed Service Identity.
 
 FEATURES:
 - **New Provider Function**: build_resource_id
