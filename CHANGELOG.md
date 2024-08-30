@@ -22,6 +22,7 @@ ENHANCEMENTS:
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
+- Accept `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables when authenticating using AKS workload identity.
 
 ## v1.15.0
 
