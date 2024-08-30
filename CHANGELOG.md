@@ -22,6 +22,7 @@ ENHANCEMENTS:
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
+- `azapi` provider: Support `oidc_azure_service_connection_id` field, which is used to specify the Azure Service Connection ID for OIDC authentication with Azure DevOps.
 
 ## v1.15.0
 
