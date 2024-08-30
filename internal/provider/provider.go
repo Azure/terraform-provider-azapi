@@ -94,6 +94,14 @@ func (model providerData) GetClientId() (*string, error) {
 		clientId = fileClientId
 	}
 
+	if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_CLIENT_ID") != "" {
+		aksClientId := os.Getenv("AZURE_CLIENT_ID")
+		if clientId != "" && clientId != aksClientId {
+			return nil, fmt.Errorf("mismatch between supplied Client ID and that provided by AKS Workload Identity - please remove, ensure they match, or disable use_aks_workload_identity")
+		}
+		clientId = aksClientId
+	}
+
 	return &clientId, nil
 }
 
@@ -365,9 +373,25 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.UseAKSWorkloadIdentity.IsNull() {
+		if v := os.Getenv("ARM_USE_AKS_WORKLOAD_IDENTITY"); v != "" {
+			model.UseAKSWorkloadIdentity = types.BoolValue(v == "true")
+		} else {
+			model.UseAKSWorkloadIdentity = types.BoolValue(false)
+		}
+	}
+
 	if model.TenantID.IsNull() {
 		if v := os.Getenv("ARM_TENANT_ID"); v != "" {
 			model.TenantID = types.StringValue(v)
+		}
+		if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_TENANT_ID") != "" {
+			aksTenantID := os.Getenv("AZURE_TENANT_ID")
+			if model.TenantID.ValueString() != "" && model.TenantID.ValueString() != aksTenantID {
+				response.Diagnostics.AddError("Invalid `tenant_id` value", "mismatch between supplied Tenant ID and that provided by AKS Workload Identity - please remove, ensure they match, or disable use_aks_workload_identity")
+				return
+			}
+			model.TenantID = types.StringValue(aksTenantID)
 		}
 	}
 
@@ -479,14 +503,6 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.UseOIDC = types.BoolValue(v == "true")
 		} else {
 			model.UseOIDC = types.BoolValue(false)
-		}
-	}
-
-	if model.UseAKSWorkloadIdentity.IsNull() {
-		if v := os.Getenv("ARM_USE_AKS_WORKLOAD_IDENTITY"); v != "" {
-			model.UseAKSWorkloadIdentity = types.BoolValue(v == "true")
-		} else {
-			model.UseAKSWorkloadIdentity = types.BoolValue(false)
 		}
 	}
 
