@@ -63,7 +63,7 @@ Where the body is:
   "issuer":"https://token.actions.githubusercontent.com",
   "subject":"repo:${REPO_OWNER}/${REPO_NAME}:refs:refs/heads/main",
   "description":"${REPO_OWNER} PR",
-  "audiences":["api://AzureADTokenExchange"],
+  "audiences":["api://AzureADTokenExchange"]
 }
 ```
 
@@ -124,6 +124,92 @@ terraform {
 provider "azapi" {
   use_oidc = true
 }
+```
+
+When running Terraform in Azure Pipelines, there are two ways to authenticate using OIDC. 
+
+The first way is to use the OIDC token.
+You can specify the OIDC token using the `oidc_token` or `oidc_token_file_path` provider arguments. 
+You can also specify the OIDC request token and URL using the environment variables `ARM_OIDC_TOKEN` and `ARM_OIDC_TOKEN_FILE_PATH`.
+
+Here is an example of how to specify the OIDC token using the `oidc_token` provider argument:
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source  = "azure/azapi"
+    }
+  }
+}
+
+provider "azapi" { 
+  oidc_token = "{OIDC Token}"
+  
+  // or use oidc_token_file_path
+  // oidc_token_file_path = "{OIDC Token File Path}"
+  
+  use_oidc = true
+}
+```
+
+And here is an example of azure-pipelines.yml file:
+
+```yaml
+  - task: AzureCLI@2
+    displayName: Acc Tests with OIDC Token
+    inputs:
+      azureSubscription: 'azapi-oidc-test' // Azure Service Connection ID
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $env:ARM_TENANT_ID = $env:tenantId
+        $env:ARM_CLIENT_ID = $env:servicePrincipalId
+        $env:ARM_OIDC_TOKEN = $env:idToken
+        $env:ARM_USE_OIDC = 'true'
+        terraform plan
+      addSpnToEnvironment: true
+```
+
+The second way is to use the OIDC request token and URL. The provider will detect the `SYSTEM_OIDCREQUESTURI` environment variable set by the Azure Pipelines runtime and use it as the OIDC request URL.
+You can specify the OIDC request token using the `oidc_request_token` provider argument or the environment variable `ARM_OIDC_REQUEST_TOKEN`.
+And the Azure Service Connection ID must be specified using the `oidc_azure_service_connection_id` provider argument or the environment variable `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID`.
+
+Here is an example of how to specify the OIDC request token and URL using the `oidc_request_token` and `oidc_azure_service_connection_id` provider arguments:
+
+```hcl
+terraform {
+  required_providers {
+    azapi = {
+      source  = "azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+  oidc_request_token = "{OIDC Request Token}"
+  oidc_azure_service_connection_id = "{Azure Service Connection ID}"
+  use_oidc = true
+}
+```
+
+And here is an example of azure-pipelines.yml file:
+
+```yaml
+  - task: AzureCLI@2
+    displayName: Acc Tests with OIDC Azure Pipeline
+    inputs:
+      azureSubscription: 'azapi-oidc-test' // Azure Service Connection ID
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $env:ARM_TENANT_ID = $env:tenantId
+        $env:ARM_CLIENT_ID = $env:servicePrincipalId
+        $env:ARM_OIDC_REQUEST_TOKEN = "$(System.AccessToken)"
+        $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID = "azapi-oidc-test"
+        $env:ARM_USE_OIDC = 'true'
+        terraform plan
+      addSpnToEnvironment: true
 ```
 
 More information on [the fields supported in the Provider block can be found here](../index.html#argument-reference).

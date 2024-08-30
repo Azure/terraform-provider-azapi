@@ -44,34 +44,35 @@ type Provider struct {
 }
 
 type providerData struct {
-	SubscriptionID              types.String `tfsdk:"subscription_id"`
-	ClientID                    types.String `tfsdk:"client_id"`
-	ClientIDFilePath            types.String `tfsdk:"client_id_file_path"`
-	TenantID                    types.String `tfsdk:"tenant_id"`
-	AuxiliaryTenantIDs          types.List   `tfsdk:"auxiliary_tenant_ids"`
-	Endpoint                    types.List   `tfsdk:"endpoint"`
-	Environment                 types.String `tfsdk:"environment"`
-	ClientCertificate           types.String `tfsdk:"client_certificate"`
-	ClientCertificatePath       types.String `tfsdk:"client_certificate_path"`
-	ClientCertificatePassword   types.String `tfsdk:"client_certificate_password"`
-	ClientSecret                types.String `tfsdk:"client_secret"`
-	ClientSecretFilePath        types.String `tfsdk:"client_secret_file_path"`
-	SkipProviderRegistration    types.Bool   `tfsdk:"skip_provider_registration"`
-	OIDCRequestToken            types.String `tfsdk:"oidc_request_token"`
-	OIDCRequestURL              types.String `tfsdk:"oidc_request_url"`
-	OIDCToken                   types.String `tfsdk:"oidc_token"`
-	OIDCTokenFilePath           types.String `tfsdk:"oidc_token_file_path"`
-	UseOIDC                     types.Bool   `tfsdk:"use_oidc"`
-	UseCLI                      types.Bool   `tfsdk:"use_cli"`
-	UseMSI                      types.Bool   `tfsdk:"use_msi"`
-	UseAKSWorkloadIdentity      types.Bool   `tfsdk:"use_aks_workload_identity"`
-	PartnerID                   types.String `tfsdk:"partner_id"`
-	CustomCorrelationRequestID  types.String `tfsdk:"custom_correlation_request_id"`
-	DisableCorrelationRequestID types.Bool   `tfsdk:"disable_correlation_request_id"`
-	DisableTerraformPartnerID   types.Bool   `tfsdk:"disable_terraform_partner_id"`
-	DefaultName                 types.String `tfsdk:"default_name"`
-	DefaultLocation             types.String `tfsdk:"default_location"`
-	DefaultTags                 types.Map    `tfsdk:"default_tags"`
+	SubscriptionID               types.String `tfsdk:"subscription_id"`
+	ClientID                     types.String `tfsdk:"client_id"`
+	ClientIDFilePath             types.String `tfsdk:"client_id_file_path"`
+	TenantID                     types.String `tfsdk:"tenant_id"`
+	AuxiliaryTenantIDs           types.List   `tfsdk:"auxiliary_tenant_ids"`
+	Endpoint                     types.List   `tfsdk:"endpoint"`
+	Environment                  types.String `tfsdk:"environment"`
+	ClientCertificate            types.String `tfsdk:"client_certificate"`
+	ClientCertificatePath        types.String `tfsdk:"client_certificate_path"`
+	ClientCertificatePassword    types.String `tfsdk:"client_certificate_password"`
+	ClientSecret                 types.String `tfsdk:"client_secret"`
+	ClientSecretFilePath         types.String `tfsdk:"client_secret_file_path"`
+	SkipProviderRegistration     types.Bool   `tfsdk:"skip_provider_registration"`
+	OIDCRequestToken             types.String `tfsdk:"oidc_request_token"`
+	OIDCRequestURL               types.String `tfsdk:"oidc_request_url"`
+	OIDCToken                    types.String `tfsdk:"oidc_token"`
+	OIDCTokenFilePath            types.String `tfsdk:"oidc_token_file_path"`
+	OIDCAzureServiceConnectionID types.String `tfsdk:"oidc_azure_service_connection_id"`
+	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
+	UseCLI                       types.Bool   `tfsdk:"use_cli"`
+	UseMSI                       types.Bool   `tfsdk:"use_msi"`
+	UseAKSWorkloadIdentity       types.Bool   `tfsdk:"use_aks_workload_identity"`
+	PartnerID                    types.String `tfsdk:"partner_id"`
+	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
+	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
+	DisableTerraformPartnerID    types.Bool   `tfsdk:"disable_terraform_partner_id"`
+	DefaultName                  types.String `tfsdk:"default_name"`
+	DefaultLocation              types.String `tfsdk:"default_location"`
+	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -264,6 +265,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			"oidc_token_file_path": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "The path to a file containing an ID token when authenticating using OpenID Connect (OIDC). This can also be sourced from the `ARM_OIDC_TOKEN_FILE_PATH` environment Variable.",
+			},
+
+			"oidc_azure_service_connection_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.",
 			},
 
 			"use_oidc": schema.BoolAttribute{
@@ -471,6 +477,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	if model.OIDCTokenFilePath.IsNull() {
 		if v := os.Getenv("ARM_OIDC_TOKEN_FILE_PATH"); v != "" {
 			model.OIDCTokenFilePath = types.StringValue(v)
+		}
+	}
+
+	if model.OIDCAzureServiceConnectionID.IsNull() {
+		if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
 		}
 	}
 
@@ -721,6 +733,13 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 		} else {
 			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
 		}
+
+		log.Printf("[DEBUG] azure pipelines credential enabled")
+		if cred, err := buildAzurePipelinesCredential(model, options); err == nil {
+			creds = append(creds, cred)
+		} else {
+			log.Printf("[DEBUG] failed to initialize azure pipelines credential: %v", err)
+		}
 	}
 
 	if cred, err := buildClientSecretCredential(model, options); err == nil {
@@ -802,6 +821,10 @@ func buildClientCertificateCredential(model providerData, options azidentity.Def
 		}
 	}
 
+	if len(certData) == 0 {
+		return nil, fmt.Errorf("no certificate data provided")
+	}
+
 	var password []byte
 	if v := model.ClientCertificatePassword.ValueString(); v != "" {
 		password = []byte(v)
@@ -862,6 +885,20 @@ func buildAzureCLICredential(options azidentity.DefaultAzureCredentialOptions) (
 		TenantID:                   options.TenantID,
 	}
 	return azidentity.NewAzureCLICredential(o)
+}
+
+func buildAzurePipelinesCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building azure pipeline credential")
+	o := &azidentity.AzurePipelinesCredentialOptions{
+		ClientOptions:              options.ClientOptions,
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	}
+	clientId, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+	return azidentity.NewAzurePipelinesCredential(options.TenantID, *clientId, model.OIDCAzureServiceConnectionID.ValueString(), model.OIDCRequestToken.ValueString(), o)
 }
 
 func decodeCertificate(clientCertificate string) ([]byte, error) {
