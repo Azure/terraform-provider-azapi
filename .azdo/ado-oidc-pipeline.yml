@@ -1,0 +1,47 @@
+pool:
+  name: pool-ubuntu-2004
+
+steps:
+  - task: GoTool@0
+    displayName: "Install correct version of Go"
+    inputs:
+      version: '1.21.4'
+      GOPATH: "$(Pipeline.Workspace)/gopath"
+      GOBIN: "$(GOPATH)/bin"
+  
+  - task: AzureCLI@2
+    displayName: Acc Tests with OIDC Token
+    inputs:
+      azureSubscription: 'azapi-oidc-test'
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $env:ARM_TENANT_ID = $env:tenantId
+        $env:ARM_CLIENT_ID = $env:servicePrincipalId
+        $env:ARM_OIDC_TOKEN = $env:idToken
+        $env:ARM_USE_OIDC = 'true'
+        $env:ARM_USE_CLI = 'false'
+        $env:TESTARGS = '-run TestAccAuth_oidc'
+        make acctests
+      addSpnToEnvironment: true
+      useGlobalConfig: true
+      failOnStandardError: true
+
+  - task: AzureCLI@2
+    displayName: Acc Tests with OIDC Azure Pipeline
+    inputs:
+      azureSubscription: 'azapi-oidc-test'
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $env:ARM_TENANT_ID = $env:tenantId
+        $env:ARM_CLIENT_ID = $env:servicePrincipalId
+        $env:ARM_OIDC_REQUEST_TOKEN = "$(System.AccessToken)"
+        $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID = "azapi-oidc-test"
+        $env:ARM_USE_OIDC = 'true'
+        $env:ARM_USE_CLI = 'false'
+        $env:TESTARGS = '-run TestAccAuth_oidc'
+        make acctests
+      addSpnToEnvironment: true
+      useGlobalConfig: true
+      failOnStandardError: true

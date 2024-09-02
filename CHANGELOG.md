@@ -23,6 +23,8 @@ ENHANCEMENTS:
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
 - Accept `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables when authenticating using AKS workload identity.
+- `azapi` provider: Support `oidc_azure_service_connection_id` field, which is used to specify the Azure Service Connection ID for OIDC authentication with Azure DevOps.
+
 
 ## v1.15.0
 
