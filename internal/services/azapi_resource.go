@@ -509,10 +509,6 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 
 	// Check if any paths in replace_triggers_refs have changed
 	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
-		//if !state.ReplaceTriggersRefs.Equal(plan.ReplaceTriggersRefs) {
-		//	response.RequiresReplace.Append(path.Root("replace_triggers_refs"))
-		//}
-
 		refPaths := make(map[string]string)
 		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
 			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
