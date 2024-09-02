@@ -92,6 +92,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				Body                  types.Dynamic       `tfsdk:"body"`
 				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
+				ReplaceTriggersRefs   types.List          `tfsdk:"replace_triggers_refs"`
 				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
 				Retry                 retry.RetryValue    `tfsdk:"retry"`
 				Locks                 types.List          `tfsdk:"locks"`
@@ -138,6 +139,7 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				Locks:                 oldState.Locks,
 				IgnoreCasing:          oldState.IgnoreCasing,
 				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
+				ReplaceTriggersRefs:   types.ListNull(types.StringType),
 				ResponseExportValues:  responseExportValues,
 				Retry:                 retry.NewRetryValueNull(),
 				Output:                outputVal,

@@ -518,7 +518,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		var data interface{}
 		err = json.Unmarshal([]byte(state.Body.String()), &data)
 		if err != nil {
-			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
 			return
 		}
 		previousValues := flattenOutputJMES(data, refPaths)
@@ -526,7 +526,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		// read current values from plan
 		err = json.Unmarshal([]byte(plan.Body.String()), &data)
 		if err != nil {
-			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
 			return
 		}
 		currentValues := flattenOutputJMES(data, refPaths)
