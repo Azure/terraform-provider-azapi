@@ -54,40 +54,41 @@ provider "azapi" {
 
 ### Optional
 
-- `auxiliary_tenant_ids` (List of String) The Auxiliary Tenant IDs which should be used.
-- `client_certificate` (String) A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
-- `client_certificate_password` (String) The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate
-- `client_certificate_path` (String) The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.
-- `client_id` (String) The Client ID which should be used.
-- `client_id_file_path` (String) The path to a file containing the Client ID which should be used.
-- `client_secret` (String) The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.
-- `client_secret_file_path` (String) The path to a file containing the Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.
-- `custom_correlation_request_id` (String) The value of the x-ms-correlation-request-id header (otherwise an auto-generated UUID will be used).
-- `default_location` (String) The default location which should be used for resources.
-- `default_name` (String) The default name which should be used for resources.
-- `default_tags` (Map of String) The default tags which should be used for resources.
+- `auxiliary_tenant_ids` (List of String) List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.
+- `client_certificate` (String) A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication. This can also be sourced from the `ARM_CLIENT_CERTIFICATE` environment variable.
+- `client_certificate_password` (String) The password associated with the Client Certificate. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PASSWORD` Environment Variable.
+- `client_certificate_path` (String) The path to the Client Certificate associated with the Service Principal which should be used. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PATH` Environment Variable.
+- `client_id` (String) The Client ID which should be used. This can also be sourced from the `ARM_CLIENT_ID` Environment Variable.
+- `client_id_file_path` (String) The path to a file containing the Client ID which should be used. This can also be sourced from the `ARM_CLIENT_ID_FILE_PATH` Environment Variable.
+- `client_secret` (String) The Client Secret which should be used. This can also be sourced from the `ARM_CLIENT_SECRET` Environment Variable.
+- `client_secret_file_path` (String) The path to a file containing the Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret. This can also be sourced from the `ARM_CLIENT_SECRET_FILE_PATH` Environment Variable.
+- `custom_correlation_request_id` (String) The value of the `x-ms-correlation-request-id` header, otherwise an auto-generated UUID will be used. This can also be sourced from the `ARM_CORRELATION_REQUEST_ID` environment variable.
+- `default_location` (String) The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.
+- `default_name` (String) The default name to create the azure resource. The `name` in each resource block can override the `default_name`. Changing this forces new resources to be created.
+- `default_tags` (Map of String) A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.
 - `disable_correlation_request_id` (Boolean) This will disable the x-ms-correlation-request-id header.
-- `disable_terraform_partner_id` (Boolean) This will disable the Terraform Partner ID which is used if a custom `partner_id` isn't specified.
-- `endpoint` (Attributes List) (see [below for nested schema](#nestedatt--endpoint))
-- `environment` (String) The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.
-- `oidc_request_token` (String) The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.
-- `oidc_request_url` (String) The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.
-- `oidc_token` (String) The OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.
-- `oidc_token_file_path` (String) The path to a file containing an OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.
-- `partner_id` (String) A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.
-- `skip_provider_registration` (Boolean) Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?
-- `subscription_id` (String) The Subscription ID which should be used.
-- `tenant_id` (String) The Tenant ID which should be used.
+- `disable_terraform_partner_id` (Boolean) Disable sending the Terraform Partner ID if a custom `partner_id` isn't specified, which allows Microsoft to better understand the usage of Terraform. The Partner ID does not give HashiCorp any direct access to usage information. This can also be sourced from the `ARM_DISABLE_TERRAFORM_PARTNER_ID` environment variable. Defaults to `false`.
+- `endpoint` (Attributes List) The Azure API Endpoint Configuration. (see [below for nested schema](#nestedatt--endpoint))
+- `environment` (String) The Cloud Environment which should be used. Possible values are `public`, `usgovernment` and `china`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.
+- `oidc_azure_service_connection_id` (String) The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.
+- `oidc_request_token` (String) The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` Environment Variables.
+- `oidc_request_url` (String) The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_URL` Environment Variables.
+- `oidc_token` (String) The ID token when authenticating using OpenID Connect (OIDC). This can also be sourced from the `ARM_OIDC_TOKEN` environment Variable.
+- `oidc_token_file_path` (String) The path to a file containing an ID token when authenticating using OpenID Connect (OIDC). This can also be sourced from the `ARM_OIDC_TOKEN_FILE_PATH` environment Variable.
+- `partner_id` (String) A GUID/UUID that is [registered](https://docs.microsoft.com/azure/marketplace/azure-partner-customer-usage-attribution#register-guids-and-offers) with Microsoft to facilitate partner resource usage attribution. This can also be sourced from the `ARM_PARTNER_ID` Environment Variable.
+- `skip_provider_registration` (Boolean) Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.
+- `subscription_id` (String) The Subscription ID which should be used. This can also be sourced from the `ARM_SUBSCRIPTION_ID` Environment Variable.
+- `tenant_id` (String) The Tenant ID should be used. This can also be sourced from the `ARM_TENANT_ID` Environment Variable.
 - `use_aks_workload_identity` (Boolean) Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified.
-- `use_cli` (Boolean) Allow Azure CLI to be used for Authentication.
-- `use_msi` (Boolean) Allow Managed Service Identity to be used for Authentication.
-- `use_oidc` (Boolean) Allow OpenID Connect to be used for authentication
+- `use_cli` (Boolean) Should Azure CLI be used for authentication? This can also be sourced from the `ARM_USE_CLI` environment variable. Defaults to `true`.
+- `use_msi` (Boolean) Should Managed Identity be used for Authentication? This can also be sourced from the `ARM_USE_MSI` Environment Variable. Defaults to `false`.
+- `use_oidc` (Boolean) Should OIDC be used for Authentication? This can also be sourced from the `ARM_USE_OIDC` Environment Variable. Defaults to `false`.
 
 <a id="nestedatt--endpoint"></a>
 ### Nested Schema for `endpoint`
 
 Optional:
 
-- `active_directory_authority_host` (String) The Active Directory login endpoint which should be used.
-- `resource_manager_audience` (String) The resource ID to obtain AD tokens for.
-- `resource_manager_endpoint` (String) The Resource Manager Endpoint which should be used.
+- `active_directory_authority_host` (String) The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.
+- `resource_manager_audience` (String) The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.
+- `resource_manager_endpoint` (String) The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.

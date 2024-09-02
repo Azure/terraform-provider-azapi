@@ -6,12 +6,25 @@ BREAKING CHANGES:
 - The `ignore_body_changes` field is removed. Please use the `lifecyle.ignore_changes` to ignore some properties when comparing the resource with its current state.
 - The `body` field now only accepts an HCL object. Please remove the `jsondecode` function when using the `body` field.
 - The `output` field now only exports an HCL object. Please remove the `jsondecode` function when using the `output` field.
+- The `use_msi` field now defaults to `false`, please set it to `true` explicitly if you want to authenticate using Managed Service Identity.
+
+FEATURES:
+- **New Provider Function**: build_resource_id
+- **New Provider Function**: parse_resource_id
+- **New Provider Function**: subscription_resource_id
+- **New Provider Function**: tenant_resource_id
+- **New Provider Function**: management_group_resource_id
+- **New Provider Function**: resource_group_resource_id
+- **New Provider Function**: extension_resource_id
 
 ENHANCEMENTS:
-- `azapi_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
+- `azapi_resource` and `azapi_data_plane_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
+- Accept `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables when authenticating using AKS workload identity.
+- `azapi` provider: Support `oidc_azure_service_connection_id` field, which is used to specify the Azure Service Connection ID for OIDC authentication with Azure DevOps.
+
 
 ## v1.15.0
 

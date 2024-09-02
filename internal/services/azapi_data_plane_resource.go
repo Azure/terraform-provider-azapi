@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
@@ -36,27 +37,28 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                    types.String        `tfsdk:"id"`
-	Name                  types.String        `tfsdk:"name"`
-	ParentID              types.String        `tfsdk:"parent_id"`
-	Type                  types.String        `tfsdk:"type"`
-	Body                  types.Dynamic       `tfsdk:"body"`
-	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-	ReplaceTriggersRefs   types.List          `tfsdk:"replace_triggers_refs"`
-	ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
-	Retry                 retry.RetryValue    `tfsdk:"retry"`
-	Locks                 types.List          `tfsdk:"locks"`
-	Output                types.Dynamic       `tfsdk:"output"`
-	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
-	CreateHeaders         map[string]string   `tfsdk:"create_headers"`
-	CreateQueryParameters map[string][]string `tfsdk:"create_query_parameters"`
-	UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
-	UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
-	DeleteHeaders         map[string]string   `tfsdk:"delete_headers"`
-	DeleteQueryParameters map[string][]string `tfsdk:"delete_query_parameters"`
-	ReadHeaders           map[string]string   `tfsdk:"read_headers"`
-	ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
+	ID                            types.String        `tfsdk:"id"`
+	Name                          types.String        `tfsdk:"name"`
+	ParentID                      types.String        `tfsdk:"parent_id"`
+	Type                          types.String        `tfsdk:"type"`
+	Body                          types.Dynamic       `tfsdk:"body"`
+	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
+	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+	Retry                         retry.RetryValue    `tfsdk:"retry"`
+	Locks                         types.List          `tfsdk:"locks"`
+	Output                        types.Dynamic       `tfsdk:"output"`
+	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+	CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
+	CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
+	UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
+	DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
+	DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
+	ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 type DataPlaneResource struct {
@@ -136,12 +138,6 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.Body(),
 			},
 
-			"replace_triggers_refs": schema.ListAttribute{
-				ElementType:         types.StringType,
-				Optional:            true,
-				MarkdownDescription: "A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.",
-			},
-
 			"ignore_casing": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
@@ -159,6 +155,42 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"replace_triggers_external_values": schema.DynamicAttribute{
+				Optional: true,
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
+					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
+					"\n" +
+					"```hcl\n" +
+					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
+					"  name      = var.name\n" +
+					"  type      = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
+					"  body      = {\n" +
+					"    properties = {\n" +
+					"      sku   = var.sku\n" +
+					"      zones = var.zones\n" +
+					"    }\n" +
+					"  }\n" +
+					"\n" +
+					"  replace_triggers_external_values = [\n" +
+					"    var.sku,\n" +
+					"    var.zones,\n" +
+					"  ]\n" +
+					"}\n" +
+					"```\n",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
+			},
+
+			"replace_triggers_refs": schema.ListAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.",
+			},
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,

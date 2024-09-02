@@ -85,27 +85,28 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 				Timeouts              timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                    types.String        `tfsdk:"id"`
-				Name                  types.String        `tfsdk:"name"`
-				ParentID              types.String        `tfsdk:"parent_id"`
-				Type                  types.String        `tfsdk:"type"`
-				Body                  types.Dynamic       `tfsdk:"body"`
-				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-				ReplaceTriggersRefs   types.List          `tfsdk:"replace_triggers_refs"`
-				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
-				Retry                 retry.RetryValue    `tfsdk:"retry"`
-				Locks                 types.List          `tfsdk:"locks"`
-				Output                types.Dynamic       `tfsdk:"output"`
-				Timeouts              timeouts.Value      `tfsdk:"timeouts"`
-				CreateHeaders         map[string]string   `tfsdk:"create_headers"`
-				CreateQueryParameters map[string][]string `tfsdk:"create_query_parameters"`
-				UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
-				UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
-				DeleteHeaders         map[string]string   `tfsdk:"delete_headers"`
-				DeleteQueryParameters map[string][]string `tfsdk:"delete_query_parameters"`
-				ReadHeaders           map[string]string   `tfsdk:"read_headers"`
-				ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
+				ID                            types.String        `tfsdk:"id"`
+				Name                          types.String        `tfsdk:"name"`
+				ParentID                      types.String        `tfsdk:"parent_id"`
+				Type                          types.String        `tfsdk:"type"`
+				Body                          types.Dynamic       `tfsdk:"body"`
+				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+				ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
+				Retry                         retry.RetryValue    `tfsdk:"retry"`
+				Locks                         types.List          `tfsdk:"locks"`
+				Output                        types.Dynamic       `tfsdk:"output"`
+				Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+				CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
+				CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
+				UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
+				UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
+				DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
+				DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
+				ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
+				ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
 			}
 
 			var oldState OldModel
@@ -131,19 +132,20 @@ func AzapiDataPlaneResourceMigrationV1ToV2(ctx context.Context) resource.StateUp
 			}
 
 			newState := newModel{
-				ID:                    oldState.ID,
-				Name:                  oldState.Name,
-				ParentID:              oldState.ParentID,
-				Type:                  oldState.Type,
-				Body:                  bodyVal,
-				Locks:                 oldState.Locks,
-				IgnoreCasing:          oldState.IgnoreCasing,
-				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
-				ReplaceTriggersRefs:   types.ListNull(types.StringType),
-				ResponseExportValues:  responseExportValues,
-				Retry:                 retry.NewRetryValueNull(),
-				Output:                outputVal,
-				Timeouts:              oldState.Timeouts,
+				ID:                            oldState.ID,
+				Name:                          oldState.Name,
+				ParentID:                      oldState.ParentID,
+				Type:                          oldState.Type,
+				Body:                          bodyVal,
+				Locks:                         oldState.Locks,
+				IgnoreCasing:                  oldState.IgnoreCasing,
+				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
+				ResponseExportValues:          responseExportValues,
+				ReplaceTriggersRefs:           types.ListNull(types.StringType),
+				ReplaceTriggersExternalValues: types.DynamicNull(),
+				Retry:                         retry.NewRetryValueNull(),
+				Output:                        outputVal,
+				Timeouts:                      oldState.Timeouts,
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)
