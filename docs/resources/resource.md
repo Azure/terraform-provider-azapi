@@ -134,6 +134,7 @@ resource "azapi_resource" "example" {
   ]
 }
 ```
+- `replace_triggers_refs` (List of String) A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
