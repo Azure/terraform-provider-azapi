@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -23,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -43,6 +45,7 @@ type DataPlaneResourceModel struct {
 	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
 	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue    `tfsdk:"retry"`
 	Locks                         types.List          `tfsdk:"locks"`
@@ -183,6 +186,12 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				},
 			},
 
+			"replace_triggers_refs": schema.ListAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.",
+			},
+
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
 				Optional:    true,
@@ -288,6 +297,36 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
+
+	// Check if any paths in replace_triggers_refs have changed
+	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
+		refPaths := make(map[string]string)
+		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+		}
+
+		// read previous values from state
+		var data interface{}
+		err := json.Unmarshal([]byte(state.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		previousValues := flattenOutputJMES(data, refPaths)
+
+		// read current values from plan
+		err = json.Unmarshal([]byte(plan.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		currentValues := flattenOutputJMES(data, refPaths)
+
+		// compare previous and current values
+		if !reflect.DeepEqual(previousValues, currentValues) {
+			response.RequiresReplace.Append(path.Root("body"))
+		}
+	}
 }
 
 func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {

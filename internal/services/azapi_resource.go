@@ -57,6 +57,7 @@ type AzapiResourceModel struct {
 	Output                        types.Dynamic       `tfsdk:"output"`
 	ParentID                      types.String        `tfsdk:"parent_id"`
 	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue    `tfsdk:"retry"`
 	SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
@@ -194,6 +195,12 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.Dynamic{
 					planmodifierdynamic.RequiresReplaceIfNotNull(),
 				},
+			},
+
+			"replace_triggers_refs": schema.ListAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.",
 			},
 
 			"ignore_casing": schema.BoolAttribute{
@@ -497,6 +504,36 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		if err != nil {
 			response.Diagnostics.AddError("Invalid configuration", err.Error())
 			return
+		}
+	}
+
+	// Check if any paths in replace_triggers_refs have changed
+	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
+		refPaths := make(map[string]string)
+		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+		}
+
+		// read previous values from state
+		var data interface{}
+		err = json.Unmarshal([]byte(state.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		previousValues := flattenOutputJMES(data, refPaths)
+
+		// read current values from plan
+		err = json.Unmarshal([]byte(plan.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		currentValues := flattenOutputJMES(data, refPaths)
+
+		// compare previous and current values
+		if !reflect.DeepEqual(previousValues, currentValues) {
+			response.RequiresReplace.Append(path.Root("body"))
 		}
 	}
 }
