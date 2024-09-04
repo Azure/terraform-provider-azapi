@@ -405,11 +405,14 @@ func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.Val
 }
 
 func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyPlanRequest, response *resource.ModifyPlanResponse) {
-	r.modifyPlan(ctx, request, response)
+	var config, state, plan *AzapiResourceModel
+	response.Diagnostics.Append(request.Config.Get(ctx, &config)...)
+	response.Diagnostics.Append(request.State.Get(ctx, &state)...)
+	response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...)
+	if response.Diagnostics.HasError() {
+		return
+	}
 
-<<<<<<< HEAD
-	err := r.preflightValidation(ctx, request, response)
-=======
 	// destroy doesn't need to modify plan
 	if config == nil {
 		return
@@ -476,14 +479,12 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
->>>>>>> main
 	if err != nil {
-		response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
+		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
 		return
 	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
 
-<<<<<<< HEAD
-=======
 	plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
 	if state == nil || !state.Tags.Equal(plan.Tags) {
 		plan.Output = basetypes.NewDynamicUnknown()
@@ -544,7 +545,12 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			response.RequiresReplace.Append(path.Root("body"))
 		}
 	}
->>>>>>> main
+
+	err = r.preflightValidation(ctx, request, response)
+	if err != nil {
+		response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
+		return
+	}
 }
 
 func (r *AzapiResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
@@ -1069,8 +1075,7 @@ func (r *AzapiResource) modifyPlan(ctx context.Context, request resource.ModifyP
 		return
 	}
 
-	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) ||
-		!bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	}
 
@@ -1116,6 +1121,42 @@ func (r *AzapiResource) modifyPlan(ctx context.Context, request resource.ModifyP
 			response.Diagnostics.AddError("Invalid configuration", err.Error())
 			return
 		}
+	}
+
+	// Check if any paths in replace_triggers_refs have changed
+	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
+		refPaths := make(map[string]string)
+		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+		}
+
+		// read previous values from state
+		var data interface{}
+		err = json.Unmarshal([]byte(state.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		previousValues := flattenOutputJMES(data, refPaths)
+
+		// read current values from plan
+		err = json.Unmarshal([]byte(plan.Body.String()), &data)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		currentValues := flattenOutputJMES(data, refPaths)
+
+		// compare previous and current values
+		if !reflect.DeepEqual(previousValues, currentValues) {
+			response.RequiresReplace.Append(path.Root("body"))
+		}
+	}
+
+	err = r.preflightValidation(ctx, request, response)
+	if err != nil {
+		response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
+		return
 	}
 }
 
@@ -1220,7 +1261,7 @@ func (r *AzapiResource) preflightValidation(ctx context.Context, request resourc
 	requestBody.Resources = []map[string]interface{}{resourceBody}
 
 	client := r.ProviderData.ResourceClient
-	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody)
+	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", requestBody, clients.DefaultRequestOptions())
 	if err != nil {
 		return err
 	}
