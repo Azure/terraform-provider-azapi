@@ -18,6 +18,7 @@ FEATURES:
 - **New Provider Function**: extension_resource_id
 
 ENHANCEMENTS:
+- `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `false`.
 - `azapi_resource` and `azapi_data_plane_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
@@ -42,7 +43,6 @@ FEATURES:
 - **New Data Source**: azapi_client_config
 
 ENHANCEMENTS:
-- `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `false`.
 - `azapi` provider: Support `client_certificate` field, which specifies base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.
 - `azapi` provider: Support `use_aks_workload_identity` field to enable AKS workload identity.
 - `azapi_resource`, `azapi_update_resource`, `azapi_resource_action`, `azapi_data_plane_resource` resources: Support `timeouts.update` field, which is used to specify the timeout for the update operation.
