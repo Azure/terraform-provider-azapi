@@ -1,0 +1,16 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace -}}
+
+{{- if .HasExample -}}## Example Usage
+
+{{ tffile (printf .ExampleFile) | trimspace}}{{ end }}
+
+{{ .SchemaMarkdown | trimspace }}

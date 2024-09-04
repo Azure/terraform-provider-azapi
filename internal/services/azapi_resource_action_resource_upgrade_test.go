@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -42,13 +43,14 @@ func TestAccAzapiActionResourceUpgrade_registerResourceProvider(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.registerResourceProvider(),
+			Config: r.registerResourceProvider(subscriptionId),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.registerResourceProvider(),
+			Config: r.registerResourceProvider(subscriptionId),
 		}),
 	})
 }
@@ -57,13 +59,14 @@ func TestAccAzapiActionResourceUpgrade_upgradeFromVeryOldVersion(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
 
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.registerResourceProvider(),
+			Config: r.registerResourceProvider(subscriptionId),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, "1.8.0"),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.registerResourceProvider(),
+			Config: r.registerResourceProvider(subscriptionId),
 		}),
 	})
 }
@@ -74,11 +77,11 @@ func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.providerAction(),
+			Config: r.providerAction(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.providerAction(),
+			Config: r.providerAction(data),
 		}),
 	})
 }
@@ -89,11 +92,13 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.nonstandardLRO(data),
-			Check:  resource.ComposeTestCheckFunc(),
+			Config:            r.nonstandardLRO(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check:             resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.nonstandardLRO(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Config:            r.nonstandardLRO(data),
 		}),
 	})
 }
@@ -127,6 +132,26 @@ func TestAccAzapiActionResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 		}),
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.timeouts(data),
+		}),
+	})
+}
+
+func TestAccAzapiActionResourceUpgrade_basic_from_schema_v0(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
+	updatedConfig := r.oldConfig(data, subscriptionId)
+	updatedConfig = strings.ReplaceAll(updatedConfig, "jsonencode({", "{")
+	updatedConfig = strings.ReplaceAll(updatedConfig, "})", "}")
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.oldConfig(data, subscriptionId),
+			Check:  resource.ComposeTestCheckFunc(),
+		}, "1.12.1"),
+		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
 		}),
 	})
 }

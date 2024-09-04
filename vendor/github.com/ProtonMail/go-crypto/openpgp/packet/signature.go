@@ -31,9 +31,11 @@ const (
 	KeyFlagEncryptStorage
 	KeyFlagSplitKey
 	KeyFlagAuthenticate
-	_
+	KeyFlagForward
 	KeyFlagGroupKey
 )
+
+const SaltNotationName = "salt@notations.openpgpjs.org"
 
 // Signature represents a signature. See RFC 4880, section 5.2.
 type Signature struct {
@@ -63,6 +65,7 @@ type Signature struct {
 	ECDSASigR, ECDSASigS encoding.Field
 	EdDSASigR, EdDSASigS encoding.Field
 	EdSig                []byte
+	HMAC                 encoding.Field
 
 	// rawSubpackets contains the unparsed subpackets, in order.
 	rawSubpackets []outputSubpacket
@@ -99,8 +102,9 @@ type Signature struct {
 
 	// FlagsValid is set if any flags were given. See RFC 4880, section
 	// 5.2.3.21 for details.
-	FlagsValid                                                                                                         bool
-	FlagCertify, FlagSign, FlagEncryptCommunications, FlagEncryptStorage, FlagSplitKey, FlagAuthenticate, FlagGroupKey bool
+	FlagsValid                                                           bool
+	FlagCertify, FlagSign, FlagEncryptCommunications, FlagEncryptStorage bool
+	FlagSplitKey, FlagAuthenticate, FlagForward, FlagGroupKey            bool
 
 	// RevocationReason is set if this signature has been revoked.
 	// See RFC 4880, section 5.2.3.23 for details.
@@ -149,11 +153,16 @@ func (sig *Signature) parse(r io.Reader) (err error) {
 	if err != nil {
 		return
 	}
-	if buf[0] != 4 && buf[0] != 5 && buf[0] != 6 {
+	sig.Version = int(buf[0])
+	if sig.Version != 4 && sig.Version != 5 && sig.Version != 6 {
 		err = errors.UnsupportedError("signature packet version " + strconv.Itoa(int(buf[0])))
 		return
 	}
-	sig.Version = int(buf[0])
+
+	if V5Disabled && sig.Version == 5 {
+		return errors.UnsupportedError("support for parsing v5 entities is disabled; build with `-tags v5` if needed")
+	}
+
 	if sig.Version == 6 {
 		_, err = readFull(r, buf[:7])
 	} else {
@@ -165,7 +174,7 @@ func (sig *Signature) parse(r io.Reader) (err error) {
 	sig.SigType = SignatureType(buf[0])
 	sig.PubKeyAlgo = PublicKeyAlgorithm(buf[1])
 	switch sig.PubKeyAlgo {
-	case PubKeyAlgoRSA, PubKeyAlgoRSASignOnly, PubKeyAlgoDSA, PubKeyAlgoECDSA, PubKeyAlgoEdDSA, PubKeyAlgoEd25519, PubKeyAlgoEd448:
+	case PubKeyAlgoRSA, PubKeyAlgoRSASignOnly, PubKeyAlgoDSA, PubKeyAlgoECDSA, PubKeyAlgoEdDSA, PubKeyAlgoEd25519, PubKeyAlgoEd448, ExperimentalPubKeyAlgoHMAC:
 	default:
 		err = errors.UnsupportedError("public key algorithm " + strconv.Itoa(int(sig.PubKeyAlgo)))
 		return
@@ -303,6 +312,11 @@ func (sig *Signature) parse(r io.Reader) (err error) {
 		if err != nil {
 			return
 		}
+	case ExperimentalPubKeyAlgoHMAC:
+		sig.HMAC = new(encoding.ShortByteString)
+		if _, err = sig.HMAC.ReadFrom(r); err != nil {
+			return
+		}
 	default:
 		panic("unreachable")
 	}
@@ -331,6 +345,7 @@ type signatureSubpacketType uint8
 const (
 	creationTimeSubpacket        signatureSubpacketType = 2
 	signatureExpirationSubpacket signatureSubpacketType = 3
+	exportableCertSubpacket      signatureSubpacketType = 4
 	trustSubpacket               signatureSubpacketType = 5
 	regularExpressionSubpacket   signatureSubpacketType = 6
 	keyExpirationSubpacket       signatureSubpacketType = 9
@@ -418,6 +433,11 @@ func parseSignatureSubpacket(sig *Signature, subpacket []byte, isHashed bool) (r
 		}
 		sig.SigLifetimeSecs = new(uint32)
 		*sig.SigLifetimeSecs = binary.BigEndian.Uint32(subpacket)
+	case exportableCertSubpacket:
+		if subpacket[0] == 0 {
+			err = errors.UnsupportedError("signature with non-exportable certification")
+			return
+		}
 	case trustSubpacket:
 		if len(subpacket) != 2 {
 			err = errors.StructuralError("trust subpacket with bad length")
@@ -507,11 +527,10 @@ func parseSignatureSubpacket(sig *Signature, subpacket []byte, isHashed bool) (r
 		}
 	case keyFlagsSubpacket:
 		// Key flags, section 5.2.3.21
+		sig.FlagsValid = true
 		if len(subpacket) == 0 {
-			err = errors.StructuralError("empty key flags subpacket")
 			return
 		}
-		sig.FlagsValid = true
 		if subpacket[0]&KeyFlagCertify != 0 {
 			sig.FlagCertify = true
 		}
@@ -529,6 +548,9 @@ func parseSignatureSubpacket(sig *Signature, subpacket []byte, isHashed bool) (r
 		}
 		if subpacket[0]&KeyFlagAuthenticate != 0 {
 			sig.FlagAuthenticate = true
+		}
+		if subpacket[0]&KeyFlagForward != 0 {
+			sig.FlagForward = true
 		}
 		if subpacket[0]&KeyFlagGroupKey != 0 {
 			sig.FlagGroupKey = true
@@ -872,6 +894,20 @@ func (sig *Signature) Sign(h hash.Hash, priv *PrivateKey, config *Config) (err e
 	}
 	sig.Version = priv.PublicKey.Version
 	sig.IssuerFingerprint = priv.PublicKey.Fingerprint
+	if sig.Version < 6 && config.RandomizeSignaturesViaNotation() {
+		sig.removeNotationsWithName(SaltNotationName)
+		salt, err := SignatureSaltForHash(sig.Hash, config.Random())
+		if err != nil {
+			return err
+		}
+		notation := Notation{
+			Name:            SaltNotationName,
+			Value:           salt,
+			IsCritical:      false,
+			IsHumanReadable: false,
+		}
+		sig.Notations = append(sig.Notations, &notation)
+	}
 	sig.outSubpackets, err = sig.buildSubpackets(priv.PublicKey)
 	if err != nil {
 		return err
@@ -926,6 +962,11 @@ func (sig *Signature) Sign(h hash.Hash, priv *PrivateKey, config *Config) (err e
 		signature, err := ed448.Sign(sk, digest)
 		if err == nil {
 			sig.EdSig = signature
+		}
+	case ExperimentalPubKeyAlgoHMAC:
+		sigdata, err := priv.PrivateKey.(crypto.Signer).Sign(config.Random(), digest, nil)
+		if err == nil {
+			sig.HMAC = encoding.NewShortByteString(sigdata)
 		}
 	default:
 		err = errors.UnsupportedError("public key algorithm: " + strconv.Itoa(int(sig.PubKeyAlgo)))
@@ -1032,7 +1073,7 @@ func (sig *Signature) Serialize(w io.Writer) (err error) {
 	if len(sig.outSubpackets) == 0 {
 		sig.outSubpackets = sig.rawSubpackets
 	}
-	if sig.RSASignature == nil && sig.DSASigR == nil && sig.ECDSASigR == nil && sig.EdDSASigR == nil && sig.EdSig == nil {
+	if sig.RSASignature == nil && sig.DSASigR == nil && sig.ECDSASigR == nil && sig.EdDSASigR == nil && sig.EdSig == nil && sig.HMAC == nil {
 		return errors.InvalidArgumentError("Signature: need to call Sign, SignUserId or SignKey before Serialize")
 	}
 
@@ -1053,6 +1094,8 @@ func (sig *Signature) Serialize(w io.Writer) (err error) {
 		sigLength = ed25519.SignatureSize
 	case PubKeyAlgoEd448:
 		sigLength = ed448.SignatureSize
+	case ExperimentalPubKeyAlgoHMAC:
+		sigLength = int(sig.HMAC.EncodedLength())
 	default:
 		panic("impossible")
 	}
@@ -1159,6 +1202,8 @@ func (sig *Signature) serializeBody(w io.Writer) (err error) {
 		err = ed25519.WriteSignature(w, sig.EdSig)
 	case PubKeyAlgoEd448:
 		err = ed448.WriteSignature(w, sig.EdSig)
+	case ExperimentalPubKeyAlgoHMAC:
+		_, err = w.Write(sig.HMAC.EncodedBytes())
 	default:
 		panic("impossible")
 	}
@@ -1176,28 +1221,68 @@ type outputSubpacket struct {
 func (sig *Signature) buildSubpackets(issuer PublicKey) (subpackets []outputSubpacket, err error) {
 	creationTime := make([]byte, 4)
 	binary.BigEndian.PutUint32(creationTime, uint32(sig.CreationTime.Unix()))
-	subpackets = append(subpackets, outputSubpacket{true, creationTimeSubpacket, false, creationTime})
-
-	if sig.IssuerKeyId != nil && sig.Version == 4 {
-		keyId := make([]byte, 8)
-		binary.BigEndian.PutUint64(keyId, *sig.IssuerKeyId)
-		subpackets = append(subpackets, outputSubpacket{true, issuerSubpacket, false, keyId})
-	}
-	if sig.IssuerFingerprint != nil {
-		contents := append([]uint8{uint8(issuer.Version)}, sig.IssuerFingerprint...)
-		subpackets = append(subpackets, outputSubpacket{true, issuerFingerprintSubpacket, sig.Version >= 5, contents})
-	}
-	if sig.SignerUserId != nil {
-		subpackets = append(subpackets, outputSubpacket{true, signerUserIdSubpacket, false, []byte(*sig.SignerUserId)})
-	}
+	// Signature Creation Time
+	subpackets = append(subpackets, outputSubpacket{true, creationTimeSubpacket, true, creationTime})
+	// Signature Expiration Time
 	if sig.SigLifetimeSecs != nil && *sig.SigLifetimeSecs != 0 {
 		sigLifetime := make([]byte, 4)
 		binary.BigEndian.PutUint32(sigLifetime, *sig.SigLifetimeSecs)
 		subpackets = append(subpackets, outputSubpacket{true, signatureExpirationSubpacket, true, sigLifetime})
 	}
-
+	// Trust Signature
+	if sig.TrustLevel != 0 {
+		subpackets = append(subpackets, outputSubpacket{true, trustSubpacket, true, []byte{byte(sig.TrustLevel), byte(sig.TrustAmount)}})
+	}
+	// Regular Expression
+	if sig.TrustRegularExpression != nil {
+		// RFC specifies the string should be null-terminated; add a null byte to the end
+		subpackets = append(subpackets, outputSubpacket{true, regularExpressionSubpacket, true, []byte(*sig.TrustRegularExpression + "\000")})
+	}
+	// Key Expiration Time
+	if sig.KeyLifetimeSecs != nil && *sig.KeyLifetimeSecs != 0 {
+		keyLifetime := make([]byte, 4)
+		binary.BigEndian.PutUint32(keyLifetime, *sig.KeyLifetimeSecs)
+		subpackets = append(subpackets, outputSubpacket{true, keyExpirationSubpacket, true, keyLifetime})
+	}
+	// Preferred Symmetric Ciphers for v1 SEIPD
+	if len(sig.PreferredSymmetric) > 0 {
+		subpackets = append(subpackets, outputSubpacket{true, prefSymmetricAlgosSubpacket, false, sig.PreferredSymmetric})
+	}
+	// Issuer Key ID
+	if sig.IssuerKeyId != nil && sig.Version == 4 {
+		keyId := make([]byte, 8)
+		binary.BigEndian.PutUint64(keyId, *sig.IssuerKeyId)
+		subpackets = append(subpackets, outputSubpacket{true, issuerSubpacket, true, keyId})
+	}
+	// Notation Data
+	for _, notation := range sig.Notations {
+		subpackets = append(
+			subpackets,
+			outputSubpacket{
+				true,
+				notationDataSubpacket,
+				notation.IsCritical,
+				notation.getData(),
+			})
+	}
+	// Preferred Hash Algorithms
+	if len(sig.PreferredHash) > 0 {
+		subpackets = append(subpackets, outputSubpacket{true, prefHashAlgosSubpacket, false, sig.PreferredHash})
+	}
+	// Preferred Compression Algorithms
+	if len(sig.PreferredCompression) > 0 {
+		subpackets = append(subpackets, outputSubpacket{true, prefCompressionSubpacket, false, sig.PreferredCompression})
+	}
+	// Primary User ID
+	if sig.IsPrimaryId != nil && *sig.IsPrimaryId {
+		subpackets = append(subpackets, outputSubpacket{true, primaryUserIdSubpacket, false, []byte{1}})
+	}
+	// Policy URI
+	if len(sig.PolicyURI) > 0 {
+		subpackets = append(subpackets, outputSubpacket{true, policyUriSubpacket, false, []uint8(sig.PolicyURI)})
+	}
+	// Key Flags
 	// Key flags may only appear in self-signatures or certification signatures.
-
 	if sig.FlagsValid {
 		var flags byte
 		if sig.FlagCertify {
@@ -1218,23 +1303,51 @@ func (sig *Signature) buildSubpackets(issuer PublicKey) (subpackets []outputSubp
 		if sig.FlagAuthenticate {
 			flags |= KeyFlagAuthenticate
 		}
+		if sig.FlagForward {
+			flags |= KeyFlagForward
+		}
 		if sig.FlagGroupKey {
 			flags |= KeyFlagGroupKey
 		}
-		subpackets = append(subpackets, outputSubpacket{true, keyFlagsSubpacket, false, []byte{flags}})
+		subpackets = append(subpackets, outputSubpacket{true, keyFlagsSubpacket, true, []byte{flags}})
 	}
-
-	for _, notation := range sig.Notations {
-		subpackets = append(
-			subpackets,
-			outputSubpacket{
-				true,
-				notationDataSubpacket,
-				notation.IsCritical,
-				notation.getData(),
-			})
+	// Signer's User ID
+	if sig.SignerUserId != nil {
+		subpackets = append(subpackets, outputSubpacket{true, signerUserIdSubpacket, false, []byte(*sig.SignerUserId)})
 	}
-
+	// Reason for Revocation
+	// Revocation reason appears only in revocation signatures and is serialized as per section 5.2.3.23.
+	if sig.RevocationReason != nil {
+		subpackets = append(subpackets, outputSubpacket{true, reasonForRevocationSubpacket, true,
+			append([]uint8{uint8(*sig.RevocationReason)}, []uint8(sig.RevocationReasonText)...)})
+	}
+	// Features
+	var features = byte(0x00)
+	if sig.SEIPDv1 {
+		features |= 0x01
+	}
+	if sig.SEIPDv2 {
+		features |= 0x08
+	}
+	if features != 0x00 {
+		subpackets = append(subpackets, outputSubpacket{true, featuresSubpacket, false, []byte{features}})
+	}
+	// Embedded Signature
+	// EmbeddedSignature appears only in subkeys capable of signing and is serialized as per section 5.2.3.26.
+	if sig.EmbeddedSignature != nil {
+		var buf bytes.Buffer
+		err = sig.EmbeddedSignature.serializeBody(&buf)
+		if err != nil {
+			return
+		}
+		subpackets = append(subpackets, outputSubpacket{true, embeddedSignatureSubpacket, true, buf.Bytes()})
+	}
+	// Issuer Fingerprint
+	if sig.IssuerFingerprint != nil {
+		contents := append([]uint8{uint8(issuer.Version)}, sig.IssuerFingerprint...)
+		subpackets = append(subpackets, outputSubpacket{true, issuerFingerprintSubpacket, sig.Version >= 5, contents})
+	}
+	// Intended Recipient Fingerprint
 	for _, recipient := range sig.IntendedRecipients {
 		subpackets = append(
 			subpackets,
@@ -1245,56 +1358,7 @@ func (sig *Signature) buildSubpackets(issuer PublicKey) (subpackets []outputSubp
 				recipient.Serialize(),
 			})
 	}
-
-	// The following subpackets may only appear in self-signatures.
-
-	var features = byte(0x00)
-	if sig.SEIPDv1 {
-		features |= 0x01
-	}
-	if sig.SEIPDv2 {
-		features |= 0x08
-	}
-
-	if features != 0x00 {
-		subpackets = append(subpackets, outputSubpacket{true, featuresSubpacket, false, []byte{features}})
-	}
-
-	if sig.TrustLevel != 0 {
-		subpackets = append(subpackets, outputSubpacket{true, trustSubpacket, true, []byte{byte(sig.TrustLevel), byte(sig.TrustAmount)}})
-	}
-
-	if sig.TrustRegularExpression != nil {
-		// RFC specifies the string should be null-terminated; add a null byte to the end
-		subpackets = append(subpackets, outputSubpacket{true, regularExpressionSubpacket, true, []byte(*sig.TrustRegularExpression + "\000")})
-	}
-
-	if sig.KeyLifetimeSecs != nil && *sig.KeyLifetimeSecs != 0 {
-		keyLifetime := make([]byte, 4)
-		binary.BigEndian.PutUint32(keyLifetime, *sig.KeyLifetimeSecs)
-		subpackets = append(subpackets, outputSubpacket{true, keyExpirationSubpacket, true, keyLifetime})
-	}
-
-	if sig.IsPrimaryId != nil && *sig.IsPrimaryId {
-		subpackets = append(subpackets, outputSubpacket{true, primaryUserIdSubpacket, false, []byte{1}})
-	}
-
-	if len(sig.PreferredSymmetric) > 0 {
-		subpackets = append(subpackets, outputSubpacket{true, prefSymmetricAlgosSubpacket, false, sig.PreferredSymmetric})
-	}
-
-	if len(sig.PreferredHash) > 0 {
-		subpackets = append(subpackets, outputSubpacket{true, prefHashAlgosSubpacket, false, sig.PreferredHash})
-	}
-
-	if len(sig.PreferredCompression) > 0 {
-		subpackets = append(subpackets, outputSubpacket{true, prefCompressionSubpacket, false, sig.PreferredCompression})
-	}
-
-	if len(sig.PolicyURI) > 0 {
-		subpackets = append(subpackets, outputSubpacket{true, policyUriSubpacket, false, []uint8(sig.PolicyURI)})
-	}
-
+	// Preferred AEAD Ciphersuites
 	if len(sig.PreferredCipherSuites) > 0 {
 		serialized := make([]byte, len(sig.PreferredCipherSuites)*2)
 		for i, cipherSuite := range sig.PreferredCipherSuites {
@@ -1303,23 +1367,6 @@ func (sig *Signature) buildSubpackets(issuer PublicKey) (subpackets []outputSubp
 		}
 		subpackets = append(subpackets, outputSubpacket{true, prefCipherSuitesSubpacket, false, serialized})
 	}
-
-	// Revocation reason appears only in revocation signatures and is serialized as per section 5.2.3.23.
-	if sig.RevocationReason != nil {
-		subpackets = append(subpackets, outputSubpacket{true, reasonForRevocationSubpacket, true,
-			append([]uint8{uint8(*sig.RevocationReason)}, []uint8(sig.RevocationReasonText)...)})
-	}
-
-	// EmbeddedSignature appears only in subkeys capable of signing and is serialized as per section 5.2.3.26.
-	if sig.EmbeddedSignature != nil {
-		var buf bytes.Buffer
-		err = sig.EmbeddedSignature.serializeBody(&buf)
-		if err != nil {
-			return
-		}
-		subpackets = append(subpackets, outputSubpacket{true, embeddedSignatureSubpacket, true, buf.Bytes()})
-	}
-
 	return
 }
 
@@ -1399,4 +1446,18 @@ func SignatureSaltForHash(hash crypto.Hash, randReader io.Reader) ([]byte, error
 		return nil, err
 	}
 	return salt, nil
+}
+
+// removeNotationsWithName removes all notations in this signature with the given name.
+func (sig *Signature) removeNotationsWithName(name string) {
+	if sig == nil || sig.Notations == nil {
+		return
+	}
+	updatedNotations := make([]*Notation, 0, len(sig.Notations))
+	for _, notation := range sig.Notations {
+		if notation.Name != name {
+			updatedNotations = append(updatedNotations, notation)
+		}
+	}
+	sig.Notations = updatedNotations
 }

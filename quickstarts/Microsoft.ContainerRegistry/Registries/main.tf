@@ -30,9 +30,9 @@ resource "azapi_update_resource" "test" {
   type        = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
   resource_id = azurerm_container_registry.acr.id
 
-  body = jsonencode({
+  body = {
     properties = {
       anonymousPullEnabled = true
     }
-  })
+  }
 }

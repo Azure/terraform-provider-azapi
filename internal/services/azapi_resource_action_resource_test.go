@@ -3,6 +3,7 @@ package services_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -53,7 +54,7 @@ func TestAccActionResource_registerResourceProvider(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.registerResourceProvider(),
+			Config: r.registerResourceProvider(os.Getenv("ARM_SUBSCRIPTION_ID")),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -65,19 +66,7 @@ func TestAccActionResource_providerAction(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.providerAction(),
-			Check:  resource.ComposeTestCheckFunc(),
-		},
-	})
-}
-
-func TestAccActionResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
-	r := ActionResource{}
-
-	data.DataSourceTest(t, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(),
+			Config: r.providerAction(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -89,8 +78,9 @@ func TestAccActionResource_nonstandardLRO(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.nonstandardLRO(data),
-			Check:  resource.ComposeTestCheckFunc(),
+			Config:            r.nonstandardLRO(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check:             resource.ComposeTestCheckFunc(),
 		},
 	})
 }
@@ -102,6 +92,30 @@ func TestAccActionResource_timeouts(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.timeouts(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.queryParameters(),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -122,9 +136,9 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]
@@ -148,9 +162,9 @@ resource "azapi_resource_action" "test" {
   resource_id = azapi_resource.test.id
   when        = "destroy"
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]
@@ -159,61 +173,33 @@ resource "azapi_resource_action" "test" {
 `, GenericResource{}.identityNone(data))
 }
 
-func (r ActionResource) registerResourceProvider() string {
-	return `
-provider "azurerm" {
-  features {}
-}
-
-data "azurerm_client_config" "current" {}
-
+func (r ActionResource) registerResourceProvider(subscriptionId string) string {
+	return fmt.Sprintf(`
 resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Resources/providers@2021-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Compute"
-  action      = "register"
-  method      = "POST"
+  type                   = "Microsoft.Resources/providers@2021-04-01"
+  resource_id            = "/subscriptions/%s/providers/Microsoft.Compute"
+  action                 = "register"
+  method                 = "POST"
+  response_export_values = ["*"]
 }
-`
-}
-
-func (r ActionResource) providerAction() string {
-	return `
-provider "azurerm" {
-  features {}
+`, subscriptionId)
 }
 
-data "azurerm_client_config" "current" {}
+func (r ActionResource) providerAction(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+
+data "azapi_client_config" "current" {}
 
 resource "azapi_resource_action" "test" {
   type        = "Microsoft.Cache@2023-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
-  action      = "CheckNameAvailability"
-  body = jsonencode({
-    type = "Microsoft.Cache/Redis"
-    name = "cacheName"
-  })
-}
-`
-}
-
-func (r ActionResource) dynamicSchema() string {
-	return `
-provider "azurerm" {
-  features {}
-}
-
-data "azurerm_client_config" "current" {}
-
-resource "azapi_resource_action" "test" {
-  type        = "Microsoft.Cache@2023-04-01"
-  resource_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Cache"
   action      = "CheckNameAvailability"
   body = {
     type = "Microsoft.Cache/Redis"
-    name = "cacheName"
+    name = "%s"
   }
 }
-`
+`, data.RandomString)
 }
 
 func (r ActionResource) nonstandardLRO(data acceptance.TestData) string {
@@ -275,12 +261,12 @@ resource "azapi_resource_action" "test" {
   resource_id            = data.azapi_resource_id.functionKey.id
   method                 = "PUT"
   response_export_values = ["*"]
-  body = jsonencode({
+  body = {
     properties = {
       name  = "test_key"
       value = "test_value"
     }
-  })
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
@@ -300,9 +286,9 @@ resource "azapi_resource_action" "test" {
   type        = "Microsoft.Automation/automationAccounts@2021-06-22"
   resource_id = azapi_resource.test.id
   action      = "agentRegistrationInformation/regenerateKey"
-  body = jsonencode({
+  body = {
     keyName = "primary"
-  })
+  }
   depends_on = [
     data.azapi_resource_action.list
   ]
@@ -314,4 +300,64 @@ resource "azapi_resource_action" "test" {
   }
 }
 `, GenericResource{}.identityNone(data))
+}
+
+func (r ActionResource) oldConfig(data acceptance.TestData, subscriptionId string) string {
+	return fmt.Sprintf(`
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@2023-04-01"
+  resource_id = "/subscriptions/%s/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = jsonencode({
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  })
+  response_export_values = ["*"]
+}
+`, subscriptionId, data.RandomString)
+}
+
+func (r ActionResource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_resource_action" "list" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = azapi_resource.test.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  action      = "agentRegistrationInformation/regenerateKey"
+  body = {
+    keyName = "primary"
+  }
+  headers = {
+    "header1" = "value1"
+  }
+  depends_on = [
+    data.azapi_resource_action.list
+  ]
+}
+`, GenericResource{}.identityNone(data))
+}
+
+func (r ActionResource) queryParameters() string {
+	return `
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Authorization@2021-06-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization"
+  action      = "policyDefinitions"
+  method      = "GET"
+  query_parameters = {
+    "$filter" = ["policyType eq 'BuiltIn'"]
+  }
+  response_export_values = ["*"]
+}`
 }

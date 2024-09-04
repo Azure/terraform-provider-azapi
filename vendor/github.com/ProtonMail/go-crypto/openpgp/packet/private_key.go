@@ -28,6 +28,7 @@ import (
 	"github.com/ProtonMail/go-crypto/openpgp/errors"
 	"github.com/ProtonMail/go-crypto/openpgp/internal/encoding"
 	"github.com/ProtonMail/go-crypto/openpgp/s2k"
+	"github.com/ProtonMail/go-crypto/openpgp/symmetric"
 	"github.com/ProtonMail/go-crypto/openpgp/x25519"
 	"github.com/ProtonMail/go-crypto/openpgp/x448"
 	"golang.org/x/crypto/hkdf"
@@ -166,6 +167,8 @@ func NewSignerPrivateKey(creationTime time.Time, signer interface{}) *PrivateKey
 		pk.PublicKey = *NewEd448PublicKey(creationTime, &pubkey.PublicKey)
 	case ed448.PrivateKey:
 		pk.PublicKey = *NewEd448PublicKey(creationTime, &pubkey.PublicKey)
+	case *symmetric.HMACPrivateKey:
+		pk.PublicKey = *NewHMACPublicKey(creationTime, &pubkey.PublicKey)
 	default:
 		panic("openpgp: unknown signer type in NewSignerPrivateKey")
 	}
@@ -187,6 +190,8 @@ func NewDecrypterPrivateKey(creationTime time.Time, decrypter interface{}) *Priv
 		pk.PublicKey = *NewX25519PublicKey(creationTime, &priv.PublicKey)
 	case *x448.PrivateKey:
 		pk.PublicKey = *NewX448PublicKey(creationTime, &priv.PublicKey)
+	case *symmetric.AEADPrivateKey:
+		pk.PublicKey = *NewAEADPublicKey(creationTime, &priv.PublicKey)
 	default:
 		panic("openpgp: unknown decrypter type in NewDecrypterPrivateKey")
 	}
@@ -201,6 +206,10 @@ func (pk *PrivateKey) parse(r io.Reader) (err error) {
 	}
 	v5 := pk.PublicKey.Version == 5
 	v6 := pk.PublicKey.Version == 6
+
+	if V5Disabled && v5 {
+		return errors.UnsupportedError("support for parsing v5 entities is disabled; build with `-tags v5` if needed")
+	}
 
 	var buf [1]byte
 	_, err = readFull(r, buf[:])
@@ -260,6 +269,12 @@ func (pk *PrivateKey) parse(r io.Reader) (err error) {
 		}
 		if pk.s2kParams.Dummy() {
 			return
+		}
+		if pk.s2kParams.Mode() == s2k.Argon2S2K && pk.s2kType != S2KAEAD {
+			return errors.StructuralError("using Argon2 S2K without AEAD is not allowed")
+		}
+		if pk.s2kParams.Mode() == s2k.SimpleS2K && pk.Version == 6 {
+			return errors.StructuralError("using Simple S2K with version 6 keys is not allowed")
 		}
 		pk.s2k, err = pk.s2kParams.Function()
 		if err != nil {
@@ -520,6 +535,24 @@ func serializeEd448PrivateKey(w io.Writer, priv *ed448.PrivateKey) error {
 	return err
 }
 
+func serializeAEADPrivateKey(w io.Writer, priv *symmetric.AEADPrivateKey) (err error) {
+	_, err = w.Write(priv.HashSeed[:])
+	if err != nil {
+		return
+	}
+	_, err = w.Write(priv.Key)
+	return
+}
+
+func serializeHMACPrivateKey(w io.Writer, priv *symmetric.HMACPrivateKey) (err error) {
+	_, err = w.Write(priv.HashSeed[:])
+	if err != nil {
+		return
+	}
+	_, err = w.Write(priv.Key)
+	return
+}
+
 // decrypt decrypts an encrypted private key using a decryption key.
 func (pk *PrivateKey) decrypt(decryptionKey []byte) error {
 	if pk.Dummy() {
@@ -653,6 +686,13 @@ func (pk *PrivateKey) encrypt(key []byte, params *s2k.Params, s2kType S2KType, c
 	// check if encryptionKey has the correct size
 	if len(key) != cipherFunction.KeySize() {
 		return errors.InvalidArgumentError("supplied encryption key has the wrong size")
+	}
+
+	if params.Mode() == s2k.Argon2S2K && s2kType != S2KAEAD {
+		return errors.InvalidArgumentError("using Argon2 S2K without AEAD is not allowed")
+	}
+	if params.Mode() != s2k.Argon2S2K && params.Mode() != s2k.IteratedSaltedS2K {
+		return errors.InvalidArgumentError("insecure S2K mode")
 	}
 
 	priv := bytes.NewBuffer(nil)
@@ -812,6 +852,10 @@ func (pk *PrivateKey) serializePrivateKey(w io.Writer) (err error) {
 		err = serializeEd25519PrivateKey(w, priv)
 	case *ed448.PrivateKey:
 		err = serializeEd448PrivateKey(w, priv)
+	case *symmetric.AEADPrivateKey:
+		err = serializeAEADPrivateKey(w, priv)
+	case *symmetric.HMACPrivateKey:
+		err = serializeHMACPrivateKey(w, priv)
 	default:
 		err = errors.InvalidArgumentError("unknown private key type")
 	}
@@ -843,6 +887,10 @@ func (pk *PrivateKey) parsePrivateKey(data []byte) (err error) {
 	default:
 		err = errors.StructuralError("unknown private key type")
 		return
+	case ExperimentalPubKeyAlgoAEAD:
+		return pk.parseAEADPrivateKey(data)
+	case ExperimentalPubKeyAlgoHMAC:
+		return pk.parseHMACPrivateKey(data)
 	}
 }
 
@@ -1101,6 +1149,66 @@ func (pk *PrivateKey) applyHKDF(inputKey []byte) []byte {
 	encryptionKey := make([]byte, pk.cipher.KeySize())
 	_, _ = readFull(hkdfReader, encryptionKey)
 	return encryptionKey
+}
+
+func (pk *PrivateKey) parseAEADPrivateKey(data []byte) (err error) {
+	pubKey := pk.PublicKey.PublicKey.(*symmetric.AEADPublicKey)
+
+	aeadPriv := new(symmetric.AEADPrivateKey)
+	aeadPriv.PublicKey = *pubKey
+
+	copy(aeadPriv.HashSeed[:], data[:32])
+
+	priv := make([]byte, pubKey.Cipher.KeySize())
+	copy(priv, data[32:])
+	aeadPriv.Key = priv
+	aeadPriv.PublicKey.Key = aeadPriv.Key
+
+	if err = validateAEADParameters(aeadPriv); err != nil {
+		return
+	}
+
+	pk.PrivateKey = aeadPriv
+	pk.PublicKey.PublicKey = &aeadPriv.PublicKey
+	return
+}
+
+func (pk *PrivateKey) parseHMACPrivateKey(data []byte) (err error) {
+	pubKey := pk.PublicKey.PublicKey.(*symmetric.HMACPublicKey)
+
+	hmacPriv := new(symmetric.HMACPrivateKey)
+	hmacPriv.PublicKey = *pubKey
+
+	copy(hmacPriv.HashSeed[:], data[:32])
+
+	priv := make([]byte, pubKey.Hash.Size())
+	copy(priv, data[32:])
+	hmacPriv.Key = data[32:]
+	hmacPriv.PublicKey.Key = hmacPriv.Key
+
+	if err = validateHMACParameters(hmacPriv); err != nil {
+		return
+	}
+
+	pk.PrivateKey = hmacPriv
+	pk.PublicKey.PublicKey = &hmacPriv.PublicKey
+	return
+}
+
+func validateAEADParameters(priv *symmetric.AEADPrivateKey) error {
+	return validateCommonSymmetric(priv.HashSeed, priv.PublicKey.BindingHash)
+}
+
+func validateHMACParameters(priv *symmetric.HMACPrivateKey) error {
+	return validateCommonSymmetric(priv.HashSeed, priv.PublicKey.BindingHash)
+}
+
+func validateCommonSymmetric(seed [32]byte, bindingHash [32]byte) error {
+	expectedBindingHash := symmetric.ComputeBindingHash(seed)
+	if !bytes.Equal(expectedBindingHash, bindingHash[:]) {
+		return errors.KeyInvalidError("symmetric: wrong binding hash")
+	}
+	return nil
 }
 
 func validateDSAParameters(priv *dsa.PrivateKey) error {

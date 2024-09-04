@@ -192,6 +192,198 @@ func Test_UpdateObject(t *testing.T) {
 			OldJson: `
 {
   "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}
+`,
+			NewJson: `
+{
+  "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}`,
+			ExpectJson: `
+{
+  "properties": {
+    "mode": "Deferred",
+    "basePolicyName": "Microsoft.Default",
+    "contentFilters": [
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Completion"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "selfharm",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Low",
+        "blocking": true,
+        "enabled": true,
+        "name": "violence",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "hate",
+        "source": "Prompt"
+      },
+      {
+        "allowedContentLevel": "Medium",
+        "blocking": true,
+        "enabled": true,
+        "name": "sexual",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "jailbreak",
+        "source": "Prompt"
+      },
+      {
+        "blocking": true,
+        "enabled": true,
+        "name": "indirect_attack",
+        "source": "Prompt"
+      }
+    ]
+  }
+}`,
+		},
+		{
+			OldJson: `
+{
+  "properties": {
     "sshPrivateKey": "asdf"
   }
 }`,
@@ -572,5 +764,257 @@ func Test_OverrideWithPaths(t *testing.T) {
 			resultJson, _ := json.Marshal(result)
 			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
 		}
+	}
+}
+
+func Test_ExtractObjectJMES(t *testing.T) {
+	testcases := []struct {
+		InputJson  string
+		PathKey    string
+		Path       string
+		ExpectJson string
+	}{
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].name",
+			Path:    "values[*].name",
+			ExpectJson: `
+{
+  "values[*].name": ["test1", "test2"]
+}
+`,
+		},
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].status",
+			Path:    "values[*].properties.status",
+			ExpectJson: `
+{
+  "values[*].status": ["active", "inactive"]
+}
+`,
+		},
+		{
+			InputJson: `
+{
+  "values": [
+    {
+      "id": "1",
+      "name": "test1",
+      "properties": {
+        "status": "active"
+      }
+    },
+    {
+      "id": "2",
+      "name": "test2",
+      "properties": {
+        "status": "inactive"
+      }
+    }
+  ]
+}
+`,
+			PathKey: "values[*].nonexistent",
+			Path:    "values[*].nonexistent",
+			ExpectJson: `
+{
+  "values[*].nonexistent": []
+}
+`,
+		},
+	}
+
+	for _, testcase := range testcases {
+		var input, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.InputJson), &input)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.ExtractObjectJMES(input, testcase.PathKey, testcase.Path)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", string(expectedJson), string(resultJson))
+		}
+	}
+}
+
+func Test_UpdateObjectDuplicateIdentifiers(t *testing.T) {
+	OldJson := `
+[
+	{
+		"apiVersion": "2021-05-01-preview",
+		"condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/flexibleServers')]",
+		"dependsOn": [],
+		"location": "[parameters('location')]",
+		"name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+		"properties": {
+			"logs": [
+				{
+					"category": "PostgreSQLLogs",
+					"enabled": "[parameters('logsEnabled')]"
+				}
+			],
+			"metrics": [
+				{
+					"category": "AllMetrics",
+					"enabled": "[parameters('metricsEnabled')]",
+					"retentionPolicy": {
+						"days": 0,
+						"enabled": false
+					},
+					"timeGrain": null
+				}
+			],
+			"workspaceId": "[parameters('logAnalytics')]"
+		},
+		"type": "Microsoft.DBforPostgreSQL/flexibleServers/providers/diagnosticSettings"
+	},
+	{
+		"apiVersion": "2021-05-01-preview",
+		"condition": "[startsWith(parameters('resourceType'),'Microsoft.DBforPostgreSQL/servers')]",
+		"dependsOn": [],
+		"location": "[parameters('location')]",
+		"name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+		"properties": {
+			"logs": [
+				{
+					"category": "PostgreSQLLogs",
+					"enabled": "[parameters('logsEnabled')]"
+				},
+				{
+					"category": "QueryStoreRuntimeStatistics",
+					"enabled": "[parameters('logsEnabled')]"
+				},
+				{
+					"category": "QueryStoreWaitStatistics",
+					"enabled": "[parameters('logsEnabled')]"
+				}
+			],
+			"metrics": [
+				{
+					"category": "AllMetrics",
+					"enabled": "[parameters('metricsEnabled')]",
+					"retentionPolicy": {
+						"days": 0,
+						"enabled": false
+					},
+					"timeGrain": null
+				}
+			],
+			"workspaceId": "[parameters('logAnalytics')]"
+		},
+		"type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings"
+	}
+]
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(OldJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
+
+func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T) {
+	OldJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Prompt"
+		},
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+		}
+  ]
+}
+`
+	NewJson := `
+{
+	"contentFilters": [
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Completion"
+			},
+			{
+				"name": "Hate",
+				"allowedContentLevel": "Medium",
+				"blocking": true,
+				"enabled": true,
+				"source": "Prompt"
+			}
+  ]
+}
+`
+	var old, new, expected any
+	_ = json.Unmarshal([]byte(OldJson), &old)
+	_ = json.Unmarshal([]byte(NewJson), &new)
+	_ = json.Unmarshal([]byte(OldJson), &expected)
+
+	got := utils.UpdateObject(old, new, utils.UpdateJsonOption{
+		IgnoreCasing:          false,
+		IgnoreMissingProperty: true,
+	})
+	if !reflect.DeepEqual(got, expected) {
+		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
+		gotJson, _ := json.MarshalIndent(got, "", "  ")
+		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
 	}
 }

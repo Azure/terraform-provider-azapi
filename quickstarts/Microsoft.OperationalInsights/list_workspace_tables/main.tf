@@ -35,9 +35,9 @@ data "azapi_resource_action" "test" {
 }
 
 output "first_table_name" {
-  value = jsondecode(data.azapi_resource_action.test.output).value.0.name
+  value = data.azapi_resource_action.test.output.value.0.name
 }
 
 output "count" {
-  value = length(jsondecode(data.azapi_resource_action.test.output).value)
+  value = length(data.azapi_resource_action.test.output.value)
 }

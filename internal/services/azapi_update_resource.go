@@ -7,7 +7,9 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
+	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -30,19 +32,23 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String   `tfsdk:"id"`
-	Name                  types.String   `tfsdk:"name"`
-	ParentID              types.String   `tfsdk:"parent_id"`
-	ResourceID            types.String   `tfsdk:"resource_id"`
-	Type                  types.String   `tfsdk:"type"`
-	Body                  types.Dynamic  `tfsdk:"body"`
-	IgnoreCasing          types.Bool     `tfsdk:"ignore_casing"`
-	IgnoreBodyChanges     types.List     `tfsdk:"ignore_body_changes"`
-	IgnoreMissingProperty types.Bool     `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List     `tfsdk:"response_export_values"`
-	Locks                 types.List     `tfsdk:"locks"`
-	Output                types.Dynamic  `tfsdk:"output"`
-	Timeouts              timeouts.Value `tfsdk:"timeouts"`
+	ID                    types.String        `tfsdk:"id"`
+	Name                  types.String        `tfsdk:"name"`
+	ParentID              types.String        `tfsdk:"parent_id"`
+	ResourceID            types.String        `tfsdk:"resource_id"`
+	Type                  types.String        `tfsdk:"type"`
+	Body                  types.Dynamic       `tfsdk:"body"`
+	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
+	Locks                 types.List          `tfsdk:"locks"`
+	Output                types.Dynamic       `tfsdk:"output"`
+	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
+	Retry                 retry.RetryValue    `tfsdk:"retry"`
+	UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
+	ReadHeaders           map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 type AzapiUpdateResource struct {
@@ -67,18 +73,23 @@ func (r *AzapiUpdateResource) Metadata(ctx context.Context, request resource.Met
 
 func (r *AzapiUpdateResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{
-		0: migration.AzapiUpdateResourceMigrationV0ToV1(ctx),
+		0: migration.AzapiUpdateResourceMigrationV0ToV2(ctx),
+		1: migration.AzapiUpdateResourceMigrationV1ToV2(ctx),
 	}
 }
 
 func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This resource can manage a subset of any existing Azure resource manager resource's properties.\n\n" +
+			"-> **Note** This resource is used to add or modify properties on an existing resource. When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
+		Description: "This resource can manage a subset of any existing Azure resource manager resource's properties.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"name": schema.StringAttribute{
@@ -91,6 +102,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
 				},
+				MarkdownDescription: "Specifies the name of the Azure resource. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -103,6 +115,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: docstrings.ParentID(),
 			},
 
 			"resource_id": schema.StringAttribute{
@@ -115,6 +128,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
+				MarkdownDescription: "The ID of an existing Azure source.",
 			},
 
 			"type": schema.StringAttribute{
@@ -122,51 +136,33 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
+				MarkdownDescription: docstrings.Type(),
 			},
 
-			// The body attribute is a dynamic attribute that allows users to specify the resource body as an HCL object or a JSON string.
-			// If the body is specified as a JSON string, the underlying value will be a string
-			// TODO: Remove the support for JSON string in the next major release
+			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
-				Computed: true,
-				Default:  defaults.DynamicDefault(types.StringValue("{}")),
-				Validators: []validator.Dynamic{
-					myvalidator.BodyValidator(),
-				},
 				PlanModifiers: []planmodifier.Dynamic{
-					myplanmodifier.DynamicUseStateWhen(bodySemanticallyEqual),
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
-			},
-
-			"ignore_body_changes": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				DeprecationMessage: "This feature is deprecated and will be removed in a major release. Please use the `lifecycle.ignore_changes` argument to specify the fields in `body` to ignore.",
+				MarkdownDescription: docstrings.Body(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(false),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(false),
+				MarkdownDescription: docstrings.IgnoreCasing(),
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
-				Optional: true,
-				Computed: true,
-				Default:  defaults.BoolDefault(true),
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -174,10 +170,42 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
+				MarkdownDescription: docstrings.Locks(),
 			},
 
 			"output": schema.DynamicAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: docstrings.Output("azapi_update_resource"),
+			},
+
+			"retry": retry.SingleNestedAttribute(ctx),
+
+			"update_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the update request.",
+			},
+
+			"update_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the update request.",
+			},
+
+			"read_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the read request.",
+			},
+
+			"read_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
 		},
 
@@ -190,7 +218,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 			}),
 		},
 
-		Version: 1,
+		Version: 2,
 	}
 }
 
@@ -249,7 +277,7 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !bodySemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
@@ -291,15 +319,18 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	defer cancel()
 
 	var id parse.ResourceId
-	if name := model.Name.ValueString(); len(name) != 0 {
-		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
+	// We need to ensure that the ID parsed in create and update is the same to produce consistent results.
+	// In update, all these fields are set, using resource_id and type is able to parse the parent_id and name which are used to build it.
+	// But using parent_id, name and type is not able to parse the original resource_id, because the last resource type segment comes from the type instead of the resource_id.
+	if resourceId := model.ResourceID.ValueString(); len(resourceId) != 0 {
+		buildId, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
 		if err != nil {
 			diagnostics.AddError("Invalid configuration", err.Error())
 			return
 		}
 		id = buildId
 	} else {
-		buildId, err := parse.ResourceIDWithResourceType(model.ResourceID.ValueString(), model.Type.ValueString())
+		buildId, err := parse.NewResourceID(model.Name.ValueString(), model.ParentID.ValueString(), model.Type.ValueString())
 		if err != nil {
 			diagnostics.AddError("Invalid configuration", err.Error())
 			return
@@ -307,8 +338,19 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		id = buildId
 	}
 
-	client := r.ProviderData.ResourceClient
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -325,14 +367,6 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	}
 
 	requestBody = utils.MergeObject(existing, requestBody)
-	if ignoreChanges := AsStringList(model.IgnoreBodyChanges); len(ignoreChanges) != 0 {
-		out, err := overrideWithPaths(requestBody, existing, ignoreChanges)
-		if err != nil {
-			diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid, value: %q, error: %s`, model.IgnoreBodyChanges.String(), err.Error()))
-			return
-		}
-		requestBody = out
-	}
 
 	if id.ResourceDef != nil {
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
@@ -343,13 +377,13 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		defer locks.UnlockByID(id)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody)
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(model.UpdateHeaders, model.UpdateQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -364,11 +398,14 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.Name = basetypes.NewStringValue(id.Name)
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
-	if dynamicIsString(model.Body) {
-		model.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		model.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
 	}
+	model.Output = output
+
 	diagnostics.Append(state.Set(ctx, model)...)
 }
 
@@ -393,8 +430,20 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	client := r.ProviderData.ResourceClient
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		bkof, regexps := clients.NewRetryableErrors(
+			model.Retry.GetIntervalSeconds(),
+			model.Retry.GetMaxIntervalSeconds(),
+			model.Retry.GetMultiplier(),
+			model.Retry.GetRandomizationFactor(),
+			model.Retry.GetErrorMessageRegex(),
+		)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+	}
+
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -418,13 +467,6 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	if out, err := overrideWithPaths(responseBody, requestBody, AsStringList(model.IgnoreBodyChanges)); err == nil {
-		responseBody = out
-	} else {
-		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "ignore_body_changes" is invalid, value: %q, error: %s`, model.IgnoreBodyChanges.String(), err.Error()))
-		return
-	}
-
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
@@ -436,23 +478,25 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	if dynamicIsString(model.Body) {
-		state.Body = types.DynamicValue(types.StringValue(string(data)))
-		state.Output = types.DynamicValue(types.StringValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues))))
-	} else {
-		state.Output = types.DynamicValue(flattenOutputPayload(responseBody, AsStringList(model.ResponseExportValues)))
-		if !model.Body.IsNull() {
-			payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	state.Output = output
+
+	if !model.Body.IsNull() {
+		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
+		if err != nil {
+			tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
+			payload, err = dynamic.FromJSONImplied(data)
 			if err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to parse payload: %s", err.Error()))
-				payload, err = dynamic.FromJSONImplied(data)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid payload", err.Error())
-					return
-				}
+				response.Diagnostics.AddError("Invalid payload", err.Error())
+				return
 			}
-			state.Body = payload
 		}
+		state.Body = payload
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)

@@ -33,23 +33,6 @@ func TestAccGenericUpdateResource_automationAccount(t *testing.T) {
 	})
 }
 
-func TestAccGenericUpdateResource_dynamicSchema(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.dynamicSchema(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("resource_id").Exists(),
-				check.That(data.ResourceName).Key("parent_id").Exists(),
-				check.That(data.ResourceName).Key("name").Exists(),
-			),
-		},
-	})
-}
-
 func TestAccGenericUpdateResource_withNameParentId(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -101,34 +84,6 @@ func TestAccGenericUpdateResource_locks(t *testing.T) {
 	})
 }
 
-func TestAccGenericUpdateResource_ignoreChanges(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChanges(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
-func TestAccGenericUpdateResource_ignoreChangesArray(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
-	r := GenericUpdateResource{}
-
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config: r.ignoreChangesArray(data),
-			Check: resource.ComposeTestCheckFunc(
-				check.That(data.ResourceName).ExistsInAzure(r),
-			),
-		},
-	})
-}
-
 func TestAccGenericUpdateResource_ignoreOrderInArray(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -157,6 +112,54 @@ func TestAccGenericUpdateResource_timeouts(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_ignoreIDCasing(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.ignoreIDCasing(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.ignoreIDCasingUpdated(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericUpdateResource_headers(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.headers(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccGenericUpdateResource_queryParameters(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.queryParameters(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -164,7 +167,7 @@ func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Clien
 		return nil, err
 	}
 
-	resp, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	resp, err := client.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			exist := false
@@ -180,39 +183,23 @@ func (r GenericUpdateResource) automationAccount(data acceptance.TestData) strin
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
     properties = {
-      publicNetworkAccess = true
+      sku = {
+        name = "Basic"
+      }
     }
-  })
-}
-`, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) dynamicSchema(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+  }
 }
 
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
+  resource_id = azapi_resource.automationAccount.id
   body = {
     properties = {
       publicNetworkAccess = true
@@ -226,22 +213,29 @@ func (r GenericUpdateResource) automationAccountWithNameParentId(data acceptance
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_update_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = azurerm_automation_account.test.name
-  parent_id = azurerm_resource_group.test.id
-  body = jsonencode({
+  name      = azapi_resource.automationAccount.name
+  parent_id = azapi_resource.resourceGroup.id
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -250,50 +244,74 @@ func (r GenericUpdateResource) siteConfigSlotConfigNames(data acceptance.TestDat
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_app_service_plan" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
 
-  sku {
-    tier = "Standard"
-    size = "S1"
+resource "azapi_resource" "serverfarm" {
+  type      = "Microsoft.Web/serverfarms@2023-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      hyperV         = false
+      perSiteScaling = false
+      reserved       = false
+      zoneRedundant  = false
+    }
+    sku = {
+      name = "S1"
+    }
   }
 }
 
-resource "azurerm_app_service" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  app_service_plan_id = azurerm_app_service_plan.test.id
-
-  site_config {
-    dotnet_framework_version = "v4.0"
-    scm_type                 = "LocalGit"
-  }
-
-  app_settings = {
-    "SOME_KEY" = "some-value"
-  }
-
-  connection_string {
-    name  = "Database"
-    type  = "SQLServer"
-    value = "Server=some-server.mydomain.com;Integrated Security=SSPI"
+resource "azapi_resource" "site" {
+  type      = "Microsoft.Web/sites@2023-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      clientAffinityEnabled = false
+      clientCertEnabled     = false
+      clientCertMode        = "Required"
+      enabled               = true
+      httpsOnly             = false
+      publicNetworkAccess   = "Enabled"
+      serverFarmId          = azapi_resource.serverfarm.id
+      siteConfig = {
+        acrUseManagedIdentityCreds       = false
+        alwaysOn                         = true
+        autoHealEnabled                  = false
+        ftpsState                        = "Disabled"
+        http20Enabled                    = false
+        loadBalancing                    = "LeastRequests"
+        localMySqlEnabled                = false
+        managedPipelineMode              = "Integrated"
+        minTlsVersion                    = "1.2"
+        publicNetworkAccess              = "Enabled"
+        remoteDebuggingEnabled           = false
+        scmIpSecurityRestrictionsUseMain = false
+        scmMinTlsVersion                 = "1.2"
+        use32BitWorkerProcess            = true
+        vnetRouteAllEnabled              = false
+        webSocketsEnabled                = false
+        windowsFxVersion                 = ""
+      }
+      vnetRouteAllEnabled = false
+    }
   }
 }
 
 resource "azapi_update_resource" "test" {
   type      = "Microsoft.Web/sites/config@2021-03-01"
   name      = "slotConfigNames"
-  parent_id = azurerm_app_service.test.id
-  body = jsonencode({
+  parent_id = azapi_resource.site.id
+  body = {
     properties = {
       connectionStringNames   = ["test1", "test2"]
       appSettingNames         = ["test3"]
       azureStorageConfigNames = ["test4"]
     }
-  })
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -302,102 +320,42 @@ func (r GenericUpdateResource) locks(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_update_resource" "test1" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  resource_id = azapi_resource.automationAccount.id
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
-  locks = [azurerm_automation_account.test.id]
+  }
+  locks = [azapi_resource.automationAccount.id]
 }
 
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  resource_id = azapi_resource.automationAccount.id
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
-  locks = [azurerm_automation_account.test.id]
+  }
+  locks = [azapi_resource.automationAccount.id]
 }
 `, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) ignoreChanges(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
-    properties = {
-      sku = {
-        name = "Free"
-      }
-    }
-  })
-
-  ignore_body_changes = ["properties.sku.name"]
-}
-`, r.template(data), data.RandomString)
-}
-
-func (r GenericUpdateResource) ignoreChangesArray(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%[1]s
-
-resource "azurerm_virtual_network" "test" {
-  name                = "acctest%[2]d"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-}
-
-resource "azurerm_subnet" "test" {
-  name                 = "default"
-  resource_group_name  = azurerm_resource_group.test.name
-  virtual_network_name = azurerm_virtual_network.test.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
-  resource_id = azurerm_virtual_network.test.id
-  body = jsonencode({
-    properties = {
-      subnets = [
-        {
-          name = "second"
-          properties = {
-            addressPrefix = "10.0.2.0/24"
-          }
-        }
-      ]
-    }
-  })
-
-  ignore_body_changes = ["properties.subnets"]
-  depends_on          = [azurerm_subnet.test]
-}
-`, r.template(data), data.RandomInteger)
 }
 
 func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) string {
@@ -406,9 +364,9 @@ func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) stri
 
 resource "azapi_resource" "vnet" {
   type      = "Microsoft.Network/virtualNetworks@2023-09-01"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]d"
-  location  = azurerm_resource_group.test.location
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
       addressSpace = {
@@ -463,43 +421,229 @@ resource "azapi_update_resource" "test" {
 `, r.template(data), data.RandomInteger)
 }
 
-func (GenericUpdateResource) template(data acceptance.TestData) string {
+func (r GenericUpdateResource) ignoreIDCasing(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.SignalRService/WebPubSub@2024-04-01-preview"
+  resource_id = azapi_resource.webPubSub.id
+
+  body = {
+    properties = {
+      networkACLs = {
+        defaultAction = "Deny"
+        publicNetwork = {
+          allow = ["ClientConnection"]
+        }
+        ipRules = [{
+          value  = "0.0.0.0/0"
+          action = "Allow"
+        }]
+      }
+    }
+  }
+}
+`, r.templateForIDCasing(data))
 }
 
-resource "azurerm_resource_group" "test" {
+func (r GenericUpdateResource) ignoreIDCasingUpdated(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.SignalRService/WebPubSub@2024-04-01-preview"
+  resource_id = azapi_resource.webPubSub.id
+
+  body = {
+    properties = {
+      networkACLs = {
+        defaultAction = "Deny"
+        publicNetwork = {
+          allow = ["ClientConnection", "RESTAPI"]
+        }
+        ipRules = [{
+          value  = "0.0.0.0/0"
+          action = "Allow"
+        }]
+      }
+    }
+  }
+}
+`, r.templateForIDCasing(data))
+}
+
+func (GenericUpdateResource) template(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }
 
+func (r GenericUpdateResource) templateForIDCasing(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "webPubSub" {
+  type      = "Microsoft.SignalRService/webPubSub@2024-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      disableAadAuth      = false
+      disableLocalAuth    = false
+      publicNetworkAccess = "Enabled"
+      tls = {
+        clientCertEnabled = false
+      }
+    }
+    sku = {
+      capacity = 1
+      name     = "Standard_S1"
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
 func (r GenericUpdateResource) timeouts(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azurerm_automation_account" "test" {
-  name                = "acctest-%[2]s"
-  location            = azurerm_resource_group.test.location
-  resource_group_name = azurerm_resource_group.test.name
-  sku_name            = "Basic"
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
 }
 
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
-  resource_id = azurerm_automation_account.test.id
-  body = jsonencode({
+  resource_id = azapi_resource.automationAccount.id
+  body = {
     properties = {
       publicNetworkAccess = true
     }
-  })
+  }
   timeouts {
     create = "10m"
     update = "10m"
     delete = "10m"
     read   = "10m"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) oldConfig(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = jsonencode({
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  })
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.automationAccount.id
+  body = jsonencode({
+    properties = {
+      publicNetworkAccess = true
+    }
+  })
+  response_export_values = ["properties"]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) headers(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.automationAccount.id
+  body = {
+    properties = {
+      publicNetworkAccess = true
+    }
+  }
+  update_headers = {
+    "header2" = "update-value"
+  }
+  read_headers = {
+    "header4" = "read-value"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) queryParameters(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id = azapi_resource.automationAccount.id
+  body = {
+    properties = {
+      publicNetworkAccess = true
+    }
+  }
+  update_query_parameters = {
+    "query1" = ["update-value"]
+  }
+  read_query_parameters = {
+    "query1" = ["read-value"]
   }
 }
 `, r.template(data), data.RandomString)

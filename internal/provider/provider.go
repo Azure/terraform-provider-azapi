@@ -17,12 +17,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/features"
 	"github.com/Azure/terraform-provider-azapi/internal/services"
+	"github.com/Azure/terraform-provider-azapi/internal/services/functions"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,6 +32,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
+
+var _ provider.Provider = &Provider{}
+var _ provider.ProviderWithFunctions = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -56,19 +61,18 @@ type providerData struct {
 	OIDCRequestURL               types.String `tfsdk:"oidc_request_url"`
 	OIDCToken                    types.String `tfsdk:"oidc_token"`
 	OIDCTokenFilePath            types.String `tfsdk:"oidc_token_file_path"`
+	OIDCAzureServiceConnectionID types.String `tfsdk:"oidc_azure_service_connection_id"`
 	UseOIDC                      types.Bool   `tfsdk:"use_oidc"`
 	UseCLI                       types.Bool   `tfsdk:"use_cli"`
 	UseMSI                       types.Bool   `tfsdk:"use_msi"`
+	UseAKSWorkloadIdentity       types.Bool   `tfsdk:"use_aks_workload_identity"`
 	PartnerID                    types.String `tfsdk:"partner_id"`
 	CustomCorrelationRequestID   types.String `tfsdk:"custom_correlation_request_id"`
 	DisableCorrelationRequestID  types.Bool   `tfsdk:"disable_correlation_request_id"`
 	DisableTerraformPartnerID    types.Bool   `tfsdk:"disable_terraform_partner_id"`
 	DefaultName                  types.String `tfsdk:"default_name"`
-	DefaultNamingPrefix          types.String `tfsdk:"default_naming_prefix"`
-	DefaultNamingSuffix          types.String `tfsdk:"default_naming_suffix"`
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
-	EnableHCLOutputForDataSource types.Bool   `tfsdk:"enable_hcl_output_for_data_source"`
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 }
 
@@ -90,6 +94,14 @@ func (model providerData) GetClientId() (*string, error) {
 		}
 
 		clientId = fileClientId
+	}
+
+	if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_CLIENT_ID") != "" {
+		aksClientId := os.Getenv("AZURE_CLIENT_ID")
+		if clientId != "" && clientId != aksClientId {
+			return nil, fmt.Errorf("mismatch between supplied Client ID and that provided by AKS Workload Identity - please remove, ensure they match, or disable use_aks_workload_identity")
+		}
+		clientId = aksClientId
 	}
 
 	return &clientId, nil
@@ -118,6 +130,18 @@ func (model providerData) GetClientSecret() (*string, error) {
 	return &clientSecret, nil
 }
 
+func (model providerData) GetOIDCTokenFilePath() string {
+	if !model.OIDCTokenFilePath.IsNull() && model.OIDCTokenFilePath.ValueString() != "" {
+		return model.OIDCTokenFilePath.ValueString()
+	}
+
+	if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_FEDERATED_TOKEN_FILE") != "" {
+		return os.Getenv("AZURE_FEDERATED_TOKEN_FILE")
+	}
+
+	return ""
+}
+
 type providerEndpointData struct {
 	ActiveDirectoryAuthorityHost types.String `tfsdk:"active_directory_authority_host"`
 	ResourceManagerEndpoint      types.String `tfsdk:"resource_manager_endpoint"`
@@ -133,50 +157,51 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 		Description: "The Azure API Provider",
 		Attributes: map[string]schema.Attribute{
 			"subscription_id": schema.StringAttribute{
-				Optional:    true,
-				Description: "The Subscription ID which should be used.",
+				Optional:            true,
+				MarkdownDescription: "The Subscription ID which should be used. This can also be sourced from the `ARM_SUBSCRIPTION_ID` Environment Variable.",
 			},
 
 			"client_id": schema.StringAttribute{
-				Optional:    true,
-				Description: "The Client ID which should be used.",
+				Optional:            true,
+				MarkdownDescription: "The Client ID which should be used. This can also be sourced from the `ARM_CLIENT_ID` Environment Variable.",
 			},
 
 			"client_id_file_path": schema.StringAttribute{
-				Optional:    true,
-				Description: "The path to a file containing the Client ID which should be used.",
+				Optional:            true,
+				MarkdownDescription: "The path to a file containing the Client ID which should be used. This can also be sourced from the `ARM_CLIENT_ID_FILE_PATH` Environment Variable.",
 			},
 
 			"tenant_id": schema.StringAttribute{
-				Optional:    true,
-				Description: "The Tenant ID which should be used.",
+				Optional:            true,
+				MarkdownDescription: "The Tenant ID should be used. This can also be sourced from the `ARM_TENANT_ID` Environment Variable.",
 			},
 
 			"auxiliary_tenant_ids": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators:  []validator.List{listvalidator.SizeAtMost(3)},
-				Description: "The Auxiliary Tenant IDs which should be used.",
+				ElementType:         types.StringType,
+				Optional:            true,
+				Validators:          []validator.List{listvalidator.SizeAtMost(3)},
+				MarkdownDescription: "List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.",
 			},
 
 			"endpoint": schema.ListNestedAttribute{
-				Optional:   true,
-				Validators: []validator.List{listvalidator.SizeAtMost(1)},
+				Optional:            true,
+				Validators:          []validator.List{listvalidator.SizeAtMost(1)},
+				MarkdownDescription: "The Azure API Endpoint Configuration.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"active_directory_authority_host": schema.StringAttribute{
-							Optional:    true,
-							Description: "The Active Directory login endpoint which should be used.",
+							Optional:            true,
+							MarkdownDescription: "The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.",
 						},
 
 						"resource_manager_endpoint": schema.StringAttribute{
-							Optional:    true,
-							Description: "The Resource Manager Endpoint which should be used.",
+							Optional:            true,
+							MarkdownDescription: "The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.",
 						},
 
 						"resource_manager_audience": schema.StringAttribute{
-							Optional:    true,
-							Description: "The resource ID to obtain AD tokens for.",
+							Optional:            true,
+							MarkdownDescription: "The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.",
 						},
 					},
 				},
@@ -187,7 +212,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.OneOfCaseInsensitive("public", "usgovernment", "china"),
 				},
-				Description: "The Cloud Environment which should be used. Possible values are public, usgovernment and china. Defaults to public.",
+				MarkdownDescription: "The Cloud Environment which should be used. Possible values are `public`, `usgovernment` and `china`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.",
 			},
 
 			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
@@ -200,72 +225,82 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			// Client Certificate specific fields
 			"client_certificate_path": schema.StringAttribute{
-				Optional:    true,
-				Description: "The path to the Client Certificate associated with the Service Principal for use when authenticating as a Service Principal using a Client Certificate.",
+				Optional:            true,
+				MarkdownDescription: "The path to the Client Certificate associated with the Service Principal which should be used. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PATH` Environment Variable.",
 			},
 
 			"client_certificate": schema.StringAttribute{
-				Optional:    true,
-				Description: "A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication.",
+				Optional:            true,
+				MarkdownDescription: "A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication. This can also be sourced from the `ARM_CLIENT_CERTIFICATE` environment variable.",
 			},
 
 			"client_certificate_password": schema.StringAttribute{
-				Optional:    true,
-				Description: "The password associated with the Client Certificate. For use when authenticating as a Service Principal using a Client Certificate",
+				Optional:            true,
+				MarkdownDescription: "The password associated with the Client Certificate. This can also be sourced from the `ARM_CLIENT_CERTIFICATE_PASSWORD` Environment Variable.",
 			},
 
 			// Client Secret specific fields
 			"client_secret": schema.StringAttribute{
-				Optional:    true,
-				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
+				Optional:            true,
+				MarkdownDescription: "The Client Secret which should be used. This can also be sourced from the `ARM_CLIENT_SECRET` Environment Variable.",
 			},
 
 			"client_secret_file_path": schema.StringAttribute{
-				Optional:    true,
-				Description: "The path to a file containing the Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
+				Optional:            true,
+				MarkdownDescription: "The path to a file containing the Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret. This can also be sourced from the `ARM_CLIENT_SECRET_FILE_PATH` Environment Variable.",
 			},
 
 			"skip_provider_registration": schema.BoolAttribute{
-				Optional:    true,
-				Description: "Should the Provider skip registering all of the Resource Providers that it supports, if they're not already registered?",
+				Optional:            true,
+				MarkdownDescription: "Should the Provider skip registering the Resource Providers it supports? This can also be sourced from the `ARM_SKIP_PROVIDER_REGISTRATION` Environment Variable. Defaults to `false`.",
 			},
 
 			// OIDC specific fields
 			"oidc_request_token": schema.StringAttribute{
-				Optional:    true,
-				Description: "The bearer token for the request to the OIDC provider. For use When authenticating as a Service Principal using OpenID Connect.",
+				Optional:            true,
+				MarkdownDescription: "The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` Environment Variables.",
 			},
 
 			"oidc_request_url": schema.StringAttribute{
-				Optional:    true,
-				Description: "The URL for the OIDC provider from which to request an ID token. For use When authenticating as a Service Principal using OpenID Connect.",
+				Optional:            true,
+				MarkdownDescription: "The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_URL` Environment Variables.",
 			},
 
 			"oidc_token": schema.StringAttribute{
-				Optional:    true,
-				Description: "The OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
+				Optional:            true,
+				MarkdownDescription: "The ID token when authenticating using OpenID Connect (OIDC). This can also be sourced from the `ARM_OIDC_TOKEN` environment Variable.",
 			},
 
 			"oidc_token_file_path": schema.StringAttribute{
-				Optional:    true,
-				Description: "The path to a file containing an OIDC ID token for use when authenticating as a Service Principal using OpenID Connect.",
+				Optional:            true,
+				MarkdownDescription: "The path to a file containing an ID token when authenticating using OpenID Connect (OIDC). This can also be sourced from the `ARM_OIDC_TOKEN_FILE_PATH` environment Variable.",
+			},
+
+			"oidc_azure_service_connection_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.",
 			},
 
 			"use_oidc": schema.BoolAttribute{
-				Optional:    true,
-				Description: "Allow OpenID Connect to be used for authentication",
+				Optional:            true,
+				MarkdownDescription: "Should OIDC be used for Authentication? This can also be sourced from the `ARM_USE_OIDC` Environment Variable. Defaults to `false`.",
 			},
 
 			// Azure CLI specific fields
 			"use_cli": schema.BoolAttribute{
-				Optional:    true,
-				Description: "Allow Azure CLI to be used for Authentication.",
+				Optional:            true,
+				MarkdownDescription: "Should Azure CLI be used for authentication? This can also be sourced from the `ARM_USE_CLI` environment variable. Defaults to `true`.",
 			},
 
 			// Managed Service Identity specific fields
 			"use_msi": schema.BoolAttribute{
-				Optional:    true,
-				Description: "Allow Managed Service Identity to be used for Authentication.",
+				Optional:            true,
+				MarkdownDescription: "Should Managed Identity be used for Authentication? This can also be sourced from the `ARM_USE_MSI` Environment Variable. Defaults to `false`.",
+			},
+
+			"use_aks_workload_identity": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "Should AKS Workload Identity be used for Authentication? This can also be sourced from the `ARM_USE_AKS_WORKLOAD_IDENTITY` Environment Variable. Defaults to `false`. When set, `client_id`, `tenant_id` and `oidc_token_file_path` will be detected from the environment and do not need to be specified.",
 			},
 
 			// TODO@mgd: azidentity doesn't support msi_endpoint
@@ -282,44 +317,32 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.Any(myvalidator.StringIsUUID(), myvalidator.StringIsEmpty()),
 				},
-				Description: "A GUID/UUID that is registered with Microsoft to facilitate partner resource usage attribution.",
+				MarkdownDescription: "A GUID/UUID that is [registered](https://docs.microsoft.com/azure/marketplace/azure-partner-customer-usage-attribution#register-guids-and-offers) with Microsoft to facilitate partner resource usage attribution. This can also be sourced from the `ARM_PARTNER_ID` Environment Variable.",
 			},
 
 			"custom_correlation_request_id": schema.StringAttribute{
-				Optional:    true,
-				Description: "The value of the x-ms-correlation-request-id header (otherwise an auto-generated UUID will be used).",
+				Optional:            true,
+				MarkdownDescription: "The value of the `x-ms-correlation-request-id` header, otherwise an auto-generated UUID will be used. This can also be sourced from the `ARM_CORRELATION_REQUEST_ID` environment variable.",
 			},
 
 			"disable_correlation_request_id": schema.BoolAttribute{
-				Optional:    true,
-				Description: "This will disable the x-ms-correlation-request-id header.",
+				Optional:            true,
+				MarkdownDescription: "This will disable the x-ms-correlation-request-id header.",
 			},
 
 			"disable_terraform_partner_id": schema.BoolAttribute{
-				Optional:    true,
-				Description: "This will disable the Terraform Partner ID which is used if a custom `partner_id` isn't specified.",
+				Optional:            true,
+				MarkdownDescription: "Disable sending the Terraform Partner ID if a custom `partner_id` isn't specified, which allows Microsoft to better understand the usage of Terraform. The Partner ID does not give HashiCorp any direct access to usage information. This can also be sourced from the `ARM_DISABLE_TERRAFORM_PARTNER_ID` environment variable. Defaults to `false`.",
 			},
 
 			"default_name": schema.StringAttribute{
-				Optional:    true,
-				Description: "The default name which should be used for resources.",
-			},
-
-			"default_naming_prefix": schema.StringAttribute{
-				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
-				Optional:           true,
-				Description:        "The default prefix which should be used for resources.",
-			},
-
-			"default_naming_suffix": schema.StringAttribute{
-				DeprecationMessage: "This field is deprecated and will be removed in a major release. Please specify the naming prefix and suffix in the resource's `name` field instead.",
-				Optional:           true,
-				Description:        "The default suffix which should be used for resources.",
+				Optional:            true,
+				MarkdownDescription: "The default name to create the azure resource. The `name` in each resource block can override the `default_name`. Changing this forces new resources to be created.",
 			},
 
 			"default_location": schema.StringAttribute{
-				Optional:    true,
-				Description: "The default location which should be used for resources.",
+				Optional:            true,
+				MarkdownDescription: " The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
 			},
 
 			"default_tags": schema.MapAttribute{
@@ -328,12 +351,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
-				Description: "The default tags which should be used for resources.",
-			},
-
-			"enable_hcl_output_for_data_source": schema.BoolAttribute{
-				Optional:    true,
-				Description: "Enable HCL output for data sources. The default is false. When set to true, the provider will return HCL output for data sources. When set to false, the provider will return JSON output for data sources.",
+				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.",
 			},
 
 			"enable_preflight": schema.BoolAttribute{
@@ -347,11 +365,6 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 func (p Provider) Configure(ctx context.Context, request provider.ConfigureRequest, response *provider.ConfigureResponse) {
 	var model providerData
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
-		return
-	}
-
-	if !model.DefaultName.IsNull() && (!model.DefaultNamingPrefix.IsNull() || !model.DefaultNamingSuffix.IsNull()) {
-		response.Diagnostics.AddError("Invalid `default_name` value.", "The `default_name` value cannot be used with `default_naming_prefix` or `default_naming_suffix`.")
 		return
 	}
 
@@ -372,9 +385,25 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.UseAKSWorkloadIdentity.IsNull() {
+		if v := os.Getenv("ARM_USE_AKS_WORKLOAD_IDENTITY"); v != "" {
+			model.UseAKSWorkloadIdentity = types.BoolValue(v == "true")
+		} else {
+			model.UseAKSWorkloadIdentity = types.BoolValue(false)
+		}
+	}
+
 	if model.TenantID.IsNull() {
 		if v := os.Getenv("ARM_TENANT_ID"); v != "" {
 			model.TenantID = types.StringValue(v)
+		}
+		if model.UseAKSWorkloadIdentity.ValueBool() && os.Getenv("AZURE_TENANT_ID") != "" {
+			aksTenantID := os.Getenv("AZURE_TENANT_ID")
+			if model.TenantID.ValueString() != "" && model.TenantID.ValueString() != aksTenantID {
+				response.Diagnostics.AddError("Invalid `tenant_id` value", "mismatch between supplied Tenant ID and that provided by AKS Workload Identity - please remove, ensure they match, or disable use_aks_workload_identity")
+				return
+			}
+			model.TenantID = types.StringValue(aksTenantID)
 		}
 	}
 
@@ -481,6 +510,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.OIDCAzureServiceConnectionID.IsNull() {
+		if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
+		}
+	}
+
 	if model.UseOIDC.IsNull() {
 		if v := os.Getenv("ARM_USE_OIDC"); v != "" {
 			model.UseOIDC = types.BoolValue(v == "true")
@@ -501,7 +536,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		if v := os.Getenv("ARM_USE_MSI"); v != "" {
 			model.UseMSI = types.BoolValue(v == "true")
 		} else {
-			model.UseMSI = types.BoolValue(true)
+			model.UseMSI = types.BoolValue(false)
 		}
 	}
 
@@ -531,10 +566,6 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		} else {
 			model.DisableTerraformPartnerID = types.BoolValue(false)
 		}
-	}
-
-	if model.EnableHCLOutputForDataSource.IsNull() {
-		model.EnableHCLOutputForDataSource = types.BoolValue(false)
 	}
 
 	if model.EnablePreflight.IsNull() {
@@ -608,18 +639,16 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		CloudCfg:             cloudConfig,
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		Features: features.UserFeatures{
-			DefaultTags:                  tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:              location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:                model.DefaultName.ValueString(),
-			DefaultNamingPrefix:          model.DefaultNamingPrefix.ValueString(),
-			DefaultNamingSuffix:          model.DefaultNamingSuffix.ValueString(),
-			EnableHCLOutputForDataSource: model.EnableHCLOutputForDataSource.ValueBool(),
-			EnablePreflight:              model.EnablePreflight.ValueBool(),
+			DefaultTags:     tags.ExpandTags(model.DefaultTags),
+			DefaultLocation: location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:   model.DefaultName.ValueString(),
+			EnablePreflight: model.EnablePreflight.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
 		CustomCorrelationRequestID:  model.CustomCorrelationRequestID.ValueString(),
 		SubscriptionId:              model.SubscriptionID.ValueString(),
+		TenantId:                    model.TenantID.ValueString(),
 	}
 
 	client := &clients.Client{}
@@ -635,6 +664,24 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	response.DataSourceData = client
 }
 
+func (p Provider) Functions(ctx context.Context) []func() function.Function {
+	return []func() function.Function{
+		func() function.Function {
+			return &functions.ParseResourceIdFunction{}
+		},
+		func() function.Function { return &functions.BuildResourceIdFunction{} },
+		func() function.Function {
+			return &functions.TenantResourceIdFunction{}
+		},
+		func() function.Function {
+			return &functions.SubscriptionResourceIdFunction{}
+		},
+		func() function.Function { return &functions.ResourceGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ManagementGroupResourceIdFunction{} },
+		func() function.Function { return &functions.ExtensionResourceIdFunction{} },
+	}
+}
+
 func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		func() datasource.DataSource {
@@ -648,6 +695,9 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 		},
 		func() datasource.DataSource {
 			return &services.AzapiResourceDataSource{}
+		},
+		func() datasource.DataSource {
+			return &services.ClientConfigDataSource{}
 		},
 	}
 
@@ -703,12 +753,19 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 	log.Printf("[DEBUG] building chained token credential")
 	var creds []azcore.TokenCredential
 
-	if model.UseOIDC.ValueBool() {
-		log.Printf("[DEBUG] oidc credential enabled")
+	if model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool() {
+		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
 		if cred, err := buildOidcCredential(model, options); err == nil {
 			creds = append(creds, cred)
 		} else {
 			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
+		}
+
+		log.Printf("[DEBUG] azure pipelines credential enabled")
+		if cred, err := buildAzurePipelinesCredential(model, options); err == nil {
+			creds = append(creds, cred)
+		} else {
+			log.Printf("[DEBUG] failed to initialize azure pipelines credential: %v", err)
 		}
 	}
 
@@ -791,6 +848,10 @@ func buildClientCertificateCredential(model providerData, options azidentity.Def
 		}
 	}
 
+	if len(certData) == 0 {
+		return nil, fmt.Errorf("no certificate data provided")
+	}
+
 	var password []byte
 	if v := model.ClientCertificatePassword.ValueString(); v != "" {
 		password = []byte(v)
@@ -813,6 +874,9 @@ func buildOidcCredential(model providerData, options azidentity.DefaultAzureCred
 	if err != nil {
 		return nil, err
 	}
+	if model.OIDCToken.ValueString() == "" && model.GetOIDCTokenFilePath() == "" && (model.OIDCRequestToken.ValueString() == "" || model.OIDCRequestURL.ValueString() == "") {
+		return nil, fmt.Errorf("missing required OIDC configuration")
+	}
 	o := &OidcCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: options.Cloud,
@@ -823,7 +887,7 @@ func buildOidcCredential(model providerData, options azidentity.DefaultAzureCred
 		RequestToken:               model.OIDCRequestToken.ValueString(),
 		RequestUrl:                 model.OIDCRequestURL.ValueString(),
 		Token:                      model.OIDCToken.ValueString(),
-		TokenFilePath:              model.OIDCTokenFilePath.ValueString(),
+		TokenFilePath:              model.GetOIDCTokenFilePath(),
 	}
 	return NewOidcCredential(o)
 }
@@ -848,6 +912,20 @@ func buildAzureCLICredential(options azidentity.DefaultAzureCredentialOptions) (
 		TenantID:                   options.TenantID,
 	}
 	return azidentity.NewAzureCLICredential(o)
+}
+
+func buildAzurePipelinesCredential(model providerData, options azidentity.DefaultAzureCredentialOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] building azure pipeline credential")
+	o := &azidentity.AzurePipelinesCredentialOptions{
+		ClientOptions:              options.ClientOptions,
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	}
+	clientId, err := model.GetClientId()
+	if err != nil {
+		return nil, err
+	}
+	return azidentity.NewAzurePipelinesCredential(options.TenantID, *clientId, model.OIDCAzureServiceConnectionID.ValueString(), model.OIDCRequestToken.ValueString(), o)
 }
 
 func decodeCertificate(clientCertificate string) ([]byte, error) {

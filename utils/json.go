@@ -3,8 +3,11 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"regexp"
 	"strings"
+
+	jmes "github.com/jmespath/go-jmespath"
 )
 
 func NormalizeJson(jsonString interface{}) string {
@@ -65,6 +68,9 @@ type UpdateJsonOption struct {
 
 // UpdateObject is used to get an updated object which has same schema as old, but with new value
 func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) interface{} {
+	if reflect.DeepEqual(old, new) {
+		return old
+	}
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
 		if newMap, ok := new.(map[string]interface{}); ok {
@@ -101,8 +107,20 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 			used := make([]bool, len(newArr))
 
 			for _, oldItem := range oldValue {
+				found := false
 				for index, newItem := range newArr {
-					if areSameArrayItems(oldItem, newItem) {
+					if reflect.DeepEqual(oldItem, newItem) && !used[index] {
+						res = append(res, UpdateObject(oldItem, newItem, option))
+						used[index] = true
+						found = true
+						break
+					}
+				}
+				if found {
+					continue
+				}
+				for index, newItem := range newArr {
+					if areSameArrayItems(oldItem, newItem) && !used[index] {
 						res = append(res, UpdateObject(oldItem, newItem, option))
 						used[index] = true
 						break
@@ -183,6 +201,17 @@ func ExtractObject(old interface{}, path string) interface{} {
 		}
 	}
 	return nil
+}
+
+// ExtractObjectJMES is used to extract object from old using JMES path
+func ExtractObjectJMES(old interface{}, pathKey, path string) interface{} {
+	result := make(map[string]interface{}, 1)
+	value, err := jmes.Search(path, old)
+	if err != nil {
+		return nil
+	}
+	result[pathKey] = value
+	return result
 }
 
 // OverrideWithPaths is used to override old object with new object for specific paths

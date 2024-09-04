@@ -11,50 +11,71 @@ import (
 )
 
 type ResourceManagerAccount struct {
+	tenantId       *string
 	subscriptionId *string
 	mutex          *sync.Mutex
 }
 
-func NewResourceManagerAccount(subscriptionId string) ResourceManagerAccount {
-	if subscriptionId == "" {
-		return ResourceManagerAccount{
-			mutex: &sync.Mutex{},
-		}
+func NewResourceManagerAccount(tenantId, subscriptionId string) ResourceManagerAccount {
+	out := ResourceManagerAccount{
+		mutex: &sync.Mutex{},
 	}
-	return ResourceManagerAccount{
-		subscriptionId: &subscriptionId,
-		mutex:          &sync.Mutex{},
+	if tenantId != "" {
+		out.tenantId = &tenantId
 	}
+	if subscriptionId != "" {
+		out.subscriptionId = &subscriptionId
+	}
+	return out
 }
 
-func (account ResourceManagerAccount) GetSubscriptionId() string {
+func (account *ResourceManagerAccount) GetTenantId() string {
+	account.mutex.Lock()
+	defer account.mutex.Unlock()
+	if account.tenantId != nil {
+		return *account.tenantId
+	}
+
+	err := account.loadDefaultsFromAzCmd()
+	if err != nil {
+		log.Printf("[DEBUG] Error getting default tenant ID: %s", err)
+	}
+
+	return *account.tenantId
+}
+
+func (account *ResourceManagerAccount) GetSubscriptionId() string {
 	account.mutex.Lock()
 	defer account.mutex.Unlock()
 	if account.subscriptionId != nil {
 		return *account.subscriptionId
 	}
 
-	subscriptionId, err := getDefaultSubscriptionID()
+	err := account.loadDefaultsFromAzCmd()
 	if err != nil {
 		log.Printf("[DEBUG] Error getting default subscription ID: %s", err)
 	}
 
-	account.subscriptionId = &subscriptionId
-
+	if account.subscriptionId == nil {
+		log.Printf("[DEBUG] No default subscription ID found")
+		return ""
+	}
 	return *account.subscriptionId
 }
 
-// getDefaultSubscriptionID tries to determine the default subscription
-func getDefaultSubscriptionID() (string, error) {
-	var account struct {
+func (account *ResourceManagerAccount) loadDefaultsFromAzCmd() error {
+	var accountModel struct {
 		SubscriptionID string `json:"id"`
+		TenantId       string `json:"tenantId"`
 	}
-	err := jsonUnmarshalAzCmd(&account, "account", "show")
+	err := jsonUnmarshalAzCmd(&accountModel, "account", "show")
 	if err != nil {
-		return "", fmt.Errorf("obtaining subscription ID: %s", err)
+		return fmt.Errorf("obtaining defaults from az cmd: %s", err)
 	}
 
-	return account.SubscriptionID, nil
+	account.tenantId = &accountModel.TenantId
+	account.subscriptionId = &accountModel.SubscriptionID
+	return nil
 }
 
 // jsonUnmarshalAzCmd executes an Azure CLI command and unmarshalls the JSON output.
