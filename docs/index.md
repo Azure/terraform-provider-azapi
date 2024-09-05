@@ -68,6 +68,7 @@ provider "azapi" {
 - `default_tags` (Map of String) A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.
 - `disable_correlation_request_id` (Boolean) This will disable the x-ms-correlation-request-id header.
 - `disable_terraform_partner_id` (Boolean) Disable sending the Terraform Partner ID if a custom `partner_id` isn't specified, which allows Microsoft to better understand the usage of Terraform. The Partner ID does not give HashiCorp any direct access to usage information. This can also be sourced from the `ARM_DISABLE_TERRAFORM_PARTNER_ID` environment variable. Defaults to `false`.
+- `enable_preflight` (Boolean) Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.
 - `endpoint` (Attributes List) The Azure API Endpoint Configuration. (see [below for nested schema](#nestedatt--endpoint))
 - `environment` (String) The Cloud Environment which should be used. Possible values are `public`, `usgovernment` and `china`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.
 - `oidc_azure_service_connection_id` (String) The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.

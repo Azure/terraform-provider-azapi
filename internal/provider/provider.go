@@ -73,6 +73,7 @@ type providerData struct {
 	DefaultName                  types.String `tfsdk:"default_name"`
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
+	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -352,6 +353,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				},
 				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.",
 			},
+
+			"enable_preflight": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.",
+			},
 		},
 	}
 }
@@ -562,6 +568,10 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
+	if model.EnablePreflight.IsNull() {
+		model.EnablePreflight = types.BoolValue(false)
+	}
+
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
 	switch strings.ToLower(env) {
@@ -632,6 +642,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			DefaultTags:     tags.ExpandTags(model.DefaultTags),
 			DefaultLocation: location.Normalize(model.DefaultLocation.ValueString()),
 			DefaultNaming:   model.DefaultName.ValueString(),
+			EnablePreflight: model.EnablePreflight.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
