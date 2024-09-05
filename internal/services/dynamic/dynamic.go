@@ -11,14 +11,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
+type UnknownValueHandler func(val attr.Value) ([]byte, error)
+
 func ToJSON(d types.Dynamic) ([]byte, error) {
-	return attrValueToJSON(d.UnderlyingValue())
+	return attrValueToJSON(d.UnderlyingValue(), nil)
 }
 
-func attrListToJSON(in []attr.Value) ([]json.RawMessage, error) {
+func ToJSONWithUnknownValueHandler(d types.Dynamic, handler UnknownValueHandler) ([]byte, error) {
+	return attrValueToJSON(d.UnderlyingValue(), handler)
+}
+
+func attrListToJSON(in []attr.Value, handler UnknownValueHandler) ([]json.RawMessage, error) {
 	l := make([]json.RawMessage, 0)
 	for _, v := range in {
-		vv, err := attrValueToJSON(v)
+		vv, err := attrValueToJSON(v, handler)
 		if err != nil {
 			return nil, err
 		}
@@ -27,10 +33,10 @@ func attrListToJSON(in []attr.Value) ([]json.RawMessage, error) {
 	return l, nil
 }
 
-func attrMapToJSON(in map[string]attr.Value) (map[string]json.RawMessage, error) {
+func attrMapToJSON(in map[string]attr.Value, handler UnknownValueHandler) (map[string]json.RawMessage, error) {
 	m := map[string]json.RawMessage{}
 	for k, v := range in {
-		vv, err := attrValueToJSON(v)
+		vv, err := attrValueToJSON(v, handler)
 		if err != nil {
 			return nil, err
 		}
@@ -39,9 +45,14 @@ func attrMapToJSON(in map[string]attr.Value) (map[string]json.RawMessage, error)
 	return m, nil
 }
 
-func attrValueToJSON(val attr.Value) ([]byte, error) {
+func attrValueToJSON(val attr.Value, handler UnknownValueHandler) ([]byte, error) {
 	if val == nil || val.IsNull() {
 		return json.Marshal(nil)
+	}
+	if val.IsUnknown() {
+		if handler != nil {
+			return handler(val)
+		}
 	}
 	switch value := val.(type) {
 	case types.Bool:
@@ -56,31 +67,31 @@ func attrValueToJSON(val attr.Value) ([]byte, error) {
 		v, _ := value.ValueBigFloat().Float64()
 		return json.Marshal(v)
 	case types.List:
-		l, err := attrListToJSON(value.Elements())
+		l, err := attrListToJSON(value.Elements(), handler)
 		if err != nil {
 			return nil, err
 		}
 		return json.Marshal(l)
 	case types.Set:
-		l, err := attrListToJSON(value.Elements())
+		l, err := attrListToJSON(value.Elements(), handler)
 		if err != nil {
 			return nil, err
 		}
 		return json.Marshal(l)
 	case types.Tuple:
-		l, err := attrListToJSON(value.Elements())
+		l, err := attrListToJSON(value.Elements(), handler)
 		if err != nil {
 			return nil, err
 		}
 		return json.Marshal(l)
 	case types.Map:
-		m, err := attrMapToJSON(value.Elements())
+		m, err := attrMapToJSON(value.Elements(), handler)
 		if err != nil {
 			return nil, err
 		}
 		return json.Marshal(m)
 	case types.Object:
-		m, err := attrMapToJSON(value.Attributes())
+		m, err := attrMapToJSON(value.Attributes(), handler)
 		if err != nil {
 			return nil, err
 		}
