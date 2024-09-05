@@ -130,6 +130,10 @@ func unmarshalPreflightBody(input types.Dynamic, out *map[string]interface{}) er
 		return json.Marshal(unknownPlaceholder)
 	})
 
+	if err != nil {
+		return fmt.Errorf("marshaling failed: %v", err)
+	}
+
 	if err = json.Unmarshal(data, &out); err != nil {
 		return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
 	}
