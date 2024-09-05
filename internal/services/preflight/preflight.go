@@ -14,6 +14,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 )
 
 type RequestBodyModel struct {
@@ -24,10 +26,11 @@ type RequestBodyModel struct {
 	Resources []map[string]interface{} `json:"resources"`
 }
 
-func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId string) string {
+// ParentIdPlaceholder generates a placeholder for the parentID based on the resource definition and subscription ID
+func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId string) (string, error) {
 	// since the parentID is faked, there should exist only one scope type
 	if resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
-		return ""
+		return "", fmt.Errorf("failed to generate parentID placeholder because the resource definition is invalid")
 	}
 
 	parentId := ""
@@ -35,21 +38,26 @@ func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId strin
 	case aztypes.Tenant:
 		parentId = "/"
 	case aztypes.ManagementGroup:
-		parentId = "/providers/Microsoft.Management/managementGroups/azapifakemg"
+		parentId = "/providers/Microsoft.Management/managementGroups/" + NamePlaceholder()
 	case aztypes.Subscription:
 		parentId = fmt.Sprintf("/subscriptions/%s", subscriptionId)
 	case aztypes.ResourceGroup:
-		parentId = fmt.Sprintf("/subscriptions/%s/resourceGroups/azapifakerg", subscriptionId)
+		parentId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s", subscriptionId, NamePlaceholder())
 	default:
+		return "", fmt.Errorf("failed to generate parentID placeholder because the scope type is not supported")
 	}
-	return parentId
+	return parentId, nil
 }
 
+// NamePlaceholder generates a random name placeholder
 func NamePlaceholder() string {
-	return "placeholder"
+	return acctest.RandStringFromCharSet(8, acctest.CharSetAlpha)
 }
 
-func IsSupported(parentId string, resourceType string) bool {
+// IsSupported checks if the resource type is supported for preflight validation
+// The resource type should be a top-level resource type, and the specified parentID should be a resource group, subscription, tenant or management group
+// If the parentID is not specified, the resource type should be able to deploy only at the tenant, management group, subscription or resource group level
+func IsSupported(resourceType string, parentId string) bool {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return false
@@ -81,6 +89,7 @@ func IsSupported(parentId string, resourceType string) bool {
 		deployedScope == aztypes.Subscription || deployedScope == aztypes.ResourceGroup
 }
 
+// Validate validates the resource using the preflight API
 func Validate(ctx context.Context, client *clients.ResourceClient, resourceType string, parentId string, name string, location string, body types.Dynamic) error {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
@@ -97,7 +106,8 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 	resource := make(map[string]interface{})
 	err = unmarshalPreflightBody(body, &resource)
 	if err != nil {
-		return err
+		tflog.Warn(ctx, fmt.Sprintf("Skipping preflight validation for resource %s because the body is invalid: %v", resourceType, err))
+		return nil
 	}
 
 	resource["name"] = name
@@ -106,16 +116,12 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 	payload.Resources = []map[string]interface{}{resource}
 
 	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", payload, clients.DefaultRequestOptions())
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
-func unmarshalPreflightBody(input types.Dynamic, out interface{}) error {
+func unmarshalPreflightBody(input types.Dynamic, out *map[string]interface{}) error {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
-		return nil
+		return fmt.Errorf("input is null or unknown")
 	}
 
 	const unknownPlaceholder = "[length('foo')]"
@@ -124,13 +130,15 @@ func unmarshalPreflightBody(input types.Dynamic, out interface{}) error {
 		return json.Marshal(unknownPlaceholder)
 	})
 
-	res := map[string]interface{}{}
-	if err = json.Unmarshal(data, &res); err != nil {
+	if err = json.Unmarshal(data, &out); err != nil {
 		return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
 	}
 
+	if out == nil {
+		out = &map[string]interface{}{}
+	}
 	// make sure that there's no unknown value outside the properties bag
-	for k, v := range res {
+	for k, v := range *out {
 		if k == "properties" {
 			continue
 		}
@@ -138,8 +146,6 @@ func unmarshalPreflightBody(input types.Dynamic, out interface{}) error {
 			return fmt.Errorf("unknown value found outside the properties bag")
 		}
 	}
-
-	out = res
 	return nil
 }
 

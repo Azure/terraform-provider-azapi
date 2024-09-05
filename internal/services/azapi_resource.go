@@ -419,14 +419,17 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	if state != nil {
 		plan.Output = state.Output
 	}
-	resourceType := config.Type.ValueString()
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
+		return
+	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
 
 	// for resource group, if parent_id is not specified, set it to subscription id
-	if config.ParentID.IsNull() {
-		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
-		if strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
-			plan.ParentID = types.StringValue(fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId()))
-		}
+	if config.ParentID.IsNull() && strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+		plan.ParentID = types.StringValue(fmt.Sprintf("/subscriptions/%s", r.ProviderData.Account.GetSubscriptionId()))
 	}
 
 	if name, diags := r.nameWithDefaultNaming(config.Name); !diags.HasError() {
@@ -449,6 +452,11 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
+	isNewResource := state == nil
+	if !dynamic.IsFullyKnown(plan.Body) || isNewResource || !plan.Identity.Equal(state.Identity) ||
+		!plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
+		plan.Output = basetypes.NewDynamicUnknown()
+	}
 	if !dynamic.IsFullyKnown(plan.Body) {
 		if config.Tags.IsNull() {
 			plan.Tags = basetypes.NewMapUnknown(types.StringType)
@@ -456,97 +464,85 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		if config.Location.IsNull() {
 			plan.Location = basetypes.NewStringUnknown()
 		}
-		plan.Output = basetypes.NewDynamicUnknown()
-		return
 	}
 
-	if state == nil || !plan.Identity.Equal(state.Identity) || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	}
-
-	body := make(map[string]interface{})
-	if err := unmarshalBody(config.Body, &body); err != nil {
-		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
-		return
-	}
-
-	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
-	if err != nil {
-		response.Diagnostics.AddError("Invalid configuration", fmt.Sprintf(`The argument "type" is invalid: %s`, err.Error()))
-		return
-	}
-	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
-
-	plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
-	if state == nil || !state.Tags.Equal(plan.Tags) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	}
-
-	// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
-	locationValue := plan.Location
-	// For the following cases, we need to use the location in config as the specified location
-	// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
-	// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
-	if locationValue.IsUnknown() || config.Location.IsNull() {
-		locationValue = config.Location
-	}
-	// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
-	plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
-	if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
-		// if the location is changed, replace the resource
-		response.RequiresReplace.Append(path.Root("location"))
-	}
-	if plan.SchemaValidationEnabled.ValueBool() {
-		if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
+	if dynamic.IsFullyKnown(plan.Body) {
+		body := make(map[string]interface{})
+		if err := unmarshalBody(config.Body, &body); err != nil {
+			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 			return
 		}
-		body["name"] = plan.Name.ValueString()
-		err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid configuration", err.Error())
-			return
-		}
-	}
 
-	// Check if any paths in replace_triggers_refs have changed
-	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
-		refPaths := make(map[string]string)
-		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
-			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+		plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
+		if state == nil || !state.Tags.Equal(plan.Tags) {
+			plan.Output = basetypes.NewDynamicUnknown()
 		}
 
-		// read previous values from state
-		var data interface{}
-		err = json.Unmarshal([]byte(state.Body.String()), &data)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
-			return
+		// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
+		locationValue := plan.Location
+		// For the following cases, we need to use the location in config as the specified location
+		// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
+		// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
+		if locationValue.IsUnknown() || config.Location.IsNull() {
+			locationValue = config.Location
 		}
-		previousValues := flattenOutputJMES(data, refPaths)
-
-		// read current values from plan
-		err = json.Unmarshal([]byte(plan.Body.String()), &data)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
-			return
+		// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
+		plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
+		if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
+			// if the location is changed, replace the resource
+			response.RequiresReplace.Append(path.Root("location"))
 		}
-		currentValues := flattenOutputJMES(data, refPaths)
-
-		// compare previous and current values
-		if !reflect.DeepEqual(previousValues, currentValues) {
-			response.RequiresReplace.Append(path.Root("body"))
-		}
-	}
-
-	isNewResource := state == nil
-	if r.ProviderData.Features.EnablePreflight && isNewResource && preflight.IsSupported(plan.ParentID.ValueString(), plan.Type.ValueString()) {
-		parentId := plan.ParentID.ValueString()
-		if parentId == "" {
-			if placeholder := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId()); placeholder != "" {
-				parentId = placeholder
-			} else {
+		if plan.SchemaValidationEnabled.ValueBool() {
+			if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
 				return
 			}
+			body["name"] = plan.Name.ValueString()
+			err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid configuration", err.Error())
+				return
+			}
+		}
+
+		// Check if any paths in replace_triggers_refs have changed
+		if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
+			refPaths := make(map[string]string)
+			for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+				refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+			}
+
+			// read previous values from state
+			var data interface{}
+			err = json.Unmarshal([]byte(state.Body.String()), &data)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+				return
+			}
+			previousValues := flattenOutputJMES(data, refPaths)
+
+			// read current values from plan
+			err = json.Unmarshal([]byte(plan.Body.String()), &data)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+				return
+			}
+			currentValues := flattenOutputJMES(data, refPaths)
+
+			// compare previous and current values
+			if !reflect.DeepEqual(previousValues, currentValues) {
+				response.RequiresReplace.Append(path.Root("body"))
+			}
+		}
+	}
+
+	if r.ProviderData.Features.EnablePreflight && isNewResource && preflight.IsSupported(plan.Type.ValueString(), plan.ParentID.ValueString()) {
+		parentId := plan.ParentID.ValueString()
+		if parentId == "" {
+			placeholder, err := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId())
+			if err != nil {
+				return
+			}
+			parentId = placeholder
 		}
 
 		name := plan.Name.ValueString()
@@ -554,7 +550,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			name = preflight.NamePlaceholder()
 		}
 
-		err = preflight.Validate(ctx, r.ProviderData.ResourceClient, resourceType, parentId, name, plan.Location.ValueString(), plan.Body)
+		err = preflight.Validate(ctx, r.ProviderData.ResourceClient, plan.Type.ValueString(), parentId, name, plan.Location.ValueString(), plan.Body)
 		if err != nil {
 			response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
 			return
