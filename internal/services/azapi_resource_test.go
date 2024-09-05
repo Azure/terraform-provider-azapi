@@ -525,6 +525,25 @@ func TestAccGenericResource_queryParameters(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.replaceTriggersRefs(data, "S0"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config: r.replaceTriggersRefs(data, "E0"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1436,6 +1455,16 @@ resource "azapi_resource" "test2" {
 `, r.template(data), data.RandomInteger, data.RandomString)
 }
 
+func (GenericResource) template(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
 func (r GenericResource) secretsInAsterisks(data acceptance.TestData, clientId, clientSecret string) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -1774,16 +1803,6 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString)
 }
 
-func (GenericResource) template(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name     = "acctestRG-%[1]d"
-  location = "%[2]s"
-}
-`, data.RandomInteger, data.LocationPrimary, data.RandomString)
-}
-
 func (r GenericResource) replaceTriggeredByValue1(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -1915,4 +1934,26 @@ resource "azapi_resource" "test" {
   response_export_values = ["properties"]
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) replaceTriggersRefs(data acceptance.TestData, skuName string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.AppPlatform/Spring@2024-05-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-sc-%[2]d"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      zoneRedundant = false
+    }
+    sku = {
+      name = "%[3]s"
+    }
+  }
+  replace_triggers_refs = ["sku.name"]
+}
+`, r.template(data), data.RandomInteger, skuName)
 }
