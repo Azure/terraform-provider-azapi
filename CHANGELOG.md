@@ -20,6 +20,7 @@ FEATURES:
 ENHANCEMENTS:
 - `azapi` provider: Support `enable_preflight` field, which is used to enable Preflight Validation, the default value is `false`.
 - `azapi_resource` and `azapi_data_plane_resource` resource: Support `replace_triggers_external_values` field which is used to trigger a replacement of the resource.
+- `azapi_resource` and `azapi_data_plane_resource` resource: Support `replace_triggers_refs` field which is used to trigger a replacement of the resource.
 - `azapi` resources and data sources: Support `retry` field, which is used to specify the retry configuration.
 - `azapi` resources and data sources: Support `headers` and `query_parameters` fields, which are used to specify the headers and query parameters.
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
