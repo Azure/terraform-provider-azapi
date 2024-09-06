@@ -306,21 +306,32 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		}
 
 		// read previous values from state
-		var data interface{}
-		err := json.Unmarshal([]byte(state.Body.String()), &data)
+		stateData, err := dynamic.ToJSON(state.Body)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
 			return
 		}
-		previousValues := flattenOutputJMES(data, refPaths)
+		var stateModel interface{}
+		err = json.Unmarshal(stateData, &stateModel)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		previousValues := flattenOutputJMES(stateModel, refPaths)
 
 		// read current values from plan
-		err = json.Unmarshal([]byte(plan.Body.String()), &data)
+		planData, err := dynamic.ToJSON(plan.Body)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
 			return
 		}
-		currentValues := flattenOutputJMES(data, refPaths)
+		var planModel interface{}
+		err = json.Unmarshal(planData, &planModel)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		currentValues := flattenOutputJMES(planModel, refPaths)
 
 		// compare previous and current values
 		if !reflect.DeepEqual(previousValues, currentValues) {
