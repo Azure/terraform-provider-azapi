@@ -1613,117 +1613,64 @@ func (r GenericResource) nullLocation(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
-data "azapi_client_config" "current" {}
-
-resource "azapi_resource" "component" {
-  type      = "Microsoft.Insights/components@2020-02-02-preview"
-  parent_id = azapi_resource.resourceGroup.id
-  name      = "accappinsights%[2]s"
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    kind = "web"
-    properties = {
-      Application_Type                = "web"
-      DisableIpMasking                = false
-      DisableLocalAuth                = false
-      ForceCustomerStorageForProfiler = false
-      SamplingPercentage              = 100
-      publicNetworkAccessForIngestion = "Enabled"
-      publicNetworkAccessForQuery     = "Enabled"
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
     }
   }
 }
 
-resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2024-04-01-preview"
-  parent_id = azapi_resource.resourceGroup.id
-  name      = "acckeyvault%[2]s"
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    properties = {
-      accessPolicies               = []
-      createMode                   = "default"
-      enableRbacAuthorization      = false
-      enableSoftDelete             = true
-      enabledForDeployment         = false
-      enabledForDiskEncryption     = false
-      enabledForTemplateDeployment = false
-      publicNetworkAccess          = "Enabled"
-      sku = {
-        family = "A"
-        name   = "premium"
-      }
-      softDeleteRetentionInDays = 7
-      tenantId                  = data.azapi_client_config.current.tenant_id
-    }
-  }
-  lifecycle {
-    ignore_changes = [body.properties.accessPolicies]
-  }
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_application_insights" "test" {
+  name                = "accappinsights%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  application_type    = "web"
 }
 
-
-resource "azapi_resource" "storageAccount" {
-  type      = "Microsoft.Storage/storageAccounts@2023-05-01"
-  parent_id = azapi_resource.resourceGroup.id
-  name      = "acctestsa%[2]s"
-  location  = azapi_resource.resourceGroup.location
-  body = {
-    kind = "StorageV2"
-    properties = {
-      accessTier                   = "Hot"
-      allowBlobPublicAccess        = true
-      allowCrossTenantReplication  = true
-      allowSharedKeyAccess         = true
-      defaultToOAuthAuthentication = false
-      isHnsEnabled                 = false
-      isNfsV3Enabled               = false
-      isSftpEnabled                = false
-      minimumTlsVersion            = "TLS1_2"
-      networkAcls = {
-        defaultAction = "Allow"
-      }
-      publicNetworkAccess      = "Enabled"
-      supportsHttpsTrafficOnly = true
-    }
-    sku = {
-      name = "Standard_LRS"
-    }
-  }
+resource "azurerm_key_vault" "test" {
+  name                = "acckeyvault%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "premium"
 }
 
-resource "azapi_resource" "workspace" {
-  type      = "Microsoft.MachineLearningServices/workspaces@2024-04-01-preview"
-  parent_id = azapi_resource.resourceGroup.id
-  name      = "acctestmlws%[2]s"
-  location  = azapi_resource.resourceGroup.location
+resource "azurerm_storage_account" "test" {
+  name                     = "acctestsa%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+
+resource "azurerm_machine_learning_workspace" "test" {
+  name                    = "acctestmlws%[2]s"
+  location                = azapi_resource.resourceGroup.location
+  resource_group_name     = azapi_resource.resourceGroup.name
+  application_insights_id = azurerm_application_insights.test.id
+  key_vault_id            = azurerm_key_vault.test.id
+  storage_account_id      = azurerm_storage_account.test.id
+
   identity {
-    type         = "SystemAssigned"
-    identity_ids = []
+    type = "SystemAssigned"
   }
-  body = {
-    properties = {
-      applicationInsights = azapi_resource.component.id
-      keyVault            = azapi_resource.vault.id
-      publicNetworkAccess = "Enabled"
-      storageAccount      = azapi_resource.storageAccount.id
-      v1LegacyMode        = false
-      managedNetwork = {
-        isolationMode = "AllowOnlyApprovedOutbound"
-      }
-    }
-    sku = {
-      name = "Basic"
-      tier = "Basic"
-    }
+  public_network_access_enabled = true
+  managed_network {
+    isolation_mode = "AllowOnlyApprovedOutbound"
   }
-  ignore_casing = true
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.MachineLearningServices/workspaces/outboundRules@2023-10-01"
   name      = "acctest%[2]s"
-  parent_id = azapi_resource.workspace.id
+  parent_id = azurerm_machine_learning_workspace.test.id
   body = {
     properties = {
       category    = "UserDefined"
@@ -1732,7 +1679,7 @@ resource "azapi_resource" "test" {
       destination = "example.org"
     }
   }
-  locks = [azapi_resource.workspace.id]
+  locks = [azurerm_machine_learning_workspace.test.id]
 }
 `, r.template(data), data.RandomString)
 }
