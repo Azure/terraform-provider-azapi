@@ -138,17 +138,17 @@ Here is an example of how to specify the OIDC token using the `oidc_token` provi
 terraform {
   required_providers {
     azapi = {
-      source  = "azure/azapi"
+      source = "azure/azapi"
     }
   }
 }
 
-provider "azapi" { 
+provider "azapi" {
   oidc_token = "{OIDC Token}"
-  
+
   // or use oidc_token_file_path
   // oidc_token_file_path = "{OIDC Token File Path}"
-  
+
   use_oidc = true
 }
 ```
@@ -181,15 +181,15 @@ Here is an example of how to specify the OIDC request token and URL using the `o
 terraform {
   required_providers {
     azapi = {
-      source  = "azure/azapi"
+      source = "azure/azapi"
     }
   }
 }
 
 provider "azapi" {
-  oidc_request_token = "{OIDC Request Token}"
+  oidc_request_token               = "{OIDC Request Token}"
   oidc_azure_service_connection_id = "{Azure Service Connection ID}"
-  use_oidc = true
+  use_oidc                         = true
 }
 ```
 
