@@ -420,7 +420,8 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	r := GenericResource{}
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.nullLocation(data),
+			Config:            r.nullLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -1639,7 +1640,33 @@ resource "azurerm_key_vault" "test" {
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
-  sku_name            = "premium"
+  sku_name            = "standard"
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+    key_permissions = [
+      "Create",
+      "Get",
+      "Delete",
+      "Purge",
+      "GetRotationPolicy",
+    ]
+  }
+  lifecycle {
+    ignore_changes = [access_policy]
+  }
+}
+
+resource "azurerm_user_assigned_identity" "test" {
+  name                = "acctestUAI-%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+}
+
+resource "azurerm_role_assignment" "test" {
+  scope                = azurerm_key_vault.test.id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = azurerm_user_assigned_identity.test.principal_id
 }
 
 resource "azurerm_storage_account" "test" {
@@ -1647,7 +1674,7 @@ resource "azurerm_storage_account" "test" {
   location                 = azapi_resource.resourceGroup.location
   resource_group_name      = azapi_resource.resourceGroup.name
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = "LRS"
 }
 
 resource "azurerm_machine_learning_workspace" "test" {
@@ -1659,12 +1686,18 @@ resource "azurerm_machine_learning_workspace" "test" {
   storage_account_id      = azurerm_storage_account.test.id
 
   identity {
-    type = "SystemAssigned"
+    type = "UserAssigned"
+    identity_ids = [
+      azurerm_user_assigned_identity.test.id,
+    ]
   }
-  public_network_access_enabled = true
+  primary_user_assigned_identity = azurerm_user_assigned_identity.test.id
+  public_network_access_enabled  = true
   managed_network {
     isolation_mode = "AllowOnlyApprovedOutbound"
   }
+
+  depends_on = [azurerm_role_assignment.test]
 }
 
 resource "azapi_resource" "test" {
