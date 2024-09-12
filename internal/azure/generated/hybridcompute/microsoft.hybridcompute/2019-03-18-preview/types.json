@@ -58,14 +58,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "Resource tags"
       },
       "identity": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Hybrid Compute Machine Managed Identity"
@@ -120,7 +120,7 @@
       },
       "vmId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Specifies the hybrid machine unique ID."
@@ -255,6 +255,12 @@
     }
   },
   {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
     "$type": "ObjectType",
     "name": "ResourceTags",
     "properties": {},
@@ -297,5 +303,113 @@
       "$ref": "#/3"
     },
     "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineReconnect",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineReconnectProperties",
+    "properties": {
+      "vmId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the hybrid machine unique ID."
+      },
+      "clientPublicKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Public Key that the client provides to be used during initial resource onboarding."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Machine",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine properties"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine Managed Identity"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reconnect",
+    "resourceType": "Microsoft.HybridCompute/machines",
+    "apiVersion": "2019-03-18-preview",
+    "output": {
+      "$ref": "#/19"
+    },
+    "input": {
+      "$ref": "#/17"
+    }
   }
 ]

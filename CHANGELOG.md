@@ -26,6 +26,7 @@ ENHANCEMENTS:
 - `azapi` resources and data sources: The `response_export_values` field supports JMESPath expressions.
 - Accept `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables when authenticating using AKS workload identity.
 - `azapi` provider: Support `oidc_azure_service_connection_id` field, which is used to specify the Azure Service Connection ID for OIDC authentication with Azure DevOps.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/7492c6d0a12a07f97b955661bf6df83d51bbb14d
 
 
 ## v1.15.0

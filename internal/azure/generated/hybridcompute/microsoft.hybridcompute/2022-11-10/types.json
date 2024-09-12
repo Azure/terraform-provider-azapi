@@ -51,21 +51,21 @@
       },
       "resources": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/67"
         },
         "flags": 2,
         "description": "The list of extensions affiliated to the machine"
       },
       "identity": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "Identity for the resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -79,7 +79,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -162,7 +162,7 @@
       },
       "vmId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "Specifies the hybrid machine unique ID."
@@ -211,14 +211,14 @@
       },
       "vmUuid": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/41"
         },
         "flags": 2,
         "description": "Specifies the Arc Machine's unique SMBIOS ID"
       },
       "extensions": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "Machine Extensions information (deprecated field)"
@@ -274,7 +274,7 @@
       },
       "detectedProperties": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/49"
         },
         "flags": 2,
         "description": "Detected properties from the machine."
@@ -743,6 +743,12 @@
     }
   },
   {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
     "$type": "ObjectType",
     "name": "MachineExtensionInstanceView",
     "properties": {
@@ -769,7 +775,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "Instance view status."
@@ -789,7 +795,7 @@
       },
       "level": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "The level code."
@@ -833,13 +839,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/43"
-      },
-      {
         "$ref": "#/44"
       },
       {
         "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
       },
       {
         "$ref": "#/0"
@@ -849,7 +855,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/41"
+      "$ref": "#/42"
     }
   },
   {
@@ -866,14 +872,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "Describes Machine Extension Properties."
       },
       "tags": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/55"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -908,7 +914,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -949,28 +955,28 @@
       },
       "enableAutomaticUpgrade": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available."
       },
       "autoUpgradeMinorVersion": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
       },
       "settings": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "Json formatted public settings for the extension."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
@@ -984,7 +990,7 @@
       },
       "instanceView": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The machine extension instance view."
@@ -1031,7 +1037,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -1052,7 +1058,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -1086,9 +1092,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/56"
-      },
-      {
         "$ref": "#/57"
       },
       {
@@ -1096,6 +1099,9 @@
       },
       {
         "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
       },
       {
         "$ref": "#/0"
@@ -1122,9 +1128,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/61"
-      },
-      {
         "$ref": "#/62"
       },
       {
@@ -1134,6 +1137,9 @@
         "$ref": "#/64"
       },
       {
+        "$ref": "#/65"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -1141,7 +1147,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/49"
+      "$ref": "#/50"
     }
   },
   {
@@ -1164,7 +1170,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/69"
         },
         "flags": 0,
         "description": "The identity type."
@@ -1220,28 +1226,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/72"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/73"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "Describes Machine Extension Properties."
       },
       "tags": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1255,7 +1261,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1275,7 +1281,7 @@
     "name": "Microsoft.HybridCompute/machines/extensions@2022-11-10",
     "scopeType": 8,
     "body": {
-      "$ref": "#/73"
+      "$ref": "#/74"
     },
     "flags": 0
   },
@@ -1307,28 +1313,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/77"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/78"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Properties that define a Azure Arc PrivateLinkScope resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "The system meta data relating to this resource."
@@ -1342,7 +1348,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Resource tags"
@@ -1355,7 +1361,7 @@
     "properties": {
       "publicNetworkAccess": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints."
@@ -1376,7 +1382,7 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/89"
         },
         "flags": 2,
         "description": "The collection of associated Private Endpoint Connections."
@@ -1395,10 +1401,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/80"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/82"
       },
       {
         "$ref": "#/0"
@@ -1432,7 +1438,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "The Private Endpoint Connection properties."
@@ -1445,14 +1451,14 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "Private endpoint which the connection belongs to."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Connection state of the private endpoint connection."
@@ -1466,7 +1472,7 @@
       },
       "groupIds": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/88"
         },
         "flags": 2,
         "description": "List of group IDs."
@@ -1522,7 +1528,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/83"
+      "$ref": "#/84"
     }
   },
   {
@@ -1538,7 +1544,7 @@
     "name": "Microsoft.HybridCompute/privateLinkScopes@2022-11-10",
     "scopeType": 8,
     "body": {
-      "$ref": "#/78"
+      "$ref": "#/79"
     },
     "flags": 0
   },
@@ -1570,28 +1576,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/92"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/93"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1603,7 +1609,7 @@
     "name": "Microsoft.HybridCompute/privateLinkScopes/privateEndpointConnections@2022-11-10",
     "scopeType": 8,
     "body": {
-      "$ref": "#/93"
+      "$ref": "#/94"
     },
     "flags": 0
   },
@@ -1635,28 +1641,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/96"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/97"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/99"
         },
         "flags": 2,
         "description": "The single extension based on search criteria"
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1695,7 +1701,7 @@
     "name": "Microsoft.HybridCompute/locations/publishers/extensionTypes/versions@2022-11-10",
     "scopeType": 4,
     "body": {
-      "$ref": "#/97"
+      "$ref": "#/98"
     },
     "flags": 1
   },
@@ -1727,28 +1733,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/101"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/102"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/103"
+          "$ref": "#/104"
         },
         "flags": 2,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1768,14 +1774,14 @@
       },
       "requiredMembers": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/105"
         },
         "flags": 2,
         "description": "The private link resource required member names."
       },
       "requiredZoneNames": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/106"
         },
         "flags": 2,
         "description": "Required DNS zone names of the the private link resource."
@@ -1799,8 +1805,51 @@
     "name": "Microsoft.HybridCompute/privateLinkScopes/privateLinkResources@2022-11-10",
     "scopeType": 8,
     "body": {
-      "$ref": "#/102"
+      "$ref": "#/103"
     },
     "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineExtensionUpgrade",
+    "properties": {
+      "extensionTargets": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "Describes the Extension Target Properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtensionTargetProperties",
+    "properties": {
+      "targetVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Properties for the specified Extension to Upgrade."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtensionTarget",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/109"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "upgradeExtensions",
+    "resourceType": "Microsoft.HybridCompute/machines",
+    "apiVersion": "2022-11-10",
+    "input": {
+      "$ref": "#/108"
+    }
   }
 ]

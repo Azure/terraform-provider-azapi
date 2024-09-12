@@ -51,13 +51,13 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/23"
         },
         "flags": 0
       },
       "tags": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -126,7 +126,7 @@
       },
       "vmId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Specifies the hybrid machine unique ID."
@@ -168,14 +168,14 @@
       },
       "vmUuid": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/15"
         },
         "flags": 2,
         "description": "Specifies the Arc Machine's unique SMBIOS ID"
       },
       "extensions": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/22"
         },
         "flags": 2,
         "description": "Machine Extensions information"
@@ -337,6 +337,12 @@
     }
   },
   {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
     "$type": "ObjectType",
     "name": "MachineExtensionInstanceView",
     "properties": {
@@ -363,7 +369,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/17"
         },
         "flags": 0,
         "description": "Instance view status."
@@ -383,7 +389,7 @@
       },
       "level": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "The level code."
@@ -427,13 +433,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/17"
-      },
-      {
         "$ref": "#/18"
       },
       {
         "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
       },
       {
         "$ref": "#/0"
@@ -443,7 +449,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/15"
+      "$ref": "#/16"
     }
   },
   {
@@ -518,28 +524,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/26"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/27"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Describes Machine Extension Properties."
       },
       "tags": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -587,21 +593,21 @@
       },
       "autoUpgradeMinorVersion": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
       },
       "settings": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "Json formatted public settings for the extension."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
@@ -615,7 +621,7 @@
       },
       "instanceView": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The machine extension instance view."
@@ -655,7 +661,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/17"
         },
         "flags": 0,
         "description": "Instance view status."
@@ -675,7 +681,7 @@
     "name": "Microsoft.HybridCompute/machines/extensions@2020-08-02",
     "scopeType": 8,
     "body": {
-      "$ref": "#/27"
+      "$ref": "#/28"
     },
     "flags": 0
   }
