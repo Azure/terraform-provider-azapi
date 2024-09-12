@@ -1,0 +1,1194 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Consumption/budgets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Consumption/budgets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The properties of the budget."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetProperties",
+    "properties": {
+      "category": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The category of the budget, whether the budget tracks cost or usage."
+      },
+      "amount": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The total amount of cost to track with the budget"
+      },
+      "timeGrain": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers"
+      },
+      "timePeriod": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should not be more than twelve months. Past start date should  be selected within the timegrain period. There are no restrictions on the end date."
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "May be used to filter budgets by user-specified dimensions and/or tags."
+      },
+      "currentSpend": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The current amount of cost which is being tracked for a budget."
+      },
+      "notifications": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Dictionary of notifications associated with the budget. Budget can have up to five notifications."
+      },
+      "forecastSpend": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 2,
+        "description": "The forecasted cost which is being tracked for a budget."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cost"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Quarterly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Annually"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BillingMonth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BillingQuarter"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BillingAnnual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetTimePeriod",
+    "properties": {
+      "startDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The start date for the budget."
+      },
+      "endDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end date for the budget. If not provided, we default this to 10 years from the start date."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetFilter",
+    "properties": {
+      "and": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The logical \"AND\" expression. Must have at least 2 items."
+      },
+      "dimensions": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a dimension"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a tag"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetFilterProperties",
+    "properties": {
+      "dimensions": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a dimension"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Has comparison expression for a tag"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetComparisonExpression",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the column to use in comparison."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "The operator to use for comparison."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "Array of values to use for comparison"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/17"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CurrentSpend",
+    "properties": {
+      "amount": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The total amount of cost which is being tracked by the budget."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The unit of measure for the budget amount."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Notification",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "The notification is enabled or not."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 1,
+        "description": "The comparison operator."
+      },
+      "threshold": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to be between 0 and 1000."
+      },
+      "contactEmails": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "Email addresses to send the budget notification to when the threshold is exceeded. Must have at least one contact email or contact group specified at the Subscription or Resource Group scopes. All other scopes must have at least one contact email specified."
+      },
+      "contactRoles": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Contact roles to send the budget notification to when the threshold is exceeded."
+      },
+      "contactGroups": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Action groups to send the budget notification to when the threshold is exceeded. Must be provided as a fully qualified Azure resource id. Only supported at Subscription or Resource Group scopes."
+      },
+      "thresholdType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of threshold"
+      },
+      "locale": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Language in which the recipient will receive the notification"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EqualTo"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqualTo"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Actual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Forecasted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en-us"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-cn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "de-de"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "es-es"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fr-fr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "it-it"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ko-kr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pt-br"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ru-ru"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-tw"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cs-cz"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pl-pl"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tr-tr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "da-dk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en-gb"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hu-hu"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nb-no"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nl-nl"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pt-pt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sv-se"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BudgetPropertiesNotifications",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ForecastSpend",
+    "properties": {
+      "amount": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The forecasted cost for the total time period which is being tracked by the budget. This value is only provided if the budget contains a forecast alert type."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The unit of measure for the budget amount."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Consumption/budgets@2024-08-01",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Consumption/pricesheets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Consumption/pricesheets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 2,
+        "description": "price sheet result. It contains the pricesheet associated with billing period"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The etag for the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PriceSheetModel",
+    "properties": {
+      "pricesheets": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 2,
+        "description": "Price sheet"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The link (url) to the next page of results."
+      },
+      "download": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Pricesheet download details."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PriceSheetProperties",
+    "properties": {
+      "billingPeriodId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The id of the billing period resource that the usage belongs to."
+      },
+      "meterId": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "The meter id (GUID)"
+      },
+      "meterDetails": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The details about the meter. By default this is not populated, unless it's specified in $expand."
+      },
+      "unitOfMeasure": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unit of measure"
+      },
+      "includedQuantity": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Included quality for an offer"
+      },
+      "partNumber": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Part Number"
+      },
+      "unitPrice": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Unit Price"
+      },
+      "currencyCode": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Currency Code"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Offer Id"
+      },
+      "savingsPlan": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "SavingsPlan Details"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MeterDetails",
+    "properties": {
+      "meterName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the meter, within the given meter category"
+      },
+      "meterCategory": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The category of the meter, for example, 'Cloud services', 'Networking', etc.."
+      },
+      "meterSubCategory": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The subcategory of the meter, for example, 'A6 Cloud services', 'ExpressRoute (IXP)', etc.."
+      },
+      "unit": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The unit in which the meter consumption is charged, for example, 'Hours', 'GB', etc."
+      },
+      "meterLocation": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The location in which the Azure service is available."
+      },
+      "totalIncludedQuantity": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The total included quantity associated with the offer."
+      },
+      "pretaxStandardRate": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The pretax listing price."
+      },
+      "serviceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the service."
+      },
+      "serviceTier": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The service tier."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SavingsPlan",
+    "properties": {
+      "term": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "SavingsPlan term"
+      },
+      "marketPrice": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "SavingsPlan Market Price"
+      },
+      "effectivePrice": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "SavingsPlan Effective Price"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/66"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Consumption/pricesheets@2024-08-01",
+    "scopeType": 20,
+    "body": {
+      "$ref": "#/64"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "balanceSummary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Consumption/credits"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Consumption/credits",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 2,
+        "description": "The properties of the credit summary."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreditSummaryProperties",
+    "properties": {
+      "balanceSummary": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 2,
+        "description": "Summary of balances associated with this credit summary."
+      },
+      "pendingCreditAdjustments": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "Pending credit adjustments."
+      },
+      "expiredCredit": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "Expired credit."
+      },
+      "pendingEligibleCharges": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "Pending eligible charges."
+      },
+      "creditCurrency": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The credit currency."
+      },
+      "billingCurrency": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The billing currency."
+      },
+      "reseller": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "Credit's reseller."
+      },
+      "isEstimatedBalance": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "If true, the listed details are based on an estimation and it will be subjected to change."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The eTag for the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreditBalanceSummary",
+    "properties": {
+      "estimatedBalance": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "Estimated balance."
+      },
+      "currentBalance": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 2,
+        "description": "Current balance."
+      },
+      "estimatedBalanceInBillingCurrency": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 2,
+        "description": "Estimated balance in billing currency."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Amount",
+    "properties": {
+      "currency": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Amount currency."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Amount."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AmountWithExchangeRate",
+    "properties": {
+      "exchangeRate": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The exchange rate."
+      },
+      "exchangeRateMonth": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The exchange rate month."
+      },
+      "currency": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Amount currency."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Amount."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Reseller",
+    "properties": {
+      "resellerId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The reseller property ID."
+      },
+      "resellerDescription": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The reseller property description."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Consumption/credits@2024-08-01",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/76"
+    },
+    "flags": 1
+  }
+]
