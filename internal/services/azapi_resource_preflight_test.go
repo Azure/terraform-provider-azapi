@@ -199,7 +199,7 @@ resource "azapi_resource" "aksCluster" {
           vmSize = "Standard_DS2_v2"
         },
       ]
-      dnsPrefix = azapi_resource.resourceGroup.id
+      dnsPrefix = "exampleaks"
     }
   }
   schema_validation_enabled = false
