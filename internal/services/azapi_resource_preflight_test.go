@@ -78,6 +78,18 @@ func TestAccGenericResource_preflightExtensionResourceValidation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_preflightWithIdentity(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             r.preflightWithIdentity(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func (r GenericResource) preflightMockPropertyValue(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 provider "azapi" {
