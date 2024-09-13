@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
@@ -90,7 +91,7 @@ func IsSupported(resourceType string, parentId string) bool {
 }
 
 // Validate validates the resource using the preflight API
-func Validate(ctx context.Context, client *clients.ResourceClient, resourceType string, parentId string, name string, location string, body types.Dynamic) error {
+func Validate(ctx context.Context, client *clients.ResourceClient, resourceType string, parentId string, name string, location string, body types.Dynamic, identity types.List) error {
 	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
 	if err != nil {
 		return err
@@ -104,7 +105,7 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 	}
 
 	resource := make(map[string]interface{})
-	err = unmarshalPreflightBody(body, &resource)
+	err = unmarshalPreflightBody(body, identity, &resource)
 	if err != nil {
 		tflog.Warn(ctx, fmt.Sprintf("Skipping preflight validation for resource %s because the body is invalid: %v", resourceType, err))
 		return nil
@@ -119,7 +120,7 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 	return err
 }
 
-func unmarshalPreflightBody(input types.Dynamic, out *map[string]interface{}) error {
+func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *map[string]interface{}) error {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
 		return fmt.Errorf("input is null or unknown")
 	}
@@ -149,6 +150,15 @@ func unmarshalPreflightBody(input types.Dynamic, out *map[string]interface{}) er
 		if searchForValue(v, unknownPlaceholder) {
 			return fmt.Errorf("unknown value found outside the properties bag")
 		}
+	}
+
+	if (*out)["identity"] == nil && !identityList.IsNull() && !identityList.IsUnknown() {
+		identityModel := identity.FromList(identityList)
+		expandedIdentity, err := identity.ExpandIdentity(identityModel)
+		if err != nil {
+			return err
+		}
+		(*out)["identity"] = expandedIdentity
 	}
 	return nil
 }

@@ -561,7 +561,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			name = preflight.NamePlaceholder()
 		}
 
-		err = preflight.Validate(ctx, r.ProviderData.ResourceClient, plan.Type.ValueString(), parentId, name, plan.Location.ValueString(), plan.Body)
+		err = preflight.Validate(ctx, r.ProviderData.ResourceClient, plan.Type.ValueString(), parentId, name, plan.Location.ValueString(), plan.Body, plan.Identity)
 		if err != nil {
 			response.Diagnostics.AddError("Preflight Validation: Invalid configuration", err.Error())
 			return

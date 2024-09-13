@@ -160,3 +160,37 @@ provider "azapi" {
 %s
 `, r.extensionScope(data))
 }
+
+func (r GenericResource) preflightWithIdentity(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+}
+
+%[1]s
+
+resource "azapi_resource" "aksCluster" {
+  type      = "Microsoft.ContainerService/managedClusters@2024-06-02-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = azapi_resource.resourceGroup.id
+  location  = "westus"
+  identity {
+    type = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      agentPoolProfiles = [
+        {
+          count  = 1
+          mode   = "System"
+          name   = "default"
+          vmSize = "Standard_DS2_v2"
+        },
+      ]
+      dnsPrefix = azapi_resource.resourceGroup.id
+    }
+  }
+  schema_validation_enabled = false
+}
+`, r.template(data))
+}
