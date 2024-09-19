@@ -118,7 +118,7 @@ func (client *ResourceClient) WithRetry(bkof *backoff.ExponentialBackOff, errReg
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -198,8 +198,8 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 // If it is, it will retry the operation with the configured backoff.
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resourceID string, apiVersion string, options RequestOptions) (interface{}, error) {
-	if retryclient.backoff == nil == 0 {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	if retryclient.backoff == nil {
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -261,7 +261,7 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID s
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, resourceID string, apiVersion string, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -342,7 +342,7 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceI
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -441,7 +441,7 @@ func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceI
 // If it is not, it will return the error as a backoff.PermanentError{}.
 func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url string, apiVersion string, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
