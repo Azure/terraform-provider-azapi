@@ -7,6 +7,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+func ResponseWasForbidden(err error) bool {
+	return ResponseErrorWasStatusCode(err, http.StatusForbidden)
+}
+
 func ResponseErrorWasNotFound(err error) bool {
 	return ResponseErrorWasStatusCode(err, http.StatusNotFound)
 }

@@ -84,18 +84,20 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Timeouts             timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                   types.String     `tfsdk:"id"`
-				Type                 types.String     `tfsdk:"type"`
-				ResourceId           types.String     `tfsdk:"resource_id"`
-				Action               types.String     `tfsdk:"action"`
-				Method               types.String     `tfsdk:"method"`
-				Body                 types.Dynamic    `tfsdk:"body"`
-				When                 types.String     `tfsdk:"when"`
-				Locks                types.List       `tfsdk:"locks"`
-				ResponseExportValues types.List       `tfsdk:"response_export_values"`
-				Output               types.Dynamic    `tfsdk:"output"`
-				Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-				Retry                retry.RetryValue `tfsdk:"retry"`
+				ID                   types.String        `tfsdk:"id"`
+				Type                 types.String        `tfsdk:"type"`
+				ResourceId           types.String        `tfsdk:"resource_id"`
+				Action               types.String        `tfsdk:"action"`
+				Method               types.String        `tfsdk:"method"`
+				Body                 types.Dynamic       `tfsdk:"body"`
+				When                 types.String        `tfsdk:"when"`
+				Locks                types.List          `tfsdk:"locks"`
+				ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
+				Output               types.Dynamic       `tfsdk:"output"`
+				Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+				Retry                retry.RetryValue    `tfsdk:"retry"`
+				Headers              map[string]string   `tfsdk:"headers"`
+				QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 			}
 
 			var oldState OldModel
@@ -114,6 +116,12 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				response.Diagnostics.AddError("failed to migrate output to dynamic value", err.Error())
 				return
 			}
+
+			responseExportValues := types.DynamicNull()
+			if !oldState.ResponseExportValues.IsNull() {
+				responseExportValues = types.DynamicValue(oldState.ResponseExportValues)
+			}
+
 			newState := newModel{
 				ID:                   oldState.ID,
 				Type:                 oldState.Type,
@@ -123,7 +131,7 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Body:                 bodyVal,
 				When:                 oldState.When,
 				Locks:                oldState.Locks,
-				ResponseExportValues: oldState.ResponseExportValues,
+				ResponseExportValues: responseExportValues,
 				Output:               outputVal,
 				Timeouts:             oldState.Timeouts,
 				Retry:                retry.NewRetryValueNull(),

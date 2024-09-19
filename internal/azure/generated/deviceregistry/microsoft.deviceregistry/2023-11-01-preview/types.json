@@ -122,7 +122,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF)."
+        "description": "Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF)."
       },
       "provisioningState": {
         "type": {
@@ -142,7 +142,7 @@
           "$ref": "#/10"
         },
         "flags": 1,
-        "description": "Defines the mode to authenticate the user of the client at the server."
+        "description": "Defines the method to authenticate the user of the client at the server."
       },
       "usernamePasswordCredentials": {
         "type": {
@@ -666,28 +666,28 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides the default settings here. This assumes that each asset instance has one protocol."
+        "description": "Stringified JSON that contains protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides the default settings here."
       },
       "defaultEventsConfiguration": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here. This assumes that each asset instance has one protocol."
+        "description": "Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here."
       },
       "dataPoints": {
         "type": {
           "$ref": "#/50"
         },
         "flags": 0,
-        "description": "Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data point configuration. See below for more details for the definition of the dataPoints element."
+        "description": "Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data point configuration."
       },
       "events": {
         "type": {
           "$ref": "#/55"
         },
         "flags": 0,
-        "description": "Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration. See below for more details about the definition of the events element."
+        "description": "Array of events that are part of the asset. Each event can have per-event configuration."
       },
       "status": {
         "type": {
@@ -759,7 +759,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Protocol-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
       }
     }
   },
@@ -849,7 +849,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Protocol-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+        "description": "Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
       }
     }
   },
@@ -889,14 +889,14 @@
         "type": {
           "$ref": "#/58"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "Array object to transfer and persist errors that originate from the Edge."
       },
       "version": {
         "type": {
           "$ref": "#/40"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "A read only incremental counter indicating the number of times the configuration has been modified from the perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and would sync back up to the cloud. In steady state, this should equal version."
       }
     }
@@ -909,14 +909,14 @@
         "type": {
           "$ref": "#/40"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "Error code for classification of errors (ex: 400, 404, 500, etc.)."
       },
       "message": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”)."
       }
     }

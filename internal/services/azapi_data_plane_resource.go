@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -14,13 +15,16 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -33,18 +37,28 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                    types.String     `tfsdk:"id"`
-	Name                  types.String     `tfsdk:"name"`
-	ParentID              types.String     `tfsdk:"parent_id"`
-	Type                  types.String     `tfsdk:"type"`
-	Body                  types.Dynamic    `tfsdk:"body"`
-	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.List       `tfsdk:"response_export_values"`
-	Retry                 retry.RetryValue `tfsdk:"retry"`
-	Locks                 types.List       `tfsdk:"locks"`
-	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts"`
+	ID                            types.String        `tfsdk:"id"`
+	Name                          types.String        `tfsdk:"name"`
+	ParentID                      types.String        `tfsdk:"parent_id"`
+	Type                          types.String        `tfsdk:"type"`
+	Body                          types.Dynamic       `tfsdk:"body"`
+	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
+	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+	Retry                         retry.RetryValue    `tfsdk:"retry"`
+	Locks                         types.List          `tfsdk:"locks"`
+	Output                        types.Dynamic       `tfsdk:"output"`
+	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+	CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
+	CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
+	UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
+	UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
+	DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
+	DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
+	ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
+	ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
 }
 
 type DataPlaneResource struct {
@@ -115,6 +129,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
+				Computed: true,
+				// in the previous version, the default value is string "{}", now it's a dynamic value {}
+				Default: defaults.DynamicDefault(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})),
 				PlanModifiers: []planmodifier.Dynamic{
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
@@ -135,16 +152,45 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"replace_triggers_external_values": schema.DynamicAttribute{
+				Optional: true,
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
+					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
+					"\n" +
+					"```hcl\n" +
+					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
+					"  name      = var.name\n" +
+					"  type      = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
+					"  body      = {\n" +
+					"    properties = {\n" +
+					"      sku   = var.sku\n" +
+					"      zones = var.zones\n" +
+					"    }\n" +
+					"  }\n" +
+					"\n" +
+					"  replace_triggers_external_values = [\n" +
+					"    var.sku,\n" +
+					"    var.zones,\n" +
+					"  ]\n" +
+					"}\n" +
+					"```\n",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
+			},
+
+			"replace_triggers_refs": schema.ListAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.",
+			},
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -158,6 +204,62 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			"output": schema.DynamicAttribute{
 				Computed:            true,
 				MarkdownDescription: docstrings.Output("azapi_data_plane_resource"),
+			},
+
+			"create_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the create request.",
+			},
+
+			"create_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the create request.",
+			},
+
+			"update_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the update request.",
+			},
+
+			"update_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the update request.",
+			},
+
+			"delete_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the delete request.",
+			},
+
+			"delete_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the delete request.",
+			},
+
+			"read_headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A mapping of headers to be sent with the read request.",
+			},
+
+			"read_query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A mapping of query parameters to be sent with the read request.",
 			},
 		},
 
@@ -195,6 +297,47 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
+
+	// Check if any paths in replace_triggers_refs have changed
+	if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
+		refPaths := make(map[string]string)
+		for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+			refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
+		}
+
+		// read previous values from state
+		stateData, err := dynamic.ToJSON(state.Body)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		var stateModel interface{}
+		err = json.Unmarshal(stateData, &stateModel)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid state body configuration", err.Error())
+			return
+		}
+		previousValues := flattenOutputJMES(stateModel, refPaths)
+
+		// read current values from plan
+		planData, err := dynamic.ToJSON(plan.Body)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		var planModel interface{}
+		err = json.Unmarshal(planData, &planModel)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid plan body configuration", err.Error())
+			return
+		}
+		currentValues := flattenOutputJMES(planModel, refPaths)
+
+		// compare previous and current values
+		if !reflect.DeepEqual(previousValues, currentValues) {
+			response.RequiresReplace.Append(path.Root("body"))
+		}
+	}
 }
 
 func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
@@ -248,7 +391,9 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	defer cancel()
 
 	if isNewResource {
-		_, err = client.Get(ctx, id)
+		// check if the resource already exists using the non-retry client to avoid issue where user specifies
+		// a FooResourceNotFound error as a retryable error
+		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_data_plane_resource", id.ID()).Error())
 			return
@@ -270,13 +415,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		defer locks.UnlockByID(id)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, id, body)
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(model.CreateHeaders, model.CreateQueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id)
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -288,7 +433,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
@@ -326,7 +477,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		)
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
 	}
-	responseBody, err := client.Get(ctx, id)
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -354,7 +505,14 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	if !model.Body.IsNull() {
 		payload, err := dynamic.FromJSON(data, model.Body.UnderlyingValue().Type(ctx))
 		if err != nil {
@@ -415,7 +573,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.DeleteThenPoll(ctx, id)
+	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(model.DeleteHeaders, model.DeleteQueryParameters))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

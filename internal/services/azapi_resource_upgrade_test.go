@@ -289,10 +289,6 @@ func TestAccAzapiResourceUpgrade_subscriptionScope(t *testing.T) {
 	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 
 	updatedConfig := fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
 resource "azapi_resource" "test" {
   type      = "Microsoft.Resources/resourceGroups@2023-07-01"
   name      = "acctestRG-%[1]d"
@@ -429,13 +425,15 @@ func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
 
 	data.UpgradeTest(t, r, []resource.TestStep{
 		data.UpgradeTestDeployStep(resource.TestStep{
-			Config: r.nullLocation(data),
+			Config:            r.nullLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.nullLocation(data),
+			Config:            r.nullLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
 		}),
 	})
 }

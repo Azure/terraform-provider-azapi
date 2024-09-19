@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -26,18 +25,20 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Name                 types.String     `tfsdk:"name"`
-	ParentID             types.String     `tfsdk:"parent_id"`
-	ResourceID           types.String     `tfsdk:"resource_id"`
-	Type                 types.String     `tfsdk:"type"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Location             types.String     `tfsdk:"location"`
-	Identity             types.List       `tfsdk:"identity"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Tags                 types.Map        `tfsdk:"tags"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	Name                 types.String        `tfsdk:"name"`
+	ParentID             types.String        `tfsdk:"parent_id"`
+	ResourceID           types.String        `tfsdk:"resource_id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
+	Location             types.String        `tfsdk:"location"`
+	Identity             types.List          `tfsdk:"identity"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Tags                 types.Map           `tfsdk:"tags"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type AzapiResourceDataSource struct {
@@ -134,14 +135,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				},
 			},
 
-			"response_export_values": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
@@ -155,6 +149,20 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -221,7 +229,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
@@ -246,6 +254,13 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Identity = identity.ToList(*v)
 		}
 	}
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

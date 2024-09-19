@@ -30,18 +30,20 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Type                 types.String     `tfsdk:"type"`
-	ResourceId           types.String     `tfsdk:"resource_id"`
-	Action               types.String     `tfsdk:"action"`
-	Method               types.String     `tfsdk:"method"`
-	Body                 types.Dynamic    `tfsdk:"body"`
-	When                 types.String     `tfsdk:"when"`
-	Locks                types.List       `tfsdk:"locks"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	Type                 types.String        `tfsdk:"type"`
+	ResourceId           types.String        `tfsdk:"resource_id"`
+	Action               types.String        `tfsdk:"action"`
+	Method               types.String        `tfsdk:"method"`
+	Body                 types.Dynamic       `tfsdk:"body"`
+	When                 types.String        `tfsdk:"when"`
+	Locks                types.List          `tfsdk:"locks"`
+	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -149,21 +151,28 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.Locks(),
 			},
 
-			"response_export_values": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
-				MarkdownDescription: docstrings.ResponseExportValues(),
+				MarkdownDescription: docstrings.Output("azapi_resource_action"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -315,7 +324,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
@@ -326,6 +335,13 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		resourceId = fmt.Sprintf("%s/%s", id.ID(), actionName)
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
+
 	diagnostics.Append(state.Set(ctx, model)...)
 }

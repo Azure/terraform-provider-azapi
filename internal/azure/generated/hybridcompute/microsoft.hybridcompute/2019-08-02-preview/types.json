@@ -58,14 +58,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 0,
         "description": "Resource tags"
       },
       "identity": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Hybrid Compute Machine Managed Identity"
@@ -120,7 +120,7 @@
       },
       "vmId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Specifies the hybrid machine unique ID."
@@ -169,7 +169,7 @@
       },
       "extensions": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "Machine Extensions information"
@@ -262,6 +262,12 @@
     }
   },
   {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
     "$type": "ObjectType",
     "name": "MachineExtensionInstanceView",
     "properties": {
@@ -288,7 +294,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Instance view status."
@@ -308,7 +314,7 @@
       },
       "level": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/19"
         },
         "flags": 0,
         "description": "The level code."
@@ -352,20 +358,20 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/15"
-      },
-      {
         "$ref": "#/16"
       },
       {
         "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/13"
+      "$ref": "#/14"
     }
   },
   {
@@ -440,21 +446,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/24"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/25"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "Describes Machine Extension Properties."
@@ -468,14 +474,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "Resource tags"
       },
       "identity": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Hybrid Compute Machine Managed Identity"
@@ -516,21 +522,21 @@
       },
       "autoUpgradeMinorVersion": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
       },
       "settings": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Json formatted public settings for the extension."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
@@ -544,7 +550,7 @@
       },
       "instanceView": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "The machine extension instance view."
@@ -570,8 +576,116 @@
     "name": "Microsoft.HybridCompute/machines/extensions@2019-08-02-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/25"
+      "$ref": "#/26"
     },
     "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineReconnect",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineReconnectProperties",
+    "properties": {
+      "vmId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the hybrid machine unique ID."
+      },
+      "clientPublicKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Public Key that the client provides to be used during initial resource onboarding."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Machine",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine properties"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Hybrid Compute Machine Managed Identity"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reconnect",
+    "resourceType": "Microsoft.HybridCompute/machines",
+    "apiVersion": "2019-08-02-preview",
+    "output": {
+      "$ref": "#/34"
+    },
+    "input": {
+      "$ref": "#/32"
+    }
   }
 ]

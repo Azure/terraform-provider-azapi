@@ -47,6 +47,8 @@ terrafmt:
 	@find internal | egrep "_test.go" | sort | while read f; do terrafmt fmt -f $$f; done
 	@echo "==> Fixing website terraform blocks code with terrafmt..."
 	@find docs | egrep .md | sort | while read f; do terrafmt fmt $$f; done
+	@find templates | egrep .tmpl | sort | while read f; do terrafmt fmt $$f; done
+	@find templates | egrep .md | sort | while read f; do terrafmt fmt $$f; done
 
 generate:
 	go generate ./internal/services/...

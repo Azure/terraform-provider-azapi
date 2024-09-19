@@ -4,6 +4,7 @@ type UserFeatures struct {
 	DefaultTags     map[string]string
 	DefaultLocation string
 	DefaultNaming   string
+	EnablePreflight bool
 }
 
 func Default() UserFeatures {
@@ -11,5 +12,6 @@ func Default() UserFeatures {
 		DefaultTags:     nil,
 		DefaultLocation: "",
 		DefaultNaming:   "",
+		EnablePreflight: false,
 	}
 }

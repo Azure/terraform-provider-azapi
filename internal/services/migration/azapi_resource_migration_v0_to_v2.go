@@ -140,23 +140,32 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				Timeouts                timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                            types.String     `tfsdk:"id"`
-				Name                          types.String     `tfsdk:"name"`
-				ParentID                      types.String     `tfsdk:"parent_id"`
-				Type                          types.String     `tfsdk:"type"`
-				Location                      types.String     `tfsdk:"location"`
-				Identity                      types.List       `tfsdk:"identity"`
-				Body                          types.Dynamic    `tfsdk:"body"`
-				Locks                         types.List       `tfsdk:"locks"`
-				SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
-				IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
-				ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
-				ResponseExportValues          types.List       `tfsdk:"response_export_values"`
-				Retry                         retry.RetryValue `tfsdk:"retry"`
-				Output                        types.Dynamic    `tfsdk:"output"`
-				Tags                          types.Map        `tfsdk:"tags"`
-				Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+				ID                            types.String        `tfsdk:"id"`
+				Name                          types.String        `tfsdk:"name"`
+				ParentID                      types.String        `tfsdk:"parent_id"`
+				Type                          types.String        `tfsdk:"type"`
+				Location                      types.String        `tfsdk:"location"`
+				Identity                      types.List          `tfsdk:"identity"`
+				Body                          types.Dynamic       `tfsdk:"body"`
+				Locks                         types.List          `tfsdk:"locks"`
+				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
+				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
+				ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
+				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+				Retry                         retry.RetryValue    `tfsdk:"retry"`
+				Output                        types.Dynamic       `tfsdk:"output"`
+				Tags                          types.Map           `tfsdk:"tags"`
+				Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+				CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
+				CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
+				UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
+				UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
+				DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
+				DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
+				ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
+				ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
 			}
 
 			var oldState OldModel
@@ -178,6 +187,11 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				return
 			}
 
+			responseExportValues := types.DynamicNull()
+			if !oldState.ResponseExportValues.IsNull() {
+				responseExportValues = types.DynamicValue(oldState.ResponseExportValues)
+			}
+
 			newState := newModel{
 				ID:                            oldState.ID,
 				Name:                          oldState.Name,
@@ -191,7 +205,8 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
 				ReplaceTriggersExternalValues: types.DynamicNull(),
-				ResponseExportValues:          oldState.ResponseExportValues,
+				ReplaceTriggersRefs:           types.ListNull(types.StringType),
+				ResponseExportValues:          responseExportValues,
 				Retry:                         retry.NewRetryValueNull(),
 				Output:                        outputVal,
 				Tags:                          oldState.Tags,

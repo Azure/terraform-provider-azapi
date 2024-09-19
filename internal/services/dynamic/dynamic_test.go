@@ -2,6 +2,7 @@ package dynamic
 
 import (
 	"context"
+	"encoding/json"
 	"math/big"
 	"testing"
 
@@ -198,6 +199,82 @@ func TestToJSON(t *testing.T) {
 }`
 
 	b, err := ToJSON(input)
+	require.NoError(t, err)
+	require.JSONEq(t, expect, string(b))
+}
+
+func TestToJSONWithUnknownValueHandler(t *testing.T) {
+	input := types.DynamicValue(
+		types.ObjectValueMust(
+			map[string]attr.Type{
+				"bool":    types.BoolType,
+				"string":  types.StringType,
+				"int64":   types.Int64Type,
+				"float64": types.Float64Type,
+				"number":  types.NumberType,
+				"list": types.ListType{
+					ElemType: types.BoolType,
+				},
+				"set": types.SetType{
+					ElemType: types.BoolType,
+				},
+				"tuple": types.TupleType{
+					ElemTypes: []attr.Type{
+						types.BoolType,
+						types.StringType,
+					},
+				},
+				"map": types.MapType{
+					ElemType: types.BoolType,
+				},
+				"object": types.ObjectType{
+					AttrTypes: map[string]attr.Type{
+						"bool":   types.BoolType,
+						"string": types.StringType,
+					},
+				},
+			},
+			map[string]attr.Value{
+				"bool":    types.BoolUnknown(),
+				"string":  types.StringUnknown(),
+				"int64":   types.Int64Unknown(),
+				"float64": types.Float64Unknown(),
+				"number":  types.NumberUnknown(),
+				"list":    types.ListUnknown(types.BoolType),
+				"set":     types.SetUnknown(types.BoolType),
+				"tuple": types.TupleUnknown(
+					[]attr.Type{
+						types.BoolType,
+						types.StringType,
+					},
+				),
+				"map": types.MapUnknown(types.BoolType),
+				"object": types.ObjectUnknown(
+					map[string]attr.Type{
+						"bool":   types.BoolType,
+						"string": types.StringType,
+					},
+				),
+			},
+		),
+	)
+
+	expect := `
+{
+	"bool": "<unknown>",
+	"string": "<unknown>",
+	"int64": "<unknown>",
+	"float64": "<unknown>",
+	"number": "<unknown>",
+	"list": "<unknown>",
+	"set": "<unknown>",
+	"tuple": "<unknown>",
+	"map": "<unknown>",
+	"object": "<unknown>"
+}`
+	b, err := ToJSONWithUnknownValueHandler(input, func(val attr.Value) ([]byte, error) {
+		return json.Marshal("<unknown>")
+	})
 	require.NoError(t, err)
 	require.JSONEq(t, expect, string(b))
 }

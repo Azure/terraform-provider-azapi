@@ -77,10 +77,42 @@ resource "azapi_data_plane_resource" "dataset" {
 ### Optional
 
 - `body` (Dynamic) A dynamic attribute that contains the request body.
+- `create_headers` (Map of String) A mapping of headers to be sent with the create request.
+- `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
+- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
+- `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
 - `ignore_casing` (Boolean) A dynamic attribute that contains the request body.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
-- `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
+- `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
+If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. 
+Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
+
+e.g. to replace a resource when either the SKU or os_type attributes change:
+
+```hcl
+resource "azapi_data_plane_resource" "example" {
+  name      = var.name
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  body      = {
+    properties = {
+      sku   = var.sku
+      zones = var.zones
+    }
+  }
+
+  replace_triggers_external_values = [
+    var.sku,
+    var.zones,
+  ]
+}
+```
+- `replace_triggers_refs` (List of String) A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.
+- `response_export_values` (Dynamic) The attribute can accept either a list or a map.
+
+- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
 	```text
 	{
@@ -94,8 +126,21 @@ resource "azapi_data_plane_resource" "dataset" {
 		}
 	}
 	```
+
+- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+
+	```text
+	{
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
+	}
+	```
+
+To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only
 

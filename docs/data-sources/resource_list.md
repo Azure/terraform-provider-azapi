@@ -61,7 +61,11 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 ### Optional
 
-- `response_export_values` (List of String) A list of path that needs to be exported from response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to computed property output.
+- `headers` (Map of String) A map of headers to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `response_export_values` (Dynamic) The attribute can accept either a list or a map.
+
+- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
 	```text
 	{
@@ -75,6 +79,17 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 		}
 	}
 	```
+
+- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+
+	```text
+	{
+		"login_server" = "registry1.azurecr.io"
+		"quarantine_status" = "disabled"
+	}
+	```
+
+To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 

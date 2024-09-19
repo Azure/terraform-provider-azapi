@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -21,16 +20,18 @@ import (
 )
 
 type ResourceActionDataSourceModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	ResourceID           types.String     `tfsdk:"resource_id"`
-	Type                 types.String     `tfsdk:"type"`
-	Action               types.String     `tfsdk:"action"`
-	Method               types.String     `tfsdk:"method"`
-	Body                 types.Dynamic    `tfsdk:"body"`
-	ResponseExportValues types.List       `tfsdk:"response_export_values"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
+	ID                   types.String        `tfsdk:"id"`
+	ResourceID           types.String        `tfsdk:"resource_id"`
+	Type                 types.String        `tfsdk:"type"`
+	Action               types.String        `tfsdk:"action"`
+	Method               types.String        `tfsdk:"method"`
+	Body                 types.Dynamic       `tfsdk:"body"`
+	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
+	Output               types.Dynamic       `tfsdk:"output"`
+	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
+	Retry                retry.RetryValue    `tfsdk:"retry"`
+	Headers              map[string]string   `tfsdk:"headers"`
+	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ResourceActionDataSource struct {
@@ -93,14 +94,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Optional: true,
 			},
 
-			"response_export_values": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Validators: []validator.List{
-					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
-				},
-				MarkdownDescription: docstrings.ResponseExportValues(),
-			},
+			"response_export_values": CommonAttributeResponseExportValues(),
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
@@ -108,6 +102,20 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
+
+			"headers": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: "A map of headers to include in the request",
+			},
+
+			"query_parameters": schema.MapAttribute{
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
+				Optional:            true,
+				MarkdownDescription: "A map of query parameters to include in the request",
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -165,14 +173,20 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody)
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
 	}
 
 	model.ID = basetypes.NewStringValue(id.ID())
-	model.Output = types.DynamicValue(flattenOutput(responseBody, AsStringList(model.ResponseExportValues)))
+
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	model.Output = output
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

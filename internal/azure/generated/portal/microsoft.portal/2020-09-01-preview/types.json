@@ -2,7 +2,8 @@
   {
     "$type": "StringType",
     "minLength": 3,
-    "maxLength": 64
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
   },
   {
     "$type": "StringLiteralType",
@@ -52,41 +53,55 @@
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "The shared dashboard properties."
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Resource location"
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/25"
         },
-        "flags": 0,
-        "description": "Resource tags"
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "DashboardProperties",
+    "name": "DashboardPropertiesWithProvisioningState",
     "properties": {
       "lenses": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/19"
         },
         "flags": 0,
         "description": "The dashboard lenses."
       },
       "metadata": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "The dashboard metadata."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
       }
     }
   },
@@ -103,14 +118,14 @@
       },
       "parts": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/18"
         },
         "flags": 1,
         "description": "The dashboard parts."
       },
       "metadata": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "The dashboard len's metadata."
@@ -133,7 +148,7 @@
       },
       "metadata": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/11"
         },
         "flags": 0,
         "description": "The dashboard part's metadata."
@@ -174,7 +189,7 @@
       },
       "metadata": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "The dashboard part's metadata."
@@ -185,21 +200,13 @@
     "$type": "AnyType"
   },
   {
-    "$type": "ObjectType",
-    "name": "DashboardPartsPositionMetadata",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/10"
-    }
-  },
-  {
     "$type": "DiscriminatedObjectType",
     "name": "DashboardPartMetadata",
     "discriminator": "type",
     "baseProperties": {},
     "elements": {
       "Extension/HubsExtension/PartType/MarkdownPart": {
-        "$ref": "#/13"
+        "$ref": "#/12"
       }
     }
   },
@@ -209,24 +216,24 @@
     "properties": {
       "inputs": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "Input to dashboard part."
       },
       "settings": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "Markdown part settings."
       },
       "type": {
         "type": {
-          "$ref": "#/18"
+          "$ref": "#/17"
         },
         "flags": 1,
-        "description": "The type of dashboard part."
+        "description": "The dashboard part metadata type."
       }
     }
   },
@@ -242,7 +249,7 @@
     "properties": {
       "content": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The content of markdown part."
@@ -255,7 +262,7 @@
     "properties": {
       "settings": {
         "type": {
-          "$ref": "#/17"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The setting of the content of markdown part."
@@ -314,34 +321,167 @@
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "DashboardLensMetadata",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/10"
-    }
-  },
-  {
     "$type": "ArrayType",
     "itemType": {
       "$ref": "#/6"
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "DashboardPropertiesMetadata",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/10"
-    }
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ObjectType",
-    "name": "DashboardTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",
@@ -353,19 +493,8 @@
     "flags": 0
   },
   {
-    "$type": "StringLiteralType",
-    "value": "default"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
+    "$type": "StringType",
+    "pattern": "^(?!con$|prn$|aux$|nul$|com[1-9]$)(?!.*[._-]{2,})[a-zA-Z0-9]([a-zA-Z0-9-._]*[a-zA-Z0-9])?$"
   },
   {
     "$type": "StringLiteralType",
@@ -388,31 +517,38 @@
       },
       "name": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/37"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/38"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/39"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/41"
         },
         "flags": 0,
-        "description": "Tenant configuration properties."
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -422,10 +558,17 @@
     "properties": {
       "enforcePrivateMarkdownStorage": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "When flag is set to true Markdown tile will require external storage configuration (URI). The inline content configuration will be prohibited."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
       }
     }
   },
@@ -433,11 +576,40 @@
     "$type": "BooleanType"
   },
   {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Portal/tenantConfigurations@2020-09-01-preview",
     "scopeType": 1,
     "body": {
-      "$ref": "#/29"
+      "$ref": "#/40"
     },
     "flags": 0
   }

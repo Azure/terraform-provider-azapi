@@ -38,19 +38,19 @@ func NewMockDataPlaneClient(t *testing.T, resp interface{}, err error, retries i
 	}
 }
 
-func (m *MockDataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}) (interface{}, error) {
+func (m *MockDataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockDataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+func (m *MockDataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockDataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId) (interface{}, error) {
+func (m *MockDataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
-func (m *MockDataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}) (interface{}, error) {
+func (m *MockDataPlaneClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options clients.RequestOptions) (interface{}, error) {
 	return m.respond(ctx)
 }
 
