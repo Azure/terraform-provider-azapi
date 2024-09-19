@@ -28,7 +28,7 @@ import (
 func TestRetryClient(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 30, 2, 0.0, []string{"retry error"})
-	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.requestCount)
@@ -48,7 +48,7 @@ func TestRetryClient(t *testing.T) {
 func TestRetryClientRegexp(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
@@ -57,7 +57,7 @@ func TestRetryClientRegexp(t *testing.T) {
 func TestRetryClientMultiRegexp(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"nomatch", "^retry"})
-	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
@@ -66,7 +66,7 @@ func TestRetryClientMultiRegexp(t *testing.T) {
 func TestRetryClientMultiRegexpNoMatchWithPermError(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, errors.New("perm error"), 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"retry"})
-	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), "", "")
 	assert.ErrorContains(t, err, "perm error")
 	assert.Equal(t, 3, mock.RequestCount())
@@ -75,7 +75,7 @@ func TestRetryClientMultiRegexpNoMatchWithPermError(t *testing.T) {
 func TestRetryClientContextDeadline(t *testing.T) {
 	mock := NewMockResourceClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(60, 60, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewResourceClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	start := time.Now()

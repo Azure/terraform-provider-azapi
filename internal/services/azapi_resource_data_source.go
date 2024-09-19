@@ -219,7 +219,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {

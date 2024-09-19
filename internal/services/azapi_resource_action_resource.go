@@ -312,7 +312,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody)

@@ -323,7 +323,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
 	if err != nil {
@@ -408,7 +408,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion)
