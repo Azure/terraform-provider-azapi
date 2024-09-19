@@ -547,19 +547,9 @@ func (client *ResourceClient) List(ctx context.Context, url string, apiVersion s
 	}, nil
 }
 
-type WrappedError interface {
-	Unwrap() error
-}
-
 func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
 	if err == nil {
 		return true
-	}
-
-	// the error could be wrapped, unwrap it
-	var wrappedError WrappedError
-	if errors.As(err, &wrappedError) {
-		err = wrappedError.Unwrap()
 	}
 
 	// there are some APIs that don't follow the ARM LRO guideline, return the response as is
