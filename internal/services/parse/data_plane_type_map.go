@@ -261,6 +261,12 @@ const raw = `
     "Url": "/integrationruntimes/{integrationRuntimeName}"
   },
   {
+    "UrlFormat": "{parentId}/managedvirtualnetworks/{name}",
+    "ResourceType": "Microsoft.Purview/accounts/Scanning/managedvirtualnetworks",
+    "ParentIDExample": "{accountName}.purview.azure.com/scan",
+    "Url": "/managedvirtualnetworks/{managedVirtualNetworkName}"
+  },
+  {
     "UrlFormat": "{parentId}/managedprivateendpoints/{name}",
     "ResourceType": "Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints",
     "ParentIDExample": "{accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}",
