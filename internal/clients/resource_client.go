@@ -2,6 +2,7 @@ package clients
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -551,7 +552,8 @@ func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
 		return true
 	}
 	// there are some APIs that don't follow the ARM LRO guideline, return the response as is
-	if responseErr, ok := err.(*azcore.ResponseError); ok {
+	var responseErr *azcore.ResponseError
+	if errors.As(err, &responseErr) {
 		if responseErr.RawResponse != nil && responseErr.RawResponse.Request != nil {
 			// all control plane APIs must flow through ARM, ignore the polling error if it's not ARM
 			// issue: https://github.com/Azure/azure-rest-api-specs/issues/25356, in this case, the polling url is not exposed by ARM
