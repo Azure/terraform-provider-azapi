@@ -551,7 +551,6 @@ func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
 	if err == nil {
 		return true
 	}
-
 	// there are some APIs that don't follow the ARM LRO guideline, return the response as is
 	var responseErr *azcore.ResponseError
 	if errors.As(err, &responseErr) {
