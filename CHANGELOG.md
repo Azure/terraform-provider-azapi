@@ -4,7 +4,7 @@ BREAKING CHANGES:
 - Provider field `enable_hcl_output_for_data_source` is removed. The `output` field in the data source is always in HCL format.
 - The `azapi_resource`'s `removing_special_chars` field is removed. Please specify the `name` field and remove the special characters in the `name` field instead.
 - The `ignore_body_changes` field is removed. Please use the `lifecyle.ignore_changes` to ignore some properties when comparing the resource with its current state.
-- The `body` field now only accepts an HCL object. Please remove the `jsondecode` function when using the `body` field.
+- The `body` field now only accepts an HCL object. Please remove the `jsonencode` function when using the `body` field.
 - The `output` field now only exports an HCL object. Please remove the `jsondecode` function when using the `output` field.
 - The `use_msi` field now defaults to `false`, please set it to `true` explicitly if you want to authenticate using Managed Service Identity.
 
