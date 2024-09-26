@@ -29,7 +29,7 @@ import (
 func TestRetryDataPlaneClient(t *testing.T) {
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 30, 2, 0.0, []string{"retry error"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.requestCount)
@@ -49,7 +49,7 @@ func TestRetryDataPlaneClient(t *testing.T) {
 func TestRetryDataPlaneClientRegexp(t *testing.T) {
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
@@ -58,7 +58,7 @@ func TestRetryDataPlaneClientRegexp(t *testing.T) {
 func TestRetryDataPlaneClientMultiRegexp(t *testing.T) {
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"nomatch", "^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
@@ -67,7 +67,7 @@ func TestRetryDataPlaneClientMultiRegexp(t *testing.T) {
 func TestRetryDataPlaneClientMultiRegexpNoMatchWithPermError(t *testing.T) {
 	mock := NewMockDataPlaneClient(t, nil, errors.New("perm error"), 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.ErrorContains(t, err, "perm error")
 	assert.Equal(t, 3, mock.RequestCount())
@@ -76,7 +76,7 @@ func TestRetryDataPlaneClientMultiRegexpNoMatchWithPermError(t *testing.T) {
 func TestRetryDataPlaneClientContextDeadline(t *testing.T) {
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
 	bkof, errRegExps := clients.NewRetryableErrors(60, 60, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps)
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	start := time.Now()

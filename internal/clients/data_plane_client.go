@@ -2,10 +2,12 @@ package clients
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -28,9 +30,11 @@ type DataPlaneClient struct {
 }
 
 type DataPlaneClientRetryableErrors struct {
-	client  DataPlaneRequester          // client is a DataPlaneRequester interface to allow mocking
-	backoff *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
-	errors  []regexp.Regexp             // errors is the list of errors regexp to retry on
+	client            DataPlaneRequester          // client is a Requester interface to allow mocking
+	backoff           *backoff.ExponentialBackOff // backoff is the backoff configuration for retrying
+	errors            []regexp.Regexp             // errors is the list of errors regexp to retry on
+	statusCodes       []int                       // statusCodes is the list of status codes to retry on
+	dataCallbackFuncs []func(interface{}) bool    // dataCallbackFuncs is the list of functions to call to determine if the data is retryable
 }
 
 type DataPlaneRequester interface {
@@ -46,11 +50,13 @@ var (
 )
 
 // NewDataPlaneClientRetryableErrors creates a new ResourceClientRetryableErrors.
-func NewDataPlaneClientRetryableErrors(client DataPlaneRequester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+func NewDataPlaneClientRetryableErrors(client DataPlaneRequester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp, statusCodes []int, dataCallbackFuncs []func(any) bool) *DataPlaneClientRetryableErrors {
 	rcre := &DataPlaneClientRetryableErrors{
-		client:  client,
-		backoff: bkof,
-		errors:  errRegExps,
+		client:            client,
+		backoff:           bkof,
+		errors:            errRegExps,
+		statusCodes:       statusCodes,
+		dataCallbackFuncs: dataCallbackFuncs,
 	}
 	rcre.backoff.Reset()
 	return rcre
@@ -69,11 +75,13 @@ func NewDataPlaneClient(credential azcore.TokenCredential, opt *arm.ClientOption
 }
 
 // WithRetry configures the retryable errors for the client.
-func (client *DataPlaneClient) WithRetry(bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp) *DataPlaneClientRetryableErrors {
+func (client *DataPlaneClient) WithRetry(bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp, statusCodes []int, dataCallbackFuncs []func(interface{}) bool) *DataPlaneClientRetryableErrors {
 	rcre := &DataPlaneClientRetryableErrors{
-		client:  client,
-		backoff: bkof,
-		errors:  errRegExps,
+		client:            client,
+		backoff:           bkof,
+		errors:            errRegExps,
+		statusCodes:       statusCodes,
+		dataCallbackFuncs: dataCallbackFuncs,
 	}
 	rcre.backoff.Reset()
 	return rcre
@@ -326,10 +334,8 @@ func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx co
 		func() (interface{}, error) {
 			data, err := retryclient.client.CreateOrUpdateThenPoll(ctx, id, body, options)
 			if err != nil {
-				for _, e := range retryclient.errors {
-					if e.MatchString(err.Error()) {
-						return data, err
-					}
+				if isDataPlaneRetryable(*retryclient, data, err) {
+					return data, err
 				}
 				return nil, &backoff.PermanentError{Err: err}
 			}
@@ -347,10 +353,8 @@ func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id p
 		func() (interface{}, error) {
 			data, err := retryclient.client.Get(ctx, id, options)
 			if err != nil {
-				for _, e := range retryclient.errors {
-					if e.MatchString(err.Error()) {
-						return data, err
-					}
+				if isDataPlaneRetryable(*retryclient, data, err) {
+					return data, err
 				}
 				return nil, &backoff.PermanentError{Err: err}
 			}
@@ -368,10 +372,8 @@ func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Co
 		func() (interface{}, error) {
 			data, err := retryclient.client.DeleteThenPoll(ctx, id, options)
 			if err != nil {
-				for _, e := range retryclient.errors {
-					if e.MatchString(err.Error()) {
-						return data, err
-					}
+				if isDataPlaneRetryable(*retryclient, data, err) {
+					return data, err
 				}
 				return nil, &backoff.PermanentError{Err: err}
 			}
@@ -389,10 +391,8 @@ func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, r
 		func() (interface{}, error) {
 			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body, options)
 			if err != nil {
-				for _, e := range retryclient.errors {
-					if e.MatchString(err.Error()) {
-						return data, err
-					}
+				if isDataPlaneRetryable(*retryclient, data, err) {
+					return data, err
 				}
 				return nil, &backoff.PermanentError{Err: err}
 			}
@@ -400,4 +400,24 @@ func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, r
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
 	return backoff.RetryWithData[interface{}](op, exbo)
+}
+
+func isDataPlaneRetryable(retryclient DataPlaneClientRetryableErrors, data interface{}, err error) bool {
+	for _, e := range retryclient.errors {
+		if e.MatchString(err.Error()) {
+			return true
+		}
+	}
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) {
+		if slices.Contains(retryclient.statusCodes, respErr.StatusCode) {
+			return true
+		}
+	}
+	for _, f := range retryclient.dataCallbackFuncs {
+		if f(data) {
+			return true
+		}
+	}
+	return false
 }
