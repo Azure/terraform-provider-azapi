@@ -29,6 +29,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/preflight"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -601,7 +602,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Retry.GetRandomizationFactor(),
 			plan.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
@@ -699,8 +700,21 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
 		return
 	}
-
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
+	// Create a new retry client to handle specific case of transient 404 after resource creation
+	clientRetry404 := r.ProviderData.ResourceClient.WithRetry(
+		backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(5*time.Second),
+			backoff.WithMaxInterval(30*time.Second),
+		),
+		nil,
+		[]int{404},
+		[]func(d interface{}) bool{
+			func(d interface{}) bool {
+				return d == nil
+			},
+		},
+	)
+	responseBody, err := clientRetry404.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -769,7 +783,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
@@ -888,7 +902,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)

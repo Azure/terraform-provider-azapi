@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -370,7 +371,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	isNewResource := state == nil || state.Raw.IsNull()
 
@@ -421,7 +422,21 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	// Create a new retry client to handle specific case of transient 404 after resource creation
+	clientRetry404 := r.ProviderData.DataPlaneClient.WithRetry(
+		backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(5*time.Second),
+			backoff.WithMaxInterval(30*time.Second),
+		),
+		nil,
+		[]int{404},
+		[]func(d interface{}) bool{
+			func(d interface{}) bool {
+				return d == nil
+			},
+		},
+	)
+	responseBody, err := clientRetry404.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -475,7 +490,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
@@ -550,7 +565,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)

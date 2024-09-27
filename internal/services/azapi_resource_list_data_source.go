@@ -139,7 +139,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps)
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
