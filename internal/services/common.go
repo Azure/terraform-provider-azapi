@@ -3,6 +3,8 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"os"
+	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
@@ -12,6 +14,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func Retry404MaxElapsedTime() time.Duration {
+	if v := os.Getenv("AZAPI_RETRY_404_MAX_ELAPSED_TIME"); v != "" {
+		timeout, err := time.ParseDuration(v)
+		if err != nil {
+			return timeout
+		}
+	}
+	return 2 * time.Minute
+}
 
 func CommonAttributeResponseExportValues() schema.DynamicAttribute {
 	return schema.DynamicAttribute{

@@ -327,8 +327,8 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx context.Context, id parse.DataPlaneResourceId, body interface{}, options RequestOptions) (interface{}, error) {
-	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	if retryclient.backoff == nil {
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -346,8 +346,8 @@ func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx co
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
-	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	if retryclient.backoff == nil {
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -365,8 +365,8 @@ func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id p
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
-	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	if retryclient.backoff == nil {
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
@@ -384,8 +384,8 @@ func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Co
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
-	if retryclient.backoff == nil || len(retryclient.errors) == 0 {
-		return nil, fmt.Errorf("retry is not configured, please call WithRetry() first")
+	if retryclient.backoff == nil {
+		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
