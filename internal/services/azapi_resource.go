@@ -705,6 +705,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		backoff.NewExponentialBackOff(
 			backoff.WithInitialInterval(5*time.Second),
 			backoff.WithMaxInterval(30*time.Second),
+			backoff.WithMaxElapsedTime(2*time.Minute),
 		),
 		nil,
 		[]int{404},
