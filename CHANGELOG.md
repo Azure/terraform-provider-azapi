@@ -1,3 +1,11 @@
+## Unreleased
+ENHANCEMENTS:
+- `azapi_data_plane_resource` resource: Support `Microsoft.Purview/accounts/Scanning/managedvirtualnetworks` type.
+- Support a default retry policy that retries when GET request fails with 404 status code after resource creation.
+
+BUG FIXES:
+- Fix a bug that non-standard LRO error responses are not handled properly.
+
 ## v2.0.0-beta
 BREAKING CHANGES:
 - Provider field `default_naming_prefix` and `default_naming_suffix` are removed. Please specify the naming prefix and suffix in the resource's `name` field instead.

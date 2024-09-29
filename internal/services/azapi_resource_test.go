@@ -1252,7 +1252,7 @@ resource "azapi_resource" "storageAccount" {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
-      allowBlobPublicAccess        = true
+      allowBlobPublicAccess        = false
       allowCrossTenantReplication  = true
       allowSharedKeyAccess         = true
       defaultToOAuthAuthentication = false
@@ -1325,7 +1325,7 @@ resource "azapi_resource" "storageAccount" {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
-      allowBlobPublicAccess        = true
+      allowBlobPublicAccess        = false
       allowCrossTenantReplication  = true
       allowSharedKeyAccess         = true
       defaultToOAuthAuthentication = false
@@ -1539,7 +1539,7 @@ resource "azapi_resource" "storageAccount" {
     kind = "StorageV2"
     properties = {
       accessTier                   = "Hot"
-      allowBlobPublicAccess        = true
+      allowBlobPublicAccess        = false
       allowCrossTenantReplication  = true
       allowSharedKeyAccess         = true
       defaultToOAuthAuthentication = false
@@ -1669,11 +1669,12 @@ resource "azurerm_role_assignment" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                     = "acctestsa%[2]s"
-  location                 = azapi_resource.resourceGroup.location
-  resource_group_name      = azapi_resource.resourceGroup.name
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                            = "acctestsa%[2]s"
+  location                        = azapi_resource.resourceGroup.location
+  resource_group_name             = azapi_resource.resourceGroup.name
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  allow_nested_items_to_be_public = false
 }
 
 resource "azurerm_machine_learning_workspace" "test" {

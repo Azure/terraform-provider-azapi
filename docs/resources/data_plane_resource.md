@@ -94,9 +94,9 @@ e.g. to replace a resource when either the SKU or os_type attributes change:
 
 ```hcl
 resource "azapi_data_plane_resource" "example" {
-  name      = var.name
-  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  body      = {
+  name = var.name
+  type = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  body = {
     properties = {
       sku   = var.sku
       zones = var.zones
