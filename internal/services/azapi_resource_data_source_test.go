@@ -114,6 +114,20 @@ func TestAccGenericDataSource_queryParameter(t *testing.T) {
 	})
 }
 
+func TestAccGenericDataSource_defaultOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.defaultOutput(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("output.properties.automationHybridServiceUrl").Exists(),
+			),
+		},
+	})
+}
+
 func (r GenericDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -217,4 +231,16 @@ data "azapi_resource" "test" {
   }
 }
 `, GenericResource{}.complete(data))
+}
+
+func (r GenericDataSource) defaultOutput(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource" "test" {
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  type      = azapi_resource.test.type
+}
+`, GenericResource{}.defaultOutput(data))
 }

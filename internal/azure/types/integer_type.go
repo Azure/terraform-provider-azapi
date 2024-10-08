@@ -14,6 +14,13 @@ type IntegerType struct {
 	MaxValue *int   `json:"maxValue"`
 }
 
+func (t *IntegerType) GetReadOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	return i
+}
+
 func (t *IntegerType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase

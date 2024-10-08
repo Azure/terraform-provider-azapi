@@ -277,7 +277,7 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
@@ -399,7 +399,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -479,7 +479,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

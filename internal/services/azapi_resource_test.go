@@ -544,6 +544,20 @@ func TestAccGenericResource_replaceTriggersRefs(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_defaultOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.defaultOutput(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.properties.automationHybridServiceUrl").Exists(),
+			),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1936,4 +1950,24 @@ resource "azapi_resource" "test" {
   replace_triggers_refs = ["sku.name"]
 }
 `, r.template(data), data.RandomInteger, skuName)
+}
+
+func (r GenericResource) defaultOutput(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString)
 }

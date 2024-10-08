@@ -17,6 +17,57 @@ type ObjectType struct {
 	Sensitive            bool                      `json:"sensitive"`
 }
 
+func (t *ObjectType) GetReadOnly(body interface{}) interface{} {
+	if t == nil || body == nil {
+		return nil
+	}
+
+	// check body type
+	bodyMap, ok := body.(map[string]interface{})
+	if !ok {
+		return body
+	}
+
+	res := make(map[string]interface{})
+	for key, def := range t.Properties {
+		if _, ok := bodyMap[key]; ok {
+			if bodyMap[key] == nil {
+				continue
+			}
+			if def.Type == nil || def.Type.Type == nil {
+				res[key] = bodyMap[key]
+				continue
+			}
+			switch v := bodyMap[key].(type) {
+			case map[string]interface{}:
+				out := (*def.Type.Type).GetReadOnly(v)
+				if outMap, ok := out.(map[string]interface{}); ok && len(outMap) > 0 {
+					res[key] = out
+				}
+			case []interface{}:
+				out := (*def.Type.Type).GetReadOnly(v)
+				if outArray, ok := out.([]interface{}); ok && len(outArray) > 0 {
+					res[key] = out
+				}
+			default:
+				if def.IsReadOnly() {
+					res[key] = (*def.Type.Type).GetReadOnly(bodyMap[key])
+				}
+			}
+		}
+	}
+
+	if t.AdditionalProperties != nil && t.AdditionalProperties.Type != nil {
+		for key, value := range bodyMap {
+			if _, ok := t.Properties[key]; ok {
+				continue
+			}
+			res[key] = (*t.AdditionalProperties.Type).GetReadOnly(value)
+		}
+	}
+	return res
+}
+
 func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 	if t == nil || body == nil {
 		return nil

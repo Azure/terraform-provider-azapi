@@ -60,6 +60,20 @@ func TestAccListDataSource_queryParameter(t *testing.T) {
 	})
 }
 
+func TestAccListDataSource_defaultOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_list", "test")
+	r := ListDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.defaultOutput(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("output.value.#").Exists(),
+			),
+		},
+	})
+}
+
 func (r ListDataSource) basic() string {
 	return `
 data "azapi_client_config" "current" {}
@@ -110,6 +124,17 @@ data "azapi_resource_list" "test" {
     "$filter" = ["policyType eq 'BuiltIn'"]
   }
   response_export_values = ["*"]
+}
+`
+}
+
+func (r ListDataSource) defaultOutput() string {
+	return `
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "test" {
+  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
 }
 `
 }

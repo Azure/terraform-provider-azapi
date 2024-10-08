@@ -11,6 +11,10 @@ type ResourceFunctionType struct {
 	Output       *TypeReference `json:"output"`
 }
 
+func (t ResourceFunctionType) GetReadOnly(i interface{}) interface{} {
+	return i
+}
+
 func (t ResourceFunctionType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(t)
 	return &typeBase

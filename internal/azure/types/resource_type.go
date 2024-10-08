@@ -16,6 +16,16 @@ type ResourceType struct {
 	Flags              []ResourceTypeFlag
 }
 
+func (t *ResourceType) GetReadOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	if t.Body != nil && t.Body.Type != nil {
+		return (*t.Body.Type).GetReadOnly(i)
+	}
+	return i
+}
+
 func (t *ResourceType) GetWriteOnly(body interface{}) interface{} {
 	if t == nil || body == nil {
 		return nil
