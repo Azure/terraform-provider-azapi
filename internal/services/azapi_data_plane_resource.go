@@ -450,7 +450,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 
 	model.ID = basetypes.NewStringValue(id.ID())
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, nil)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -522,7 +522,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, nil)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

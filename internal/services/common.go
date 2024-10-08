@@ -35,9 +35,16 @@ func CommonAttributeResponseExportValues() schema.DynamicAttribute {
 	}
 }
 
-func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic) (types.Dynamic, error) {
+func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic, defaultResult interface{}) (types.Dynamic, error) {
 	if modelResponseExportValues.IsNull() {
-		return types.DynamicValue(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})), nil
+		if defaultResult == nil {
+			return types.DynamicValue(types.ObjectValueMust(map[string]attr.Type{}, map[string]attr.Value{})), nil
+		}
+		data, err := json.Marshal(defaultResult)
+		if err != nil {
+			return types.DynamicNull(), err
+		}
+		return dynamic.FromJSONImplied(data)
 	}
 
 	data, err := dynamic.ToJSON(modelResponseExportValues)

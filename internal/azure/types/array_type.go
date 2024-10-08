@@ -16,6 +16,30 @@ type ArrayType struct {
 	MaxLength *int           `json:"maxLength"`
 }
 
+func (t *ArrayType) GetReadOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	var itemType *TypeBase
+	if t.ItemType != nil {
+		itemType = t.ItemType.Type
+	}
+	// check body type
+	bodyArray, ok := i.([]interface{})
+	if !ok {
+		return nil
+	}
+	if itemType == nil {
+		return bodyArray
+	}
+
+	res := make([]interface{}, 0)
+	for _, value := range bodyArray {
+		res = append(res, (*itemType).GetReadOnly(value))
+	}
+	return res
+}
+
 func (t *ArrayType) GetWriteOnly(body interface{}) interface{} {
 	if t == nil || body == nil {
 		return nil

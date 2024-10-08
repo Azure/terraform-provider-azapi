@@ -11,6 +11,14 @@ type UnionType struct {
 	Elements []*TypeReference `json:"elements"`
 }
 
+func (t *UnionType) GetReadOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	// TODO: improve this
+	return i
+}
+
 func (t *UnionType) GetWriteOnly(body interface{}) interface{} {
 	if t == nil || body == nil {
 		return nil

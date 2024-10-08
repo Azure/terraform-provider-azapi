@@ -13,6 +13,13 @@ type StringLiteralType struct {
 	Value string `json:"value"`
 }
 
+func (t *StringLiteralType) GetReadOnly(i interface{}) interface{} {
+	if t == nil || i == nil {
+		return nil
+	}
+	return i
+}
+
 func (t *StringLiteralType) GetWriteOnly(i interface{}) interface{} {
 	if t == nil || i == nil {
 		return nil

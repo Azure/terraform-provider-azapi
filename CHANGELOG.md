@@ -2,6 +2,8 @@
 ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `Microsoft.Purview/accounts/Scanning/managedvirtualnetworks` type.
 - Support a default retry policy that retries when GET request fails with 404 status code after resource creation.
+- The `azapi_resource`, `azapi_update_resource` resources and data sources' `output` field defaults to the readonly fields when the `response_export_values` is not specified.
+- The `azapi_resource_list` data source's `output` field defaults to the response when the `response_export_values` is not specified.
 
 BUG FIXES:
 - Fix a bug that non-standard LRO error responses are not handled properly.

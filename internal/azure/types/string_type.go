@@ -18,6 +18,13 @@ type StringType struct {
 	Pattern   string `json:"pattern"`
 }
 
+func (s *StringType) GetReadOnly(i interface{}) interface{} {
+	if s == nil || i == nil {
+		return nil
+	}
+	return i
+}
+
 func (s *StringType) AsTypeBase() *TypeBase {
 	typeBase := TypeBase(s)
 	return &typeBase

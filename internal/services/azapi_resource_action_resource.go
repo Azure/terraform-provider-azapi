@@ -336,7 +336,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	}
 	model.ID = basetypes.NewStringValue(resourceId)
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues)
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, nil)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
