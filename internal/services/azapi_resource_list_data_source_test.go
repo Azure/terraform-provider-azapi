@@ -133,8 +133,8 @@ func (r ListDataSource) defaultOutput() string {
 data "azapi_client_config" "current" {}
 
 data "azapi_resource_list" "test" {
-  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
-  parent_id              = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  type      = "Microsoft.Resources/resourceGroups@2024-03-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
 }
 `
 }

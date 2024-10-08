@@ -238,9 +238,9 @@ func (r GenericDataSource) defaultOutput(data acceptance.TestData) string {
 %s
 
 data "azapi_resource" "test" {
-  name                   = azapi_resource.test.name
-  parent_id              = azapi_resource.test.parent_id
-  type                   = azapi_resource.test.type
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  type      = azapi_resource.test.type
 }
 `, GenericResource{}.defaultOutput(data))
 }
