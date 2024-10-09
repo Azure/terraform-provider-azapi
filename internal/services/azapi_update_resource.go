@@ -399,7 +399,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.ParentID = basetypes.NewStringValue(id.ParentId)
 	model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -479,7 +483,11 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

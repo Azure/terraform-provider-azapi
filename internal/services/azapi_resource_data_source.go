@@ -255,7 +255,11 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		}
 	}
 
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

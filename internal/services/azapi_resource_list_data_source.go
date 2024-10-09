@@ -149,8 +149,11 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	}
 
 	model.ID = basetypes.NewStringValue(listUrl)
-
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, responseBody)
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = responseBody
+	}
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return

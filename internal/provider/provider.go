@@ -74,6 +74,7 @@ type providerData struct {
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
+	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -358,6 +359,11 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Optional:    true,
 				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.",
 			},
+
+			"disable_default_output": schema.BoolAttribute{
+				Optional:    true,
+				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output.",
+			},
 		},
 	}
 }
@@ -571,6 +577,9 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	if model.EnablePreflight.IsNull() {
 		model.EnablePreflight = types.BoolValue(false)
 	}
+	if model.DisableDefaultOutput.IsNull() {
+		model.DisableDefaultOutput = types.BoolValue(false)
+	}
 
 	var cloudConfig cloud.Configuration
 	env := model.Environment.ValueString()
@@ -639,10 +648,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		CloudCfg:             cloudConfig,
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		Features: features.UserFeatures{
-			DefaultTags:     tags.ExpandTags(model.DefaultTags),
-			DefaultLocation: location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:   model.DefaultName.ValueString(),
-			EnablePreflight: model.EnablePreflight.ValueBool(),
+			DefaultTags:          tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:        model.DefaultName.ValueString(),
+			EnablePreflight:      model.EnablePreflight.ValueBool(),
+			DisableDefaultOutput: model.DisableDefaultOutput.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),
