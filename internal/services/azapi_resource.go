@@ -675,7 +675,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 
-				output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+				var defaultOutput interface{}
+				if !r.ProviderData.Features.DisableDefaultOutput {
+					defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+				}
+				output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, defaultOutput)
 				if err != nil {
 					diagnostics.AddError("Failed to build output", err.Error())
 					return
@@ -730,7 +734,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	// generate the computed fields
 	plan.ID = types.StringValue(id.ID())
 
-	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, defaultOutput)
 	if err != nil {
 		diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -864,8 +872,11 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		response.Diagnostics.AddError("Invalid body", err.Error())
 		return
 	}
-
-	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, id.ResourceDef.GetReadOnly(responseBody))
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to build output", err.Error())
 		return
@@ -1041,6 +1052,17 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 			state.Identity = identity.ToList(*v)
 		}
 	}
+
+	var defaultOutput interface{}
+	if !r.ProviderData.Features.DisableDefaultOutput {
+		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+	}
+	output, err := buildOutputFromBody(responseBody, state.ResponseExportValues, defaultOutput)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	state.Output = output
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
