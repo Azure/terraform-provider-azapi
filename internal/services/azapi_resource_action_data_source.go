@@ -92,6 +92,9 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
 			"body": schema.DynamicAttribute{
 				Optional: true,
+				Validators: []validator.Dynamic{
+					myvalidator.DynamicIsNotStringValidator(),
+				},
 			},
 
 			"response_export_values": CommonAttributeResponseExportValues(),

@@ -166,6 +166,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.Body(),
+				Validators: []validator.Dynamic{
+					myvalidator.DynamicIsNotStringValidator(),
+				},
 			},
 
 			"replace_triggers_external_values": schema.DynamicAttribute{

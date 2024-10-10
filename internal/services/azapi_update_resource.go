@@ -146,6 +146,9 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.Body(),
+				Validators: []validator.Dynamic{
+					myvalidator.DynamicIsNotStringValidator(),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{

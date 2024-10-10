@@ -130,6 +130,9 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.Body(),
+				Validators: []validator.Dynamic{
+					myvalidator.DynamicIsNotStringValidator(),
+				},
 			},
 
 			"when": schema.StringAttribute{

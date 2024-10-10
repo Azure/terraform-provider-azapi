@@ -137,6 +137,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.Body(),
+				Validators: []validator.Dynamic{
+					myvalidator.DynamicIsNotStringValidator(),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{
