@@ -1,10 +1,14 @@
 [
   {
-    "$type": "StringType"
+    "$type": "StringType",
+    "pattern": "^[^#<>%&:\\?/{}*]{1,260}$"
   },
   {
     "$type": "StringLiteralType",
     "value": "Microsoft.Insights/scheduledQueryRules"
+  },
+  {
+    "$type": "StringType"
   },
   {
     "$type": "StringLiteralType",
@@ -16,7 +20,7 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource id"
@@ -37,56 +41,56 @@
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/3"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "identity": {
         "type": {
-          "$ref": "#/4"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The identity of the resource."
       },
       "tags": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/12"
         },
         "flags": 0,
         "description": "Resource tags."
       },
       "location": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
       },
       "kind": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Indicates the type of scheduled query rule. The default is LogAlert."
       },
       "etag": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
       },
       "systemData": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "SystemData of ScheduledQueryRule."
       },
       "properties": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/27"
         },
         "flags": 1,
         "description": "The rule properties of the resource."
@@ -99,28 +103,28 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The principal ID of resource identity."
       },
       "tenantId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The tenant ID of resource."
       },
       "type": {
         "type": {
-          "$ref": "#/8"
+          "$ref": "#/9"
         },
         "flags": 1,
         "description": "Type of managed service identity."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/11"
         },
         "flags": 0,
         "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
@@ -143,13 +147,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/5"
-      },
-      {
         "$ref": "#/6"
       },
       {
         "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
       }
     ]
   },
@@ -159,14 +163,14 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The principal id of user assigned identity."
       },
       "clientId": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The client id of user assigned identity."
@@ -178,7 +182,7 @@
     "name": "IdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/9"
+      "$ref": "#/10"
     }
   },
   {
@@ -186,7 +190,7 @@
     "name": "ScheduledQueryRuleResourceTags",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -201,13 +205,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/12"
-      },
-      {
         "$ref": "#/13"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -217,42 +221,42 @@
     "properties": {
       "createdBy": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The identity that created the resource."
       },
       "createdByType": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
       },
       "createdAt": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The timestamp of resource creation (UTC)."
       },
       "lastModifiedBy": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The identity that last modified the resource."
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
       },
       "lastModifiedAt": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The timestamp of resource last modification (UTC)"
@@ -279,9 +283,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/16"
-      },
-      {
         "$ref": "#/17"
       },
       {
@@ -291,7 +292,10 @@
         "$ref": "#/19"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -315,9 +319,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/21"
-      },
-      {
         "$ref": "#/22"
       },
       {
@@ -327,7 +328,10 @@
         "$ref": "#/24"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -337,133 +341,133 @@
     "properties": {
       "createdWithApiVersion": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 2,
         "description": "The api-version used when creating this alert rule"
       },
       "isLegacyLogAnalyticsRule": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 2,
         "description": "True if alert rule is legacy Log Analytic rule"
       },
       "description": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The description of the scheduled query rule."
       },
       "displayName": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The display name of the alert rule"
       },
       "severity": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert."
       },
       "enabled": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The flag which indicates whether this scheduled query rule is enabled. Value should be true or false"
       },
       "scopes": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "The list of resource id's that this scheduled query rule is scoped to."
       },
       "evaluationFrequency": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert."
       },
       "windowSize": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert."
       },
       "overrideQueryTimeRange": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "If specified then overrides the query time range (default is WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert."
       },
       "targetResourceTypes": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert"
       },
       "criteria": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The rule criteria that defines the conditions of the scheduled query rule."
       },
       "muteActionsDuration": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules of the kind LogAlert."
       },
       "actions": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "Actions to invoke when the alert fires."
       },
       "isWorkspaceAlertsStorageConfigured": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 2,
         "description": "The flag which indicates whether this scheduled query rule has been configured to be stored in the customer's storage. The default is false."
       },
       "checkWorkspaceAlertsStorageConfigured": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The flag which indicates whether this scheduled query rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind LogAlert."
       },
       "skipQueryValidation": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The flag which indicates whether the provided query should be validated or not. The default is false. Relevant only for rules of the kind LogAlert."
       },
       "autoMitigate": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The flag that indicates whether the alert should be automatically resolved or not. The default is true. Relevant only for rules of the kind LogAlert."
       },
-      "ruleResolveConfiguration": {
+      "resolveConfiguration": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/58"
         },
         "flags": 0,
         "description": "Defines the configuration for resolving fired alerts. Relevant only for rules of the kind LogAlert."
@@ -479,13 +483,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -494,7 +498,7 @@
     "properties": {
       "allOf": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "A list of conditions to evaluate against the specified scopes"
@@ -507,63 +511,63 @@
     "properties": {
       "query": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "Log query alert"
       },
       "timeAggregation": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "Aggregation type. Relevant and required only for rules of the kind LogAlert."
       },
       "metricMeasureColumn": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The column containing the metric measure number. Relevant only for rules of the kind LogAlert."
       },
       "resourceIdColumn": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The column containing the resource id. The content of the column must be a uri formatted as resource id. Relevant only for rules of the kind LogAlert."
       },
       "dimensions": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "List of Dimensions conditions"
       },
       "operator": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "The criteria operator. Relevant and required only for rules of the kind LogAlert."
       },
       "threshold": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "the criteria threshold value that activates the alert. Relevant and required only for rules of the kind LogAlert."
       },
       "failingPeriods": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "The minimum number of violations required within the selected lookback time window required to raise an alert. Relevant only for rules of the kind LogAlert."
       },
       "metricName": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The name of the metric to be sent. Relevant and required only for rules of the kind LogToMetric."
@@ -594,9 +598,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/33"
-      },
-      {
         "$ref": "#/34"
       },
       {
@@ -609,7 +610,10 @@
         "$ref": "#/37"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -619,21 +623,21 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 1,
         "description": "Name of the dimension"
       },
       "operator": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/43"
         },
         "flags": 1,
         "description": "Operator for dimension values"
       },
       "values": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/44"
         },
         "flags": 1,
         "description": "List of dimension values"
@@ -652,26 +656,26 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/40"
-      },
-      {
         "$ref": "#/41"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/39"
+      "$ref": "#/40"
     }
   },
   {
@@ -698,9 +702,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
-      },
-      {
         "$ref": "#/46"
       },
       {
@@ -713,7 +714,10 @@
         "$ref": "#/49"
       },
       {
-        "$ref": "#/0"
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
       }
     ]
   },
@@ -723,14 +727,14 @@
     "properties": {
       "numberOfEvaluationPeriods": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points. Default value is 1"
       },
       "minFailingPeriodsToAlert": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods. Default value is 1"
@@ -740,7 +744,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/32"
+      "$ref": "#/33"
     }
   },
   {
@@ -749,21 +753,21 @@
     "properties": {
       "actionGroups": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/55"
         },
         "flags": 0,
         "description": "Action Group resource Ids to invoke when the alert fires."
       },
       "customProperties": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "The properties of an alert payload."
       },
       "actionProperties": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/57"
         },
         "flags": 0,
         "description": "The properties of an action properties."
@@ -773,7 +777,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -781,7 +785,7 @@
     "name": "ActionsCustomProperties",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -789,7 +793,7 @@
     "name": "ActionsActionProperties",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/0"
+      "$ref": "#/2"
     }
   },
   {
@@ -798,14 +802,14 @@
     "properties": {
       "autoResolved": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "The flag that indicates whether or not to auto resolve a fired alert."
       },
       "timeToResolve": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "The duration a rule must evaluate as healthy before the fired alert is automatically resolved represented in ISO 8601 duration format."
@@ -817,7 +821,7 @@
     "name": "Microsoft.Insights/scheduledQueryRules@2023-03-15-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/3"
+      "$ref": "#/4"
     },
     "flags": 0
   }

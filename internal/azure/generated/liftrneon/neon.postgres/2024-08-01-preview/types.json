@@ -1,0 +1,591 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_\\-.: ]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Neon.Postgres/organizations"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Neon.Postgres/organizations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseDataOrganizationProperties",
+    "properties": {
+      "marketplaceDetails": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Marketplace details of the resource."
+      },
+      "userDetails": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Details of the user."
+      },
+      "companyDetails": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Details of the company."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "partnerOrganizationProperties": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Organization properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseMarketplaceDetails",
+    "properties": {
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "SaaS subscription id for the the marketplace offer"
+      },
+      "subscriptionStatus": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Marketplace subscription status"
+      },
+      "offerDetails": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Offer details for the marketplace that is selected by the user"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingFulfillmentStart"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscribed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsubscribed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseOfferDetails",
+    "properties": {
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher Id for the marketplace offer"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Offer Id for the marketplace offer"
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Plan Id for the marketplace offer"
+      },
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Name for the marketplace offer"
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Term Name for the marketplace offer"
+      },
+      "termId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Term Id for the marketplace offer"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseUserDetails",
+    "properties": {
+      "firstName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "First name of the user"
+      },
+      "lastName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Last name of the user"
+      },
+      "emailAddress": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Email address of the user"
+      },
+      "upn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's principal name"
+      },
+      "phoneNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "User's phone number"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseCompanyDetails",
+    "properties": {
+      "companyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Company name"
+      },
+      "country": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Country name of the company"
+      },
+      "officeAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Office address of the company"
+      },
+      "businessPhone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Business phone number of the company"
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Domain of the user"
+      },
+      "numberOfEmployees": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Number of employees in the company"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseDataPartnerOrganizationProperties",
+    "properties": {
+      "organizationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Organization Id in partner's system"
+      },
+      "organizationName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Organization name in partner's system"
+      },
+      "singleSignOnProperties": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Single Sign On properties for the organization"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseSingleSignOnProperties",
+    "properties": {
+      "singleSignOnState": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "State of the Single Sign On for the organization"
+      },
+      "enterpriseAppId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AAD enterprise application Id used to setup SSO"
+      },
+      "singleSignOnUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL for SSO to be used by the partner to redirect the user to their system"
+      },
+      "aadDomains": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "List of AAD domains fetched from Microsoft Graph for user."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Neon.Postgres/organizations@2024-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  }
+]

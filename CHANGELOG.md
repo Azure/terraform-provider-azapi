@@ -1,10 +1,11 @@
-## Unreleased
+## v2.0.1
 ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `Microsoft.Purview/accounts/Scanning/managedvirtualnetworks` type.
 - Support a default retry policy that retries when GET request fails with 404 status code after resource creation.
 - `azapi_resource`, `azapi_update_resource` resources and data sources' `output` field defaults to the readonly fields when the `response_export_values` is not specified.
 - `azapi_resource_list` data source's `output` field defaults to the response when the `response_export_values` is not specified.
 - `azapi` provider: Support `disable_default_output` field, which is used to disable the default output for the resources and data sources.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/c3ff45dfffe7f229447639b5982a1e2deadc1b71
 
 BUG FIXES:
 - Fix a bug that non-standard LRO error responses are not handled properly.

@@ -1,0 +1,1878 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DevHub/workflows"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DevHub/workflows",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Properties of a workflow."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkflowProperties",
+    "properties": {
+      "githubWorkflowProfile": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Profile of a github workflow."
+      },
+      "artifactGenerationProperties": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Properties for generating artifacts like dockerfile and manifests."
+      },
+      "azurePipelineProfile": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Profile of an azure pipeline."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubWorkflowProfile",
+    "properties": {
+      "repositoryOwner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Owner"
+      },
+      "repositoryName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Name"
+      },
+      "branchName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Branch Name"
+      },
+      "dockerfile": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to the Dockerfile within the repository."
+      },
+      "dockerBuildContext": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to Dockerfile Build Context within the repository."
+      },
+      "deploymentProperties": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Deployment details of the repository associated with the workflow."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Kubernetes namespace the application is deployed to."
+      },
+      "acr": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Information on the azure container registry"
+      },
+      "oidcCredentials": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The fields needed for OIDC with GitHub."
+      },
+      "aksResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure Kubernetes Cluster Resource the application will be deployed to."
+      },
+      "prURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The URL to the Pull Request submitted against the users repository."
+      },
+      "pullNumber": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The number associated with the submitted pull request."
+      },
+      "prStatus": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The status of the Pull Request submitted against the users repository."
+      },
+      "lastWorkflowRun": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0
+      },
+      "authStatus": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Determines the authorization status of requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Deployment",
+    "properties": {
+      "manifestType": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Determines the type of manifests within the repository."
+      },
+      "kubeManifestLocations": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0
+      },
+      "helmChartPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Helm chart directory path in repository."
+      },
+      "helmValues": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Helm Values.yaml file location in repository."
+      },
+      "overrides": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Manifest override values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "helm"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kube"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentOverrides",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ACR",
+    "properties": {
+      "acrSubscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ACR subscription id"
+      },
+      "acrResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ACR resource group"
+      },
+      "acrRegistryName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ACR registry"
+      },
+      "acrRepositoryName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ACR repository"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubWorkflowProfileOidcCredentials",
+    "properties": {
+      "azureClientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure Application Client ID"
+      },
+      "azureTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure Directory (tenant) ID"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "submitted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "merged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "removed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkflowRun",
+    "properties": {
+      "succeeded": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Describes if the workflow run succeeded."
+      },
+      "workflowRunURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "URL to the run of the workflow."
+      },
+      "lastRunAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last workflow run."
+      },
+      "workflowRunStatus": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Describes the status of the workflow run"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inprogress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "completed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authorized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotFound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ArtifactGenerationProperties",
+    "properties": {
+      "generationLanguage": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The programming language used."
+      },
+      "languageVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the language image used for execution in the generated dockerfile."
+      },
+      "builderVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the language image used for building the code in the generated dockerfile."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The port the application is exposed on."
+      },
+      "appName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the app."
+      },
+      "dockerfileOutputDirectory": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The directory to output the generated Dockerfile to."
+      },
+      "manifestOutputDirectory": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The directory to output the generated manifests to."
+      },
+      "dockerfileGenerationMode": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The mode of generation to be used for generating Dockerfiles."
+      },
+      "manifestGenerationMode": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The mode of generation to be used for generating Manifest."
+      },
+      "manifestType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Determines the type of manifests to be generated."
+      },
+      "imageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the image to be generated."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The namespace to deploy the application to."
+      },
+      "imageTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The tag to apply to the generated image."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clojure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "csharp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "erlang"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "go"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "gomodule"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "gradle"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "java"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "javascript"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "php"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "python"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ruby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rust"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "swift"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "helm"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kube"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzurePipelineProfile",
+    "properties": {
+      "repository": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Details of the ADO repository associated with the workflow."
+      },
+      "armServiceConnection": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the ARM Service Connection the pipeline is associated with."
+      },
+      "build": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Build details of the repository associated with the workflow."
+      },
+      "deployment": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Deployment details of the repository associated with the workflow."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Kubernetes namespace the application is deployed to."
+      },
+      "acr": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource identifier for azure container registry repository associated with the workflow."
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure Kubernetes Cluster Resource the application will be deployed to."
+      },
+      "pullRequest": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Details of the pull request containing the workflow."
+      },
+      "lastWorkflowRun": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0
+      },
+      "authStatus": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "Determines the authorization status of requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ADORepository",
+    "properties": {
+      "repositoryOwner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The owner of the repository the workflow is associated with."
+      },
+      "repositoryName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the repository the workflow is associated with."
+      },
+      "branchName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the branch the workflow is associated with."
+      },
+      "adoOrganization": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the Azure DevOps organization the pipeline is associated with."
+      },
+      "projectName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the project the pipeline is associated with."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Build",
+    "properties": {
+      "dockerfile": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to the Dockerfile within the repository."
+      },
+      "dockerBuildContext": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to Dockerfile Build Context within the repository."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PullRequest",
+    "properties": {
+      "prURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The URL to the Pull Request submitted against the users repository."
+      },
+      "pullNumber": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The number associated with the submitted pull request."
+      },
+      "prStatus": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "The status of the Pull Request submitted against the users repository."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "submitted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "merged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "removed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authorized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotFound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DevHub/workflows@2024-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DevHub/iacProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DevHub/iacProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Properties of a IacProfile."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IacProfileProperties",
+    "properties": {
+      "githubProfile": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "GitHub Profile of a IacProfile"
+      },
+      "terraformProfile": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "Terraform Profile of a IacProfile"
+      },
+      "stages": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0
+      },
+      "templates": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IacGitHubProfile",
+    "properties": {
+      "repositoryName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Name"
+      },
+      "repositoryMainBranch": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Main Branch"
+      },
+      "repositoryOwner": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Owner"
+      },
+      "authStatus": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "Determines the authorization status of requests."
+      },
+      "pullNumber": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The number associated with the submitted pull request."
+      },
+      "prStatus": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 2,
+        "description": "The status of the Pull Request submitted against the users repository."
+      },
+      "branchName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Repository Branch Name"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authorized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotFound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "submitted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "merged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "removed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TerraformProfile",
+    "properties": {
+      "storageAccountSubscription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Terraform Storage Account Subscription"
+      },
+      "storageAccountResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Terraform Storage Account Resource Group"
+      },
+      "storageAccountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Terraform Storage Account Name"
+      },
+      "storageContainerName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Terraform Container Name"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StageProperties",
+    "properties": {
+      "stageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stage Name"
+      },
+      "dependencies": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0
+      },
+      "gitEnvironment": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/96"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IacTemplateProperties",
+    "properties": {
+      "templateName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Template Name"
+      },
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "the source store of the template"
+      },
+      "instanceStage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "the source stage of the template"
+      },
+      "instanceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "the sample instance name of the template"
+      },
+      "templateDetails": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0
+      },
+      "quickStartTemplateType": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 2,
+        "description": "Determines the authorization status of requests."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IacTemplateDetails",
+    "properties": {
+      "productName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the products."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Count of the product"
+      },
+      "namingConvention": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Naming convention of this product"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/100"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HCI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HCIAKS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HCIARCVM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/99"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DevHub/iacProfiles@2024-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/83"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DevHub/locations/adooauth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DevHub/locations/adooauth",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 2,
+        "description": "Details of ADO OAuth."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdooAuth",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "user making request"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DevHub/locations/adooauth@2024-08-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/113"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubOAuthCallRequest",
+    "properties": {
+      "redirectUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL the client will redirect to on successful authentication. If empty, no redirect will occur."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubOAuthInfoResponse",
+    "properties": {
+      "authURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL for authorizing the Developer Hub GitHub App"
+      },
+      "token": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "OAuth token used to make calls to GitHub"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getGitHubOAuthInfo",
+    "resourceType": "Microsoft.DevHub/locations/githuboauth",
+    "apiVersion": "2024-08-01-preview",
+    "output": {
+      "$ref": "#/117"
+    },
+    "input": {
+      "$ref": "#/116"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GeneratePreviewArtifactsResponse",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generatePreviewArtifacts",
+    "resourceType": "Microsoft.DevHub/locations",
+    "apiVersion": "2024-08-01-preview",
+    "output": {
+      "$ref": "#/119"
+    },
+    "input": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdooAuthCallRequest",
+    "properties": {
+      "redirectUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL the client will redirect to on successful authentication. If empty, no redirect will occur."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdooAuthInfoResponse",
+    "properties": {
+      "authURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL used to authorize ADO app using Entra ID"
+      },
+      "token": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "OAuth token used to make calls to ADO APIs"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getADOOAuthInfo",
+    "resourceType": "Microsoft.DevHub/locations/adooauth",
+    "apiVersion": "2024-08-01-preview",
+    "output": {
+      "$ref": "#/122"
+    },
+    "input": {
+      "$ref": "#/121"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportTemplateRequest",
+    "properties": {
+      "templateName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Template Name"
+      },
+      "resourceGroupIds": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0
+      },
+      "siteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      },
+      "instanceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      },
+      "instanceStage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrLinkResponse",
+    "properties": {
+      "prLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The link of the pull request."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "export",
+    "resourceType": "Microsoft.DevHub/iacProfiles",
+    "apiVersion": "2024-08-01-preview",
+    "output": {
+      "$ref": "#/126"
+    },
+    "input": {
+      "$ref": "#/124"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScaleTemplateRequest",
+    "properties": {
+      "templateName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Template Name"
+      },
+      "scaleRequirement": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScaleProperty",
+    "properties": {
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The region of the store"
+      },
+      "stage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The stage of the store"
+      },
+      "numberOfStore": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Number of the store"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/129"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "scale",
+    "resourceType": "Microsoft.DevHub/iacProfiles",
+    "apiVersion": "2024-08-01-preview",
+    "output": {
+      "$ref": "#/126"
+    },
+    "input": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "sync",
+    "resourceType": "Microsoft.DevHub/iacProfiles",
+    "apiVersion": "2024-08-01-preview"
+  }
+]
