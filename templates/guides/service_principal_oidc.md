@@ -57,7 +57,7 @@ az rest --method POST \
 
 Where the body is:
 
-```json
+```shell
 {
   "name":"${REPO_NAME}-pull-request",
   "issuer":"https://token.actions.githubusercontent.com",
@@ -101,7 +101,7 @@ When running Terraform in GitHub Actions, the provider will detect the `ACTIONS_
 
 For GitHub Actions workflows, you'll need to ensure the workflow has `write` permissions for the `id-token`.
 
-```yaml
+```shell
 permissions:
   id-token: write
   contents: read
@@ -155,7 +155,7 @@ provider "azapi" {
 
 And here is an example of azure-pipelines.yml file:
 
-```yaml
+```shell
   - task: AzureCLI@2
     displayName: Acc Tests with OIDC Token
     inputs:
@@ -195,7 +195,7 @@ provider "azapi" {
 
 And here is an example of azure-pipelines.yml file:
 
-```yaml
+```shell
   - task: AzureCLI@2
     displayName: Acc Tests with OIDC Azure Pipeline
     inputs:

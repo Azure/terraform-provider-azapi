@@ -8,7 +8,7 @@ description: |-
 ## After applying the configuration, running terraform plan found there's still a change?
 
 More context:
-```
+```shell
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   ~ update in-place
 
