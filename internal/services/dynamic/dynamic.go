@@ -364,11 +364,15 @@ func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 }
 
 func SemanticallyEqual(a, b types.Dynamic) bool {
-	aJson, err := ToJSON(a)
+	aJson, err := ToJSONWithUnknownValueHandler(a, func(value attr.Value) ([]byte, error) {
+		return json.Marshal(nil)
+	})
 	if err != nil {
 		return false
 	}
-	bJson, err := ToJSON(b)
+	bJson, err := ToJSONWithUnknownValueHandler(b, func(value attr.Value) ([]byte, error) {
+		return json.Marshal(nil)
+	})
 	if err != nil {
 		return false
 	}

@@ -1,3 +1,7 @@
+## Unreleased
+BUG FIXES:
+- Fix a bug when `body` contains an unknown float number, the provider will crash.
+
 ## v2.0.1
 ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `Microsoft.Purview/accounts/Scanning/managedvirtualnetworks` type.
