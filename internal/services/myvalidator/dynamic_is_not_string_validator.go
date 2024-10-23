@@ -25,7 +25,7 @@ func (_ dynamicIsNotStringValidator) ValidateDynamic(ctx context.Context, req va
 	}
 
 	if _, ok := raw.UnderlyingValue().(types.String); ok {
-		resp.Diagnostics.AddAttributeError(req.Path, "Invalid Type", "The value must not be a string")
+		resp.Diagnostics.AddAttributeError(req.Path, "Invalid Type", "The value must not be a string. From 2.0, the value only accepts an HCL object. Please refer to the documentation for more information: https://registry.terraform.io/providers/Azure/azapi/latest/docs/guides/2.0-upgrade-guide#dynamic-properties-support")
 	}
 }
 
