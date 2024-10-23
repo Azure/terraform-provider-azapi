@@ -1,3 +1,7 @@
+## Unreleased
+BUG FIXES:
+- Fix a bug when `body` contains an unknown float number, the provider will crash.
+
 ## v2.0.1
 BREAKING CHANGES:
 - `azapi_resource`, `azapi_update_resource` resources and data sources' `output` field defaults to the readonly fields when the `response_export_values` is not specified.
