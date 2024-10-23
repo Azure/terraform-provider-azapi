@@ -6,12 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
-	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -23,16 +19,6 @@ func Retry404MaxElapsedTime() time.Duration {
 		}
 	}
 	return 2 * time.Minute
-}
-
-func CommonAttributeResponseExportValues() schema.DynamicAttribute {
-	return schema.DynamicAttribute{
-		Optional: true,
-		PlanModifiers: []planmodifier.Dynamic{
-			myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
-		},
-		MarkdownDescription: docstrings.ResponseExportValues(),
-	}
 }
 
 func buildOutputFromBody(responseBody interface{}, modelResponseExportValues types.Dynamic, defaultResult interface{}) (types.Dynamic, error) {

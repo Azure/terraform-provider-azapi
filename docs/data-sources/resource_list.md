@@ -23,15 +23,20 @@ provider "azapi" {
 }
 
 data "azapi_resource_list" "listBySubscription" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
-  parent_id              = "/subscriptions/00000000-0000-0000-0000-000000000000"
-  response_export_values = ["*"]
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000"
+  response_export_values = {
+    "values" = "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}"
+    "names"  = "value[].name"
+  }
 }
 
 data "azapi_resource_list" "listByResourceGroup" {
-  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
-  parent_id              = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"
-  response_export_values = ["*"]
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"
+  response_export_values = {
+    "names" = "value[].name"
+  }
 }
 
 data "azapi_resource_list" "listSubnetsByVnet" {
@@ -65,27 +70,46 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 - `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["value"]`, it will set the following HCL object to the computed property output.
 
 	```text
 	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
-				}
-			}
+	  "value" = [
+		{
+		  "id" = "/subscriptions/000000/resourceGroups/demo-rg/providers/Microsoft.Automation/automationAccounts/example"
+		  "location" = "eastus2"
+		  "name" = "example"
+		  "properties" = {
+			"creationTime" = "2024-10-11T08:18:38.737+00:00"
+			"disableLocalAuth" = false
+			"lastModifiedTime" = "2024-10-11T08:18:38.737+00:00"
+			"publicNetworkAccess" = true
+		  }
+		  "tags" = {}
+		  "type" = "Microsoft.Automation/AutomationAccounts"
 		}
+	  ]
 	}
 	```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"values": "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}", "names": "value[].name"}`, it will set the following HCL object to the computed property output.
 
 	```text
 	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
+		"names" = [
+			"example",
+			"fredaccount01",
+		]
+		"values" = [
+			{
+			  "name" = "example"
+			  "publicNetworkAccess" = true
+			},
+			{
+			  "name" = "fredaccount01"
+			  "publicNetworkAccess" = null
+			},
+		]
 	}
 	```
 

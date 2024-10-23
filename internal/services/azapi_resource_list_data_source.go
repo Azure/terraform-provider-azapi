@@ -72,7 +72,10 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				MarkdownDescription: docstrings.ParentID(),
 			},
 
-			"response_export_values": CommonAttributeResponseExportValues(),
+			"response_export_values": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: docstrings.ResponseExportValuesForResourceList(),
+			},
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,

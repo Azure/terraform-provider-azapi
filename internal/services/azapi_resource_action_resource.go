@@ -154,7 +154,13 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.Locks(),
 			},
 
-			"response_export_values": CommonAttributeResponseExportValues(),
+			"response_export_values": schema.DynamicAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,
