@@ -55,9 +55,9 @@ resource "azurerm_resource_group" "example" {
 resource "azapi_resource" "automationAccount" {
   type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "myAccount"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azurerm_resource_group.example.id
 
-  location = azurerm_resource_group.test.location
+  location = azurerm_resource_group.example.location
   body = {
     properties = {
       disableLocalAuth    = true
