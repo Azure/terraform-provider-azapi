@@ -97,7 +97,10 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				},
 			},
 
-			"response_export_values": CommonAttributeResponseExportValues(),
+			"response_export_values": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
 
 			"output": schema.DynamicAttribute{
 				Computed:            true,

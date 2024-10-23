@@ -222,7 +222,13 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
 			},
 
-			"response_export_values": CommonAttributeResponseExportValues(),
+			"response_export_values": schema.DynamicAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
 
 			"locks": schema.ListAttribute{
 				ElementType: types.StringType,
