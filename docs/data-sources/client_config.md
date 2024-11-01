@@ -39,6 +39,7 @@ output "tenant_id" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+- `object_id` (String)
 - `subscription_id` (String)
 - `tenant_id` (String)
 

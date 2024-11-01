@@ -16,6 +16,7 @@ type ClientConfigDataSourceModel struct {
 	ID             types.String   `tfsdk:"id"`
 	TenantID       types.String   `tfsdk:"tenant_id"`
 	SubscriptionID types.String   `tfsdk:"subscription_id"`
+	ObjectID       types.String   `tfsdk:"object_id"`
 	Timeouts       timeouts.Value `tfsdk:"timeouts"`
 }
 
@@ -50,6 +51,10 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 			"subscription_id": schema.StringAttribute{
 				Computed: true,
 			},
+
+			"object_id": schema.StringAttribute{
+				Computed: true,
+			},
 		},
 
 		Blocks: map[string]schema.Block{
@@ -77,9 +82,11 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 
 	subscriptionId := r.ProviderData.Account.GetSubscriptionId()
 	tenantId := r.ProviderData.Account.GetTenantId()
+	objectId := r.ProviderData.Account.GetObjectId()
 
 	model.ID = types.StringValue(fmt.Sprintf("clientConfigs/subscriptionId=%s;tenantId=%s", subscriptionId, tenantId))
 	model.SubscriptionID = types.StringValue(subscriptionId)
 	model.TenantID = types.StringValue(tenantId)
+	model.ObjectID = types.StringValue(objectId)
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

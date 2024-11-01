@@ -46,6 +46,7 @@ func TestAccClientConfigDataSource_azcli(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).Key("tenant_id").MatchesRegex(idRegex),
 				check.That(data.ResourceName).Key("subscription_id").MatchesRegex(idRegex),
+				check.That(data.ResourceName).Key("object_id").MatchesRegex(idRegex),
 			),
 		},
 	})

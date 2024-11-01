@@ -13,10 +13,11 @@ import (
 type ResourceManagerAccount struct {
 	tenantId       *string
 	subscriptionId *string
+	objectId       *string
 	mutex          *sync.Mutex
 }
 
-func NewResourceManagerAccount(tenantId, subscriptionId string) ResourceManagerAccount {
+func NewResourceManagerAccount(tenantId, subscriptionId, objectId string) ResourceManagerAccount {
 	out := ResourceManagerAccount{
 		mutex: &sync.Mutex{},
 	}
@@ -25,6 +26,9 @@ func NewResourceManagerAccount(tenantId, subscriptionId string) ResourceManagerA
 	}
 	if subscriptionId != "" {
 		out.subscriptionId = &subscriptionId
+	}
+	if objectId != "" {
+		out.objectId = &objectId
 	}
 	return out
 }
@@ -61,6 +65,38 @@ func (account *ResourceManagerAccount) GetSubscriptionId() string {
 		return ""
 	}
 	return *account.subscriptionId
+}
+
+func (account *ResourceManagerAccount) GetObjectId() string {
+	account.mutex.Lock()
+	defer account.mutex.Unlock()
+	if account.objectId != nil {
+		return *account.objectId
+	}
+
+	err := account.loadSignedInUserFromAzCmd()
+	if err != nil {
+		log.Printf("[DEBUG] Error getting user object ID: %s", err)
+	}
+
+	if account.objectId == nil {
+		log.Printf("[DEBUG] No object ID found")
+		return ""
+	}
+	return *account.objectId
+}
+
+func (account *ResourceManagerAccount) loadSignedInUserFromAzCmd() error {
+	var userModel struct {
+		ObjectId string `json:"id"`
+	}
+	err := jsonUnmarshalAzCmd(&userModel, "ad", "signed-in-user", "show")
+	if err != nil {
+		return fmt.Errorf("obtaining defaults from az cmd: %s", err)
+	}
+
+	account.objectId = &userModel.ObjectId
+	return nil
 }
 
 func (account *ResourceManagerAccount) loadDefaultsFromAzCmd() error {
