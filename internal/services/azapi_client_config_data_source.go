@@ -13,11 +13,12 @@ import (
 )
 
 type ClientConfigDataSourceModel struct {
-	ID             types.String   `tfsdk:"id"`
-	TenantID       types.String   `tfsdk:"tenant_id"`
-	SubscriptionID types.String   `tfsdk:"subscription_id"`
-	ObjectID       types.String   `tfsdk:"object_id"`
-	Timeouts       timeouts.Value `tfsdk:"timeouts"`
+	ID                     types.String   `tfsdk:"id"`
+	TenantID               types.String   `tfsdk:"tenant_id"`
+	SubscriptionID         types.String   `tfsdk:"subscription_id"`
+	SubscriptionResourceID types.String   `tfsdk:"subscription_resource_id"`
+	ObjectID               types.String   `tfsdk:"object_id"`
+	Timeouts               timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ClientConfigDataSource struct {
@@ -50,6 +51,11 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 
 			"subscription_id": schema.StringAttribute{
 				Computed: true,
+			},
+
+			"subscription_resource_id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`",
 			},
 
 			"object_id": schema.StringAttribute{
@@ -86,6 +92,7 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 
 	model.ID = types.StringValue(fmt.Sprintf("clientConfigs/subscriptionId=%s;tenantId=%s", subscriptionId, tenantId))
 	model.SubscriptionID = types.StringValue(subscriptionId)
+	model.SubscriptionResourceID = types.StringValue(fmt.Sprintf("/subscriptions/%s", subscriptionId))
 	model.TenantID = types.StringValue(tenantId)
 	model.ObjectID = types.StringValue(objectId)
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)

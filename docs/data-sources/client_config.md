@@ -41,6 +41,7 @@ output "tenant_id" {
 - `id` (String) The ID of this resource.
 - `object_id` (String)
 - `subscription_id` (String)
+- `subscription_resource_id` (String) The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`
 - `tenant_id` (String)
 
 <a id="nestedblock--timeouts"></a>
