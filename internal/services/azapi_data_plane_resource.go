@@ -176,9 +176,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					"\n" +
 					"```hcl\n" +
 					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
-					"  name      = var.name\n" +
-					"  type      = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
-					"  body      = {\n" +
+					"  name = var.name\n" +
+					"  type = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
+					"  body = {\n" +
 					"    properties = {\n" +
 					"      sku   = var.sku\n" +
 					"      zones = var.zones\n" +

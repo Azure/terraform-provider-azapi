@@ -184,7 +184,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 					"  name      = var.name\n" +
 					"  type      = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
 					"  parent_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example\"\n" +
-					"  body      = {\n" +
+					"  body = {\n" +
 					"    properties = {\n" +
 					"      sku   = var.sku\n" +
 					"      zones = var.zones\n" +
