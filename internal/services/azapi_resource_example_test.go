@@ -30,6 +30,13 @@ func TestAccExamples(t *testing.T) {
 
 			data := acceptance.BuildTestData(t, "azapi_resource", "test")
 			config := string(content)
+			config = strings.ReplaceAll(config, `terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}`, "")
 			config = strings.ReplaceAll(config, `default = "acctest0001"`, fmt.Sprintf(`default = "acctest%s"`, data.RandomString))
 
 			r := GenericResource{}
