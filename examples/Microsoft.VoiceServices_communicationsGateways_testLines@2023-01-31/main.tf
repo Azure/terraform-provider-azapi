@@ -79,7 +79,7 @@ resource "azapi_resource" "communicationsGateway" {
 }
 
 resource "azapi_resource" "TestLine" {
-  type = "Microsoft.VoiceServices/communicationsGateways/testLines@2023-01-31"
+  type      = "Microsoft.VoiceServices/communicationsGateways/testLines@2023-01-31"
   parent_id = azapi_resource.communicationsGateway.id
   name      = var.resource_name
   location  = var.location
