@@ -121,7 +121,7 @@ resource "azapi_resource" "example" {
   name      = var.name
   type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
-  body      = {
+  body = {
     properties = {
       sku   = var.sku
       zones = var.zones
