@@ -84,7 +84,7 @@ resource "azapi_resource" "staticCidr" {
         "10.0.0.0/25",
       ]
       numberOfIPAddressesToAllocate = ""
-      description = "test description"
+      description                   = "test description"
     }
   }
 }

@@ -71,7 +71,7 @@ resource "azapi_resource" "subnet" {
       ]
     }
   }
-  ignore_missing_property   = true # ignore serviceEndpointPolicies NOT in GET subnet response
+  ignore_missing_property = true # ignore serviceEndpointPolicies NOT in GET subnet response
 }
 
 resource "azapi_resource" "networkInterface" {
@@ -103,7 +103,7 @@ resource "azapi_resource" "networkInterface" {
 resource "azapi_resource" "virtualMachine" {
   type      = "Microsoft.Compute/virtualMachines@2023-03-01"
   parent_id = azapi_resource.resourceGroup.id
-  name      = "terraform-armstrong-test-vm" 
+  name      = var.resource_name
   location  = var.location
   body = {
     properties = {
@@ -144,7 +144,7 @@ resource "azapi_resource" "virtualMachine" {
       }
     }
   }
-  ignore_missing_property   = true # ignore adminPassword as NOT part of GET vm response
+  ignore_missing_property = true # ignore adminPassword as NOT part of GET vm response
 }
 
 resource "azapi_resource" "networkManager" {
