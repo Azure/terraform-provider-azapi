@@ -46,7 +46,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-const PrivateStateKeyCreateMode = "create_mode"
 const FlagMoveState = "move_state"
 
 type AzapiResourceModel struct {
@@ -908,7 +907,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		state.Body = payload
 	}
 
-	if v, _ := request.Private.GetKey(ctx, PrivateStateKeyCreateMode); v != nil && string(v) == FlagMoveState {
+	if v, _ := request.Private.GetKey(ctx, FlagMoveState); v != nil && string(v) == "true" {
 		payload, err := flattenBody(responseBody, id.ResourceDef)
 		if err != nil {
 			response.Diagnostics.AddError("Invalid body", err.Error())
@@ -1068,7 +1067,7 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 				state.ParentID = types.StringValue(id.ParentId)
 				state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-				response.TargetPrivate.SetKey(ctx, PrivateStateKeyCreateMode, []byte(FlagMoveState))
+				response.Diagnostics.Append(response.TargetPrivate.SetKey(ctx, FlagMoveState, []byte("true"))...)
 				response.Diagnostics.Append(response.TargetState.Set(ctx, state)...)
 			},
 		},
