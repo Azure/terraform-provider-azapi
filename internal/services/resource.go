@@ -69,6 +69,28 @@ func canResourceHaveProperty(resourceDef *aztypes.ResourceType, property string)
 	return false
 }
 
+func flattenBody(responseBody interface{}, resourceDef *aztypes.ResourceType) (types.Dynamic, error) {
+	body := utils.NormalizeObject(responseBody)
+
+	if resourceDef != nil {
+		writeOnlyBody := (*resourceDef).GetWriteOnly(body)
+		if bodyMap, ok := writeOnlyBody.(map[string]interface{}); ok {
+			delete(bodyMap, "location")
+			delete(bodyMap, "tags")
+			delete(bodyMap, "name")
+			delete(bodyMap, "identity")
+			writeOnlyBody = bodyMap
+		}
+		body = writeOnlyBody
+	}
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		return types.DynamicNull(), err
+	}
+	return dynamic.FromJSONImplied(data)
+}
+
 func flattenOutput(responseBody interface{}, paths []string) attr.Value {
 	for _, path := range paths {
 		if path == "*" {
