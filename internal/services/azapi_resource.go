@@ -1058,7 +1058,7 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 				}
 				id, err := parse.ResourceID(requestID)
 				if err != nil {
-					response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request, err).Error())
+					response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", requestID, err).Error())
 					return
 				}
 
