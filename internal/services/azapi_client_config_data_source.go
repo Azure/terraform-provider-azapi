@@ -82,7 +82,6 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 	if response.Diagnostics.HasError() {
 		return
 	}
-
 	ctx, cancel := context.WithTimeout(ctx, readTimeout)
 	defer cancel()
 
