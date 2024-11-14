@@ -46,11 +46,13 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 			},
 
 			"tenant_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The tenant ID. E.g. `00000000-0000-0000-0000-000000000000`",
 			},
 
 			"subscription_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The subscription ID. E.g. `00000000-0000-0000-0000-000000000000`",
 			},
 
 			"subscription_resource_id": schema.StringAttribute{
@@ -59,7 +61,8 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 			},
 
 			"object_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The object ID of the identity. E.g. `00000000-0000-0000-0000-000000000000`",
 			},
 		},
 
