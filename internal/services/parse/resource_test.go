@@ -292,7 +292,7 @@ func Test_ResourceIDWithResourceType(t *testing.T) {
 	}
 }
 
-func Test_ResourceIDWithApiVersion(t *testing.T) {
+func Test_ResourceIDContainsApiVersion(t *testing.T) {
 	testData := []struct {
 		Input            string
 		Error            bool
@@ -485,7 +485,7 @@ func Test_ResourceIDWithApiVersion(t *testing.T) {
 	for _, v := range testData {
 		t.Logf("[DEBUG] Testing %q", v.Input)
 
-		actual, err := ResourceIDWithApiVersion(v.Input)
+		actual, err := ResourceIDContainsApiVersion(v.Input)
 		if err != nil {
 			if v.Error {
 				continue

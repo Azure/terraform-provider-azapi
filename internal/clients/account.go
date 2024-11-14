@@ -52,7 +52,7 @@ func (account *ResourceManagerAccount) GetTenantId() string {
 	}
 
 	if account.tenantId == nil {
-		log.Printf("[DEBUG] No tenant ID found")
+		log.Printf("[DEBUG] No default tenant ID found")
 		return ""
 	}
 
