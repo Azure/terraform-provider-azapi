@@ -95,18 +95,19 @@ func (account *ResourceManagerAccount) GetObjectId() string {
 		log.Printf("[DEBUG] Error getting requesting token from credentials: %s", err)
 	}
 
-	cl, err := parseTokenClaims(tok.Token)
-	if err != nil {
-		log.Printf("[DEBUG] Error getting object id from token: %s", err)
-	}
-	if cl != nil && cl.ObjectId != "" {
-		account.objectId = &cl.ObjectId
-		return cl.ObjectId
-	}
-
-	err = account.loadSignedInUserFromAzCmd()
-	if err != nil {
-		log.Printf("[DEBUG] Error getting user object ID from az cli: %s", err)
+	if tok.Token == "" {
+		err = account.loadSignedInUserFromAzCmd()
+		if err != nil {
+			log.Printf("[DEBUG] Error getting user object ID from az cli: %s", err)
+		}
+	} else {
+		cl, err := parseTokenClaims(tok.Token)
+		if err != nil {
+			log.Printf("[DEBUG] Error getting object id from token: %s", err)
+		}
+		if cl != nil && cl.ObjectId != "" {
+			account.objectId = &cl.ObjectId
+		}
 	}
 
 	if account.objectId == nil {
