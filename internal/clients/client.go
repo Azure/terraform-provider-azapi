@@ -23,6 +23,7 @@ type Client struct {
 	DataPlaneClient *DataPlaneClient
 
 	Account ResourceManagerAccount
+	Option  *Option
 }
 
 type Option struct {
@@ -42,6 +43,7 @@ type Option struct {
 func (client *Client) Build(ctx context.Context, o *Option) error {
 	client.StopContext = ctx
 	client.Features = o.Features
+	client.Option = o
 
 	azlog.SetListener(func(cls azlog.Event, msg string) {
 		log.Printf("[DEBUG] %s %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
@@ -131,7 +133,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	}
 	client.DataPlaneClient = dataPlaneClient
 
-	client.Account = NewResourceManagerAccount(o.TenantId, o.SubscriptionId)
+	client.Account = NewResourceManagerAccount(client)
 
 	return nil
 }

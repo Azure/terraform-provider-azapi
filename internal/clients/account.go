@@ -2,36 +2,46 @@ package clients
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os/exec"
 	"strings"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 type ResourceManagerAccount struct {
 	tenantId       *string
 	subscriptionId *string
+	objectId       *string
 	mutex          *sync.Mutex
+	client         *Client
 }
 
-func NewResourceManagerAccount(tenantId, subscriptionId string) ResourceManagerAccount {
+func NewResourceManagerAccount(client *Client) ResourceManagerAccount {
 	out := ResourceManagerAccount{
 		mutex: &sync.Mutex{},
 	}
-	if tenantId != "" {
-		out.tenantId = &tenantId
+	if client != nil && client.Account.tenantId != nil && *client.Account.tenantId != "" {
+		out.tenantId = client.Account.tenantId
 	}
-	if subscriptionId != "" {
-		out.subscriptionId = &subscriptionId
+	if client != nil && client.Account.subscriptionId != nil && *client.Account.subscriptionId != "" {
+		out.subscriptionId = client.Account.subscriptionId
 	}
+	// We lazy load object ID because it's not always needed and could cause a performance hit
+	out.client = client
 	return out
 }
 
 func (account *ResourceManagerAccount) GetTenantId() string {
 	account.mutex.Lock()
 	defer account.mutex.Unlock()
+
 	if account.tenantId != nil {
 		return *account.tenantId
 	}
@@ -52,6 +62,7 @@ func (account *ResourceManagerAccount) GetTenantId() string {
 func (account *ResourceManagerAccount) GetSubscriptionId() string {
 	account.mutex.Lock()
 	defer account.mutex.Unlock()
+
 	if account.subscriptionId != nil {
 		return *account.subscriptionId
 	}
@@ -62,10 +73,62 @@ func (account *ResourceManagerAccount) GetSubscriptionId() string {
 	}
 
 	if account.subscriptionId == nil {
-		log.Printf("[DEBUG] No default subscription ID found")
+		log.Printf("[DEBUG] No subscription ID found")
 		return ""
 	}
+
 	return *account.subscriptionId
+}
+
+func (account *ResourceManagerAccount) GetObjectId() string {
+	account.mutex.Lock()
+	defer account.mutex.Unlock()
+
+	if account.objectId != nil {
+		return *account.objectId
+	}
+
+	tok, err := account.client.Option.Cred.GetToken(account.client.StopContext, policy.TokenRequestOptions{
+		TenantID: account.client.Option.TenantId,
+		Scopes:   []string{account.client.Option.CloudCfg.Services[cloud.ResourceManager].Endpoint + "/.default"}})
+	if err != nil {
+		log.Printf("[DEBUG] Error getting requesting token from credentials: %s", err)
+	}
+
+	if tok.Token == "" {
+		err = account.loadSignedInUserFromAzCmd()
+		if err != nil {
+			log.Printf("[DEBUG] Error getting user object ID from az cli: %s", err)
+		}
+	} else {
+		cl, err := parseTokenClaims(tok.Token)
+		if err != nil {
+			log.Printf("[DEBUG] Error getting object id from token: %s", err)
+		}
+		if cl != nil && cl.ObjectId != "" {
+			account.objectId = &cl.ObjectId
+		}
+	}
+
+	if account.objectId == nil {
+		log.Printf("[DEBUG] No object ID found")
+		return ""
+	}
+
+	return *account.objectId
+}
+
+func (account *ResourceManagerAccount) loadSignedInUserFromAzCmd() error {
+	var userModel struct {
+		ObjectId string `json:"id"`
+	}
+	err := jsonUnmarshalAzCmd(&userModel, "ad", "signed-in-user", "show")
+	if err != nil {
+		return fmt.Errorf("obtaining defaults from az cmd: %s", err)
+	}
+
+	account.objectId = &userModel.ObjectId
+	return nil
 }
 
 func (account *ResourceManagerAccount) loadDefaultsFromAzCmd() error {
@@ -114,4 +177,41 @@ func jsonUnmarshalAzCmd(i interface{}, arg ...string) error {
 	}
 
 	return nil
+}
+
+func parseTokenClaims(token string) (*tokenClaims, error) {
+	// Parse the token to get the claims
+	parts := strings.Split(token, ".")
+	if len(parts) != 3 {
+		return nil, errors.New("parseTokenClaims: token does not have 3 parts")
+	}
+	decoded, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return nil, fmt.Errorf("parseTokenClaims: error decoding token: %s", err)
+	}
+	var claims tokenClaims
+	err = json.Unmarshal(decoded, &claims)
+	if err != nil {
+		return nil, fmt.Errorf("parseTokenClaims: error unmarshalling claims: %w", err)
+	}
+	return &claims, nil
+}
+
+type tokenClaims struct {
+	Audience          string   `json:"aud"`
+	Expires           int64    `json:"exp"`
+	IssuedAt          int64    `json:"iat"`
+	Issuer            string   `json:"iss"`
+	IdentityProvider  string   `json:"idp"`
+	ObjectId          string   `json:"oid"`
+	Roles             []string `json:"roles"`
+	Scopes            string   `json:"scp"`
+	Subject           string   `json:"sub"`
+	TenantRegionScope string   `json:"tenant_region_scope"`
+	TenantId          string   `json:"tid"`
+	Version           string   `json:"ver"`
+
+	AppDisplayName string `json:"app_displayname,omitempty"`
+	AppId          string `json:"appid,omitempty"`
+	IdType         string `json:"idtyp,omitempty"`
 }
