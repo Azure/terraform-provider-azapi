@@ -2,6 +2,7 @@ package clients
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -11,30 +12,33 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+type ObjectIDProvider func() (string, error)
+
 type ResourceManagerAccount struct {
-	tenantId       *string
-	subscriptionId *string
-	objectId       *string
-	mutex          *sync.Mutex
-	client         *Client
+	tenantId         *string
+	subscriptionId   *string
+	objectId         *string
+	mutex            *sync.Mutex
+	objectIDProvider ObjectIDProvider
 }
 
-func NewResourceManagerAccount(client *Client) ResourceManagerAccount {
+func NewResourceManagerAccount(tenantId, subscriptionId string, provider ObjectIDProvider) ResourceManagerAccount {
 	out := ResourceManagerAccount{
 		mutex: &sync.Mutex{},
 	}
-	if client != nil && client.Account.tenantId != nil && *client.Account.tenantId != "" {
-		out.tenantId = client.Account.tenantId
+	if tenantId != "" {
+		out.tenantId = &tenantId
 	}
-	if client != nil && client.Account.subscriptionId != nil && *client.Account.subscriptionId != "" {
-		out.subscriptionId = client.Account.subscriptionId
+	if subscriptionId != "" {
+		out.subscriptionId = &subscriptionId
 	}
 	// We lazy load object ID because it's not always needed and could cause a performance hit
-	out.client = client
+	out.objectIDProvider = provider
 	return out
 }
 
@@ -88,28 +92,21 @@ func (account *ResourceManagerAccount) GetObjectId() string {
 		return *account.objectId
 	}
 
-	tok, err := account.client.Option.Cred.GetToken(account.client.StopContext, policy.TokenRequestOptions{
-		TenantID: account.client.Option.TenantId,
-		Scopes:   []string{account.client.Option.CloudCfg.Services[cloud.ResourceManager].Endpoint + "/.default"}})
+	if account.objectIDProvider != nil {
+		objectId, err := account.objectIDProvider()
+		if err != nil {
+			log.Printf("[DEBUG] Error getting object ID: %s", err)
+		}
+		if objectId != "" {
+			account.objectId = &objectId
+			return *account.objectId
+		}
+	}
+
+	err := account.loadSignedInUserFromAzCmd()
 	if err != nil {
-		log.Printf("[DEBUG] Error getting requesting token from credentials: %s", err)
+		log.Printf("[DEBUG] Error getting user object ID from az cli: %s", err)
 	}
-
-	if tok.Token == "" {
-		err = account.loadSignedInUserFromAzCmd()
-		if err != nil {
-			log.Printf("[DEBUG] Error getting user object ID from az cli: %s", err)
-		}
-	} else {
-		cl, err := parseTokenClaims(tok.Token)
-		if err != nil {
-			log.Printf("[DEBUG] Error getting object id from token: %s", err)
-		}
-		if cl != nil && cl.ObjectId != "" {
-			account.objectId = &cl.ObjectId
-		}
-	}
-
 	if account.objectId == nil {
 		log.Printf("[DEBUG] No object ID found")
 		return ""
@@ -214,4 +211,26 @@ type tokenClaims struct {
 	AppDisplayName string `json:"app_displayname,omitempty"`
 	AppId          string `json:"appid,omitempty"`
 	IdType         string `json:"idtyp,omitempty"`
+}
+
+func ParsedTokenClaimsObjectIDProvider(ctx context.Context, cred azcore.TokenCredential, tenantId string, cloudCfg cloud.Configuration) ObjectIDProvider {
+	return func() (string, error) {
+		tok, err := cred.GetToken(ctx, policy.TokenRequestOptions{
+			TenantID: tenantId,
+			Scopes:   []string{cloudCfg.Services[cloud.ResourceManager].Endpoint + "/.default"}})
+		if err != nil {
+			return "", fmt.Errorf("getting requesting token from credentials: %w", err)
+		}
+		if tok.Token == "" {
+			return "", errors.New("token is empty")
+		}
+		cl, err := parseTokenClaims(tok.Token)
+		if err != nil {
+			return "", fmt.Errorf("getting object id from token: %w", err)
+		}
+		if cl == nil || cl.ObjectId == "" {
+			return "", errors.New("object id is empty")
+		}
+		return cl.ObjectId, nil
+	}
 }
