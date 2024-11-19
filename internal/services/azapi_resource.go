@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 	"strings"
 	"time"
 
@@ -670,7 +671,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	}
 
 	// create/update the resource
-	for _, lockId := range AsStringList(plan.Locks) {
+	lockIds := AsStringList(plan.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}
@@ -953,7 +956,9 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		return
 	}
 
-	for _, lockId := range AsStringList(model.Locks) {
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}

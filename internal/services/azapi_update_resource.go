@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -381,9 +382,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
 	}
 
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(model.UpdateHeaders, model.UpdateQueryParameters))

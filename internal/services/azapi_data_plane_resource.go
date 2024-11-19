@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -419,10 +420,11 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
 	}
-
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
 	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(model.CreateHeaders, model.CreateQueryParameters))
@@ -593,7 +595,9 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		return
 	}
 
-	for _, lockId := range AsStringList(model.Locks) {
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}

@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -315,9 +316,11 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
 	var client clients.Requester
