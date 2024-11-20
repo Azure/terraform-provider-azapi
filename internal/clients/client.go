@@ -133,7 +133,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 	}
 	client.DataPlaneClient = dataPlaneClient
 
-	client.Account = NewResourceManagerAccount(client)
+	client.Account = NewResourceManagerAccount(o.TenantId, o.SubscriptionId, ParsedTokenClaimsObjectIDProvider(o.Cred, o.CloudCfg))
 
 	return nil
 }

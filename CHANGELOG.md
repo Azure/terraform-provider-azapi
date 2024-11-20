@@ -1,6 +1,7 @@
 ## Unreleased
 FEATURES:
 - `azapi_resource` resource: Support resource move operation, it allows moving resources from `azurerm` provider.
+- `azapi_client_config` data source: Support `object_id` field.
 
 BUG FIXES:
 - Fix a bug when `body` contains an unknown float number, the provider will crash.
