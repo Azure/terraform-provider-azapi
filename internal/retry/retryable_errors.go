@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"regexp"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -585,6 +586,19 @@ func (v RetryValue) GetErrorMessageRegex() []string {
 	res := make([]string, len(v.ErrorMessageRegex.Elements()))
 	for i, elem := range v.ErrorMessageRegex.Elements() {
 		res[i] = elem.(types.String).ValueString()
+	}
+	return res
+}
+
+func (v RetryValue) GetErrorMessageRegexAsRegexp() []regexp.Regexp {
+	regexs := v.GetErrorMessageRegex()
+	if regexs == nil {
+		return nil
+	}
+	res := make([]regexp.Regexp, len(regexs))
+	for i, str := range regexs {
+		re := regexp.MustCompile(str)
+		res[i] = *re
 	}
 	return res
 }
