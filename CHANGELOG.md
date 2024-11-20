@@ -6,6 +6,7 @@ FEATURES:
 BUG FIXES:
 - Fix a bug when `body` contains an unknown float number, the provider will crash.
 - Fix the crash that occurs when no tenant ID is configured in Azure CLI.
+- Fix a bug that using multiple locks can result in a deadlock.
 
 ## v2.0.1
 BREAKING CHANGES:

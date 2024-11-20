@@ -1464,7 +1464,7 @@ resource "azapi_resource" "test2" {
     }
   }
 
-  locks = [azapi_resource.routeTable.id, azapi_resource.resourceGroup.id]
+  locks = [azapi_resource.resourceGroup.id, azapi_resource.routeTable.id]
 }
 `, r.template(data), data.RandomInteger, data.RandomString)
 }
