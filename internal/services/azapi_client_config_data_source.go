@@ -90,7 +90,7 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 
 	subscriptionId := r.ProviderData.Account.GetSubscriptionId()
 	tenantId := r.ProviderData.Account.GetTenantId()
-	objectId := r.ProviderData.Account.GetObjectId()
+	objectId := r.ProviderData.Account.GetObjectId(ctx)
 
 	model.ID = types.StringValue(fmt.Sprintf("clientConfigs/subscriptionId=%s;tenantId=%s", subscriptionId, tenantId))
 	model.SubscriptionID = types.StringValue(subscriptionId)

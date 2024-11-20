@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-type ObjectIDProvider func() (string, error)
+type ObjectIDProvider func(ctx context.Context) (string, error)
 
 type ResourceManagerAccount struct {
 	tenantId         *string
@@ -84,7 +84,7 @@ func (account *ResourceManagerAccount) GetSubscriptionId() string {
 	return *account.subscriptionId
 }
 
-func (account *ResourceManagerAccount) GetObjectId() string {
+func (account *ResourceManagerAccount) GetObjectId(ctx context.Context) string {
 	account.mutex.Lock()
 	defer account.mutex.Unlock()
 
@@ -93,7 +93,7 @@ func (account *ResourceManagerAccount) GetObjectId() string {
 	}
 
 	if account.objectIDProvider != nil {
-		objectId, err := account.objectIDProvider()
+		objectId, err := account.objectIDProvider(ctx)
 		if err != nil {
 			log.Printf("[DEBUG] Error getting object ID: %s", err)
 		}
@@ -213,11 +213,11 @@ type tokenClaims struct {
 	IdType         string `json:"idtyp,omitempty"`
 }
 
-func ParsedTokenClaimsObjectIDProvider(ctx context.Context, cred azcore.TokenCredential, tenantId string, cloudCfg cloud.Configuration) ObjectIDProvider {
-	return func() (string, error) {
-		tok, err := cred.GetToken(ctx, policy.TokenRequestOptions{
-			TenantID: tenantId,
-			Scopes:   []string{cloudCfg.Services[cloud.ResourceManager].Endpoint + "/.default"}})
+func ParsedTokenClaimsObjectIDProvider(cred azcore.TokenCredential, cloudCfg cloud.Configuration) ObjectIDProvider {
+	return func(ctx context.Context) (string, error) {
+		tok, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{
+			EnableCAE: true,
+			Scopes:    []string{cloudCfg.Services[cloud.ResourceManager].Audience + "/.default"}})
 		if err != nil {
 			return "", fmt.Errorf("getting requesting token from credentials: %w", err)
 		}
