@@ -606,9 +606,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	tflog.Info(ctx, "azapi_resource.CreateUpdate begin", map[string]interface{}{
-		"id": types.StringValue(id.ID()),
-	})
+	ctx = tflog.SetField(ctx, "id", types.StringValue(id.ID()))
+	tflog.Info(ctx, "azapi_resource: CreateUpdate begin")
+	defer tflog.Info(ctx, "azapi_resource: CreateUpdate end")
 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
@@ -621,7 +621,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Retry.GetErrorMessageRegex(),
 		)
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate using retry for create/update", map[string]interface{}{
-			"id":                       types.StringValue(id.ID()),
 			"backoff_interval":         bkof.InitialInterval,
 			"backoff_max_interval":     bkof.MaxInterval,
 			"backoff_max_elapsed_time": bkof.MaxElapsedTime,
@@ -631,10 +630,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate determined if new resource", map[string]interface{}{
-		"id":              types.StringValue(id.ID()),
-		"is_new_resource": isNewResource,
-	})
+	ctx = tflog.SetField(ctx, "is_new_resource", isNewResource)
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate determined if new resource")
 	var timeout time.Duration
 	var diags diag.Diagnostics
 	if isNewResource {
@@ -698,13 +695,10 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	if !isNewResource {
 		options = clients.NewRequestOptions(plan.UpdateHeaders, plan.UpdateQueryParameters)
 	}
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate create/update resource", map[string]interface{}{
-		"id": types.StringValue(id.ID()),
-	})
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate client call create/update resource")
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, options)
 	if err != nil {
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate create/update resource failed", map[string]interface{}{
-			"id":  types.StringValue(id.ID()),
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate client call create/update resource failed", map[string]interface{}{
 			"err": err,
 		})
 		if isNewResource {
@@ -742,9 +736,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
 		return
 	}
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate create/update resource success", map[string]interface{}{
-		"id": types.StringValue(id.ID()),
-	})
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate create/update resource success")
 	// Create a new retry client to handle specific case of transient 404 after resource creation
 	clientGetAfterPut := r.ProviderData.ResourceClient.WithRetry(
 		backoff.NewExponentialBackOff(
@@ -761,14 +753,12 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		},
 	)
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation", map[string]interface{}{
-		"id":               types.StringValue(id.ID()),
 		"retryable_errors": plan.Retry.GetErrorMessageRegex(),
 		"backoff_max_time": Retry404MaxElapsedTime().String(),
 	})
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation failed", map[string]interface{}{
-			"id":  types.StringValue(id.ID()),
 			"err": err,
 		})
 		if utils.ResponseErrorWasNotFound(err) {
@@ -807,7 +797,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Identity = identity.ToList(planIdentity)
 		}
 	}
-
 	diagnostics.Append(responseState.Set(ctx, plan)...)
 }
 

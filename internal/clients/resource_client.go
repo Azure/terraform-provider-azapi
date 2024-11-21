@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/cenkalti/backoff/v4"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 const (
@@ -120,15 +121,29 @@ func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Con
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "CreateOrUpdate")
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.CreateOrUpdate(ctx, resourceID, apiVersion, body, options)
 			if err != nil {
-				if isRetryable(*retryclient, data, err) {
+				if isRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
@@ -201,15 +216,29 @@ func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resou
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "Get")
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.Get(ctx, resourceID, apiVersion, options)
 			if err != nil {
-				if isRetryable(*retryclient, data, err) {
+				if isRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
@@ -263,15 +292,29 @@ func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, re
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "Delete")
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.Delete(ctx, resourceID, apiVersion, options)
 			if err != nil {
-				if isRetryable(*retryclient, data, err) {
+				if isRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
@@ -344,15 +387,29 @@ func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, re
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "Action")
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body, options)
 			if err != nil {
-				if isRetryable(*retryclient, data, err) {
+				if isRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
@@ -443,15 +500,29 @@ func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url 
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "List")
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.List(ctx, url, apiVersion, options)
 			if err != nil {
-				if isRetryable(*retryclient, data, err) {
+				if isRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
@@ -569,22 +640,35 @@ func (client *ResourceClient) shouldIgnorePollingError(err error) bool {
 	return false
 }
 
-func isRetryable(retryclient ResourceClientRetryableErrors, data interface{}, err error) bool {
+func isRetryable(ctx context.Context, retryclient ResourceClientRetryableErrors, data interface{}, err error) bool {
 	for _, e := range retryclient.errors {
 		if e.MatchString(err.Error()) {
+			tflog.Debug(ctx, "isRetryable: Error is retryable by regex", map[string]interface{}{
+				"err":    err,
+				"regexp": e.String(),
+			})
 			return true
 		}
 	}
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
 		if slices.Contains(retryclient.statusCodes, respErr.StatusCode) {
+			tflog.Debug(ctx, "isRetryable: Error is retryable by status code", map[string]interface{}{
+				"err":        err,
+				"statusCode": respErr.StatusCode,
+			})
 			return true
 		}
 	}
-	for _, f := range retryclient.dataCallbackFuncs {
+	for i, f := range retryclient.dataCallbackFuncs {
 		if f(data) {
+			tflog.Debug(ctx, "isRetryable: Error is retryable by function callback", map[string]interface{}{
+				"err":               err,
+				"callback_func_idx": i,
+			})
 			return true
 		}
 	}
+	tflog.Debug(ctx, "isRetryable: Error is not retryable")
 	return false
 }
