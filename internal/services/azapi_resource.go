@@ -91,7 +91,8 @@ type AzapiResource struct {
 }
 
 func (r *AzapiResource) Configure(ctx context.Context, request resource.ConfigureRequest, _ *resource.ConfigureResponse) {
-	tflog.Info(ctx, "Configuring the azapi_resource resource")
+	tflog.Info(ctx, "azapi_resource: configure")
+	defer tflog.Info(ctx, "azapi_resource: configure done")
 	if v, ok := request.ProviderData.(*clients.Client); ok {
 		r.ProviderData = v
 	}
@@ -606,7 +607,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	ctx = tflog.SetField(ctx, "resource_id", id.String())
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 	tflog.Info(ctx, "azapi_resource: CreateUpdate begin")
 	defer tflog.Info(ctx, "azapi_resource: CreateUpdate end")
 
@@ -620,13 +621,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Retry.GetRandomizationFactor(),
 			plan.Retry.GetErrorMessageRegex(),
 		)
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate using retry for create/update", map[string]interface{}{
-			"backoff_interval":         bkof.InitialInterval.String(),
-			"backoff_max_interval":     bkof.MaxInterval.String(),
-			"backoff_max_elapsed_time": bkof.MaxElapsedTime.String(),
-			"backoff_multiplier":       bkof.Multiplier,
-			"retryable_errors":         plan.Retry.GetErrorMessageRegex(),
-		})
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
@@ -752,10 +747,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			},
 		},
 	)
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation", map[string]interface{}{
-		"retryable_errors": plan.Retry.GetErrorMessageRegex(),
-		"backoff_max_time": Retry404MaxElapsedTime().String(),
-	})
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation failed", map[string]interface{}{

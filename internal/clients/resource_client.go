@@ -113,6 +113,20 @@ func (client *ResourceClient) WithRetry(bkof *backoff.ExponentialBackOff, errReg
 	return rcre
 }
 
+func (retryclient *ResourceClientRetryableErrors) updateContext(ctx context.Context) context.Context {
+	ctx = tflog.SetField(ctx, "backoff_max_elapsed_time", retryclient.backoff.MaxElapsedTime.String())
+	ctx = tflog.SetField(ctx, "backoff_initial_interval", retryclient.backoff.InitialInterval.String())
+	ctx = tflog.SetField(ctx, "backoff_max_interval", retryclient.backoff.MaxInterval.String())
+	ctx = tflog.SetField(ctx, "backoff_multiplier", retryclient.backoff.Multiplier)
+	ctx = tflog.SetField(ctx, "backoff_randomization_factor", retryclient.backoff.RandomizationFactor)
+	re := make([]string, len(retryclient.errors))
+	for i, r := range retryclient.errors {
+		re[i] = r.String()
+	}
+	ctx = tflog.SetField(ctx, "retryable_errors", re)
+	return ctx
+}
+
 // CreateOrUpdate configures the retryable errors for the client.
 // It calls CreateOrUpdate, then checks if the error is contained in the retryable errors list.
 // If it is, it will retry the operation with the configured backoff.
@@ -122,6 +136,7 @@ func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Con
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	ctx = tflog.SetField(ctx, "request", "CreateOrUpdate")
+	ctx = retryclient.updateContext(ctx)
 	tflog.Debug(ctx, "retryclient: Begin")
 	i := 0
 	op := backoff.OperationWithData[interface{}](
@@ -218,6 +233,7 @@ func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resou
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	ctx = tflog.SetField(ctx, "request", "Get")
+	ctx = retryclient.updateContext(ctx)
 	tflog.Debug(ctx, "retryclient: Begin")
 	i := 0
 	op := backoff.OperationWithData[interface{}](
@@ -295,6 +311,7 @@ func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, re
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	ctx = tflog.SetField(ctx, "request", "Delete")
+	ctx = retryclient.updateContext(ctx)
 	tflog.Debug(ctx, "retryclient: Begin")
 	i := 0
 	op := backoff.OperationWithData[interface{}](
@@ -391,6 +408,7 @@ func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, re
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	ctx = tflog.SetField(ctx, "request", "Action")
+	ctx = retryclient.updateContext(ctx)
 	tflog.Debug(ctx, "retryclient: Begin")
 	i := 0
 	op := backoff.OperationWithData[interface{}](
@@ -505,6 +523,7 @@ func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url 
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
 	ctx = tflog.SetField(ctx, "request", "List")
+	ctx = retryclient.updateContext(ctx)
 	tflog.Debug(ctx, "retryclient: Begin")
 	i := 0
 	op := backoff.OperationWithData[interface{}](

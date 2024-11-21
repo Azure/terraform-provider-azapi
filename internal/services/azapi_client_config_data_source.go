@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type ClientConfigDataSourceModel struct {
@@ -79,6 +80,8 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 	if response.Diagnostics.Append(request.Config.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
+	tflog.Info(ctx, "azapi_client_config: Read begin")
+	defer tflog.Info(ctx, "azapi_client_config: Read end")
 
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
