@@ -606,7 +606,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	ctx = tflog.SetField(ctx, "id", types.StringValue(id.ID()))
+	ctx = tflog.SetField(ctx, "resource_id", id.String())
 	tflog.Info(ctx, "azapi_resource: CreateUpdate begin")
 	defer tflog.Info(ctx, "azapi_resource: CreateUpdate end")
 
@@ -621,9 +621,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Retry.GetErrorMessageRegex(),
 		)
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate using retry for create/update", map[string]interface{}{
-			"backoff_interval":         bkof.InitialInterval,
-			"backoff_max_interval":     bkof.MaxInterval,
-			"backoff_max_elapsed_time": bkof.MaxElapsedTime,
+			"backoff_interval":         bkof.InitialInterval.String(),
+			"backoff_max_interval":     bkof.MaxInterval.String(),
+			"backoff_max_elapsed_time": bkof.MaxElapsedTime.String(),
 			"backoff_multiplier":       bkof.Multiplier,
 			"retryable_errors":         plan.Retry.GetErrorMessageRegex(),
 		})

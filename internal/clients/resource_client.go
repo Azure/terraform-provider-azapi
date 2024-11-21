@@ -133,6 +133,7 @@ func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Con
 						"err":     err,
 						"attempt": i,
 					})
+					i++
 					return data, err
 				}
 				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
@@ -228,6 +229,7 @@ func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resou
 						"err":     err,
 						"attempt": i,
 					})
+					i++
 					return data, err
 				}
 				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
@@ -304,6 +306,7 @@ func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, re
 						"err":     err,
 						"attempt": i,
 					})
+					i++
 					return data, err
 				}
 				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
@@ -399,6 +402,7 @@ func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, re
 						"err":     err,
 						"attempt": i,
 					})
+					i++
 					return data, err
 				}
 				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
@@ -512,6 +516,7 @@ func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url 
 						"err":     err,
 						"attempt": i,
 					})
+					i++
 					return data, err
 				}
 				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
