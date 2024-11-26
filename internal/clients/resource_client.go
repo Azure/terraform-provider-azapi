@@ -119,6 +119,8 @@ func (retryclient *ResourceClientRetryableErrors) updateContext(ctx context.Cont
 	ctx = tflog.SetField(ctx, "backoff_max_interval", retryclient.backoff.MaxInterval.String())
 	ctx = tflog.SetField(ctx, "backoff_multiplier", retryclient.backoff.Multiplier)
 	ctx = tflog.SetField(ctx, "backoff_randomization_factor", retryclient.backoff.RandomizationFactor)
+	ctx = tflog.SetField(ctx, "retryable_http_status_codes", retryclient.statusCodes)
+	ctx = tflog.SetField(ctx, "retryable_data_callback_funcs_length", len(retryclient.dataCallbackFuncs))
 	re := make([]string, len(retryclient.errors))
 	for i, r := range retryclient.errors {
 		re[i] = r.String()

@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type ResourceListDataSourceModel struct {
@@ -130,6 +131,8 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
 	var client clients.Requester
@@ -142,6 +145,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
+		tflog.Debug(ctx, "data.azapi_resource_list.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 

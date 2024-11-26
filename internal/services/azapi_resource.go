@@ -91,8 +91,6 @@ type AzapiResource struct {
 }
 
 func (r *AzapiResource) Configure(ctx context.Context, request resource.ConfigureRequest, _ *resource.ConfigureResponse) {
-	tflog.Info(ctx, "azapi_resource: configure")
-	defer tflog.Info(ctx, "azapi_resource: configure done")
 	if v, ok := request.ProviderData.(*clients.Client); ok {
 		r.ProviderData = v
 	}
@@ -608,8 +606,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	}
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
-	tflog.Info(ctx, "azapi_resource: CreateUpdate begin")
-	defer tflog.Info(ctx, "azapi_resource: CreateUpdate end")
 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
@@ -626,7 +622,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 	ctx = tflog.SetField(ctx, "is_new_resource", isNewResource)
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate determined if new resource")
 	var timeout time.Duration
 	var diags diag.Diagnostics
 	if isNewResource {
@@ -652,8 +647,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			return
 		}
 
-		// 403 is returned if group does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
-		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && strings.EqualFold("Microsoft.Management/managementGroups", id.AzureResourceType)) {
+		// 403 is returned if group (or child resource of group) does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
+		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}
@@ -690,7 +685,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	if !isNewResource {
 		options = clients.NewRequestOptions(plan.UpdateHeaders, plan.UpdateQueryParameters)
 	}
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate client call create/update resource")
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, options)
 	if err != nil {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate client call create/update resource failed", map[string]interface{}{
@@ -731,15 +725,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
 		return
 	}
-	tflog.Debug(ctx, "azapi_resource.CreateUpdate create/update resource success")
-	// Create a new retry client to handle specific case of transient 404 after resource creation
+	// Create a new retry client to handle specific case of transient 404 or empty body after resource creation
 	clientGetAfterPut := r.ProviderData.ResourceClient.WithRetry(
 		backoff.NewExponentialBackOff(
 			backoff.WithInitialInterval(5*time.Second),
 			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(Retry404MaxElapsedTime()),
+			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
 		),
-		plan.Retry.GetErrorMessageRegexAsRegexp(),
+		nil,
 		[]int{404},
 		[]func(d interface{}) bool{
 			func(d interface{}) bool {
@@ -750,9 +743,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation failed", map[string]interface{}{
-			"err": err,
-		})
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
 			responseState.RemoveResource(ctx)
@@ -813,6 +803,8 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -823,6 +815,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
+		tflog.Debug(ctx, "azapi_resource.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
@@ -944,6 +937,14 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		return
 	}
 
+	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Error parsing ID", err.Error())
+		return
+	}
+
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -954,6 +955,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 			model.Retry.GetRandomizationFactor(),
 			model.Retry.GetErrorMessageRegex(),
 		)
+		tflog.Debug(ctx, "azapi_resource.Delete is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
@@ -965,12 +967,6 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()
-
-	id, err := parse.ResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
-	if err != nil {
-		response.Diagnostics.AddError("Error parsing ID", err.Error())
-		return
-	}
 
 	lockIds := AsStringList(model.Locks)
 	slices.Sort(lockIds)
@@ -1231,4 +1227,12 @@ func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]in
 		diags.AddError("Invalid configuration", `can't specify both the argument "identity" and "identity" in the argument "body"`)
 	}
 	return diags
+}
+
+func isManagementGroupScope(scope string) bool {
+	const managementGroupScope = "/providers/microsoft.management/managementgroups"
+	return strings.HasPrefix(
+		strings.ToLower(scope),
+		managementGroupScope,
+	)
 }
