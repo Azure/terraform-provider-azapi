@@ -1,0 +1,1200 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-.]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DevOpsInfrastructure/pools"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-19"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DevOpsInfrastructure/pools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The status of the current operation."
+      },
+      "maximumConcurrency": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Defines how many resources can there be created at any given time."
+      },
+      "organizationProfile": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "Defines the organization in which the pool will be used."
+      },
+      "agentProfile": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "Defines how the machine will be handled once it executed a job."
+      },
+      "fabricProfile": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 1,
+        "description": "Defines the type of fabric the agent will run on."
+      },
+      "devCenterProjectResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the DevCenter Project the pool belongs to."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 10000
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "OrganizationProfile",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "AzureDevOps": {
+        "$ref": "#/16"
+      },
+      "GitHub": {
+        "$ref": "#/29"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureDevOpsOrganizationProfile",
+    "properties": {
+      "organizations": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 1,
+        "description": "The list of Azure DevOps organizations the pool should be present in."
+      },
+      "permissionProfile": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The type of permission which determines which accounts are admins on the Azure DevOps pool."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 1,
+        "description": "Discriminator property for OrganizationProfile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Organization",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure DevOps organization URL in which the pool should be created."
+      },
+      "projects": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Optional list of projects in which the pool should be created."
+      },
+      "parallelism": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/17"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureDevOpsPermissionProfile",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Determines who has admin permissions to the Azure DevOps pool."
+      },
+      "users": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "User email addresses"
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Group email addresses"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inherit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CreatorOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SpecificAccounts"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureDevOps"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubOrganizationProfile",
+    "properties": {
+      "organizations": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "The list of GitHub organizations/repositories the pool should be present in."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "Discriminator property for OrganizationProfile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitHubOrganization",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The GitHub organization URL in which the pool should be created."
+      },
+      "repositories": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Optional list of repositories in which the pool should be created."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/30"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GitHub"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AgentProfile",
+    "discriminator": "kind",
+    "baseProperties": {
+      "resourcePredictions": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Defines pool buffer/stand-by agents."
+      },
+      "resourcePredictionsProfile": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Defines how the pool buffer/stand-by agents is provided."
+      }
+    },
+    "elements": {
+      "Stateful": {
+        "$ref": "#/47"
+      },
+      "Stateless": {
+        "$ref": "#/49"
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ResourcePredictionsProfile",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "Automatic": {
+        "$ref": "#/37"
+      },
+      "Manual": {
+        "$ref": "#/45"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomaticResourcePredictionsProfile",
+    "properties": {
+      "predictionPreference": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Determines the balance between cost and performance."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "Determines how the stand-by scheme should be provided."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Balanced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MostCostEffective"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MoreCostEffective"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MorePerformance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BestPerformance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManualResourcePredictionsProfile",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Determines how the stand-by scheme should be provided."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Stateful",
+    "properties": {
+      "maxAgentLifetime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "How long should stateful machines be kept around. The maximum is one week."
+      },
+      "gracePeriodTimeSpan": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "How long should the machine be kept around after it ran a workload when there are no stand-by agents. The maximum is one week."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Discriminator property for AgentProfile."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stateful"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StatelessAgentProfile",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "Discriminator property for AgentProfile."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stateless"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FabricProfile",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "Vmss": {
+        "$ref": "#/52"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmssFabricProfile",
+    "properties": {
+      "sku": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "The Azure SKU of the machines in the pool."
+      },
+      "images": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "The VM images of the machines in the pool."
+      },
+      "osProfile": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The OS profile of the machines in the pool."
+      },
+      "storageProfile": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The storage profile of the machines in the pool."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "The network profile of the machines in the pool."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 1,
+        "description": "Discriminator property for FabricProfile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DevOpsAzureSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure SKU name of the machines in the pool."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolImage",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource id of the image."
+      },
+      "wellKnownImageName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The image to use from a well-known set of images made available to customers."
+      },
+      "aliases": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "List of aliases to reference the image by."
+      },
+      "buffer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The percentage of the buffer to be allocated to this image."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/54"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OsProfile",
+    "properties": {
+      "secretsManagementSettings": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The secret management settings of the machines in the pool."
+      },
+      "logonType": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Determines how the service should be run. By default, this will be set to Service."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecretsManagementSettings",
+    "properties": {
+      "certificateStoreLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Where to store certificates on the machine."
+      },
+      "observedCertificates": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "The list of certificates to install on all machines in the pool."
+      },
+      "keyExportable": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Defines if the key of the certificates should be exportable."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Service"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Interactive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageProfile",
+    "properties": {
+      "osDiskStorageAccountType": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The Azure SKU name of the machines in the pool."
+      },
+      "dataDisks": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "A list of empty data disks to attach."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataDisk",
+    "properties": {
+      "caching": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/."
+      },
+      "diskSizeGiB": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The initial disk size in gigabytes."
+      },
+      "storageAccountType": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The storage Account type to be used for the data disk. If omitted, the default is \"standard_lrs\"."
+      },
+      "driveLetter": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The drive letter for the empty data disk. If not specified, it will be the first available letter."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_ZRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkProfile",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The subnet id on which to put all machines created in the pool."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Vmss"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/90"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DevOpsInfrastructure/pools@2024-10-19",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  }
+]

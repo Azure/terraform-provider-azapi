@@ -46,37 +46,44 @@
         "flags": 10,
         "description": "The resource api version"
       },
+      "kind": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Distinguishes the kind of cluster. Read-only."
+      },
       "sku": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/8"
         },
         "flags": 1,
         "description": "The SKU to create, which affects price, performance, and features."
       },
       "zones": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "The Availability Zones where this cluster will be deployed."
       },
       "identity": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/67"
         },
         "flags": 0,
         "description": "The identity of the resource."
       },
       "properties": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "Other properties of the cluster."
       },
       "tags": {
         "type": {
-          "$ref": "#/127"
+          "$ref": "#/130"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -91,19 +98,41 @@
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "v1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "v2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ObjectType",
     "name": "Sku",
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/64"
         },
         "flags": 1,
         "description": "The level of Redis Enterprise cluster to deploy. Possible values: ('Balanced_B5', 'MemoryOptimized_M10', 'ComputeOptimized_X5', etc.). For more information on SKUs see the latest pricing documentation. Note that additional SKUs may become supported in the future."
       },
       "capacity": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "This property is only used with Enterprise and EnterpriseFlash SKUs. Determines the size of the cluster. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for EnterpriseFlash SKUs."
@@ -334,15 +363,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
         "$ref": "#/9"
       },
       {
@@ -499,6 +519,15 @@
         "$ref": "#/60"
       },
       {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -518,28 +547,28 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 2,
         "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
       },
       "tenantId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 2,
         "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
       },
       "type": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/73"
         },
         "flags": 1,
         "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
@@ -572,16 +601,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/66"
-      },
-      {
-        "$ref": "#/67"
-      },
-      {
-        "$ref": "#/68"
-      },
-      {
         "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
       },
       {
         "$ref": "#/2"
@@ -594,14 +623,14 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 2,
         "description": "The principal ID of the assigned identity."
       },
       "clientId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 2,
         "description": "The client ID of the assigned identity."
@@ -613,7 +642,7 @@
     "name": "UserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/71"
+      "$ref": "#/74"
     }
   },
   {
@@ -622,21 +651,21 @@
     "properties": {
       "highAvailability": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA, and increases the risk of data loss."
       },
       "minimumTlsVersion": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are mentioned only for the sake of consistency with old API versions."
       },
       "encryption": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Encryption-at-rest configuration for the cluster."
@@ -650,21 +679,21 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/96"
         },
         "flags": 2,
         "description": "Current provisioning status of the cluster"
       },
       "redundancyMode": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/100"
         },
         "flags": 2,
         "description": "Explains the current redundancy strategy of the cluster, which affects the expected SLA."
       },
       "resourceState": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/115"
         },
         "flags": 2,
         "description": "Current resource status of the cluster"
@@ -678,7 +707,7 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/129"
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with the specified Redis Enterprise cluster"
@@ -697,10 +726,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/74"
+        "$ref": "#/77"
       },
       {
-        "$ref": "#/75"
+        "$ref": "#/78"
       },
       {
         "$ref": "#/2"
@@ -723,13 +752,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/77"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/79"
+        "$ref": "#/82"
       },
       {
         "$ref": "#/2"
@@ -742,7 +771,7 @@
     "properties": {
       "customerManagedKeyEncryption": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed key encryption."
@@ -755,7 +784,7 @@
     "properties": {
       "keyEncryptionKeyIdentity": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault."
@@ -782,7 +811,7 @@
       },
       "identityType": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "Only userAssignedIdentity is supported in this API version; other types may be supported in the future"
@@ -801,10 +830,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/84"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/88"
       },
       {
         "$ref": "#/2"
@@ -839,15 +868,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/89"
-      },
-      {
         "$ref": "#/90"
       },
       {
@@ -855,6 +875,15 @@
       },
       {
         "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
       },
       {
         "$ref": "#/2"
@@ -877,13 +906,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/94"
+        "$ref": "#/97"
       },
       {
-        "$ref": "#/95"
+        "$ref": "#/98"
       },
       {
-        "$ref": "#/96"
+        "$ref": "#/99"
       },
       {
         "$ref": "#/2"
@@ -950,15 +979,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/98"
-      },
-      {
-        "$ref": "#/99"
-      },
-      {
-        "$ref": "#/100"
-      },
-      {
         "$ref": "#/101"
       },
       {
@@ -992,6 +1012,15 @@
         "$ref": "#/111"
       },
       {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1002,7 +1031,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/117"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -1036,21 +1065,21 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/118"
         },
         "flags": 0,
         "description": "The resource of private end point."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/119"
         },
         "flags": 1,
         "description": "A collection of information about the state of the connection between service consumer and provider."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/128"
         },
         "flags": 2,
         "description": "The provisioning state of the private endpoint connection resource."
@@ -1076,7 +1105,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
@@ -1113,13 +1142,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/117"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/118"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/119"
+        "$ref": "#/122"
       },
       {
         "$ref": "#/2"
@@ -1146,16 +1175,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/121"
-      },
-      {
-        "$ref": "#/122"
-      },
-      {
-        "$ref": "#/123"
-      },
-      {
         "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
       },
       {
         "$ref": "#/2"
@@ -1165,7 +1194,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/113"
+      "$ref": "#/116"
     }
   },
   {
@@ -1213,28 +1242,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/129"
+          "$ref": "#/132"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/130"
+          "$ref": "#/133"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/135"
         },
         "flags": 0,
         "description": "Other properties of the database."
       },
       "systemData": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/199"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1247,63 +1276,63 @@
     "properties": {
       "clientProtocol": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/138"
         },
         "flags": 0,
         "description": "Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted."
       },
       "port": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "TCP port of the database endpoint. Specified at create time. Defaults to an available port."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/145"
         },
         "flags": 2,
         "description": "Current provisioning status of the database"
       },
       "resourceState": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/160"
         },
         "flags": 2,
         "description": "Current resource status of the database"
       },
       "clusteringPolicy": {
         "type": {
-          "$ref": "#/160"
+          "$ref": "#/163"
         },
         "flags": 0,
         "description": "Clustering policy - default is OSSCluster. This property must be chosen at create time, and cannot be changed without deleting the database."
       },
       "evictionPolicy": {
         "type": {
-          "$ref": "#/169"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "Redis eviction policy - default is VolatileLRU"
       },
       "persistence": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/173"
         },
         "flags": 0,
         "description": "Persistence settings"
       },
       "modules": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/183"
         },
         "flags": 0,
         "description": "Optional set of redis modules to enable in this database - modules can only be added at creation time."
       },
       "geoReplication": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/184"
         },
         "flags": 0,
         "description": "Optional set of properties to configure geo replication for this database."
@@ -1317,14 +1346,14 @@
       },
       "deferUpgrade": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/195"
         },
         "flags": 0,
         "description": "Option to defer upgrade when newest version is released - default is NotDeferred. Learn more: https://aka.ms/redisversionupgrade"
       },
       "accessKeysAuthentication": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/198"
         },
         "flags": 0,
         "description": "This property can be Enabled/Disabled to allow or deny access with the current access keys. Can be updated even after database is created."
@@ -1343,10 +1372,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/133"
+        "$ref": "#/136"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/137"
       },
       {
         "$ref": "#/2"
@@ -1381,15 +1410,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/136"
-      },
-      {
-        "$ref": "#/137"
-      },
-      {
-        "$ref": "#/138"
-      },
-      {
         "$ref": "#/139"
       },
       {
@@ -1397,6 +1417,15 @@
       },
       {
         "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
       },
       {
         "$ref": "#/2"
@@ -1463,15 +1492,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/143"
-      },
-      {
-        "$ref": "#/144"
-      },
-      {
-        "$ref": "#/145"
-      },
-      {
         "$ref": "#/146"
       },
       {
@@ -1505,6 +1525,15 @@
         "$ref": "#/156"
       },
       {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1521,10 +1550,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/158"
+        "$ref": "#/161"
       },
       {
-        "$ref": "#/159"
+        "$ref": "#/162"
       },
       {
         "$ref": "#/2"
@@ -1567,15 +1596,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/161"
-      },
-      {
-        "$ref": "#/162"
-      },
-      {
-        "$ref": "#/163"
-      },
-      {
         "$ref": "#/164"
       },
       {
@@ -1591,6 +1611,15 @@
         "$ref": "#/168"
       },
       {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1601,28 +1630,28 @@
     "properties": {
       "aofEnabled": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/174"
         },
         "flags": 0,
         "description": "Sets whether AOF is enabled. Note that at most one of AOF or RDB persistence may be enabled."
       },
       "rdbEnabled": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/174"
         },
         "flags": 0,
         "description": "Sets whether RDB is enabled. Note that at most one of AOF or RDB persistence may be enabled."
       },
       "aofFrequency": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/177"
         },
         "flags": 0,
         "description": "Sets the frequency at which data is written to disk. Defaults to '1s', meaning 'every second'. Note that the 'always' setting is deprecated, because of its performance impact."
       },
       "rdbFrequency": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/181"
         },
         "flags": 0,
         "description": "Sets the frequency at which a snapshot of the database is created."
@@ -1644,10 +1673,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/172"
+        "$ref": "#/175"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/176"
       },
       {
         "$ref": "#/2"
@@ -1670,13 +1699,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/175"
+        "$ref": "#/178"
       },
       {
-        "$ref": "#/176"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/177"
+        "$ref": "#/180"
       },
       {
         "$ref": "#/2"
@@ -1713,7 +1742,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/179"
+      "$ref": "#/182"
     }
   },
   {
@@ -1729,7 +1758,7 @@
       },
       "linkedDatabases": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "List of database resources to link with this database"
@@ -1749,7 +1778,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/191"
         },
         "flags": 2,
         "description": "State of the link between the database resources."
@@ -1780,19 +1809,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/183"
-      },
-      {
-        "$ref": "#/184"
-      },
-      {
-        "$ref": "#/185"
-      },
-      {
         "$ref": "#/186"
       },
       {
         "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
       },
       {
         "$ref": "#/2"
@@ -1802,7 +1831,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/182"
+      "$ref": "#/185"
     }
   },
   {
@@ -1817,10 +1846,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/190"
+        "$ref": "#/193"
       },
       {
-        "$ref": "#/191"
+        "$ref": "#/194"
       },
       {
         "$ref": "#/2"
@@ -1839,10 +1868,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/193"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/194"
+        "$ref": "#/197"
       },
       {
         "$ref": "#/2"
@@ -1862,7 +1891,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/201"
+          "$ref": "#/204"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -1883,7 +1912,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/206"
+          "$ref": "#/209"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -1917,16 +1946,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/197"
-      },
-      {
-        "$ref": "#/198"
-      },
-      {
-        "$ref": "#/199"
-      },
-      {
         "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
       },
       {
         "$ref": "#/2"
@@ -1953,16 +1982,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/202"
-      },
-      {
-        "$ref": "#/203"
-      },
-      {
-        "$ref": "#/204"
-      },
-      {
         "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
       },
       {
         "$ref": "#/2"
@@ -1974,7 +2003,7 @@
     "name": "Microsoft.Cache/redisEnterprise/databases@2024-09-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/131"
+      "$ref": "#/134"
     },
     "flags": 0
   },
@@ -2006,21 +2035,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/211"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/209"
+          "$ref": "#/212"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/214"
         },
         "flags": 0,
         "description": "Properties of the access policy assignment."
@@ -2033,21 +2062,21 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/218"
+          "$ref": "#/221"
         },
         "flags": 2,
         "description": "Current provisioning status of the access policy assignment."
       },
       "accessPolicyName": {
         "type": {
-          "$ref": "#/219"
+          "$ref": "#/222"
         },
         "flags": 1,
         "description": "Name of access policy under specific access policy assignment. Only \"default\" policy is supported for now."
       },
       "user": {
         "type": {
-          "$ref": "#/220"
+          "$ref": "#/223"
         },
         "flags": 1,
         "description": "The user associated with the access policy."
@@ -2082,15 +2111,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/212"
-      },
-      {
-        "$ref": "#/213"
-      },
-      {
-        "$ref": "#/214"
-      },
-      {
         "$ref": "#/215"
       },
       {
@@ -2098,6 +2118,15 @@
       },
       {
         "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
       },
       {
         "$ref": "#/2"
@@ -2126,7 +2155,7 @@
     "name": "Microsoft.Cache/redisEnterprise/databases/accessPolicyAssignments@2024-09-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/210"
+      "$ref": "#/213"
     },
     "flags": 0
   },
@@ -2158,21 +2187,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/225"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/226"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/117"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -2184,7 +2213,7 @@
     "name": "Microsoft.Cache/redisEnterprise/privateEndpointConnections@2024-09-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/224"
+      "$ref": "#/227"
     },
     "flags": 0
   },
@@ -2214,7 +2243,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "output": {
-      "$ref": "#/226"
+      "$ref": "#/229"
     }
   },
   {
@@ -2223,7 +2252,7 @@
     "properties": {
       "keyType": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/234"
         },
         "flags": 1,
         "description": "Which access key to regenerate."
@@ -2242,10 +2271,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/229"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/230"
+        "$ref": "#/233"
       }
     ]
   },
@@ -2255,10 +2284,10 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "output": {
-      "$ref": "#/226"
+      "$ref": "#/229"
     },
     "input": {
-      "$ref": "#/228"
+      "$ref": "#/231"
     }
   },
   {
@@ -2267,7 +2296,7 @@
     "properties": {
       "sasUris": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/237"
         },
         "flags": 1,
         "description": "SAS URIs for the target blobs to import from"
@@ -2286,7 +2315,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "input": {
-      "$ref": "#/233"
+      "$ref": "#/236"
     }
   },
   {
@@ -2295,7 +2324,7 @@
     "properties": {
       "sasUri": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/240"
         },
         "flags": 1,
         "description": "SAS URI for the target directory to export to"
@@ -2312,7 +2341,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "input": {
-      "$ref": "#/236"
+      "$ref": "#/239"
     }
   },
   {
@@ -2321,7 +2350,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/243"
         },
         "flags": 1,
         "description": "The resource IDs of the database resources to be unlinked."
@@ -2340,7 +2369,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "input": {
-      "$ref": "#/239"
+      "$ref": "#/242"
     }
   },
   {
@@ -2356,7 +2385,7 @@
       },
       "linkedDatabases": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/246"
         },
         "flags": 1,
         "description": "The resource IDs of the databases that are expected to be linked and included in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it is splintered."
@@ -2366,7 +2395,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/182"
+      "$ref": "#/185"
     }
   },
   {
@@ -2375,7 +2404,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "input": {
-      "$ref": "#/242"
+      "$ref": "#/245"
     }
   },
   {
@@ -2384,7 +2413,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/249"
         },
         "flags": 0,
         "description": "The identifiers of all the other database resources in the georeplication group to be flushed."
@@ -2403,7 +2432,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-09-01-preview",
     "input": {
-      "$ref": "#/245"
+      "$ref": "#/248"
     }
   },
   {

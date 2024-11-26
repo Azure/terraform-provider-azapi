@@ -1,7 +1,10 @@
-## Unreleased
+## v2.1.0
 FEATURES:
 - `azapi_resource` resource: Support resource move operation, it allows moving resources from `azurerm` provider.
+
+ENHANCEMENTS:
 - `azapi_client_config` data source: Support `object_id` field.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/401bed53e5495fb79f6c3357d9befb9fea158b1f
 
 BUG FIXES:
 - Fix a bug when `body` contains an unknown float number, the provider will crash.
