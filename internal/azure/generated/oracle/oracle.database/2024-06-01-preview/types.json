@@ -186,14 +186,14 @@
           "$ref": "#/27"
         },
         "flags": 2,
-        "description": "The list of [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases located in Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous Database Serverless instances, standby databases located in the same region as the source primary database do not have OCIDs."
+        "description": "The list of Azure resource IDs of standby databases located in Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous Database Serverless instances, standby databases located in the same region as the source primary database do not have Azure IDs."
       },
       "peerDbId": {
         "type": {
           "$ref": "#/10"
         },
         "flags": 4,
-        "description": "The database OCID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
+        "description": "The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
       },
       "isLocalDataGuardEnabled": {
         "type": {
@@ -2017,7 +2017,7 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The Azure ID of the Autonomous Database that was cloned to create the current Autonomous Database."
+        "description": "The Azure resource ID of the Autonomous Database that was cloned to create the current Autonomous Database."
       },
       "cloneType": {
         "type": {
@@ -4360,10 +4360,10 @@
       },
       "retentionPeriodInDays": {
         "type": {
-          "$ref": "#/341"
+          "$ref": "#/32"
         },
         "flags": 0,
-        "description": "Retention period, in days, for long-term backups."
+        "description": "Retention period, in days"
       },
       "sizeInTbs": {
         "type": {
@@ -4395,14 +4395,14 @@
       },
       "backupType": {
         "type": {
-          "$ref": "#/345"
+          "$ref": "#/344"
         },
         "flags": 2,
         "description": "The type of backup."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/350"
+          "$ref": "#/349"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
@@ -4453,11 +4453,6 @@
     ]
   },
   {
-    "$type": "IntegerType",
-    "minValue": 60,
-    "maxValue": 3650
-  },
-  {
     "$type": "StringLiteralType",
     "value": "Incremental"
   },
@@ -4473,13 +4468,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/341"
+      },
+      {
         "$ref": "#/342"
       },
       {
         "$ref": "#/343"
-      },
-      {
-        "$ref": "#/344"
       },
       {
         "$ref": "#/2"
@@ -4506,6 +4501,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/345"
+      },
+      {
         "$ref": "#/346"
       },
       {
@@ -4513,9 +4511,6 @@
       },
       {
         "$ref": "#/348"
-      },
-      {
-        "$ref": "#/349"
       },
       {
         "$ref": "#/2"
@@ -4558,28 +4553,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/352"
+          "$ref": "#/351"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/353"
+          "$ref": "#/352"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/354"
+          "$ref": "#/353"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/356"
+          "$ref": "#/355"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -4634,14 +4629,14 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/361"
+          "$ref": "#/360"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
       },
       "lifecycleState": {
         "type": {
-          "$ref": "#/367"
+          "$ref": "#/366"
         },
         "flags": 2,
         "description": "virtual network address lifecycle state."
@@ -4675,6 +4670,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/356"
+      },
+      {
         "$ref": "#/357"
       },
       {
@@ -4682,9 +4680,6 @@
       },
       {
         "$ref": "#/359"
-      },
-      {
-        "$ref": "#/360"
       },
       {
         "$ref": "#/2"
@@ -4715,6 +4710,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/361"
+      },
+      {
         "$ref": "#/362"
       },
       {
@@ -4727,9 +4725,6 @@
         "$ref": "#/365"
       },
       {
-        "$ref": "#/366"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -4739,7 +4734,7 @@
     "name": "Oracle.Database/cloudVmClusters/virtualNetworkAddresses@2024-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/355"
+      "$ref": "#/354"
     },
     "flags": 0
   },
@@ -4771,21 +4766,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/369"
+          "$ref": "#/368"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/370"
+          "$ref": "#/369"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/371"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -4817,7 +4812,7 @@
     "name": "Oracle.Database/locations/autonomousDatabaseCharacterSets@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/371"
+      "$ref": "#/370"
     },
     "flags": 1
   },
@@ -4849,21 +4844,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/374"
+          "$ref": "#/373"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/375"
+          "$ref": "#/374"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/377"
+          "$ref": "#/376"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -4895,7 +4890,7 @@
     "name": "Oracle.Database/locations/autonomousDatabaseNationalCharacterSets@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/376"
+      "$ref": "#/375"
     },
     "flags": 1
   },
@@ -4927,21 +4922,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/379"
+          "$ref": "#/378"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/380"
+          "$ref": "#/379"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/382"
+          "$ref": "#/381"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -4968,7 +4963,7 @@
       },
       "dbWorkload": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/386"
         },
         "flags": 0,
         "description": "The Autonomous Database workload type"
@@ -5023,6 +5018,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/382"
+      },
+      {
         "$ref": "#/383"
       },
       {
@@ -5030,9 +5028,6 @@
       },
       {
         "$ref": "#/385"
-      },
-      {
-        "$ref": "#/386"
       },
       {
         "$ref": "#/2"
@@ -5044,7 +5039,7 @@
     "name": "Oracle.Database/locations/autonomousDbVersions@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/381"
+      "$ref": "#/380"
     },
     "flags": 1
   },
@@ -5076,21 +5071,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/389"
+          "$ref": "#/388"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/390"
+          "$ref": "#/389"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/392"
+          "$ref": "#/391"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5255,7 +5250,7 @@
     "name": "Oracle.Database/locations/dbSystemShapes@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/391"
+      "$ref": "#/390"
     },
     "flags": 1
   },
@@ -5286,28 +5281,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/393"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/395"
+          "$ref": "#/394"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/396"
+          "$ref": "#/395"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/398"
+          "$ref": "#/397"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5348,7 +5343,7 @@
       },
       "lifecycleState": {
         "type": {
-          "$ref": "#/403"
+          "$ref": "#/402"
         },
         "flags": 1,
         "description": "Views lifecycleState"
@@ -5376,7 +5371,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/407"
+          "$ref": "#/406"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
@@ -5403,6 +5398,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/398"
+      },
+      {
         "$ref": "#/399"
       },
       {
@@ -5410,9 +5408,6 @@
       },
       {
         "$ref": "#/401"
-      },
-      {
-        "$ref": "#/402"
       },
       {
         "$ref": "#/2"
@@ -5435,13 +5430,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/403"
+      },
+      {
         "$ref": "#/404"
       },
       {
         "$ref": "#/405"
-      },
-      {
-        "$ref": "#/406"
       },
       {
         "$ref": "#/2"
@@ -5453,7 +5448,7 @@
     "name": "Oracle.Database/locations/dnsPrivateViews@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/397"
+      "$ref": "#/396"
     },
     "flags": 1
   },
@@ -5485,21 +5480,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/408"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/410"
+          "$ref": "#/409"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/412"
+          "$ref": "#/411"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5533,7 +5528,7 @@
       },
       "lifecycleState": {
         "type": {
-          "$ref": "#/418"
+          "$ref": "#/417"
         },
         "flags": 1,
         "description": "Zones lifecycleState"
@@ -5568,7 +5563,7 @@
       },
       "zoneType": {
         "type": {
-          "$ref": "#/421"
+          "$ref": "#/420"
         },
         "flags": 1,
         "description": "The type of the zone. Must be either PRIMARY or SECONDARY. SECONDARY is only supported for GLOBAL zones."
@@ -5582,7 +5577,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/425"
+          "$ref": "#/424"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
@@ -5613,6 +5608,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/412"
+      },
+      {
         "$ref": "#/413"
       },
       {
@@ -5623,9 +5621,6 @@
       },
       {
         "$ref": "#/416"
-      },
-      {
-        "$ref": "#/417"
       },
       {
         "$ref": "#/2"
@@ -5644,10 +5639,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/419"
+        "$ref": "#/418"
       },
       {
-        "$ref": "#/420"
+        "$ref": "#/419"
       },
       {
         "$ref": "#/2"
@@ -5670,13 +5665,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/421"
+      },
+      {
         "$ref": "#/422"
       },
       {
         "$ref": "#/423"
-      },
-      {
-        "$ref": "#/424"
       },
       {
         "$ref": "#/2"
@@ -5688,7 +5683,7 @@
     "name": "Oracle.Database/locations/dnsPrivateZones@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/411"
+      "$ref": "#/410"
     },
     "flags": 1
   },
@@ -5720,21 +5715,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/427"
+          "$ref": "#/426"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/428"
+          "$ref": "#/427"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/430"
+          "$ref": "#/429"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5766,7 +5761,7 @@
     "name": "Oracle.Database/locations/giVersions@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/429"
+      "$ref": "#/428"
     },
     "flags": 1
   },
@@ -5798,21 +5793,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/432"
+          "$ref": "#/431"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/433"
+          "$ref": "#/432"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/434"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5844,7 +5839,7 @@
     "name": "Oracle.Database/locations/systemVersions@2024-06-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/434"
+      "$ref": "#/433"
     },
     "flags": 1
   },
@@ -5869,28 +5864,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/393"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/437"
+          "$ref": "#/436"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/438"
+          "$ref": "#/437"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/440"
+          "$ref": "#/439"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5945,7 +5940,7 @@
       },
       "dbServerPatchingDetails": {
         "type": {
-          "$ref": "#/441"
+          "$ref": "#/440"
         },
         "flags": 2,
         "description": "dbServerPatching details of the Db server."
@@ -5966,14 +5961,14 @@
       },
       "vmClusterIds": {
         "type": {
-          "$ref": "#/447"
+          "$ref": "#/446"
         },
         "flags": 2,
         "description": "The OCID of the VM Clusters associated with the Db server."
       },
       "dbNodeIds": {
         "type": {
-          "$ref": "#/448"
+          "$ref": "#/447"
         },
         "flags": 2,
         "description": "The OCID of the Db nodes associated with the Db server."
@@ -5987,7 +5982,7 @@
       },
       "lifecycleState": {
         "type": {
-          "$ref": "#/455"
+          "$ref": "#/454"
         },
         "flags": 2,
         "description": "DbServer provisioning state."
@@ -6001,14 +5996,14 @@
       },
       "autonomousVmClusterIds": {
         "type": {
-          "$ref": "#/456"
+          "$ref": "#/455"
         },
         "flags": 2,
         "description": "The list of OCIDs of the Autonomous VM Clusters associated with the Db server."
       },
       "autonomousVirtualMachineIds": {
         "type": {
-          "$ref": "#/457"
+          "$ref": "#/456"
         },
         "flags": 2,
         "description": "The list of OCIDs of the Autonomous Virtual Machines associated with the Db server."
@@ -6043,7 +6038,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/461"
+          "$ref": "#/460"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
@@ -6063,7 +6058,7 @@
       },
       "patchingStatus": {
         "type": {
-          "$ref": "#/446"
+          "$ref": "#/445"
         },
         "flags": 2,
         "description": "Patching Status"
@@ -6104,6 +6099,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/441"
+      },
+      {
         "$ref": "#/442"
       },
       {
@@ -6111,9 +6109,6 @@
       },
       {
         "$ref": "#/444"
-      },
-      {
-        "$ref": "#/445"
       },
       {
         "$ref": "#/2"
@@ -6160,6 +6155,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/448"
+      },
+      {
         "$ref": "#/449"
       },
       {
@@ -6173,9 +6171,6 @@
       },
       {
         "$ref": "#/453"
-      },
-      {
-        "$ref": "#/454"
       },
       {
         "$ref": "#/2"
@@ -6210,13 +6205,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/457"
+      },
+      {
         "$ref": "#/458"
       },
       {
         "$ref": "#/459"
-      },
-      {
-        "$ref": "#/460"
       },
       {
         "$ref": "#/2"
@@ -6228,7 +6223,7 @@
     "name": "Oracle.Database/cloudExadataInfrastructures/dbServers@2024-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/439"
+      "$ref": "#/438"
     },
     "flags": 1
   },
@@ -6253,28 +6248,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/393"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/463"
+          "$ref": "#/462"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/464"
+          "$ref": "#/463"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/466"
+          "$ref": "#/465"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -6378,7 +6373,7 @@
       },
       "lifecycleState": {
         "type": {
-          "$ref": "#/476"
+          "$ref": "#/475"
         },
         "flags": 1,
         "description": "The current state of the database node."
@@ -6392,7 +6387,7 @@
       },
       "maintenanceType": {
         "type": {
-          "$ref": "#/478"
+          "$ref": "#/477"
         },
         "flags": 0,
         "description": "The type of database node maintenance."
@@ -6448,7 +6443,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/482"
+          "$ref": "#/481"
         },
         "flags": 2,
         "description": "Azure resource provisioning state."
@@ -6495,6 +6490,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/466"
+      },
+      {
         "$ref": "#/467"
       },
       {
@@ -6519,9 +6517,6 @@
         "$ref": "#/474"
       },
       {
-        "$ref": "#/475"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -6534,7 +6529,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/477"
+        "$ref": "#/476"
       },
       {
         "$ref": "#/2"
@@ -6557,13 +6552,13 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/478"
+      },
+      {
         "$ref": "#/479"
       },
       {
         "$ref": "#/480"
-      },
-      {
-        "$ref": "#/481"
       },
       {
         "$ref": "#/2"
@@ -6575,7 +6570,7 @@
     "name": "Oracle.Database/cloudVmClusters/dbNodes@2024-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/465"
+      "$ref": "#/464"
     },
     "flags": 1
   },
@@ -6588,7 +6583,7 @@
           "$ref": "#/10"
         },
         "flags": 0,
-        "description": "The database OCID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
+        "description": "The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
       }
     }
   },
@@ -6605,7 +6600,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/486"
+          "$ref": "#/485"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -6661,10 +6656,10 @@
     "resourceType": "Oracle.Database/autonomousDatabases",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/485"
+      "$ref": "#/484"
     },
     "input": {
-      "$ref": "#/484"
+      "$ref": "#/483"
     }
   },
   {
@@ -6673,7 +6668,7 @@
     "properties": {
       "generateType": {
         "type": {
-          "$ref": "#/491"
+          "$ref": "#/490"
         },
         "flags": 0,
         "description": "The type of wallet to generate."
@@ -6706,10 +6701,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/489"
+        "$ref": "#/488"
       },
       {
-        "$ref": "#/490"
+        "$ref": "#/489"
       },
       {
         "$ref": "#/2"
@@ -6735,10 +6730,10 @@
     "resourceType": "Oracle.Database/autonomousDatabases",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/492"
+      "$ref": "#/491"
     },
     "input": {
-      "$ref": "#/488"
+      "$ref": "#/487"
     }
   },
   {
@@ -6760,10 +6755,10 @@
     "resourceType": "Oracle.Database/autonomousDatabases",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/485"
+      "$ref": "#/484"
     },
     "input": {
-      "$ref": "#/494"
+      "$ref": "#/493"
     }
   },
   {
@@ -6772,7 +6767,7 @@
     "resourceType": "Oracle.Database/autonomousDatabases",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/485"
+      "$ref": "#/484"
     }
   },
   {
@@ -6781,10 +6776,10 @@
     "resourceType": "Oracle.Database/autonomousDatabases",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/485"
+      "$ref": "#/484"
     },
     "input": {
-      "$ref": "#/484"
+      "$ref": "#/483"
     }
   },
   {
@@ -6800,14 +6795,14 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/499"
+          "$ref": "#/498"
         },
         "flags": 1,
         "description": "CloudExadataInfrastructure zones"
       },
       "tags": {
         "type": {
-          "$ref": "#/500"
+          "$ref": "#/499"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -6869,7 +6864,7 @@
     "resourceType": "Oracle.Database/cloudExadataInfrastructures",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/498"
+      "$ref": "#/497"
     }
   },
   {
@@ -6878,7 +6873,7 @@
     "properties": {
       "dbServers": {
         "type": {
-          "$ref": "#/503"
+          "$ref": "#/502"
         },
         "flags": 1,
         "description": "Db servers ocids"
@@ -6904,7 +6899,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/505"
+          "$ref": "#/504"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -6960,10 +6955,10 @@
     "resourceType": "Oracle.Database/cloudVmClusters",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/504"
+      "$ref": "#/503"
     },
     "input": {
-      "$ref": "#/502"
+      "$ref": "#/501"
     }
   },
   {
@@ -7030,7 +7025,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/508"
+      "$ref": "#/507"
     }
   },
   {
@@ -7039,10 +7034,10 @@
     "resourceType": "Oracle.Database/cloudVmClusters",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/509"
+      "$ref": "#/508"
     },
     "input": {
-      "$ref": "#/507"
+      "$ref": "#/506"
     }
   },
   {
@@ -7051,10 +7046,10 @@
     "resourceType": "Oracle.Database/cloudVmClusters",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/504"
+      "$ref": "#/503"
     },
     "input": {
-      "$ref": "#/502"
+      "$ref": "#/501"
     }
   },
   {
@@ -7063,7 +7058,7 @@
     "properties": {
       "azureSubscriptionIds": {
         "type": {
-          "$ref": "#/513"
+          "$ref": "#/512"
         },
         "flags": 1,
         "description": "Azure Subscription Ids to be updated"
@@ -7082,7 +7077,7 @@
     "resourceType": "Oracle.Database/oracleSubscriptions",
     "apiVersion": "2024-06-01-preview",
     "input": {
-      "$ref": "#/512"
+      "$ref": "#/511"
     }
   },
   {
@@ -7111,7 +7106,7 @@
     "resourceType": "Oracle.Database/oracleSubscriptions",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/515"
+      "$ref": "#/514"
     }
   },
   {
@@ -7140,7 +7135,7 @@
     "resourceType": "Oracle.Database/oracleSubscriptions",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/517"
+      "$ref": "#/516"
     }
   },
   {
@@ -7239,7 +7234,7 @@
     "resourceType": "Oracle.Database/oracleSubscriptions",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/519"
+      "$ref": "#/518"
     }
   },
   {
@@ -7248,7 +7243,7 @@
     "properties": {
       "action": {
         "type": {
-          "$ref": "#/526"
+          "$ref": "#/525"
         },
         "flags": 1,
         "description": "Db action"
@@ -7275,6 +7270,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/521"
+      },
+      {
         "$ref": "#/522"
       },
       {
@@ -7282,9 +7280,6 @@
       },
       {
         "$ref": "#/524"
-      },
-      {
-        "$ref": "#/525"
       },
       {
         "$ref": "#/2"
@@ -7297,7 +7292,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/466"
+          "$ref": "#/465"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -7338,10 +7333,10 @@
     "resourceType": "Oracle.Database/cloudVmClusters/dbNodes",
     "apiVersion": "2024-06-01-preview",
     "output": {
-      "$ref": "#/527"
+      "$ref": "#/526"
     },
     "input": {
-      "$ref": "#/521"
+      "$ref": "#/520"
     }
   }
 ]
