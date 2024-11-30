@@ -358,7 +358,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
@@ -458,7 +458,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}

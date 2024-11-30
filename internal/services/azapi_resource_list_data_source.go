@@ -143,7 +143,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "data.azapi_resource_list.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)

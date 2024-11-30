@@ -382,7 +382,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_data_plane_resource.CreateUpdate is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
@@ -444,7 +444,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			backoff.WithMaxInterval(30*time.Second),
 			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
 		),
-		nil,
+		model.Retry.GetErrorMessagesRegex(),
 		[]int{404},
 		[]func(d interface{}) bool{
 			func(d interface{}) bool {
@@ -505,7 +505,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_data_plane_resource.Read is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
@@ -597,7 +597,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_data_plane_resource.Delete is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)

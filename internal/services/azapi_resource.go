@@ -615,7 +615,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			plan.Retry.GetMaxIntervalSeconds(),
 			plan.Retry.GetMultiplier(),
 			plan.Retry.GetRandomizationFactor(),
-			plan.Retry.GetErrorMessageRegex(),
+			plan.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
@@ -732,7 +732,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			backoff.WithMaxInterval(30*time.Second),
 			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
 		),
-		nil,
+		plan.Retry.GetErrorMessagesRegex(),
 		[]int{404},
 		[]func(d interface{}) bool{
 			func(d interface{}) bool {
@@ -813,7 +813,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_resource.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
@@ -953,7 +953,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		tflog.Debug(ctx, "azapi_resource.Delete is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
