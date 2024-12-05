@@ -73,6 +73,7 @@ var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
 var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
+	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
 	if v, ok := request.ProviderData.(*clients.Client); ok {
 		r.ProviderData = v
 	}
@@ -371,6 +372,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.DataPlaneRequester
 	client = r.ProviderData.DataPlaneClient
 	if !model.Retry.IsNull() {
@@ -379,8 +382,9 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
+		tflog.Debug(ctx, "azapi_data_plane_resource.CreateUpdate is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	isNewResource := state == nil || state.Raw.IsNull()
@@ -434,13 +438,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	// Create a new retry client to handle specific case of transient 404 after resource creation
-	clientRetry404 := r.ProviderData.DataPlaneClient.WithRetry(
+	clientGetAfterPut := r.ProviderData.DataPlaneClient.WithRetry(
 		backoff.NewExponentialBackOff(
 			backoff.WithInitialInterval(5*time.Second),
 			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(Retry404MaxElapsedTime()),
+			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
 		),
-		nil,
+		model.Retry.GetErrorMessagesRegex(),
 		[]int{404},
 		[]func(d interface{}) bool{
 			func(d interface{}) bool {
@@ -448,7 +452,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			},
 		},
 	)
-	responseBody, err := clientRetry404.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -491,6 +495,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Error parsing ID", err.Error())
 		return
 	}
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
 	var client clients.DataPlaneRequester
 	client = r.ProviderData.DataPlaneClient
@@ -500,8 +505,9 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
+		tflog.Debug(ctx, "azapi_data_plane_resource.Read is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
@@ -567,6 +573,22 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		return
 	}
 
+	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
+	response.Diagnostics.Append(diags...)
+	if response.Diagnostics.HasError() {
+		return
+	}
+	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
+	defer cancel()
+
+	id, err := parse.DataPlaneResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
+	if err != nil {
+		response.Diagnostics.AddError("Error parsing ID", err.Error())
+		return
+	}
+
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.DataPlaneRequester
 	client = r.ProviderData.DataPlaneClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -575,24 +597,10 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
+		tflog.Debug(ctx, "azapi_data_plane_resource.Delete is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
-
-	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
-	response.Diagnostics.Append(diags...)
-	if response.Diagnostics.HasError() {
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
-	defer cancel()
-
-	id, err := parse.DataPlaneResourceIDWithResourceType(model.ID.ValueString(), model.Type.ValueString())
-	if err != nil {
-		response.Diagnostics.AddError("Error parsing ID", err.Error())
-		return
 	}
 
 	lockIds := AsStringList(model.Locks)

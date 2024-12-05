@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type AzapiResourceDataSourceModel struct {
@@ -220,6 +221,8 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		id = buildId
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -228,8 +231,9 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
+		tflog.Debug(ctx, "data.azapi_resource.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))

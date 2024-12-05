@@ -348,6 +348,8 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		id = buildId
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -356,7 +358,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
@@ -446,6 +448,8 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
@@ -454,7 +458,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}

@@ -11,10 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func Retry404MaxElapsedTime() time.Duration {
-	if v := os.Getenv("AZAPI_RETRY_404_MAX_ELAPSED_TIME"); v != "" {
+func RetryGetAfterPut() time.Duration {
+	if v := os.Getenv("AZAPI_RETRY_GET_AFTER_PUT_MAX_TIME"); v != "" {
 		timeout, err := time.ParseDuration(v)
-		if err != nil {
+		if err == nil {
 			return timeout
 		}
 	}

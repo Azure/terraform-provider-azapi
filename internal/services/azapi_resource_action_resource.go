@@ -28,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type ActionResourceModel struct {
@@ -310,6 +311,8 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var requestBody interface{}
 	if err := unmarshalBody(model.Body, &requestBody); err != nil {
 		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
@@ -331,8 +334,9 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 			model.Retry.GetMaxIntervalSeconds(),
 			model.Retry.GetMultiplier(),
 			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
+			model.Retry.GetErrorMessages(),
 		)
+		tflog.Debug(ctx, "azapi_resource_action.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
