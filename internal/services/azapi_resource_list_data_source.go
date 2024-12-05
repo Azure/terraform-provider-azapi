@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -159,6 +160,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = responseBody
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {

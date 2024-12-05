@@ -1,3 +1,9 @@
+## v2.2.0 (unreleased)
+
+BUG FIXES:
+- Fix a bug that the provider produced inconsistent result after apply when default output feature is enabled.  
+Notice: Terraform will detect the `output` field's changes made outside of Terraform since the last "terraform apply". You can run `terraform refresh` to update the state file with the latest values.
+
 ## v2.1.0
 FEATURES:
 - `azapi_resource` resource: Support resource move operation, it allows moving resources from `azurerm` provider.

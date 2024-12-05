@@ -57,3 +57,20 @@ func buildOutputFromBody(responseBody interface{}, modelResponseExportValues typ
 		return types.DynamicNull(), errors.New("unsupported type for response_export_values, must be a list or map")
 	}
 }
+
+func volatileFieldList() []string {
+	return []string{
+		"etag",
+		"updatedBy",
+		"lastUpdatedOn",
+		"lastUpdated",
+		"lastUpdatedTime",
+		"lastUpdatedTimeUtc",
+		"modifiedOn",
+		"lastModifiedUtc",
+		"lastModifiedTimeUtc",
+		"lastModifiedAt",
+		"lastModifiedBy",
+		"lastModifiedByType",
+	}
+}
