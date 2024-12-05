@@ -698,6 +698,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 				var defaultOutput interface{}
 				if !r.ProviderData.Features.DisableDefaultOutput {
 					defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+					defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 				}
 				output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, defaultOutput)
 				if err != nil {
@@ -758,6 +759,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, defaultOutput)
 	if err != nil {
@@ -898,6 +900,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
@@ -1032,6 +1035,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, state.ResponseExportValues, defaultOutput)
 	if err != nil {

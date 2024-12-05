@@ -289,6 +289,31 @@ func NormalizeObject(input interface{}) interface{} {
 	return output
 }
 
+// RemoveFields is used to remove fields from input
+func RemoveFields(input interface{}, fields []string) interface{} {
+	if input == nil {
+		return input
+	}
+	switch v := input.(type) {
+	case map[string]interface{}:
+		for _, field := range fields {
+			delete(v, field)
+		}
+		for key, value := range v {
+			v[key] = RemoveFields(value, fields)
+		}
+		return v
+	case []interface{}:
+		res := make([]interface{}, 0)
+		for _, item := range v {
+			res = append(res, RemoveFields(item, fields))
+		}
+		return res
+	default:
+		return input
+	}
+}
+
 func isZeroValue(value interface{}) bool {
 	if value == nil {
 		return true
