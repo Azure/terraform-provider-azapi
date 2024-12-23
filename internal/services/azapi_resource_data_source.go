@@ -48,6 +48,7 @@ type AzapiResourceDataSource struct {
 
 var _ datasource.DataSource = &AzapiResourceDataSource{}
 var _ datasource.DataSourceWithConfigure = &AzapiResourceDataSource{}
+var _ datasource.DataSourceWithValidateConfig = &AzapiResourceDataSource{}
 
 func (r *AzapiResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -76,13 +77,13 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				MarkdownDescription: docstrings.Type(),
 			},
 
-			`name`: schema.StringAttribute{
+			"name": schema.StringAttribute{
 				Optional: true,
 				Computed: true,
 				Validators: []validator.String{
 					myvalidator.StringIsNotEmpty(),
 				},
-				MarkdownDescription: "Specifies the name of the Azure resource.",
+				MarkdownDescription: "Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -100,7 +101,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Validators: []validator.String{
 					myvalidator.StringIsResourceID(),
 				},
-				MarkdownDescription: "The ID of the Azure resource to retrieve.",
+				MarkdownDescription: "The ID of the Azure resource to retrieve. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.",
 			},
 
 			"location": schema.StringAttribute{
@@ -174,6 +175,39 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				Read: true,
 			}),
 		},
+	}
+}
+
+func (r *AzapiResourceDataSource) ValidateConfig(ctx context.Context, request datasource.ValidateConfigRequest, response *datasource.ValidateConfigResponse) {
+	var config *AzapiResourceDataSourceModel
+	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
+		return
+	}
+	if config == nil {
+		return
+	}
+
+	if config.Name.IsNull() && !config.ParentID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `The argument "name" is required when the argument "parent_id" is set`)
+	}
+	if !config.Name.IsNull() && config.ParentID.IsNull() {
+		resourceType := config.Type.ValueString()
+		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+		// If the resource type is not a resource group, then the parent_id is required
+		if !strings.EqualFold(azureResourceType, arm.ResourceGroupResourceType.String()) {
+			response.Diagnostics.AddError("Invalid configuration", `The argument "parent_id" is required when the argument "name" is set`)
+		}
+	}
+	if config.Name.IsNull() && config.ResourceID.IsNull() {
+		resourceType := config.Type.ValueString()
+		azureResourceType, _, _ := utils.GetAzureResourceTypeApiVersion(resourceType)
+		// If the resource type is not a subscription, then at least one of the name or resource_id must be set
+		if !strings.EqualFold(azureResourceType, arm.SubscriptionResourceType.String()) {
+			response.Diagnostics.AddError("Invalid configuration", `One of the arguments "name" or "resource_id" must be set`)
+		}
+	}
+	if !config.Name.IsNull() && !config.ResourceID.IsNull() {
+		response.Diagnostics.AddError("Invalid configuration", `Exactly one of the arguments "name" or "resource_id" can be set`)
 	}
 }
 
