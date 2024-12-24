@@ -257,19 +257,8 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessages(),
-		)
-		tflog.Debug(ctx, "data.azapi_resource.Read is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
+
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {

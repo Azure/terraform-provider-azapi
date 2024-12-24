@@ -136,19 +136,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessages(),
-		)
-		tflog.Debug(ctx, "data.azapi_resource_list.Read is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {

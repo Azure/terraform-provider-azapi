@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"regexp"
 	"slices"
 	"strings"
@@ -18,6 +19,7 @@ import (
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -513,4 +515,43 @@ func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetrya
 		}
 	}
 	return false
+}
+
+func (retryclient *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) *DataPlaneClientRetryableErrors {
+	// configure default retry configuration
+	backOff := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(5*time.Second),
+		backoff.WithMaxInterval(30*time.Second),
+		backoff.WithMaxElapsedTime(RetryGet()),
+	)
+	errRegExps := retry.GetErrorMessagesRegex()
+	statusCodes := retry.GetDefaultRetryableStatusCodes()
+	dataCallbackFuncs := []func(d interface{}) bool{
+		func(d interface{}) bool {
+			return d == nil
+		},
+	}
+
+	if !retry.IsNull() && !retry.IsUnknown() {
+		tflog.Debug(ctx, "using custom retry configuration")
+		backOff, errRegExps = NewRetryableErrors(
+			retry.GetIntervalSeconds(),
+			retry.GetMaxIntervalSeconds(),
+			retry.GetMultiplier(),
+			retry.GetRandomizationFactor(),
+			retry.GetErrorMessages(),
+		)
+	}
+
+	return retryclient.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
+}
+
+func RetryGet() time.Duration {
+	if v := os.Getenv("AZAPI_RETRY_GET_MAX_TIME"); v != "" {
+		timeout, err := time.ParseDuration(v)
+		if err == nil {
+			return timeout
+		}
+	}
+	return 2 * time.Minute
 }

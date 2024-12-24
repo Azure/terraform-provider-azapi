@@ -29,7 +29,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/preflight"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -726,21 +725,10 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
 		return
 	}
-	// Create a new retry client to handle specific case of transient 404 or empty body after resource creation
-	clientGetAfterPut := r.ProviderData.ResourceClient.WithRetry(
-		backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(5*time.Second),
-			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
-		),
-		plan.Retry.GetErrorMessagesRegex(),
-		[]int{404},
-		[]func(d interface{}) bool{
-			func(d interface{}) bool {
-				return d == nil
-			},
-		},
-	)
+
+	// Create a new retry client to handle specific case of transient 404 or empty body after resource creation or other retryable errors
+	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry)
+
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(plan.ReadHeaders, plan.ReadQueryParameters))
 	if err != nil {

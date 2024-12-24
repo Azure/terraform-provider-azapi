@@ -17,6 +17,8 @@ import (
 var (
 	_ basetypes.ObjectTypable  = RetryType{}
 	_ basetypes.ObjectValuable = RetryValue{}
+
+	defaultRetryableStatusCodes = []int{404, 429}
 )
 
 const (
@@ -659,4 +661,8 @@ func (v RetryValue) AddDefaultValuesIfUnknownOrNull() RetryValue {
 		v.RandomizationFactor = basetypes.NewNumberValue(big.NewFloat(defaultRandomizationFactor))
 	}
 	return v
+}
+
+func (v RetryValue) GetDefaultRetryableStatusCodes() []int {
+	return defaultRetryableStatusCodes
 }

@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -438,20 +437,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	// Create a new retry client to handle specific case of transient 404 after resource creation
-	clientGetAfterPut := r.ProviderData.DataPlaneClient.WithRetry(
-		backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(5*time.Second),
-			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
-		),
-		model.Retry.GetErrorMessagesRegex(),
-		[]int{404},
-		[]func(d interface{}) bool{
-			func(d interface{}) bool {
-				return d == nil
-			},
-		},
-	)
+	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, retry.NewRetryValueNull())
+
 	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {

@@ -326,19 +326,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		defer locks.UnlockByID(lockId)
 	}
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessages(),
-		)
-		tflog.Debug(ctx, "azapi_resource_action.Read is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
 	if err != nil {
