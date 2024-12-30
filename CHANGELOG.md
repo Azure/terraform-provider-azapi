@@ -1,7 +1,8 @@
-## v2.2.0 (unreleased)
+## v2.2.0
 
 ENHANCEMENTS:
 - `azapi_resource` resource: Improved 403 handling for management group resources to include child resources
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/4da2e194de989ed72552add82b9a5ead5223695b
 
 BUG FIXES:
 - Fix a bug that the provider produced inconsistent result after apply when default output feature is enabled.  
