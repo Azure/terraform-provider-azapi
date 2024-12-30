@@ -1,6 +1,6 @@
 ---
 layout: "azapi"
-page_title: "AzAPI Provider: Authenticating via a Service Principal and a Client Certificate"
+page_title: "Authentication: Authenticating via a Service Principal and a Client Certificate"
 description: |-
   This guide will cover how to use a Service Principal (Shared Account) with a Client Certificate as authentication for the AzAPI Provider.
 

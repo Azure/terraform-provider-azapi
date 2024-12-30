@@ -1,6 +1,6 @@
 ---
 layout: "azapi"
-page_title: "AzAPI Provider: Authenticating via a Service Principal and a Client Secret"
+page_title: "Authentication: Authenticating via a Service Principal and a Client Secret"
 description: |-
   This guide will cover how to use a Service Principal (Shared Account) with a Client Secret as authentication for the AzAPI Provider.
 

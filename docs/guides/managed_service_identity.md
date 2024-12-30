@@ -1,6 +1,6 @@
 ---
 layout: "azapi"
-page_title: "AzAPI Provider: Authenticating via Managed Identity"
+page_title: "Authentication: Authenticating via Managed Identity"
 description: |-
   This guide will cover how to use managed identity for Azure resources as authentication for the AzAPI Provider.
 ---
