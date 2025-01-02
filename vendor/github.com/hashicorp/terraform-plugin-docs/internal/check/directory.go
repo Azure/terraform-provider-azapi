@@ -6,23 +6,26 @@ package check
 import (
 	"fmt"
 	"log"
+	"path"
 	"path/filepath"
 )
 
 const (
 	CdktfIndexDirectory = `cdktf`
 
-	LegacyIndexDirectory       = `website/docs`
-	LegacyDataSourcesDirectory = `d`
-	LegacyGuidesDirectory      = `guides`
-	LegacyResourcesDirectory   = `r`
-	LegacyFunctionsDirectory   = `functions`
+	LegacyIndexDirectory              = `website/docs`
+	LegacyDataSourcesDirectory        = `d`
+	LegacyEphemeralResourcesDirectory = `ephemeral-resources`
+	LegacyGuidesDirectory             = `guides`
+	LegacyResourcesDirectory          = `r`
+	LegacyFunctionsDirectory          = `functions`
 
-	RegistryIndexDirectory       = `docs`
-	RegistryDataSourcesDirectory = `data-sources`
-	RegistryGuidesDirectory      = `guides`
-	RegistryResourcesDirectory   = `resources`
-	RegistryFunctionsDirectory   = `functions`
+	RegistryIndexDirectory              = `docs`
+	RegistryDataSourcesDirectory        = `data-sources`
+	RegistryEphemeralResourcesDirectory = `ephemeral-resources`
+	RegistryGuidesDirectory             = `guides`
+	RegistryResourcesDirectory          = `resources`
+	RegistryFunctionsDirectory          = `functions`
 
 	// Terraform Registry Storage Limits
 	// https://www.terraform.io/docs/registry/providers/docs.html#storage-limits
@@ -34,6 +37,7 @@ const (
 var ValidLegacyDirectories = []string{
 	LegacyIndexDirectory,
 	LegacyIndexDirectory + "/" + LegacyDataSourcesDirectory,
+	LegacyIndexDirectory + "/" + LegacyEphemeralResourcesDirectory,
 	LegacyIndexDirectory + "/" + LegacyGuidesDirectory,
 	LegacyIndexDirectory + "/" + LegacyResourcesDirectory,
 	LegacyIndexDirectory + "/" + LegacyFunctionsDirectory,
@@ -42,6 +46,7 @@ var ValidLegacyDirectories = []string{
 var ValidRegistryDirectories = []string{
 	RegistryIndexDirectory,
 	RegistryIndexDirectory + "/" + RegistryDataSourcesDirectory,
+	RegistryIndexDirectory + "/" + RegistryEphemeralResourcesDirectory,
 	RegistryIndexDirectory + "/" + RegistryGuidesDirectory,
 	RegistryIndexDirectory + "/" + RegistryResourcesDirectory,
 	RegistryIndexDirectory + "/" + RegistryFunctionsDirectory,
@@ -58,6 +63,7 @@ var ValidCdktfLanguages = []string{
 var ValidLegacySubdirectories = []string{
 	LegacyIndexDirectory,
 	LegacyDataSourcesDirectory,
+	LegacyEphemeralResourcesDirectory,
 	LegacyGuidesDirectory,
 	LegacyResourcesDirectory,
 }
@@ -65,6 +71,7 @@ var ValidLegacySubdirectories = []string{
 var ValidRegistrySubdirectories = []string{
 	RegistryIndexDirectory,
 	RegistryDataSourcesDirectory,
+	RegistryEphemeralResourcesDirectory,
 	RegistryGuidesDirectory,
 	RegistryResourcesDirectory,
 }
@@ -82,7 +89,7 @@ func InvalidDirectoriesCheck(dirPath string) error {
 		return nil
 	}
 
-	return fmt.Errorf("invalid Terraform Provider documentation directory found: %s", dirPath)
+	return fmt.Errorf("invalid Terraform Provider documentation directory found: %s", filepath.FromSlash(dirPath))
 
 }
 
@@ -92,7 +99,7 @@ func MixedDirectoriesCheck(docFiles []string) error {
 	err := fmt.Errorf("mixed Terraform Provider documentation directory layouts found, must use only legacy or registry layout")
 
 	for _, file := range docFiles {
-		directory := filepath.Dir(file)
+		directory := path.Dir(file)
 		log.Printf("[DEBUG] Found directory: %s", directory)
 
 		// Allow docs/ with other files
@@ -118,45 +125,9 @@ func MixedDirectoriesCheck(docFiles []string) error {
 	return nil
 }
 
-// NumberOfFilesCheck verifies that documentation is below the Terraform Registry storage limit.
-// This check presumes that all provided directories are valid, e.g. that directory checking
-// for invalid or mixed directory structures was previously completed.
-func NumberOfFilesCheck(docFiles []string) error {
-	var numberOfFiles int
-
-	directoryCounts := make(map[string]int)
-	for _, file := range docFiles {
-		directory := filepath.Dir(file)
-
-		// Ignore CDKTF files. The file limit is per-language and presumably there is one CDKTF file per source HCL file.
-		if IsValidCdktfDirectory(directory) {
-			continue
-		}
-
-		if directory == RegistryIndexDirectory || directory == filepath.FromSlash(LegacyIndexDirectory) {
-			continue
-		}
-
-		directoryCounts[directory]++
-	}
-
-	for directory, count := range directoryCounts {
-
-		log.Printf("[TRACE] Found %d documentation files in directory: %s", count, directory)
-		numberOfFiles = numberOfFiles + count
-	}
-
-	log.Printf("[DEBUG] Found %d documentation files with limit of %d", numberOfFiles, RegistryMaximumNumberOfFiles)
-	if numberOfFiles >= RegistryMaximumNumberOfFiles {
-		return fmt.Errorf("exceeded maximum (%d) number of documentation files for Terraform Registry: %d", RegistryMaximumNumberOfFiles, numberOfFiles)
-	}
-
-	return nil
-}
-
 func IsValidLegacyDirectory(directory string) bool {
 	for _, validLegacyDirectory := range ValidLegacyDirectories {
-		if directory == filepath.FromSlash(validLegacyDirectory) {
+		if directory == validLegacyDirectory {
 			return true
 		}
 	}
@@ -166,7 +137,7 @@ func IsValidLegacyDirectory(directory string) bool {
 
 func IsValidRegistryDirectory(directory string) bool {
 	for _, validRegistryDirectory := range ValidRegistryDirectories {
-		if directory == filepath.FromSlash(validRegistryDirectory) {
+		if directory == validRegistryDirectory {
 			return true
 		}
 	}
@@ -175,32 +146,32 @@ func IsValidRegistryDirectory(directory string) bool {
 }
 
 func IsValidCdktfDirectory(directory string) bool {
-	if directory == filepath.FromSlash(fmt.Sprintf("%s/%s", LegacyIndexDirectory, CdktfIndexDirectory)) {
+	if directory == fmt.Sprintf("%s/%s", LegacyIndexDirectory, CdktfIndexDirectory) {
 		return true
 	}
 
-	if directory == filepath.FromSlash(fmt.Sprintf("%s/%s", RegistryIndexDirectory, CdktfIndexDirectory)) {
+	if directory == fmt.Sprintf("%s/%s", RegistryIndexDirectory, CdktfIndexDirectory) {
 		return true
 	}
 
 	for _, validCdktfLanguage := range ValidCdktfLanguages {
 
-		if directory == filepath.FromSlash(fmt.Sprintf("%s/%s/%s", LegacyIndexDirectory, CdktfIndexDirectory, validCdktfLanguage)) {
+		if directory == fmt.Sprintf("%s/%s/%s", LegacyIndexDirectory, CdktfIndexDirectory, validCdktfLanguage) {
 			return true
 		}
 
-		if directory == filepath.FromSlash(fmt.Sprintf("%s/%s/%s", RegistryIndexDirectory, CdktfIndexDirectory, validCdktfLanguage)) {
+		if directory == fmt.Sprintf("%s/%s/%s", RegistryIndexDirectory, CdktfIndexDirectory, validCdktfLanguage) {
 			return true
 		}
 
 		for _, validLegacySubdirectory := range ValidLegacySubdirectories {
-			if directory == filepath.FromSlash(fmt.Sprintf("%s/%s/%s/%s", LegacyIndexDirectory, CdktfIndexDirectory, validCdktfLanguage, validLegacySubdirectory)) {
+			if directory == fmt.Sprintf("%s/%s/%s/%s", LegacyIndexDirectory, CdktfIndexDirectory, validCdktfLanguage, validLegacySubdirectory) {
 				return true
 			}
 		}
 
 		for _, validRegistrySubdirectory := range ValidRegistrySubdirectories {
-			if directory == filepath.FromSlash(fmt.Sprintf("%s/%s/%s/%s", RegistryIndexDirectory, CdktfIndexDirectory, validCdktfLanguage, validRegistrySubdirectory)) {
+			if directory == fmt.Sprintf("%s/%s/%s/%s", RegistryIndexDirectory, CdktfIndexDirectory, validCdktfLanguage, validRegistrySubdirectory) {
 				return true
 			}
 		}
