@@ -781,7 +781,7 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 		} else {
 			log.Printf("[DEBUG] failed to initialize azure pipelines credential: %v", err)
 		}
-		
+
 		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
 		if cred, err := buildOidcCredential(model, options); err == nil {
 			creds = append(creds, cred)
