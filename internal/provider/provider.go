@@ -775,18 +775,18 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 	var creds []azcore.TokenCredential
 
 	if model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool() {
-		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
-		if cred, err := buildOidcCredential(model, options); err == nil {
-			creds = append(creds, cred)
-		} else {
-			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
-		}
-
 		log.Printf("[DEBUG] azure pipelines credential enabled")
 		if cred, err := buildAzurePipelinesCredential(model, options); err == nil {
 			creds = append(creds, cred)
 		} else {
 			log.Printf("[DEBUG] failed to initialize azure pipelines credential: %v", err)
+		}
+		
+		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
+		if cred, err := buildOidcCredential(model, options); err == nil {
+			creds = append(creds, cred)
+		} else {
+			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
 		}
 	}
 
