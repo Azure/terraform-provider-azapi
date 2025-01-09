@@ -24,19 +24,19 @@ import (
 )
 
 type ActionEphemeralModel struct {
-	ID                   types.String        `tfsdk:"id"`
-	Type                 types.String        `tfsdk:"type"`
-	ResourceId           types.String        `tfsdk:"resource_id"`
-	Action               types.String        `tfsdk:"action"`
-	Method               types.String        `tfsdk:"method"`
-	Body                 types.Dynamic       `tfsdk:"body"`
-	Locks                types.List          `tfsdk:"locks"`
-	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-	Output               types.Dynamic       `tfsdk:"output"`
-	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-	Retry                retry.RetryValue    `tfsdk:"retry"`
-	Headers              map[string]string   `tfsdk:"headers"`
-	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+	ID                   types.String     `tfsdk:"id"`
+	Type                 types.String     `tfsdk:"type"`
+	ResourceId           types.String     `tfsdk:"resource_id"`
+	Action               types.String     `tfsdk:"action"`
+	Method               types.String     `tfsdk:"method"`
+	Body                 types.Dynamic    `tfsdk:"body"`
+	Locks                types.List       `tfsdk:"locks"`
+	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
+	Headers              types.Map        `tfsdk:"headers"`
+	QueryParameters      types.Map        `tfsdk:"query_parameters"`
 }
 
 type ActionEphemeral struct {
@@ -202,7 +202,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return

@@ -159,6 +159,24 @@ func AsStringList(input types.List) []string {
 	return result
 }
 
+func AsMapOfString(input types.Map) map[string]string {
+	result := make(map[string]string)
+	diags := input.ElementsAs(context.Background(), &result, false)
+	if diags.HasError() {
+		tflog.Warn(context.Background(), fmt.Sprintf("failed to convert input to map of strings: %s", diags))
+	}
+	return result
+}
+
+func AsMapOfLists(input types.Map) map[string][]string {
+	result := make(map[string][]string)
+	diags := input.ElementsAs(context.Background(), &result, false)
+	if diags.HasError() {
+		tflog.Warn(context.Background(), fmt.Sprintf("failed to convert input to map of lists: %s", diags))
+	}
+	return result
+}
+
 func unmarshalBody(input types.Dynamic, out interface{}) error {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
 		return nil
