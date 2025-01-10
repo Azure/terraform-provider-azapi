@@ -6,6 +6,10 @@ ENHANCEMENTS:
 - `azapi_resource_action` resource, data source: Support `sensitive_response_export_values` field, which is used to specify the sensitive fields to export.
 - `azaapi_resource_action` resource, data source: Support `sensitive_output` field, which is a sensitive computed field that contains the fields exported by `sensitive_response_export_values`.
 
+BUG FIXES:
+- Fix a bug that query parameters and headers don't work properly with unknown values
+
+
 ## v2.2.0
 
 ENHANCEMENTS:

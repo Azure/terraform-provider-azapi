@@ -39,28 +39,28 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                            types.String        `tfsdk:"id"`
-	Name                          types.String        `tfsdk:"name"`
-	ParentID                      types.String        `tfsdk:"parent_id"`
-	Type                          types.String        `tfsdk:"type"`
-	Body                          types.Dynamic       `tfsdk:"body"`
-	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
-	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
-	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
-	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
-	Retry                         retry.RetryValue    `tfsdk:"retry"`
-	Locks                         types.List          `tfsdk:"locks"`
-	Output                        types.Dynamic       `tfsdk:"output"`
-	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
-	CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
-	CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
-	UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
-	UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
-	DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
-	DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
-	ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
-	ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
+	ID                            types.String     `tfsdk:"id"`
+	Name                          types.String     `tfsdk:"name"`
+	ParentID                      types.String     `tfsdk:"parent_id"`
+	Type                          types.String     `tfsdk:"type"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Locks                         types.List       `tfsdk:"locks"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+	CreateHeaders                 types.Map        `tfsdk:"create_headers"`
+	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters"`
+	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
+	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
+	DeleteHeaders                 types.Map        `tfsdk:"delete_headers"`
+	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters"`
 }
 
 type DataPlaneResource struct {
@@ -408,7 +408,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
-		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_data_plane_resource", id.ID()).Error())
 			return
@@ -431,7 +431,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(model.CreateHeaders, model.CreateQueryParameters))
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(AsMapOfString(model.CreateHeaders), AsMapOfLists(model.CreateQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
 		return
@@ -452,7 +452,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			},
 		},
 	)
-	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -510,7 +510,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		tflog.Debug(ctx, "azapi_data_plane_resource.Read is using retry")
 		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
 	}
-	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -610,7 +610,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(model.DeleteHeaders, model.DeleteQueryParameters))
+	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(AsMapOfString(model.DeleteHeaders), AsMapOfLists(model.DeleteQueryParameters)))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

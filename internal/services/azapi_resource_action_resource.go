@@ -46,8 +46,8 @@ type ActionResourceModel struct {
 	SensitiveOutput               types.Dynamic       `tfsdk:"sensitive_output"`
 	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
 	Retry                         retry.RetryValue    `tfsdk:"retry"`
-	Headers                       map[string]string   `tfsdk:"headers"`
-	QueryParameters               map[string][]string `tfsdk:"query_parameters"`
+	Headers                       types.Map        `tfsdk:"headers"`
+	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -365,7 +365,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
