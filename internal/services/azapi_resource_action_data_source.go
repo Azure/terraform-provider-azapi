@@ -21,20 +21,20 @@ import (
 )
 
 type ResourceActionDataSourceModel struct {
-	ID                            types.String        `tfsdk:"id"`
-	ResourceID                    types.String        `tfsdk:"resource_id"`
-	Type                          types.String        `tfsdk:"type"`
-	Action                        types.String        `tfsdk:"action"`
-	Method                        types.String        `tfsdk:"method"`
-	Body                          types.Dynamic       `tfsdk:"body"`
-	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
-	SensitiveResponseExportValues types.Dynamic       `tfsdk:"sensitive_response_export_values"`
-	Output                        types.Dynamic       `tfsdk:"output"`
-	SensitiveOutput               types.Dynamic       `tfsdk:"sensitive_output"`
-	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
-	Retry                         retry.RetryValue    `tfsdk:"retry"`
-	Headers                       types.Map           `tfsdk:"headers"`
-	QueryParameters               types.Map           `tfsdk:"query_parameters"`
+	ID                            types.String     `tfsdk:"id"`
+	ResourceID                    types.String     `tfsdk:"resource_id"`
+	Type                          types.String     `tfsdk:"type"`
+	Action                        types.String     `tfsdk:"action"`
+	Method                        types.String     `tfsdk:"method"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	SensitiveOutput               types.Dynamic    `tfsdk:"sensitive_output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Headers                       types.Map        `tfsdk:"headers"`
+	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
 
 type ResourceActionDataSource struct {

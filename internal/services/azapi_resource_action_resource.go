@@ -32,20 +32,20 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                            types.String        `tfsdk:"id"`
-	Type                          types.String        `tfsdk:"type"`
-	ResourceId                    types.String        `tfsdk:"resource_id"`
-	Action                        types.String        `tfsdk:"action"`
-	Method                        types.String        `tfsdk:"method"`
-	Body                          types.Dynamic       `tfsdk:"body"`
-	When                          types.String        `tfsdk:"when"`
-	Locks                         types.List          `tfsdk:"locks"`
-	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
-	SensitiveResponseExportValues types.Dynamic       `tfsdk:"sensitive_response_export_values"`
-	Output                        types.Dynamic       `tfsdk:"output"`
-	SensitiveOutput               types.Dynamic       `tfsdk:"sensitive_output"`
-	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
-	Retry                         retry.RetryValue    `tfsdk:"retry"`
+	ID                            types.String     `tfsdk:"id"`
+	Type                          types.String     `tfsdk:"type"`
+	ResourceId                    types.String     `tfsdk:"resource_id"`
+	Action                        types.String     `tfsdk:"action"`
+	Method                        types.String     `tfsdk:"method"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	When                          types.String     `tfsdk:"when"`
+	Locks                         types.List       `tfsdk:"locks"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	SensitiveOutput               types.Dynamic    `tfsdk:"sensitive_output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+	Retry                         retry.RetryValue `tfsdk:"retry"`
 	Headers                       types.Map        `tfsdk:"headers"`
 	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
