@@ -2,6 +2,9 @@
 FEATURES:
 - **New Ephemeral Resource**: azapi_resource_action
 
+BUG FIXES:
+- Fix a bug that query parameters and headers don't work properly with unknown values
+
 ## v2.2.0
 
 ENHANCEMENTS:
