@@ -56,6 +56,7 @@ resource "azapi_resource" "devBoxDefinition" {
   location  = var.location
   body = {
     properties = {
+      hibernateSupport = "Enabled"
       imageReference = {
         id = "${azapi_resource.devCenter.id}/galleries/default/images/microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win10-m365-gen2"
       },
@@ -66,14 +67,4 @@ resource "azapi_resource" "devBoxDefinition" {
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
-}
-
-resource "azapi_update_resource" "addHibernateSupport" {
-  type        = "Microsoft.DevCenter/devcenters/devboxdefinitions@2024-10-01-preview"
-  resource_id = azapi_resource.devBoxDefinition.id
-  body = {
-    properties = {
-      hibernateSupport = "Enabled"
-    }
-  }
 }
