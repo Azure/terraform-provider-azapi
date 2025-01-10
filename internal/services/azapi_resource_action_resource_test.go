@@ -121,6 +121,18 @@ func TestAccActionResource_queryParameters(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_sensitiveOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.sensitiveOutput(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -361,4 +373,22 @@ resource "azapi_resource_action" "test" {
   }
   response_export_values = ["*"]
 }`
+}
+
+func (r ActionResource) sensitiveOutput(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@2023-04-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = {
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  }
+  sensitive_response_export_values = ["*"]
+}
+`, data.RandomString)
 }

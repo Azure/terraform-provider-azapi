@@ -32,20 +32,22 @@ import (
 )
 
 type ActionResourceModel struct {
-	ID                   types.String        `tfsdk:"id"`
-	Type                 types.String        `tfsdk:"type"`
-	ResourceId           types.String        `tfsdk:"resource_id"`
-	Action               types.String        `tfsdk:"action"`
-	Method               types.String        `tfsdk:"method"`
-	Body                 types.Dynamic       `tfsdk:"body"`
-	When                 types.String        `tfsdk:"when"`
-	Locks                types.List          `tfsdk:"locks"`
-	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-	Output               types.Dynamic       `tfsdk:"output"`
-	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-	Retry                retry.RetryValue    `tfsdk:"retry"`
-	Headers              map[string]string   `tfsdk:"headers"`
-	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+	ID                            types.String        `tfsdk:"id"`
+	Type                          types.String        `tfsdk:"type"`
+	ResourceId                    types.String        `tfsdk:"resource_id"`
+	Action                        types.String        `tfsdk:"action"`
+	Method                        types.String        `tfsdk:"method"`
+	Body                          types.Dynamic       `tfsdk:"body"`
+	When                          types.String        `tfsdk:"when"`
+	Locks                         types.List          `tfsdk:"locks"`
+	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+	SensitiveResponseExportValues types.Dynamic       `tfsdk:"sensitive_response_export_values"`
+	Output                        types.Dynamic       `tfsdk:"output"`
+	SensitiveOutput               types.Dynamic       `tfsdk:"sensitive_output"`
+	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+	Retry                         retry.RetryValue    `tfsdk:"retry"`
+	Headers                       map[string]string   `tfsdk:"headers"`
+	QueryParameters               map[string][]string `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -164,9 +166,23 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
+			"sensitive_response_export_values": schema.DynamicAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+
 			"output": schema.DynamicAttribute{
 				Computed:            true,
 				MarkdownDescription: docstrings.Output("azapi_resource_action"),
+			},
+
+			"sensitive_output": schema.DynamicAttribute{
+				Computed:            true,
+				Sensitive:           true,
+				MarkdownDescription: docstrings.SensitiveOutput("azapi_resource_action"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
@@ -213,10 +229,18 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
+		plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
+		if !plan.ResponseExportValues.Equal(state.ResponseExportValues) {
+			plan.Output = basetypes.NewDynamicUnknown()
+		}
+		plan.SensitiveOutput = state.SensitiveOutput
+		if !plan.SensitiveResponseExportValues.Equal(state.SensitiveResponseExportValues) {
+			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
+		}
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
@@ -249,6 +273,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		}
 		model.ID = basetypes.NewStringValue(resourceId)
 		model.Output = basetypes.NewDynamicNull()
+		model.SensitiveOutput = basetypes.NewDynamicNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
@@ -358,6 +383,13 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 	model.Output = output
+
+	sensitiveOutput, err := buildOutputFromBody(responseBody, model.SensitiveResponseExportValues, nil)
+	if err != nil {
+		diagnostics.AddError("Failed to build sensitive output", err.Error())
+		return
+	}
+	model.SensitiveOutput = sensitiveOutput
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }
