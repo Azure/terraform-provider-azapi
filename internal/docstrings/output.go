@@ -29,12 +29,14 @@ const (
 	%s%s%sterraform
 	// it will output "registry1.azurecr.io"
 	output "login_server" {
-		value = RESOURCE.example.output.properties.loginServer
+		value     = RESOURCE.example.sensitive_output.properties.loginServer
+        sensitive = true
 	}
 
 	// it will output "disabled"
 	output "quarantine_policy" {
-		value = RESOURCE.example.output.properties.policies.quarantinePolicy.status
+		value     = RESOURCE.example.sensitive_output.properties.policies.quarantinePolicy.status
+        sensitive = true
 	}
 	%s%s%s
 `

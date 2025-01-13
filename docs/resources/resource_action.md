@@ -159,12 +159,14 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	```terraform
 	// it will output "registry1.azurecr.io"
 	output "login_server" {
-		value = azapi_resource_action.example.output.properties.loginServer
+		value     = azapi_resource_action.example.sensitive_output.properties.loginServer
+        sensitive = true
 	}
 
 	// it will output "disabled"
 	output "quarantine_policy" {
-		value = azapi_resource_action.example.output.properties.policies.quarantinePolicy.status
+		value     = azapi_resource_action.example.sensitive_output.properties.policies.quarantinePolicy.status
+        sensitive = true
 	}
 	```
 
