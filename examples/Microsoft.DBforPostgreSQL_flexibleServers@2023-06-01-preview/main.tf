@@ -23,17 +23,9 @@ variable "resource_name" {
   default = "acctest0001"
 }
 
-variable "replica_resource_name" {
-  type    = string
-  default = "acctestreplica0001"
-}
-
 variable "location" {
   type    = string
   default = "eastus"
-}
-
-data "azurerm_client_config" "current" {
 }
 
 resource "azapi_resource" "resourceGroup" {
