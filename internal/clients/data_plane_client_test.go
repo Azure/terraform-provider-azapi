@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,9 +28,16 @@ import (
 //
 // We check these timings are expected using the assert.InDeltaSlice function.
 func TestRetryDataPlaneClient(t *testing.T) {
+	t.Parallel()
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
-	bkof, errRegExps := clients.NewRetryableErrors(1, 30, 2, 0.0, []string{"retry error"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(1*time.Second),
+		backoff.WithMaxInterval(30*time.Second),
+		backoff.WithMultiplier(2),
+		backoff.WithRandomizationFactor(0.0),
+	)
+	rexs := clients.StringSliceToRegexpSliceMust([]string{"retry error"})
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, rexs, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.requestCount)
@@ -47,36 +55,64 @@ func TestRetryDataPlaneClient(t *testing.T) {
 }
 
 func TestRetryDataPlaneClientRegexp(t *testing.T) {
+	t.Parallel()
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
-	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(1*time.Second),
+		backoff.WithMaxInterval(5*time.Second),
+		backoff.WithMultiplier(1.5),
+		backoff.WithRandomizationFactor(0.0),
+	)
+	rexs := clients.StringSliceToRegexpSliceMust([]string{"^retry"})
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, rexs, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
 }
 
 func TestRetryDataPlaneClientMultiRegexp(t *testing.T) {
+	t.Parallel()
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
-	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"nomatch", "^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(1*time.Second),
+		backoff.WithMaxInterval(5*time.Second),
+		backoff.WithMultiplier(1.5),
+		backoff.WithRandomizationFactor(0.0),
+	)
+	rexs := clients.StringSliceToRegexpSliceMust([]string{"nomatch", "^retry"})
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, rexs, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.NoError(t, err)
 	assert.Equal(t, 3, mock.RequestCount())
 }
 
 func TestRetryDataPlaneClientMultiRegexpNoMatchWithPermError(t *testing.T) {
+	t.Parallel()
 	mock := NewMockDataPlaneClient(t, nil, errors.New("perm error"), 3, errors.New("retry error"))
-	bkof, errRegExps := clients.NewRetryableErrors(1, 5, 1.5, 0.0, []string{"retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(1*time.Second),
+		backoff.WithMaxInterval(5*time.Second),
+		backoff.WithMultiplier(1.5),
+		backoff.WithRandomizationFactor(0.0),
+	)
+	rexs := clients.StringSliceToRegexpSliceMust([]string{"retry"})
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, rexs, nil, nil)
 	_, err := retryClient.Get(context.Background(), parse.DataPlaneResourceId{}, clients.DefaultRequestOptions())
 	assert.ErrorContains(t, err, "perm error")
 	assert.Equal(t, 3, mock.RequestCount())
 }
 
 func TestRetryDataPlaneClientContextDeadline(t *testing.T) {
+	t.Parallel()
 	mock := NewMockDataPlaneClient(t, nil, nil, 3, errors.New("retry error"))
-	bkof, errRegExps := clients.NewRetryableErrors(60, 60, 1.5, 0.0, []string{"^retry"})
-	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, errRegExps, nil, nil)
+	bkof := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(60*time.Second),
+		backoff.WithMaxInterval(60*time.Second),
+		backoff.WithMultiplier(1.5),
+		backoff.WithRandomizationFactor(0.0),
+	)
+	rexs := clients.StringSliceToRegexpSliceMust([]string{"^retry"})
+	retryClient := clients.NewDataPlaneClientRetryableErrors(mock, bkof, rexs, nil, nil)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	start := time.Now()
