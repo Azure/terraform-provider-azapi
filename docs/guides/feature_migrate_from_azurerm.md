@@ -34,7 +34,7 @@ Please add the necessary terraform code to deploy the resources in the root modu
 
 provider "azurerm" {
   features {}
-  
+
   subscription_id = "00000000-0000-0000-0000-000000000000"
 }
 
@@ -46,7 +46,7 @@ provider "azurerm" {
 location            = "eastus"
 resource_group_name = "heng-aks" // name of an existing resource group
 name                = "henglutest"
-lock = {    // enable the lock
+lock = { // enable the lock
   kind = "CanNotDelete"
   name = "mylock"
 }
@@ -145,7 +145,7 @@ resource "azapi_resource" "lock_this" {
   body = {
     properties = {
       level = var.lock.kind
-      notes =var.lock.kind == "CanNotDelete" ? "Cannot delete the resource or its child resources." : "Cannot delete or modify the resource or its child resources."
+      notes = var.lock.kind == "CanNotDelete" ? "Cannot delete the resource or its child resources." : "Cannot delete or modify the resource or its child resources."
     }
   }
   ignore_casing             = false

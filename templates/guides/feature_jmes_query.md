@@ -61,7 +61,7 @@ data "azapi_resource" "virtualMachine" {
   name      = "myVirtualMachine"
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
   response_export_values = {
-    admin = "osProfile.adminUsername"
+    admin   = "osProfile.adminUsername"
     ssh_key = "osProfile.linuxConfiguration.ssh.publicKeys[0].keyData"
   }
 }
