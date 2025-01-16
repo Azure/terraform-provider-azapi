@@ -69,7 +69,7 @@ resource "azapi_resource" "networkWatchers" {
 resource "azapi_resource" "storageAccount" {
   type      = "Microsoft.Storage/storageAccounts@2021-09-01"
   parent_id = azapi_resource.resourceGroup.id
-  name      = "acasdfatsstsets"
+  name      = var.resource_name
   location  = var.location
   body = {
     kind = "StorageV2"
