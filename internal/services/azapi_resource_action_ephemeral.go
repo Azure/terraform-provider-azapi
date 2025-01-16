@@ -24,19 +24,21 @@ import (
 )
 
 type ActionEphemeralModel struct {
-	ID                   types.String     `tfsdk:"id"`
-	Type                 types.String     `tfsdk:"type"`
-	ResourceId           types.String     `tfsdk:"resource_id"`
-	Action               types.String     `tfsdk:"action"`
-	Method               types.String     `tfsdk:"method"`
-	Body                 types.Dynamic    `tfsdk:"body"`
-	Locks                types.List       `tfsdk:"locks"`
-	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
-	Output               types.Dynamic    `tfsdk:"output"`
-	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
-	Retry                retry.RetryValue `tfsdk:"retry"`
-	Headers              types.Map        `tfsdk:"headers"`
-	QueryParameters      types.Map        `tfsdk:"query_parameters"`
+	ID                            types.String     `tfsdk:"id"`
+	Type                          types.String     `tfsdk:"type"`
+	ResourceId                    types.String     `tfsdk:"resource_id"`
+	Action                        types.String     `tfsdk:"action"`
+	Method                        types.String     `tfsdk:"method"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	Locks                         types.List       `tfsdk:"locks"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	SensitiveOutput               types.Dynamic    `tfsdk:"sensitive_output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Headers                       types.Map        `tfsdk:"headers"`
+	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
 
 type ActionEphemeral struct {
@@ -118,9 +120,20 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
+			"sensitive_response_export_values": schema.DynamicAttribute{
+				Optional:            true,
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+
 			"output": schema.DynamicAttribute{
 				Computed:            true,
 				MarkdownDescription: docstrings.Output("ephemeral.azapi_resource_action"),
+			},
+
+			"sensitive_output": schema.DynamicAttribute{
+				Computed:            true,
+				Sensitive:           true,
+				MarkdownDescription: docstrings.SensitiveOutput("ephemeral.azapi_resource_action"),
 			},
 
 			"retry": retry.SingleNestedAttribute(ctx),
@@ -220,6 +233,13 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		return
 	}
 	model.Output = output
+
+	sensitiveOutput, err := buildOutputFromBody(responseBody, model.SensitiveResponseExportValues, nil)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build sensitive output", err.Error())
+		return
+	}
+	model.SensitiveOutput = sensitiveOutput
 
 	response.Diagnostics.Append(response.Result.Set(ctx, model)...)
 }
