@@ -4,6 +4,7 @@ FEATURES:
 
 BUG FIXES:
 - Fix a bug that query parameters and headers don't work properly with unknown values
+- Fix more edge cases that the provider produced inconsistent result after apply when default output feature is enabled.
 
 ## v2.2.0
 
