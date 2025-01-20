@@ -70,7 +70,7 @@ resource "azapi_resource" "flexibleServer" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_update_resource" "pgbouncer_enabled" {
+resource "azapi_update_resource" "pgbouncerEnabled" {
   type      = "Microsoft.DBforPostgreSQL/flexibleServers/configurations@2022-12-01"
   parent_id = azapi_resource.flexibleServer.id
   name      = "pgbouncer.enabled"
@@ -82,8 +82,8 @@ resource "azapi_update_resource" "pgbouncer_enabled" {
   }
 }
 
-resource "azapi_update_resource" "pgbouncer_default_pool_size" {
-  depends_on = [azapi_update_resource.pgbouncer_enabled]
+resource "azapi_update_resource" "pgbouncerDefaultPoolSize" {
+  depends_on = [azapi_update_resource.pgbouncerEnabled]
   type       = "Microsoft.DBforPostgreSQL/flexibleServers/configurations@2022-12-01"
   parent_id  = azapi_resource.flexibleServer.id
   name       = "pgbouncer.default_pool_size"
