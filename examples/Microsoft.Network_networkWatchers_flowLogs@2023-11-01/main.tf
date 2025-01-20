@@ -108,7 +108,7 @@ resource "azapi_resource" "storageAccount" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "vnet_flow_logs" {
+resource "azapi_resource" "flowLog" {
   type      = "Microsoft.Network/networkWatchers/flowLogs@2023-11-01"
   name      = var.resource_name
   location  = var.location
