@@ -607,19 +607,6 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !plan.Retry.IsNull() {
-		bkof, regexps := clients.NewRetryableErrors(
-			plan.Retry.GetIntervalSeconds(),
-			plan.Retry.GetMaxIntervalSeconds(),
-			plan.Retry.GetMultiplier(),
-			plan.Retry.GetRandomizationFactor(),
-			plan.Retry.GetErrorMessages(),
-		)
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 	ctx = tflog.SetField(ctx, "is_new_resource", isNewResource)
 	var timeout time.Duration
@@ -634,6 +621,20 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		if diagnostics.Append(diags...); diagnostics.HasError() {
 			return
 		}
+	}
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !plan.Retry.IsNull() {
+		regexps := clients.StringSliceToRegexpSliceMust(plan.Retry.GetErrorMessages())
+		bkof := backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(plan.Retry.GetIntervalSecondsAsDuration()),
+			backoff.WithMaxInterval(plan.Retry.GetMaxIntervalSecondsAsDuration()),
+			backoff.WithMultiplier(plan.Retry.GetMultiplier()),
+			backoff.WithRandomizationFactor(plan.Retry.GetRandomizationFactor()),
+			backoff.WithMaxElapsedTime(timeout),
+		)
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
@@ -810,12 +811,13 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	var client clients.Requester
 	client = r.ProviderData.ResourceClient
 	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessages(),
+		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
+		bkof := backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
+			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
+			backoff.WithMultiplier(model.Retry.GetMultiplier()),
+			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
+			backoff.WithMaxElapsedTime(readTimeout),
 		)
 		tflog.Debug(ctx, "azapi_resource.Read is using retry")
 		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
@@ -948,24 +950,25 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessages(),
-		)
-		tflog.Debug(ctx, "azapi_resource.Delete is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
-
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {
 		return
+	}
+
+	var client clients.Requester
+	client = r.ProviderData.ResourceClient
+	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
+		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
+		bkof := backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
+			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
+			backoff.WithMultiplier(model.Retry.GetMultiplier()),
+			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
+			backoff.WithMaxElapsedTime(deleteTimeout),
+		)
+		tflog.Debug(ctx, "azapi_resource.Delete is using retry")
+		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
 	}
 
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)

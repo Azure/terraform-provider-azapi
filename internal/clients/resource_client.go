@@ -84,20 +84,14 @@ func NewResourceClient(credential azcore.TokenCredential, opt *arm.ClientOptions
 	}, nil
 }
 
-// NewRetryableErrors creates the backoff and error regexs for retryable errors.
-func NewRetryableErrors(intervalSeconds, maxIntervalSeconds int, multiplier, randomizationFactor float64, errorRegexs []string) (*backoff.ExponentialBackOff, []regexp.Regexp) {
-	bkof := backoff.NewExponentialBackOff(
-		backoff.WithInitialInterval(time.Duration(intervalSeconds)*time.Second),
-		backoff.WithRandomizationFactor(randomizationFactor),
-		backoff.WithMaxInterval(time.Duration(maxIntervalSeconds)*time.Second),
-		backoff.WithRandomizationFactor(randomizationFactor),
-		backoff.WithMultiplier(multiplier),
-	)
-	res := make([]regexp.Regexp, len(errorRegexs))
-	for i, e := range errorRegexs {
-		res[i] = *regexp.MustCompile(e) // MustCompile as schema has custom validation so we know it's valid
+// StringSliceToRegexpSliceMust converts a slice of strings to a slice of regexps.
+// It panics if any of the strings are invalid regexps.
+func StringSliceToRegexpSliceMust(ss []string) []regexp.Regexp {
+	res := make([]regexp.Regexp, len(ss))
+	for i, e := range ss {
+		res[i] = *regexp.MustCompile(e)
 	}
-	return bkof, res
+	return res
 }
 
 // WithRetry configures the retryable errors for the client.
