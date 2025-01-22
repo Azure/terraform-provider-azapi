@@ -3,7 +3,7 @@ package services
 import (
 	"encoding/json"
 	"errors"
-	
+
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
