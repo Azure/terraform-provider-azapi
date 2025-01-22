@@ -1,6 +1,6 @@
 ---
 layout: "azapi"
-page_title: "AzAPI Provider: Authenticating via the Azure CLI"
+page_title: "Authentication: Authenticating via the Azure CLI"
 description: |-
   This guide will cover how to use the Azure CLI as authentication for the AzAPI Provider.
 

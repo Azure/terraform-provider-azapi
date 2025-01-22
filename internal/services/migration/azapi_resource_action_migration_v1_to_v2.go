@@ -84,20 +84,22 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Timeouts             timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                   types.String        `tfsdk:"id"`
-				Type                 types.String        `tfsdk:"type"`
-				ResourceId           types.String        `tfsdk:"resource_id"`
-				Action               types.String        `tfsdk:"action"`
-				Method               types.String        `tfsdk:"method"`
-				Body                 types.Dynamic       `tfsdk:"body"`
-				When                 types.String        `tfsdk:"when"`
-				Locks                types.List          `tfsdk:"locks"`
-				ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-				Output               types.Dynamic       `tfsdk:"output"`
-				Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-				Retry                retry.RetryValue    `tfsdk:"retry"`
-				Headers              map[string]string   `tfsdk:"headers"`
-				QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+				ID                            types.String        `tfsdk:"id"`
+				Type                          types.String        `tfsdk:"type"`
+				ResourceId                    types.String        `tfsdk:"resource_id"`
+				Action                        types.String        `tfsdk:"action"`
+				Method                        types.String        `tfsdk:"method"`
+				Body                          types.Dynamic       `tfsdk:"body"`
+				When                          types.String        `tfsdk:"when"`
+				Locks                         types.List          `tfsdk:"locks"`
+				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
+				SensitiveResponseExportValues types.Dynamic       `tfsdk:"sensitive_response_export_values"`
+				Output                        types.Dynamic       `tfsdk:"output"`
+				SensitiveOutput               types.Dynamic       `tfsdk:"sensitive_output"`
+				Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
+				Retry                         retry.RetryValue    `tfsdk:"retry"`
+				Headers                       map[string]string   `tfsdk:"headers"`
+				QueryParameters               map[string][]string `tfsdk:"query_parameters"`
 			}
 
 			var oldState OldModel
@@ -123,18 +125,20 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 			}
 
 			newState := newModel{
-				ID:                   oldState.ID,
-				Type:                 oldState.Type,
-				ResourceId:           oldState.ResourceId,
-				Action:               oldState.Action,
-				Method:               oldState.Method,
-				Body:                 bodyVal,
-				When:                 oldState.When,
-				Locks:                oldState.Locks,
-				ResponseExportValues: responseExportValues,
-				Output:               outputVal,
-				Timeouts:             oldState.Timeouts,
-				Retry:                retry.NewRetryValueNull(),
+				ID:                            oldState.ID,
+				Type:                          oldState.Type,
+				ResourceId:                    oldState.ResourceId,
+				Action:                        oldState.Action,
+				Method:                        oldState.Method,
+				Body:                          bodyVal,
+				When:                          oldState.When,
+				Locks:                         oldState.Locks,
+				ResponseExportValues:          responseExportValues,
+				SensitiveResponseExportValues: types.DynamicNull(),
+				Output:                        outputVal,
+				SensitiveOutput:               types.DynamicNull(),
+				Timeouts:                      oldState.Timeouts,
+				Retry:                         retry.NewRetryValueNull(),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

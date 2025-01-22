@@ -26,20 +26,20 @@ import (
 )
 
 type AzapiResourceDataSourceModel struct {
-	ID                   types.String        `tfsdk:"id"`
-	Name                 types.String        `tfsdk:"name"`
-	ParentID             types.String        `tfsdk:"parent_id"`
-	ResourceID           types.String        `tfsdk:"resource_id"`
-	Type                 types.String        `tfsdk:"type"`
-	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-	Location             types.String        `tfsdk:"location"`
-	Identity             types.List          `tfsdk:"identity"`
-	Output               types.Dynamic       `tfsdk:"output"`
-	Tags                 types.Map           `tfsdk:"tags"`
-	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-	Retry                retry.RetryValue    `tfsdk:"retry"`
-	Headers              map[string]string   `tfsdk:"headers"`
-	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+	ID                   types.String     `tfsdk:"id"`
+	Name                 types.String     `tfsdk:"name"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResourceID           types.String     `tfsdk:"resource_id"`
+	Type                 types.String     `tfsdk:"type"`
+	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
+	Location             types.String     `tfsdk:"location"`
+	Identity             types.List       `tfsdk:"identity"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Tags                 types.Map        `tfsdk:"tags"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
+	Headers              types.Map        `tfsdk:"headers"`
+	QueryParameters      types.Map        `tfsdk:"query_parameters"`
 }
 
 type AzapiResourceDataSource struct {

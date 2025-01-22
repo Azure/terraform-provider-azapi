@@ -7,7 +7,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 data "azapi_resource_list" "listBySubscription" {

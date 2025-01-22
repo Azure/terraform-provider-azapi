@@ -70,6 +70,18 @@ func TestAccActionDataSource_queryParameters(t *testing.T) {
 	})
 }
 
+func TestAccActionDataSource_sensitiveOutput(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource_action", "test")
+	r := ActionDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.sensitiveOutput(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionDataSource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
@@ -141,4 +153,17 @@ data "azapi_resource_action" "test" {
   }
   response_export_values = ["*"]
 }`
+}
+
+func (r ActionDataSource) sensitiveOutput(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+data "azapi_resource_action" "test" {
+  type                             = "Microsoft.Automation/automationAccounts@2023-11-01"
+  resource_id                      = azapi_resource.test.id
+  action                           = "listKeys"
+  sensitive_response_export_values = ["*"]
+}
+`, GenericResource{}.defaultTag(data))
 }
