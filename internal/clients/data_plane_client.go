@@ -534,13 +534,14 @@ func (retryclient *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.C
 
 	if !retry.IsNull() && !retry.IsUnknown() {
 		tflog.Debug(ctx, "using custom retry configuration")
-		backOff, errRegExps = NewRetryableErrors(
-			retry.GetIntervalSeconds(),
-			retry.GetMaxIntervalSeconds(),
-			retry.GetMultiplier(),
-			retry.GetRandomizationFactor(),
-			retry.GetErrorMessages(),
+		backOff = backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),
+			backoff.WithMaxInterval(retry.GetMaxIntervalSecondsAsDuration()),
+			backoff.WithMultiplier(retry.GetMultiplier()),
+			backoff.WithRandomizationFactor(retry.GetRandomizationFactor()),
+			backoff.WithMaxElapsedTime(RetryGet()),
 		)
+		errRegExps = StringSliceToRegexpSliceMust(retry.GetErrorMessages())
 	}
 
 	return retryclient.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
