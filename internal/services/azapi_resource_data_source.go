@@ -259,7 +259,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
