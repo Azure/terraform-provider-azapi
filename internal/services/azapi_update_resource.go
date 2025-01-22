@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -442,19 +441,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(readTimeout),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {

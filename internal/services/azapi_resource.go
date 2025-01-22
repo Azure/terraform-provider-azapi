@@ -622,20 +622,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			return
 		}
 	}
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !plan.Retry.IsNull() {
-		regexps := clients.StringSliceToRegexpSliceMust(plan.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(plan.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(plan.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(plan.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(plan.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(timeout),
-		)
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry)
+
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
