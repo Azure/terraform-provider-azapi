@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cenkalti/backoff/v4"
 	"reflect"
 	"slices"
 	"time"
@@ -598,20 +599,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(deleteTimeout),
-		)
-		tflog.Debug(ctx, "azapi_data_plane_resource.Delete is using retry")
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	lockIds := AsStringList(model.Locks)
 	slices.Sort(lockIds)
