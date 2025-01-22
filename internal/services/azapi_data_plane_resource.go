@@ -475,7 +475,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
 	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
-	
+
 	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
