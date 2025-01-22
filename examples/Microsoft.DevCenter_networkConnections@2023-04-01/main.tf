@@ -62,10 +62,10 @@ resource "azapi_resource" "subnet" {
 
 resource "azapi_resource" "networkConnection" {
   type      = "Microsoft.DevCenter/networkConnections@2023-04-01"
-  name      = var.resource_name
   parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
   body = {
-    location = var.location
     properties = {
       domainJoinType = "AzureADJoin"
       subnetId       = azapi_resource.subnet.id
