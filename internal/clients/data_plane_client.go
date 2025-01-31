@@ -539,7 +539,7 @@ func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Contex
 		tflog.Debug(ctx, "using custom retry configuration")
 		// If custom retry then use the context deadline (timeout value) as the max elapsed time
 		if ctxDeadline, ok := ctx.Deadline(); ok {
-			maxElapsed = ctxDeadline.Sub(time.Now())
+			maxElapsed = time.Until(ctxDeadline)
 		}
 		statusCodes = make([]int, 0, 2)
 		if retry.StatusForbidden.ValueBool() {
