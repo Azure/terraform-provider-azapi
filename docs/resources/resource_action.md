@@ -184,8 +184,8 @@ Optional:
 - `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
 - `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
 - `response_is_nil` (Boolean) If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.
-- `status_forbidden` (Boolean) If set to `true`, the retry will be triggered when the status code is `403`. Default is `true`.
-- `status_not_found` (Boolean) If set to `true`, the retry will be triggered when the status code is `404`. Default is `true`.
+- `status_forbidden` (Boolean) If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.
+- `status_not_found` (Boolean) If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.
 
 
 <a id="nestedblock--timeouts"></a>
