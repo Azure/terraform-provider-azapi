@@ -41,6 +41,7 @@ If you configure a retry configuration, the maximum elapsed time for the retry w
 
 The schema of these retry attributes is as follows:
 
+- `error_message_regex` - A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 - `interval_seconds` - The initial number of seconds to wait before the 1st retry. The default value is `10`.
 - `max_interval_seconds` - The maximum number of times to retry the request. The default value is `180`.
 - `multiplier` - The multiplier to apply to the interval between retries. The default value is `1.5`.
