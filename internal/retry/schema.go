@@ -19,7 +19,7 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 		Attributes: map[string]schema.Attribute{
 			"error_message_regex": schema.ListAttribute{
 				ElementType: types.StringType,
-				Required:    true,
+				Optional:    true,
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsValidRegex()),
 					listvalidator.UniqueValues(),
