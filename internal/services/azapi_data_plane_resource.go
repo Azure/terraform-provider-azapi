@@ -49,6 +49,7 @@ type DataPlaneResourceModel struct {
 	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue `tfsdk:"retry"`
+	RetryReadAfterCreate          retry.RetryValue `tfsdk:"retry_read_after_create"`
 	Locks                         types.List       `tfsdk:"locks"`
 	Output                        types.Dynamic    `tfsdk:"output"`
 	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
@@ -165,7 +166,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
+
+			"retry_read_after_create": retry.RetrySchema(ctx),
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
@@ -389,10 +392,11 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		}
 	}
 
-	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
-
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
+
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
@@ -426,8 +430,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	// Create a new retry client to handle specific case of transient 404 after resource creation
-	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, retry.NewRetryValueNull())
+	// Create a new retry client to handle specific case of transient 403/404 after resource creation
+	// If a read after create retry is not specified, use the default.
+	rtry := model.Retry
+	if rtry.IsNull() || rtry.IsUnknown() {
+		rtry = retry.RetryValueWithDefaultReadAfterCreateValues(ctx)
+	}
+	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, rtry)
 
 	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
@@ -474,6 +483,7 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
+	// Ensure that the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
@@ -555,6 +565,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	lockIds := AsStringList(model.Locks)

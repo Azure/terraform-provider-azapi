@@ -63,6 +63,7 @@ type AzapiResourceModel struct {
 	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue `tfsdk:"retry"`
+	RetryReadAfterCreate          retry.RetryValue `tfsdk:"retry_read_after_create"`
 	SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
 	Tags                          types.Map        `tfsdk:"tags"`
 	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
@@ -263,7 +264,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				MarkdownDescription: "A mapping of tags which should be assigned to the Azure resource.",
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
+
+			"retry_read_after_create": retry.RetrySchema(ctx),
 
 			"create_headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -716,8 +719,13 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	// Create a new retry client to handle specific case of transient 404 or empty body after resource creation or other retryable errors
-	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry)
+	// Create a new retry client to handle specific case of transient 403/404 after resource creation
+	// If a read after create retry is not specified, use the default.
+	rtry := plan.RetryReadAfterCreate
+	if rtry.IsNull() || rtry.IsUnknown() {
+		rtry = retry.RetryValueWithDefaultReadAfterCreateValues(ctx)
+	}
+	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, rtry)
 
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters)))

@@ -121,7 +121,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				MarkdownDescription: docstrings.SensitiveOutput("data.azapi_resource_action"),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -152,8 +152,6 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 		return
 	}
 
-	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
-
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {
@@ -182,6 +180,7 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 		method = "POST"
 	}
 
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))

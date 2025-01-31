@@ -153,7 +153,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				MarkdownDescription: "A mapping of tags which are assigned to the Azure resource.",
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -217,8 +217,6 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		return
 	}
 
-	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
-
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {
@@ -257,6 +255,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"regexp"
 	"slices"
 	"strings"
@@ -517,14 +516,18 @@ func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetrya
 	return false
 }
 
-func (retryclient *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) *DataPlaneClientRetryableErrors {
+// ConfigureClientWithCustomRetry configures the client with a custom retry configuration if supplied.
+// If the retry configuration is null or unknown, it will use the default retry configuration.
+// If the supplied context has a deadline, it will use the deadline as the max elapsed time.
+func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) DataPlaneRequester {
 	// configure default retry configuration
+	maxElapsed := 2 * time.Minute
 	backOff := backoff.NewExponentialBackOff(
 		backoff.WithInitialInterval(5*time.Second),
 		backoff.WithMaxInterval(30*time.Second),
-		backoff.WithMaxElapsedTime(RetryGet()),
+		backoff.WithMaxElapsedTime(maxElapsed),
 	)
-	errRegExps := retry.GetErrorMessagesRegex()
+	errRegExps := []regexp.Regexp{}
 	statusCodes := retry.GetDefaultRetryableStatusCodes()
 	dataCallbackFuncs := []func(d interface{}) bool{
 		func(d interface{}) bool {
@@ -534,25 +537,29 @@ func (retryclient *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.C
 
 	if !retry.IsNull() && !retry.IsUnknown() {
 		tflog.Debug(ctx, "using custom retry configuration")
+		// If custom retry then use the context deadline (timeout value) as the max elapsed time
+		if ctxDeadline, ok := ctx.Deadline(); ok {
+			maxElapsed = ctxDeadline.Sub(time.Now())
+		}
+		statusCodes = make([]int, 0, 2)
+		if retry.StatusForbidden.ValueBool() {
+			statusCodes = append(statusCodes, http.StatusForbidden)
+		}
+		if retry.StatusNotFound.ValueBool() {
+			statusCodes = append(statusCodes, http.StatusNotFound)
+		}
+		if !retry.ResponseIsNil.ValueBool() {
+			dataCallbackFuncs = nil
+		}
 		backOff = backoff.NewExponentialBackOff(
 			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),
 			backoff.WithMaxInterval(retry.GetMaxIntervalSecondsAsDuration()),
 			backoff.WithMultiplier(retry.GetMultiplier()),
 			backoff.WithRandomizationFactor(retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(RetryGet()),
+			backoff.WithMaxElapsedTime(maxElapsed),
 		)
-		errRegExps = StringSliceToRegexpSliceMust(retry.GetErrorMessages())
+		errRegExps = retry.GetErrorMessagesRegex()
 	}
 
-	return retryclient.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
-}
-
-func RetryGet() time.Duration {
-	if v := os.Getenv("AZAPI_RETRY_GET_MAX_TIME"); v != "" {
-		timeout, err := time.ParseDuration(v)
-		if err == nil {
-			return timeout
-		}
-	}
-	return 2 * time.Minute
+	return client.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
 }
