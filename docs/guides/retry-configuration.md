@@ -48,3 +48,12 @@ The schema of these retry attributes is as follows:
 - `response_is_nil` - If the response is nil, should the request be retried. The default value is `true`.
 - `status_forbidden` - If the status code is 403, should the request be retried. The default value is `false`.
 - `status_not_found` - If the status code is 404, should the request be retried. The default value is `false`.
+
+## Default resource-specific retry configuration
+
+If you do not configure any retry values, the provider will use the following:
+
+For the initial create/read/update/delete operation we will retry on HTTP 429 status codes for a maximum time of 2 minutes.
+
+For the read-after-create operation we will retry on HTTP 404, 403 status codes as well as a nill response.
+We will do this up to the operation timeout configured in the `timeouts {}` block.

@@ -696,7 +696,7 @@ func isRetryable(ctx context.Context, retryclient ResourceClientRetryableErrors,
 
 // ConfigureClientWithCustomRetry configures the client with a custom retry configuration if supplied.
 // If the retry configuration is null or unknown, it will use the default retry configuration.
-// If the supplied context has a deadline, it will use the deadline as the max elapsed time.
+// If the supplied context has a deadline, it will use the deadline as the max elapsed time when a custom retry is provided.
 func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) Requester {
 	// configure default retry configuration
 	maxElapsed := 2 * time.Minute
@@ -707,11 +707,7 @@ func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context
 	)
 	errRegExps := []regexp.Regexp{}
 	statusCodes := retry.GetDefaultRetryableStatusCodes()
-	dataCallbackFuncs := []func(d interface{}) bool{
-		func(d interface{}) bool {
-			return d == nil
-		},
-	}
+	dataCallbackFuncs := []func(d interface{}) bool{}
 
 	if !retry.IsNull() && !retry.IsUnknown() {
 		tflog.Debug(ctx, "using custom retry configuration")
@@ -726,8 +722,12 @@ func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context
 		if retry.StatusNotFound.ValueBool() {
 			statusCodes = append(statusCodes, http.StatusNotFound)
 		}
-		if !retry.ResponseIsNil.ValueBool() {
-			dataCallbackFuncs = nil
+		if retry.ResponseIsNil.ValueBool() {
+			dataCallbackFuncs = []func(d interface{}) bool{
+				func(d interface{}) bool {
+					return d == nil
+				},
+			}
 		}
 		backOff = backoff.NewExponentialBackOff(
 			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),

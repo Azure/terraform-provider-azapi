@@ -18,7 +18,7 @@ var (
 	_ basetypes.ObjectTypable  = RetryType{}
 	_ basetypes.ObjectValuable = RetryValue{}
 
-	defaultRetryableStatusCodes = []int{}
+	defaultRetryableStatusCodes = []int{429}
 )
 
 const (
