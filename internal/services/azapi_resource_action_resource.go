@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/skip"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -44,8 +45,8 @@ type ActionResourceModel struct {
 	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
 	Output                        types.Dynamic    `tfsdk:"output"`
 	SensitiveOutput               types.Dynamic    `tfsdk:"sensitive_output"`
-	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
-	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	Headers                       types.Map        `tfsdk:"headers"`
 	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
@@ -279,20 +280,31 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 }
 
 func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
-	var model ActionResourceModel
-	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
+	var state, plan ActionResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
 		return
 	}
 
-	timeout, diags := model.Timeouts.Update(ctx, 30*time.Minute)
+	request.State.Get(ctx, &state)
+	request.Plan.Get(ctx, &plan)
+
+	timeout, diags := plan.Timeouts.Update(ctx, 30*time.Minute)
 	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
 		return
 	}
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	if model.When.ValueString() == "apply" {
-		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	// See if we can skip the external API call (changes are to state only)
+	if skip.CanSkipExternalRequest(state, plan, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
+
+	if plan.When.ValueString() == "apply" {
+		r.Action(ctx, plan, &response.State, &response.Diagnostics)
 	}
 }
 
