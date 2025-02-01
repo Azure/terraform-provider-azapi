@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/services/skip"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/cenkalti/backoff/v4"
@@ -49,18 +50,18 @@ type DataPlaneResourceModel struct {
 	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
 	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
-	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	Locks                         types.List       `tfsdk:"locks"`
 	Output                        types.Dynamic    `tfsdk:"output"`
-	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
-	CreateHeaders                 types.Map        `tfsdk:"create_headers"`
-	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	CreateHeaders                 types.Map        `tfsdk:"create_headers" skip_on:"update"`
+	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters" skip_on:"update"`
 	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
-	DeleteHeaders                 types.Map        `tfsdk:"delete_headers"`
-	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters"`
-	ReadHeaders                   types.Map        `tfsdk:"read_headers"`
-	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters"`
+	DeleteHeaders                 types.Map        `tfsdk:"delete_headers" skip_on:"update"`
+	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type DataPlaneResource struct {
@@ -357,6 +358,15 @@ func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateR
 }
 
 func (r *DataPlaneResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	// See if we can skip the external API call (changes are to state only)
+	var state, plan DataPlaneResourceModel
+	request.Plan.Get(ctx, &plan)
+	request.State.Get(ctx, &state)
+	if skip.CanSkipExternalRequest(state, plan, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
 	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
 }
 
