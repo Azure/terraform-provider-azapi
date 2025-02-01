@@ -184,6 +184,21 @@ func TestCanSkipExternalRequest(t *testing.T) {
 				SkipOnCreateRead: basetypes.NewStringValue("value3"),
 			},
 			operation: "update",
+			result:    true,
+		},
+		{
+			desc: "skip on update, null and unknown value differ on non-skippable fields",
+			a: SkipTestType1{
+				SkipOnUpdate:     basetypes.NewStringNull(),
+				NoSkip:           basetypes.NewStringNull(),
+				SkipOnCreateRead: basetypes.NewStringValue("value3"),
+			},
+			b: SkipTestType1{
+				SkipOnUpdate:     basetypes.NewStringUnknown(),
+				NoSkip:           basetypes.NewStringUnknown(),
+				SkipOnCreateRead: basetypes.NewStringValue("value3"),
+			},
+			operation: "update",
 			result:    false,
 		},
 	}
