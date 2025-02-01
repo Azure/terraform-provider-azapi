@@ -20,7 +20,7 @@ There are two types of retry configurations available in the AzAPI provider:
 
 The provider retry configuration is a global configuration that applies to all resources managed by the provider. You can configure the provider retry behavior by setting the following provider values:
 
-- `go_sdk_maximum_retry_attempts`
+- `maximum_busy_retry_attempts`
 
 This value controls the number of times the provider will retry a failed request. The default value is `3`.
 A retry will be triggered if the request fails with HTTP 408, 429, 500, 502, 503, or 504.
