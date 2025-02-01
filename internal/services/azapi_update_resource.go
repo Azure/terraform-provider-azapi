@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -45,12 +45,12 @@ type AzapiUpdateResourceModel struct {
 	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
 	Locks                 types.List       `tfsdk:"locks"`
 	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts"`
-	Retry                 retry.RetryValue `tfsdk:"retry"`
+	Timeouts              timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                 retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	UpdateHeaders         types.Map        `tfsdk:"update_headers"`
 	UpdateQueryParameters types.Map        `tfsdk:"update_query_parameters"`
-	ReadHeaders           types.Map        `tfsdk:"read_headers"`
-	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters"`
+	ReadHeaders           types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -189,7 +189,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				MarkdownDescription: docstrings.Output("azapi_update_resource"),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"update_headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -302,6 +302,17 @@ func (r *AzapiUpdateResource) Create(ctx context.Context, request resource.Creat
 }
 
 func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	// See if we can skip the external API call (changes are to state only)
+	var plan, state AzapiUpdateResourceModel
+	request.Plan.Get(ctx, &plan)
+	request.State.Get(ctx, &state)
+	if skip.CanSkipExternalRequest(plan, state, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(request.State.Set(ctx, plan)...)
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
+
 	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
 }
 
@@ -351,19 +362,9 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(timeout),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
+
 	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
@@ -453,19 +454,8 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(readTimeout),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {

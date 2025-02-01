@@ -27,9 +27,9 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/services/preflight"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -63,19 +63,20 @@ type AzapiResourceModel struct {
 	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
 	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
-	Retry                         retry.RetryValue `tfsdk:"retry"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	RetryReadAfterCreate          retry.RetryValue `tfsdk:"retry_read_after_create" skip_on:"update"`
 	SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
 	Tags                          types.Map        `tfsdk:"tags"`
-	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
 	Type                          types.String     `tfsdk:"type"`
-	CreateHeaders                 types.Map        `tfsdk:"create_headers"`
-	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters"`
+	CreateHeaders                 types.Map        `tfsdk:"create_headers" skip_on:"update"`
+	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters" skip_on:"update"`
 	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
 	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
-	DeleteHeaders                 types.Map        `tfsdk:"delete_headers"`
-	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters"`
-	ReadHeaders                   types.Map        `tfsdk:"read_headers"`
-	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters"`
+	DeleteHeaders                 types.Map        `tfsdk:"delete_headers" skip_on:"update"`
+	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 var _ resource.Resource = &AzapiResource{}
@@ -264,7 +265,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				MarkdownDescription: "A mapping of tags which should be assigned to the Azure resource.",
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
+
+			"retry_read_after_create": retry.RetrySchema(ctx),
 
 			"create_headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -588,6 +591,16 @@ func (r *AzapiResource) Create(ctx context.Context, request resource.CreateReque
 }
 
 func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	// See if we can skip the external API call (changes are to state only)
+	var plan, state AzapiResourceModel
+	request.State.Get(ctx, &state)
+	request.Plan.Get(ctx, &plan)
+	if skip.CanSkipExternalRequest(plan, state, "update") {
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
 	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
 }
 
@@ -622,20 +635,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 			return
 		}
 	}
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !plan.Retry.IsNull() {
-		regexps := clients.StringSliceToRegexpSliceMust(plan.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(plan.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(plan.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(plan.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(plan.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(timeout),
-		)
-		tflog.Debug(ctx, "azapi_resource.CreateUpdate is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry)
+
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
@@ -727,21 +729,15 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %s: %+v", id, err).Error())
 		return
 	}
-	// Create a new retry client to handle specific case of transient 404 or empty body after resource creation
-	clientGetAfterPut := r.ProviderData.ResourceClient.WithRetry(
-		backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(5*time.Second),
-			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
-		),
-		plan.Retry.GetErrorMessagesRegex(),
-		[]int{404},
-		[]func(d interface{}) bool{
-			func(d interface{}) bool {
-				return d == nil
-			},
-		},
-	)
+
+	// Create a new retry client to handle specific case of transient 403/404 after resource creation
+	// If a read after create retry is not specified, use the default.
+	rtry := plan.RetryReadAfterCreate
+	if rtry.IsNull() || rtry.IsUnknown() {
+		rtry = retry.RetryValueWithDefaultReadAfterCreateValues(ctx)
+	}
+	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, rtry)
+
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters)))
 	if err != nil {
@@ -808,20 +804,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(readTimeout),
-		)
-		tflog.Debug(ctx, "azapi_resource.Read is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
@@ -956,20 +939,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		return
 	}
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(deleteTimeout),
-		)
-		tflog.Debug(ctx, "azapi_resource.Delete is using retry")
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()
