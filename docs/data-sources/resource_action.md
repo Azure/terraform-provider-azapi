@@ -87,7 +87,7 @@ data "azapi_resource_action" "example" {
 	```
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
-- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
+- `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
 - `sensitive_response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property sensitive_output.
@@ -152,16 +152,16 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 <a id="nestedatt--retry"></a>
 ### Nested Schema for `retry`
 
-Required:
-
-- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
-
 Optional:
 
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 - `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
 - `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
 - `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
 - `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+- `response_is_nil` (Boolean) If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.
+- `status_forbidden` (Boolean) If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.
+- `status_not_found` (Boolean) If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.
 
 
 <a id="nestedblock--timeouts"></a>
