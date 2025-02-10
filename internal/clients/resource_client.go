@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 	"slices"
 	"strings"
@@ -16,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
@@ -691,4 +693,44 @@ func isRetryable(ctx context.Context, retryclient ResourceClientRetryableErrors,
 	}
 	tflog.Debug(ctx, "isRetryable: Error is not retryable")
 	return false
+}
+
+func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) Requester {
+	// configure default retry configuration
+	backOff := backoff.NewExponentialBackOff(
+		backoff.WithInitialInterval(5*time.Second),
+		backoff.WithMaxInterval(30*time.Second),
+		backoff.WithMaxElapsedTime(RetryGetAfterPut()),
+	)
+	errRegExps := retry.GetErrorMessagesRegex()
+	statusCodes := retry.GetDefaultRetryableStatusCodes()
+	dataCallbackFuncs := []func(d interface{}) bool{
+		func(d interface{}) bool {
+			return d == nil
+		},
+	}
+
+	if !retry.IsNull() && !retry.IsUnknown() {
+		tflog.Debug(ctx, "using custom retry configuration")
+		backOff = backoff.NewExponentialBackOff(
+			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),
+			backoff.WithMaxInterval(retry.GetMaxIntervalSecondsAsDuration()),
+			backoff.WithMultiplier(retry.GetMultiplier()),
+			backoff.WithRandomizationFactor(retry.GetRandomizationFactor()),
+			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
+		)
+		errRegExps = StringSliceToRegexpSliceMust(retry.GetErrorMessages())
+	}
+
+	return client.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
+}
+
+func RetryGetAfterPut() time.Duration {
+	if v := os.Getenv("AZAPI_RETRY_GET_AFTER_PUT_MAX_TIME"); v != "" {
+		timeout, err := time.ParseDuration(v)
+		if err == nil {
+			return timeout
+		}
+	}
+	return 2 * time.Minute
 }

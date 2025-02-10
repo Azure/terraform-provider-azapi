@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -390,20 +389,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		}
 	}
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(timeout),
-		)
-		tflog.Debug(ctx, "azapi_data_plane_resource.CreateUpdate is using retry")
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
@@ -441,20 +427,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	}
 
 	// Create a new retry client to handle specific case of transient 404 after resource creation
-	clientGetAfterPut := r.ProviderData.DataPlaneClient.WithRetry(
-		backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(5*time.Second),
-			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(RetryGetAfterPut()),
-		),
-		model.Retry.GetErrorMessagesRegex(),
-		[]int{404},
-		[]func(d interface{}) bool{
-			func(d interface{}) bool {
-				return d == nil
-			},
-		},
-	)
+	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, retry.NewRetryValueNull())
+
 	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -500,20 +474,8 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(readTimeout),
-		)
-		tflog.Debug(ctx, "azapi_data_plane_resource.Read is using retry")
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
+
 	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
@@ -593,20 +555,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		regexps := clients.StringSliceToRegexpSliceMust(model.Retry.GetErrorMessages())
-		bkof := backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(model.Retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(model.Retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(model.Retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(model.Retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(deleteTimeout),
-		)
-		tflog.Debug(ctx, "azapi_data_plane_resource.Delete is using retry")
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
 
 	lockIds := AsStringList(model.Locks)
 	slices.Sort(lockIds)
