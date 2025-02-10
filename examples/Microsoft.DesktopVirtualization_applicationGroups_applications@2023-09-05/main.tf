@@ -77,14 +77,3 @@ resource "azapi_resource" "application" {
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
-
-resource "azapi_update_resource" "updateAppDescription" {
-  resource_id = azapi_resource.application.id
-  type        = "Microsoft.DesktopVirtualization/applicationGroups/applications@2023-09-05"
-
-  body = {
-    properties = {
-      description = "TestDescription"
-    }
-  }
-}
