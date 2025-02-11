@@ -92,7 +92,6 @@ resource "azapi_resource_action" "logAnalyticsWorkspaceAuditTable" {
   method      = "PUT"
   body = {
     properties = {
-      # schema               = null
       retentionInDays      = 730
       totalRetentionInDays = 1826
     }
