@@ -63,7 +63,7 @@ resource "azapi_resource" "hostPool" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "weekdaysPersonalScheduleRoot" {
+resource "azapi_resource" "scalingPlan" {
   depends_on = [azurerm_role_assignment.test]
   type       = "Microsoft.DesktopVirtualization/scalingPlans@2023-11-01-preview"
   name       = var.resource_name
@@ -87,10 +87,10 @@ resource "azapi_resource" "weekdaysPersonalScheduleRoot" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "weekdaysPersonalSchedule" {
+resource "azapi_resource" "personalSchedule" {
   type      = "Microsoft.DesktopVirtualization/scalingPlans/personalSchedules@2023-11-01-preview"
   name      = "Weekdays"
-  parent_id = azapi_resource.weekdaysPersonalScheduleRoot.id
+  parent_id = azapi_resource.scalingPlan.id
   body = {
     properties = {
       daysOfWeek = [
