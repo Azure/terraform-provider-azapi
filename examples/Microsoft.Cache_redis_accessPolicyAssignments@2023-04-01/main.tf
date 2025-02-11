@@ -53,7 +53,7 @@ resource "azapi_resource" "redis" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "addUser" {
+resource "azapi_resource" "accessPolicyAssignment" {
   type      = "Microsoft.Cache/redis/accessPolicyAssignments@2024-03-01"
   name      = var.resource_name
   parent_id = azapi_resource.redis.id
