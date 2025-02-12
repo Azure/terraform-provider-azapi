@@ -240,7 +240,8 @@ resource "azurerm_private_endpoint" "blob" {
     name                           = "${var.resource_name}-private-endpoint-connection"
     private_connection_resource_id = azapi_resource.storageAccount.id
     subresource_names              = ["blob"]
-    is_manual_connection           = false
+    is_manual_connection           = true
+    request_message                = "test"
   }
 
   private_dns_zone_group {
@@ -287,3 +288,19 @@ resource "azurerm_private_endpoint" "web" {
   }
 }
 
+resource "azapi_update_resource" "approveBlobPrivateEndpointConnection" {
+  type      = "Microsoft.Storage/storageAccounts/privateEndpointConnections@2021-09-01"
+  name      = azapi_resource.storageAccount.output.properties.privateEndpointConnections[0].name
+  parent_id = azapi_resource.storageAccount.id
+
+  body = {
+    properties = {
+      privateLinkServiceConnectionState = {
+        description = "Approved via Terraform"
+        status      = "Approved"
+      }
+    }
+  }
+
+  depends_on = [azurerm_private_endpoint.blob, azurerm_private_endpoint.queue, azurerm_private_endpoint.web]
+}
