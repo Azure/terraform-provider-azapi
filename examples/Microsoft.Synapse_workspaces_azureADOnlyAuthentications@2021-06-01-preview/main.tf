@@ -96,8 +96,9 @@ resource "azapi_resource" "workspace" {
 }
 
 resource "azapi_update_resource" "synapse_azuread_only_authentication" {
-  type        = "Microsoft.Synapse/workspaces/azureADOnlyAuthentications@2021-06-01-preview"
-  resource_id = "${azapi_resource.workspace.id}/azureADOnlyAuthentications/default"
+  type      = "Microsoft.Synapse/workspaces/azureADOnlyAuthentications@2021-06-01-preview"
+  parent_id = azapi_resource.workspace.id
+  name      = "default"
 
   body = {
     properties = {
