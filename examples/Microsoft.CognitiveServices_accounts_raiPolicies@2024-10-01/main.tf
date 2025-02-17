@@ -33,10 +33,6 @@ resource "azapi_resource" "account" {
   location  = var.location
 
   body = {
-    identity = {
-      type                   = "None"
-      userAssignedIdentities = null
-    }
     kind = "OpenAI"
     properties = {
       disableLocalAuth              = false
@@ -52,7 +48,7 @@ resource "azapi_resource" "account" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "raiPolicies" {
+resource "azapi_resource" "raiPolicy" {
   type      = "Microsoft.CognitiveServices/accounts/raiPolicies@2024-10-01"
   name      = "NoModerationPolicy"
   parent_id = azapi_resource.account.id
