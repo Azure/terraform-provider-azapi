@@ -46,7 +46,7 @@ resource "azapi_resource" "automationAccount" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "module" {
+resource "azapi_resource" "powerShell72Module" {
   type      = "Microsoft.Automation/automationAccounts/powerShell72Modules@2020-01-13-preview"
   parent_id = azapi_resource.automationAccount.id
   name      = "xActiveDirectory"
