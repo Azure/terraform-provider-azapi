@@ -85,7 +85,7 @@ data "azurerm_managed_api" "test" {
   location = var.location
 }
 
-resource "azapi_resource" "connections" {
+resource "azapi_resource" "connection" {
   type      = "Microsoft.Web/connections@2016-06-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
