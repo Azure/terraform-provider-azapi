@@ -12,7 +12,6 @@ provider "azapi" {
 
 provider "azurerm" {
   features {
-
   }
 }
 
@@ -83,6 +82,8 @@ resource "azapi_resource" "namespaces" {
 data "azurerm_managed_api" "test" {
   name     = "servicebus"
   location = var.location
+
+  depends_on = [azapi_resource.workflows, azapi_resource.namespaces]
 }
 
 resource "azapi_resource" "connection" {
