@@ -86,3 +86,17 @@ resource "azapi_resource" "table" {
   response_export_values    = ["*"]
 }
 
+resource "azapi_update_resource" "table" {
+  type      = "Microsoft.OperationalInsights/workspaces/tables@2022-10-01"
+  name      = local.audit_log_table_name
+  parent_id = azapi_resource.workspace.id
+
+  body = {
+    properties = {
+      totalRetentionInDays = 90
+      retentionInDays      = 30
+    }
+  }
+
+  depends_on = [azapi_resource.table]
+}
