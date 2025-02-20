@@ -3,14 +3,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
   }
 }
 
@@ -26,15 +18,6 @@ variable "resource_name" {
 variable "location" {
   type    = string
   default = "westeurope"
-}
-
-data "azurerm_client_config" "current" {
-}
-
-data "azapi_resource" "subscription" {
-  type                   = "Microsoft.Resources/subscriptions@2021-01-01"
-  resource_id            = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  response_export_values = ["*"]
 }
 
 resource "azapi_resource" "resourceGroup" {
