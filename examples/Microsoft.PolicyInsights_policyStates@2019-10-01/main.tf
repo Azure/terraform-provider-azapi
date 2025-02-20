@@ -26,7 +26,7 @@ resource "azapi_resource" "resourceGroup" {
   location = var.location
 }
 
-resource "azapi_resource_action" "test" {
+resource "azapi_resource_action" "triggerEvaluation" {
   type        = "Microsoft.PolicyInsights/policyStates@2019-10-01"
   resource_id = "${azapi_resource.resourceGroup.id}/providers/Microsoft.PolicyInsights/policyStates/latest"
   action      = "triggerEvaluation"
