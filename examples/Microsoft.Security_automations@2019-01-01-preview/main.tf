@@ -52,7 +52,7 @@ resource "azapi_resource" "workspace" {
   response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "continuous_export" {
+resource "azapi_resource" "automation" {
   type      = "Microsoft.Security/automations@2019-01-01-preview"
   name      = "ExportToWorkspace"
   parent_id = azapi_resource.resourceGroup.id
