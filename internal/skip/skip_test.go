@@ -172,15 +172,15 @@ func TestCanSkipExternalRequest(t *testing.T) {
 			result:    true,
 		},
 		{
-			desc: "skip on update, null and unknown value differ",
+			desc: "no skip, null and unknown value differ",
 			a: SkipTestType1{
-				SkipOnUpdate:     basetypes.NewStringNull(),
-				NoSkip:           basetypes.NewStringValue("value2"),
+				SkipOnUpdate:     basetypes.NewStringValue("value1"),
+				NoSkip:           basetypes.NewStringUnknown(),
 				SkipOnCreateRead: basetypes.NewStringValue("value3"),
 			},
 			b: SkipTestType1{
-				SkipOnUpdate:     basetypes.NewStringUnknown(),
-				NoSkip:           basetypes.NewStringValue("value2"),
+				SkipOnUpdate:     basetypes.NewStringValue("value1"),
+				NoSkip:           basetypes.NewStringNull(),
 				SkipOnCreateRead: basetypes.NewStringValue("value3"),
 			},
 			operation: "update",
