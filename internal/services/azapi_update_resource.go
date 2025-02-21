@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/skip"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
@@ -305,8 +305,12 @@ func (r *AzapiUpdateResource) Create(ctx context.Context, request resource.Creat
 func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
 	// See if we can skip the external API call (changes are to state only)
 	var plan, state AzapiUpdateResourceModel
-	request.Plan.Get(ctx, &plan)
-	request.State.Get(ctx, &state)
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
 	if skip.CanSkipExternalRequest(plan, state, "update") {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
 		response.Diagnostics.Append(request.State.Set(ctx, plan)...)

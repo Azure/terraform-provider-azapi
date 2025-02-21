@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/Azure/terraform-provider-azapi/internal/services/skip"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
@@ -285,9 +285,9 @@ func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequ
 	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
 		return
 	}
-
-	request.State.Get(ctx, &state)
-	request.Plan.Get(ctx, &plan)
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
 
 	timeout, diags := plan.Timeouts.Update(ctx, 30*time.Minute)
 	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
