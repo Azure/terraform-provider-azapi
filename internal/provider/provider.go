@@ -281,7 +281,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"oidc_azure_service_connection_id": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.",
+				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID` or `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` Environment Variables.",
 			},
 
 			"use_oidc": schema.BoolAttribute{
@@ -519,7 +519,9 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	}
 
 	if model.OIDCAzureServiceConnectionID.IsNull() {
-		if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+		if v := os.Getenv("ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
+		} else if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
 			model.OIDCAzureServiceConnectionID = types.StringValue(v)
 		}
 	}
