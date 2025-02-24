@@ -47,7 +47,7 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 					int64validator.AtLeast(1),
 					int64validator.AtMost(120),
 				},
-				Default: int64default.StaticInt64(10),
+				Default: int64default.StaticInt64(defaultIntervalSeconds),
 			},
 			"max_interval_seconds": schema.Int64Attribute{
 				Optional:            true,
@@ -58,21 +58,21 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 					int64validator.AtLeast(1),
 					int64validator.AtMost(300),
 				},
-				Default: int64default.StaticInt64(180),
+				Default: int64default.StaticInt64(defaultMaxIntervalSeconds),
 			},
 			"multiplier": schema.Float64Attribute{
 				Optional:            true,
 				Computed:            true,
 				Description:         "The multiplier to apply to the interval between retries. Default is `1.5`.",
 				MarkdownDescription: "The multiplier to apply to the interval between retries. Default is `1.5`.",
-				Default:             float64default.StaticFloat64(1.5),
+				Default:             float64default.StaticFloat64(defaultMultiplier),
 			},
 			"randomization_factor": schema.Float64Attribute{
 				Optional:            true,
 				Computed:            true,
 				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
 				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
-				Default:             float64default.StaticFloat64(0.5),
+				Default:             float64default.StaticFloat64(defaultRandomizationFactor),
 			},
 			"read_after_create_retry_on_not_found_or_forbidden": schema.BoolAttribute{
 				Optional:            true,
