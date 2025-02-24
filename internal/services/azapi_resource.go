@@ -63,7 +63,6 @@ type AzapiResourceModel struct {
 	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	Retry                         retry.RetryValue `tfsdk:"retry"`
-	RetryReadAfterCreate          retry.RetryValue `tfsdk:"retry_read_after_create"`
 	SchemaValidationEnabled       types.Bool       `tfsdk:"schema_validation_enabled"`
 	Tags                          types.Map        `tfsdk:"tags"`
 	Timeouts                      timeouts.Value   `tfsdk:"timeouts"`
@@ -265,8 +264,6 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			},
 
 			"retry": retry.RetrySchema(ctx),
-
-			"retry_read_after_create": retry.RetrySchema(ctx),
 
 			"create_headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -625,10 +622,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		}
 	}
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry)
-
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
+
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry, false)
 
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
@@ -719,13 +717,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		return
 	}
 
-	// Create a new retry client to handle specific case of transient 403/404 after resource creation
-	// If a read after create retry is not specified, use the default.
-	rtry := plan.RetryReadAfterCreate
-	if rtry.IsNull() || rtry.IsUnknown() {
-		rtry = retry.RetryValueWithDefaultReadAfterCreateValues(ctx)
-	}
-	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, rtry)
+	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry, true)
 
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
 	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters)))
@@ -793,7 +785,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
@@ -928,7 +920,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		return
 	}
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry)
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()

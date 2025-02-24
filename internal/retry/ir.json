@@ -146,23 +146,48 @@
                   }
                 },
                 {
-                  "name": "status_forbidden",
-                  "bool": {
-                    "default": {
-                      "static": true
+                  "name": "http_status_codes",
+                  "list": {
+                    "description": "A list of HTTP status codes to retry on, valid codes are 400-599.",
+                    "element_type": {
+                      "int64": {}
                     },
-                    "computed_optional_required": "computed_optional",
-                    "description": "If set to `true`, the retry will be triggered when the status code is `403`. Default is `true`."
+                    "computed_optional_required": "optional",
+                    "validators": [
+                      {
+                        "custom": {
+                          "imports": [
+                            {
+                              "path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+                            }
+                          ],
+                          "schema_definition": "listvalidator.UniqueValues()"
+                        }
+                      },
+                      {
+                        "custom": {
+                          "imports": [
+                            {
+                              "path": "github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+                            },
+                            {
+                              "path": "github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+                            }
+                          ],
+                          "schema_definition": "listvalidator.ValueInt64sAre(int64validator.Between(400,599))"
+                        }
+                      }
+                    ]
                   }
                 },
                 {
-                  "name": "status_not_found",
+                  "name": "read_after_create_retry_on_not_found_or_forbidden",
                   "bool": {
                     "default": {
                       "static": true
                     },
                     "computed_optional_required": "computed_optional",
-                    "description": "If set to `true`, the retry will be triggered when the status code is `404`. Default is `true`."
+                    "description": "If set to `true`, the read after create retry will be triggered when the status code is `403` or `404`. Default is `true`. Only pertains to `azapi_resource` and `azapi_data_plane_resource`."
                   }
                 },
                 {

@@ -138,7 +138,6 @@ resource "azapi_data_plane_resource" "example" {
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
-- `retry_read_after_create` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry_read_after_create))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
@@ -166,28 +165,13 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 Optional:
 
 - `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `http_status_codes` (List of Number) A list of HTTP status codes to retry on, valid codes are 400-599.
 - `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
 - `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
 - `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
 - `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+- `read_after_create_retry_on_not_found_or_forbidden` (Boolean) If set to `true`, the read after create retry will be triggered when the status code is `403` or `404`. Default is `true`. Only pertains to `azapi_resource` and `azapi_data_plane_resource`.
 - `response_is_nil` (Boolean) If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.
-- `status_forbidden` (Boolean) If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.
-- `status_not_found` (Boolean) If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.
-
-
-<a id="nestedatt--retry_read_after_create"></a>
-### Nested Schema for `retry_read_after_create`
-
-Optional:
-
-- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
-- `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
-- `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
-- `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
-- `randomization_factor` (Number) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
-- `response_is_nil` (Boolean) If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.
-- `status_forbidden` (Boolean) If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.
-- `status_not_found` (Boolean) If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.
 
 
 <a id="nestedblock--timeouts"></a>

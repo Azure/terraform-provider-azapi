@@ -376,7 +376,7 @@ func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx co
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
@@ -411,7 +411,7 @@ func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id p
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
@@ -446,7 +446,7 @@ func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Co
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
@@ -481,7 +481,7 @@ func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, r
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetryableErrors, data interface{}, err error) bool {
@@ -519,47 +519,7 @@ func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetrya
 // ConfigureClientWithCustomRetry configures the client with a custom retry configuration if supplied.
 // If the retry configuration is null or unknown, it will use the default retry configuration.
 // If the supplied context has a deadline, it will use the deadline as the max elapsed time when a custom retry is provided.
-func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) DataPlaneRequester {
-	// configure default retry configuration
-	maxElapsed := 2 * time.Minute
-	backOff := backoff.NewExponentialBackOff(
-		backoff.WithInitialInterval(5*time.Second),
-		backoff.WithMaxInterval(30*time.Second),
-		backoff.WithMaxElapsedTime(maxElapsed),
-	)
-	errRegExps := []regexp.Regexp{}
-	statusCodes := retry.GetDefaultRetryableStatusCodes()
-	dataCallbackFuncs := []func(d interface{}) bool{}
-
-	if !retry.IsNull() && !retry.IsUnknown() {
-		tflog.Debug(ctx, "using custom retry configuration")
-		// If custom retry then use the context deadline (timeout value) as the max elapsed time
-		if ctxDeadline, ok := ctx.Deadline(); ok {
-			maxElapsed = time.Until(ctxDeadline)
-		}
-		statusCodes = make([]int, 0, 2)
-		if retry.StatusForbidden.ValueBool() {
-			statusCodes = append(statusCodes, http.StatusForbidden)
-		}
-		if retry.StatusNotFound.ValueBool() {
-			statusCodes = append(statusCodes, http.StatusNotFound)
-		}
-		if retry.ResponseIsNil.ValueBool() {
-			dataCallbackFuncs = []func(d interface{}) bool{
-				func(d interface{}) bool {
-					return d == nil
-				},
-			}
-		}
-		backOff = backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(maxElapsed),
-		)
-		errRegExps = retry.GetErrorMessagesRegex()
-	}
-
+func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) DataPlaneRequester {
+	backOff, errRegExps, statusCodes, dataCallbackFuncs := configureCustomRetry(ctx, rtry, useReadAfterCreateValues)
 	return client.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
 }

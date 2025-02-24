@@ -20,11 +20,22 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 			"error_message_regex": schema.ListAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
+				Description:         "A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.",
 				MarkdownDescription: "A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.",
 				Validators: []validator.List{
 					listvalidator.ValueStringsAre(myvalidator.StringIsValidRegex()),
 					listvalidator.UniqueValues(),
 					listvalidator.SizeAtLeast(1),
+				},
+			},
+			"http_status_codes": schema.ListAttribute{
+				ElementType:         types.Int64Type,
+				Optional:            true,
+				Description:         "A list of HTTP status codes to retry on, valid codes are 400-599.",
+				MarkdownDescription: "A list of HTTP status codes to retry on, valid codes are 400-599.",
+				Validators: []validator.List{
+					listvalidator.UniqueValues(),
+					listvalidator.ValueInt64sAre(int64validator.Between(400, 599)),
 				},
 			},
 			"interval_seconds": schema.Int64Attribute{
@@ -63,26 +74,19 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
 				Default:             float64default.StaticFloat64(0.5),
 			},
+			"read_after_create_retry_on_not_found_or_forbidden": schema.BoolAttribute{
+				Optional:            true,
+				Computed:            true,
+				Description:         "If set to `true`, the read after create retry will be triggered when the status code is `403` or `404`. Default is `true`. Only pertains to `azapi_resource` and `azapi_data_plane_resource`.",
+				MarkdownDescription: "If set to `true`, the read after create retry will be triggered when the status code is `403` or `404`. Default is `true`. Only pertains to `azapi_resource` and `azapi_data_plane_resource`.",
+				Default:             booldefault.StaticBool(true),
+			},
 			"response_is_nil": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
 				Description:         "If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.",
 				MarkdownDescription: "If set to `true`, the retry will be triggered when the response is `nil`. Default is `true`.",
 				Default:             booldefault.StaticBool(true),
-			},
-			"status_forbidden": schema.BoolAttribute{
-				Optional:            true,
-				Computed:            true,
-				Description:         "If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.",
-				MarkdownDescription: "If set to `true`, the retry will be triggered when the status code is `403`. Default is `false`.",
-				Default:             booldefault.StaticBool(false),
-			},
-			"status_not_found": schema.BoolAttribute{
-				Optional:            true,
-				Computed:            true,
-				Description:         "If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.",
-				MarkdownDescription: "If set to `true`, the retry will be triggered when the status code is `404`. Default is `false`.",
-				Default:             booldefault.StaticBool(false),
 			},
 		},
 		CustomType: RetryType{

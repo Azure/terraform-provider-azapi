@@ -160,7 +160,7 @@ func (retryclient *ResourceClientRetryableErrors) CreateOrUpdate(ctx context.Con
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID string, apiVersion string, body interface{}, options RequestOptions) (interface{}, error) {
@@ -257,7 +257,7 @@ func (retryclient *ResourceClientRetryableErrors) Get(ctx context.Context, resou
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVersion string, options RequestOptions) (interface{}, error) {
@@ -335,7 +335,7 @@ func (retryclient *ResourceClientRetryableErrors) Delete(ctx context.Context, re
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (client *ResourceClient) Delete(ctx context.Context, resourceID string, apiVersion string, options RequestOptions) (interface{}, error) {
@@ -432,7 +432,7 @@ func (retryclient *ResourceClientRetryableErrors) Action(ctx context.Context, re
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (client *ResourceClient) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
@@ -547,11 +547,11 @@ func (retryclient *ResourceClientRetryableErrors) List(ctx context.Context, url 
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (client *ResourceClient) List(ctx context.Context, url string, apiVersion string, options RequestOptions) (interface{}, error) {
-	pager := runtime.NewPager[interface{}](runtime.PagingHandler[interface{}]{
+	pager := runtime.NewPager(runtime.PagingHandler[interface{}]{
 		More: func(current interface{}) bool {
 			if current == nil {
 				return false
@@ -697,47 +697,7 @@ func isRetryable(ctx context.Context, retryclient ResourceClientRetryableErrors,
 // ConfigureClientWithCustomRetry configures the client with a custom retry configuration if supplied.
 // If the retry configuration is null or unknown, it will use the default retry configuration.
 // If the supplied context has a deadline, it will use the deadline as the max elapsed time when a custom retry is provided.
-func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context, retry retry.RetryValue) Requester {
-	// configure default retry configuration
-	maxElapsed := 2 * time.Minute
-	backOff := backoff.NewExponentialBackOff(
-		backoff.WithInitialInterval(5*time.Second),
-		backoff.WithMaxInterval(30*time.Second),
-		backoff.WithMaxElapsedTime(maxElapsed),
-	)
-	errRegExps := []regexp.Regexp{}
-	statusCodes := retry.GetDefaultRetryableStatusCodes()
-	dataCallbackFuncs := []func(d interface{}) bool{}
-
-	if !retry.IsNull() && !retry.IsUnknown() {
-		tflog.Debug(ctx, "using custom retry configuration")
-		// If custom retry then use the context deadline (timeout value) as the max elapsed time
-		if ctxDeadline, ok := ctx.Deadline(); ok {
-			maxElapsed = time.Until(ctxDeadline)
-		}
-		statusCodes = make([]int, 0, 2)
-		if retry.StatusForbidden.ValueBool() {
-			statusCodes = append(statusCodes, http.StatusForbidden)
-		}
-		if retry.StatusNotFound.ValueBool() {
-			statusCodes = append(statusCodes, http.StatusNotFound)
-		}
-		if retry.ResponseIsNil.ValueBool() {
-			dataCallbackFuncs = []func(d interface{}) bool{
-				func(d interface{}) bool {
-					return d == nil
-				},
-			}
-		}
-		backOff = backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(retry.GetIntervalSecondsAsDuration()),
-			backoff.WithMaxInterval(retry.GetMaxIntervalSecondsAsDuration()),
-			backoff.WithMultiplier(retry.GetMultiplier()),
-			backoff.WithRandomizationFactor(retry.GetRandomizationFactor()),
-			backoff.WithMaxElapsedTime(maxElapsed),
-		)
-		errRegExps = retry.GetErrorMessagesRegex()
-	}
-
+func (client *ResourceClient) ConfigureClientWithCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) Requester {
+	backOff, errRegExps, statusCodes, dataCallbackFuncs := configureCustomRetry(ctx, rtry, useReadAfterCreateValues)
 	return client.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
 }
