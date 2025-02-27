@@ -2593,5 +2593,1161 @@
       "$ref": "#/191"
     },
     "flags": 1
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MapRequest",
+    "discriminator": "kind",
+    "baseProperties": {
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Map interval start time."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Map interval end time."
+      }
+    },
+    "elements": {
+      "map:machine-group-dependency": {
+        "$ref": "#/196"
+      },
+      "map:machine-list-dependency": {
+        "$ref": "#/199"
+      },
+      "map:single-machine-dependency": {
+        "$ref": "#/202"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineGroupMapRequest",
+    "properties": {
+      "machineGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "URI of machine group resource for which to generate the map."
+      },
+      "filterProcesses": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "If true, only processes between specified machines will be included. Any connections in or out of those processes will be included."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 1,
+        "description": "The type of map to create."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "map:machine-group-dependency"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineListMapRequest",
+    "properties": {
+      "machineIds": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 1,
+        "description": "a list of URIs of machine resources for which to generate the map."
+      },
+      "filterProcesses": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "If true, only processes between specified machines will be included. Any connections in or out of those processes will be included."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 1,
+        "description": "The type of map to create."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "map:machine-list-dependency"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingleMachineDependencyMapRequest",
+    "properties": {
+      "machineId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "URI of machine resource for which to generate the map."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 1,
+        "description": "The type of map to create."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "map:single-machine-dependency"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MapResponse",
+    "properties": {
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Map interval start time."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Map interval end time."
+      },
+      "map": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 1,
+        "description": "The generated map."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Map",
+    "properties": {
+      "nodes": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 1,
+        "description": "The nodes (entities) of a map."
+      },
+      "edges": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 1,
+        "description": "The edges (relationships) of a map."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MapNodes",
+    "properties": {
+      "machines": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "Machine resources."
+      },
+      "processes": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "Process resources."
+      },
+      "ports": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "Port resources."
+      },
+      "clientGroups": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Client Group resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Machine",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ETAG."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/207"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Process",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ETAG."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/215"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Port",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ETAG."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/223"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClientGroup",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ETAG."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/231"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MapEdges",
+    "properties": {
+      "connections": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 0,
+        "description": "Network connections."
+      },
+      "acceptors": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 0,
+        "description": "Processes accepting on a port."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Connection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Properties for a connection resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionProperties",
+    "properties": {
+      "serverPort": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "Reference to the server port via which this connection has been established."
+      },
+      "failureState": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "Specifies whether there are only successful, failed or a mixture of both connections represented by this resource."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 1,
+        "description": "Source resource of the relationship."
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 1,
+        "description": "Destination resource of the relationship."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relationship start time."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relationship end time."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PortReference",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource URI."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type qualifier."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 1,
+        "description": "Specifies the sub-class of the reference."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:machinewithhints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:onmachine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:clientgroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ok"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "mixed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rel:connection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rel:acceptor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/240"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Acceptor",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 0,
+        "description": "Properties for an acceptor relationship."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AcceptorProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 1,
+        "description": "Port being accepted."
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 1,
+        "description": "Accepting process."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relationship start time."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Relationship end time."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProcessReference",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource URI."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type qualifier."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 1,
+        "description": "Specifies the sub-class of the reference."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:machinewithhints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:onmachine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ref:clientgroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rel:connection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rel:acceptor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/258"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateMap",
+    "resourceType": "Microsoft.OperationalInsights/workspaces/features",
+    "apiVersion": "2015-11-01-preview",
+    "output": {
+      "$ref": "#/204"
+    },
+    "input": {
+      "$ref": "#/195"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineGroup",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ETAG."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 1,
+        "description": "Additional resource type qualifier."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource identifier."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machine"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "process"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "port"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "clientGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "machineGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "machineGroups",
+    "resourceType": "Microsoft.OperationalInsights/workspaces/features",
+    "apiVersion": "2015-11-01-preview",
+    "input": {
+      "$ref": "#/273"
+    }
   }
 ]

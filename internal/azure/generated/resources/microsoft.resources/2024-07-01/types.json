@@ -1756,8 +1756,15 @@
   },
   {
     "$type": "ObjectType",
-    "name": "DeploymentExtended",
+    "name": "DeploymentValidateResult",
     "properties": {
+      "error": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 2,
+        "description": "The deployment validation error."
+      },
       "id": {
         "type": {
           "$ref": "#/2"
@@ -1779,26 +1786,12 @@
         "flags": 2,
         "description": "The type of the deployment."
       },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "the location of the deployment."
-      },
       "properties": {
         "type": {
           "$ref": "#/132"
         },
         "flags": 0,
-        "description": "Deployment properties."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/158"
-        },
-        "flags": 0,
-        "description": "Deployment tags"
+        "description": "The template deployment properties."
       }
     }
   },
@@ -2122,14 +2115,6 @@
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "DeploymentExtendedTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
     "$type": "ResourceFunctionType",
     "name": "validate",
     "resourceType": "Microsoft.Resources/deployments",
@@ -2160,7 +2145,7 @@
     "resourceType": "Microsoft.Resources/deployments",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/160"
+      "$ref": "#/159"
     }
   },
   {
@@ -2176,7 +2161,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/163"
+          "$ref": "#/162"
         },
         "flags": 1,
         "description": "The deployment properties."
@@ -2189,7 +2174,7 @@
     "properties": {
       "whatIfSettings": {
         "type": {
-          "$ref": "#/164"
+          "$ref": "#/163"
         },
         "flags": 0,
         "description": "Optional What-If operation settings."
@@ -2210,7 +2195,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide the parameter values directly in the request rather than link to an existing parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed JSON string."
@@ -2224,7 +2209,7 @@
       },
       "mode": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/170"
         },
         "flags": 1,
         "description": "The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed without deleting existing resources that are not included in the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted. Be careful when using Complete mode as you may unintentionally delete resources."
@@ -2258,7 +2243,7 @@
     "properties": {
       "resultFormat": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "The format of the What-If results"
@@ -2277,10 +2262,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/165"
+        "$ref": "#/164"
       },
       {
-        "$ref": "#/166"
+        "$ref": "#/165"
       }
     ]
   },
@@ -2304,10 +2289,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/169"
+        "$ref": "#/168"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/169"
       }
     ]
   },
@@ -2324,7 +2309,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/173"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "What-If operation properties."
@@ -2344,21 +2329,21 @@
     "properties": {
       "changes": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "List of resource changes predicted by What-If operation."
       },
       "potentialChanges": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "List of resource changes predicted by What-If operation."
       },
       "diagnostics": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/193"
         },
         "flags": 2,
         "description": "List of resource diagnostics detected by What-If operation."
@@ -2378,7 +2363,7 @@
       },
       "changeType": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/181"
         },
         "flags": 1,
         "description": "Type of change that will be made to the resource when the deployment is executed."
@@ -2406,7 +2391,7 @@
       },
       "delta": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/190"
         },
         "flags": 0,
         "description": "The predicted changes to resource properties."
@@ -2445,6 +2430,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/174"
+      },
+      {
         "$ref": "#/175"
       },
       {
@@ -2461,9 +2449,6 @@
       },
       {
         "$ref": "#/180"
-      },
-      {
-        "$ref": "#/181"
       }
     ]
   },
@@ -2480,7 +2465,7 @@
       },
       "propertyChangeType": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/188"
         },
         "flags": 1,
         "description": "The type of property change."
@@ -2501,7 +2486,7 @@
       },
       "children": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/189"
         },
         "flags": 0,
         "description": "Nested property changes."
@@ -2532,6 +2517,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/183"
+      },
+      {
         "$ref": "#/184"
       },
       {
@@ -2542,34 +2530,31 @@
       },
       {
         "$ref": "#/187"
-      },
-      {
-        "$ref": "#/188"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/183"
+      "$ref": "#/182"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/183"
+      "$ref": "#/182"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/174"
+      "$ref": "#/173"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/174"
+      "$ref": "#/173"
     }
   },
   {
@@ -2584,10 +2569,10 @@
     "resourceType": "Microsoft.Resources/deployments",
     "apiVersion": "2024-07-01",
     "output": {
-      "$ref": "#/172"
+      "$ref": "#/171"
     },
     "input": {
-      "$ref": "#/162"
+      "$ref": "#/161"
     }
   }
 ]

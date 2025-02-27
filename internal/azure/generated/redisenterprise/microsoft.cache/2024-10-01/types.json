@@ -1630,18 +1630,31 @@
     "$type": "ObjectType",
     "name": "ForceLinkParameters",
     "properties": {
-      "groupNickname": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The name of the group of linked database resources. This should match the existing replication group name."
-      },
-      "linkedDatabases": {
+      "geoReplication": {
         "type": {
           "$ref": "#/161"
         },
         "flags": 1,
+        "description": "Properties to configure geo replication for this database."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ForceLinkParametersGeoReplication",
+    "properties": {
+      "groupNickname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the group of linked database resources. This should match the existing replication group name."
+      },
+      "linkedDatabases": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
         "description": "The resource IDs of the databases that are expected to be linked and included in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it is splintered."
       }
     }
@@ -1667,7 +1680,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/164"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The identifiers of all the other database resources in the georeplication group to be flushed."
@@ -1686,7 +1699,7 @@
     "resourceType": "Microsoft.Cache/redisEnterprise/databases",
     "apiVersion": "2024-10-01",
     "input": {
-      "$ref": "#/163"
+      "$ref": "#/164"
     }
   }
 ]
