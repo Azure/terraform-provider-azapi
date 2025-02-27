@@ -29,6 +29,43 @@ func Test_UniqueStringFunction(t *testing.T) {
 				Result: function.NewResultData(types.StringValue("cwvxuqg24sifi")),
 			},
 		},
+		"unique-string-fu": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("fu")
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Result: function.NewResultData(types.StringValue("6rkxbspxjmsho")),
+			},
+		},		
+		"unique-string-fubar": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("fubar")
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Result: function.NewResultData(types.StringValue("cj2xpqsiwjfne")),
+			},
+		},
+		"unique-string-fu-bar": {
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.ListValueMust(types.StringType, []attr.Value{
+						types.StringValue("fu"),
+						types.StringValue("bar")
+					}),
+				}),
+			},
+			expected: function.RunResponse{
+				Result: function.NewResultData(types.StringValue("q5wxoscxs5j6k")),
+			},
+		},
 	}
 
 	for name, testCase := range testCases {
