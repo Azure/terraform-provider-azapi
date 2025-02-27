@@ -1,0 +1,894 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AgriculturePlatform/agriServices"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AgriculturePlatform/agriServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The SKU (Stock Keeping Unit) assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgriServiceResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "config": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Config of the AgriService instance."
+      },
+      "managedOnBehalfOfConfiguration": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 2,
+        "description": "Managed On Behalf Of Configuration."
+      },
+      "dataConnectorCredentials": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Data connector credentials of AgriService instance."
+      },
+      "installedSolutions": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "AgriService installed solutions."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgriServiceConfig",
+    "properties": {
+      "instanceUri": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Instance URI of the AgriService instance."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Version of AgriService instance."
+      },
+      "appServiceResourceId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "App service resource Id."
+      },
+      "cosmosDbResourceId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Cosmos Db resource Id."
+      },
+      "storageAccountResourceId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Storage account resource Id."
+      },
+      "keyVaultResourceId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Key vault resource Id."
+      },
+      "redisCacheResourceId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Redis cache resource Id."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 256
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedOnBehalfOfConfiguration",
+    "properties": {
+      "moboBrokerResources": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 3,
+        "description": "Associated MoboBrokerResources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MoboBrokerResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The fully qualified resource ID of the MoboBroker resource.\nExample: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/18"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataConnectorCredentialMap",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The key representing the credential."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The data connector credential value."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataConnectorCredentials",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Type of credential."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Client Id associated with the provider, if type of credentials is OAuthClientCredentials."
+      },
+      "keyVaultUri": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Uri of the key vault"
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Name of the key vault key."
+      },
+      "keyVersion": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Version of the key vault key."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OAuthClientCredentials"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApiKeyAuthCredentials"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InstalledSolutionMap",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The key representing the installed solution."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "The installed solution value."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Solution",
+    "properties": {
+      "applicationName": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Application name of the solution."
+      },
+      "partnerId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Partner Id."
+      },
+      "marketPlacePublisherId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Marketplace publisher Id."
+      },
+      "saasSubscriptionId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Saas subscription Id."
+      },
+      "saasSubscriptionName": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Saas subscription name."
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Plan Id."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/26"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/36"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. E.g. P3. It is typically a letter+number code"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If the service has different generations of hardware, for the same SKU, then that can be captured here."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AgriculturePlatform/agriServices@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableAgriSolutionListResult",
+    "properties": {
+      "solutions": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "Agri solutions list."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataManagerForAgricultureSolution",
+    "properties": {
+      "partnerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner Id."
+      },
+      "solutionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Solution Id."
+      },
+      "partnerTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Partner tenant Id."
+      },
+      "dataAccessScopes": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Data access scopes."
+      },
+      "marketPlaceOfferDetails": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 1,
+        "description": "Marketplace offer details."
+      },
+      "saasApplicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Saas application Id."
+      },
+      "accessAzureDataManagerForAgricultureApplicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Entra application Id used to access azure data manager for agriculture instance."
+      },
+      "accessAzureDataManagerForAgricultureApplicationName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Entra application name used to access azure data manager for agriculture instance."
+      },
+      "isValidateInput": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 1,
+        "description": "Whether solution inference will validate input."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MarketPlaceOfferDetails",
+    "properties": {
+      "saasOfferId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Saas offer Id."
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher Id."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAvailableSolutions",
+    "resourceType": "Microsoft.AgriculturePlatform/agriServices",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/58"
+    }
+  }
+]

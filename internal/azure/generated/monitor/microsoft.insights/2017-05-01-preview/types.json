@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Insights/diagnosticSettings"
+    "value": "microsoft.insights/diagnosticSettings"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Insights/diagnosticSettings",
+    "name": "microsoft.insights/diagnosticSettings",
     "properties": {
       "id": {
         "type": {
@@ -47,13 +47,20 @@
           "$ref": "#/4"
         },
         "flags": 0,
-        "description": "Properties of a Diagnostic Settings Resource."
+        "description": "Properties of a Subscription Diagnostic Settings Resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Location of the resource"
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "DiagnosticSettings",
+    "name": "SubscriptionDiagnosticSettings",
     "properties": {
       "storageAccountId": {
         "type": {
@@ -83,16 +90,9 @@
         "flags": 0,
         "description": "The name of the event hub. If none is specified, the default event hub will be selected."
       },
-      "metrics": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
-        "description": "The list of metric settings."
-      },
       "logs": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "The list of logs settings."
@@ -103,76 +103,31 @@
         },
         "flags": 0,
         "description": "The full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2"
-      },
-      "logAnalyticsDestinationType": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: <normalized service identity>_<normalized category name>. Possible values are: Dedicated and null (null is default.)"
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "MetricSettings",
+    "name": "SubscriptionLogSettings",
     "properties": {
-      "timeGrain": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the timegrain of the metric in ISO8601 format."
-      },
       "category": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings operation."
+        "description": "Name of a Subscription Diagnostic Log category for a resource type this setting is applied to."
       },
       "enabled": {
         "type": {
           "$ref": "#/6"
         },
         "flags": 1,
-        "description": "a value indicating whether this category is enabled."
-      },
-      "retentionPolicy": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "the retention policy for this category."
+        "description": "a value indicating whether this log is enabled."
       }
     }
   },
   {
     "$type": "BooleanType"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RetentionPolicy",
-    "properties": {
-      "enabled": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "a value indicating whether the retention policy is enabled."
-      },
-      "days": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 1,
-        "description": "the number of days for the retention in days. A value of 0 will retain the events indefinitely."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType",
-    "minValue": 0
   },
   {
     "$type": "ArrayType",
@@ -181,41 +136,8 @@
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "LogSettings",
-    "properties": {
-      "category": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation."
-      },
-      "enabled": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "a value indicating whether this log is enabled."
-      },
-      "retentionPolicy": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "the retention policy for this log."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/10"
-    }
-  },
-  {
     "$type": "ResourceType",
-    "name": "Microsoft.Insights/diagnosticSettings@2017-05-01-preview",
+    "name": "microsoft.insights/diagnosticSettings@2017-05-01-preview",
     "scopeType": 0,
     "body": {
       "$ref": "#/3"
@@ -250,21 +172,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/9"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/10"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/12"
         },
         "flags": 2,
         "description": "The properties of a Diagnostic Settings Category."
@@ -277,7 +199,7 @@
     "properties": {
       "categoryType": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The type of the diagnostic settings category."
@@ -296,10 +218,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/17"
+        "$ref": "#/13"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/14"
       }
     ]
   },
@@ -308,7 +230,7 @@
     "name": "Microsoft.Insights/diagnosticSettingsCategories@2017-05-01-preview",
     "scopeType": 0,
     "body": {
-      "$ref": "#/15"
+      "$ref": "#/11"
     },
     "flags": 1
   }

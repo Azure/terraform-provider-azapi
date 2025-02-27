@@ -1,14 +1,10 @@
 [
   {
-    "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9-]{3,63}$"
+    "$type": "StringType"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.HybridConnectivity/solutionConfigurations"
-  },
-  {
-    "$type": "StringType"
+    "value": "Microsoft.HybridConnectivity/endpoints"
   },
   {
     "$type": "StringLiteralType",
@@ -16,11 +12,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.HybridConnectivity/solutionConfigurations",
+    "name": "Microsoft.HybridConnectivity/endpoints",
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 10,
         "description": "The resource id"
@@ -41,21 +37,21 @@
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/3"
+          "$ref": "#/2"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/4"
         },
         "flags": 0,
-        "description": "The resource-specific properties for this resource."
+        "description": "The endpoint properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -64,122 +60,50 @@
   },
   {
     "$type": "ObjectType",
-    "name": "SolutionConfigurationProperties",
+    "name": "EndpointProperties",
     "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The type of endpoint."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource Id of the connectivity endpoint (optional)."
+      },
       "provisioningState": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/0"
         },
         "flags": 2,
         "description": "The resource provisioning state."
-      },
-      "solutionType": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The type of the solution"
-      },
-      "solutionSettings": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 0,
-        "description": "Solution settings"
-      },
-      "status": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 2,
-        "description": "The status of solution configurations"
-      },
-      "statusDetails": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The detailed message of status details"
-      },
-      "lastSyncTime": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The last time resources were inventoried"
       }
     }
   },
   {
     "$type": "StringLiteralType",
-    "value": "Succeeded"
+    "value": "default"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
+    "value": "custom"
   },
   {
     "$type": "UnionType",
     "elements": [
+      {
+        "$ref": "#/5"
+      },
       {
         "$ref": "#/6"
       },
       {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SolutionSettings",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "New"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Completed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/11"
-      },
-      {
-        "$ref": "#/12"
-      },
-      {
-        "$ref": "#/13"
-      },
-      {
-        "$ref": "#/14"
-      },
-      {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -189,42 +113,42 @@
     "properties": {
       "createdBy": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The identity that created the resource."
       },
       "createdByType": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
       },
       "createdAt": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The timestamp of resource creation (UTC)."
       },
       "lastModifiedBy": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The identity that last modified the resource."
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
       },
       "lastModifiedAt": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The timestamp of resource last modification (UTC)"
@@ -251,19 +175,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/17"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/12"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -287,334 +211,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/22"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/23"
+        "$ref": "#/15"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/25"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.HybridConnectivity/solutionConfigurations@2024-12-01",
-    "scopeType": 0,
-    "body": {
-      "$ref": "#/4"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.HybridConnectivity/publicCloudConnectors"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-12-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.HybridConnectivity/publicCloudConnectors",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 0,
-        "description": "The resource-specific properties for this resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The geo-location where the resource lives"
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PublicCloudConnectorProperties",
-    "properties": {
-      "awsCloudProfile": {
-        "type": {
-          "$ref": "#/32"
-        },
-        "flags": 1,
-        "description": "Cloud profile for AWS."
-      },
-      "hostType": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 1,
-        "description": "Host cloud the public cloud connector."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/40"
-        },
-        "flags": 2,
-        "description": "The resource provisioning state."
-      },
-      "connectorPrimaryIdentifier": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Connector primary identifier."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AwsCloudProfile",
-    "properties": {
-      "accountId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Account id for the AWS account."
-      },
-      "excludedAccounts": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 0,
-        "description": "List of AWS accounts which need to be excluded."
-      },
-      "isOrganizationalAccount": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 0,
-        "description": "Boolean value that indicates whether the account is organizational or not. True represents organization account, whereas false represents a single account."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AWS"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/39"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.HybridConnectivity/publicCloudConnectors@2024-12-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/30"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.HybridConnectivity/endpoints"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-12-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.HybridConnectivity/endpoints",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/43"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/44"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/46"
-        },
-        "flags": 0,
-        "description": "The endpoint properties."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EndpointProperties",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/49"
-        },
-        "flags": 1,
-        "description": "The type of endpoint."
-      },
-      "resourceId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The resource Id of the connectivity endpoint (optional)."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The resource provisioning state."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "default"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "custom"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/47"
-      },
-      {
-        "$ref": "#/48"
-      },
-      {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -623,7 +232,7 @@
     "name": "Microsoft.HybridConnectivity/endpoints@2024-12-01",
     "scopeType": 0,
     "body": {
-      "$ref": "#/45"
+      "$ref": "#/3"
     },
     "flags": 0
   },
@@ -641,42 +250,42 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/20"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/21"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "The service configuration properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -689,28 +298,28 @@
     "properties": {
       "serviceName": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/26"
         },
         "flags": 1,
         "description": "Name of the service."
       },
       "resourceId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The resource Id of the connectivity endpoint (optional)."
       },
       "port": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "The port on which service is enabled."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/33"
         },
         "flags": 2,
         "description": "The resource provisioning state."
@@ -729,13 +338,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/55"
+        "$ref": "#/24"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/25"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -766,8 +375,394 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/59"
+        "$ref": "#/28"
       },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HybridConnectivity/endpoints/serviceConfigurations@2024-12-01",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/22"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{3,63}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HybridConnectivity/solutionConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HybridConnectivity/solutionConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SolutionConfigurationProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The resource provisioning state."
+      },
+      "solutionType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The type of the solution"
+      },
+      "solutionSettings": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Solution settings"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The status of solution configurations"
+      },
+      "statusDetails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The detailed message of status details"
+      },
+      "lastSyncTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The last time resources were inventoried"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SolutionSettings",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HybridConnectivity/solutionConfigurations@2024-12-01",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/38"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HybridConnectivity/publicCloudConnectors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HybridConnectivity/publicCloudConnectors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicCloudConnectorProperties",
+    "properties": {
+      "awsCloudProfile": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 1,
+        "description": "Cloud profile for AWS."
+      },
+      "hostType": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "Host cloud the public cloud connector."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "The resource provisioning state."
+      },
+      "connectorPrimaryIdentifier": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Connector primary identifier."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AwsCloudProfile",
+    "properties": {
+      "accountId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Account id for the AWS account."
+      },
+      "excludedAccounts": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "List of AWS accounts which need to be excluded."
+      },
+      "isOrganizationalAccount": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Boolean value that indicates whether the account is organizational or not. True represents organization account, whereas false represents a single account."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AWS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
       {
         "$ref": "#/60"
       },
@@ -778,17 +773,22 @@
         "$ref": "#/62"
       },
       {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
   {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
     "$type": "ResourceType",
-    "name": "Microsoft.HybridConnectivity/endpoints/serviceConfigurations@2024-12-01",
-    "scopeType": 0,
+    "name": "Microsoft.HybridConnectivity/publicCloudConnectors@2024-12-01",
+    "scopeType": 8,
     "body": {
       "$ref": "#/53"
     },
@@ -808,14 +808,14 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 9,
         "description": "The resource name"
@@ -843,7 +843,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -863,14 +863,14 @@
       },
       "cloudNativeResourceId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "Gets or sets the cloud native resource name."
       },
       "azureResourceId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "Gets or sets the mapped azure resource id."
@@ -884,7 +884,7 @@
       },
       "statusDetails": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "Gets or sets the status details."
@@ -909,7 +909,7 @@
         "$ref": "#/70"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -945,7 +945,7 @@
         "$ref": "#/75"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -974,7 +974,7 @@
         "$ref": "#/79"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -1001,14 +1001,14 @@
     "properties": {
       "id": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 10,
         "description": "The resource id"
       },
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 9,
         "description": "The resource name"
@@ -1036,7 +1036,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/8"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1049,14 +1049,14 @@
     "properties": {
       "solutionType": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The name of the solution type."
       },
       "description": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "Short description of solution type."
@@ -1080,7 +1080,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2"
+      "$ref": "#/0"
     }
   },
   {
@@ -1089,28 +1089,28 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The name of the solution setting property."
       },
       "displayName": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The UI friendly name of the solution setting property."
       },
       "type": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "Type of the solution setting property, represented as a string."
       },
       "description": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "Description of solution setting property."
@@ -1124,7 +1124,7 @@
       },
       "defaultValue": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "Default value for this solution settings property."
@@ -1134,7 +1134,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2"
+      "$ref": "#/0"
     }
   },
   {
@@ -1154,185 +1154,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "OperationStatusResult",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Fully qualified ID for the async operation."
-      },
-      "resourceId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Fully qualified ID of the resource against which the original async operation was started."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Name of the async operation."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Operation status."
-      },
-      "percentComplete": {
-        "type": {
-          "$ref": "#/92"
-        },
-        "flags": 0,
-        "description": "Percent of the operation that is complete."
-      },
-      "startTime": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The start time of the operation."
-      },
-      "endTime": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The end time of the operation."
-      },
-      "operations": {
-        "type": {
-          "$ref": "#/93"
-        },
-        "flags": 0,
-        "description": "The operations list."
-      },
-      "error": {
-        "type": {
-          "$ref": "#/94"
-        },
-        "flags": 0,
-        "description": "If present, details of the operation error."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType",
-    "minValue": 0,
-    "maxValue": 100
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/91"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ErrorDetail",
-    "properties": {
-      "code": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error code."
-      },
-      "message": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error message."
-      },
-      "target": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error target."
-      },
-      "details": {
-        "type": {
-          "$ref": "#/95"
-        },
-        "flags": 2,
-        "description": "The error details."
-      },
-      "additionalInfo": {
-        "type": {
-          "$ref": "#/98"
-        },
-        "flags": 2,
-        "description": "The error additional info."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/94"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ErrorAdditionalInfo",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The additional info type."
-      },
-      "info": {
-        "type": {
-          "$ref": "#/97"
-        },
-        "flags": 2,
-        "description": "The additional info."
-      }
-    }
-  },
-  {
-    "$type": "AnyType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/96"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "syncNow",
-    "resourceType": "Microsoft.HybridConnectivity/solutionConfigurations",
-    "apiVersion": "2024-12-01",
-    "output": {
-      "$ref": "#/91"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "testPermissions",
-    "resourceType": "Microsoft.HybridConnectivity/publicCloudConnectors",
-    "apiVersion": "2024-12-01",
-    "output": {
-      "$ref": "#/91"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "ListCredentialsRequest",
     "properties": {
       "serviceName": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "The name of the service. If not provided, the request will by pass the generation of service configuration token"
@@ -1351,13 +1177,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/102"
+        "$ref": "#/92"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/93"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -1367,7 +1193,7 @@
     "properties": {
       "relay": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Azure relay hybrid connection access properties"
@@ -1380,42 +1206,42 @@
     "properties": {
       "namespaceName": {
         "type": {
-          "$ref": "#/107"
+          "$ref": "#/97"
         },
         "flags": 1,
         "description": "The namespace name."
       },
       "namespaceNameSuffix": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/98"
         },
         "flags": 1,
         "description": "The suffix domain name of relay namespace."
       },
       "hybridConnectionName": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "Azure Relay hybrid connection name for the resource."
       },
       "accessKey": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 2,
         "description": "Access key for hybrid connection."
       },
       "expiresOn": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "The expiration of access key in unix time."
       },
       "serviceConfigurationToken": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The token to access the enabled service."
@@ -1433,19 +1259,15 @@
     "maxLength": 100
   },
   {
-    "$type": "StringType",
-    "sensitive": true
-  },
-  {
     "$type": "ResourceFunctionType",
     "name": "listCredentials",
     "resourceType": "Microsoft.HybridConnectivity/endpoints",
     "apiVersion": "2024-12-01",
     "output": {
-      "$ref": "#/105"
+      "$ref": "#/95"
     },
     "input": {
-      "$ref": "#/101"
+      "$ref": "#/91"
     }
   },
   {
@@ -1454,10 +1276,10 @@
     "properties": {
       "serviceName": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/103"
         },
         "flags": 0,
-        "description": "The name of the service."
+        "description": "The name of the service. If not provided, the request will by pass the generation of service configuration token."
       }
     }
   },
@@ -1473,13 +1295,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/112"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/113"
+        "$ref": "#/102"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -1489,14 +1311,14 @@
     "properties": {
       "relay": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "Azure relay hybrid connection access properties"
       },
       "ingress": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/105"
         },
         "flags": 0,
         "description": "Ingress gateway profile"
@@ -1509,14 +1331,14 @@
     "properties": {
       "hostname": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The ingress hostname."
       },
       "aadProfile": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/106"
         },
         "flags": 1,
         "description": "The AAD Profile"
@@ -1529,14 +1351,14 @@
     "properties": {
       "serverId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The arc ingress gateway server app id."
       },
       "tenantId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The target resource home tenant id."
@@ -1549,10 +1371,10 @@
     "resourceType": "Microsoft.HybridConnectivity/endpoints",
     "apiVersion": "2024-12-01",
     "output": {
-      "$ref": "#/115"
+      "$ref": "#/104"
     },
     "input": {
-      "$ref": "#/111"
+      "$ref": "#/100"
     }
   },
   {
@@ -1561,21 +1383,21 @@
     "properties": {
       "service": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The name of the service."
       },
       "hostname": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 0,
         "description": "The target host name."
       },
       "serviceName": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "The name of the service. It is an optional property, if not provided, service configuration tokens issue code would be by passed."
@@ -1594,13 +1416,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/120"
+        "$ref": "#/109"
       },
       {
-        "$ref": "#/121"
+        "$ref": "#/110"
       },
       {
-        "$ref": "#/2"
+        "$ref": "#/0"
       }
     ]
   },
@@ -1610,14 +1432,14 @@
     "properties": {
       "proxy": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
         },
         "flags": 1,
         "description": "The short lived proxy name."
       },
       "expiresOn": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/27"
         },
         "flags": 1,
         "description": "The expiration time of short lived proxy name in unix epoch."
@@ -1630,10 +1452,184 @@
     "resourceType": "Microsoft.HybridConnectivity/endpoints",
     "apiVersion": "2024-12-01",
     "output": {
-      "$ref": "#/123"
+      "$ref": "#/112"
     },
     "input": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperationStatusResult",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Fully qualified ID for the async operation."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified ID of the resource against which the original async operation was started."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the async operation."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Operation status."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Percent of the operation that is complete."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The start time of the operation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end time of the operation."
+      },
+      "operations": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "The operations list."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "If present, details of the operation error."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/117"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
       "$ref": "#/119"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "syncNow",
+    "resourceType": "Microsoft.HybridConnectivity/solutionConfigurations",
+    "apiVersion": "2024-12-01",
+    "output": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "testPermissions",
+    "resourceType": "Microsoft.HybridConnectivity/publicCloudConnectors",
+    "apiVersion": "2024-12-01",
+    "output": {
+      "$ref": "#/114"
     }
   }
 ]
