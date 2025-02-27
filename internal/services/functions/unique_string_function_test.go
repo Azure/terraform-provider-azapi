@@ -33,19 +33,19 @@ func Test_UniqueStringFunction(t *testing.T) {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("fu")
+						types.StringValue("fu"),
 					}),
 				}),
 			},
 			expected: function.RunResponse{
 				Result: function.NewResultData(types.StringValue("6rkxbspxjmsho")),
 			},
-		},		
+		},
 		"unique-string-fubar": {
 			request: function.RunRequest{
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.ListValueMust(types.StringType, []attr.Value{
-						types.StringValue("fubar")
+						types.StringValue("fubar"),
 					}),
 				}),
 			},
@@ -58,7 +58,7 @@ func Test_UniqueStringFunction(t *testing.T) {
 				Arguments: function.NewArgumentsData([]attr.Value{
 					types.ListValueMust(types.StringType, []attr.Value{
 						types.StringValue("fu"),
-						types.StringValue("bar")
+						types.StringValue("bar"),
 					}),
 				}),
 			},
