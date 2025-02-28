@@ -359,7 +359,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"enable_preflight": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.",
+				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation. This can also be sourced from the `ARM_ENABLE_PREFLIGHT` Environment Variable.",
 			},
 
 			"disable_default_output": schema.BoolAttribute{
@@ -579,7 +579,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	}
 
 	if model.EnablePreflight.IsNull() {
-		model.EnablePreflight = types.BoolValue(false)
+		if v := os.Getenv("ARM_ENABLE_PREFLIGHT"); v != "" {
+			model.EnablePreflight = types.BoolValue(v == "true")
+		} else {
+			model.EnablePreflight = types.BoolValue(false)
+		}
 	}
 	if model.DisableDefaultOutput.IsNull() {
 		model.DisableDefaultOutput = types.BoolValue(false)
