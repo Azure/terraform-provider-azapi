@@ -38,17 +38,15 @@ Resource specific retry is configured using the `retry` attribute.
 
 If you configure a retry configuration, the maximum elapsed time for the retry will be set to the resource's timeout value for that operation (create, update, read, delete).
 
-With `azapi_resource` and `azapi_data_plane_resource`, the provider performs a read-after-create operation to ensure that the resource has been created successfully. The `read_after_create_retry_on_not_found_or_forbidden` attribute controls whether the provider will retry the read-after-create operation on HTTP 404 and 403 status codes.
+With `azapi_resource` and `azapi_data_plane_resource`, the provider performs a read operation after the resource has been created so that we can store the read-only values.
 
 The schema of these retry attributes is as follows:
 
 - `error_message_regex` - A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 - `interval_seconds` - The initial number of seconds to wait before the 1st retry. The default value is `10`.
-- `max_interval_seconds` - The maximum number of times to retry the request. The default value is `180`.
+- `max_interval_seconds` - The maximum number of seconds to wait before retrying a request. The default value is `180`.
 - `multiplier` - The multiplier to apply to the interval between retries. The default value is `1.5`.
 - `randomization_factor` - The randomization factor to apply to the interval between retries. The default value is `0.5`. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Set to zero `0.0` for no randomization.
-- `http_status_codes` - A list of HTTP status codes to retry on, permitted values are 400-599.
-- `read_after_create_retry_on_not_found_or_forbidden` - If set to `true`, the provider will retry the read-after-create operation on HTTP 404 and 403 status codes as well as a nil response. The default value is `true`. Only pertains to `azapi_resource` and `azapi_data_plane_resource`.
 
 ## Default resource-specific retry configuration
 
@@ -56,6 +54,6 @@ If you do not configure any retry values, the provider will use the following:
 
 For the initial create/read/update/delete operation we will retry on HTTP 429 status codes, this is a safety net against the provider `maximum_busy_retry_attempts` being exceeded.
 
-For the read-after-create, the provider will retry on HTTP 404 and 403 status codes. This is logical as, if we have just sucessfully created the resource, we should not be getting a 404 or 403 on any subsequent GET request.
+For the read-after-create, the provider will retry on HTTP 404 and 403 status codes. This is logical as, if we have just successfully created the resource, we should not be getting a 404 or 403 on any subsequent GET request.
 
 Both of these configurations will have a maximum elapsed time of the resource's timeout value for that operation (create, update, read, delete).

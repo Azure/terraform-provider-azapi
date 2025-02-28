@@ -23,15 +23,11 @@ var (
 )
 
 const (
-	defaultIntervalSeconds     = 10
-	defaultMaxIntervalSeconds  = 180
-	defaultMultiplier          = 1.5
-	defaultRandomizationFactor = 0.5
+	DefaultIntervalSeconds     = 10
+	DefaultMaxIntervalSeconds  = 180
+	DefaultMultiplier          = 1.5
+	DefaultRandomizationFactor = 0.5
 )
-
-type TestResourceModel struct {
-	Retry RetryValue `tfsdk:"retry"`
-}
 
 var _ basetypes.ObjectTypable = RetryType{}
 
@@ -74,24 +70,6 @@ func (t RetryType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue
 		diags.AddError(
 			"Attribute Wrong Type",
 			fmt.Sprintf(`error_message_regex expected to be basetypes.ListValue, was: %T`, errorMessageRegexAttribute))
-	}
-
-	httpStatusCodesAttribute, ok := attributes["http_status_codes"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`http_status_codes is missing from object`)
-
-		return nil, diags
-	}
-
-	httpStatusCodesVal, ok := httpStatusCodesAttribute.(basetypes.ListValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`http_status_codes expected to be basetypes.ListValue, was: %T`, httpStatusCodesAttribute))
 	}
 
 	intervalSecondsAttribute, ok := attributes["interval_seconds"]
@@ -166,56 +144,17 @@ func (t RetryType) ValueFromObject(ctx context.Context, in basetypes.ObjectValue
 			fmt.Sprintf(`randomization_factor expected to be basetypes.Float64Value, was: %T`, randomizationFactorAttribute))
 	}
 
-	readAfterCreateRetryOnNotFoundOrForbiddenAttribute, ok := attributes["read_after_create_retry_on_not_found_or_forbidden"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`read_after_create_retry_on_not_found_or_forbidden is missing from object`)
-
-		return nil, diags
-	}
-
-	readAfterCreateRetryOnNotFoundOrForbiddenVal, ok := readAfterCreateRetryOnNotFoundOrForbiddenAttribute.(basetypes.BoolValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`read_after_create_retry_on_not_found_or_forbidden expected to be basetypes.BoolValue, was: %T`, readAfterCreateRetryOnNotFoundOrForbiddenAttribute))
-	}
-
-	responseIsNilAttribute, ok := attributes["response_is_nil"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`response_is_nil is missing from object`)
-
-		return nil, diags
-	}
-
-	responseIsNilVal, ok := responseIsNilAttribute.(basetypes.BoolValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`response_is_nil expected to be basetypes.BoolValue, was: %T`, responseIsNilAttribute))
-	}
-
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	return RetryValue{
 		ErrorMessageRegex:   errorMessageRegexVal,
-		HttpStatusCodes:     httpStatusCodesVal,
 		IntervalSeconds:     intervalSecondsVal,
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
 		Multiplier:          multiplierVal,
 		RandomizationFactor: randomizationFactorVal,
-		ReadAfterCreateRetryOnNotFoundOrForbidden: readAfterCreateRetryOnNotFoundOrForbiddenVal,
-		ResponseIsNil: responseIsNilVal,
-		state:         attr.ValueStateKnown,
+		state:               attr.ValueStateKnown,
 	}, diags
 }
 
@@ -300,24 +239,6 @@ func NewRetryValue(attributeTypes map[string]attr.Type, attributes map[string]at
 			fmt.Sprintf(`error_message_regex expected to be basetypes.ListValue, was: %T`, errorMessageRegexAttribute))
 	}
 
-	httpStatusCodesAttribute, ok := attributes["http_status_codes"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`http_status_codes is missing from object`)
-
-		return NewRetryValueUnknown(), diags
-	}
-
-	httpStatusCodesVal, ok := httpStatusCodesAttribute.(basetypes.ListValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`http_status_codes expected to be basetypes.ListValue, was: %T`, httpStatusCodesAttribute))
-	}
-
 	intervalSecondsAttribute, ok := attributes["interval_seconds"]
 
 	if !ok {
@@ -390,56 +311,17 @@ func NewRetryValue(attributeTypes map[string]attr.Type, attributes map[string]at
 			fmt.Sprintf(`randomization_factor expected to be basetypes.Float64Value, was: %T`, randomizationFactorAttribute))
 	}
 
-	readAfterCreateRetryOnNotFoundOrForbiddenAttribute, ok := attributes["read_after_create_retry_on_not_found_or_forbidden"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`read_after_create_retry_on_not_found_or_forbidden is missing from object`)
-
-		return NewRetryValueUnknown(), diags
-	}
-
-	readAfterCreateRetryOnNotFoundOrForbiddenVal, ok := readAfterCreateRetryOnNotFoundOrForbiddenAttribute.(basetypes.BoolValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`read_after_create_retry_on_not_found_or_forbidden expected to be basetypes.BoolValue, was: %T`, readAfterCreateRetryOnNotFoundOrForbiddenAttribute))
-	}
-
-	responseIsNilAttribute, ok := attributes["response_is_nil"]
-
-	if !ok {
-		diags.AddError(
-			"Attribute Missing",
-			`response_is_nil is missing from object`)
-
-		return NewRetryValueUnknown(), diags
-	}
-
-	responseIsNilVal, ok := responseIsNilAttribute.(basetypes.BoolValue)
-
-	if !ok {
-		diags.AddError(
-			"Attribute Wrong Type",
-			fmt.Sprintf(`response_is_nil expected to be basetypes.BoolValue, was: %T`, responseIsNilAttribute))
-	}
-
 	if diags.HasError() {
 		return NewRetryValueUnknown(), diags
 	}
 
 	return RetryValue{
 		ErrorMessageRegex:   errorMessageRegexVal,
-		HttpStatusCodes:     httpStatusCodesVal,
 		IntervalSeconds:     intervalSecondsVal,
 		MaxIntervalSeconds:  maxIntervalSecondsVal,
 		Multiplier:          multiplierVal,
 		RandomizationFactor: randomizationFactorVal,
-		ReadAfterCreateRetryOnNotFoundOrForbidden: readAfterCreateRetryOnNotFoundOrForbiddenVal,
-		ResponseIsNil: responseIsNilVal,
-		state:         attr.ValueStateKnown,
+		state:               attr.ValueStateKnown,
 	}, diags
 }
 
@@ -511,19 +393,16 @@ func (t RetryType) ValueType(ctx context.Context) attr.Value {
 var _ basetypes.ObjectValuable = RetryValue{}
 
 type RetryValue struct {
-	ErrorMessageRegex                         basetypes.ListValue    `tfsdk:"error_message_regex"`
-	HttpStatusCodes                           basetypes.ListValue    `tfsdk:"http_status_codes"`
-	IntervalSeconds                           basetypes.Int64Value   `tfsdk:"interval_seconds"`
-	MaxIntervalSeconds                        basetypes.Int64Value   `tfsdk:"max_interval_seconds"`
-	Multiplier                                basetypes.Float64Value `tfsdk:"multiplier"`
-	RandomizationFactor                       basetypes.Float64Value `tfsdk:"randomization_factor"`
-	ReadAfterCreateRetryOnNotFoundOrForbidden basetypes.BoolValue    `tfsdk:"read_after_create_retry_on_not_found_or_forbidden"`
-	ResponseIsNil                             basetypes.BoolValue    `tfsdk:"response_is_nil"`
-	state                                     attr.ValueState
+	ErrorMessageRegex   basetypes.ListValue    `tfsdk:"error_message_regex"`
+	IntervalSeconds     basetypes.Int64Value   `tfsdk:"interval_seconds"`
+	MaxIntervalSeconds  basetypes.Int64Value   `tfsdk:"max_interval_seconds"`
+	Multiplier          basetypes.Float64Value `tfsdk:"multiplier"`
+	RandomizationFactor basetypes.Float64Value `tfsdk:"randomization_factor"`
+	state               attr.ValueState
 }
 
 func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {
-	attrTypes := make(map[string]tftypes.Type, 8)
+	attrTypes := make(map[string]tftypes.Type, 5)
 
 	var val tftypes.Value
 	var err error
@@ -531,21 +410,16 @@ func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error)
 	attrTypes["error_message_regex"] = basetypes.ListType{
 		ElemType: types.StringType,
 	}.TerraformType(ctx)
-	attrTypes["http_status_codes"] = basetypes.ListType{
-		ElemType: types.Int64Type,
-	}.TerraformType(ctx)
 	attrTypes["interval_seconds"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["max_interval_seconds"] = basetypes.Int64Type{}.TerraformType(ctx)
 	attrTypes["multiplier"] = basetypes.Float64Type{}.TerraformType(ctx)
 	attrTypes["randomization_factor"] = basetypes.Float64Type{}.TerraformType(ctx)
-	attrTypes["read_after_create_retry_on_not_found_or_forbidden"] = basetypes.BoolType{}.TerraformType(ctx)
-	attrTypes["response_is_nil"] = basetypes.BoolType{}.TerraformType(ctx)
 
 	objectType := tftypes.Object{AttributeTypes: attrTypes}
 
 	switch v.state {
 	case attr.ValueStateKnown:
-		vals := make(map[string]tftypes.Value, 8)
+		vals := make(map[string]tftypes.Value, 5)
 
 		val, err = v.ErrorMessageRegex.ToTerraformValue(ctx)
 
@@ -554,14 +428,6 @@ func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error)
 		}
 
 		vals["error_message_regex"] = val
-
-		val, err = v.HttpStatusCodes.ToTerraformValue(ctx)
-
-		if err != nil {
-			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
-		}
-
-		vals["http_status_codes"] = val
 
 		val, err = v.IntervalSeconds.ToTerraformValue(ctx)
 
@@ -594,22 +460,6 @@ func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error)
 		}
 
 		vals["randomization_factor"] = val
-
-		val, err = v.ReadAfterCreateRetryOnNotFoundOrForbidden.ToTerraformValue(ctx)
-
-		if err != nil {
-			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
-		}
-
-		vals["read_after_create_retry_on_not_found_or_forbidden"] = val
-
-		val, err = v.ResponseIsNil.ToTerraformValue(ctx)
-
-		if err != nil {
-			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
-		}
-
-		vals["response_is_nil"] = val
 
 		if err := tftypes.ValidateValue(objectType, vals); err != nil {
 			return tftypes.NewValue(objectType, tftypes.UnknownValue), err
@@ -657,44 +507,10 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 			"error_message_regex": basetypes.ListType{
 				ElemType: types.StringType,
 			},
-			"http_status_codes": basetypes.ListType{
-				ElemType: types.Int64Type,
-			},
 			"interval_seconds":     basetypes.Int64Type{},
 			"max_interval_seconds": basetypes.Int64Type{},
 			"multiplier":           basetypes.Float64Type{},
 			"randomization_factor": basetypes.Float64Type{},
-			"read_after_create_retry_on_not_found_or_forbidden": basetypes.BoolType{},
-			"response_is_nil": basetypes.BoolType{},
-		}), diags
-	}
-
-	var httpStatusCodesVal basetypes.ListValue
-	switch {
-	case v.HttpStatusCodes.IsUnknown():
-		httpStatusCodesVal = types.ListUnknown(types.Int64Type)
-	case v.HttpStatusCodes.IsNull():
-		httpStatusCodesVal = types.ListNull(types.Int64Type)
-	default:
-		var d diag.Diagnostics
-		httpStatusCodesVal, d = types.ListValue(types.Int64Type, v.HttpStatusCodes.Elements())
-		diags.Append(d...)
-	}
-
-	if diags.HasError() {
-		return types.ObjectUnknown(map[string]attr.Type{
-			"error_message_regex": basetypes.ListType{
-				ElemType: types.StringType,
-			},
-			"http_status_codes": basetypes.ListType{
-				ElemType: types.Int64Type,
-			},
-			"interval_seconds":     basetypes.Int64Type{},
-			"max_interval_seconds": basetypes.Int64Type{},
-			"multiplier":           basetypes.Float64Type{},
-			"randomization_factor": basetypes.Float64Type{},
-			"read_after_create_retry_on_not_found_or_forbidden": basetypes.BoolType{},
-			"response_is_nil": basetypes.BoolType{},
 		}), diags
 	}
 
@@ -702,15 +518,10 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 		"error_message_regex": basetypes.ListType{
 			ElemType: types.StringType,
 		},
-		"http_status_codes": basetypes.ListType{
-			ElemType: types.Int64Type,
-		},
 		"interval_seconds":     basetypes.Int64Type{},
 		"max_interval_seconds": basetypes.Int64Type{},
 		"multiplier":           basetypes.Float64Type{},
 		"randomization_factor": basetypes.Float64Type{},
-		"read_after_create_retry_on_not_found_or_forbidden": basetypes.BoolType{},
-		"response_is_nil": basetypes.BoolType{},
 	}
 
 	if v.IsNull() {
@@ -725,13 +536,10 @@ func (v RetryValue) ToObjectValue(ctx context.Context) (basetypes.ObjectValue, d
 		attributeTypes,
 		map[string]attr.Value{
 			"error_message_regex":  errorMessageRegexVal,
-			"http_status_codes":    httpStatusCodesVal,
 			"interval_seconds":     v.IntervalSeconds,
 			"max_interval_seconds": v.MaxIntervalSeconds,
 			"multiplier":           v.Multiplier,
 			"randomization_factor": v.RandomizationFactor,
-			"read_after_create_retry_on_not_found_or_forbidden": v.ReadAfterCreateRetryOnNotFoundOrForbidden,
-			"response_is_nil": v.ResponseIsNil,
 		})
 
 	return objVal, diags
@@ -756,10 +564,6 @@ func (v RetryValue) Equal(o attr.Value) bool {
 		return false
 	}
 
-	if !v.HttpStatusCodes.Equal(other.HttpStatusCodes) {
-		return false
-	}
-
 	if !v.IntervalSeconds.Equal(other.IntervalSeconds) {
 		return false
 	}
@@ -773,14 +577,6 @@ func (v RetryValue) Equal(o attr.Value) bool {
 	}
 
 	if !v.RandomizationFactor.Equal(other.RandomizationFactor) {
-		return false
-	}
-
-	if !v.ReadAfterCreateRetryOnNotFoundOrForbidden.Equal(other.ReadAfterCreateRetryOnNotFoundOrForbidden) {
-		return false
-	}
-
-	if !v.ResponseIsNil.Equal(other.ResponseIsNil) {
 		return false
 	}
 
@@ -800,42 +596,11 @@ func (v RetryValue) AttributeTypes(ctx context.Context) map[string]attr.Type {
 		"error_message_regex": basetypes.ListType{
 			ElemType: types.StringType,
 		},
-		"http_status_codes": basetypes.ListType{
-			ElemType: types.Int64Type,
-		},
 		"interval_seconds":     basetypes.Int64Type{},
 		"max_interval_seconds": basetypes.Int64Type{},
 		"multiplier":           basetypes.Float64Type{},
 		"randomization_factor": basetypes.Float64Type{},
-		"read_after_create_retry_on_not_found_or_forbidden": basetypes.BoolType{},
-		"response_is_nil": basetypes.BoolType{},
 	}
-}
-
-func (v RetryValue) GetErrorMessages() []string {
-	if v.IsNull() {
-		return nil
-	}
-	if v.IsUnknown() {
-		return nil
-	}
-	res := make([]string, len(v.ErrorMessageRegex.Elements()))
-	for i, elem := range v.ErrorMessageRegex.Elements() {
-		res[i] = elem.(types.String).ValueString()
-	}
-	return res
-}
-
-func (v RetryValue) GetErrorMessagesRegex() []regexp.Regexp {
-	msgs := v.GetErrorMessages()
-	if msgs == nil {
-		return nil
-	}
-	res := make([]regexp.Regexp, len(msgs))
-	for i, msg := range msgs {
-		res[i] = *regexp.MustCompile(msg)
-	}
-	return res
 }
 
 func (v RetryValue) GetIntervalSeconds() int {
@@ -870,23 +635,28 @@ func (v RetryValue) GetDefaultRetryableReadAfterCreateStatusCodes() []int {
 	return defaultRetryableReadAfterCreateStatusCodes
 }
 
-func (v RetryValue) GetRetryableStatusCodes() []int {
+func (v RetryValue) GetErrorMessages() []string {
 	if v.IsNull() {
 		return nil
 	}
 	if v.IsUnknown() {
 		return nil
 	}
-	res := make([]int, 0, len(v.HttpStatusCodes.Elements()))
-	for _, elem := range v.HttpStatusCodes.Elements() {
-		if elem.IsUnknown() || elem.IsNull() {
-			continue
-		}
-		elemI, ok := elem.(types.Int64)
-		if !ok {
-			continue
-		}
-		res = append(res, int(elemI.ValueInt64()))
+	res := make([]string, len(v.ErrorMessageRegex.Elements()))
+	for i, elem := range v.ErrorMessageRegex.Elements() {
+		res[i] = elem.(types.String).ValueString()
+	}
+	return res
+}
+
+func (v RetryValue) GetErrorMessagesRegex() []regexp.Regexp {
+	msgs := v.GetErrorMessages()
+	if msgs == nil {
+		return nil
+	}
+	res := make([]regexp.Regexp, len(msgs))
+	for i, msg := range msgs {
+		res[i] = *regexp.MustCompile(msg)
 	}
 	return res
 }
