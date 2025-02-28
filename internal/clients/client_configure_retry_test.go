@@ -26,6 +26,7 @@ func TestConfigureCustomRetry(t *testing.T) {
 		expectedRandomization   float64
 		expectedStatusCodes     []int
 		expectedErrorRegexps    []string
+		expectedCallbackFuncs   []func(d interface{}) bool
 	}{
 		{
 			name:                    "default retry configuration",
@@ -37,6 +38,7 @@ func TestConfigureCustomRetry(t *testing.T) {
 			expectedRandomization:   retry.DefaultRandomizationFactor,
 			expectedStatusCodes:     retry.NewRetryValueNull().GetDefaultRetryableStatusCodes(),
 			expectedErrorRegexps:    []string{},
+			expectedCallbackFuncs:   nil,
 		},
 		{
 			name:                    "default retry configuration with read after create",
@@ -48,6 +50,7 @@ func TestConfigureCustomRetry(t *testing.T) {
 			expectedRandomization:   retry.DefaultRandomizationFactor,
 			expectedStatusCodes:     retry.NewRetryValueNull().GetDefaultRetryableReadAfterCreateStatusCodes(),
 			expectedErrorRegexps:    []string{},
+			expectedCallbackFuncs:   nil,
 		},
 		{
 			name: "custom retry configuration",
@@ -65,6 +68,7 @@ func TestConfigureCustomRetry(t *testing.T) {
 			expectedRandomization:   0.2,
 			expectedErrorRegexps:    []string{"timeout", "temporary"},
 			expectedStatusCodes:     retry.NewRetryValueNull().GetDefaultRetryableStatusCodes(),
+			expectedCallbackFuncs:   nil,
 		},
 		{
 			name: "custom retry with read after create",
@@ -82,19 +86,27 @@ func TestConfigureCustomRetry(t *testing.T) {
 			expectedRandomization:   0.2,
 			expectedStatusCodes:     retry.NewRetryValueNull().GetDefaultRetryableReadAfterCreateStatusCodes(),
 			expectedErrorRegexps:    []string{"timeout", "temporary"},
+			expectedCallbackFuncs:   nil,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
-			backOff, errRegExps, statusCodes, _ := configureCustomRetry(ctx, tt.rtry, tt.useReadAfterCreate)
+			backOff, errRegExps, statusCodes, callbackFuncs := configureCustomRetry(ctx, tt.rtry, tt.useReadAfterCreate)
 
 			assert.Equalf(t, tt.expectedInitialInterval, backOff.InitialInterval, "InitialInterval")
 			assert.Equalf(t, tt.expectedMaxInterval, backOff.MaxInterval, "MaxInterval")
 			assert.Equalf(t, tt.expectedMultiplier, backOff.Multiplier, "Multiplier")
 			assert.Equalf(t, tt.expectedRandomization, backOff.RandomizationFactor, "RandomizationFactor")
 			assert.Equalf(t, tt.expectedStatusCodes, statusCodes, "StatusCodes")
+
+			if tt.expectedCallbackFuncs != nil {
+				assert.Len(t, callbackFuncs, len(tt.expectedCallbackFuncs), "Callback function count mismatch")
+			} else {
+				assert.Empty(t, callbackFuncs, "Expected no callback functions for test case: "+tt.name)
+			}
+
 			actualErrorRegexps := make([]string, len(errRegExps))
 			for i, re := range errRegExps {
 				actualErrorRegexps[i] = re.String()
