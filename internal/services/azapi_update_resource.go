@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
@@ -44,12 +45,12 @@ type AzapiUpdateResourceModel struct {
 	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
 	Locks                 types.List       `tfsdk:"locks"`
 	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts"`
-	Retry                 retry.RetryValue `tfsdk:"retry"`
+	Timeouts              timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                 retry.RetryValue `tfsdk:"retry" skip_on:"update"`
 	UpdateHeaders         types.Map        `tfsdk:"update_headers"`
 	UpdateQueryParameters types.Map        `tfsdk:"update_query_parameters"`
-	ReadHeaders           types.Map        `tfsdk:"read_headers"`
-	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters"`
+	ReadHeaders           types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -301,6 +302,21 @@ func (r *AzapiUpdateResource) Create(ctx context.Context, request resource.Creat
 }
 
 func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	// See if we can skip the external API call (changes are to state only)
+	var plan, state AzapiUpdateResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
+	if skip.CanSkipExternalRequest(plan, state, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(request.State.Set(ctx, plan)...)
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
+
 	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
 }
 
