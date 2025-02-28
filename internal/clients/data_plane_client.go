@@ -520,6 +520,6 @@ func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetrya
 // If the retry configuration is null or unknown, it will use the default retry configuration.
 // If the supplied context has a deadline, it will use the deadline as the max elapsed time when a custom retry is provided.
 func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) DataPlaneRequester {
-	backOff, errRegExps, statusCodes, dataCallbackFuncs := configureCustomRetry(ctx, rtry, useReadAfterCreateValues)
-	return client.WithRetry(backOff, errRegExps, statusCodes, dataCallbackFuncs)
+	backOff, errRegExps, statusCodes := configureCustomRetry(ctx, rtry, useReadAfterCreateValues)
+	return client.WithRetry(backOff, errRegExps, statusCodes, nil)
 }

@@ -12,7 +12,8 @@ import (
 
 // configureCustomRetry configures the retry configuration based on the supplied retry configuration.
 // Using a dedicated function to allow for easier testing.
-func configureCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) (*backoff.ExponentialBackOff, []regexp.Regexp, []int, []func(d interface{}) bool) {
+// Data callback funcs have been removed because we no longer use them.
+func configureCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) (*backoff.ExponentialBackOff, []regexp.Regexp, []int) {
 	// Configure default retry configuration.
 	// The default is to retry on 429 codes, so using the context deadline as max elapsed time is sane.
 	// Add 1 second to the max elapsed time to allow the context deadline to be reached,
@@ -32,7 +33,6 @@ func configureCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAft
 	if useReadAfterCreateValues {
 		statusCodes = rtry.GetDefaultRetryableReadAfterCreateStatusCodes()
 	}
-	var dataCallbackFuncs []func(d interface{}) bool
 
 	// If a custom retry configuration is supplied, use it.
 	if !rtry.IsNull() && !rtry.IsUnknown() {
@@ -48,5 +48,5 @@ func configureCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAft
 		errRegExps = rtry.GetErrorMessagesRegex()
 	}
 
-	return backOff, errRegExps, statusCodes, dataCallbackFuncs
+	return backOff, errRegExps, statusCodes
 }
