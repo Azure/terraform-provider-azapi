@@ -18,7 +18,7 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 		Attributes: map[string]schema.Attribute{
 			"error_message_regex": schema.ListAttribute{
 				ElementType:         types.StringType,
-				Optional:            true,
+				Required:            true,
 				Description:         "A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.",
 				MarkdownDescription: "A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.",
 				Validators: []validator.List{
