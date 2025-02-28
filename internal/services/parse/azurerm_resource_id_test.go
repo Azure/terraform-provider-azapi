@@ -28,6 +28,13 @@ func Test_AzurermIdToAzureId(t *testing.T) {
 			expectedAzureId:     "",
 			expectError:         true,
 		},
+		{
+			name:                "azurerm_role_definition valid",
+			azurermResourceType: "azurerm_role_definition",
+			azurermId:           "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Authorization/roleDefinitions/roleDefinitionId|/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg",
+			expectedAzureId:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Authorization/roleDefinitions/roleDefinitionId",
+			expectError:         false,
+		},
 	}
 
 	for _, tc := range testcases {
