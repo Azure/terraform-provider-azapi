@@ -173,9 +173,12 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 <a id="nestedatt--retry"></a>
 ### Nested Schema for `retry`
 
-Optional:
+Required:
 
 - `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+
+Optional:
+
 - `interval_seconds` (Number) The base number of seconds to wait between retries. Default is `10`.
 - `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
 - `multiplier` (Number) The multiplier to apply to the interval between retries. Default is `1.5`.
