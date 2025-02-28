@@ -4,6 +4,7 @@ FEATURES:
 
 ENHANCEMENTS:
 - `azapi` provider: The `oidc_azure_service_connection_id` field can be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID` or `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` Environment Variables.
+- `azapi` provider: The `enable_preflight` field can be sourced from the `ARM_ENABLE_PRE_FLIGHT` Environment Variable.
 - `azapi_resource_action` resource, data source: Support `sensitive_response_export_values` field, which is used to specify the sensitive fields to export.
 - `azaapi_resource_action` resource, data source: Support `sensitive_output` field, which is a sensitive computed field that contains the fields exported by `sensitive_response_export_values`.
 
