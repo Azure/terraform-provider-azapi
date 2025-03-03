@@ -1,0 +1,2358 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "pattern": "^[^<>%&:?#/\\\\]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/experiments"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/experiments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The properties of the experiment resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Most recent provisioning state for the given experiment resource."
+      },
+      "steps": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "List of steps."
+      },
+      "selectors": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "List of selectors."
+      },
+      "customerDataStorage": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Optional customer-managed Storage account where Experiment schema will be stored."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosExperimentStep",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "String of the step name."
+      },
+      "branches": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 1,
+        "description": "List of branches."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosExperimentBranch",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "String of the branch name."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "List of actions."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ChaosExperimentAction",
+    "discriminator": "type",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "String that represents a Capability URN."
+      }
+    },
+    "elements": {
+      "continuous": {
+        "$ref": "#/27"
+      },
+      "delay": {
+        "$ref": "#/31"
+      },
+      "discrete": {
+        "$ref": "#/33"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 2048
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContinuousAction",
+    "properties": {
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ISO8601 formatted string that represents a duration."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 1,
+        "description": "List of key value pairs."
+      },
+      "selectorId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "String that represents a selector."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "Chaos experiment action discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyValuePair",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The name of the setting for the action."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The value of the setting for the action."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "continuous"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelayAction",
+    "properties": {
+      "duration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ISO8601 formatted string that represents a duration."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Chaos experiment action discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "delay"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscreteAction",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "List of key value pairs."
+      },
+      "selectorId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "String that represents a selector."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
+        "description": "Chaos experiment action discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "discrete"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/25"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/22"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ChaosTargetSelector",
+    "discriminator": "type",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "String of the selector ID."
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Model that represents available filter types that can be applied to a targets list."
+      }
+    },
+    "elements": {
+      "List": {
+        "$ref": "#/45"
+      },
+      "Query": {
+        "$ref": "#/51"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ChaosTargetFilter",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "Simple": {
+        "$ref": "#/41"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosTargetSimpleFilter",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Model that represents the Simple filter parameters."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "Chaos target filter discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosTargetSimpleFilterParameters",
+    "properties": {
+      "zones": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "List of Azure availability zones to filter targets by."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Simple"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosTargetListSelector",
+    "properties": {
+      "targets": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "List of Target references."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "Chaos target selector discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetReference",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Enum of the Target reference type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "String of the resource ID of a Target resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ChaosTarget"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/46"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "List"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChaosTargetQuerySelector",
+    "properties": {
+      "queryString": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure Resource Graph (ARG) Query Language query for target resources."
+      },
+      "subscriptionIds": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Subscription id list to scope resource query."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Chaos target selector discriminator type"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Query"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomerDataStorageProperties",
+    "properties": {
+      "storageAccountResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM Resource ID of the Storage account to use for Customer Data storage."
+      },
+      "blobContainerName": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Name of the Azure Blob Storage container to use or create."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[a-z0-9]([a-z0-9]|(-(?!-))){1,61}[a-z0-9]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/experiments@2024-11-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/privateAccesses"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/privateAccesses",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateAccessProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 2,
+        "description": "Most recent provisioning state for the given privateAccess resource."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "A readonly collection of private endpoint connection. Currently only one endpoint connection is supported."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Public Network Access Control for PrivateAccess resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/81"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/privateAccesses@2024-11-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/72"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9_\\-\\.]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/targets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/targets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The properties of the target resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource location."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/107"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/targets@2024-11-01-preview",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/106"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9\\-\\.]+-\\d\\.\\d$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/targets/capabilities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/targets/capabilities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "The properties of a capability resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityProperties",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the Publisher that this Capability extends."
+      },
+      "targetType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the Target Type that this Capability extends."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Localized string of the description."
+      },
+      "parametersSchema": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "URL to retrieve JSON schema of the Capability parameters."
+      },
+      "urn": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "String of the URN for this Capability Type."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 2,
+        "description": "Resource provisioning state. Not currently in use because resource is created synchronously."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/targets/capabilities@2024-11-01-preview",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/113"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/experiments/executions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/experiments/executions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The properties of experiment execution status."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionProperties",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the execution."
+      },
+      "startedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the start date time."
+      },
+      "stoppedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the stop date time."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "Resource provisioning state. Not currently in use for executions."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/experiments/executions@2024-11-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/126"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/locations/targetTypes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/locations/targetTypes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 2,
+        "description": "The properties of the target type resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetTypeProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Localized string of the display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Localized string of the description."
+      },
+      "propertiesSchema": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "URL to retrieve JSON schema of the Target Type properties."
+      },
+      "resourceTypes": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 2,
+        "description": "List of resource types this Target Type can extend."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/locations/targetTypes@2024-11-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/138"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/locations/targetTypes/capabilityTypes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/locations/targetTypes/capabilityTypes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 2,
+        "description": "The properties of the capability type resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityTypeProperties",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the Publisher that this Capability Type extends."
+      },
+      "targetType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the Target Type that this Capability Type extends."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Localized string of the display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Localized string of the description."
+      },
+      "parametersSchema": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "URL to retrieve JSON schema of the Capability Type parameters."
+      },
+      "urn": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "String of the URN for this Capability Type."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the kind of this Capability Type."
+      },
+      "azureRbacActions": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 2,
+        "description": "Control plane actions necessary to execute capability type."
+      },
+      "azureRbacDataActions": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 2,
+        "description": "Data plane actions necessary to execute capability type."
+      },
+      "runtimeProperties": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 2,
+        "description": "Runtime properties of this Capability Type."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapabilityTypePropertiesRuntimeProperties",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the kind of the resource's action type (continuous or discrete)."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/locations/targetTypes/capabilityTypes@2024-11-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/144"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[^<>%&:?#/\\\\]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Chaos/privateAccesses/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Chaos/privateAccesses/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Chaos/privateAccesses/privateEndpointConnections@2024-11-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/153"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.Chaos/experiments",
+    "apiVersion": "2024-11-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Chaos/experiments",
+    "apiVersion": "2024-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionDetails",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the fully qualified resource ID."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String of the resource name."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 2,
+        "description": "The properties of the experiment execution details."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionDetailsProperties",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the execution."
+      },
+      "startedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the start date time."
+      },
+      "stoppedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the stop date time."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 2,
+        "description": "Resource provisioning state. Not currently in use for executions."
+      },
+      "failureReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The reason why the execution failed."
+      },
+      "lastActionAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the last action date time."
+      },
+      "runInformation": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 2,
+        "description": "The information of the experiment run."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionDetailsPropertiesRunInformation",
+    "properties": {
+      "steps": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 2,
+        "description": "The steps of the experiment run."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StepStatus",
+    "properties": {
+      "stepName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the step."
+      },
+      "stepId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The id of the step."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The value of the status of the step."
+      },
+      "branches": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "The array of branches."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BranchStatus",
+    "properties": {
+      "branchName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the branch status."
+      },
+      "branchId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The id of the branch status."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the branch."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "The array of actions."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionStatus",
+    "properties": {
+      "actionName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the action status."
+      },
+      "actionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The id of the action status."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the action."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the start time of the action."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the end time of the action."
+      },
+      "targets": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "The array of targets."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionActionTargetDetailsProperties",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the execution."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The target for the action."
+      },
+      "targetFailedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the failed date time."
+      },
+      "targetCompletedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "String that represents the completed date time."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 2,
+        "description": "The error of the action."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentExecutionActionTargetDetailsError",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/170"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/169"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/168"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getExecutionDetails",
+    "resourceType": "Microsoft.Chaos/experiments/executions",
+    "apiVersion": "2024-11-01-preview",
+    "output": {
+      "$ref": "#/157"
+    }
+  }
+]

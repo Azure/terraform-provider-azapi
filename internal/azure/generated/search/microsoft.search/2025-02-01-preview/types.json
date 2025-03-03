@@ -1,0 +1,1936 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Search/searchServices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Search/searchServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Properties of the search service."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "The SKU of the search service, which determines price tier and capacity limits. This property is required when creating a new search service."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The identity of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata of the search service containing createdBy and modifiedBy information."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SearchServiceProperties",
+    "properties": {
+      "replicaCount": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The number of replicas in the search service. If specified, it must be a value between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU."
+      },
+      "partitionCount": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed values are between 1 and 3."
+      },
+      "endpoint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The endpoint of the Azure AI Search service."
+      },
+      "hostingMode": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'."
+      },
+      "computeType": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Configure this property to support the search service using either the default compute or Azure Confidential Compute."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private endpoint connections would be the exclusive access method."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "The status of the search service. Possible values include: 'running': The search service is running and no provisioning operations are underway. 'provisioning': The search service is being provisioned or scaled up or down. 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This can occur when the underlying search units are not healthy. The search service is most likely operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is disabled. In this state, the service will reject all API requests. 'error': The search service is in an error state. 'stopped': The search service is in a subscription that's disabled. If your service is in the degraded, disabled, or error states, it means the Azure AI Search team is actively investigating the underlying issue. Dedicated services in these states are still chargeable based on the number of search units provisioned."
+      },
+      "statusDetails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The details of the search service status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The state of the last provisioning operation performed on the search service. Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is set up, provisioningState changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service operation to see when an operation is completed. If you are using the free service, this value tends to come back as 'Succeeded' directly in the call to Create search service. This is because the free service uses capacity that is already set up."
+      },
+      "networkRuleSet": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Network specific rules that determine how the Azure AI Search service may be reached."
+      },
+      "disabledDataExfiltrationOptions": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "A list of data exfiltration scenarios that are explicitly disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data export scenarios with more fine grained controls planned for the future."
+      },
+      "encryptionWithCmk": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Specifies any policy regarding encryption of resources (such as indexes) using customer manager keys within a search service."
+      },
+      "disableLocalAuth": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined."
+      },
+      "authOptions": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Defines the options for how the data plane API of a search service authenticates requests. This cannot be set if 'disableLocalAuth' is set to true."
+      },
+      "semanticSearch": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Sets options that control the availability of semantic search. This configuration is only possible for certain Azure AI Search SKUs in certain locations."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 2,
+        "description": "The list of private endpoint connections to the Azure AI Search service."
+      },
+      "sharedPrivateLinkResources": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "The list of shared private link resources managed by the Azure AI Search service."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A system generated property representing the service's etag that can be for optimistic concurrency control during updates."
+      },
+      "upgradeAvailable": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 2,
+        "description": "Indicates whether or not the search service has an upgrade available."
+      },
+      "serviceUpgradeDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The date and time the search service was last upgraded. This field will be null until the service gets upgraded for the first time."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 12
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "highDensity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "confidential"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "stopped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkRuleSet",
+    "properties": {
+      "ipRules": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "A list of IP restriction rules that defines the inbound network(s) with allowing access to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise, traffic over public interface is not allowed even with any public IP rules, and private endpoint connections would be the exclusive access method."
+      },
+      "bypass": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules' section."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IpRule",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Value corresponding to a single IPv4 address (eg., 123.1.2.3) or an IP range in CIDR format (eg., 123.1.2.3/24) to be allowed."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzurePortal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureServices"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/35"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionWithCmk",
+    "properties": {
+      "enforcement": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Describes how a search service should enforce compliance if it finds objects that aren't encrypted with the customer-managed key."
+      },
+      "encryptionComplianceStatus": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Returns the status of search service compliance with respect to non-CMK-encrypted objects. If a service has more than one unencrypted object, and enforcement is enabled, the service is marked as noncompliant."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unspecified"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonCompliant"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataPlaneAuthOptions",
+    "properties": {
+      "apiKeyOnly": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Indicates that only the API key can be used for authentication."
+      },
+      "aadOrApiKey": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "Indicates that either the API key or an access token from a Microsoft Entra ID tenant can be used for authentication."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataPlaneAadOrApiKeyAuthOption",
+    "properties": {
+      "aadAuthFailureMode": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Describes what response the data plane API of a search service would send for requests that failed authentication."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http403"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http401WithBearerChallenge"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "standard"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Describes the properties of an existing private endpoint connection to the Azure AI Search service."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource from Microsoft.Network provider."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Describes the current state of an existing Azure Private Link service connection to the private endpoint."
+      },
+      "groupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The group ID of the Azure resource for which the private link service is for."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "The provisioning state of the private link service connection. Valid values are Updating, Deleting, Failed, Succeeded, Incomplete, or Canceled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionPropertiesPrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource ID of the private endpoint resource from Microsoft.Network provider."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Status of the the private link service connection. Valid values are Pending, Approved, Rejected, or Disconnected."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description for the private link service connection state."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A description of any extra actions that may be required."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incomplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/56"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SharedPrivateLinkResource",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Describes the properties of a shared private link resource managed by the Azure AI Search service."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SharedPrivateLinkResourceProperties",
+    "properties": {
+      "privateLinkResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource ID of the resource the shared private link resource is for."
+      },
+      "groupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The group ID from the provider of resource the shared private link resource is for."
+      },
+      "requestMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The message for requesting approval of the shared private link resource."
+      },
+      "resourceRegion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional. Can be used to specify the Azure Resource Manager location of the resource for which a shared private link is being created. This is only required for those resources whose DNS configuration are regional (such as Azure Kubernetes Service)."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Status of the shared private link resource. Valid values are Pending, Approved, Rejected or Disconnected."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "The provisioning state of the shared private link resource. Valid values are Updating, Deleting, Failed, Succeeded or Incomplete."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incomplete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/73"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "standard2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "standard3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "storage_optimized_l1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "storage_optimized_l2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal ID of the system-assigned identity of the search service."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system-assigned identity of the search service."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 1,
+        "description": "The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity created by the system and a set of user assigned identities. The type 'None' will remove all identities from the service."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource IDs in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedManagedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal ID of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The client ID of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedManagedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Search/searchServices@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Search/searchServices/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Search/searchServices/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Describes the properties of an existing private endpoint connection to the Azure AI Search service."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Search/searchServices/privateEndpointConnections@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/119"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Search/searchServices/sharedPrivateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Search/searchServices/sharedPrivateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Describes the properties of a shared private link resource managed by the Azure AI Search service."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Search/searchServices/sharedPrivateLinkResources@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/123"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 38,
+    "maxLength": 100,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}\\.[a-z][a-z0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 2,
+        "description": "Resource properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkSecurityPerimeterConfigurationProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2
+      },
+      "networkSecurityPerimeter": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The perimeter for a network security perimeter configuration."
+      },
+      "resourceAssociation": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The resource association for the network security perimeter."
+      },
+      "profile": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "The profile for a network security perimeter configuration."
+      },
+      "provisioningIssues": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigPerimeter",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "perimeterGuid": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigAssociation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "accessMode": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigProfile",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "accessRulesVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "accessRules": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigAccessRule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "The properties for the access rules in a network security perimeter configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigAccessRuleProperties",
+    "properties": {
+      "direction": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "addressPrefixes": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0
+      },
+      "fullyQualifiedDomainNames": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0
+      },
+      "subscriptions": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0
+      },
+      "networkSecurityPerimeters": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPConfigNetworkSecurityPerimeterRule",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "perimeterGuid": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/138"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPProvisioningIssue",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "The properties to describe any issues with provisioning network security perimeters to a search service."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NSPProvisioningIssueProperties",
+    "properties": {
+      "issueType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "suggestedResourceIds": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0
+      },
+      "suggestedAccessRules": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/141"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/128"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdminKeyResult",
+    "properties": {
+      "primaryKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The primary admin API key of the search service."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The secondary admin API key of the search service."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAdminKeys",
+    "resourceType": "Microsoft.Search/searchServices",
+    "apiVersion": "2025-02-01-preview",
+    "output": {
+      "$ref": "#/147"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListQueryKeysResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 2,
+        "description": "The query keys for the Azure AI Search service."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Request URL that can be used to query next page of query keys. Returned when the total number of requested query keys exceed maximum page size."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryKey",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the query API key. Query names are optional, but assigning a name can help you remember how it's used."
+      },
+      "key": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The value of the query API key."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/150"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listQueryKeys",
+    "resourceType": "Microsoft.Search/searchServices",
+    "apiVersion": "2025-02-01-preview",
+    "output": {
+      "$ref": "#/149"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SearchService",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Properties of the search service."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "The SKU of the search service, which determines price tier and capacity limits. This property is required when creating a new search service."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The identity of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata of the search service containing createdBy and modifiedBy information."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "upgrade",
+    "resourceType": "Microsoft.Search/searchServices",
+    "apiVersion": "2025-02-01-preview",
+    "output": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reconcile",
+    "resourceType": "Microsoft.Search/searchServices/networkSecurityPerimeterConfigurations",
+    "apiVersion": "2025-02-01-preview"
+  }
+]

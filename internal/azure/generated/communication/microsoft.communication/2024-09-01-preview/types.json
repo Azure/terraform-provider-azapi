@@ -1,0 +1,1796 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[-\\w]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/communicationServices"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/communicationServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The properties of the service."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Managed service identity (system assigned and/or user assigned identities)"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunicationServiceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "hostName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "FQDN of the CommunicationService instance."
+      },
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location where the communication service stores its data at rest."
+      },
+      "notificationHubId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ID of an Azure Notification Hub linked to this resource."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Version of the CommunicationService resource. Probably you need the same or higher version of client SDKs."
+      },
+      "immutableResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The immutable resource Id of the communication service."
+      },
+      "linkedDomains": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "List of email Domain resource Ids."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/communicationServices@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 253
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/emailServices/domains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/emailServices/domains",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The properties of a Domains resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location where the Domains resource data is stored at rest."
+      },
+      "fromSenderDomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "P2 sender domain that is displayed to the email recipients [RFC 5322]."
+      },
+      "mailFromSenderDomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "P1 sender domain that is present on the email envelope [RFC 5321]."
+      },
+      "domainManagement": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "Describes how a Domains resource is being managed."
+      },
+      "verificationStates": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 2,
+        "description": "List of VerificationStatusRecord"
+      },
+      "verificationRecords": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "List of DnsRecord"
+      },
+      "userEngagementTracking": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Describes whether user engagement tracking is enabled or disabled."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureManaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomerManagedInExchangeOnline"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainPropertiesVerificationStates",
+    "properties": {
+      "Domain": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "SPF": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DKIM": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DKIM2": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DMARC": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VerificationStatusRecord",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Status of the verification operation."
+      },
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Error code. This property will only be present if the status is UnableToVerify."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VerificationRequested"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VerificationInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VerificationFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Verified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CancellationRequested"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DomainPropertiesVerificationRecords",
+    "properties": {
+      "Domain": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "SPF": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DKIM": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DKIM2": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      },
+      "DMARC": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "A class that represents a VerificationStatus record."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DnsRecord",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Type of the DNS record. Example: TXT"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Name of the DNS record."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Value of the DNS record."
+      },
+      "ttl": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Represents an expiry time in seconds to represent how long this entry can be cached by the resolver, default = 3600sec."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/emailServices/domains@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/42"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z0-9-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/emailServices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/emailServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The properties of the service."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EmailServiceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location where the email service stores its data at rest."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/emailServices@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/78"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/emailServices/domains/senderUsernames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/emailServices/domains/senderUsernames",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The properties of a SenderUsername resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SenderUsernameProperties",
+    "properties": {
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location where the SenderUsername resource data is stored at rest."
+      },
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A sender senderUsername to be used when sending emails."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The display name for the senderUsername."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource. Unknown is the default state for Communication Services."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/emailServices/domains/senderUsernames@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/94"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 253,
+    "pattern": "^[a-zA-Z0-9-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/communicationServices/smtpUsernames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/communicationServices/smtpUsernames",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "The properties of a SmtpUsername resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SmtpUsernameProperties",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The SMTP username. Could be free form or in the email address format."
+      },
+      "entraApplicationId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 1,
+        "description": "The application Id for the linked Entra Application."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 1,
+        "description": "The tenant of the linked Entra Application."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/communicationServices/smtpUsernames@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/110"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/emailServices/domains/suppressionLists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/emailServices/domains/suppressionLists",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "The properties of a SuppressionList resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SuppressionListProperties",
+    "properties": {
+      "listName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The the name of the suppression list. This value must match one of the valid sender usernames of the sending domain."
+      },
+      "lastUpdatedTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date the resource was last updated."
+      },
+      "createdTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date the resource was created."
+      },
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location where the SuppressionListAddress data is stored at rest. This value is inherited from the parent Domains resource."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/emailServices/domains/suppressionLists@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/115"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Communication/emailServices/domains/suppressionLists/suppressionListAddresses"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Communication/emailServices/domains/suppressionLists/suppressionListAddresses",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "The properties of a SuppressionListAddress resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SuppressionListAddressProperties",
+    "properties": {
+      "email": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Email address of the recipient."
+      },
+      "firstName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The first name of the email recipient."
+      },
+      "lastName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The last name of the email recipient."
+      },
+      "notes": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An optional property to provide contextual notes or a description for an address."
+      },
+      "lastModified": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date the address was last updated in a suppression list."
+      },
+      "dataLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location where the SuppressionListAddress data is stored at rest. This value is inherited from the parent Domains resource."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Communication/emailServices/domains/suppressionLists/suppressionListAddresses@2024-09-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/120"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinkNotificationHubParameters",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of the notification hub"
+      },
+      "connectionString": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Connection string for the notification hub"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinkedNotificationHub",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the notification hub"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "linkNotificationHub",
+    "resourceType": "Microsoft.Communication/communicationServices",
+    "apiVersion": "2024-09-01-preview",
+    "output": {
+      "$ref": "#/124"
+    },
+    "input": {
+      "$ref": "#/123"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunicationServiceKeys",
+    "properties": {
+      "primaryKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The primary access key."
+      },
+      "secondaryKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The secondary access key."
+      },
+      "primaryConnectionString": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "CommunicationService connection string constructed via the primaryKey"
+      },
+      "secondaryConnectionString": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "CommunicationService connection string constructed via the secondaryKey"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listKeys",
+    "resourceType": "Microsoft.Communication/communicationServices",
+    "apiVersion": "2024-09-01-preview",
+    "output": {
+      "$ref": "#/126"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegenerateKeyParameters",
+    "properties": {
+      "keyType": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "regenerateKey",
+    "resourceType": "Microsoft.Communication/communicationServices",
+    "apiVersion": "2024-09-01-preview",
+    "output": {
+      "$ref": "#/126"
+    },
+    "input": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VerificationParameter",
+    "properties": {
+      "verificationType": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 1,
+        "description": "Type of verification."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Domain"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SPF"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DKIM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DKIM2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DMARC"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "initiateVerification",
+    "resourceType": "Microsoft.Communication/emailServices/domains",
+    "apiVersion": "2024-09-01-preview",
+    "input": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancelVerification",
+    "resourceType": "Microsoft.Communication/emailServices/domains",
+    "apiVersion": "2024-09-01-preview",
+    "input": {
+      "$ref": "#/133"
+    }
+  }
+]

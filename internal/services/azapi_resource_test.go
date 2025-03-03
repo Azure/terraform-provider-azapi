@@ -40,7 +40,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -55,12 +55,12 @@ func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config:      r.basicInvalidVersion(data),
 			ExpectError: regexp.MustCompile("400 Bad Request"),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config:   r.basic(data),
 			PlanOnly: true,
@@ -115,7 +115,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -133,7 +133,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(append(importIgnores, defaultIgnores()...)...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, append(importIgnores, defaultIgnores()...)...),
 	})
 }
 
@@ -148,28 +148,28 @@ func TestAccGenericResource_identity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.identityUserAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.identitySystemAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.complete(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -185,7 +185,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInBody(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -193,7 +193,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTag(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -201,7 +201,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -209,7 +209,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -226,7 +226,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 				check.That(data.ResourceName).Key("location").DoesNotExist(),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -242,7 +242,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultLocationOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -250,7 +250,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -283,7 +283,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 				check.That(data.ResourceName).Key("name").HasValue("acctestdefaultNaming"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultNamingOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -291,7 +291,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 				check.That(data.ResourceName).Key("name").HasValue("hclNaming"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -1646,6 +1646,9 @@ resource "azurerm_application_insights" "test" {
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   application_type    = "web"
+  lifecycle {
+	ignore_changes = [workspace_id]
+  }
 }
 
 resource "azurerm_key_vault" "test" {

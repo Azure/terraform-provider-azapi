@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "microsoft.insights/guestDiagnosticSettingsAssociation"
+    "value": "microsoft.insights/guestDiagnosticSettings"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "microsoft.insights/guestDiagnosticSettingsAssociation",
+    "name": "microsoft.insights/guestDiagnosticSettings",
     "properties": {
       "id": {
         "type": {
@@ -47,6 +47,379 @@
           "$ref": "#/4"
         },
         "flags": 1,
+        "description": "The diagnostic settings to be applied to azure resources."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GuestDiagnosticSettings",
+    "properties": {
+      "osType": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Operating system type for the configuration"
+      },
+      "dataSources": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "the array of data source object which are configured to collect and send data"
+      },
+      "proxySetting": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataSource",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Datasource kind"
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1
+      },
+      "sinks": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PerformanceCounter"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ETWProviders"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WindowsEventLogs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataSourceConfiguration",
+    "properties": {
+      "providers": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "ETW providers configuration"
+      },
+      "perfCounters": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Performance counter configuration"
+      },
+      "eventLogs": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Windows event logs configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EtwProviderConfiguration",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1
+      },
+      "events": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EtwEventConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1
+      },
+      "id": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PerformanceCounterConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1
+      },
+      "samplingPeriod": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1
+      },
+      "instance": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventLogConfiguration",
+    "properties": {
+      "logName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1
+      },
+      "filter": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SinkConfiguration",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EventHub"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ApplicationInsights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogAnalytics"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/23"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "microsoft.insights/guestDiagnosticSettings@2018-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "microsoft.insights/guestDiagnosticSettingsAssociation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2018-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "microsoft.insights/guestDiagnosticSettingsAssociation",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 1,
         "description": "The diagnostics settings associations of the resource."
       },
       "location": {
@@ -58,7 +431,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "Resource tags"
@@ -91,380 +464,7 @@
     "name": "microsoft.insights/guestDiagnosticSettingsAssociation@2018-06-01-preview",
     "scopeType": 0,
     "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "microsoft.insights/guestDiagnosticSettings"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2018-06-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "microsoft.insights/guestDiagnosticSettings",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 1,
-        "description": "The diagnostic settings to be applied to azure resources."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Resource location"
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 0,
-        "description": "Resource tags"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "GuestDiagnosticSettings",
-    "properties": {
-      "osType": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 0,
-        "description": "Operating system type for the configuration"
-      },
-      "dataSources": {
-        "type": {
-          "$ref": "#/35"
-        },
-        "flags": 0,
-        "description": "the array of data source object which are configured to collect and send data"
-      },
-      "proxySetting": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Windows"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Linux"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/11"
-      },
-      {
-        "$ref": "#/12"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DataSource",
-    "properties": {
-      "kind": {
-        "type": {
-          "$ref": "#/18"
-        },
-        "flags": 1,
-        "description": "Datasource kind"
-      },
-      "configuration": {
-        "type": {
-          "$ref": "#/19"
-        },
-        "flags": 1
-      },
-      "sinks": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 1
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "PerformanceCounter"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ETWProviders"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "WindowsEventLogs"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/16"
-      },
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DataSourceConfiguration",
-    "properties": {
-      "providers": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "ETW providers configuration"
-      },
-      "perfCounters": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 0,
-        "description": "Performance counter configuration"
-      },
-      "eventLogs": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 0,
-        "description": "Windows event logs configuration."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EtwProviderConfiguration",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1
-      },
-      "events": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 1
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EtwEventConfiguration",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1
-      },
-      "id": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 1
-      },
-      "filter": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/21"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/20"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PerformanceCounterConfiguration",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1
-      },
-      "samplingPeriod": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1
-      },
-      "instance": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/25"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EventLogConfiguration",
-    "properties": {
-      "logName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1
-      },
-      "filter": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/27"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SinkConfiguration",
-    "properties": {
-      "kind": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 1
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "EventHub"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ApplicationInsights"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LogAnalytics"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/29"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/14"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "microsoft.insights/guestDiagnosticSettings@2018-06-01-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/9"
+      "$ref": "#/34"
     },
     "flags": 0
   }
