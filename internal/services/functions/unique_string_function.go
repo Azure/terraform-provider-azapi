@@ -64,7 +64,7 @@ func base32Encode(value uint64) string {
 	const text = "abcdefghijklmnopqrstuvwxyz234567"
 	var builder strings.Builder
 	for i := 0; i < 13; i++ {
-		builder.WriteByte(text[int32(value>>59)])
+		builder.WriteByte(text[int32(value>>59)%int32(len(text))])
 		value <<= 5
 	}
 	return builder.String()
@@ -132,15 +132,15 @@ func murmurHash64A(data []byte, seed uint32) uint64 {
 				k4 = int32(data[index+4])
 			}
 			k4 *= -1425107063
-			i4 := uint32(k4)
+			i4 := uint32(k4 % (1 << 32))
 			i4 = bits.RotateLeft32(i4, 17)
 			i4 *= 597399067
 			h2 ^= i4
 		}
 	}
 
-	h1 ^= uint32(length)
-	h2 ^= uint32(length)
+	h1 ^= uint32(length % (1 << 32))
+	h2 ^= uint32(length % (1 << 32))
 	h1 += h2
 	h2 += h1
 	h1 ^= h1 >> 16
