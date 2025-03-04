@@ -18,7 +18,7 @@ var (
 	_ basetypes.ObjectTypable  = RetryType{}
 	_ basetypes.ObjectValuable = RetryValue{}
 
-	defaultRetryableStatusCodes                = []int{429}
+	defaultRetryableStatusCodes                = []int{}
 	defaultRetryableReadAfterCreateStatusCodes = []int{404, 403}
 )
 
