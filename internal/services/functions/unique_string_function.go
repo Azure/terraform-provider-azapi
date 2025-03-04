@@ -132,15 +132,15 @@ func murmurHash64A(data []byte, seed uint32) uint64 {
 				k4 = int32(data[index+4])
 			}
 			k4 *= -1425107063
-			i4 := uint32(k4 % (1 << 32))
+			i4 := safeUint32(k4)
 			i4 = bits.RotateLeft32(i4, 17)
 			i4 *= 597399067
 			h2 ^= i4
 		}
 	}
 
-	h1 ^= uint32(length % (1 << 32))
-	h2 ^= uint32(length % (1 << 32))
+	h1 ^= safeUint32(int32(length))
+	h2 ^= safeUint32(int32(length))
 	h1 += h2
 	h2 += h1
 	h1 ^= h1 >> 16
@@ -157,4 +157,11 @@ func murmurHash64A(data []byte, seed uint32) uint64 {
 	h2 += h1
 
 	return (uint64(h2) << 32) | uint64(h1)
+}
+
+func safeUint32(v int32) uint32 {
+	if v < 0 {
+		return uint32(-v)
+	}
+	return uint32(v)
 }
