@@ -10,19 +10,7 @@ description: |-
 
 This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on th ARM `uniqueString` function.
 
-## Example Usage
 
-```terraform
-locals {
-  resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet"
-}
-
-// it will output below value
-# "bkysb75tbw4ig"
-output "unique_string" {
-  value = provider::azapi::unique_string([local.resource_id])
-}
-```
 
 ## Signature
 
