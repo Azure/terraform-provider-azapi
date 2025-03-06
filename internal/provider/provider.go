@@ -77,6 +77,7 @@ type providerData struct {
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
+	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -364,7 +365,12 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"disable_default_output": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output.",
+				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
+			},
+
+			"maximum_busy_retry_attempts": schema.Int32Attribute{
+				Optional:            true,
+				MarkdownDescription: "The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `3`. The resource-specific retry configuration may additionally be used to retry on other errors and conditions.",
 			},
 		},
 	}
@@ -586,7 +592,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 	if model.DisableDefaultOutput.IsNull() {
-		model.DisableDefaultOutput = types.BoolValue(false)
+		if v := os.Getenv("ARM_DISABLE_DEFAULT_OUTPUT"); v != "" {
+			model.DisableDefaultOutput = types.BoolValue(v == "true")
+		} else {
+			model.DisableDefaultOutput = types.BoolValue(false)
+		}
 	}
 
 	var cloudConfig cloud.Configuration
@@ -650,11 +660,15 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
 		return
 	}
-
+	maxGoSdkRetryAttempts := int32(3)
+	if !model.MaximumBusyRetryAttempts.IsNull() {
+		maxGoSdkRetryAttempts = model.MaximumBusyRetryAttempts.ValueInt32()
+	}
 	copt := &clients.Option{
 		Cred:                 cred,
 		CloudCfg:             cloudConfig,
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
+		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
 			DefaultTags:          tags.ExpandTags(model.DefaultTags),
 			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
