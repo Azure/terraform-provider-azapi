@@ -112,10 +112,12 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 
 	if includingRootTestcase {
 		rootConfig := path.Join(resourceTypeDir, "main.tf")
-		if tc, err := LoadTestcase(rootConfig); err == nil {
-			testcases = append(testcases, *tc)
-		} else {
-			fmt.Printf("[WARN] Error loading config %s: %v\n", rootConfig, err)
+		if _, err := os.Stat(rootConfig); err == nil {
+			if tc, err := LoadTestcase(rootConfig); err == nil {
+				testcases = append(testcases, *tc)
+			} else {
+				fmt.Printf("[WARN] Error loading config %s: %v\n", rootConfig, err)
+			}
 		}
 	}
 
@@ -129,10 +131,12 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 		}
 
 		subConfig := path.Join(resourceTypeDir, subDir.Name(), "main.tf")
-		if tc, err := LoadTestcase(subConfig); err == nil {
-			testcases = append(testcases, *tc)
-		} else {
-			fmt.Printf("[WARN] Error loading config %s: %v\n", subConfig, err)
+		if _, err := os.Stat(subConfig); err == nil {
+			if tc, err := LoadTestcase(subConfig); err == nil {
+				testcases = append(testcases, *tc)
+			} else {
+				fmt.Printf("[WARN] Error loading config %s: %v\n", subConfig, err)
+			}
 		}
 	}
 
