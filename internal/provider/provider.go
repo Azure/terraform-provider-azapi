@@ -365,7 +365,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"disable_default_output": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output.",
+				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
 			},
 
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
@@ -592,7 +592,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 	if model.DisableDefaultOutput.IsNull() {
-		model.DisableDefaultOutput = types.BoolValue(false)
+		if v := os.Getenv("ARM_DISABLE_DEFAULT_OUTPUT"); v != "" {
+			model.DisableDefaultOutput = types.BoolValue(v == "true")
+		} else {
+			model.DisableDefaultOutput = types.BoolValue(false)
+		}
 	}
 
 	var cloudConfig cloud.Configuration
