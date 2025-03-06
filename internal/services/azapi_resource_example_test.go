@@ -34,7 +34,6 @@ func knownExternalProvidersAzurerm() map[string]resource.ExternalProvider {
 // The environment variable should be a comma-separated list of example directories.
 // For example, ARM_TEST_EXAMPLES=Microsoft.AlertsManagement_actionRules@2021-08-08,Microsoft.ApiManagement_service_groups@2021-08-01
 func TestAccExamples_Selected(t *testing.T) {
-	externalProvidersAzurerm()
 	if os.Getenv("ARM_TEST_EXAMPLES") == "" {
 		t.Skip("Skipping TestAccExamples_Selected because ARM_TEST_EXAMPLES is not set")
 	}
