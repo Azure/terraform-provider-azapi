@@ -99,7 +99,8 @@ func TestAccExamples_All(t *testing.T) {
 			data := acceptance.BuildTestData(nil, "azapi_resource", "test")
 			data.ResourceTest(t, r, []resource.TestStep{
 				{
-					Config: tc.Config,
+					Config:            tc.Config,
+					ExternalProviders: tc.ExternalProviders,
 				},
 			})
 		})
