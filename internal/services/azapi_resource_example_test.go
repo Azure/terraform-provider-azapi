@@ -115,7 +115,7 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 		if tc, err := LoadTestcase(rootConfig); err == nil {
 			testcases = append(testcases, *tc)
 		} else {
-			fmt.Printf("Error loading config %s: %v\n", rootConfig, err)
+			fmt.Printf("[WARN] Error loading config %s: %v\n", rootConfig, err)
 		}
 	}
 
@@ -132,7 +132,7 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 		if tc, err := LoadTestcase(subConfig); err == nil {
 			testcases = append(testcases, *tc)
 		} else {
-			fmt.Printf("Error loading config %s: %v\n", subConfig, err)
+			fmt.Printf("[WARN] Error loading config %s: %v\n", subConfig, err)
 		}
 	}
 
