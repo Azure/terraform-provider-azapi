@@ -1647,7 +1647,7 @@ resource "azurerm_application_insights" "test" {
   resource_group_name = azapi_resource.resourceGroup.name
   application_type    = "web"
   lifecycle {
-	ignore_changes = [workspace_id]
+    ignore_changes = [workspace_id]
   }
 }
 
