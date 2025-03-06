@@ -166,7 +166,7 @@ func LoadTestcase(configPath string) (*ExampleTestcase, error) {
 					nestedBlock.Body().RemoveAttribute("azapi")
 				}
 
-				for providerName, _ := range nestedBlock.Body().Attributes() {
+				for providerName := range nestedBlock.Body().Attributes() {
 					externalProviders[providerName] = knownExternalProvidersAzurerm()[providerName]
 				}
 			}
