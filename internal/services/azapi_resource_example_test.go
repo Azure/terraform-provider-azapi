@@ -15,8 +15,18 @@ import (
 )
 
 type ExampleTestcase struct {
-	Path   string
-	Config string
+	Path              string
+	Config            string
+	ExternalProviders map[string]resource.ExternalProvider
+}
+
+func knownExternalProvidersAzurerm() map[string]resource.ExternalProvider {
+	return map[string]resource.ExternalProvider{
+		"azurerm": {
+			VersionConstraint: "4.20.0",
+			Source:            "hashicorp/azurerm",
+		},
+	}
 }
 
 // TestAccExamples_Selected runs acceptance tests for selected examples
@@ -24,6 +34,7 @@ type ExampleTestcase struct {
 // The environment variable should be a comma-separated list of example directories.
 // For example, ARM_TEST_EXAMPLES=Microsoft.AlertsManagement_actionRules@2021-08-08,Microsoft.ApiManagement_service_groups@2021-08-01
 func TestAccExamples_Selected(t *testing.T) {
+	externalProvidersAzurerm()
 	if os.Getenv("ARM_TEST_EXAMPLES") == "" {
 		t.Skip("Skipping TestAccExamples_Selected because ARM_TEST_EXAMPLES is not set")
 	}
@@ -46,7 +57,8 @@ func TestAccExamples_Selected(t *testing.T) {
 			data := acceptance.BuildTestData(nil, "azapi_resource", "test")
 			data.ResourceTest(t, r, []resource.TestStep{
 				{
-					Config: tc.Config,
+					Config:            tc.Config,
+					ExternalProviders: tc.ExternalProviders,
 				},
 			})
 		})
@@ -100,8 +112,8 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 
 	if includingRootTestcase {
 		rootConfig := path.Join(resourceTypeDir, "main.tf")
-		if config, err := LoadConfig(rootConfig); err == nil {
-			testcases = append(testcases, ExampleTestcase{Path: rootConfig, Config: config})
+		if tc, err := LoadTestcase(rootConfig); err == nil {
+			testcases = append(testcases, *tc)
 		} else {
 			fmt.Printf("Error loading config %s: %v\n", rootConfig, err)
 		}
@@ -117,8 +129,8 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 		}
 
 		subConfig := path.Join(resourceTypeDir, subDir.Name(), "main.tf")
-		if config, err := LoadConfig(subConfig); err == nil {
-			testcases = append(testcases, ExampleTestcase{Path: subConfig, Config: config})
+		if tc, err := LoadTestcase(subConfig); err == nil {
+			testcases = append(testcases, *tc)
 		} else {
 			fmt.Printf("Error loading config %s: %v\n", subConfig, err)
 		}
@@ -127,18 +139,19 @@ func ListTestcases(resourceTypeDir string, includingRootTestcase bool) []Example
 	return testcases
 }
 
-func LoadConfig(configPath string) (string, error) {
+func LoadTestcase(configPath string) (*ExampleTestcase, error) {
 	content, err := os.ReadFile(configPath)
 	if err != nil {
-		return "", fmt.Errorf("unable to read file %s: %v", configPath, err)
+		return nil, fmt.Errorf("unable to read file %s: %v", configPath, err)
 	}
 
 	hclFile, diags := hclwrite.ParseConfig(content, configPath, hcl.InitialPos)
 	if diags.HasErrors() {
-		return "", fmt.Errorf("unable to parse HCL file %s: %v", configPath, diags)
+		return nil, fmt.Errorf("unable to parse HCL file %s: %v", configPath, diags)
 	}
 
 	data := acceptance.BuildTestData(nil, "azapi_resource", "test")
+	externalProviders := make(map[string]resource.ExternalProvider)
 	for _, block := range hclFile.Body().Blocks() {
 		if block.Type() == "variable" && len(block.Labels()) != 0 {
 			if block.Labels()[0] == "resource_name" {
@@ -153,8 +166,16 @@ func LoadConfig(configPath string) (string, error) {
 				if nestedBlock.Type() == "required_providers" {
 					nestedBlock.Body().RemoveAttribute("azapi")
 				}
+
+				for providerName, _ := range nestedBlock.Body().Attributes() {
+					externalProviders[providerName] = knownExternalProvidersAzurerm()[providerName]
+				}
 			}
 		}
 	}
-	return string(hclwrite.Format(hclFile.Bytes())), nil
+	return &ExampleTestcase{
+		Path:              configPath,
+		Config:            string(hclFile.Bytes()),
+		ExternalProviders: externalProviders,
+	}, nil
 }
