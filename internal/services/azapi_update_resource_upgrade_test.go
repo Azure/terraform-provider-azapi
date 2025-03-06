@@ -106,10 +106,10 @@ func TestAccAzapiUpdateResourceUpgrade_timeouts_from_v1_13_1(t *testing.T) {
 			),
 		}, "1.13.1"),
 		data.UpgradeTestApplyStep(resource.TestStep{
-			Config: r.timeouts(data),
+			Config: strings.ReplaceAll(r.timeouts(data), `update = "10m"`, ""),
 		}),
 		data.UpgradeTestPlanStep(resource.TestStep{
-			Config: r.timeouts(data),
+			Config: strings.ReplaceAll(r.timeouts(data), `update = "10m"`, ""),
 		}),
 	})
 }
