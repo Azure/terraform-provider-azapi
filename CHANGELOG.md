@@ -4,7 +4,7 @@ FEATURES:
 
 ENHANCEMENTS:
 - `azapi` provider: The `oidc_azure_service_connection_id` field can be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID` or `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` Environment Variables.
-- `azapi` provider: The `enable_preflight` field can be sourced from the `ARM_ENABLE_PRE_FLIGHT` Environment Variable.
+- `azapi` provider: The `enable_preflight` field can be sourced from the `ARM_ENABLE_PREFLIGHT` Environment Variable.
 - `azapi` provider: The `disable_default_output` field can be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.
 - `azapi` provider: Support `maximum_busy_retry_attempts` field, which is used to specify the maximum number of busy retry attempts if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response.
 - `azapi_resource_action` resource, data source: Support `sensitive_response_export_values` field, which is used to specify the sensitive fields to export.
