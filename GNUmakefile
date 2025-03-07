@@ -118,5 +118,8 @@ teamcity-test:
 	@$(MAKE) -C .teamcity tools
 	@$(MAKE) -C .teamcity test
 
+example-test:
+	TF_ACC=1 ARM_TEST_EXAMPLES=${TARGET} go test -v ./internal/services/... -run TestAccExamples_Selected -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
 
-.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test
+
+.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test example-test
