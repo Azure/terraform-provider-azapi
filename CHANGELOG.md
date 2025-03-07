@@ -1,4 +1,4 @@
-## v2.3.0 (unreleased)
+## v2.3.0
 FEATURES:
 - **New Ephemeral Resource**: azapi_resource_action
 
