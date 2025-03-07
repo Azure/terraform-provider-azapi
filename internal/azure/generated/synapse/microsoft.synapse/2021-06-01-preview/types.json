@@ -615,7 +615,7 @@
         "$ref": "#/37"
       },
       "SelfHosted": {
-        "$ref": "#/97"
+        "$ref": "#/102"
       }
     }
   },
@@ -639,14 +639,14 @@
       },
       "managedVirtualNetwork": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/100"
         },
         "flags": 0,
         "description": "Managed integration runtime managed virtual network."
       },
       "type": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/101"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -744,7 +744,7 @@
       },
       "ssisProperties": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "SSIS properties for managed integration runtime."
@@ -796,6 +796,20 @@
         },
         "flags": 0,
         "description": "VNet properties for managed integration runtime."
+      },
+      "copyComputeScaleProperties": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "CopyComputeScale properties for managed integration runtime."
+      },
+      "pipelineExternalComputeScaleProperties": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "PipelineExternalComputeScale properties for managed integration runtime."
       }
     },
     "additionalProperties": {
@@ -921,46 +935,106 @@
   },
   {
     "$type": "ObjectType",
+    "name": "CopyComputeScaleProperties",
+    "properties": {
+      "dataIntegrationUnit": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "DIU number setting reserved for copy activity execution. Supported values are multiples of 4 in range 4-256."
+      },
+      "timeToLive": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Time to live (in minutes) setting of integration runtime which will execute copy activity."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 4
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 5
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PipelineExternalComputeScaleProperties",
+    "properties": {
+      "timeToLive": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Time to live (in minutes) setting of integration runtime which will execute pipeline and external activity."
+      },
+      "numberOfPipelineNodes": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Number of the pipeline nodes, which should be greater than 0 and less than 11."
+      },
+      "numberOfExternalNodes": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Number of the the external nodes, which should be greater than 0 and less than 11."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 10
+  },
+  {
+    "$type": "ObjectType",
     "name": "IntegrationRuntimeSsisProperties",
     "properties": {
       "catalogInfo": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "Catalog information for managed dedicated integration runtime."
       },
       "licenseType": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "License type for bringing your own license scenario."
       },
       "customSetupScriptProperties": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/77"
         },
         "flags": 0,
         "description": "Custom setup script properties for a managed dedicated integration runtime."
       },
       "dataProxyProperties": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "Data proxy properties for a managed dedicated integration runtime."
       },
       "edition": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "The edition for the SSIS Integration Runtime"
       },
       "expressCustomSetupProperties": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "Custom setup without script properties for a SSIS integration runtime."
@@ -983,21 +1057,21 @@
       },
       "catalogAdminUserName": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/67"
         },
         "flags": 0,
         "description": "The administrator user name of catalog database."
       },
       "catalogAdminPassword": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "The password of the administrator user account of the catalog database."
       },
       "catalogPricingTier": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/73"
         },
         "flags": 0,
         "description": "The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/"
@@ -1052,16 +1126,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/64"
+        "$ref": "#/69"
       },
       {
-        "$ref": "#/65"
+        "$ref": "#/70"
       },
       {
-        "$ref": "#/66"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/72"
       },
       {
         "$ref": "#/0"
@@ -1080,10 +1154,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/75"
       },
       {
         "$ref": "#/0"
@@ -1103,7 +1177,7 @@
       },
       "sasToken": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "The SAS token of the Azure blob container."
@@ -1116,14 +1190,14 @@
     "properties": {
       "connectVia": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "The self-hosted integration runtime reference."
       },
       "stagingLinkedService": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "The staging linked service reference."
@@ -1143,7 +1217,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "The type of this referenced entity."
@@ -1169,10 +1243,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/75"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/76"
+        "$ref": "#/81"
       },
       {
         "$ref": "#/0"
@@ -1191,10 +1265,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/78"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/79"
+        "$ref": "#/84"
       },
       {
         "$ref": "#/0"
@@ -1208,13 +1282,13 @@
     "baseProperties": {},
     "elements": {
       "CmdkeySetup": {
-        "$ref": "#/82"
+        "$ref": "#/87"
       },
       "ComponentSetup": {
-        "$ref": "#/88"
+        "$ref": "#/93"
       },
       "EnvironmentVariableSetup": {
-        "$ref": "#/91"
+        "$ref": "#/96"
       }
     }
   },
@@ -1224,14 +1298,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/88"
         },
         "flags": 1,
         "description": "Cmdkey command custom setup type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/92"
         },
         "flags": 1,
         "description": "The type of custom setup."
@@ -1258,7 +1332,7 @@
       },
       "password": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/89"
         },
         "flags": 1,
         "description": "The password of data source access."
@@ -1272,7 +1346,7 @@
     "baseProperties": {},
     "elements": {
       "SecureString": {
-        "$ref": "#/85"
+        "$ref": "#/90"
       }
     }
   },
@@ -1289,7 +1363,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/91"
         },
         "flags": 1,
         "description": "Type of the secret."
@@ -1310,14 +1384,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/94"
         },
         "flags": 1,
         "description": "Install 3rd party component type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/95"
         },
         "flags": 1,
         "description": "The type of custom setup."
@@ -1337,7 +1411,7 @@
       },
       "licenseKey": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "The license key to activate the component."
@@ -1354,14 +1428,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/97"
         },
         "flags": 1,
         "description": "Add environment variable type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/98"
         },
         "flags": 1,
         "description": "The type of custom setup."
@@ -1395,7 +1469,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/81"
+      "$ref": "#/86"
     }
   },
   {
@@ -1435,14 +1509,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime."
       },
       "type": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/109"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -1455,10 +1529,17 @@
     "properties": {
       "linkedInfo": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/104"
         },
         "flags": 0,
         "description": "Linked integration runtime type from data factory"
+      },
+      "selfContainedInteractiveAuthoringEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "An alternative option to ensure interactive authoring function when your self-hosted integration runtime is unable to establish a connection with Azure Relay."
       }
     }
   },
@@ -1469,10 +1550,10 @@
     "baseProperties": {},
     "elements": {
       "Key": {
-        "$ref": "#/100"
+        "$ref": "#/105"
       },
       "RBAC": {
-        "$ref": "#/102"
+        "$ref": "#/107"
       }
     }
   },
@@ -1482,14 +1563,14 @@
     "properties": {
       "key": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/68"
         },
         "flags": 1,
         "description": "The key used for authorization."
       },
       "authorizationType": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/106"
         },
         "flags": 1,
         "description": "The authorization type for integration runtime sharing."
@@ -1513,7 +1594,7 @@
       },
       "authorizationType": {
         "type": {
-          "$ref": "#/103"
+          "$ref": "#/108"
         },
         "flags": 1,
         "description": "The authorization type for integration runtime sharing."
@@ -1565,28 +1646,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/111"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/107"
+          "$ref": "#/112"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "sku": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/114"
         },
         "flags": 1,
         "description": "The SKU of the kusto pool."
       },
       "properties": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "The kusto pool properties."
@@ -1600,14 +1681,14 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       },
       "tags": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/160"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1627,7 +1708,7 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/117"
         },
         "flags": 1,
         "description": "SKU name."
@@ -1641,7 +1722,7 @@
       },
       "size": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/122"
         },
         "flags": 1,
         "description": "SKU size."
@@ -1660,10 +1741,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/110"
+        "$ref": "#/115"
       },
       {
-        "$ref": "#/111"
+        "$ref": "#/116"
       },
       {
         "$ref": "#/0"
@@ -1690,16 +1771,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/113"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/114"
+        "$ref": "#/119"
       },
       {
-        "$ref": "#/115"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/121"
       },
       {
         "$ref": "#/0"
@@ -1712,14 +1793,14 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/133"
         },
         "flags": 2,
         "description": "The state of the resource."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/141"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -1747,7 +1828,7 @@
       },
       "optimizedAutoscale": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "Optimized auto scale definition."
@@ -1768,7 +1849,7 @@
       },
       "languageExtensions": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/143"
         },
         "flags": 2,
         "description": "List of the Kusto Pool's language extensions."
@@ -1822,21 +1903,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/119"
-      },
-      {
-        "$ref": "#/120"
-      },
-      {
-        "$ref": "#/121"
-      },
-      {
-        "$ref": "#/122"
-      },
-      {
-        "$ref": "#/123"
-      },
-      {
         "$ref": "#/124"
       },
       {
@@ -1847,6 +1913,21 @@
       },
       {
         "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
       },
       {
         "$ref": "#/0"
@@ -1885,25 +1966,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/129"
-      },
-      {
-        "$ref": "#/130"
-      },
-      {
-        "$ref": "#/131"
-      },
-      {
-        "$ref": "#/132"
-      },
-      {
-        "$ref": "#/133"
-      },
-      {
         "$ref": "#/134"
       },
       {
         "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
       },
       {
         "$ref": "#/0"
@@ -1950,7 +2031,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/148"
         },
         "flags": 0,
         "description": "The list of language extensions."
@@ -1963,7 +2044,7 @@
     "properties": {
       "languageExtensionName": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/147"
         },
         "flags": 0,
         "description": "The language extension name."
@@ -1982,10 +2063,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/140"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/141"
+        "$ref": "#/146"
       },
       {
         "$ref": "#/0"
@@ -1995,7 +2076,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/139"
+      "$ref": "#/144"
     }
   },
   {
@@ -2011,7 +2092,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -2032,7 +2113,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/159"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -2045,42 +2126,6 @@
         "description": "The timestamp of resource last modification (UTC)"
       }
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/145"
-      },
-      {
-        "$ref": "#/146"
-      },
-      {
-        "$ref": "#/147"
-      },
-      {
-        "$ref": "#/148"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
   },
   {
     "$type": "StringLiteralType",
@@ -2119,6 +2164,42 @@
     ]
   },
   {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
@@ -2131,7 +2212,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/108"
+      "$ref": "#/113"
     },
     "flags": 0
   },
@@ -2163,14 +2244,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/162"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/163"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -2184,14 +2265,14 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/160"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The properties of the attached database configuration."
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2204,7 +2285,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/173"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -2225,21 +2306,21 @@
       },
       "attachedDatabaseNames": {
         "type": {
-          "$ref": "#/169"
+          "$ref": "#/174"
         },
         "flags": 2,
         "description": "The list of databases from the clusterResourceId which are currently attached to the kusto pool."
       },
       "defaultPrincipalsModificationKind": {
         "type": {
-          "$ref": "#/173"
+          "$ref": "#/178"
         },
         "flags": 1,
         "description": "The default principals modification kind"
       },
       "tableLevelSharingProperties": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/179"
         },
         "flags": 0,
         "description": "Table level sharing specifications"
@@ -2278,25 +2359,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/161"
-      },
-      {
-        "$ref": "#/162"
-      },
-      {
-        "$ref": "#/163"
-      },
-      {
-        "$ref": "#/164"
-      },
-      {
-        "$ref": "#/165"
-      },
-      {
         "$ref": "#/166"
       },
       {
         "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
       },
       {
         "$ref": "#/0"
@@ -2325,13 +2406,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/170"
+        "$ref": "#/175"
       },
       {
-        "$ref": "#/171"
+        "$ref": "#/176"
       },
       {
-        "$ref": "#/172"
+        "$ref": "#/177"
       },
       {
         "$ref": "#/0"
@@ -2344,42 +2425,42 @@
     "properties": {
       "tablesToInclude": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/180"
         },
         "flags": 0,
         "description": "List of tables to include in the follower database"
       },
       "tablesToExclude": {
         "type": {
-          "$ref": "#/176"
+          "$ref": "#/181"
         },
         "flags": 0,
         "description": "List of tables to exclude from the follower database"
       },
       "externalTablesToInclude": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/182"
         },
         "flags": 0,
         "description": "List of external tables to include in the follower database"
       },
       "externalTablesToExclude": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/183"
         },
         "flags": 0,
         "description": "List of external tables exclude from the follower database"
       },
       "materializedViewsToInclude": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/184"
         },
         "flags": 0,
         "description": "List of materialized views to include in the follower database"
       },
       "materializedViewsToExclude": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/185"
         },
         "flags": 0,
         "description": "List of materialized views exclude from the follower database"
@@ -2427,7 +2508,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools/attachedDatabaseConfigurations@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/159"
+      "$ref": "#/164"
     },
     "flags": 0
   },
@@ -2460,14 +2541,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/187"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/183"
+          "$ref": "#/188"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -2481,7 +2562,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2489,10 +2570,10 @@
     },
     "elements": {
       "ReadOnlyFollowing": {
-        "$ref": "#/185"
+        "$ref": "#/190"
       },
       "ReadWrite": {
-        "$ref": "#/201"
+        "$ref": "#/206"
       }
     }
   },
@@ -2502,14 +2583,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/186"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "The database properties."
       },
       "kind": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/205"
         },
         "flags": 1,
         "description": "Kind of the database"
@@ -2522,7 +2603,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/199"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -2543,7 +2624,7 @@
       },
       "statistics": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/200"
         },
         "flags": 2,
         "description": "The statistics of the database."
@@ -2564,7 +2645,7 @@
       },
       "principalsModificationKind": {
         "type": {
-          "$ref": "#/199"
+          "$ref": "#/204"
         },
         "flags": 2,
         "description": "The principals modification kind of the database"
@@ -2603,25 +2684,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/187"
-      },
-      {
-        "$ref": "#/188"
-      },
-      {
-        "$ref": "#/189"
-      },
-      {
-        "$ref": "#/190"
-      },
-      {
-        "$ref": "#/191"
-      },
-      {
         "$ref": "#/192"
       },
       {
         "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
       },
       {
         "$ref": "#/0"
@@ -2657,13 +2738,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/196"
+        "$ref": "#/201"
       },
       {
-        "$ref": "#/197"
+        "$ref": "#/202"
       },
       {
-        "$ref": "#/198"
+        "$ref": "#/203"
       },
       {
         "$ref": "#/0"
@@ -2680,14 +2761,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/207"
         },
         "flags": 0,
         "description": "The database properties."
       },
       "kind": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/216"
         },
         "flags": 1,
         "description": "Kind of the database"
@@ -2700,7 +2781,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/215"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -2721,7 +2802,7 @@
       },
       "statistics": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/200"
         },
         "flags": 2,
         "description": "The statistics of the database."
@@ -2767,25 +2848,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/203"
-      },
-      {
-        "$ref": "#/204"
-      },
-      {
-        "$ref": "#/205"
-      },
-      {
-        "$ref": "#/206"
-      },
-      {
-        "$ref": "#/207"
-      },
-      {
         "$ref": "#/208"
       },
       {
         "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
       },
       {
         "$ref": "#/0"
@@ -2801,7 +2882,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools/databases@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/184"
+      "$ref": "#/189"
     },
     "flags": 0
   },
@@ -2834,14 +2915,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/213"
+          "$ref": "#/218"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/214"
+          "$ref": "#/219"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -2855,7 +2936,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2863,13 +2944,13 @@
     },
     "elements": {
       "EventGrid": {
-        "$ref": "#/216"
+        "$ref": "#/221"
       },
       "EventHub": {
-        "$ref": "#/247"
+        "$ref": "#/252"
       },
       "IotHub": {
-        "$ref": "#/279"
+        "$ref": "#/284"
       }
     }
   },
@@ -2879,14 +2960,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "The properties of the Event Grid data connection."
       },
       "kind": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/251"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -2934,7 +3015,7 @@
       },
       "dataFormat": {
         "type": {
-          "$ref": "#/234"
+          "$ref": "#/239"
         },
         "flags": 0,
         "description": "The data format of the message. Optionally the data format can be added to each message."
@@ -2948,14 +3029,14 @@
       },
       "blobStorageEventType": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/242"
         },
         "flags": 0,
         "description": "The name of blob storage event type to process."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/250"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -3030,21 +3111,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/218"
-      },
-      {
-        "$ref": "#/219"
-      },
-      {
-        "$ref": "#/220"
-      },
-      {
-        "$ref": "#/221"
-      },
-      {
-        "$ref": "#/222"
-      },
-      {
         "$ref": "#/223"
       },
       {
@@ -3078,6 +3144,21 @@
         "$ref": "#/233"
       },
       {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -3094,10 +3175,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/235"
+        "$ref": "#/240"
       },
       {
-        "$ref": "#/236"
+        "$ref": "#/241"
       },
       {
         "$ref": "#/0"
@@ -3136,25 +3217,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/238"
-      },
-      {
-        "$ref": "#/239"
-      },
-      {
-        "$ref": "#/240"
-      },
-      {
-        "$ref": "#/241"
-      },
-      {
-        "$ref": "#/242"
-      },
-      {
         "$ref": "#/243"
       },
       {
         "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/249"
       },
       {
         "$ref": "#/0"
@@ -3171,14 +3252,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/248"
+          "$ref": "#/253"
         },
         "flags": 0,
         "description": "The Event Hub data connection properties to validate."
       },
       "kind": {
         "type": {
-          "$ref": "#/278"
+          "$ref": "#/283"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -3219,28 +3300,28 @@
       },
       "dataFormat": {
         "type": {
-          "$ref": "#/265"
+          "$ref": "#/270"
         },
         "flags": 0,
         "description": "The data format of the message. Optionally the data format can be added to each message."
       },
       "eventSystemProperties": {
         "type": {
-          "$ref": "#/266"
+          "$ref": "#/271"
         },
         "flags": 0,
         "description": "System properties of the event hub"
       },
       "compression": {
         "type": {
-          "$ref": "#/269"
+          "$ref": "#/274"
         },
         "flags": 0,
         "description": "The event hub messages compression type"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/277"
+          "$ref": "#/282"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -3322,21 +3403,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/249"
-      },
-      {
-        "$ref": "#/250"
-      },
-      {
-        "$ref": "#/251"
-      },
-      {
-        "$ref": "#/252"
-      },
-      {
-        "$ref": "#/253"
-      },
-      {
         "$ref": "#/254"
       },
       {
@@ -3370,6 +3436,21 @@
         "$ref": "#/264"
       },
       {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/267"
+      },
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -3392,10 +3473,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/267"
+        "$ref": "#/272"
       },
       {
-        "$ref": "#/268"
+        "$ref": "#/273"
       },
       {
         "$ref": "#/0"
@@ -3434,25 +3515,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/270"
-      },
-      {
-        "$ref": "#/271"
-      },
-      {
-        "$ref": "#/272"
-      },
-      {
-        "$ref": "#/273"
-      },
-      {
-        "$ref": "#/274"
-      },
-      {
         "$ref": "#/275"
       },
       {
         "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
       },
       {
         "$ref": "#/0"
@@ -3469,14 +3550,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/285"
         },
         "flags": 0,
         "description": "The Iot Hub data connection properties."
       },
       "kind": {
         "type": {
-          "$ref": "#/307"
+          "$ref": "#/312"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -3517,14 +3598,14 @@
       },
       "dataFormat": {
         "type": {
-          "$ref": "#/297"
+          "$ref": "#/302"
         },
         "flags": 0,
         "description": "The data format of the message. Optionally the data format can be added to each message."
       },
       "eventSystemProperties": {
         "type": {
-          "$ref": "#/298"
+          "$ref": "#/303"
         },
         "flags": 0,
         "description": "System properties of the iot hub"
@@ -3538,7 +3619,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/306"
+          "$ref": "#/311"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -3613,21 +3694,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/281"
-      },
-      {
-        "$ref": "#/282"
-      },
-      {
-        "$ref": "#/283"
-      },
-      {
-        "$ref": "#/284"
-      },
-      {
-        "$ref": "#/285"
-      },
-      {
         "$ref": "#/286"
       },
       {
@@ -3659,6 +3725,21 @@
       },
       {
         "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
       },
       {
         "$ref": "#/0"
@@ -3703,25 +3784,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/299"
-      },
-      {
-        "$ref": "#/300"
-      },
-      {
-        "$ref": "#/301"
-      },
-      {
-        "$ref": "#/302"
-      },
-      {
-        "$ref": "#/303"
-      },
-      {
         "$ref": "#/304"
       },
       {
         "$ref": "#/305"
+      },
+      {
+        "$ref": "#/306"
+      },
+      {
+        "$ref": "#/307"
+      },
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
       },
       {
         "$ref": "#/0"
@@ -3737,7 +3818,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/215"
+      "$ref": "#/220"
     },
     "flags": 0
   },
@@ -3769,28 +3850,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/309"
+          "$ref": "#/314"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/315"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/312"
+          "$ref": "#/317"
         },
         "flags": 0,
         "description": "The cluster principal."
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -3810,7 +3891,7 @@
       },
       "role": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/320"
         },
         "flags": 1,
         "description": "Cluster principal role."
@@ -3824,7 +3905,7 @@
       },
       "principalType": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/324"
         },
         "flags": 1,
         "description": "Principal type."
@@ -3845,7 +3926,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/327"
+          "$ref": "#/332"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -3871,10 +3952,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/313"
+        "$ref": "#/318"
       },
       {
-        "$ref": "#/314"
+        "$ref": "#/319"
       },
       {
         "$ref": "#/0"
@@ -3897,13 +3978,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/316"
+        "$ref": "#/321"
       },
       {
-        "$ref": "#/317"
+        "$ref": "#/322"
       },
       {
-        "$ref": "#/318"
+        "$ref": "#/323"
       },
       {
         "$ref": "#/0"
@@ -3942,25 +4023,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/320"
-      },
-      {
-        "$ref": "#/321"
-      },
-      {
-        "$ref": "#/322"
-      },
-      {
-        "$ref": "#/323"
-      },
-      {
-        "$ref": "#/324"
-      },
-      {
         "$ref": "#/325"
       },
       {
         "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
       },
       {
         "$ref": "#/0"
@@ -3972,7 +4053,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools/principalAssignments@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/311"
+      "$ref": "#/316"
     },
     "flags": 0
   },
@@ -4004,28 +4085,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/329"
+          "$ref": "#/334"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/330"
+          "$ref": "#/335"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/332"
+          "$ref": "#/337"
         },
         "flags": 0,
         "description": "The database principal."
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -4045,7 +4126,7 @@
       },
       "role": {
         "type": {
-          "$ref": "#/339"
+          "$ref": "#/344"
         },
         "flags": 1,
         "description": "Database principal role."
@@ -4059,7 +4140,7 @@
       },
       "principalType": {
         "type": {
-          "$ref": "#/343"
+          "$ref": "#/348"
         },
         "flags": 1,
         "description": "Principal type."
@@ -4080,7 +4161,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/351"
+          "$ref": "#/356"
         },
         "flags": 2,
         "description": "The provisioned state of the resource."
@@ -4122,22 +4203,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/333"
-      },
-      {
-        "$ref": "#/334"
-      },
-      {
-        "$ref": "#/335"
-      },
-      {
-        "$ref": "#/336"
-      },
-      {
-        "$ref": "#/337"
-      },
-      {
         "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
       },
       {
         "$ref": "#/0"
@@ -4160,13 +4241,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/340"
+        "$ref": "#/345"
       },
       {
-        "$ref": "#/341"
+        "$ref": "#/346"
       },
       {
-        "$ref": "#/342"
+        "$ref": "#/347"
       },
       {
         "$ref": "#/0"
@@ -4205,25 +4286,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/344"
-      },
-      {
-        "$ref": "#/345"
-      },
-      {
-        "$ref": "#/346"
-      },
-      {
-        "$ref": "#/347"
-      },
-      {
-        "$ref": "#/348"
-      },
-      {
         "$ref": "#/349"
       },
       {
         "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
       },
       {
         "$ref": "#/0"
@@ -4235,7 +4316,7 @@
     "name": "Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/331"
+      "$ref": "#/336"
     },
     "flags": 0
   },
@@ -4267,21 +4348,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/353"
+          "$ref": "#/358"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/354"
+          "$ref": "#/359"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/356"
+          "$ref": "#/361"
         },
         "flags": 0,
         "description": "IP firewall rule properties"
@@ -4301,7 +4382,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/362"
+          "$ref": "#/367"
         },
         "flags": 2,
         "description": "Resource provisioning state"
@@ -4339,19 +4420,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/357"
+        "$ref": "#/362"
       },
       {
-        "$ref": "#/358"
+        "$ref": "#/363"
       },
       {
-        "$ref": "#/359"
+        "$ref": "#/364"
       },
       {
-        "$ref": "#/360"
+        "$ref": "#/365"
       },
       {
-        "$ref": "#/361"
+        "$ref": "#/366"
       },
       {
         "$ref": "#/0"
@@ -4363,7 +4444,7 @@
     "name": "Microsoft.Synapse/workspaces/firewallRules@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/355"
+      "$ref": "#/360"
     },
     "flags": 0
   },
@@ -4378,84 +4459,6 @@
   {
     "$type": "ObjectType",
     "name": "Microsoft.Synapse/workspaces/keys",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/364"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/365"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/367"
-        },
-        "flags": 0,
-        "description": "Keys resource properties"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "KeyProperties",
-    "properties": {
-      "isActiveCMK": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "Used to activate the workspace after a customer managed key is provided."
-      },
-      "keyVaultUrl": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The Key Vault Url of the workspace key."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Synapse/workspaces/keys@2021-06-01-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/366"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Synapse/workspaces/privateEndpointConnections"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2021-06-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Synapse/workspaces/privateEndpointConnections",
     "properties": {
       "id": {
         "type": {
@@ -4490,6 +4493,84 @@
           "$ref": "#/372"
         },
         "flags": 0,
+        "description": "Keys resource properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyProperties",
+    "properties": {
+      "isActiveCMK": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Used to activate the workspace after a customer managed key is provided."
+      },
+      "keyVaultUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Key Vault Url of the workspace key."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Synapse/workspaces/keys@2021-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/371"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Synapse/workspaces/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Synapse/workspaces/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/375"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 0,
         "description": "Private endpoint connection properties."
       }
     }
@@ -4500,14 +4581,14 @@
     "properties": {
       "privateEndpoint": {
         "type": {
-          "$ref": "#/373"
+          "$ref": "#/378"
         },
         "flags": 0,
         "description": "The private endpoint which the connection belongs to."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/374"
+          "$ref": "#/379"
         },
         "flags": 0,
         "description": "Connection state of the private endpoint connection."
@@ -4566,7 +4647,7 @@
     "name": "Microsoft.Synapse/workspaces/privateEndpointConnections@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/371"
+      "$ref": "#/376"
     },
     "flags": 0
   },
@@ -4598,28 +4679,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/376"
+          "$ref": "#/381"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/377"
+          "$ref": "#/382"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/379"
+          "$ref": "#/384"
         },
         "flags": 0,
         "description": "PrivateLinkHub resource properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/382"
+          "$ref": "#/387"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4646,7 +4727,7 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/381"
+          "$ref": "#/386"
         },
         "flags": 2,
         "description": "List of private endpoint connections"
@@ -4666,7 +4747,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/377"
         },
         "flags": 0,
         "description": "Properties of private endpoint connection for private link hub"
@@ -4676,7 +4757,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/380"
+      "$ref": "#/385"
     }
   },
   {
@@ -4692,7 +4773,7 @@
     "name": "Microsoft.Synapse/privateLinkHubs@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/378"
+      "$ref": "#/383"
     },
     "flags": 0
   },
@@ -4724,35 +4805,35 @@
       },
       "type": {
         "type": {
-          "$ref": "#/384"
+          "$ref": "#/389"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/385"
+          "$ref": "#/390"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "sku": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/392"
         },
         "flags": 0,
         "description": "SQL pool SKU"
       },
       "properties": {
         "type": {
-          "$ref": "#/388"
+          "$ref": "#/393"
         },
         "flags": 0,
         "description": "SQL pool properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/397"
+          "$ref": "#/402"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4848,7 +4929,7 @@
       },
       "createMode": {
         "type": {
-          "$ref": "#/393"
+          "$ref": "#/398"
         },
         "flags": 4,
         "description": "Specifies the mode of sql pool creation.\n\nDefault: regular sql pool creation.\n\nPointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.\n\nRecovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.\n\nRestore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified."
@@ -4862,7 +4943,7 @@
       },
       "storageAccountType": {
         "type": {
-          "$ref": "#/396"
+          "$ref": "#/401"
         },
         "flags": 0,
         "description": "The storage account type used to store backups for this sql pool."
@@ -4896,16 +4977,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/389"
+        "$ref": "#/394"
       },
       {
-        "$ref": "#/390"
+        "$ref": "#/395"
       },
       {
-        "$ref": "#/391"
+        "$ref": "#/396"
       },
       {
-        "$ref": "#/392"
+        "$ref": "#/397"
       },
       {
         "$ref": "#/0"
@@ -4924,10 +5005,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/394"
+        "$ref": "#/399"
       },
       {
-        "$ref": "#/395"
+        "$ref": "#/400"
       },
       {
         "$ref": "#/0"
@@ -4947,7 +5028,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/386"
+      "$ref": "#/391"
     },
     "flags": 0
   },
@@ -4976,28 +5057,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/399"
+          "$ref": "#/404"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/400"
+          "$ref": "#/405"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/401"
+          "$ref": "#/406"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/403"
+          "$ref": "#/408"
         },
         "flags": 0,
         "description": "Metadata Sync Config properties"
@@ -5029,7 +5110,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/metadataSync@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/402"
+      "$ref": "#/407"
     },
     "flags": 0
   },
@@ -5041,7 +5122,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/405"
+        "$ref": "#/410"
       },
       {
         "$ref": "#/0"
@@ -5069,28 +5150,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/406"
+          "$ref": "#/411"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/407"
+          "$ref": "#/412"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/408"
+          "$ref": "#/413"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/410"
+          "$ref": "#/415"
         },
         "flags": 1,
         "description": "The properties of the geo backup policy."
@@ -5117,7 +5198,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/413"
+          "$ref": "#/418"
         },
         "flags": 1,
         "description": "The state of the geo backup policy."
@@ -5143,10 +5224,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/411"
+        "$ref": "#/416"
       },
       {
-        "$ref": "#/412"
+        "$ref": "#/417"
       }
     ]
   },
@@ -5155,7 +5236,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/geoBackupPolicies@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/409"
+      "$ref": "#/414"
     },
     "flags": 0
   },
@@ -5167,7 +5248,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/415"
+        "$ref": "#/420"
       },
       {
         "$ref": "#/0"
@@ -5195,21 +5276,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/416"
+          "$ref": "#/421"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/417"
+          "$ref": "#/422"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/418"
+          "$ref": "#/423"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -5223,7 +5304,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/420"
+          "$ref": "#/425"
         },
         "flags": 0,
         "description": "Represents the properties of the resource."
@@ -5236,7 +5317,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/423"
+          "$ref": "#/428"
         },
         "flags": 0,
         "description": "The status of the database transparent data encryption."
@@ -5255,10 +5336,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/421"
+        "$ref": "#/426"
       },
       {
-        "$ref": "#/422"
+        "$ref": "#/427"
       }
     ]
   },
@@ -5267,7 +5348,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/transparentDataEncryption@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/419"
+      "$ref": "#/424"
     },
     "flags": 0
   },
@@ -5279,7 +5360,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/425"
+        "$ref": "#/430"
       },
       {
         "$ref": "#/0"
@@ -5307,21 +5388,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/426"
+          "$ref": "#/431"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/427"
+          "$ref": "#/432"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/428"
+          "$ref": "#/433"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -5335,7 +5416,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/430"
+          "$ref": "#/435"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -5348,7 +5429,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/433"
+          "$ref": "#/438"
         },
         "flags": 1,
         "description": "Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required."
@@ -5376,14 +5457,14 @@
       },
       "auditActionsAndGroups": {
         "type": {
-          "$ref": "#/434"
+          "$ref": "#/439"
         },
         "flags": 0,
         "description": "Specifies the Actions-Groups and Actions to audit.\r\n\r\nThe recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures executed against the database, as well as successful and failed logins:\r\n\r\nBATCH_COMPLETED_GROUP,\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,\r\nFAILED_DATABASE_AUTHENTICATION_GROUP.\r\n\r\nThis above combination is also the set that is configured by default when enabling auditing from the Azure portal.\r\n\r\nThe supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary groups could lead to very large quantities of audit records):\r\n\r\nAPPLICATION_ROLE_CHANGE_PASSWORD_GROUP\r\nBACKUP_RESTORE_GROUP\r\nDATABASE_LOGOUT_GROUP\r\nDATABASE_OBJECT_CHANGE_GROUP\r\nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP\r\nDATABASE_OPERATION_GROUP\r\nDATABASE_PERMISSION_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_IMPERSONATION_GROUP\r\nDATABASE_ROLE_MEMBER_CHANGE_GROUP\r\nFAILED_DATABASE_AUTHENTICATION_GROUP\r\nSCHEMA_OBJECT_ACCESS_GROUP\r\nSCHEMA_OBJECT_CHANGE_GROUP\r\nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP\r\nUSER_CHANGE_PASSWORD_GROUP\r\nBATCH_STARTED_GROUP\r\nBATCH_COMPLETED_GROUP\r\n\r\nThese are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.\r\n\r\nFor more information, see [Database-Level Audit Action Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).\r\n\r\nFor Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server auditing policy). The supported actions to audit are:\r\nSELECT\r\nUPDATE\r\nINSERT\r\nDELETE\r\nEXECUTE\r\nRECEIVE\r\nREFERENCES\r\n\r\nThe general form for defining an action to be audited is:\r\n{action} ON {object} BY {principal}\r\n\r\nNote that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.\r\n\r\nFor example:\r\nSELECT on dbo.myTable by public\r\nSELECT on DATABASE::myDatabase by public\r\nSELECT on SCHEMA::mySchema by public\r\n\r\nFor more information, see [Database-Level Audit Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)"
       },
       "storageAccountSubscriptionId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 0,
         "description": "Specifies the blob storage subscription Id."
@@ -5416,10 +5497,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/431"
+        "$ref": "#/436"
       },
       {
-        "$ref": "#/432"
+        "$ref": "#/437"
       }
     ]
   },
@@ -5440,7 +5521,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/auditingSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/429"
+      "$ref": "#/434"
     },
     "flags": 0
   },
@@ -5456,10 +5537,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/437"
+        "$ref": "#/442"
       },
       {
-        "$ref": "#/438"
+        "$ref": "#/443"
       }
     ]
   },
@@ -5484,28 +5565,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/439"
+          "$ref": "#/444"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/440"
+          "$ref": "#/445"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/441"
+          "$ref": "#/446"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/443"
+          "$ref": "#/448"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -5581,7 +5662,7 @@
       },
       "rank": {
         "type": {
-          "$ref": "#/449"
+          "$ref": "#/454"
         },
         "flags": 0
       }
@@ -5611,19 +5692,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/444"
+        "$ref": "#/449"
       },
       {
-        "$ref": "#/445"
+        "$ref": "#/450"
       },
       {
-        "$ref": "#/446"
+        "$ref": "#/451"
       },
       {
-        "$ref": "#/447"
+        "$ref": "#/452"
       },
       {
-        "$ref": "#/448"
+        "$ref": "#/453"
       }
     ]
   },
@@ -5632,7 +5713,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/schemas/tables/columns/sensitivityLabels@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/442"
+      "$ref": "#/447"
     },
     "flags": 0
   },
@@ -5644,7 +5725,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/451"
+        "$ref": "#/456"
       },
       {
         "$ref": "#/0"
@@ -5672,28 +5753,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/452"
+          "$ref": "#/457"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/453"
+          "$ref": "#/458"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/454"
+          "$ref": "#/459"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/456"
+          "$ref": "#/461"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -5727,7 +5808,7 @@
       },
       "recurringScans": {
         "type": {
-          "$ref": "#/457"
+          "$ref": "#/462"
         },
         "flags": 0,
         "description": "The recurring scans settings"
@@ -5754,7 +5835,7 @@
       },
       "emails": {
         "type": {
-          "$ref": "#/458"
+          "$ref": "#/463"
         },
         "flags": 0,
         "description": "Specifies an array of e-mail addresses to which the scan notification is sent."
@@ -5772,7 +5853,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/vulnerabilityAssessments@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/455"
+      "$ref": "#/460"
     },
     "flags": 0
   },
@@ -5784,7 +5865,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/460"
+        "$ref": "#/465"
       },
       {
         "$ref": "#/0"
@@ -5812,28 +5893,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/461"
+          "$ref": "#/466"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/462"
+          "$ref": "#/467"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/463"
+          "$ref": "#/468"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/465"
+          "$ref": "#/470"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -5846,21 +5927,21 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/469"
+          "$ref": "#/474"
         },
         "flags": 1,
         "description": "Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific Sql pool."
       },
       "disabledAlerts": {
         "type": {
-          "$ref": "#/470"
+          "$ref": "#/475"
         },
         "flags": 0,
         "description": "Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action"
       },
       "emailAddresses": {
         "type": {
-          "$ref": "#/471"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "Specifies an array of e-mail addresses to which the alert is sent."
@@ -5918,13 +5999,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/466"
+        "$ref": "#/471"
       },
       {
-        "$ref": "#/467"
+        "$ref": "#/472"
       },
       {
-        "$ref": "#/468"
+        "$ref": "#/473"
       }
     ]
   },
@@ -5945,7 +6026,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/securityAlertPolicies@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/464"
+      "$ref": "#/469"
     },
     "flags": 0
   },
@@ -5961,10 +6042,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/473"
+        "$ref": "#/478"
       },
       {
-        "$ref": "#/474"
+        "$ref": "#/479"
       }
     ]
   },
@@ -5989,28 +6070,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/475"
+          "$ref": "#/480"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/476"
+          "$ref": "#/481"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/477"
+          "$ref": "#/482"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/479"
+          "$ref": "#/484"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -6023,7 +6104,7 @@
     "properties": {
       "baselineResults": {
         "type": {
-          "$ref": "#/482"
+          "$ref": "#/487"
         },
         "flags": 1,
         "description": "The rule baseline result"
@@ -6036,7 +6117,7 @@
     "properties": {
       "result": {
         "type": {
-          "$ref": "#/481"
+          "$ref": "#/486"
         },
         "flags": 1,
         "description": "The rule baseline result"
@@ -6052,7 +6133,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/480"
+      "$ref": "#/485"
     }
   },
   {
@@ -6060,7 +6141,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/vulnerabilityAssessments/rules/baselines@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/478"
+      "$ref": "#/483"
     },
     "flags": 0
   },
@@ -6072,7 +6153,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/484"
+        "$ref": "#/489"
       },
       {
         "$ref": "#/0"
@@ -6100,28 +6181,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/485"
+          "$ref": "#/490"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/486"
+          "$ref": "#/491"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/487"
+          "$ref": "#/492"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/489"
+          "$ref": "#/494"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -6141,7 +6222,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/492"
+          "$ref": "#/497"
         },
         "flags": 1,
         "description": "Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required."
@@ -6169,14 +6250,14 @@
       },
       "auditActionsAndGroups": {
         "type": {
-          "$ref": "#/493"
+          "$ref": "#/498"
         },
         "flags": 0,
         "description": "Specifies the Actions-Groups and Actions to audit.\r\n\r\nThe recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures executed against the database, as well as successful and failed logins:\r\n\r\nBATCH_COMPLETED_GROUP,\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,\r\nFAILED_DATABASE_AUTHENTICATION_GROUP.\r\n\r\nThis above combination is also the set that is configured by default when enabling auditing from the Azure portal.\r\n\r\nThe supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary groups could lead to very large quantities of audit records):\r\n\r\nAPPLICATION_ROLE_CHANGE_PASSWORD_GROUP\r\nBACKUP_RESTORE_GROUP\r\nDATABASE_LOGOUT_GROUP\r\nDATABASE_OBJECT_CHANGE_GROUP\r\nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP\r\nDATABASE_OPERATION_GROUP\r\nDATABASE_PERMISSION_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_IMPERSONATION_GROUP\r\nDATABASE_ROLE_MEMBER_CHANGE_GROUP\r\nFAILED_DATABASE_AUTHENTICATION_GROUP\r\nSCHEMA_OBJECT_ACCESS_GROUP\r\nSCHEMA_OBJECT_CHANGE_GROUP\r\nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP\r\nUSER_CHANGE_PASSWORD_GROUP\r\nBATCH_STARTED_GROUP\r\nBATCH_COMPLETED_GROUP\r\n\r\nThese are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.\r\n\r\nFor more information, see [Database-Level Audit Action Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).\r\n\r\nFor Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server auditing policy). The supported actions to audit are:\r\nSELECT\r\nUPDATE\r\nINSERT\r\nDELETE\r\nEXECUTE\r\nRECEIVE\r\nREFERENCES\r\n\r\nThe general form for defining an action to be audited is:\r\n{action} ON {object} BY {principal}\r\n\r\nNote that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.\r\n\r\nFor example:\r\nSELECT on dbo.myTable by public\r\nSELECT on DATABASE::myDatabase by public\r\nSELECT on SCHEMA::mySchema by public\r\n\r\nFor more information, see [Database-Level Audit Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)"
       },
       "storageAccountSubscriptionId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 0,
         "description": "Specifies the blob storage subscription Id."
@@ -6216,10 +6297,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/490"
+        "$ref": "#/495"
       },
       {
-        "$ref": "#/491"
+        "$ref": "#/496"
       }
     ]
   },
@@ -6234,7 +6315,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/extendedAuditingSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/488"
+      "$ref": "#/493"
     },
     "flags": 0
   },
@@ -6263,28 +6344,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/495"
+          "$ref": "#/500"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/496"
+          "$ref": "#/501"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/497"
+          "$ref": "#/502"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/499"
+          "$ref": "#/504"
         },
         "flags": 0,
         "description": "The properties of the data masking policy."
@@ -6318,7 +6399,7 @@
     "properties": {
       "dataMaskingState": {
         "type": {
-          "$ref": "#/502"
+          "$ref": "#/507"
         },
         "flags": 1,
         "description": "The state of the data masking policy."
@@ -6358,10 +6439,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/500"
+        "$ref": "#/505"
       },
       {
-        "$ref": "#/501"
+        "$ref": "#/506"
       }
     ]
   },
@@ -6370,7 +6451,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/dataMaskingPolicies@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/498"
+      "$ref": "#/503"
     },
     "flags": 0
   },
@@ -6402,21 +6483,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/504"
+          "$ref": "#/509"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/505"
+          "$ref": "#/510"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/507"
+          "$ref": "#/512"
         },
         "flags": 0,
         "description": "The properties of the resource."
@@ -6457,7 +6538,7 @@
       },
       "ruleState": {
         "type": {
-          "$ref": "#/510"
+          "$ref": "#/515"
         },
         "flags": 0,
         "description": "The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState."
@@ -6485,7 +6566,7 @@
       },
       "maskingFunction": {
         "type": {
-          "$ref": "#/517"
+          "$ref": "#/522"
         },
         "flags": 1,
         "description": "The masking function that is used for the data masking rule."
@@ -6539,10 +6620,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/508"
+        "$ref": "#/513"
       },
       {
-        "$ref": "#/509"
+        "$ref": "#/514"
       }
     ]
   },
@@ -6574,22 +6655,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/511"
-      },
-      {
-        "$ref": "#/512"
-      },
-      {
-        "$ref": "#/513"
-      },
-      {
-        "$ref": "#/514"
-      },
-      {
-        "$ref": "#/515"
-      },
-      {
         "$ref": "#/516"
+      },
+      {
+        "$ref": "#/517"
+      },
+      {
+        "$ref": "#/518"
+      },
+      {
+        "$ref": "#/519"
+      },
+      {
+        "$ref": "#/520"
+      },
+      {
+        "$ref": "#/521"
       }
     ]
   },
@@ -6598,7 +6679,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/dataMaskingPolicies/rules@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/506"
+      "$ref": "#/511"
     },
     "flags": 0
   },
@@ -6630,21 +6711,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/519"
+          "$ref": "#/524"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/520"
+          "$ref": "#/525"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/522"
+          "$ref": "#/527"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -6704,7 +6785,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/workloadGroups@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/521"
+      "$ref": "#/526"
     },
     "flags": 0
   },
@@ -6736,21 +6817,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/524"
+          "$ref": "#/529"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/525"
+          "$ref": "#/530"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/527"
+          "$ref": "#/532"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -6810,7 +6891,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/workloadGroups/workloadClassifiers@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/526"
+      "$ref": "#/531"
     },
     "flags": 0
   },
@@ -6822,7 +6903,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/529"
+        "$ref": "#/534"
       },
       {
         "$ref": "#/0"
@@ -6850,28 +6931,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/530"
+          "$ref": "#/535"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/531"
+          "$ref": "#/536"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/532"
+          "$ref": "#/537"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/534"
+          "$ref": "#/539"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -6884,7 +6965,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/537"
+          "$ref": "#/542"
         },
         "flags": 1,
         "description": "Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required."
@@ -6912,14 +6993,14 @@
       },
       "auditActionsAndGroups": {
         "type": {
-          "$ref": "#/538"
+          "$ref": "#/543"
         },
         "flags": 0,
         "description": "Specifies the Actions-Groups and Actions to audit.\r\n\r\nThe recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures executed against the database, as well as successful and failed logins:\r\n\r\nBATCH_COMPLETED_GROUP,\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,\r\nFAILED_DATABASE_AUTHENTICATION_GROUP.\r\n\r\nThis above combination is also the set that is configured by default when enabling auditing from the Azure portal.\r\n\r\nThe supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary groups could lead to very large quantities of audit records):\r\n\r\nAPPLICATION_ROLE_CHANGE_PASSWORD_GROUP\r\nBACKUP_RESTORE_GROUP\r\nDATABASE_LOGOUT_GROUP\r\nDATABASE_OBJECT_CHANGE_GROUP\r\nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP\r\nDATABASE_OPERATION_GROUP\r\nDATABASE_PERMISSION_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_IMPERSONATION_GROUP\r\nDATABASE_ROLE_MEMBER_CHANGE_GROUP\r\nFAILED_DATABASE_AUTHENTICATION_GROUP\r\nSCHEMA_OBJECT_ACCESS_GROUP\r\nSCHEMA_OBJECT_CHANGE_GROUP\r\nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP\r\nUSER_CHANGE_PASSWORD_GROUP\r\nBATCH_STARTED_GROUP\r\nBATCH_COMPLETED_GROUP\r\n\r\nThese are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.\r\n\r\nFor more information, see [Database-Level Audit Action Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).\r\n\r\nFor Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server auditing policy). The supported actions to audit are:\r\nSELECT\r\nUPDATE\r\nINSERT\r\nDELETE\r\nEXECUTE\r\nRECEIVE\r\nREFERENCES\r\n\r\nThe general form for defining an action to be audited is:\r\n{action} ON {object} BY {principal}\r\n\r\nNote that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.\r\n\r\nFor example:\r\nSELECT on dbo.myTable by public\r\nSELECT on DATABASE::myDatabase by public\r\nSELECT on SCHEMA::mySchema by public\r\n\r\nFor more information, see [Database-Level Audit Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)"
       },
       "storageAccountSubscriptionId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 0,
         "description": "Specifies the blob storage subscription Id."
@@ -6966,10 +7047,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/535"
+        "$ref": "#/540"
       },
       {
-        "$ref": "#/536"
+        "$ref": "#/541"
       }
     ]
   },
@@ -6984,7 +7065,7 @@
     "name": "Microsoft.Synapse/workspaces/auditingSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/533"
+      "$ref": "#/538"
     },
     "flags": 0
   },
@@ -6996,7 +7077,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/540"
+        "$ref": "#/545"
       },
       {
         "$ref": "#/0"
@@ -7024,28 +7105,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/541"
+          "$ref": "#/546"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/542"
+          "$ref": "#/547"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/543"
+          "$ref": "#/548"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/545"
+          "$ref": "#/550"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -7065,7 +7146,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/548"
+          "$ref": "#/553"
         },
         "flags": 1,
         "description": "Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required."
@@ -7093,14 +7174,14 @@
       },
       "auditActionsAndGroups": {
         "type": {
-          "$ref": "#/549"
+          "$ref": "#/554"
         },
         "flags": 0,
         "description": "Specifies the Actions-Groups and Actions to audit.\r\n\r\nThe recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures executed against the database, as well as successful and failed logins:\r\n\r\nBATCH_COMPLETED_GROUP,\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,\r\nFAILED_DATABASE_AUTHENTICATION_GROUP.\r\n\r\nThis above combination is also the set that is configured by default when enabling auditing from the Azure portal.\r\n\r\nThe supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary groups could lead to very large quantities of audit records):\r\n\r\nAPPLICATION_ROLE_CHANGE_PASSWORD_GROUP\r\nBACKUP_RESTORE_GROUP\r\nDATABASE_LOGOUT_GROUP\r\nDATABASE_OBJECT_CHANGE_GROUP\r\nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP\r\nDATABASE_OPERATION_GROUP\r\nDATABASE_PERMISSION_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_CHANGE_GROUP\r\nDATABASE_PRINCIPAL_IMPERSONATION_GROUP\r\nDATABASE_ROLE_MEMBER_CHANGE_GROUP\r\nFAILED_DATABASE_AUTHENTICATION_GROUP\r\nSCHEMA_OBJECT_ACCESS_GROUP\r\nSCHEMA_OBJECT_CHANGE_GROUP\r\nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP\r\nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP\r\nSUCCESSFUL_DATABASE_AUTHENTICATION_GROUP\r\nUSER_CHANGE_PASSWORD_GROUP\r\nBATCH_STARTED_GROUP\r\nBATCH_COMPLETED_GROUP\r\n\r\nThese are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.\r\n\r\nFor more information, see [Database-Level Audit Action Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).\r\n\r\nFor Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server auditing policy). The supported actions to audit are:\r\nSELECT\r\nUPDATE\r\nINSERT\r\nDELETE\r\nEXECUTE\r\nRECEIVE\r\nREFERENCES\r\n\r\nThe general form for defining an action to be audited is:\r\n{action} ON {object} BY {principal}\r\n\r\nNote that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.\r\n\r\nFor example:\r\nSELECT on dbo.myTable by public\r\nSELECT on DATABASE::myDatabase by public\r\nSELECT on SCHEMA::mySchema by public\r\n\r\nFor more information, see [Database-Level Audit Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)"
       },
       "storageAccountSubscriptionId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 0,
         "description": "Specifies the blob storage subscription Id."
@@ -7140,10 +7221,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/546"
+        "$ref": "#/551"
       },
       {
-        "$ref": "#/547"
+        "$ref": "#/552"
       }
     ]
   },
@@ -7158,7 +7239,7 @@
     "name": "Microsoft.Synapse/workspaces/extendedAuditingSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/544"
+      "$ref": "#/549"
     },
     "flags": 0
   },
@@ -7170,7 +7251,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/551"
+        "$ref": "#/556"
       },
       {
         "$ref": "#/0"
@@ -7198,28 +7279,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/552"
+          "$ref": "#/557"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/553"
+          "$ref": "#/558"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/554"
+          "$ref": "#/559"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/556"
+          "$ref": "#/561"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -7232,21 +7313,21 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/560"
+          "$ref": "#/565"
         },
         "flags": 1,
         "description": "Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific server"
       },
       "disabledAlerts": {
         "type": {
-          "$ref": "#/561"
+          "$ref": "#/566"
         },
         "flags": 0,
         "description": "Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action"
       },
       "emailAddresses": {
         "type": {
-          "$ref": "#/562"
+          "$ref": "#/567"
         },
         "flags": 0,
         "description": "Specifies an array of e-mail addresses to which the alert is sent."
@@ -7304,13 +7385,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/557"
+        "$ref": "#/562"
       },
       {
-        "$ref": "#/558"
+        "$ref": "#/563"
       },
       {
-        "$ref": "#/559"
+        "$ref": "#/564"
       }
     ]
   },
@@ -7331,7 +7412,7 @@
     "name": "Microsoft.Synapse/workspaces/securityAlertPolicies@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/555"
+      "$ref": "#/560"
     },
     "flags": 0
   },
@@ -7343,7 +7424,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/564"
+        "$ref": "#/569"
       },
       {
         "$ref": "#/0"
@@ -7371,28 +7452,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/565"
+          "$ref": "#/570"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/566"
+          "$ref": "#/571"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/567"
+          "$ref": "#/572"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/569"
+          "$ref": "#/574"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -7426,7 +7507,7 @@
       },
       "recurringScans": {
         "type": {
-          "$ref": "#/457"
+          "$ref": "#/462"
         },
         "flags": 0,
         "description": "The recurring scans settings"
@@ -7438,7 +7519,7 @@
     "name": "Microsoft.Synapse/workspaces/vulnerabilityAssessments@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/568"
+      "$ref": "#/573"
     },
     "flags": 0
   },
@@ -7450,7 +7531,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/571"
+        "$ref": "#/576"
       },
       {
         "$ref": "#/0"
@@ -7478,21 +7559,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/572"
+          "$ref": "#/577"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/573"
+          "$ref": "#/578"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/574"
+          "$ref": "#/579"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -7513,7 +7594,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/576"
+          "$ref": "#/581"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -7540,7 +7621,7 @@
       },
       "serverKeyType": {
         "type": {
-          "$ref": "#/579"
+          "$ref": "#/584"
         },
         "flags": 1,
         "description": "The encryption protector type like 'ServiceManaged', 'AzureKeyVault'."
@@ -7573,10 +7654,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/577"
+        "$ref": "#/582"
       },
       {
-        "$ref": "#/578"
+        "$ref": "#/583"
       },
       {
         "$ref": "#/0"
@@ -7588,7 +7669,7 @@
     "name": "Microsoft.Synapse/workspaces/encryptionProtector@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/575"
+      "$ref": "#/580"
     },
     "flags": 0
   },
@@ -7600,7 +7681,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/581"
+        "$ref": "#/586"
       },
       {
         "$ref": "#/0"
@@ -7628,21 +7709,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/582"
+          "$ref": "#/587"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/583"
+          "$ref": "#/588"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/584"
+          "$ref": "#/589"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -7656,7 +7737,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/586"
+          "$ref": "#/591"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -7681,7 +7762,7 @@
     "name": "Microsoft.Synapse/workspaces/dedicatedSQLminimalTlsSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/585"
+      "$ref": "#/590"
     },
     "flags": 0
   },
@@ -7713,35 +7794,35 @@
       },
       "type": {
         "type": {
-          "$ref": "#/588"
+          "$ref": "#/593"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/589"
+          "$ref": "#/594"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/591"
+          "$ref": "#/596"
         },
         "flags": 0,
         "description": "Workspace resource properties"
       },
       "identity": {
         "type": {
-          "$ref": "#/610"
+          "$ref": "#/615"
         },
         "flags": 0,
         "description": "Identity of the workspace"
       },
       "tags": {
         "type": {
-          "$ref": "#/617"
+          "$ref": "#/622"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -7761,7 +7842,7 @@
     "properties": {
       "defaultDataLakeStorage": {
         "type": {
-          "$ref": "#/592"
+          "$ref": "#/597"
         },
         "flags": 0,
         "description": "Workspace default data lake storage account details"
@@ -7796,14 +7877,14 @@
       },
       "virtualNetworkProfile": {
         "type": {
-          "$ref": "#/593"
+          "$ref": "#/598"
         },
         "flags": 0,
         "description": "Virtual Network profile"
       },
       "connectivityEndpoints": {
         "type": {
-          "$ref": "#/594"
+          "$ref": "#/599"
         },
         "flags": 2,
         "description": "Connectivity endpoints"
@@ -7817,21 +7898,21 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/596"
+          "$ref": "#/601"
         },
         "flags": 0,
         "description": "Private endpoint connections to the workspace"
       },
       "encryption": {
         "type": {
-          "$ref": "#/597"
+          "$ref": "#/602"
         },
         "flags": 0,
         "description": "The encryption details of the workspace"
       },
       "workspaceUID": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 2,
         "description": "The workspace unique identifier"
@@ -7845,21 +7926,21 @@
       },
       "managedVirtualNetworkSettings": {
         "type": {
-          "$ref": "#/601"
+          "$ref": "#/606"
         },
         "flags": 0,
         "description": "Managed Virtual Network Settings"
       },
       "workspaceRepositoryConfiguration": {
         "type": {
-          "$ref": "#/603"
+          "$ref": "#/608"
         },
         "flags": 0,
         "description": "Git integration settings"
       },
       "purviewConfiguration": {
         "type": {
-          "$ref": "#/604"
+          "$ref": "#/609"
         },
         "flags": 0,
         "description": "Purview Configuration"
@@ -7873,21 +7954,21 @@
       },
       "publicNetworkAccess": {
         "type": {
-          "$ref": "#/607"
+          "$ref": "#/612"
         },
         "flags": 0,
         "description": "Enable or Disable public network access to workspace"
       },
       "cspWorkspaceAdminProperties": {
         "type": {
-          "$ref": "#/608"
+          "$ref": "#/613"
         },
         "flags": 0,
         "description": "Initial workspace AAD admin properties for a CSP subscription"
       },
       "settings": {
         "type": {
-          "$ref": "#/609"
+          "$ref": "#/614"
         },
         "flags": 2,
         "description": "Workspace settings"
@@ -7969,7 +8050,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/377"
         },
         "flags": 0,
         "description": "Private endpoint connection properties."
@@ -8000,7 +8081,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/595"
+      "$ref": "#/600"
     }
   },
   {
@@ -8016,7 +8097,7 @@
       },
       "cmk": {
         "type": {
-          "$ref": "#/598"
+          "$ref": "#/603"
         },
         "flags": 0,
         "description": "Customer Managed Key Details"
@@ -8036,14 +8117,14 @@
       },
       "key": {
         "type": {
-          "$ref": "#/599"
+          "$ref": "#/604"
         },
         "flags": 0,
         "description": "The key object of the workspace"
       },
       "kekIdentity": {
         "type": {
-          "$ref": "#/600"
+          "$ref": "#/605"
         },
         "flags": 0,
         "description": "Key encryption key"
@@ -8110,7 +8191,7 @@
       },
       "allowedAadTenantIdsForLinking": {
         "type": {
-          "$ref": "#/602"
+          "$ref": "#/607"
         },
         "flags": 0,
         "description": "Allowed Aad Tenant Ids For Linking"
@@ -8185,7 +8266,7 @@
       },
       "tenantId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 0,
         "description": "The VSTS tenant ID"
@@ -8217,10 +8298,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/605"
+        "$ref": "#/610"
       },
       {
-        "$ref": "#/606"
+        "$ref": "#/611"
       },
       {
         "$ref": "#/0"
@@ -8261,21 +8342,21 @@
       },
       "tenantId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 2,
         "description": "The tenant ID of the workspace managed identity"
       },
       "type": {
         "type": {
-          "$ref": "#/614"
+          "$ref": "#/619"
         },
         "flags": 0,
         "description": "The type of managed identity for the workspace"
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/616"
+          "$ref": "#/621"
         },
         "flags": 0,
         "description": "The user assigned managed identities."
@@ -8298,13 +8379,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/611"
+        "$ref": "#/616"
       },
       {
-        "$ref": "#/612"
+        "$ref": "#/617"
       },
       {
-        "$ref": "#/613"
+        "$ref": "#/618"
       }
     ]
   },
@@ -8314,14 +8395,14 @@
     "properties": {
       "clientId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 2,
         "description": "The client ID."
       },
       "principalId": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/440"
         },
         "flags": 2,
         "description": "The principal ID."
@@ -8333,7 +8414,7 @@
     "name": "UserAssignedManagedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/615"
+      "$ref": "#/620"
     }
   },
   {
@@ -8349,7 +8430,7 @@
     "name": "Microsoft.Synapse/workspaces@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/590"
+      "$ref": "#/595"
     },
     "flags": 0
   },
@@ -8378,28 +8459,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/619"
+          "$ref": "#/624"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/620"
+          "$ref": "#/625"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/621"
+          "$ref": "#/626"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/623"
+          "$ref": "#/628"
         },
         "flags": 0,
         "description": "Workspace active directory administrator properties"
@@ -8445,7 +8526,7 @@
     "name": "Microsoft.Synapse/workspaces/administrators@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/622"
+      "$ref": "#/627"
     },
     "flags": 0
   },
@@ -8464,68 +8545,6 @@
   {
     "$type": "ObjectType",
     "name": "Microsoft.Synapse/workspaces/sqlAdministrators",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/625"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/626"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/627"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/623"
-        },
-        "flags": 0,
-        "description": "Workspace active directory administrator properties"
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Synapse/workspaces/sqlAdministrators@2021-06-01-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/628"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "default"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2021-06-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings",
     "properties": {
       "id": {
         "type": {
@@ -8557,7 +8576,69 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/634"
+          "$ref": "#/628"
+        },
+        "flags": 0,
+        "description": "Workspace active directory administrator properties"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Synapse/workspaces/sqlAdministrators@2021-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/633"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2021-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/635"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/636"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/637"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/639"
         },
         "flags": 0,
         "description": "Sql Control Settings for workspace managed identity"
@@ -8570,7 +8651,7 @@
     "properties": {
       "grantSqlControlToManagedIdentity": {
         "type": {
-          "$ref": "#/635"
+          "$ref": "#/640"
         },
         "flags": 0,
         "description": "Grant sql control to managed identity"
@@ -8583,14 +8664,14 @@
     "properties": {
       "desiredState": {
         "type": {
-          "$ref": "#/638"
+          "$ref": "#/643"
         },
         "flags": 0,
         "description": "Desired state"
       },
       "actualState": {
         "type": {
-          "$ref": "#/644"
+          "$ref": "#/649"
         },
         "flags": 2,
         "description": "Actual state"
@@ -8609,10 +8690,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/636"
+        "$ref": "#/641"
       },
       {
-        "$ref": "#/637"
+        "$ref": "#/642"
       },
       {
         "$ref": "#/0"
@@ -8643,19 +8724,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/639"
+        "$ref": "#/644"
       },
       {
-        "$ref": "#/640"
+        "$ref": "#/645"
       },
       {
-        "$ref": "#/641"
+        "$ref": "#/646"
       },
       {
-        "$ref": "#/642"
+        "$ref": "#/647"
       },
       {
-        "$ref": "#/643"
+        "$ref": "#/648"
       },
       {
         "$ref": "#/0"
@@ -8667,7 +8748,7 @@
     "name": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/633"
+      "$ref": "#/638"
     },
     "flags": 0
   },
@@ -8696,21 +8777,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/646"
+          "$ref": "#/651"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/647"
+          "$ref": "#/652"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/648"
+          "$ref": "#/653"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -8722,7 +8803,7 @@
     "name": "Microsoft.Synapse/workspaces/trustedServiceByPassConfiguration@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/649"
+      "$ref": "#/654"
     },
     "flags": 0
   },
@@ -8734,7 +8815,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/651"
+        "$ref": "#/656"
       },
       {
         "$ref": "#/0"
@@ -8762,28 +8843,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/652"
+          "$ref": "#/657"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/653"
+          "$ref": "#/658"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/654"
+          "$ref": "#/659"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/656"
+          "$ref": "#/661"
         },
         "flags": 0,
         "description": "Azure Active Directory Only Authentication resource properties"
@@ -8803,7 +8884,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/660"
+          "$ref": "#/665"
         },
         "flags": 2,
         "description": "Azure Active Directory Only Authentication configuration state"
@@ -8833,13 +8914,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/657"
+        "$ref": "#/662"
       },
       {
-        "$ref": "#/658"
+        "$ref": "#/663"
       },
       {
-        "$ref": "#/659"
+        "$ref": "#/664"
       },
       {
         "$ref": "#/0"
@@ -8851,7 +8932,7 @@
     "name": "Microsoft.Synapse/workspaces/azureADOnlyAuthentications@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/655"
+      "$ref": "#/660"
     },
     "flags": 0
   },
@@ -8883,14 +8964,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/662"
+          "$ref": "#/667"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/663"
+          "$ref": "#/668"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -8916,7 +8997,7 @@
     "name": "Microsoft.Synapse/workspaces/libraries@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/664"
+      "$ref": "#/669"
     },
     "flags": 1
   },
@@ -8948,21 +9029,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/666"
+          "$ref": "#/671"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/667"
+          "$ref": "#/672"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/669"
+          "$ref": "#/674"
         },
         "flags": 2,
         "description": "SparkConfiguration properties."
@@ -8989,14 +9070,14 @@
       },
       "configs": {
         "type": {
-          "$ref": "#/670"
+          "$ref": "#/675"
         },
         "flags": 1,
         "description": "SparkConfiguration configs."
       },
       "annotations": {
         "type": {
-          "$ref": "#/671"
+          "$ref": "#/676"
         },
         "flags": 0,
         "description": "Annotations for SparkConfiguration."
@@ -9024,7 +9105,7 @@
       },
       "configMergeRule": {
         "type": {
-          "$ref": "#/672"
+          "$ref": "#/677"
         },
         "flags": 0,
         "description": "SparkConfiguration merge configs."
@@ -9058,7 +9139,7 @@
     "name": "Microsoft.Synapse/workspaces/sparkconfigurations@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/668"
+      "$ref": "#/673"
     },
     "flags": 1
   },
@@ -9090,21 +9171,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/674"
+          "$ref": "#/679"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/675"
+          "$ref": "#/680"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/677"
+          "$ref": "#/682"
         },
         "flags": 2,
         "description": "The private link resource properties."
@@ -9124,14 +9205,14 @@
       },
       "requiredMembers": {
         "type": {
-          "$ref": "#/678"
+          "$ref": "#/683"
         },
         "flags": 2,
         "description": "The private link resource required member names."
       },
       "requiredZoneNames": {
         "type": {
-          "$ref": "#/679"
+          "$ref": "#/684"
         },
         "flags": 2,
         "description": "Required DNS zone names of the the private link resource."
@@ -9155,7 +9236,7 @@
     "name": "Microsoft.Synapse/workspaces/privateLinkResources@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/676"
+      "$ref": "#/681"
     },
     "flags": 1
   },
@@ -9187,21 +9268,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/681"
+          "$ref": "#/686"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/682"
+          "$ref": "#/687"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/677"
+          "$ref": "#/682"
         },
         "flags": 2,
         "description": "The private link resource properties."
@@ -9213,7 +9294,7 @@
     "name": "Microsoft.Synapse/privateLinkHubs/privateLinkResources@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/683"
+      "$ref": "#/688"
     },
     "flags": 1
   },
@@ -9245,35 +9326,35 @@
       },
       "type": {
         "type": {
-          "$ref": "#/685"
+          "$ref": "#/690"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/686"
+          "$ref": "#/691"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "sku": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/392"
         },
         "flags": 2,
         "description": "SQL pool SKU"
       },
       "properties": {
         "type": {
-          "$ref": "#/388"
+          "$ref": "#/393"
         },
         "flags": 2,
         "description": "SQL pool properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/688"
+          "$ref": "#/693"
         },
         "flags": 2,
         "description": "Resource tags."
@@ -9300,7 +9381,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/operationResults@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/687"
+      "$ref": "#/692"
     },
     "flags": 1
   },
@@ -9312,7 +9393,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/690"
+        "$ref": "#/695"
       },
       {
         "$ref": "#/0"
@@ -9340,28 +9421,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/691"
+          "$ref": "#/696"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/692"
+          "$ref": "#/697"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/693"
+          "$ref": "#/698"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/695"
+          "$ref": "#/700"
         },
         "flags": 2,
         "description": "Resource properties."
@@ -9386,7 +9467,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/dataWarehouseUserActivities@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/694"
+      "$ref": "#/699"
     },
     "flags": 1
   },
@@ -9418,14 +9499,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/697"
+          "$ref": "#/702"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/698"
+          "$ref": "#/703"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -9439,7 +9520,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/700"
+          "$ref": "#/705"
         },
         "flags": 2,
         "description": "Resource properties."
@@ -9452,7 +9533,7 @@
     "properties": {
       "restorePointType": {
         "type": {
-          "$ref": "#/703"
+          "$ref": "#/708"
         },
         "flags": 2,
         "description": "The type of restore point"
@@ -9492,10 +9573,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/701"
+        "$ref": "#/706"
       },
       {
-        "$ref": "#/702"
+        "$ref": "#/707"
       }
     ]
   },
@@ -9504,7 +9585,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/restorePoints@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/699"
+      "$ref": "#/704"
     },
     "flags": 1
   },
@@ -9536,14 +9617,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/705"
+          "$ref": "#/710"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/706"
+          "$ref": "#/711"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -9557,7 +9638,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/708"
+          "$ref": "#/713"
         },
         "flags": 2,
         "description": "The properties representing the resource."
@@ -9605,14 +9686,14 @@
       },
       "role": {
         "type": {
-          "$ref": "#/714"
+          "$ref": "#/719"
         },
         "flags": 2,
         "description": "The role of the Sql pool in the replication link."
       },
       "partnerRole": {
         "type": {
-          "$ref": "#/720"
+          "$ref": "#/725"
         },
         "flags": 2,
         "description": "The role of the partner Sql pool in the replication link."
@@ -9633,7 +9714,7 @@
       },
       "replicationState": {
         "type": {
-          "$ref": "#/725"
+          "$ref": "#/730"
         },
         "flags": 2,
         "description": "The replication state for the replication link."
@@ -9664,19 +9745,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/709"
+        "$ref": "#/714"
       },
       {
-        "$ref": "#/710"
+        "$ref": "#/715"
       },
       {
-        "$ref": "#/711"
+        "$ref": "#/716"
       },
       {
-        "$ref": "#/712"
+        "$ref": "#/717"
       },
       {
-        "$ref": "#/713"
+        "$ref": "#/718"
       }
     ]
   },
@@ -9704,19 +9785,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/715"
+        "$ref": "#/720"
       },
       {
-        "$ref": "#/716"
+        "$ref": "#/721"
       },
       {
-        "$ref": "#/717"
+        "$ref": "#/722"
       },
       {
-        "$ref": "#/718"
+        "$ref": "#/723"
       },
       {
-        "$ref": "#/719"
+        "$ref": "#/724"
       }
     ]
   },
@@ -9740,16 +9821,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/721"
+        "$ref": "#/726"
       },
       {
-        "$ref": "#/722"
+        "$ref": "#/727"
       },
       {
-        "$ref": "#/723"
+        "$ref": "#/728"
       },
       {
-        "$ref": "#/724"
+        "$ref": "#/729"
       },
       {
         "$ref": "#/0"
@@ -9761,7 +9842,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/replicationLinks@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/707"
+      "$ref": "#/712"
     },
     "flags": 1
   },
@@ -9793,14 +9874,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/727"
+          "$ref": "#/732"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/728"
+          "$ref": "#/733"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -9812,7 +9893,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/schemas@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/729"
+      "$ref": "#/734"
     },
     "flags": 1
   },
@@ -9844,14 +9925,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/731"
+          "$ref": "#/736"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/732"
+          "$ref": "#/737"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -9863,7 +9944,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/schemas/tables@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/733"
+      "$ref": "#/738"
     },
     "flags": 1
   },
@@ -9875,7 +9956,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/735"
+        "$ref": "#/740"
       },
       {
         "$ref": "#/0"
@@ -9903,21 +9984,21 @@
       },
       "name": {
         "type": {
-          "$ref": "#/736"
+          "$ref": "#/741"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/737"
+          "$ref": "#/742"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/738"
+          "$ref": "#/743"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -9938,7 +10019,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/740"
+          "$ref": "#/745"
         },
         "flags": 2,
         "description": "Resource properties."
@@ -10005,7 +10086,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/connectionPolicies@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/739"
+      "$ref": "#/744"
     },
     "flags": 1
   },
@@ -10037,21 +10118,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/742"
+          "$ref": "#/747"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/743"
+          "$ref": "#/748"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/745"
+          "$ref": "#/750"
         },
         "flags": 2,
         "description": "Resource properties."
@@ -10071,14 +10152,14 @@
       },
       "triggerType": {
         "type": {
-          "$ref": "#/748"
+          "$ref": "#/753"
         },
         "flags": 2,
         "description": "The scan trigger type."
       },
       "state": {
         "type": {
-          "$ref": "#/753"
+          "$ref": "#/758"
         },
         "flags": 2,
         "description": "The scan status."
@@ -10099,7 +10180,7 @@
       },
       "errors": {
         "type": {
-          "$ref": "#/755"
+          "$ref": "#/760"
         },
         "flags": 2,
         "description": "The scan errors."
@@ -10132,10 +10213,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/746"
+        "$ref": "#/751"
       },
       {
-        "$ref": "#/747"
+        "$ref": "#/752"
       },
       {
         "$ref": "#/0"
@@ -10162,16 +10243,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/749"
+        "$ref": "#/754"
       },
       {
-        "$ref": "#/750"
+        "$ref": "#/755"
       },
       {
-        "$ref": "#/751"
+        "$ref": "#/756"
       },
       {
-        "$ref": "#/752"
+        "$ref": "#/757"
       },
       {
         "$ref": "#/0"
@@ -10201,7 +10282,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/754"
+      "$ref": "#/759"
     }
   },
   {
@@ -10209,7 +10290,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/vulnerabilityAssessments/scans@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/744"
+      "$ref": "#/749"
     },
     "flags": 1
   },
@@ -10241,21 +10322,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/757"
+          "$ref": "#/762"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/758"
+          "$ref": "#/763"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/760"
+          "$ref": "#/765"
         },
         "flags": 2,
         "description": "Resource properties."
@@ -10268,7 +10349,7 @@
     "properties": {
       "columnType": {
         "type": {
-          "$ref": "#/795"
+          "$ref": "#/800"
         },
         "flags": 0,
         "description": "The column data type."
@@ -10422,21 +10503,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/761"
-      },
-      {
-        "$ref": "#/762"
-      },
-      {
-        "$ref": "#/763"
-      },
-      {
-        "$ref": "#/764"
-      },
-      {
-        "$ref": "#/765"
-      },
-      {
         "$ref": "#/766"
       },
       {
@@ -10524,6 +10590,21 @@
         "$ref": "#/794"
       },
       {
+        "$ref": "#/795"
+      },
+      {
+        "$ref": "#/796"
+      },
+      {
+        "$ref": "#/797"
+      },
+      {
+        "$ref": "#/798"
+      },
+      {
+        "$ref": "#/799"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -10533,7 +10614,7 @@
     "name": "Microsoft.Synapse/workspaces/sqlPools/schemas/tables/columns@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/759"
+      "$ref": "#/764"
     },
     "flags": 1
   },
@@ -10565,21 +10646,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/797"
+          "$ref": "#/802"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/798"
+          "$ref": "#/803"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/800"
+          "$ref": "#/805"
         },
         "flags": 2,
         "description": "The properties of a recoverable sql pool"
@@ -10625,7 +10706,7 @@
     "name": "Microsoft.Synapse/workspaces/recoverableSqlPools@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/799"
+      "$ref": "#/804"
     },
     "flags": 1
   },
@@ -10657,14 +10738,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/802"
+          "$ref": "#/807"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/803"
+          "$ref": "#/808"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -10678,7 +10759,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/805"
+          "$ref": "#/810"
         },
         "flags": 2,
         "description": "The properties of a restorable dropped Sql pool"
@@ -10752,7 +10833,7 @@
     "name": "Microsoft.Synapse/workspaces/restorableDroppedSqlPools@2021-06-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/804"
+      "$ref": "#/809"
     },
     "flags": 1
   },
@@ -10775,7 +10856,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/809"
+          "$ref": "#/814"
         },
         "flags": 1,
         "description": "Integration runtime properties."
@@ -10796,7 +10877,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/820"
+          "$ref": "#/825"
         },
         "flags": 2,
         "description": "The state of integration runtime."
@@ -10804,10 +10885,10 @@
     },
     "elements": {
       "Managed": {
-        "$ref": "#/821"
+        "$ref": "#/826"
       },
       "SelfHosted": {
-        "$ref": "#/837"
+        "$ref": "#/842"
       }
     }
   },
@@ -10855,21 +10936,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/810"
-      },
-      {
-        "$ref": "#/811"
-      },
-      {
-        "$ref": "#/812"
-      },
-      {
-        "$ref": "#/813"
-      },
-      {
-        "$ref": "#/814"
-      },
-      {
         "$ref": "#/815"
       },
       {
@@ -10885,6 +10951,21 @@
         "$ref": "#/819"
       },
       {
+        "$ref": "#/820"
+      },
+      {
+        "$ref": "#/821"
+      },
+      {
+        "$ref": "#/822"
+      },
+      {
+        "$ref": "#/823"
+      },
+      {
+        "$ref": "#/824"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -10895,14 +10976,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/822"
+          "$ref": "#/827"
         },
         "flags": 1,
         "description": "Managed integration runtime status type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/836"
+          "$ref": "#/841"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -10922,21 +11003,21 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/832"
+          "$ref": "#/837"
         },
         "flags": 2,
         "description": "The list of nodes for managed integration runtime."
       },
       "otherErrors": {
         "type": {
-          "$ref": "#/833"
+          "$ref": "#/838"
         },
         "flags": 2,
         "description": "The errors that occurred on this integration runtime."
       },
       "lastOperation": {
         "type": {
-          "$ref": "#/834"
+          "$ref": "#/839"
         },
         "flags": 2,
         "description": "The last operation result that occurred on this integration runtime."
@@ -10956,14 +11037,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/828"
+          "$ref": "#/833"
         },
         "flags": 2,
         "description": "The managed integration runtime node status."
       },
       "errors": {
         "type": {
-          "$ref": "#/831"
+          "$ref": "#/836"
         },
         "flags": 0,
         "description": "The errors that occurred on this integration runtime node."
@@ -10993,16 +11074,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/824"
+        "$ref": "#/829"
       },
       {
-        "$ref": "#/825"
+        "$ref": "#/830"
       },
       {
-        "$ref": "#/826"
+        "$ref": "#/831"
       },
       {
-        "$ref": "#/827"
+        "$ref": "#/832"
       },
       {
         "$ref": "#/0"
@@ -11029,7 +11110,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/830"
+          "$ref": "#/835"
         },
         "flags": 2,
         "description": "Managed integration runtime error parameters."
@@ -11055,19 +11136,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/829"
+      "$ref": "#/834"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/823"
+      "$ref": "#/828"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/829"
+      "$ref": "#/834"
     }
   },
   {
@@ -11104,7 +11185,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/835"
+          "$ref": "#/840"
         },
         "flags": 2,
         "description": "Managed integration runtime error parameters."
@@ -11137,14 +11218,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/838"
+          "$ref": "#/843"
         },
         "flags": 1,
         "description": "Self-hosted integration runtime status type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/866"
+          "$ref": "#/871"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -11178,7 +11259,7 @@
       },
       "internalChannelEncryption": {
         "type": {
-          "$ref": "#/842"
+          "$ref": "#/847"
         },
         "flags": 2,
         "description": "It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist)."
@@ -11192,7 +11273,7 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/857"
+          "$ref": "#/862"
         },
         "flags": 0,
         "description": "The list of nodes for this integration runtime."
@@ -11220,21 +11301,21 @@
       },
       "capabilities": {
         "type": {
-          "$ref": "#/858"
+          "$ref": "#/863"
         },
         "flags": 2,
         "description": "Object with additional information about integration runtime capabilities."
       },
       "serviceUrls": {
         "type": {
-          "$ref": "#/859"
+          "$ref": "#/864"
         },
         "flags": 2,
         "description": "The URLs for the services used in integration runtime backend service."
       },
       "autoUpdate": {
         "type": {
-          "$ref": "#/862"
+          "$ref": "#/867"
         },
         "flags": 2,
         "description": "Whether Self-hosted integration runtime auto update has been turned on."
@@ -11248,7 +11329,7 @@
       },
       "links": {
         "type": {
-          "$ref": "#/864"
+          "$ref": "#/869"
         },
         "flags": 0,
         "description": "The list of linked integration runtimes that are created to share with this integration runtime."
@@ -11283,7 +11364,7 @@
       },
       "newerVersions": {
         "type": {
-          "$ref": "#/865"
+          "$ref": "#/870"
         },
         "flags": 0,
         "description": "The newer versions on download center."
@@ -11299,6 +11380,13 @@
           "$ref": "#/6"
         },
         "flags": 2
+      },
+      "selfContainedInteractiveAuthoringEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "An alternative option to ensure interactive authoring function when your self-hosted integration runtime is unable to establish a connection with Azure Relay."
       }
     }
   },
@@ -11318,13 +11406,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/839"
+        "$ref": "#/844"
       },
       {
-        "$ref": "#/840"
+        "$ref": "#/845"
       },
       {
-        "$ref": "#/841"
+        "$ref": "#/846"
       },
       {
         "$ref": "#/0"
@@ -11358,14 +11446,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/851"
+          "$ref": "#/856"
         },
         "flags": 2,
         "description": "Status of the integration runtime node."
       },
       "capabilities": {
         "type": {
-          "$ref": "#/852"
+          "$ref": "#/857"
         },
         "flags": 2,
         "description": "The integration runtime capabilities dictionary"
@@ -11421,7 +11509,7 @@
       },
       "lastUpdateResult": {
         "type": {
-          "$ref": "#/856"
+          "$ref": "#/861"
         },
         "flags": 2,
         "description": "The result of the last integration runtime node update."
@@ -11498,25 +11586,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/844"
-      },
-      {
-        "$ref": "#/845"
-      },
-      {
-        "$ref": "#/846"
-      },
-      {
-        "$ref": "#/847"
-      },
-      {
-        "$ref": "#/848"
-      },
-      {
         "$ref": "#/849"
       },
       {
         "$ref": "#/850"
+      },
+      {
+        "$ref": "#/851"
+      },
+      {
+        "$ref": "#/852"
+      },
+      {
+        "$ref": "#/853"
+      },
+      {
+        "$ref": "#/854"
+      },
+      {
+        "$ref": "#/855"
       },
       {
         "$ref": "#/0"
@@ -11547,13 +11635,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/853"
+        "$ref": "#/858"
       },
       {
-        "$ref": "#/854"
+        "$ref": "#/859"
       },
       {
-        "$ref": "#/855"
+        "$ref": "#/860"
       },
       {
         "$ref": "#/0"
@@ -11563,7 +11651,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/843"
+      "$ref": "#/848"
     }
   },
   {
@@ -11592,10 +11680,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/860"
+        "$ref": "#/865"
       },
       {
-        "$ref": "#/861"
+        "$ref": "#/866"
       },
       {
         "$ref": "#/0"
@@ -11646,7 +11734,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/863"
+      "$ref": "#/868"
     }
   },
   {
@@ -11665,7 +11753,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/808"
+      "$ref": "#/813"
     }
   },
   {
@@ -11705,7 +11793,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/889"
+          "$ref": "#/894"
         },
         "flags": 0,
         "description": "List of SSIS object metadata."
@@ -11748,16 +11836,16 @@
     },
     "elements": {
       "Environment": {
-        "$ref": "#/874"
+        "$ref": "#/879"
       },
       "Folder": {
-        "$ref": "#/878"
+        "$ref": "#/883"
       },
       "Package": {
-        "$ref": "#/880"
+        "$ref": "#/885"
       },
       "Project": {
-        "$ref": "#/884"
+        "$ref": "#/889"
       }
     }
   },
@@ -11774,14 +11862,14 @@
       },
       "variables": {
         "type": {
-          "$ref": "#/876"
+          "$ref": "#/881"
         },
         "flags": 0,
         "description": "Variable in environment"
       },
       "type": {
         "type": {
-          "$ref": "#/877"
+          "$ref": "#/882"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -11846,7 +11934,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/875"
+      "$ref": "#/880"
     }
   },
   {
@@ -11859,7 +11947,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/879"
+          "$ref": "#/884"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -11897,14 +11985,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/882"
+          "$ref": "#/887"
         },
         "flags": 0,
         "description": "Parameters in package"
       },
       "type": {
         "type": {
-          "$ref": "#/883"
+          "$ref": "#/888"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -12004,7 +12092,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/881"
+      "$ref": "#/886"
     }
   },
   {
@@ -12031,21 +12119,21 @@
       },
       "environmentRefs": {
         "type": {
-          "$ref": "#/886"
+          "$ref": "#/891"
         },
         "flags": 0,
         "description": "Environment reference in project"
       },
       "parameters": {
         "type": {
-          "$ref": "#/887"
+          "$ref": "#/892"
         },
         "flags": 0,
         "description": "Parameters in project"
       },
       "type": {
         "type": {
-          "$ref": "#/888"
+          "$ref": "#/893"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -12089,13 +12177,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/885"
+      "$ref": "#/890"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/881"
+      "$ref": "#/886"
     }
   },
   {
@@ -12105,7 +12193,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/873"
+      "$ref": "#/878"
     }
   },
   {
@@ -12114,10 +12202,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/872"
+      "$ref": "#/877"
     },
     "input": {
-      "$ref": "#/871"
+      "$ref": "#/876"
     }
   },
   {
@@ -12160,7 +12248,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/891"
+      "$ref": "#/896"
     }
   },
   {
@@ -12226,7 +12314,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/894"
+      "$ref": "#/899"
     }
   },
   {
@@ -12235,7 +12323,7 @@
     "properties": {
       "keyName": {
         "type": {
-          "$ref": "#/899"
+          "$ref": "#/904"
         },
         "flags": 0,
         "description": "The name of the authentication key to regenerate."
@@ -12254,10 +12342,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/897"
+        "$ref": "#/902"
       },
       {
-        "$ref": "#/898"
+        "$ref": "#/903"
       },
       {
         "$ref": "#/0"
@@ -12290,10 +12378,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/900"
+      "$ref": "#/905"
     },
     "input": {
-      "$ref": "#/896"
+      "$ref": "#/901"
     }
   },
   {
@@ -12302,7 +12390,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/900"
+      "$ref": "#/905"
     }
   },
   {
@@ -12318,7 +12406,7 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/905"
+          "$ref": "#/910"
         },
         "flags": 0,
         "description": "Integration runtime node monitoring data."
@@ -12393,7 +12481,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/904"
+      "$ref": "#/909"
     }
   },
   {
@@ -12402,7 +12490,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/903"
+      "$ref": "#/908"
     }
   },
   {
@@ -12411,7 +12499,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/808"
+      "$ref": "#/813"
     }
   },
   {
@@ -12433,7 +12521,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/integrationRuntimes/nodes",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/908"
+      "$ref": "#/913"
     }
   },
   {
@@ -12449,7 +12537,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/911"
+          "$ref": "#/916"
         },
         "flags": 1,
         "description": "The type of resource, Microsoft.Synapse/workspaces/kustoPools."
@@ -12487,7 +12575,7 @@
       },
       "reason": {
         "type": {
-          "$ref": "#/915"
+          "$ref": "#/920"
         },
         "flags": 0,
         "description": "Message providing the reason why the given name is invalid."
@@ -12506,10 +12594,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/913"
+        "$ref": "#/918"
       },
       {
-        "$ref": "#/914"
+        "$ref": "#/919"
       },
       {
         "$ref": "#/0"
@@ -12522,10 +12610,10 @@
     "resourceType": "Microsoft.Synapse/locations",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/912"
+      "$ref": "#/917"
     },
     "input": {
-      "$ref": "#/910"
+      "$ref": "#/915"
     }
   },
   {
@@ -12546,7 +12634,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/138"
+      "$ref": "#/143"
     }
   },
   {
@@ -12555,7 +12643,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "input": {
-      "$ref": "#/138"
+      "$ref": "#/143"
     }
   },
   {
@@ -12564,7 +12652,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "input": {
-      "$ref": "#/138"
+      "$ref": "#/143"
     }
   },
   {
@@ -12573,7 +12661,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/924"
+          "$ref": "#/929"
         },
         "flags": 0,
         "description": "The list of follower database result."
@@ -12610,7 +12698,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/923"
+      "$ref": "#/928"
     }
   },
   {
@@ -12619,7 +12707,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/922"
+      "$ref": "#/927"
     }
   },
   {
@@ -12628,7 +12716,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "input": {
-      "$ref": "#/923"
+      "$ref": "#/928"
     }
   },
   {
@@ -12644,7 +12732,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/930"
+          "$ref": "#/935"
         },
         "flags": 1,
         "description": "The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases."
@@ -12663,10 +12751,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/928"
+        "$ref": "#/933"
       },
       {
-        "$ref": "#/929"
+        "$ref": "#/934"
       }
     ]
   },
@@ -12676,10 +12764,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/912"
+      "$ref": "#/917"
     },
     "input": {
-      "$ref": "#/927"
+      "$ref": "#/932"
     }
   },
   {
@@ -12695,7 +12783,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/933"
+          "$ref": "#/938"
         },
         "flags": 1,
         "description": "The type of resource, Microsoft.Synapse/workspaces/kustoPools/principalAssignments."
@@ -12712,10 +12800,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/912"
+      "$ref": "#/917"
     },
     "input": {
-      "$ref": "#/932"
+      "$ref": "#/937"
     }
   },
   {
@@ -12731,7 +12819,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/936"
+          "$ref": "#/941"
         },
         "flags": 1,
         "description": "The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections."
@@ -12748,10 +12836,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools/databases",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/912"
+      "$ref": "#/917"
     },
     "input": {
-      "$ref": "#/935"
+      "$ref": "#/940"
     }
   },
   {
@@ -12767,7 +12855,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/939"
+          "$ref": "#/944"
         },
         "flags": 0,
         "description": "The data connection properties to validate."
@@ -12788,7 +12876,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/149"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -12817,13 +12905,13 @@
     },
     "elements": {
       "EventGrid": {
-        "$ref": "#/940"
+        "$ref": "#/945"
       },
       "EventHub": {
-        "$ref": "#/942"
+        "$ref": "#/947"
       },
       "IotHub": {
-        "$ref": "#/944"
+        "$ref": "#/949"
       }
     }
   },
@@ -12833,14 +12921,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "The properties of the Event Grid data connection."
       },
       "kind": {
         "type": {
-          "$ref": "#/941"
+          "$ref": "#/946"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -12857,14 +12945,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/248"
+          "$ref": "#/253"
         },
         "flags": 0,
         "description": "The Event Hub data connection properties to validate."
       },
       "kind": {
         "type": {
-          "$ref": "#/943"
+          "$ref": "#/948"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -12881,14 +12969,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/285"
         },
         "flags": 0,
         "description": "The Iot Hub data connection properties."
       },
       "kind": {
         "type": {
-          "$ref": "#/945"
+          "$ref": "#/950"
         },
         "flags": 1,
         "description": "Kind of the endpoint for the data connection"
@@ -12905,7 +12993,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/948"
+          "$ref": "#/953"
         },
         "flags": 0,
         "description": "The list of Kusto data connection validation errors."
@@ -12928,7 +13016,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/947"
+      "$ref": "#/952"
     }
   },
   {
@@ -12937,10 +13025,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools/databases",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/946"
+      "$ref": "#/951"
     },
     "input": {
-      "$ref": "#/938"
+      "$ref": "#/943"
     }
   },
   {
@@ -12956,7 +13044,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/951"
+          "$ref": "#/956"
         },
         "flags": 1,
         "description": "The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments."
@@ -12973,10 +13061,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/kustoPools/databases",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/912"
+      "$ref": "#/917"
     },
     "input": {
-      "$ref": "#/950"
+      "$ref": "#/955"
     }
   },
   {
@@ -12985,7 +13073,7 @@
     "properties": {
       "ipFirewallRules": {
         "type": {
-          "$ref": "#/954"
+          "$ref": "#/959"
         },
         "flags": 0,
         "description": "IP firewall rule properties"
@@ -12997,7 +13085,7 @@
     "name": "ReplaceAllIpFirewallRulesRequestIpFirewallRules",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/356"
+      "$ref": "#/361"
     }
   },
   {
@@ -13019,10 +13107,10 @@
     "resourceType": "Microsoft.Synapse/workspaces",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/955"
+      "$ref": "#/960"
     },
     "input": {
-      "$ref": "#/953"
+      "$ref": "#/958"
     }
   },
   {
@@ -13038,7 +13126,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/958"
+          "$ref": "#/963"
         },
         "flags": 0,
         "description": "Workspace Check Default Storage Account Status Properties."
@@ -13089,7 +13177,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/957"
+      "$ref": "#/962"
     }
   },
   {
@@ -13098,7 +13186,7 @@
     "resourceType": "Microsoft.Synapse/workspaces",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/959"
+      "$ref": "#/964"
     },
     "input": {
       "$ref": "#/35"
@@ -13110,21 +13198,21 @@
     "properties": {
       "sku": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/392"
         },
         "flags": 0,
         "description": "SQL pool SKU"
       },
       "properties": {
         "type": {
-          "$ref": "#/388"
+          "$ref": "#/393"
         },
         "flags": 0,
         "description": "SQL pool properties"
       },
       "tags": {
         "type": {
-          "$ref": "#/962"
+          "$ref": "#/967"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -13173,7 +13261,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/sqlPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/961"
+      "$ref": "#/966"
     }
   },
   {
@@ -13182,7 +13270,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/sqlPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/961"
+      "$ref": "#/966"
     }
   },
   {
@@ -13211,7 +13299,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/700"
+          "$ref": "#/705"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -13245,10 +13333,10 @@
     "resourceType": "Microsoft.Synapse/workspaces/sqlPools",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/966"
+      "$ref": "#/971"
     },
     "input": {
-      "$ref": "#/965"
+      "$ref": "#/970"
     }
   },
   {
@@ -13275,7 +13363,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/972"
+          "$ref": "#/977"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -13322,7 +13410,7 @@
     "resourceType": "Microsoft.Synapse/workspaces/sqlPools/vulnerabilityAssessments/scans",
     "apiVersion": "2021-06-01-preview",
     "output": {
-      "$ref": "#/971"
+      "$ref": "#/976"
     }
   },
   {

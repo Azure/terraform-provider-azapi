@@ -1,0 +1,1418 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KubernetesConfiguration/fluxConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Properties to create a Flux Configuration resource"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FluxConfigurationProperties",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Scope at which the operator will be installed."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only."
+      },
+      "sourceKind": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Source Kind to pull the configuration data from."
+      },
+      "suspend": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Whether this configuration should suspend its reconciliation of its kustomizations and sources."
+      },
+      "gitRepository": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Parameters to reconcile to the GitRepository source kind type."
+      },
+      "bucket": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Parameters to reconcile to the Bucket source kind type."
+      },
+      "azureBlob": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Parameters to reconcile to the AzureBlob source kind type."
+      },
+      "ociRepository": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Parameters to reconcile to the OCIRepository source kind type."
+      },
+      "kustomizations": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster."
+      },
+      "configurationProtectedSettings": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Key-value pairs of protected configuration settings for the configuration"
+      },
+      "statuses": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects provisioned by the fluxConfiguration."
+      },
+      "repositoryPublicKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user)."
+      },
+      "sourceSyncedCommitId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Branch and/or SHA of the source commit synced with the cluster."
+      },
+      "sourceUpdatedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Datetime the fluxConfiguration synced its source on the cluster."
+      },
+      "statusUpdatedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Datetime the fluxConfiguration synced its status on the cluster with Azure."
+      },
+      "waitForReconciliation": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Whether flux configuration deployment should wait for cluster to reconcile the kustomizations."
+      },
+      "reconciliationWaitDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Maximum duration to wait for flux configuration reconciliation. E.g PT1H, PT5M, P1D"
+      },
+      "complianceState": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 2,
+        "description": "Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Status of the creation of the fluxConfiguration."
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Error message returned to the user in the case of provisioning failure."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cluster"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "namespace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GitRepository"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bucket"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureBlob"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OCIRepository"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GitRepositoryDefinition",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URL to sync for the flux configuration git repository."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The maximum time to attempt to reconcile the cluster git repository source with the remote."
+      },
+      "syncIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the cluster git repository source with the remote."
+      },
+      "repositoryRef": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The source reference for the GitRepository object."
+      },
+      "sshKnownHosts": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Base64-encoded known_hosts value containing public SSH keys required to access private git repositories over SSH"
+      },
+      "httpsUser": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Plaintext HTTPS username used to access private git repositories over HTTPS"
+      },
+      "httpsCACert": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS"
+      },
+      "localAuthRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets."
+      },
+      "provider": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Name of the provider used for authentication."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RepositoryRefDefinition",
+    "properties": {
+      "branch": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The git repository branch name to checkout."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The git repository tag name to checkout. This takes precedence over branch."
+      },
+      "semver": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The semver range used to match against git repository tags. This takes precedence over tag."
+      },
+      "commit": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The commit SHA to checkout. This value must be combined with the branch name to be valid. This takes precedence over semver."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Generic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BucketDefinition",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URL to sync for the flux configuration S3 bucket."
+      },
+      "bucketName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The bucket name to sync from the url endpoint for the flux configuration."
+      },
+      "insecure": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Specify whether to use insecure communication when puling data from the S3 bucket."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The maximum time to attempt to reconcile the cluster bucket source with the remote."
+      },
+      "syncIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the cluster bucket source with the remote."
+      },
+      "accessKey": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Plaintext access key used to securely access the S3 bucket"
+      },
+      "localAuthRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureBlobDefinition",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URL to sync for the flux configuration Azure Blob storage account."
+      },
+      "containerName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Azure Blob container name to sync from the url endpoint for the flux configuration."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The maximum time to attempt to reconcile the cluster Azure Blob source with the remote."
+      },
+      "syncIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the cluster Azure Blob source with the remote."
+      },
+      "servicePrincipal": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Parameters to authenticate using Service Principal."
+      },
+      "accountKey": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The account key (shared key) to access the storage account"
+      },
+      "sasToken": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The Shared Access token to access the storage container"
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Parameters to authenticate using a Managed Identity."
+      },
+      "localAuthRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePrincipalDefinition",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The client Id for authenticating a Service Principal."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The tenant Id for authenticating a Service Principal"
+      },
+      "clientSecret": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The client secret for authenticating a Service Principal"
+      },
+      "clientCertificate": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Base64-encoded certificate used to authenticate a Service Principal"
+      },
+      "clientCertificatePassword": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The password for the certificate used to authenticate a Service Principal"
+      },
+      "clientCertificateSendChain": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Specifies whether to include x5c header in client claims when acquiring a token to enable subject name / issuer based authentication for the Client Certificate"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedIdentityDefinition",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The client Id for authenticating a Managed Identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OCIRepositoryDefinition",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URL to sync for the flux configuration OCI repository."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The maximum time to attempt to reconcile the cluster OCI repository source with the remote."
+      },
+      "syncIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the cluster OCI repository source with the remote."
+      },
+      "repositoryRef": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The source reference for the OCIRepository object."
+      },
+      "layerSelector": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The layer to be pulled from the OCI artifact."
+      },
+      "verify": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Verification of the authenticity of an OCI Artifact."
+      },
+      "insecure": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Specify whether to allow connecting to a non-TLS HTTP container registry."
+      },
+      "useWorkloadIdentity": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Specifies whether to use Workload Identity to authenticate with the OCI repository."
+      },
+      "serviceAccountName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The service account name to authenticate with the OCI repository."
+      },
+      "tlsConfig": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "Parameters to authenticate using TLS config for OCI repository."
+      },
+      "localAuthRef": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided configuration secrets."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OCIRepositoryRefDefinition",
+    "properties": {
+      "tag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The OCI repository image tag name to pull. This defaults to 'latest'."
+      },
+      "semver": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The semver range used to match against OCI repository tags. This takes precedence over tag."
+      },
+      "digest": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The image digest to pull from OCI repository, the value should be in the format ‘sha256:’. This takes precedence over semver."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LayerSelectorDefinition",
+    "properties": {
+      "mediaType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The first layer matching the specified media type will be used."
+      },
+      "operation": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The operation to be performed on the selected layer. The default value is 'extract', but it can be set to 'copy'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "extract"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "copy"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VerifyDefinition",
+    "properties": {
+      "provider": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Verification provider name."
+      },
+      "verificationConfig": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "An object containing trusted public keys of trusted authors."
+      },
+      "matchOidcIdentity": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Array defining the criteria for matching the identity while verifying an OCI artifact."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VerifyDefinitionVerificationConfig",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MatchOidcIdentityDefinition",
+    "properties": {
+      "issuer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The regex pattern to match against to verify the OIDC issuer."
+      },
+      "subject": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The regex pattern to match against to verify the identity subject."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/33"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TlsConfigDefinition",
+    "properties": {
+      "clientCertificate": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Base64-encoded certificate used to authenticate a client with the OCI repository."
+      },
+      "privateKey": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Base64-encoded private key used to authenticate a client with the OCI repository."
+      },
+      "caCertificate": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Base64-encoded CA certificate used to verify the server."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KustomizationDefinition",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the Kustomization, matching the key in the Kustomizations object map."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The path in the source reference to reconcile on the cluster."
+      },
+      "dependsOn": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies have completed their reconciliation."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The maximum time to attempt to reconcile the Kustomization on the cluster."
+      },
+      "syncIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the Kustomization on the cluster."
+      },
+      "retryIntervalInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on reconciliation."
+      },
+      "prune": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Enable/disable garbage collections of Kubernetes objects created by this Kustomization."
+      },
+      "force": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change."
+      },
+      "wait": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Enable/disable health check for all Kubernetes objects created by this Kustomization."
+      },
+      "postBuild": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Used for variable substitution for this Kustomization after kustomize build."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PostBuildDefinition",
+    "properties": {
+      "substitute": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Key/value pairs holding the variables to be substituted in this Kustomization."
+      },
+      "substituteFrom": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Array of ConfigMaps/Secrets from which the variables are substituted for this Kustomization."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PostBuildDefinitionSubstitute",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubstituteFromDefinition",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Define whether it is ConfigMap or Secret that holds the variables to be used in substitution."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the ConfigMap/Secret that holds the variables to be used in substitution."
+      },
+      "optional": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Set to True to proceed without ConfigMap/Secret, if it is not present."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FluxConfigurationPropertiesKustomizations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/36"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FluxConfigurationPropertiesConfigurationProtectedSettings",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ObjectStatusDefinition",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the applied object"
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Namespace of the applied object"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Kind of the applied object"
+      },
+      "complianceState": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Compliance state of the applied object showing whether the applied object has come into a ready state on the cluster."
+      },
+      "appliedBy": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Object reference to the Kustomization that applied this object"
+      },
+      "statusConditions": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "List of Kubernetes object status conditions present on the cluster"
+      },
+      "helmReleaseProperties": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Additional properties that are provided from objects of the HelmRelease kind"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Non-Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ObjectReferenceDefinition",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the object"
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Namespace of the object"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ObjectStatusConditionDefinition",
+    "properties": {
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Last time this status condition has changed"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A more verbose description of the object status condition"
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Reason for the specified status condition type status"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Status of the Kubernetes object condition type"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Object status condition type for this object"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HelmReleasePropertiesDefinition",
+    "properties": {
+      "lastRevisionApplied": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The revision number of the last released object change"
+      },
+      "helmChartRef": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The reference to the HelmChart object used as the source to this HelmRelease"
+      },
+      "failureCount": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Total number of times that the HelmRelease failed to install or upgrade"
+      },
+      "installFailureCount": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Number of times that the HelmRelease failed to install"
+      },
+      "upgradeFailureCount": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Number of times that the HelmRelease failed to upgrade"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Non-Compliant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.KubernetesConfiguration/fluxConfigurations@2024-11-01",
+    "scopeType": 16,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  }
+]
