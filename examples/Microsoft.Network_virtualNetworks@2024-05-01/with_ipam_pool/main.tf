@@ -119,10 +119,8 @@ resource "azapi_resource" "vnet_withIPAM" {
   ignore_casing             = false
   ignore_missing_property   = false
 
-  # ignore that addressPrefixes is created with empty [], and response has address prefix of pool after creation/association of vnet and pool
+  # ignore that the response has address prefix of pool after creation/association of vnet and pool
   lifecycle {
     ignore_changes = [body.properties.addressSpace.addressPrefixes]
   }
-
-  depends_on = [azapi_resource.ipamPool] # This line forces vnet_withIPAM to destroy first
 }
