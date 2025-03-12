@@ -3,17 +3,10 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    azurerm = {
-      source = "Hashicorp/azurerm"
-    }
     time = {
       source = "Hashicorp/time"
     }
   }
-}
-
-provider "azurerm" {
-  features {}
 }
 
 provider "azapi" {
@@ -36,14 +29,7 @@ resource "azapi_resource" "resourceGroup" {
   location = var.location
 }
 
-data "azurerm_client_config" "current" {
-}
-
-data "azapi_resource" "subscription" {
-  type                   = "Microsoft.Resources/subscriptions@2021-01-01"
-  resource_id            = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  response_export_values = ["*"]
-}
+data "azapi_client_config" "current" {}
 
 resource "azapi_resource" "networkManager" {
   type      = "Microsoft.Network/networkManagers@2024-05-01"
@@ -57,11 +43,13 @@ resource "azapi_resource" "networkManager" {
       networkManagerScopes = {
         managementGroups = []
         subscriptions = [
-          data.azapi_resource.subscription.id,
+          "/subscriptions/${data.azapi_client_config.current.subscription_id}"
         ]
       }
     }
-    tags = { "sampleTag" : "sampleTag" }
+  }
+  tags = {
+    "sampleTag" : "sampleTag"
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
@@ -87,7 +75,9 @@ resource "azapi_resource" "ipamPool" {
       parentPoolName = ""
       displayName    = "testDisplayName"
     }
-    tags = { "myTag" : "testTag" }
+  }
+  tags = {
+    "myTag" : "testTag"
   }
   schema_validation_enabled = false
   ignore_casing             = false
@@ -118,9 +108,4 @@ resource "azapi_resource" "vnet_withIPAM" {
   schema_validation_enabled = false
   ignore_casing             = false
   ignore_missing_property   = false
-
-  # ignore that the response has address prefix of pool after creation/association of vnet and pool
-  lifecycle {
-    ignore_changes = [body.properties.addressSpace.addressPrefixes]
-  }
 }
