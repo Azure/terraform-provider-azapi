@@ -72,5 +72,5 @@ func NormalizeJsonString(jsonString interface{}) (string, error) {
 	}
 
 	bytes, _ := json.Marshal(j)
-	return string(bytes[:]), nil
+	return string(bytes), nil
 }
