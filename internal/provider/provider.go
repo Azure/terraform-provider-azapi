@@ -732,6 +732,9 @@ func (p Provider) DataSources(ctx context.Context) []func() datasource.DataSourc
 		func() datasource.DataSource {
 			return &services.ClientConfigDataSource{}
 		},
+		func() datasource.DataSource {
+			return &services.DataPlaneDataSource{}
+		},
 	}
 
 }
