@@ -1,11 +1,11 @@
 ---
-page_title: "azapi_data_plane_data_source Data Source - terraform-provider-azapi"
+page_title: "azapi_data_plane_resource Data Source - terraform-provider-azapi"
 subcategory: ""
 description: |-
   This data source can read some Azure data plane resources.
 ---
 
-# azapi_data_plane_data_source (Data Source)
+# azapi_data_plane_resource (Data Source)
 
 This data source can read some Azure data plane resources.
 
@@ -20,11 +20,9 @@ This data source can read some Azure data plane resources.
 
 ### Optional
 
-- `ignore_casing` (Boolean) A dynamic attribute that contains the request body.
-- `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+- `headers` (Map of String) A mapping of headers to be sent with the read request.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
-- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
-- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
+- `query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
