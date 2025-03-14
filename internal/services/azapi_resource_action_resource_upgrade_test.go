@@ -19,7 +19,7 @@ func TestAccAzapiActionResourceUpgrade_basic(t *testing.T) {
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
 		// TODO: plan test step in plugin-framework doesn't use `refresh` option, it causes non-empty plan. Uncomment when fixed.
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.basic(data),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -37,7 +37,7 @@ func TestAccAzapiActionResourceUpgrade_basicWhenDestroy(t *testing.T) {
 			Config: r.basicWhenDestroy(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.basicWhenDestroy(data),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -56,7 +56,7 @@ func TestAccAzapiActionResourceUpgrade_registerResourceProvider(t *testing.T) {
 			Config: r.registerResourceProvider(subscriptionId),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.registerResourceProvider(subscriptionId),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -75,7 +75,7 @@ func TestAccAzapiActionResourceUpgrade_upgradeFromVeryOldVersion(t *testing.T) {
 			Config: r.registerResourceProvider(subscriptionId),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, "1.8.0"),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.registerResourceProvider(subscriptionId),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -93,7 +93,7 @@ func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 			Config: r.providerAction(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.providerAction(data),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -112,7 +112,7 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 			ExternalProviders: externalProvidersAzurerm(),
 			Check:             resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	ExternalProviders: externalProvidersAzurerm(),
 		//	Config:            r.nonstandardLRO(data),
 		//}),
@@ -132,7 +132,7 @@ func TestAccAzapiActionResourceUpgrade_timeouts(t *testing.T) {
 			Config: r.timeouts(data),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.timeouts(data),
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{
@@ -173,7 +173,7 @@ func TestAccAzapiActionResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			Config: r.oldConfig(data, subscriptionId),
 			Check:  resource.ComposeTestCheckFunc(),
 		}, "1.12.1"),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: updatedConfig,
 		//}),
 		data.UpgradeTestApplyStep(resource.TestStep{

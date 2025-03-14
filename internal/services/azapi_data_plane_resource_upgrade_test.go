@@ -93,7 +93,7 @@ func TestAccAzapiDataPlaneResourceUpgrade_keyVaultIssuer(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		}, PreviousVersion),
-		//data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config:            r.keyVaultIssuer(data),
 		//	ExternalProviders: externalProvidersAzurerm(),
 		//}),
