@@ -21,7 +21,7 @@ func TestAccAzapiActionResourceUpgrade_basic(t *testing.T) {
 		// TODO: plan test step in plugin-framework doesn't use `refresh` option, it causes non-empty plan. Uncomment when fixed.
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.basic(data),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.basic(data),
 		}),
@@ -39,7 +39,7 @@ func TestAccAzapiActionResourceUpgrade_basicWhenDestroy(t *testing.T) {
 		}, PreviousVersion),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.basicWhenDestroy(data),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.basicWhenDestroy(data),
 		}),
@@ -58,7 +58,7 @@ func TestAccAzapiActionResourceUpgrade_registerResourceProvider(t *testing.T) {
 		}, PreviousVersion),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.registerResourceProvider(subscriptionId),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.registerResourceProvider(subscriptionId),
 		}),
@@ -77,7 +77,7 @@ func TestAccAzapiActionResourceUpgrade_upgradeFromVeryOldVersion(t *testing.T) {
 		}, "1.8.0"),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.registerResourceProvider(subscriptionId),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.registerResourceProvider(subscriptionId),
 		}),
@@ -95,7 +95,7 @@ func TestAccAzapiActionResourceUpgrade_providerAction(t *testing.T) {
 		}, PreviousVersion),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.providerAction(data),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.providerAction(data),
 		}),
@@ -115,7 +115,7 @@ func TestAccAzapiActionResourceUpgrade_nonstandardLRO(t *testing.T) {
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	ExternalProviders: externalProvidersAzurerm(),
 		//	Config:            r.nonstandardLRO(data),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			ExternalProviders: externalProvidersAzurerm(),
 			Config:            r.nonstandardLRO(data),
@@ -134,7 +134,7 @@ func TestAccAzapiActionResourceUpgrade_timeouts(t *testing.T) {
 		}, PreviousVersion),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: r.timeouts(data),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.timeouts(data),
 		}),
@@ -175,7 +175,7 @@ func TestAccAzapiActionResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 		}, "1.12.1"),
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config: updatedConfig,
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: updatedConfig,
 		}),

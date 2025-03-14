@@ -96,7 +96,7 @@ func TestAccAzapiDataPlaneResourceUpgrade_keyVaultIssuer(t *testing.T) {
 		// data.UpgradeTestPlanStep(resource.TestStep{
 		//	Config:            r.keyVaultIssuer(data),
 		//	ExternalProviders: externalProvidersAzurerm(),
-		//}),
+		// }),
 		data.UpgradeTestApplyStep(resource.TestStep{
 			Config:            r.keyVaultIssuer(data),
 			ExternalProviders: externalProvidersAzurerm(),
