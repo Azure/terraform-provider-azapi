@@ -61,6 +61,12 @@ func TestUserAssignedIdentityID(t *testing.T) {
 			Input: "/SUBSCRIPTIONS/12345678-1234-9876-4563-123456789012/RESOURCEGROUPS/GROUP1/PROVIDERS/MICROSOFT.MANAGEDIDENTITY/USERASSIGNEDIDENTITIES/IDENTITY1",
 			Valid: false,
 		},
+
+		{
+			// lower-cased
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourcegroups/group1/providers/microsoft.managedidentity/userassignedidentities/identity1",
+			Valid: false,
+		},
 	}
 	for _, tc := range cases {
 		t.Logf("[DEBUG] Testing Value %s", tc.Input)

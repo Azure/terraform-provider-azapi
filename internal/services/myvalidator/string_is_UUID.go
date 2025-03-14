@@ -2,9 +2,10 @@ package myvalidator
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 type stringIsUUID struct{}
@@ -24,7 +25,7 @@ func (_ stringIsUUID) ValidateString(ctx context.Context, req validator.StringRe
 		return
 	}
 
-	if _, errs := validation.IsUUID(str.ValueString(), req.Path.String()); len(errs) != 0 {
+	if _, errs := IsUUID(str.ValueString(), req.Path.String()); len(errs) != 0 {
 		for _, err := range errs {
 			resp.Diagnostics.AddAttributeError(
 				req.Path,
@@ -36,4 +37,19 @@ func (_ stringIsUUID) ValidateString(ctx context.Context, req validator.StringRe
 
 func StringIsUUID() validator.String {
 	return stringIsUUID{}
+}
+
+// IsUUID is a ValidateFunc that ensures a string can be parsed as UUID
+func IsUUID(i interface{}, k string) (warnings []string, errors []error) {
+	v, ok := i.(string)
+	if !ok {
+		errors = append(errors, fmt.Errorf("expected type of %q to be string", k))
+		return
+	}
+
+	if _, err := uuid.ParseUUID(v); err != nil {
+		errors = append(errors, fmt.Errorf("expected %q to be a valid UUID, got %v", k, v))
+	}
+
+	return warnings, errors
 }
