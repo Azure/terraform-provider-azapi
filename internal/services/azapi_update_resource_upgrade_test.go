@@ -23,6 +23,9 @@ func TestAccAzapiUpdateResourceUpgrade_automationAccount(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.automationAccount(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.automationAccount(data),
+		}),
 	})
 }
 
@@ -38,6 +41,9 @@ func TestAccAzapiUpdateResourceUpgrade_automationAccountWithNameParentId(t *test
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.automationAccountWithNameParentId(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.automationAccountWithNameParentId(data),
 		}),
 	})
@@ -57,6 +63,9 @@ func TestAccAzapiUpdateResourceUpgrade_siteConfigSlotConfigNames(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.siteConfigSlotConfigNames(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.siteConfigSlotConfigNames(data),
+		}),
 	})
 }
 
@@ -74,6 +83,9 @@ func TestAccAzapiUpdateResourceUpgrade_locks(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.locks(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.locks(data),
+		}),
 	})
 }
 
@@ -89,6 +101,9 @@ func TestAccAzapiUpdateResourceUpgrade_timeouts(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.timeouts(data),
 		}),
 	})
@@ -130,6 +145,9 @@ func TestAccAzapiUpdateResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			),
 		}, "1.12.1"),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: updatedConfig,
 		}),
 	})

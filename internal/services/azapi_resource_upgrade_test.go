@@ -27,6 +27,9 @@ func TestAccAzapiResourceUpgrade_basic(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.basic(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.basic(data),
+		}),
 	})
 }
 
@@ -42,6 +45,9 @@ func TestAccAzapiResourceUpgrade_complete(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.complete(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.complete(data),
 		}),
 	})
@@ -61,6 +67,9 @@ func TestAccAzapiResourceUpgrade_identityNone(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.identityNone(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.identityNone(data),
+		}),
 	})
 }
 
@@ -76,6 +85,9 @@ func TestAccAzapiResourceUpgrade_identitySystemAssigned(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.identitySystemAssigned(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.identitySystemAssigned(data),
 		}),
 	})
@@ -95,6 +107,9 @@ func TestAccAzapiResourceUpgrade_identityUserAssigned(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.identityUserAssigned(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.identityUserAssigned(data),
+		}),
 	})
 }
 
@@ -110,6 +125,9 @@ func TestAccAzapiResourceUpgrade_completeBody(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.completeBody(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.completeBody(data),
 		}),
 	})
@@ -129,6 +147,9 @@ func TestAccAzapiResourceUpgrade_defaultTag(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.defaultTag(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.defaultTag(data),
+		}),
 	})
 }
 
@@ -144,6 +165,9 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInBody(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.defaultTagOverrideInBody(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.defaultTagOverrideInBody(data),
 		}),
 	})
@@ -163,6 +187,9 @@ func TestAccAzapiResourceUpgrade_defaultTagOverrideInHcl(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.defaultTagOverrideInHcl(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.defaultTagOverrideInHcl(data),
+		}),
 	})
 }
 
@@ -180,6 +207,9 @@ func TestAccAzapiResourceUpgrade_defaultLocation(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.defaultLocation(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.defaultLocation(data),
+		}),
 	})
 }
 
@@ -195,6 +225,9 @@ func TestAccAzapiResourceUpgrade_defaultLocationOverrideInHcl(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.defaultLocationOverrideInHcl(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.defaultLocationOverrideInHcl(data),
 		}),
 	})
@@ -228,6 +261,9 @@ resource "azapi_resource" "test" {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: updatedConfig,
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
 	})
 }
 
@@ -243,6 +279,9 @@ func TestAccAzapiResourceUpgrade_defaultNaming(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.defaultNaming(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.defaultNaming(data),
 		}),
 	})
@@ -262,6 +301,9 @@ func TestAccAzapiResourceUpgrade_defaultNamingOverrideInHcl(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.defaultNamingOverrideInHcl(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.defaultNamingOverrideInHcl(data),
+		}),
 	})
 }
 
@@ -277,6 +319,9 @@ func TestAccAzapiResourceUpgrade_defaultsNotApplicable(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.defaultsNotApplicable(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.defaultsNotApplicable(data),
 		}),
 	})
@@ -311,6 +356,9 @@ resource "azapi_resource" "test" {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: updatedConfig,
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
 	})
 }
 
@@ -326,6 +374,9 @@ func TestAccAzapiResourceUpgrade_extensionScope(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.extensionScope(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.extensionScope(data),
 		}),
 	})
@@ -345,6 +396,9 @@ func TestAccAzapiResourceUpgrade_ignoreMissingProperty(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.ignoreMissingProperty(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.ignoreMissingProperty(data),
+		}),
 	})
 }
 
@@ -360,6 +414,9 @@ func TestAccAzapiResourceUpgrade_ignoreCasing(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.ignoreCasing(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.ignoreCasing(data),
 		}),
 	})
@@ -379,6 +436,9 @@ func TestAccAzapiResourceUpgrade_deleteLROEndsWithNotFoundError(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.deleteLROEndsWithNotFoundError(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.deleteLROEndsWithNotFoundError(data),
+		}),
 	})
 }
 
@@ -394,6 +454,9 @@ func TestAccAzapiResourceUpgrade_locks(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.locks(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.locks(data),
 		}),
 	})
@@ -416,6 +479,9 @@ func TestAccAzapiResourceUpgrade_secretsInAsterisks(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.secretsInAsterisks(data, clientId, clientSecret),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.secretsInAsterisks(data, clientId, clientSecret),
+		}),
 	})
 }
 
@@ -435,6 +501,10 @@ func TestAccAzapiResourceUpgrade_nullLocation(t *testing.T) {
 			Config:            r.nullLocation(data),
 			ExternalProviders: externalProvidersAzurerm(),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config:            r.nullLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		}),
 	})
 }
 
@@ -450,6 +520,9 @@ func TestAccAzapiResourceUpgrade_timeouts(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.timeouts(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.timeouts(data),
 		}),
 	})
@@ -516,6 +589,9 @@ func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			),
 		}, "1.12.1"),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: updatedConfig,
 		}),
 	})
