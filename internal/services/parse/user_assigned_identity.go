@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/go-azure-helpers/resourcemanager/resourceids"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 )
 
 type UserAssignedIdentitiesId struct {
@@ -37,14 +37,19 @@ func (id UserAssignedIdentitiesId) ID() string {
 
 // UserAssignedIdentitiesID parses a UserAssignedIdentities ID into an UserAssignedIdentitiesId struct
 func UserAssignedIdentitiesID(input string) (*UserAssignedIdentitiesId, error) {
-	id, err := resourceids.ParseAzureResourceID(input)
+	id, err := arm.ParseResourceID(input)
 	if err != nil {
 		return nil, err
 	}
 
+	if id.ResourceType.String() != "Microsoft.ManagedIdentity/userAssignedIdentities" {
+		return nil, fmt.Errorf("expected resource type to be 'Microsoft.ManagedIdentity/userAssignedIdentities', got %q", id.ResourceType.String())
+	}
+
 	resourceId := UserAssignedIdentitiesId{
-		SubscriptionId: id.SubscriptionID,
-		ResourceGroup:  id.ResourceGroup,
+		SubscriptionId:           id.SubscriptionID,
+		ResourceGroup:            id.ResourceGroupName,
+		UserAssignedIdentityName: id.Name,
 	}
 
 	if resourceId.SubscriptionId == "" {
@@ -53,14 +58,6 @@ func UserAssignedIdentitiesID(input string) (*UserAssignedIdentitiesId, error) {
 
 	if resourceId.ResourceGroup == "" {
 		return nil, fmt.Errorf("ID was missing the 'resourceGroups' element")
-	}
-
-	if resourceId.UserAssignedIdentityName, err = id.PopSegment("userAssignedIdentities"); err != nil {
-		return nil, err
-	}
-
-	if err := id.ValidateNoEmptySegments(input); err != nil {
-		return nil, err
 	}
 
 	return &resourceId, nil
