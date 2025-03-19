@@ -22,7 +22,7 @@ import (
 	"github.com/zclconf/go-cty/cty"
 )
 
-func TestAccAzapiRelease_basic(t *testing.T) {
+func TestAccAVM(t *testing.T) {
 	if os.Getenv("ARM_TEST_AVM") == "" {
 		t.Skip("Skipping AVM tests as ARM_TEST_AVM is not set")
 	}
