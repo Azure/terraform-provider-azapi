@@ -1959,6 +1959,10 @@ func (r GenericResource) defaultOutput(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
+provider "azapi" {
+  disable_default_output = false
+}
+
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
