@@ -130,6 +130,10 @@ data "azapi_resource_list" "test" {
 
 func (r ListDataSource) defaultOutput() string {
 	return `
+provider "azapi" {
+  disable_default_output = false
+}
+
 data "azapi_client_config" "current" {}
 
 data "azapi_resource_list" "test" {
