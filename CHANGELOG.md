@@ -1,3 +1,9 @@
+## v2.4.0 (unreleased)
+
+BUG FIXES:
+- Fix a bug that `azapi_update_resource` resource produced inconsistent results when only `error_message_regex` is changed.
+
+
 ## v2.3.0
 FEATURES:
 - **New Ephemeral Resource**: azapi_resource_action
