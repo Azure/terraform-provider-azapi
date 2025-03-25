@@ -228,6 +228,9 @@ func migrateToDynamicValue(input types.Dynamic) (types.Dynamic, error) {
 	if !ok {
 		return input, nil
 	}
+	if stringVal.ValueString() == "" {
+		return types.DynamicNull(), nil
+	}
 	dynamicVal, err := dynamic.FromJSONImplied([]byte(stringVal.ValueString()))
 	if err != nil {
 		return input, err
