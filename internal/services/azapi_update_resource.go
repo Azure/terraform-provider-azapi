@@ -312,7 +312,7 @@ func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.Updat
 	}
 	if skip.CanSkipExternalRequest(plan, state, "update") {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
-		response.Diagnostics.Append(request.State.Set(ctx, plan)...)
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
 		return
 	}
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
