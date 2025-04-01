@@ -11,27 +11,32 @@ provider "azapi" {
 }
 
 variable "resource_name" {
-  type = string
+  type    = string
   default = "acctest0001"
 }
 
-//variable "location" {
-//  type    = string
-//  default = "westeurope"
-//}
+variable "location" {
+  type    = string
+  default = "westeurope"
+}
 
-data "azapi_resource" "resourceGroup" {
-  type = "Microsoft.Resources/resourceGroups@2020-06-01"
-  // name = var.resource_name
-  name = "terraform-testing-qumulo"
-  //  location = var.location
+variable "qumulo_password" {
+  type    = string
+  default = ")^X#ZX#JRyIY}t9"
+  sensitive = true
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
 }
 
 resource "azapi_resource" "vnet" {
   type      = "Microsoft.Network/virtualNetworks@2024-05-01"
   name      = var.resource_name
-  parent_id = data.azapi_resource.resourceGroup.id
-  location  = data.azapi_resource.resourceGroup.location
+  location  = var.location
+  parent_id = azapi_resource.resourceGroup.id
 
   body = {
     properties = {
@@ -49,8 +54,8 @@ resource "azapi_resource" "vnet" {
 resource "azapi_resource" "subnet" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
   name      = var.resource_name
+  location  = var.location
   parent_id = azapi_resource.vnet.id
-  location  = data.azapi_resource.resourceGroup.location
 
   body = {
     properties = {
@@ -75,12 +80,12 @@ resource "azapi_resource" "subnet" {
 resource "azapi_resource" "qumuloFileSystem" {
   type      = "Qumulo.Storage/fileSystems@2024-06-19"
   name      = var.resource_name
-  location  = data.azapi_resource.resourceGroup.location
-  parent_id = data.azapi_resource.resourceGroup.id
+  location  = var.location
+  parent_id = azapi_resource.resourceGroup.id
 
   body = {
     properties = {
-      adminPassword     = ")^X#ZX#JRyIY}t9"
+      adminPassword     = var.qumulo_password
       availabilityZone  = "1"
       delegatedSubnetId = azapi_resource.subnet.id
       marketplaceDetails = {
@@ -96,7 +101,6 @@ resource "azapi_resource" "qumuloFileSystem" {
   }
 
   tags = {
-    provisionResource = "55e031c5d497a3508838f44ec8767c84" // this is for test purpose to not to create real qumulo resource
     environment       = "terraform-acctests"
     some_key          = "some-value"
   }
