@@ -368,7 +368,7 @@ resource "azapi_data_plane_resource" "test" {
       ]
     }
   }
-  
+
   retry = {
     error_message_regex = ["403 Forbidden"]
   }
