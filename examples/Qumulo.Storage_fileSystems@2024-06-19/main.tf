@@ -21,8 +21,8 @@ variable "location" {
 }
 
 variable "qumulo_password" {
-  type    = string
-  default = ")^X#ZX#JRyIY}t9"
+  type      = string
+  default   = ")^X#ZX#JRyIY}t9"
   sensitive = true
 }
 
@@ -44,11 +44,16 @@ resource "azapi_resource" "vnet" {
         addressPrefixes = ["10.0.0.0/16"]
       }
       privateEndpointVNetPolicies = "Disabled"
+      subnets = []
     }
   }
 
   schema_validation_enabled = false
   response_export_values    = ["*"]
+  lifecycle {
+    # This is to avoid vnet change to overwrite the subnets
+    ignore_changes = [body.properties.subnets]
+  }
 }
 
 resource "azapi_resource" "subnet" {
@@ -101,8 +106,8 @@ resource "azapi_resource" "qumuloFileSystem" {
   }
 
   tags = {
-    environment       = "terraform-acctests"
-    some_key          = "some-value"
+    environment = "terraform-acctests"
+    some_key    = "some-value"
   }
 
   schema_validation_enabled = false
