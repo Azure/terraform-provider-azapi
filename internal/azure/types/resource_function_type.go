@@ -1,5 +1,7 @@
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/attr"
+
 var _ TypeBase = &ResourceFunctionType{}
 
 type ResourceFunctionType struct {
@@ -20,7 +22,7 @@ func (t ResourceFunctionType) AsTypeBase() *TypeBase {
 	return &typeBase
 }
 
-func (t ResourceFunctionType) Validate(body interface{}, path string) []error {
+func (t ResourceFunctionType) Validate(body attr.Value, path string) []error {
 	return []error{}
 }
 

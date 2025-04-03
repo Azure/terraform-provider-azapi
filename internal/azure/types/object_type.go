@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ TypeBase = &ObjectType{}
@@ -98,14 +100,22 @@ func (t *ObjectType) GetWriteOnly(body interface{}) interface{} {
 	return res
 }
 
-func (t *ObjectType) Validate(body interface{}, path string) []error {
-	if t == nil || body == nil {
+func (t *ObjectType) Validate(body attr.Value, path string) []error {
+	if t == nil || body == nil || body.IsNull() || body.IsUnknown() {
 		return []error{}
 	}
+
 	errors := make([]error, 0)
 	// check body type
-	bodyMap, ok := body.(map[string]interface{})
-	if !ok {
+	var bodyMap map[string]attr.Value
+	switch v := body.(type) {
+	case types.Object:
+		bodyMap = v.Attributes()
+	case types.Map:
+		bodyMap = v.Elements()
+	case types.Dynamic:
+		return t.Validate(v.UnderlyingValue(), path)
+	default:
 		errors = append(errors, utils.ErrorMismatch(path, "object", fmt.Sprintf("%T", body)))
 		return errors
 	}

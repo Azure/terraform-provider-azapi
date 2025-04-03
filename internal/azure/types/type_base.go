@@ -1,8 +1,12 @@
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+)
+
 type TypeBase interface {
 	AsTypeBase() *TypeBase
-	Validate(interface{}, string) []error
+	Validate(attr.Value, string) []error
 	GetWriteOnly(interface{}) interface{}
 	GetReadOnly(interface{}) interface{}
 }

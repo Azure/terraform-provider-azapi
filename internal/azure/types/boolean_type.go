@@ -1,5 +1,7 @@
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/attr"
+
 var _ TypeBase = &BooleanType{}
 
 type BooleanType struct {
@@ -18,7 +20,7 @@ func (t *BooleanType) AsTypeBase() *TypeBase {
 	return &typeBase
 }
 
-func (t *BooleanType) Validate(body interface{}, path string) []error {
+func (t *BooleanType) Validate(body attr.Value, path string) []error {
 	return nil
 }
 
