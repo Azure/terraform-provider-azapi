@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -17,7 +18,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-func schemaValidation(azureResourceType, apiVersion string, resourceDef *aztypes.ResourceType, body interface{}) error {
+func schemaValidate(config *AzapiResourceModel) error {
+	if config == nil {
+		return nil
+	}
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	if err != nil {
+		return fmt.Errorf(`the argument "type" is invalid: %s`, err.Error())
+	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
+
 	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", azureResourceType, apiVersion)
 	versions := azure.GetApiVersions(azureResourceType)
 	if len(versions) == 0 {
@@ -34,16 +45,75 @@ func schemaValidation(azureResourceType, apiVersion string, resourceDef *aztypes
 		return schemaValidationError(fmt.Sprintf("the argument \"type\"'s api-version is invalid.\n The supported versions are [%s].\n", strings.Join(versions, ", ")))
 	}
 
-	if resourceDef != nil {
-		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
-		if len(errors) != 0 {
-			errorMsg := "the argument \"body\" is invalid:\n"
-			for _, err := range errors {
-				errorMsg += fmt.Sprintf("%s\n", err.Error())
-			}
-			return schemaValidationError(errorMsg)
-		}
+	if resourceDef == nil {
+		return nil
 	}
+
+	var bodyToValidate attr.Value
+	if !config.Body.IsNull() && !config.Body.IsUnknown() && !config.Body.IsNull() && !config.Body.IsUnderlyingValueUnknown() {
+		switch v := config.Body.UnderlyingValue().(type) {
+		case types.Object:
+			attributes := v.Attributes()
+			attributeTypes := v.AttributeTypes(context.Background())
+
+			attributes["name"] = config.Name
+			attributeTypes["name"] = types.StringType
+
+			if !config.Location.IsNull() {
+				attributes["location"] = config.Location
+				attributeTypes["location"] = types.StringType
+			}
+
+			if !config.Tags.IsNull() {
+				attributes["tags"] = config.Tags
+				attributeTypes["tags"] = types.MapType{ElemType: types.StringType}
+			}
+
+			if !config.Identity.IsNull() {
+				identityAttributeTypes := map[string]attr.Type{
+					"type":                   types.StringType,
+					"userAssignedIdentities": types.MapType{ElemType: types.DynamicType},
+				}
+
+				identityModel := identity.FromList(config.Identity)
+				elements := make(map[string]attr.Value)
+				identityIds := identityModel.IdentityIDs.Elements()
+				for _, identityId := range identityIds {
+					elements[identityId.(types.String).ValueString()] = types.DynamicNull()
+				}
+				attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
+					"type":                   identityModel.Type,
+					"userAssignedIdentities": types.MapValueMust(types.DynamicType, elements),
+				})
+				attributeTypes["identity"] = types.ObjectType{AttrTypes: identityAttributeTypes}
+			}
+
+			bodyToValidate = types.ObjectValueMust(attributeTypes, attributes)
+		}
+	} else {
+		bodyToValidate = config.Body
+	}
+
+	validateErrors := (*resourceDef).Validate(bodyToValidate, "")
+
+	errors := make([]error, 0)
+	// skip error that location is not in the body, because user might use the default location feature
+	// same for tags
+	for _, err := range validateErrors {
+		if strings.Contains(err.Error(), "`location` is required") || strings.Contains(err.Error(), "`tags` is required") {
+			continue
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) != 0 {
+		errorMsg := "the argument \"body\" is invalid:\n"
+		for _, err := range errors {
+			errorMsg += fmt.Sprintf("%s\n", err.Error())
+		}
+		return schemaValidationError(errorMsg)
+	}
+
 	return nil
 }
 
