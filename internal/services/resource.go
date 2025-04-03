@@ -51,8 +51,7 @@ func schemaValidate(config *AzapiResourceModel) error {
 
 	var bodyToValidate attr.Value
 	if !config.Body.IsNull() && !config.Body.IsUnknown() && !config.Body.IsNull() && !config.Body.IsUnderlyingValueUnknown() {
-		switch v := config.Body.UnderlyingValue().(type) {
-		case types.Object:
+		if v, ok := config.Body.UnderlyingValue().(types.Object); ok {
 			attributes := v.Attributes()
 			attributeTypes := v.AttributeTypes(context.Background())
 
