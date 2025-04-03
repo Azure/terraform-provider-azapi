@@ -2,6 +2,8 @@ package types
 
 import (
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ TypeBase = &UnionType{}
@@ -27,8 +29,8 @@ func (t *UnionType) GetWriteOnly(body interface{}) interface{} {
 	return body
 }
 
-func (t *UnionType) Validate(body interface{}, path string) []error {
-	if t == nil || body == nil {
+func (t *UnionType) Validate(body attr.Value, path string) []error {
+	if t == nil || body == nil || body.IsNull() || body.IsUnknown() {
 		return []error{}
 	}
 	errors := make([]error, 0)
@@ -56,8 +58,8 @@ func (t *UnionType) Validate(body interface{}, path string) []error {
 			errors = append(errors, utils.ErrorNotMatchAny(path))
 		} else {
 			value := ""
-			if current, ok := body.(string); ok {
-				value = current
+			if current, ok := body.(types.String); ok {
+				value = current.ValueString()
 			}
 			errors = append(errors, utils.ErrorNotMatchAnyValues(path, value, options))
 		}

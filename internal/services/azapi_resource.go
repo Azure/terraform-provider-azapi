@@ -393,19 +393,16 @@ func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.Val
 		}
 	}
 
-	if !dynamic.IsFullyKnown(config.Body) {
-		return
-	}
-
-	body := make(map[string]interface{})
-	if err := unmarshalBody(config.Body, &body); err != nil {
-		response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
-		return
-	}
-
-	if diags := validateDuplicatedDefinitions(config, body); diags.HasError() {
+	if diags := validateDuplicatedDefinitions(config, config.Body); diags.HasError() {
 		response.Diagnostics.Append(diags...)
 		return
+	}
+
+	if config.SchemaValidationEnabled.IsNull() || config.SchemaValidationEnabled.ValueBool() {
+		if err := schemaValidate(config); err != nil {
+			response.Diagnostics.AddError("Invalid configuration", err.Error())
+			return
+		}
 	}
 }
 
@@ -481,41 +478,16 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	if dynamic.IsFullyKnown(plan.Body) {
-		body := make(map[string]interface{})
-		if err := unmarshalBody(config.Body, &body); err != nil {
-			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
-			return
-		}
-
-		plan.Tags = r.tagsWithDefaultTags(config.Tags, body, state, resourceDef)
+		plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
 		if state == nil || !state.Tags.Equal(plan.Tags) {
 			plan.Output = basetypes.NewDynamicUnknown()
 		}
 
-		// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
-		locationValue := plan.Location
-		// For the following cases, we need to use the location in config as the specified location
-		// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
-		// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
-		if locationValue.IsUnknown() || config.Location.IsNull() {
-			locationValue = config.Location
-		}
 		// locationWithDefaultLocation will return the location in config if it's not null, otherwise it will return the default location if it supports location
-		plan.Location = r.locationWithDefaultLocation(locationValue, body, state, resourceDef)
+		plan.Location = r.locationWithDefaultLocation(config.Location, plan.Location, state, config.Body, resourceDef)
 		if state != nil && location.Normalize(state.Location.ValueString()) != location.Normalize(plan.Location.ValueString()) {
 			// if the location is changed, replace the resource
 			response.RequiresReplace.Append(path.Root("location"))
-		}
-		if plan.SchemaValidationEnabled.ValueBool() {
-			if response.Diagnostics.Append(expandBody(body, *plan)...); response.Diagnostics.HasError() {
-				return
-			}
-			body["name"] = plan.Name.ValueString()
-			err = schemaValidation(azureResourceType, apiVersion, resourceDef, body)
-			if err != nil {
-				response.Diagnostics.AddError("Invalid configuration", err.Error())
-				return
-			}
 		}
 
 		// Check if any paths in replace_triggers_refs have changed
@@ -1083,55 +1055,99 @@ func (r *AzapiResource) nameWithDefaultNaming(config types.String) (types.String
 	}
 }
 
-func (r *AzapiResource) tagsWithDefaultTags(config types.Map, body map[string]interface{}, state *AzapiResourceModel, resourceDef *aztypes.ResourceType) types.Map {
-	if config.IsNull() {
-		switch {
-		case body["tags"] != nil:
-			return tags.FlattenTags(body["tags"])
-		case len(r.ProviderData.Features.DefaultTags) != 0 && canResourceHaveProperty(resourceDef, "tags"):
-			defaultTags := r.ProviderData.Features.DefaultTags
-			if state == nil || state.Tags.IsNull() {
-				return tags.FlattenTags(defaultTags)
-			} else {
-				currentTags := tags.ExpandTags(state.Tags)
-				if !reflect.DeepEqual(currentTags, defaultTags) {
-					return tags.FlattenTags(defaultTags)
-				} else {
-					return state.Tags
-				}
+func (r *AzapiResource) tagsWithDefaultTags(config types.Map, state *AzapiResourceModel, body types.Dynamic, resourceDef *aztypes.ResourceType) types.Map {
+	// 1. use the tags in config if it's not null
+	if !config.IsNull() {
+		return config
+	}
+
+	// 2. use the tags in body if it's not null
+	if !body.IsNull() && !body.IsUnknown() && !body.IsUnderlyingValueNull() && !body.IsUnderlyingValueUnknown() {
+		if bodyObject, ok := body.UnderlyingValue().(types.Object); ok {
+			if v, ok := bodyObject.Attributes()["tags"]; ok && v != nil {
+				return tags.FlattenTags(v)
 			}
-		// To suppress the diff of config: tags = null and state: tags = {}
-		case state != nil && !state.Tags.IsUnknown() && len(state.Tags.Elements()) == 0:
-			return state.Tags
 		}
 	}
-	return config
+
+	// 3. use the default tags if it's not null and the resource supports tags
+	if len(r.ProviderData.Features.DefaultTags) != 0 && canResourceHaveProperty(resourceDef, "tags") {
+		defaultTags := r.ProviderData.Features.DefaultTags
+
+		// if it's a new resource or the tags in state is null, use the default tags
+		if state == nil || state.Tags.IsNull() {
+			return tags.FlattenTags(defaultTags)
+		}
+
+		// if the tags in state is not null and the tags in state is not equal to the default tags, use the default tags
+		currentTags := tags.ExpandTags(state.Tags)
+		if !reflect.DeepEqual(currentTags, defaultTags) {
+			return tags.FlattenTags(defaultTags)
+		}
+
+		return state.Tags
+	}
+
+	// 4. To suppress the diff of config: tags = null and state: tags = {}
+	if state != nil && !state.Tags.IsUnknown() && len(state.Tags.Elements()) == 0 {
+		return state.Tags
+	}
+
+	// 5. return null if all the above cases are null
+	return types.MapNull(types.StringType)
 }
 
-func (r *AzapiResource) locationWithDefaultLocation(config types.String, body map[string]interface{}, state *AzapiResourceModel, resourceDef *aztypes.ResourceType) types.String {
-	if config.IsNull() {
-		switch {
-		case body["location"] != nil:
-			return types.StringValue(body["location"].(string))
-		case len(r.ProviderData.Features.DefaultLocation) != 0 && canResourceHaveProperty(resourceDef, "location"):
-			defaultLocation := r.ProviderData.Features.DefaultLocation
-			if state == nil || state.Location.IsNull() {
-				return types.StringValue(defaultLocation)
-			} else {
-				currentLocation := state.Location.ValueString()
-				if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
-					return types.StringValue(defaultLocation)
-				} else {
-					return state.Location
+func (r *AzapiResource) locationWithDefaultLocation(configLocation types.String, planLocation types.String, state *AzapiResourceModel, body types.Dynamic, resourceDef *aztypes.ResourceType) types.String {
+	// location field has a field level plan modifier which suppresses the diff if the location is not actually changed
+	config := planLocation
+	// For the following cases, we need to use the location in config as the specified location
+	// case 1. To create a new resource, the location is not specified in config, then the planned location will be unknown
+	// case 2. To update a resource, the location is not specified in config, then the planned location will be the state location
+	if config.IsUnknown() || configLocation.IsNull() {
+		config = configLocation
+	}
+
+	// 1. use the location in config if it's not null
+	if !config.IsNull() {
+		return config
+	}
+
+	// 2. use the location in body if it's not null
+	if !body.IsNull() && !body.IsUnknown() && !body.IsUnderlyingValueNull() && !body.IsUnderlyingValueUnknown() {
+		if bodyObject, ok := body.UnderlyingValue().(types.Object); ok {
+			if v, ok := bodyObject.Attributes()["location"]; ok && v != nil {
+				if strV, ok := v.(types.String); ok {
+					return strV
 				}
 			}
-		// To suppress the diff of config: location = null and state: location = ""
-		// This case happens when upgrading resources which doesn't support location from terraform-plugin-sdk built azapi provider
-		case state != nil && !state.Location.IsUnknown() && state.Location.ValueString() == "":
-			return state.Location
 		}
 	}
-	return config
+
+	// 3. use the default location if it's not null and the resource supports location
+	if len(r.ProviderData.Features.DefaultLocation) != 0 && canResourceHaveProperty(resourceDef, "location") {
+		defaultLocation := r.ProviderData.Features.DefaultLocation
+
+		// if it's a new resource or the location in state is null, use the default location
+		if state == nil || state.Location.IsNull() {
+			return types.StringValue(defaultLocation)
+		}
+
+		// if the location in state is not null and the location in state is not equal to the default location, use the default location
+		currentLocation := state.Location.ValueString()
+		if location.Normalize(currentLocation) != location.Normalize(defaultLocation) {
+			return types.StringValue(defaultLocation)
+		}
+
+		return state.Location
+	}
+
+	// 4. To suppress the diff of config: location = null and state: location = ""
+	if state != nil && !state.Location.IsUnknown() && state.Location.ValueString() == "" {
+		return state.Location
+	}
+
+	// 5. return null if all the above cases are null
+	return types.StringNull()
 }
 
 func (r *AzapiResource) defaultAzapiResourceModel() AzapiResourceModel {
@@ -1195,16 +1211,22 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 	return diag.Diagnostics{}
 }
 
-func validateDuplicatedDefinitions(model *AzapiResourceModel, body map[string]interface{}) diag.Diagnostics {
+func validateDuplicatedDefinitions(model *AzapiResourceModel, body types.Dynamic) diag.Diagnostics {
 	diags := diag.Diagnostics{}
-	if !model.Tags.IsNull() && !model.Tags.IsUnknown() && body["tags"] != nil {
-		diags.AddError("Invalid configuration", `can't specify both the argument "tags" and "tags" in the argument "body"`)
+	if body.IsNull() || body.IsUnknown() || body.IsUnderlyingValueNull() || body.IsUnderlyingValueUnknown() {
+		return diags
 	}
-	if !model.Location.IsNull() && !model.Location.IsUnknown() && body["location"] != nil {
-		diags.AddError("Invalid configuration", `can't specify both the argument "location" and "location" in the argument "body"`)
-	}
-	if !model.Identity.IsNull() && !model.Identity.IsUnknown() && body["identity"] != nil {
-		diags.AddError("Invalid configuration", `can't specify both the argument "identity" and "identity" in the argument "body"`)
+
+	if bodyObject, ok := body.UnderlyingValue().(types.Object); ok {
+		if !model.Tags.IsNull() && !model.Tags.IsUnknown() && bodyObject.Attributes()["tags"] != nil {
+			diags.AddError("Invalid configuration", `can't specify both the argument "tags" and "tags" in the argument "body"`)
+		}
+		if !model.Location.IsNull() && !model.Location.IsUnknown() && bodyObject.Attributes()["location"] != nil {
+			diags.AddError("Invalid configuration", `can't specify both the argument "location" and "location" in the argument "body"`)
+		}
+		if !model.Identity.IsNull() && !model.Identity.IsUnknown() && bodyObject.Attributes()["identity"] != nil {
+			diags.AddError("Invalid configuration", `can't specify both the argument "identity" and "identity" in the argument "body"`)
+		}
 	}
 	return diags
 }

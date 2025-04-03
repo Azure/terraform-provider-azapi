@@ -41,6 +41,26 @@ func FlattenTags(input interface{}) types.Map {
 		for k, v := range inputMap {
 			tagsMap[k] = basetypes.NewStringValue(v)
 		}
+	case types.Map:
+		for k, v := range inputMap.Elements() {
+			if v.IsNull() {
+				tagsMap[k] = basetypes.NewStringNull()
+				continue
+			}
+			if strV, ok := v.(types.String); ok {
+				tagsMap[k] = strV
+			}
+		}
+	case types.Object:
+		for k, v := range inputMap.Attributes() {
+			if v.IsNull() {
+				tagsMap[k] = basetypes.NewStringNull()
+				continue
+			}
+			if strV, ok := v.(types.String); ok {
+				tagsMap[k] = strV
+			}
+		}
 	}
 	return basetypes.NewMapValueMust(types.StringType, tagsMap)
 }

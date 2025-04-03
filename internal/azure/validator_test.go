@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/utils"
 )
 
@@ -234,7 +235,7 @@ func Test_BodyValidation(t *testing.T) {
 				"operator": "GreaterThanOrEqualTo",	
 				"threshold": 50,
 				"thresholdType": "Actual",	
-				"contactEmails": nil,
+				"contactEmails": null,
 				"contactGroups": []
 			}
 		},
@@ -258,7 +259,7 @@ func Test_BodyValidation(t *testing.T) {
 		"workload": "Production",
 		"billingScope": "Shared",
 		"additionalProperties": {
-			"managementGroupId": nil,
+			"managementGroupId": null,
 			"tags": {
 				"key1": "value1",
 				"key2": "value2"
@@ -305,8 +306,10 @@ func Test_BodyValidation(t *testing.T) {
 	for index, data := range testData {
 		resourceType := utils.GetResourceType(data.Id)
 
-		var body interface{}
-		_ = json.Unmarshal([]byte(data.Body), &body)
+		body, err := dynamic.FromJSONImplied([]byte(data.Body))
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		def, err := azure.GetResourceDefinition(resourceType, data.ApiVersion)
 		if err != nil {

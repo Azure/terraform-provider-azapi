@@ -44,7 +44,7 @@ resource "azapi_resource" "vnet" {
         addressPrefixes = ["10.0.0.0/16"]
       }
       privateEndpointVNetPolicies = "Disabled"
-      subnets = []
+      subnets                     = []
     }
   }
 
