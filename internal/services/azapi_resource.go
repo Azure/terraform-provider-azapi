@@ -789,6 +789,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		return
 	}
 
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	ctx, cancel := context.WithTimeout(ctx, readTimeout)
 	defer cancel()
 
@@ -935,10 +936,11 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		return
 	}
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()
+
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
 	lockIds := AsStringList(model.Locks)
 	slices.Sort(lockIds)
