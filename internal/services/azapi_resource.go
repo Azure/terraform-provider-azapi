@@ -381,6 +381,9 @@ func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.Val
 	if config == nil {
 		return
 	}
+	if config.Type.IsUnknown() {
+		return
+	}
 
 	resourceType := config.Type.ValueString()
 
