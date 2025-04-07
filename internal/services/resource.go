@@ -70,20 +70,25 @@ func schemaValidate(config *AzapiResourceModel) error {
 
 			if !config.Identity.IsNull() {
 				identityAttributeTypes := map[string]attr.Type{
-					"type":                   types.StringType,
-					"userAssignedIdentities": types.MapType{ElemType: types.DynamicType},
+					"type": types.StringType,
 				}
-
 				identityModel := identity.FromList(config.Identity)
-				elements := make(map[string]attr.Value)
-				identityIds := identityModel.IdentityIDs.Elements()
-				for _, identityId := range identityIds {
-					elements[identityId.(types.String).ValueString()] = types.DynamicNull()
+				if len(identityModel.IdentityIDs.Elements()) != 0 {
+					identityAttributeTypes["userAssignedIdentities"] = types.MapType{ElemType: types.DynamicType}
+					elements := make(map[string]attr.Value)
+					identityIds := identityModel.IdentityIDs.Elements()
+					for _, identityId := range identityIds {
+						elements[identityId.(types.String).ValueString()] = types.DynamicNull()
+					}
+					attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
+						"type":                   identityModel.Type,
+						"userAssignedIdentities": types.MapValueMust(types.DynamicType, elements),
+					})
+				} else {
+					attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
+						"type": identityModel.Type,
+					})
 				}
-				attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
-					"type":                   identityModel.Type,
-					"userAssignedIdentities": types.MapValueMust(types.DynamicType, elements),
-				})
 				attributeTypes["identity"] = types.ObjectType{AttrTypes: identityAttributeTypes}
 			}
 
