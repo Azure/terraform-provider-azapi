@@ -558,6 +558,32 @@ func TestAccGenericResource_defaultOutput(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_moveResource(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.moveResourceSetup(data),
+			Check:             resource.ComposeTestCheckFunc(),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveResourceStartMoving(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveResourceUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -1975,6 +2001,102 @@ resource "azapi_resource" "test" {
       }
     }
   }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceSetup(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_cognitive_account" "test" {
+  name                = "acctest%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  kind                = "Face"
+  sku_name            = "S0"
+  tags = {
+    Acceptance = "Test"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceStartMoving(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+moved {
+  from = azurerm_cognitive_account.test
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "Face"
+    properties = {
+      allowedFqdnList               = []
+      disableLocalAuth              = false
+      dynamicThrottlingEnabled      = false
+      publicNetworkAccess           = "Enabled"
+      restrictOutboundNetworkAccess = false
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  tags = {
+    Acceptance = "Test"
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+moved {
+  from = azurerm_cognitive_account.test
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "Face"
+    properties = {
+      allowedFqdnList               = []
+      disableLocalAuth              = false
+      dynamicThrottlingEnabled      = false
+      publicNetworkAccess           = "Enabled"
+      restrictOutboundNetworkAccess = false
+      restore                       = null
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  tags = {
+    Acceptance = "Test"
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
 }
 `, r.template(data), data.RandomString)
 }

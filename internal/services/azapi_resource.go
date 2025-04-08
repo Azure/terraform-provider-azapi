@@ -886,6 +886,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 			return
 		}
 		state.Body = payload
+		response.Diagnostics.Append(response.Private.SetKey(ctx, FlagMoveState, []byte("false"))...)
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
