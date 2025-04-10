@@ -2,6 +2,7 @@
 
 ENHANCEMENTS:
 - `azapi_resource` resource: Support schema validation in `terraform validate`.
+- `azapi_resource` resource: Preflight validation supports nested resources.
 
 BUG FIXES:
 - Fix a bug that `azapi_update_resource` resource produced inconsistent results when only `error_message_regex` is changed.

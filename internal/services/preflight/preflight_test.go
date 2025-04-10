@@ -33,6 +33,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.Tenant},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
@@ -42,6 +43,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.ManagementGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
@@ -51,6 +53,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Resources/resourceGroups@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.Subscription},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
@@ -60,6 +63,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Network/virtualNetworks@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
@@ -69,6 +73,7 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.Tenant, aztypes.ManagementGroup},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
@@ -78,11 +83,42 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 
 		{
 			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Billing/billingAccounts@2000-01-01",
 				ScopeTypes: []aztypes.ScopeType{aztypes.Extension},
 			},
 			SubscriptionId: "00000000-0000-0000-0000-000000000000",
 			Expected:       "",
 			ExpectedErr:    true,
+		},
+
+		{
+			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Network/virtualNetworks/subnets@2000-01-01",
+				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
+			},
+			SubscriptionId: "00000000-0000-0000-0000-000000000000",
+			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/.+/providers/Microsoft.Network/virtualNetworks/.+",
+			ExpectedErr:    false,
+		},
+
+		{
+			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
+				ScopeTypes: []aztypes.ScopeType{aztypes.ResourceGroup},
+			},
+			SubscriptionId: "00000000-0000-0000-0000-000000000000",
+			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/.+/providers/Microsoft.Network/virtualNetworks/.+/subnets/.+",
+			ExpectedErr:    false,
+		},
+
+		{
+			ResourceDef: &aztypes.ResourceType{
+				Name:       "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroups@2000-01-01",
+				ScopeTypes: []aztypes.ScopeType{aztypes.Subscription},
+			},
+			SubscriptionId: "00000000-0000-0000-0000-000000000000",
+			ExpectedReg:    "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/virtualNetworks/.+/subnets/.+",
+			ExpectedErr:    false,
 		},
 	}
 
@@ -103,74 +139,44 @@ func Test_ParentIdPlaceholder(t *testing.T) {
 	}
 }
 
-func Test_IsSupported(t *testing.T) {
+func Test_ScopeID(t *testing.T) {
 	testcases := []struct {
-		ParentId     string
-		ResourceType string
-		Expected     bool
+		ResourceId      string
+		ExpectedScopeId string
 	}{
 		{
-			// resource type version is not specified
-			ParentId:     "",
-			ResourceType: "Microsoft.Network/virtualNetworks",
-			Expected:     false,
+			ResourceId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet",
+			ExpectedScopeId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
 		},
-
 		{
-			ParentId:     "",
-			ResourceType: "Microsoft.Network/virtualNetworks@2020-06-01",
-			Expected:     true,
+			ResourceId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg/providers/Microsoft.Network/virtualNetworks/vnet",
+			ExpectedScopeId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
 		},
-
 		{
-			// resource is not top level resource
-			ParentId:     "",
-			ResourceType: "Microsoft.Network/virtualNetworks/subnets@2020-06-01",
-			Expected:     false,
+			ResourceId:      "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
+			ExpectedScopeId: "/subscriptions/00000000-0000-0000-0000-000000000000",
 		},
-
 		{
-			// unknown deploy scope
-			ParentId:     "",
-			ResourceType: "Microsoft.Resources/deployments@2020-06-01",
-			Expected:     false,
+			ResourceId:      "/subscriptions/00000000-0000-0000-0000-000000000000",
+			ExpectedScopeId: "/",
 		},
-
 		{
-			ParentId:     "",
-			ResourceType: "Microsoft.Resources/resourceGroups@2020-06-01",
-			Expected:     true,
+			ResourceId:      "/providers/Microsoft.Management/managementGroups/azapifakemg",
+			ExpectedScopeId: "/",
 		},
-
 		{
-			ParentId:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
-			ResourceType: "Microsoft.Network/virtualNetworks@2020-06-01",
-			Expected:     true,
-		},
-
-		{
-			ParentId:     "/subscriptions/00000000-0000-0000-0000-000000000000",
-			ResourceType: "Microsoft.Network/virtualNetworks@2020-06-01",
-			Expected:     true,
-		},
-
-		{
-			ParentId:     "/",
-			ResourceType: "Microsoft.Network/virtualNetworks@2020-06-01",
-			Expected:     true,
-		},
-
-		{
-			ParentId:     "/providers/Microsoft.Management/managementGroups/azapifakemg",
-			ResourceType: "Microsoft.Network/virtualNetworks@2020-06-01",
-			Expected:     true,
+			ResourceId:      "/providers/Microsoft.Management/managementGroups/azapifakemg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet",
+			ExpectedScopeId: "/providers/Microsoft.Management/managementGroups/azapifakemg",
 		},
 	}
 
 	for _, testcase := range testcases {
-		actual := IsSupported(testcase.ResourceType, testcase.ParentId)
-		if actual != testcase.Expected {
-			t.Errorf("Expected %v, but got %v", testcase.Expected, actual)
+		actual, err := ScopeID(testcase.ResourceId)
+		if err != nil {
+			t.Errorf("Expected no error, but got %v", err)
+		}
+		if actual != testcase.ExpectedScopeId {
+			t.Errorf("Expected %s, but got %s", testcase.ExpectedScopeId, actual)
 		}
 	}
 }
