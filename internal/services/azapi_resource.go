@@ -535,7 +535,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	if r.ProviderData.Features.EnablePreflight && isNewResource && preflight.IsSupported(plan.Type.ValueString(), plan.ParentID.ValueString()) {
+	if r.ProviderData.Features.EnablePreflight && isNewResource {
 		parentId := plan.ParentID.ValueString()
 		if parentId == "" {
 			placeholder, err := preflight.ParentIdPlaceholder(resourceDef, r.ProviderData.Account.GetSubscriptionId())
