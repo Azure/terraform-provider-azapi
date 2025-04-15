@@ -84,7 +84,7 @@ func (r *AzapiUpdateResource) UpgradeState(ctx context.Context) map[int64]resour
 func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
 		MarkdownDescription: "This resource can manage a subset of any existing Azure resource manager resource's properties.\n\n" +
-			"-> **Note** This resource is used to add or modify properties on an existing resource. When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
+			"-> **Note** This resource is used to add or modify properties on an existing resource. When `azapi_update_resource` is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
 		Description: "This resource can manage a subset of any existing Azure resource manager resource's properties.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
