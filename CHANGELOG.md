@@ -8,6 +8,7 @@ BUG FIXES:
 - Fix a bug that `azapi_update_resource` resource produced inconsistent results when only `error_message_regex` is changed.
 - Fix a bug that `azapi_resource_action` resource could not be migrated correctly when the `body` is empty string.
 - Fix a bug that after moving resource from `azurerm` provider, the `azapi_resource` resource could not be updated correctly.
+- Fix a bug that `azapi_resource` is replaced if the API returns a readonly location.
 
 ## v2.3.0
 FEATURES:

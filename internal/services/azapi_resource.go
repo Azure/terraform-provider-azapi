@@ -1129,7 +1129,12 @@ func (r *AzapiResource) locationWithDefaultLocation(configLocation types.String,
 		}
 	}
 
-	// 3. use the default location if it's not null and the resource supports location
+	// 3. use the state location if it's not specified in config but returned by the API
+	if state != nil && state.Location.ValueString() != "" {
+		return state.Location
+	}
+
+	// 4. use the default location if it's not null and the resource supports location
 	if len(r.ProviderData.Features.DefaultLocation) != 0 && canResourceHaveProperty(resourceDef, "location") {
 		defaultLocation := r.ProviderData.Features.DefaultLocation
 
@@ -1147,12 +1152,12 @@ func (r *AzapiResource) locationWithDefaultLocation(configLocation types.String,
 		return state.Location
 	}
 
-	// 4. To suppress the diff of config: location = null and state: location = ""
+	// 5. To suppress the diff of config: location = null and state: location = ""
 	if state != nil && !state.Location.IsUnknown() && state.Location.ValueString() == "" {
 		return state.Location
 	}
 
-	// 5. return null if all the above cases are null
+	// 6. return null if all the above cases are null
 	return types.StringNull()
 }
 
