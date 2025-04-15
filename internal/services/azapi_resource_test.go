@@ -2121,8 +2121,8 @@ func (r GenericResource) writeOnlyBody(data acceptance.TestData) string {
 %s
 
 variable "sku_name" {
-  type    = string
-  default = "Basic"
+  type      = string
+  default   = "Basic"
   ephemeral = true
 }
 
