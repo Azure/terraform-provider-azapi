@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_password" {
+  description = "Admin password for the database"
+  type        = string
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "msincredible"
-      administratorLoginPassword    = "P@55W0rD!!y0exn"
+      administratorLoginPassword    = var.admin_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Enabled"
