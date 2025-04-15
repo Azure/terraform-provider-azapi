@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -96,6 +97,11 @@ func schemaValidate(config *AzapiResourceModel) error {
 		}
 	} else {
 		bodyToValidate = config.Body
+	}
+
+	bodyToValidate, err = dynamic.MergeDynamic(types.DynamicValue(bodyToValidate), config.WriteOnlyBody)
+	if err != nil {
+		return fmt.Errorf("failed to merge write-only body: %s", err)
 	}
 
 	validateErrors := (*resourceDef).Validate(bodyToValidate, "")
@@ -263,4 +269,24 @@ func unmarshalBody(input types.Dynamic, out interface{}) error {
 		return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
 	}
 	return nil
+}
+
+// ephemeralBodyChangeInPlan checks if the ephemeral_body has changed in the plan modify phase.
+func ephemeralBodyChangeInPlan(ctx context.Context, d PrivateData, ephemeralBody types.Dynamic) (ok bool, diags diag.Diagnostics) {
+	tflog.Warn(ctx, fmt.Sprintf("ephemeral_bodyChangeInPlan: ephemeral_body: %s", ephemeralBody.String()))
+	// 1. ephemeral_body is unknown (e.g. referencing an knonw-after-apply value)
+	if !dynamic.IsFullyKnown(ephemeralBody) {
+		return true, nil
+	}
+
+	// 2. ephemeral_body is known in the config, but has different hash than the private data
+	eb, err := dynamic.ToJSON(ephemeralBody)
+	if err != nil {
+		diags.AddError(
+			`Error to marshal "ephemeral_body"`,
+			err.Error(),
+		)
+		return
+	}
+	return ephemeralBodyPrivateMgr.Diff(ctx, d, eb)
 }

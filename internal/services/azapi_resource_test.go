@@ -584,6 +584,21 @@ func TestAccGenericResource_moveResource(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_writeOnlyBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.writeOnlyBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -2097,6 +2112,32 @@ resource "azapi_resource" "test" {
   ignore_casing             = false
   schema_validation_enabled = true
   ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) writeOnlyBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+variable "sku_name" {
+  type    = string
+  default = "Basic"
+  ephemeral = true
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  write_only_body = {
+    properties = {
+      sku = {
+        name = var.sku_name
+      }
+    }
+  }
 }
 `, r.template(data), data.RandomString)
 }

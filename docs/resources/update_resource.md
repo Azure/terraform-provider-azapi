@@ -144,6 +144,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
+- `write_only_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 
 ### Read-Only
 
