@@ -171,7 +171,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 ### Read-Only
 
-- `id` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+- `id` (String) The ID of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
 	```terraform
