@@ -116,7 +116,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"name": schema.StringAttribute{
