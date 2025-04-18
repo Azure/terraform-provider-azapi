@@ -584,13 +584,13 @@ func TestAccGenericResource_moveResource(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_writeOnlyBody(t *testing.T) {
+func TestAccGenericResource_SensitiveBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.writeOnlyBody(data),
+			Config: r.SensitiveBody(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -2116,7 +2116,7 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString)
 }
 
-func (r GenericResource) writeOnlyBody(data acceptance.TestData) string {
+func (r GenericResource) SensitiveBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
@@ -2131,7 +2131,7 @@ resource "azapi_resource" "test" {
   name      = "acctest%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
-  write_only_body = {
+  sensitive_body = {
     properties = {
       sku = {
         name = var.sku_name

@@ -46,15 +46,15 @@ More information about the ephemeral resource can be found in the [Terraform doc
 
 Write-only arguments let you securely pass temporary values to Terraform's managed resources during an operation without persisting those values to state or plan files.
 
-The AzAPI provider supports `write_only_body` to define attributes that are not stored in the state file, ensuring sensitive information remains secure.
+The AzAPI provider supports `sensitive_body` to define attributes that are not stored in the state file, ensuring sensitive information remains secure.
 
 ### Example
 
-The below example demonstrates how to use the `write_only_body` attribute to create a storage insight configuration.
+The below example demonstrates how to use the `sensitive_body` attribute to create a storage insight configuration.
 
-The `properties.storageAccount.key` acceptes the storage account key, which is sensitive information. To avoid storing this key in the state file, it was retrieved using the `azapi_resource_action` ephemeral resource, and passed to the `write_only_body` attribute.
+The `properties.storageAccount.key` acceptes the storage account key, which is sensitive information. To avoid storing this key in the state file, it was retrieved using the `azapi_resource_action` ephemeral resource, and passed to the `sensitive_body` attribute.
 
-The `write_only_body` and `body` attributes will be merged into the request body.
+The `sensitive_body` and `body` attributes will be merged into the request body.
 
 
 ```hcl
@@ -69,7 +69,7 @@ resource "azapi_resource" "storageInsightConfig" {
       }
     }
   }
-  write_only_body = {
+  sensitive_body = {
     properties = {
       storageAccount = {
         key = ephemeral.azapi_resource_action.listKeys.output.primary_access_key

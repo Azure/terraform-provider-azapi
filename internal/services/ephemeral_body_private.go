@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	pkEphemeralBody = "ephemeral_body"
+	pkEphemeralBody = "sensitive_body"
 )
 
 type PrivateData interface {
@@ -30,7 +30,7 @@ func (m EphemeralBodyPrivateMgr) Exists(ctx context.Context, d PrivateData) (boo
 	return b != nil, diags
 }
 
-// Set sets the hash of the ephemeral_body to the private state.
+// Set sets the hash of the sensitive_body to the private state.
 // If `ebody` is nil, it removes the hash from the private state.
 func (m EphemeralBodyPrivateMgr) Set(ctx context.Context, d PrivateData, ebody []byte) (diags diag.Diagnostics) {
 	if ebody == nil {
@@ -42,7 +42,7 @@ func (m EphemeralBodyPrivateMgr) Set(ctx context.Context, d PrivateData, ebody [
 	h := sha256.New()
 	if _, err := h.Write(ebody); err != nil {
 		diags.AddError(
-			`Error to hash "ephemeral_body"`,
+			`Error to hash "sensitive_body"`,
 			err.Error(),
 		)
 		return
@@ -55,7 +55,7 @@ func (m EphemeralBodyPrivateMgr) Set(ctx context.Context, d PrivateData, ebody [
 	})
 	if err != nil {
 		diags.AddError(
-			`Error to marshal "ephemeral_body" private data`,
+			`Error to marshal "sensitive_body" private data`,
 			err.Error(),
 		)
 		return
@@ -64,7 +64,7 @@ func (m EphemeralBodyPrivateMgr) Set(ctx context.Context, d PrivateData, ebody [
 	return d.SetKey(ctx, pkEphemeralBody, b)
 }
 
-// Diff tells whether the ephemeral_body is different than the hash stored in the private state.
+// Diff tells whether the sensitive_body is different than the hash stored in the private state.
 // In case private state doesn't have the record, regard the record as "nil" (i.e. will return true if ebody is non-nil).
 // In case private state has the record (guaranteed to be non-nil), while ebody is nil, it also returns true.
 func (m EphemeralBodyPrivateMgr) Diff(ctx context.Context, d PrivateData, ebody []byte) (bool, diag.Diagnostics) {
@@ -79,7 +79,7 @@ func (m EphemeralBodyPrivateMgr) Diff(ctx context.Context, d PrivateData, ebody 
 	var mm map[string]interface{}
 	if err := json.Unmarshal(b, &mm); err != nil {
 		diags.AddError(
-			`Error to unmarshal "ephemeral_body" private data`,
+			`Error to unmarshal "sensitive_body" private data`,
 			err.Error(),
 		)
 		return false, diags
@@ -87,7 +87,7 @@ func (m EphemeralBodyPrivateMgr) Diff(ctx context.Context, d PrivateData, ebody 
 	privateHashEnc, ok := mm["hash"]
 	if !ok {
 		diags.AddError(
-			`Invalid "ephemeral_body" private data`,
+			`Invalid "sensitive_body" private data`,
 			`Key "hash" not found`,
 		)
 		return false, diags
@@ -96,7 +96,7 @@ func (m EphemeralBodyPrivateMgr) Diff(ctx context.Context, d PrivateData, ebody 
 	h := sha256.New()
 	if _, err := h.Write(ebody); err != nil {
 		diags.AddError(
-			`Error to hash "ephemeral_body"`,
+			`Error to hash "sensitive_body"`,
 			err.Error(),
 		)
 		return false, diags

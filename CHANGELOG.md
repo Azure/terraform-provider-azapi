@@ -3,7 +3,7 @@
 ENHANCEMENTS:
 - `azapi_resource` resource: Support schema validation in `terraform validate`.
 - `azapi_resource` resource: Preflight validation supports nested resources.
-- `azapi_resource`, `azapi_update_resource` resources: Support `write_only_body` field, which is used to specify the write-only properties in the request body.
+- `azapi_resource`, `azapi_update_resource` resources: Support `sensitive_body` field, which is used to specify the write-only properties in the request body.
 
 BUG FIXES:
 - Fix a bug that `azapi_update_resource` resource produced inconsistent results when only `error_message_regex` is changed.

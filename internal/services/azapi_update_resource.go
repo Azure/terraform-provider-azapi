@@ -40,7 +40,7 @@ type AzapiUpdateResourceModel struct {
 	ResourceID            types.String     `tfsdk:"resource_id"`
 	Type                  types.String     `tfsdk:"type"`
 	Body                  types.Dynamic    `tfsdk:"body"`
-	WriteOnlyBody         types.Dynamic    `tfsdk:"write_only_body"`
+	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
 	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
 	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
@@ -154,10 +154,10 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				},
 			},
 
-			"write_only_body": schema.DynamicAttribute{
+			"sensitive_body": schema.DynamicAttribute{
 				Optional:            true,
 				WriteOnly:           true,
-				MarkdownDescription: docstrings.WriteOnlyBody(),
+				MarkdownDescription: docstrings.SensitiveBody(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
@@ -305,12 +305,12 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		}
 
 		// Set output as unknown to trigger a plan diff, if ephemral body has changed
-		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.WriteOnlyBody)
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
 		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
 			return
 		}
 		if diff {
-			tflog.Info(ctx, `"write_only_body" has changed`)
+			tflog.Info(ctx, `"sensitive_body" has changed`)
 			plan.Output = types.DynamicUnknown()
 		}
 	}
@@ -413,13 +413,13 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		requestBody = existing
 	}
 
-	writeOnlyBody := make(map[string]interface{})
-	if err := unmarshalBody(config.WriteOnlyBody, &writeOnlyBody); err != nil {
-		diagnostics.AddError("Invalid write_only_body", fmt.Sprintf(`The argument "write_only_body" is invalid: %s`, err.Error()))
+	SensitiveBody := make(map[string]interface{})
+	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
 		return
 	}
-	if writeOnlyBody != nil {
-		requestBody = utils.MergeObject(requestBody, writeOnlyBody)
+	if SensitiveBody != nil {
+		requestBody = utils.MergeObject(requestBody, SensitiveBody)
 	}
 
 	if id.ResourceDef != nil {
@@ -469,9 +469,9 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 
 	diagnostics.Append(state.Set(ctx, model)...)
 
-	writeOnlyBytes, err := dynamic.ToJSON(config.WriteOnlyBody)
+	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
 	if err != nil {
-		diagnostics.AddError("Invalid write_only_body", err.Error())
+		diagnostics.AddError("Invalid sensitive_body", err.Error())
 		return
 	}
 	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)

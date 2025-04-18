@@ -160,13 +160,13 @@ func TestAccGenericUpdateResource_queryParameters(t *testing.T) {
 	})
 }
 
-func TestAccGenericUpdateResource_writeOnlyBody(t *testing.T) {
+func TestAccGenericUpdateResource_SensitiveBody(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.writeOnlyBody(data),
+			Config: r.SensitiveBody(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -663,7 +663,7 @@ resource "azapi_update_resource" "test" {
 `, r.template(data), data.RandomString)
 }
 
-func (r GenericUpdateResource) writeOnlyBody(data acceptance.TestData) string {
+func (r GenericUpdateResource) SensitiveBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
@@ -684,7 +684,7 @@ resource "azapi_resource" "automationAccount" {
 resource "azapi_update_resource" "test" {
   type        = "Microsoft.Automation/automationAccounts@2023-11-01"
   resource_id = azapi_resource.automationAccount.id
-  write_only_body = {
+  sensitive_body = {
     properties = {
       publicNetworkAccess = true
     }
