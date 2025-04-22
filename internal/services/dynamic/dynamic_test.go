@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/stretchr/testify/require"
@@ -681,6 +682,45 @@ func TestFromJSONImplied(t *testing.T) {
 			actual, err := FromJSONImplied([]byte(tt.input))
 			require.NoError(t, err)
 			require.Equal(t, tt.expect, actual)
+		})
+	}
+}
+
+func Test_MergeDynamic(t *testing.T) {
+	testcases := []struct {
+		name   string
+		lhs    string
+		rhs    string
+		expect string
+	}{
+		{
+			name:   "basic",
+			lhs:    `{"a": 1, "b": 2}`,
+			rhs:    `{"b": 3, "c": 4}`,
+			expect: `{"a": 1, "b": 3, "c": 4}`,
+		},
+		{
+			name:   "with unknown values",
+			lhs:    `{"a": 1, "b": 2}`,
+			rhs:    `{"b": 3, "c": "<unknown>"}`,
+			expect: `{"a": 1, "b": 3, "c": "<unknown>"}`,
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			lhs, err := FromJSONImplied([]byte(tc.lhs))
+			require.NoError(t, err)
+			rhs, err := FromJSONImplied([]byte(tc.rhs))
+			require.NoError(t, err)
+
+			out, err := MergeDynamic(lhs, rhs)
+			require.NoError(t, err)
+
+			actual, err := ToJSON(out)
+			require.NoError(t, err)
+
+			require.Equal(t, utils.NormalizeJson(string(actual)), utils.NormalizeJson(tc.expect))
 		})
 	}
 }

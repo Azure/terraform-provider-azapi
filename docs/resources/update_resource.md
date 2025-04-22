@@ -141,6 +141,7 @@ This resource can manage a subset of any existing Azure resource manager resourc
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
+- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
