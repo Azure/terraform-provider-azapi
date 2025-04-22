@@ -40,6 +40,7 @@ type AzapiUpdateResourceModel struct {
 	ResourceID            types.String     `tfsdk:"resource_id"`
 	Type                  types.String     `tfsdk:"type"`
 	Body                  types.Dynamic    `tfsdk:"body"`
+	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
 	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
 	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
@@ -83,7 +84,7 @@ func (r *AzapiUpdateResource) UpgradeState(ctx context.Context) map[int64]resour
 func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
 		MarkdownDescription: "This resource can manage a subset of any existing Azure resource manager resource's properties.\n\n" +
-			"-> **Note** This resource is used to add or modify properties on an existing resource. When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
+			"-> **Note** This resource is used to add or modify properties on an existing resource. When `azapi_update_resource` is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
 		Description: "This resource can manage a subset of any existing Azure resource manager resource's properties.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -151,6 +152,12 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Validators: []validator.Dynamic{
 					myvalidator.DynamicIsNotStringValidator(),
 				},
+			},
+
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
@@ -288,17 +295,31 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	} else {
+	// Output is a computed field, it defaults to unknown if there's any plan change
+	// It sets to the state if the state exists, and will set to unknown if the output needs to be updated
+	if state != nil {
 		plan.Output = state.Output
+
+		if !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type) {
+			plan.Output = basetypes.NewDynamicUnknown()
+		}
+
+		// Set output as unknown to trigger a plan diff, if ephemral body has changed
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
+		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
+			return
+		}
+		if diff {
+			tflog.Info(ctx, `"sensitive_body" has changed`)
+			plan.Output = types.DynamicUnknown()
+		}
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 }
 
 func (r *AzapiUpdateResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
 func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
@@ -317,11 +338,12 @@ func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.Updat
 	}
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
 
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
-func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics) {
-	var model AzapiUpdateResourceModel
+func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Config, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics, privateData PrivateData) {
+	var config, model AzapiUpdateResourceModel
+	diagnostics.Append(requestConfig.Get(ctx, &config)...)
 	if diagnostics.Append(plan.Get(ctx, &model)...); diagnostics.HasError() {
 		return
 	}
@@ -385,7 +407,20 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		return
 	}
 
-	requestBody = utils.MergeObject(existing, requestBody)
+	if requestBody != nil {
+		requestBody = utils.MergeObject(existing, requestBody)
+	} else {
+		requestBody = existing
+	}
+
+	SensitiveBody := make(map[string]interface{})
+	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
+		return
+	}
+	if SensitiveBody != nil {
+		requestBody = utils.MergeObject(requestBody, SensitiveBody)
+	}
 
 	if id.ResourceDef != nil {
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
@@ -433,6 +468,14 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.Output = output
 
 	diagnostics.Append(state.Set(ctx, model)...)
+
+	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+	if err != nil {
+		diagnostics.AddError("Invalid sensitive_body", err.Error())
+		return
+	}
+	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
+
 }
 
 func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {

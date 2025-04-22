@@ -51,6 +51,7 @@ const FlagMoveState = "move_state"
 
 type AzapiResourceModel struct {
 	Body                          types.Dynamic    `tfsdk:"body"`
+	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
 	ID                            types.String     `tfsdk:"id"`
 	Identity                      types.List       `tfsdk:"identity"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
@@ -116,7 +117,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.ID(),
 			},
 
 			"name": schema.StringAttribute{
@@ -172,6 +173,12 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Validators: []validator.Dynamic{
 					myvalidator.DynamicIsNotStringValidator(),
 				},
+			},
+
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
 			},
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
@@ -480,6 +487,16 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
+	// Set output as unknown to trigger a plan diff, if ephemral body has changed
+	diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
+	if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
+		return
+	}
+	if diff {
+		tflog.Info(ctx, `"sensitive_body" has changed`)
+		plan.Output = types.DynamicUnknown()
+	}
+
 	if dynamic.IsFullyKnown(plan.Body) {
 		plan.Tags = r.tagsWithDefaultTags(config.Tags, state, config.Body, resourceDef)
 		if state == nil || !state.Tags.Equal(plan.Tags) {
@@ -559,7 +576,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 }
 
 func (r *AzapiResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
 func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
@@ -577,11 +594,12 @@ func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateReque
 		return
 	}
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
-func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan, responseState *tfsdk.State, diagnostics *diag.Diagnostics) {
-	var plan, state *AzapiResourceModel
+func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Config, requestPlan tfsdk.Plan, responseState *tfsdk.State, diagnostics *diag.Diagnostics, privateData PrivateData) {
+	var config, plan, state *AzapiResourceModel
+	diagnostics.Append(requestConfig.Get(ctx, &config)...)
 	diagnostics.Append(requestPlan.Get(ctx, &plan)...)
 	diagnostics.Append(responseState.Get(ctx, &state)...)
 	if diagnostics.HasError() {
@@ -643,6 +661,12 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 	if diagnostics.Append(expandBody(body, *plan)...); diagnostics.HasError() {
 		return
 	}
+	SensitiveBody := make(map[string]interface{})
+	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
+		return
+	}
+	body = utils.MergeObject(body, SensitiveBody).(map[string]interface{})
 
 	if !isNewResource {
 		// handle the case that identity block was once set, now it's removed
@@ -750,6 +774,13 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestPlan tfsdk.Plan
 		}
 	}
 	diagnostics.Append(responseState.Set(ctx, plan)...)
+
+	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+	if err != nil {
+		diagnostics.AddError("Invalid sensitive_body", err.Error())
+		return
+	}
+	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
 }
 
 func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
