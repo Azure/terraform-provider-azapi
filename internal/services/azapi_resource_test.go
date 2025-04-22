@@ -428,6 +428,20 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_computedLocation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.computedLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_unknownName(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1771,6 +1785,47 @@ resource "azapi_resource" "test" {
     }
   }
   locks = [azurerm_machine_learning_workspace.test.id]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) computedLocation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "namespace" {
+  type      = "Microsoft.EventHub/namespaces@2022-01-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      disableLocalAuth     = false
+      isAutoInflateEnabled = false
+      publicNetworkAccess  = "Enabled"
+      zoneRedundant        = true
+    }
+    sku = {
+      capacity = 1
+      name     = "Basic"
+      tier     = "Basic"
+    }
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.EventHub/namespaces/authorizationRules@2021-11-01"
+  parent_id = azapi_resource.namespace.id
+  name      = "acctest%[2]s"
+  body = {
+    properties = {
+      rights = [
+        "Listen",
+        "Send",
+        "Manage",
+      ]
+    }
+  }
 }
 `, r.template(data), data.RandomString)
 }
