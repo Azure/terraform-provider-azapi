@@ -3,7 +3,7 @@
 ENHANCEMENTS:
 - `azapi_resource` resource: Support schema validation in `terraform validate`.
 - `azapi_resource` resource: Preflight validation supports nested resources.
-- `azapi` resources/data sources: Support `Supplied-User-Agent` header, which is used to specify the user agent for Azure Verified Modules.
+- `azapi` resources/data sources: Support `Supplied-User-Agent` header, which is used to specify the user agent which is appended to the default user agent.
 - `azapi_resource`, `azapi_update_resource` resources: Support `sensitive_body` field, which is used to specify the write-only properties in the request body.
 
 BUG FIXES:
