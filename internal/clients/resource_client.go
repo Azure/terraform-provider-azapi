@@ -22,9 +22,8 @@ import (
 )
 
 const (
-	moduleName              = "resource"
-	moduleVersion           = "v0.1.0"
-	HeaderSuppliedUserAgent = "Supplied-User-Agent"
+	moduleName    = "resource"
+	moduleVersion = "v0.1.0"
 )
 
 type ResourceClient struct {
@@ -217,10 +216,6 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
-			req.Raw().Header.Set(HeaderUserAgent, value)
-			continue
-		}
 		req.Raw().Header.Set(key, value)
 	}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -299,10 +294,6 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceID s
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
-			req.Raw().Header.Set(HeaderUserAgent, value)
-			continue
-		}
 		req.Raw().Header.Set(key, value)
 	}
 	return req, nil
@@ -400,10 +391,6 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
-			req.Raw().Header.Set(HeaderUserAgent, value)
-			continue
-		}
 		req.Raw().Header.Set(key, value)
 	}
 	return req, nil
@@ -516,10 +503,6 @@ func (client *ResourceClient) actionCreateRequest(ctx context.Context, resourceI
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
-			req.Raw().Header.Set(HeaderUserAgent, value)
-			continue
-		}
 		req.Raw().Header.Set(key, value)
 	}
 	if method != "GET" && body != nil {
@@ -599,10 +582,6 @@ func (client *ResourceClient) List(ctx context.Context, url string, apiVersion s
 				}
 				req.Raw().URL.RawQuery = reqQP.Encode()
 				for key, value := range options.Headers {
-					if strings.EqualFold(key, HeaderSuppliedUserAgent) {
-						req.Raw().Header.Set(HeaderUserAgent, value)
-						continue
-					}
 					req.Raw().Header.Set(key, value)
 				}
 				request = req
