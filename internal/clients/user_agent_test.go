@@ -1,9 +1,10 @@
 package clients
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 func Test_UserAgentPolicy(t *testing.T) {
