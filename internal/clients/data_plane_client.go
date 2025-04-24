@@ -152,8 +152,7 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		// AVM-User-Agent is a special header that is used by the Azure Verified Module (AVM) to specify the extra user agent
-		if strings.EqualFold(key, HeaderAVMUserAgent) {
+		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
 			req.Raw().Header.Set(HeaderUserAgent, value)
 			continue
 		}
@@ -209,8 +208,7 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		// AVM-User-Agent is a special header that is used by the Azure Verified Module (AVM) to specify the extra user agent
-		if strings.EqualFold(key, HeaderAVMUserAgent) {
+		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
 			req.Raw().Header.Set(HeaderUserAgent, value)
 			continue
 		}
@@ -253,8 +251,7 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		// AVM-User-Agent is a special header that is used by the Azure Verified Module (AVM) to specify the extra user agent
-		if strings.EqualFold(key, HeaderAVMUserAgent) {
+		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
 			req.Raw().Header.Set(HeaderUserAgent, value)
 			continue
 		}
@@ -309,8 +306,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	for key, value := range options.Headers {
-		// AVM-User-Agent is a special header that is used by the Azure Verified Module (AVM) to specify the extra user agent
-		if strings.EqualFold(key, HeaderAVMUserAgent) {
+		if strings.EqualFold(key, HeaderSuppliedUserAgent) {
 			req.Raw().Header.Set(HeaderUserAgent, value)
 			continue
 		}
