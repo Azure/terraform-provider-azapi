@@ -513,7 +513,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.OIDCRequestURL = types.StringValue(v)
 		} else if v := os.Getenv("SYSTEM_OIDCREQUESTURI"); v != "" {
 			model.OIDCRequestURL = types.StringValue(v)
-		} 
+		}
 	}
 
 	if model.OIDCToken.IsNull() {
@@ -800,14 +800,16 @@ func buildChainedTokenCredential(model providerData, options azidentity.DefaultA
 	log.Printf("[DEBUG] building chained token credential")
 	var creds []azcore.TokenCredential
 
-	if model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool() {
+	if (model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool()) && model.OIDCAzureServiceConnectionID.ValueString() == "" {
 		log.Printf("[DEBUG] oidc credential or AKS Workload Identity enabled")
 		if cred, err := buildOidcCredential(model, options); err == nil {
 			creds = append(creds, cred)
 		} else {
 			log.Printf("[DEBUG] failed to initialize oidc credential: %v", err)
 		}
+	}
 
+	if (model.UseOIDC.ValueBool() || model.UseAKSWorkloadIdentity.ValueBool()) && model.OIDCAzureServiceConnectionID.ValueString() != "" {
 		log.Printf("[DEBUG] azure pipelines credential enabled")
 		if cred, err := buildAzurePipelinesCredential(model, options); err == nil {
 			creds = append(creds, cred)
