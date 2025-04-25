@@ -501,7 +501,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.OIDCRequestToken = types.StringValue(v)
 		} else if v := os.Getenv("ACTIONS_ID_TOKEN_REQUEST_TOKEN"); v != "" {
 			model.OIDCRequestToken = types.StringValue(v)
-		} else if v:= os.Getenv("SYSTEM_ACCESSTOKEN"); v != "" {
+		} else if v := os.Getenv("SYSTEM_ACCESSTOKEN"); v != "" {
 			model.OIDCRequestToken = types.StringValue(v)
 		}
 	}
