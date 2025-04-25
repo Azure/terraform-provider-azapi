@@ -22,31 +22,12 @@ func Test_UserAgentPolicy(t *testing.T) {
 			},
 		},
 		{
-			Name: "Request with SuppliedUserAgentHeader",
-			RequestHeaders: map[string]string{
-				HeaderSuppliedUserAgent: "suppliedUserAgent",
-			},
-			ExpectedHeaders: map[string]string{
-				HeaderUserAgent: defaultUserAgent + " suppliedUserAgent",
-			},
-		},
-		{
 			Name: "Request with UserAgent",
 			RequestHeaders: map[string]string{
 				HeaderUserAgent: "customUserAgent",
 			},
 			ExpectedHeaders: map[string]string{
-				HeaderUserAgent: "customUserAgent",
-			},
-		},
-		{
-			Name: "Request with UserAgent and SuppliedUserAgentHeader",
-			RequestHeaders: map[string]string{
-				HeaderUserAgent:         "customUserAgent",
-				HeaderSuppliedUserAgent: "suppliedUserAgent",
-			},
-			ExpectedHeaders: map[string]string{
-				HeaderUserAgent: "customUserAgent suppliedUserAgent",
+				HeaderUserAgent: defaultUserAgent + " customUserAgent",
 			},
 		},
 	}

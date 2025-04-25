@@ -7,8 +7,7 @@ import (
 )
 
 const (
-	HeaderUserAgent         = "User-Agent"
-	HeaderSuppliedUserAgent = "Supplied-User-Agent"
+	HeaderUserAgent = "User-Agent"
 )
 
 type UserAgentPolicy struct {
@@ -16,14 +15,10 @@ type UserAgentPolicy struct {
 }
 
 func (c UserAgentPolicy) Do(req *policy.Request) (*http.Response, error) {
-	userAgent := req.Raw().Header.Get(HeaderUserAgent)
-	if userAgent == "" {
-		userAgent = c.UserAgent
-	}
+	userAgent := c.UserAgent
 
-	if suppliedUserAgent := req.Raw().Header.Get(HeaderSuppliedUserAgent); suppliedUserAgent != "" {
-		userAgent = userAgent + " " + suppliedUserAgent
-		req.Raw().Header.Del(HeaderSuppliedUserAgent)
+	if requestUserAgent := req.Raw().Header.Get(HeaderUserAgent); requestUserAgent != "" {
+		userAgent = userAgent + " " + requestUserAgent
 	}
 
 	req.Raw().Header.Set(HeaderUserAgent, userAgent)
