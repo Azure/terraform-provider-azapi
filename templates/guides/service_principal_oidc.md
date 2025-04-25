@@ -195,7 +195,7 @@ provider "azapi" {
 
 And here is an example of azure-pipelines.yml file:
 
-```shell
+```yaml
   - task: AzureCLI@2
     displayName: Acc Tests with OIDC Azure Pipeline
     inputs:
@@ -214,7 +214,7 @@ And here is an example of azure-pipelines.yml file:
 
 You can also omit some of the environment variables and use the standard `SYSTEM_ACCESSTOKEN` env var name when using the AzureCLI task:
 
-```shell
+```yaml
   - task: AzureCLI@2
     displayName: Acc Tests with OIDC Azure Pipeline
     inputs:
