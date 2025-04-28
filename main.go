@@ -19,6 +19,8 @@ import (
 // can be customized.
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
+//go:generate go run ./tools/generator-example-doc/main.go -input-dir=./examples/ -output-dir=./docs/guides
+
 func main() {
 	// remove date and time stamp from log output as the plugin SDK already adds its own
 	log.SetFlags(log.Flags() &^ (log.Ldate | log.Ltime))
