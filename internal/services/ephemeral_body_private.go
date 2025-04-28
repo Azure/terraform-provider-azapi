@@ -74,7 +74,7 @@ func (m EphemeralBodyPrivateMgr) Diff(ctx context.Context, d PrivateData, ebody 
 	}
 	if b == nil {
 		// In case private state doesn't store the key yet, it only diffs when the ebody is not nil.
-		return ebody != nil, diags
+		return ebody != nil && string(ebody) != "null", diags
 	}
 	var mm map[string]interface{}
 	if err := json.Unmarshal(b, &mm); err != nil {
