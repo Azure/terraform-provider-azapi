@@ -262,12 +262,12 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			// OIDC specific fields
 			"oidc_request_token": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` Environment Variables.",
+				MarkdownDescription: "The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN`, `ACTIONS_ID_TOKEN_REQUEST_TOKEN`, or `SYSTEM_ACCESSTOKEN` Environment Variables.",
 			},
 
 			"oidc_request_url": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_URL` Environment Variables.",
+				MarkdownDescription: "The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL`, `ACTIONS_ID_TOKEN_REQUEST_URL`, or `SYSTEM_OIDCREQUESTURI` Environment Variables.",
 			},
 
 			"oidc_token": schema.StringAttribute{
@@ -282,7 +282,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"oidc_azure_service_connection_id": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID` or `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` Environment Variables.",
+				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID`, `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID`, or `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` Environment Variables.",
 			},
 
 			"use_oidc": schema.BoolAttribute{
@@ -501,6 +501,8 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.OIDCRequestToken = types.StringValue(v)
 		} else if v := os.Getenv("ACTIONS_ID_TOKEN_REQUEST_TOKEN"); v != "" {
 			model.OIDCRequestToken = types.StringValue(v)
+		} else if v := os.Getenv("SYSTEM_ACCESSTOKEN"); v != "" {
+			model.OIDCRequestToken = types.StringValue(v)
 		}
 	}
 
@@ -528,6 +530,8 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		if v := os.Getenv("ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID"); v != "" {
 			model.OIDCAzureServiceConnectionID = types.StringValue(v)
 		} else if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
+		} else if v := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID"); v != "" {
 			model.OIDCAzureServiceConnectionID = types.StringValue(v)
 		}
 	}
