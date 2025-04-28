@@ -105,6 +105,7 @@ func AzapiUpdateResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				ResourceID            types.String        `tfsdk:"resource_id"`
 				Type                  types.String        `tfsdk:"type"`
 				Body                  types.Dynamic       `tfsdk:"body"`
+				SensitiveBody         types.Dynamic       `tfsdk:"sensitive_body"`
 				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
 				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
