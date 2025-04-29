@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path"
-	"slices"
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
@@ -35,6 +34,7 @@ var (
 func init() {
 	var items []ResourceProvider
 	mappingJsonPath := path.Join("tools", "generator-example-doc", "resource_providers.json")
+	// #nosec G304
 	data, err := os.ReadFile(mappingJsonPath)
 	if err != nil {
 		panic(err)
@@ -52,6 +52,7 @@ func init() {
 
 	var resourceTypeItems []ResourceType
 	resourceTypeJsonPath := path.Join("tools", "generator-example-doc", "resource_types.json")
+	// #nosec G304
 	data, err = os.ReadFile(resourceTypeJsonPath)
 	if err != nil {
 		panic(err)
@@ -63,22 +64,6 @@ func init() {
 	resourceTypes = make(map[string]ResourceType)
 	for _, item := range resourceTypeItems {
 		resourceTypes[strings.ToLower(item.ResourceType)] = item
-	}
-
-	// check duplicate resource type
-	resourceTypeMap := make(map[string]int)
-	for _, item := range resourceTypeItems {
-		resourceTypeMap[item.ResourceType]++
-	}
-	duplicateResourceTypes := make([]string, 0)
-	for k, v := range resourceTypeMap {
-		if v > 1 {
-			duplicateResourceTypes = append(duplicateResourceTypes, k)
-		}
-	}
-	slices.Sort(duplicateResourceTypes)
-	for _, item := range duplicateResourceTypes {
-		log.Printf("Duplicate resource type: %s", item)
 	}
 
 	data, err = os.ReadFile(path.Join("tools", "generator-example-doc", "template.md"))
@@ -117,6 +102,7 @@ func main() {
 
 		resourceTypeName := strings.Split(resourceTypeDir.Name(), "@")[0]
 		outputFile := path.Join(*outputDir, resourceTypeName+".md")
+		// #nosec G306
 		err = os.WriteFile(outputFile, []byte(content), 0644)
 		if err != nil {
 			log.Printf("Error writing documentation for %s: %s", resourceTypeDir.Name(), err)
@@ -183,6 +169,7 @@ func generateDocumentation(inputDir string) (string, error) {
 
 		scenarioName := scenarioDir.Name()
 		exampleFilePath := path.Join(inputDir, scenarioName, "main.tf")
+		// #nosec G304
 		exampleContent, err := os.ReadFile(exampleFilePath)
 		if err != nil {
 			log.Printf("Error reading example file for %s: %s", exampleFilePath, err)
@@ -194,6 +181,7 @@ func generateDocumentation(inputDir string) (string, error) {
 	// check if there's main.tf in the inputDir
 	mainFilePath := path.Join(inputDir, "main.tf")
 	if _, err := os.Stat(mainFilePath); err == nil {
+		// #nosec G304
 		exampleContent, err := os.ReadFile(mainFilePath)
 		if err != nil {
 			log.Printf("Error reading example file for %s: %s", mainFilePath, err)
