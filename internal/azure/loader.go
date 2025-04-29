@@ -9,7 +9,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/types"
 )
 
@@ -51,18 +50,6 @@ func GetApiVersions(resourceType string) []string {
 			}
 		}
 	}
-
-	// TODO: remove the below codes when Resources RP 2024-11-01 is available
-	if strings.EqualFold(resourceType, arm.ResourceGroupResourceType.String()) {
-		temp := make([]string, 0)
-		for _, v := range res {
-			if v != "2024-11-01" {
-				temp = append(temp, v)
-			}
-		}
-		res = temp
-	}
-
 	sort.Strings(res)
 	return res
 }
