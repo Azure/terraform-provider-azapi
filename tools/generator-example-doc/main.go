@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"slices"
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
@@ -190,8 +191,15 @@ func generateDocumentation(inputDir string) (string, error) {
 		exampleMap["default"] = string(exampleContent)
 	}
 
+	scenarioNames := make([]string, 0)
+	for scenarioName := range exampleMap {
+		scenarioNames = append(scenarioNames, scenarioName)
+	}
+	slices.Sort(scenarioNames)
+
 	example := ""
-	for scenarioName, exampleContent := range exampleMap {
+	for _, scenarioName := range scenarioNames {
+		exampleContent := exampleMap[scenarioName]
 		example += fmt.Sprintf("### %s\n\n", scenarioName)
 		example += fmt.Sprintf("```hcl\n%s\n```\n\n", exampleContent)
 	}
