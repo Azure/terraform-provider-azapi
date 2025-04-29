@@ -26,8 +26,8 @@ resource "azapi_resource" "resourceGroup" {
   location = var.location
 }
 
-resource "azapi_resource" "FrontDoorWebApplicationFirewallPolicy" {
-  type      = "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2020-11-01"
+resource "azapi_resource" "frontDoorWebApplicationFirewallPolicy" {
+  type      = "Microsoft.Network/frontDoorWebApplicationFirewallPolicies@2020-11-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
