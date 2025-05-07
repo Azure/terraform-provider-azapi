@@ -148,7 +148,9 @@ If you have an example that you would like to contribute, please follow the guid
     terraform destroy
     ```
 
-6. Create a pull request with the changes. Please also include the output of the acceptance tests in the pull request description.
+6. Run `make docs` to generate the documentation for the examples. This will generate the documentation files in the `docs` directory. The documentation files will be generated based on the `main.tf` file in each example directory. 
+
+7. Create a pull request with the changes. Please also include the output of the acceptance tests in the pull request description.
 
 
 ## Documentation Examples 

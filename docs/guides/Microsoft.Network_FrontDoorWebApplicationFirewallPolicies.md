@@ -1,11 +1,11 @@
 ---
 subcategory: "Microsoft.Network - Various Networking Services"
-page_title: "frontDoorWebApplicationFirewallPolicies"
+page_title: "FrontDoorWebApplicationFirewallPolicies"
 description: |-
   Manages a Front Door Firewall Policy instance.
 ---
 
-# Microsoft.Network/frontDoorWebApplicationFirewallPolicies - Front Door Firewall Policy instance
+# Microsoft.Network/FrontDoorWebApplicationFirewallPolicies - Front Door Firewall Policy instance
 
 This article demonstrates how to use `azapi` provider to manage the Front Door Firewall Policy instance resource in Azure.
 
@@ -42,17 +42,73 @@ resource "azapi_resource" "resourceGroup" {
   location = var.location
 }
 
-resource "azapi_resource" "frontDoorWebApplicationFirewallPolicy" {
-  type      = "Microsoft.Network/frontDoorWebApplicationFirewallPolicies@2020-04-01"
+resource "azapi_resource" "FrontDoorWebApplicationFirewallPolicy" {
+  type      = "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2020-11-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = "global"
   body = {
     properties = {
-      policySettings = {
-        enabledState = "Enabled"
-        mode         = "Prevention"
+      customRules = {
+        rules = [
+          {
+            action       = "Block"
+            enabledState = "Enabled"
+            matchConditions = [
+              {
+                matchValue = [
+                  "192.168.1.0/24",
+                  "10.0.0.0/24",
+                ]
+                matchVariable   = "RemoteAddr"
+                negateCondition = false
+                operator        = "IPMatch"
+              },
+            ]
+            name                       = "Rule1"
+            priority                   = 1
+            rateLimitDurationInMinutes = 1
+            rateLimitThreshold         = 10
+            ruleType                   = "MatchRule"
+          },
+        ]
       }
+      managedRules = {
+        managedRuleSets = [
+          {
+            ruleGroupOverrides = [
+              {
+                ruleGroupName = "PHP"
+                rules = [
+                  {
+                    action       = "Block"
+                    enabledState = "Disabled"
+                    ruleId       = "933111"
+                  },
+                ]
+              },
+            ]
+            ruleSetAction  = "Block"
+            ruleSetType    = "DefaultRuleSet"
+            ruleSetVersion = "preview-0.1"
+          },
+          {
+            ruleSetAction  = "Block"
+            ruleSetType    = "BotProtection"
+            ruleSetVersion = "preview-0.1"
+          },
+        ]
+      }
+      policySettings = {
+        customBlockResponseBody       = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+        customBlockResponseStatusCode = 403
+        enabledState                  = "Enabled"
+        mode                          = "Prevention"
+        redirectUrl                   = "https://www.fabrikam.com"
+      }
+    }
+    sku = {
+      name = "Premium_AzureFrontDoor"
     }
   }
   schema_validation_enabled = false
@@ -68,21 +124,21 @@ resource "azapi_resource" "frontDoorWebApplicationFirewallPolicy" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/frontDoorWebApplicationFirewallPolicies@api-version`. The available api-versions for this resource are: [`2018-08-01`, `2019-03-01`, `2019-10-01`, `2020-04-01`, `2020-11-01`, `2021-06-01`, `2022-05-01`, `2024-02-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@api-version`. The available api-versions for this resource are: [`2018-08-01`, `2019-03-01`, `2019-10-01`, `2020-04-01`, `2020-11-01`, `2021-06-01`, `2022-05-01`, `2024-02-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
-* `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/frontDoorWebApplicationFirewallPolicies?pivots=deployment-language-terraform).
+* `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies?pivots=deployment-language-terraform).
 
 ## Import
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/{resourceName}
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies/{resourceName}?api-version=2024-02-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{resourceName}?api-version=2024-02-01
  ```
