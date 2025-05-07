@@ -11,7 +11,6 @@ BUG FIXES:
 - Fix a bug that `azapi_resource_action` resource could not be migrated correctly when the `body` is empty string.
 - Fix a bug that after moving resource from `azurerm` provider, the `azapi_resource` resource could not be updated correctly.
 - Fix a bug that `azapi_resource` is replaced if the API returns a readonly location.
-- Fix a bug that resource group's api-version `2024-11-01` is disabled in the provider.
 
 ## v2.3.0
 FEATURES:
