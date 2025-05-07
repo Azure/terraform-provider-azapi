@@ -195,17 +195,17 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 					Attributes: map[string]schema.Attribute{
 						"active_directory_authority_host": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.",
+							MarkdownDescription: "The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.",
 						},
 
 						"resource_manager_endpoint": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.",
+							MarkdownDescription: "The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.",
 						},
 
 						"resource_manager_audience": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.",
+							MarkdownDescription: "The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.",
 						},
 					},
 				},
