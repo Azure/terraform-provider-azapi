@@ -148,6 +148,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				Location                      types.String        `tfsdk:"location"`
 				Identity                      types.List          `tfsdk:"identity"`
 				Body                          types.Dynamic       `tfsdk:"body"`
+				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
 				Locks                         types.List          `tfsdk:"locks"`
 				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
@@ -227,6 +228,9 @@ func migrateToDynamicValue(input types.Dynamic) (types.Dynamic, error) {
 	stringVal, ok := input.UnderlyingValue().(types.String)
 	if !ok {
 		return input, nil
+	}
+	if stringVal.ValueString() == "" {
+		return types.DynamicNull(), nil
 	}
 	dynamicVal, err := dynamic.FromJSONImplied([]byte(stringVal.ValueString()))
 	if err != nil {

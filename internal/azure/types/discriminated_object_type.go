@@ -1,9 +1,12 @@
 package types
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure/utils"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ TypeBase = &DiscriminatedObjectType{}
@@ -110,20 +113,29 @@ func (t *DiscriminatedObjectType) GetWriteOnly(body interface{}) interface{} {
 	return res
 }
 
-func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []error {
-	if t == nil || body == nil {
+func (t *DiscriminatedObjectType) Validate(body attr.Value, path string) []error {
+	if t == nil || body == nil || body.IsNull() || body.IsUnknown() {
 		return []error{}
 	}
+
 	errors := make([]error, 0)
-	// check body type
-	bodyMap, ok := body.(map[string]interface{})
-	if !ok {
+
+	var bodyMap map[string]attr.Value
+	switch v := body.(type) {
+	case types.Object:
+		bodyMap = v.Attributes()
+	case types.Map:
+		bodyMap = v.Elements()
+	case types.Dynamic:
+		return t.Validate(v.UnderlyingValue(), path)
+	default:
 		errors = append(errors, utils.ErrorMismatch(path, "object", fmt.Sprintf("%T", body)))
 		return errors
 	}
 
 	// check base properties
-	otherProperties := make(map[string]interface{})
+	otherProperties := make(map[string]attr.Value)
+	otherPropertyTypes := make(map[string]attr.Type)
 	for key, value := range bodyMap {
 		if def, ok := t.BaseProperties[key]; ok {
 			if def.IsReadOnly() {
@@ -137,6 +149,7 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 			}
 		} else {
 			otherProperties[key] = value
+			otherPropertyTypes[key] = value.Type(context.Background())
 		}
 	}
 
@@ -156,7 +169,8 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 		return errors
 	}
 
-	if discriminator, ok := otherProperties[t.Discriminator].(string); ok {
+	if discriminatorStr, ok := otherProperties[t.Discriminator].(types.String); ok {
+		discriminator := discriminatorStr.ValueString()
 		switch {
 		case t.Elements[discriminator] == nil:
 			options := make([]string, 0)
@@ -165,7 +179,7 @@ func (t *DiscriminatedObjectType) Validate(body interface{}, path string) []erro
 			}
 			errors = append(errors, utils.ErrorNotMatchAnyValues(path+"."+t.Discriminator, discriminator, options))
 		case t.Elements[discriminator].Type != nil:
-			errors = append(errors, (*t.Elements[discriminator].Type).Validate(otherProperties, path)...)
+			errors = append(errors, (*t.Elements[discriminator].Type).Validate(types.ObjectValueMust(otherPropertyTypes, otherProperties), path)...)
 		}
 	} else {
 		errors = append(errors, utils.ErrorMismatch(path+"."+t.Discriminator, "string", fmt.Sprintf("%T", otherProperties[t.Discriminator])))

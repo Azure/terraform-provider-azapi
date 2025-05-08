@@ -11,24 +11,26 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type ResourceListDataSourceModel struct {
-	ID                   types.String        `tfsdk:"id"`
-	Type                 types.String        `tfsdk:"type"`
-	ParentID             types.String        `tfsdk:"parent_id"`
-	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-	Output               types.Dynamic       `tfsdk:"output"`
-	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-	Retry                retry.RetryValue    `tfsdk:"retry"`
-	Headers              map[string]string   `tfsdk:"headers"`
-	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+	ID                   types.String     `tfsdk:"id"`
+	Type                 types.String     `tfsdk:"type"`
+	ParentID             types.String     `tfsdk:"parent_id"`
+	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
+	Output               types.Dynamic    `tfsdk:"output"`
+	Timeouts             timeouts.Value   `tfsdk:"timeouts"`
+	Retry                retry.RetryValue `tfsdk:"retry"`
+	Headers              types.Map        `tfsdk:"headers"`
+	QueryParameters      types.Map        `tfsdk:"query_parameters"`
 }
 
 type ResourceListDataSource struct {
@@ -82,7 +84,7 @@ func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.
 				MarkdownDescription: docstrings.Output("data.azapi_resource_list"),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -113,8 +115,6 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 		return
 	}
 
-	model.Retry = model.Retry.AddDefaultValuesIfUnknownOrNull()
-
 	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {
@@ -130,22 +130,14 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(model.Headers, model.QueryParameters))
+	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
 		return
@@ -155,6 +147,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = responseBody
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {

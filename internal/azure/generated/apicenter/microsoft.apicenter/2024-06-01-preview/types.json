@@ -1,0 +1,2256 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90,
+    "pattern": "^[a-zA-Z0-9-]{3,90}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the service."
+      },
+      "restore": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Flag used to restore soft-deleted API Center service. If specified and set to 'true' all other properties will be ignored."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/18"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/metadataSchemas"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/metadataSchemas",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetadataSchemaProperties",
+    "properties": {
+      "schema": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The schema defining the type."
+      },
+      "assignedTo": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The assignees"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetadataAssignment",
+    "properties": {
+      "entity": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The entities this metadata schema component gets applied to."
+      },
+      "required": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Required assignment"
+      },
+      "deprecated": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Deprecated assignment"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "api"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "environment"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deployment"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/37"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/metadataSchemas@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/35"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkspaceProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Workspace title."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Workspace description."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/46"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/apiSources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apiSources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiSourceProperties",
+    "properties": {
+      "importSpecification": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Indicates if the specification should be imported along with metadata."
+      },
+      "azureApiManagementSource": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "API source configuration for Azure API Management."
+      },
+      "targetEnvironmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The target environment resource ID."
+      },
+      "targetLifecycleStage": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "The target lifecycle stage."
+      },
+      "linkState": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "The state of the API source link"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "never"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ondemand"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "always"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureApiManagementSource",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "API Management service resource ID."
+      },
+      "msiResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the managed identity that has access to the API Management instance."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "design"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "development"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "testing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "preview"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "production"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deprecated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "retired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinkState",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The state of the link."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The state message."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The timestamp of the last update of the link state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "syncing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apiSources@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/52"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/apis"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "API title."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 1,
+        "description": "Kind of API. For example, REST or GraphQL."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Description of the API."
+      },
+      "summary": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Short description of the API."
+      },
+      "lifecycleStage": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 2,
+        "description": "Current lifecycle stage of the API."
+      },
+      "termsOfService": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "Terms of service for the API."
+      },
+      "externalDocumentation": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "The set of external documentation"
+      },
+      "contacts": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "The set of contacts"
+      },
+      "license": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "The license information for the API."
+      },
+      "customProperties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The custom metadata defined for API catalog entities."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "graphql"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "grpc"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "soap"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "webhook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "websocket"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 1000
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 200
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "design"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "development"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "testing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "preview"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "production"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deprecated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "retired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TermsOfService",
+    "properties": {
+      "url": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "URL pointing to the terms of service."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExternalDocumentation",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "Title of the documentation."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Description of the documentation."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "URL pointing to the documentation."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 50
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 500
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/96"
+    },
+    "maxLength": 20
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Contact",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Name of the contact."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "URL for the contact."
+      },
+      "email": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Email address of the contact."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 100
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/100"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "License",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Name of the license."
+      },
+      "url": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "URL pointing to the license details. The URL field is mutually exclusive of the\nidentifier field."
+      },
+      "identifier": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "SPDX license information for the API. The identifier field is mutually\nexclusive of the URL field."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/76"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/apis/deployments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/deployments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "API deployment title"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Description of the deployment."
+      },
+      "environmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "API center-scoped environment resource ID."
+      },
+      "definitionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "API center-scoped definition resource ID."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "State of API deployment."
+      },
+      "server": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "The deployment server"
+      },
+      "customProperties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The custom metadata defined for API catalog entities."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inactive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentServer",
+    "properties": {
+      "runtimeUri": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "Base runtime URLs for this deployment."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/86"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/deployments@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/108"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/apis/versions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiVersionProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "API version title."
+      },
+      "lifecycleStage": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "Current lifecycle stage of the API."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "design"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "development"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "testing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "preview"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "production"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deprecated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "retired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/118"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiDefinitionProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "API definition title."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "API definition description."
+      },
+      "specification": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 2,
+        "description": "API specification details."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiDefinitionPropertiesSpecification",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specification name."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specification version."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/131"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/services/workspaces/environments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/services/workspaces/environments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "Environment title."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The environment description."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 1,
+        "description": "Environment kind."
+      },
+      "server": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "Server information of the environment."
+      },
+      "onboarding": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Environment onboarding information"
+      },
+      "customProperties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The custom metadata defined for API catalog entities."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "development"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "testing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "staging"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "production"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentServer",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Type of the server that represents the environment."
+      },
+      "managementPortalUri": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "The location of the management portal"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure API Management"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Azure compute service"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Apigee API Management"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AWS API Gateway"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kong API Gateway"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kubernetes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MuleSoft API Management"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Onboarding",
+    "properties": {
+      "instructions": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Onboarding guide."
+      },
+      "developerPortalUri": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "The location of the development portal"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 1
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/services/workspaces/environments@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/137"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ApiCenter/deletedServices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ApiCenter/deletedServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedServiceProperties",
+    "properties": {
+      "scheduledPurgeDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UTC date and time when the service will be automatically purged. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard."
+      },
+      "softDeletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UTC date and time when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ApiCenter/deletedServices@2024-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/159"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetadataSchemaExportRequest",
+    "properties": {
+      "assignedTo": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "An entity the metadata schema is requested for."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "api"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "environment"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deployment"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetadataSchemaExportResult",
+    "properties": {
+      "format": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "The export format for the schema"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The result of the export operation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "link"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "exportMetadataSchema",
+    "resourceType": "Microsoft.ApiCenter/services",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/167"
+    },
+    "input": {
+      "$ref": "#/162"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiSpecExportResult",
+    "properties": {
+      "format": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "The format of exported result"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The result of the export operation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "link"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "exportSpecification",
+    "resourceType": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiSpecImportRequest",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Value of the API specification source."
+      },
+      "format": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Format of the API specification source."
+      },
+      "specification": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "API specification details."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "link"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApiSpecImportRequestSpecification",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specification name."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specification version."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "importSpecification",
+    "resourceType": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions",
+    "apiVersion": "2024-06-01-preview",
+    "input": {
+      "$ref": "#/177"
+    }
+  }
+]

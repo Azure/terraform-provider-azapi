@@ -3,14 +3,14 @@ page_title: "azapi_update_resource Resource - terraform-provider-azapi"
 subcategory: ""
 description: |-
   This resource can manage a subset of any existing Azure resource manager resource's properties.
-  -> Note This resource is used to add or modify properties on an existing resource. When delete azapi_update_resource, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
+  -> Note This resource is used to add or modify properties on an existing resource. When azapi_update_resource is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 ---
 
 # azapi_update_resource (Resource)
 
 This resource can manage a subset of any existing Azure resource manager resource's properties.
 
--> **Note** This resource is used to add or modify properties on an existing resource. When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
+-> **Note** This resource is used to add or modify properties on an existing resource. When `azapi_update_resource` is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
 
 ## Example Usage
 
@@ -140,7 +140,8 @@ This resource can manage a subset of any existing Azure resource manager resourc
 	```
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
-- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
+- `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
+- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
@@ -167,7 +168,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 Required:
 
-- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 Optional:
 

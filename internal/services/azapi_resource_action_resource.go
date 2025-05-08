@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -15,6 +16,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -27,23 +29,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type ActionResourceModel struct {
-	ID                   types.String        `tfsdk:"id"`
-	Type                 types.String        `tfsdk:"type"`
-	ResourceId           types.String        `tfsdk:"resource_id"`
-	Action               types.String        `tfsdk:"action"`
-	Method               types.String        `tfsdk:"method"`
-	Body                 types.Dynamic       `tfsdk:"body"`
-	When                 types.String        `tfsdk:"when"`
-	Locks                types.List          `tfsdk:"locks"`
-	ResponseExportValues types.Dynamic       `tfsdk:"response_export_values"`
-	Output               types.Dynamic       `tfsdk:"output"`
-	Timeouts             timeouts.Value      `tfsdk:"timeouts"`
-	Retry                retry.RetryValue    `tfsdk:"retry"`
-	Headers              map[string]string   `tfsdk:"headers"`
-	QueryParameters      map[string][]string `tfsdk:"query_parameters"`
+	ID                            types.String     `tfsdk:"id"`
+	Type                          types.String     `tfsdk:"type"`
+	ResourceId                    types.String     `tfsdk:"resource_id"`
+	Action                        types.String     `tfsdk:"action"`
+	Method                        types.String     `tfsdk:"method"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	When                          types.String     `tfsdk:"when"`
+	Locks                         types.List       `tfsdk:"locks"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	SensitiveOutput               types.Dynamic    `tfsdk:"sensitive_output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	Headers                       types.Map        `tfsdk:"headers"`
+	QueryParameters               types.Map        `tfsdk:"query_parameters"`
 }
 
 type ActionResource struct {
@@ -162,12 +167,26 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
+			"sensitive_response_export_values": schema.DynamicAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Dynamic{
+					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
+				},
+				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+
 			"output": schema.DynamicAttribute{
 				Computed:            true,
 				MarkdownDescription: docstrings.Output("azapi_resource_action"),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"sensitive_output": schema.DynamicAttribute{
+				Computed:            true,
+				Sensitive:           true,
+				MarkdownDescription: docstrings.SensitiveOutput("azapi_resource_action"),
+			},
+
+			"retry": retry.RetrySchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -211,10 +230,18 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
+	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
+		plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 	} else {
 		plan.Output = state.Output
+		if !plan.ResponseExportValues.Equal(state.ResponseExportValues) {
+			plan.Output = basetypes.NewDynamicUnknown()
+		}
+		plan.SensitiveOutput = state.SensitiveOutput
+		if !plan.SensitiveResponseExportValues.Equal(state.SensitiveResponseExportValues) {
+			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
+		}
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
@@ -247,25 +274,37 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		}
 		model.ID = basetypes.NewStringValue(resourceId)
 		model.Output = basetypes.NewDynamicNull()
+		model.SensitiveOutput = basetypes.NewDynamicNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
 
 func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
-	var model ActionResourceModel
-	if response.Diagnostics.Append(request.Plan.Get(ctx, &model)...); response.Diagnostics.HasError() {
+	var state, plan ActionResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
 		return
 	}
 
-	timeout, diags := model.Timeouts.Update(ctx, 30*time.Minute)
+	timeout, diags := plan.Timeouts.Update(ctx, 30*time.Minute)
 	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
 		return
 	}
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	if model.When.ValueString() == "apply" {
-		r.Action(ctx, model, &response.State, &response.Diagnostics)
+	// See if we can skip the external API call (changes are to state only)
+	if skip.CanSkipExternalRequest(state, plan, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
+
+	if plan.When.ValueString() == "apply" {
+		r.Action(ctx, plan, &response.State, &response.Diagnostics)
 	}
 }
 
@@ -309,31 +348,25 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	var requestBody interface{}
 	if err := unmarshalBody(model.Body, &requestBody); err != nil {
 		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
 	}
 
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(model.Headers, model.QueryParameters))
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return
@@ -351,6 +384,13 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 	model.Output = output
+
+	sensitiveOutput, err := buildOutputFromBody(responseBody, model.SensitiveResponseExportValues, nil)
+	if err != nil {
+		diagnostics.AddError("Failed to build sensitive output", err.Error())
+		return
+	}
+	model.SensitiveOutput = sensitiveOutput
 
 	diagnostics.Append(state.Set(ctx, model)...)
 }

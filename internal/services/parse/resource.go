@@ -178,8 +178,8 @@ func ResourceIDWithResourceType(azureResourceId, resourceType string) (ResourceI
 	return id, nil
 }
 
-// ResourceIDWithApiVersion parses a Resource ID which contains api-version into an ResourceId struct
-func ResourceIDWithApiVersion(input string) (ResourceId, error) {
+// ResourceIDContainsApiVersion parses a Resource ID which contains api-version into an ResourceId struct
+func ResourceIDContainsApiVersion(input string) (ResourceId, error) {
 	idUrl, err := url.Parse(input)
 	if err != nil {
 		return ResourceId{}, err
@@ -202,6 +202,26 @@ func ResourceIDWithApiVersion(input string) (ResourceId, error) {
 		return ResourceId{}, err
 	}
 	return id, nil
+}
+
+// ResourceID parses a Resource ID which might not contain api-version into an ResourceId struct, it will append the latest api-version if not provided
+func ResourceID(input string) (ResourceId, error) {
+	idUrl, err := url.Parse(input)
+	if err != nil {
+		return ResourceId{}, err
+	}
+	apiVersion := idUrl.Query().Get("api-version")
+	if apiVersion == "" {
+		resourceType := utils.GetResourceType(input)
+		apiVersions := azure.GetApiVersions(resourceType)
+		if len(apiVersions) != 0 {
+			input = fmt.Sprintf("%s?api-version=%s", input, apiVersions[len(apiVersions)-1])
+		} else {
+			return ResourceId{}, fmt.Errorf("ID was missing the `api-version` element")
+		}
+	}
+
+	return ResourceIDContainsApiVersion(input)
 }
 
 func (id ResourceId) String() string {

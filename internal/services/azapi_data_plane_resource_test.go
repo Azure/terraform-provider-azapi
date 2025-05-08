@@ -10,8 +10,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 type DataPlaneResource struct{}
@@ -368,6 +368,7 @@ resource "azapi_data_plane_resource" "test" {
       ]
     }
   }
+
   depends_on = [
     azapi_resource_action.add_accesspolicy
   ]

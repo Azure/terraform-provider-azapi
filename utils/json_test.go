@@ -1018,3 +1018,86 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
 	}
 }
+
+func Test_RemoveFields(t *testing.T) {
+	testcases := []struct {
+		OldJson    string
+		Fields     []string
+		ExpectJson string
+	}{
+		{
+			OldJson: `
+{
+    "apiVersion": "2024-05-01",
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestheng125/providers/Microsoft.Network/routeTables/acctestheng125",
+    "name": "acctestheng125",
+    "type": "microsoft.network/routetables",
+    "location": "westus",
+    "properties": {
+        "provisioningState": "Succeeded",
+        "resourceGuid": "c7e6268d-eef3-4aa0-86a2-9a2cdedd59a8",
+        "disableBgpRoutePropagation": false,
+        "routes": [
+            {
+                "name": "route1",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestheng125/providers/Microsoft.Network/routeTables/acctestheng125/routes/route1",
+                "etag": "W/\"8cbb63f5-3125-4a0b-86d0-a4818311b154\"",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "addressPrefix": "10.1.0.0/16",
+                    "nextHopType": "VnetLocal",
+                    "nextHopIpAddress": "",
+                    "hasBgpOverride": false
+                },
+                "type": "Microsoft.Network/routeTables/routes"
+            }
+        ]
+    },
+    "etag": "W/\"8cbb63f5-3125-4a0b-86d0-a4818311b154\""
+}
+`,
+			Fields: []string{"etag"},
+			ExpectJson: `
+{
+    "apiVersion": "2024-05-01",
+    "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestheng125/providers/Microsoft.Network/routeTables/acctestheng125",
+    "name": "acctestheng125",
+    "type": "microsoft.network/routetables",
+    "location": "westus",
+    "properties": {
+        "provisioningState": "Succeeded",
+        "resourceGuid": "c7e6268d-eef3-4aa0-86a2-9a2cdedd59a8",
+        "disableBgpRoutePropagation": false,
+        "routes": [
+            {
+                "name": "route1",
+                "id": "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/acctestheng125/providers/Microsoft.Network/routeTables/acctestheng125/routes/route1",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "addressPrefix": "10.1.0.0/16",
+                    "nextHopType": "VnetLocal",
+                    "nextHopIpAddress": "",
+                    "hasBgpOverride": false
+                },
+                "type": "Microsoft.Network/routeTables/routes"
+            }
+        ]
+    }
+}
+`,
+		},
+	}
+
+	for _, testcase := range testcases {
+		var old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.RemoveFields(old, testcase.Fields)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+		}
+	}
+}

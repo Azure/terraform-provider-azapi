@@ -1,6 +1,6 @@
 ---
 layout: "azapi"
-page_title: "AzAPI Provider: Authenticating via a Service Principal and a Client Certificate"
+page_title: "Authentication: Authenticating via a Service Principal and a Client Certificate"
 description: |-
   This guide will cover how to use a Service Principal (Shared Account) with a Client Certificate as authentication for the AzAPI Provider.
 
@@ -33,8 +33,10 @@ $ openssl x509 -signkey "service-principal.key" -in "service-principal.csr" -req
 Finally we can generate a PFX file which can be used to authenticate with Azure:
 
 ```shell
-$ openssl pkcs12 -export -out "service-principal.pfx" -inkey "service-principal.key" -in "service-principal.crt"
+$ openssl pkcs12 -certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES -export -macalg sha1 -out "service-principal.pfx" -inkey "service-principal.key" -in "service-principal.crt"
 ```
+
+~> **NOTE:** The certificate support in AzAPI provider has limitations, for example it can't decrypt keys in PEM format or PKCS#12 certificates that use SHA256 for message authentication. If you encounter such limitations, please generate the PFX file with above command.
 
 Now that we've generated a certificate, we can create the Azure Active Directory Application.
 

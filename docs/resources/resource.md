@@ -121,7 +121,7 @@ resource "azapi_resource" "example" {
   name      = var.name
   type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
-  body      = {
+  body = {
     properties = {
       sku   = var.sku
       zones = var.zones
@@ -162,8 +162,9 @@ resource "azapi_resource" "example" {
 	```
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
-- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
+- `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
+- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
@@ -171,7 +172,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 ### Read-Only
 
-- `id` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+- `id` (String) The ID of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
 	```terraform
@@ -208,7 +209,7 @@ Read-Only:
 
 Required:
 
-- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 Optional:
 

@@ -15,8 +15,8 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 type GenericResource struct{}
@@ -40,7 +40,7 @@ func TestAccGenericResource_basic(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -55,12 +55,12 @@ func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config:      r.basicInvalidVersion(data),
 			ExpectError: regexp.MustCompile("400 Bad Request"),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config:   r.basic(data),
 			PlanOnly: true,
@@ -115,7 +115,7 @@ func TestAccGenericResource_complete(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -133,7 +133,7 @@ func TestAccGenericResource_completeBody(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(append(importIgnores, defaultIgnores()...)...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, append(importIgnores, defaultIgnores()...)...),
 	})
 }
 
@@ -148,28 +148,28 @@ func TestAccGenericResource_identity(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.identityUserAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.identitySystemAssigned(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.complete(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -185,7 +185,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInBody(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -193,7 +193,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTag(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -201,7 +201,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("default"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultTagOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -209,7 +209,7 @@ func TestAccGenericResource_defaultTags(t *testing.T) {
 				check.That(data.ResourceName).Key("tags.key").HasValue("override"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -226,7 +226,7 @@ func TestAccGenericResource_defaultsNotApplicable(t *testing.T) {
 				check.That(data.ResourceName).Key("location").DoesNotExist(),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -242,7 +242,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultLocationOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -250,7 +250,7 @@ func TestAccGenericResource_defaultLocation(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationSecondary)),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -283,7 +283,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 				check.That(data.ResourceName).Key("name").HasValue("acctestdefaultNaming"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 		{
 			Config: r.defaultNamingOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
@@ -291,7 +291,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 				check.That(data.ResourceName).Key("name").HasValue("hclNaming"),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -428,6 +428,20 @@ func TestAccGenericResource_nullLocation(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_computedLocation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.computedLocation(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_unknownName(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -555,6 +569,47 @@ func TestAccGenericResource_defaultOutput(t *testing.T) {
 				check.That(data.ResourceName).Key("output.properties.automationHybridServiceUrl").Exists(),
 			),
 		},
+	})
+}
+
+func TestAccGenericResource_moveResource(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.moveResourceSetup(data),
+			Check:             resource.ComposeTestCheckFunc(),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveResourceStartMoving(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveResourceUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+	})
+}
+
+func TestAccGenericResource_SensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.SensitiveBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
@@ -1464,7 +1519,7 @@ resource "azapi_resource" "test2" {
     }
   }
 
-  locks = [azapi_resource.routeTable.id, azapi_resource.resourceGroup.id]
+  locks = [azapi_resource.resourceGroup.id, azapi_resource.routeTable.id]
 }
 `, r.template(data), data.RandomInteger, data.RandomString)
 }
@@ -1646,6 +1701,9 @@ resource "azurerm_application_insights" "test" {
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   application_type    = "web"
+  lifecycle {
+    ignore_changes = [workspace_id]
+  }
 }
 
 resource "azurerm_key_vault" "test" {
@@ -1727,6 +1785,47 @@ resource "azapi_resource" "test" {
     }
   }
   locks = [azurerm_machine_learning_workspace.test.id]
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) computedLocation(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "namespace" {
+  type      = "Microsoft.EventHub/namespaces@2022-01-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      disableLocalAuth     = false
+      isAutoInflateEnabled = false
+      publicNetworkAccess  = "Enabled"
+      zoneRedundant        = true
+    }
+    sku = {
+      capacity = 1
+      name     = "Basic"
+      tier     = "Basic"
+    }
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.EventHub/namespaces/authorizationRules@2021-11-01"
+  parent_id = azapi_resource.namespace.id
+  name      = "acctest%[2]s"
+  body = {
+    properties = {
+      rights = [
+        "Listen",
+        "Send",
+        "Manage",
+      ]
+    }
+  }
 }
 `, r.template(data), data.RandomString)
 }
@@ -1956,6 +2055,10 @@ func (r GenericResource) defaultOutput(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 
+provider "azapi" {
+  disable_default_output = false
+}
+
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
   name      = "acctest%[2]s"
@@ -1965,6 +2068,128 @@ resource "azapi_resource" "test" {
     properties = {
       sku = {
         name = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceSetup(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_cognitive_account" "test" {
+  name                = "acctest%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  kind                = "Face"
+  sku_name            = "S0"
+  tags = {
+    Acceptance = "Test"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceStartMoving(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+moved {
+  from = azurerm_cognitive_account.test
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "Face"
+    properties = {
+      allowedFqdnList               = []
+      disableLocalAuth              = false
+      dynamicThrottlingEnabled      = false
+      publicNetworkAccess           = "Enabled"
+      restrictOutboundNetworkAccess = false
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  tags = {
+    Acceptance = "Test"
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveResourceUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+moved {
+  from = azurerm_cognitive_account.test
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "Face"
+    properties = {
+      allowedFqdnList               = []
+      disableLocalAuth              = false
+      dynamicThrottlingEnabled      = false
+      publicNetworkAccess           = "Enabled"
+      restrictOutboundNetworkAccess = false
+      restore                       = null
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  tags = {
+    Acceptance = "Test"
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) SensitiveBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+variable "sku_name" {
+  type      = string
+  default   = "Basic"
+  ephemeral = true
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  sensitive_body = {
+    properties = {
+      sku = {
+        name = var.sku_name
       }
     }
   }

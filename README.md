@@ -55,9 +55,9 @@ resource "azurerm_resource_group" "example" {
 resource "azapi_resource" "automationAccount" {
   type      = "Microsoft.Automation/automationAccounts@2021-06-22"
   name      = "myAccount"
-  parent_id = azurerm_resource_group.test.id
+  parent_id = azurerm_resource_group.example.id
 
-  location = azurerm_resource_group.test.location
+  location = azurerm_resource_group.example.location
   body = {
     properties = {
       disableLocalAuth    = true
@@ -163,13 +163,13 @@ Please ensure that the `MarkdownDescription` field is set in the schema for each
 To generate the documentation run either:
 
 ```sh
-$ make docs
+make docs
 ```
 
 or...
 
 ```sh
-$ go generate ./...
+go generate ./...
 ```
 
 ### Templates
@@ -209,6 +209,16 @@ provider_installation {
   direct {}
 }
 ```
+
+## Developer: Using the `skip_on` struct field tag
+
+The `skip_on` struct field tag is used to skip the external API call when only attributes that affect the internal state are modified, e.g. retry configuration. The `skip_on` struct field tag is used to skip the external API call when only attributes that affect the internal state are modified, e.g. retry configuration. The `skip_on` struct field tag is a comma-separated list of operations that must be met in order to skip the field.
+
+The provider will compare the state with the plan, and check for changes. If the only fields to me modified are those with the `skip_on` struct field tag set to the supplied operation, e.g. `update`, the provider will skip the external API call.
+
+The following operations are supported:
+
+* `update` - Skip the external API call when the operation is an update.
 
 ## Credits
 

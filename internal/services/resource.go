@@ -8,16 +8,28 @@ import (
 	"strings"
 
 	"github.com/Azure/terraform-provider-azapi/internal/azure"
+	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-func schemaValidation(azureResourceType, apiVersion string, resourceDef *aztypes.ResourceType, body interface{}) error {
+func schemaValidate(config *AzapiResourceModel) error {
+	if config == nil {
+		return nil
+	}
+
+	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(config.Type.ValueString())
+	if err != nil {
+		return fmt.Errorf(`the argument "type" is invalid: %s`, err.Error())
+	}
+	resourceDef, _ := azure.GetResourceDefinition(azureResourceType, apiVersion)
+
 	log.Printf("[INFO] prepare validation for resource type: %s, api-version: %s", azureResourceType, apiVersion)
 	versions := azure.GetApiVersions(azureResourceType)
 	if len(versions) == 0 {
@@ -34,16 +46,84 @@ func schemaValidation(azureResourceType, apiVersion string, resourceDef *aztypes
 		return schemaValidationError(fmt.Sprintf("the argument \"type\"'s api-version is invalid.\n The supported versions are [%s].\n", strings.Join(versions, ", ")))
 	}
 
-	if resourceDef != nil {
-		errors := (*resourceDef).Validate(utils.NormalizeObject(body), "")
-		if len(errors) != 0 {
-			errorMsg := "the argument \"body\" is invalid:\n"
-			for _, err := range errors {
-				errorMsg += fmt.Sprintf("%s\n", err.Error())
-			}
-			return schemaValidationError(errorMsg)
-		}
+	if resourceDef == nil {
+		return nil
 	}
+
+	var bodyToValidate attr.Value
+	if !config.Body.IsNull() && !config.Body.IsUnknown() && !config.Body.IsNull() && !config.Body.IsUnderlyingValueUnknown() {
+		if v, ok := config.Body.UnderlyingValue().(types.Object); ok {
+			attributes := v.Attributes()
+			attributeTypes := v.AttributeTypes(context.Background())
+
+			attributes["name"] = config.Name
+			attributeTypes["name"] = types.StringType
+
+			if !config.Location.IsNull() {
+				attributes["location"] = config.Location
+				attributeTypes["location"] = types.StringType
+			}
+
+			if !config.Tags.IsNull() {
+				attributes["tags"] = config.Tags
+				attributeTypes["tags"] = types.MapType{ElemType: types.StringType}
+			}
+
+			if !config.Identity.IsNull() {
+				identityAttributeTypes := map[string]attr.Type{
+					"type": types.StringType,
+				}
+				identityModel := identity.FromList(config.Identity)
+				if len(identityModel.IdentityIDs.Elements()) != 0 {
+					identityAttributeTypes["userAssignedIdentities"] = types.MapType{ElemType: types.DynamicType}
+					elements := make(map[string]attr.Value)
+					identityIds := identityModel.IdentityIDs.Elements()
+					for _, identityId := range identityIds {
+						elements[identityId.(types.String).ValueString()] = types.DynamicNull()
+					}
+					attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
+						"type":                   identityModel.Type,
+						"userAssignedIdentities": types.MapValueMust(types.DynamicType, elements),
+					})
+				} else {
+					attributes["identity"] = types.ObjectValueMust(identityAttributeTypes, map[string]attr.Value{
+						"type": identityModel.Type,
+					})
+				}
+				attributeTypes["identity"] = types.ObjectType{AttrTypes: identityAttributeTypes}
+			}
+
+			bodyToValidate = types.ObjectValueMust(attributeTypes, attributes)
+		}
+	} else {
+		bodyToValidate = config.Body
+	}
+
+	bodyToValidate, err = dynamic.MergeDynamic(types.DynamicValue(bodyToValidate), config.SensitiveBody)
+	if err != nil {
+		return fmt.Errorf("failed to merge write-only body: %s", err)
+	}
+
+	validateErrors := (*resourceDef).Validate(bodyToValidate, "")
+
+	errors := make([]error, 0)
+	// skip error that location is not in the body, because user might use the default location feature
+	// same for tags
+	for _, err := range validateErrors {
+		if strings.Contains(err.Error(), "`location` is required") || strings.Contains(err.Error(), "`tags` is required") {
+			continue
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) != 0 {
+		errorMsg := "the argument \"body\" is invalid:\n"
+		for _, err := range errors {
+			errorMsg += fmt.Sprintf("%s\n", err.Error())
+		}
+		return schemaValidationError(errorMsg)
+	}
+
 	return nil
 }
 
@@ -67,6 +147,28 @@ func canResourceHaveProperty(resourceDef *aztypes.ResourceType, property string)
 		}
 	}
 	return false
+}
+
+func flattenBody(responseBody interface{}, resourceDef *aztypes.ResourceType) (types.Dynamic, error) {
+	body := utils.NormalizeObject(responseBody)
+
+	if resourceDef != nil {
+		SensitiveBody := (*resourceDef).GetWriteOnly(body)
+		if bodyMap, ok := SensitiveBody.(map[string]interface{}); ok {
+			delete(bodyMap, "location")
+			delete(bodyMap, "tags")
+			delete(bodyMap, "name")
+			delete(bodyMap, "identity")
+			SensitiveBody = bodyMap
+		}
+		body = SensitiveBody
+	}
+
+	data, err := json.Marshal(body)
+	if err != nil {
+		return types.DynamicNull(), err
+	}
+	return dynamic.FromJSONImplied(data)
 }
 
 func flattenOutput(responseBody interface{}, paths []string) attr.Value {
@@ -137,6 +239,24 @@ func AsStringList(input types.List) []string {
 	return result
 }
 
+func AsMapOfString(input types.Map) map[string]string {
+	result := make(map[string]string)
+	diags := input.ElementsAs(context.Background(), &result, false)
+	if diags.HasError() {
+		tflog.Warn(context.Background(), fmt.Sprintf("failed to convert input to map of strings: %s", diags))
+	}
+	return result
+}
+
+func AsMapOfLists(input types.Map) map[string][]string {
+	result := make(map[string][]string)
+	diags := input.ElementsAs(context.Background(), &result, false)
+	if diags.HasError() {
+		tflog.Warn(context.Background(), fmt.Sprintf("failed to convert input to map of lists: %s", diags))
+	}
+	return result
+}
+
 func unmarshalBody(input types.Dynamic, out interface{}) error {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
 		return nil
@@ -149,4 +269,24 @@ func unmarshalBody(input types.Dynamic, out interface{}) error {
 		return fmt.Errorf(`unmarshaling failed: value: %s, err: %+v`, string(data), err)
 	}
 	return nil
+}
+
+// ephemeralBodyChangeInPlan checks if the sensitive_body has changed in the plan modify phase.
+func ephemeralBodyChangeInPlan(ctx context.Context, d PrivateData, ephemeralBody types.Dynamic) (ok bool, diags diag.Diagnostics) {
+	tflog.Warn(ctx, fmt.Sprintf("sensitive_bodyChangeInPlan: sensitive_body: %s", ephemeralBody.String()))
+	// 1. sensitive_body is unknown (e.g. referencing an knonw-after-apply value)
+	if !dynamic.IsFullyKnown(ephemeralBody) {
+		return true, nil
+	}
+
+	// 2. sensitive_body is known in the config, but has different hash than the private data
+	eb, err := dynamic.ToJSON(ephemeralBody)
+	if err != nil {
+		diags.AddError(
+			`Error to marshal "sensitive_body"`,
+			err.Error(),
+		)
+		return
+	}
+	return ephemeralBodyPrivateMgr.Diff(ctx, d, eb)
 }

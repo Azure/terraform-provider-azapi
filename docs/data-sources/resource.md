@@ -19,7 +19,6 @@ terraform {
 }
 
 provider "azapi" {
-  enable_hcl_output_for_data_source = true
 }
 
 provider "azurerm" {
@@ -68,7 +67,7 @@ output "quarantine_policy" {
 ### Optional
 
 - `headers` (Map of String) A map of headers to include in the request
-- `name` (String) Specifies the name of the Azure resource.
+- `name` (String) Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
   - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
@@ -81,7 +80,7 @@ output "quarantine_policy" {
 
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 - `query_parameters` (Map of List of String) A map of query parameters to include in the request
-- `resource_id` (String) The ID of the Azure resource to retrieve.
+- `resource_id` (String) The ID of the Azure resource to retrieve. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -109,7 +108,7 @@ output "quarantine_policy" {
 	```
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
-- `retry` (Attributes) The retry block supports the following arguments: (see [below for nested schema](#nestedatt--retry))
+- `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 
 ### Read-Only
@@ -137,7 +136,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 Required:
 
-- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the error is considered retryable.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 Optional:
 

@@ -60,3 +60,10 @@ resource "azapi_resource_action" "buildService" {
   response_export_values = ["*"]
 }
 
+data "azapi_resource" "buildService" {
+  type      = "Microsoft.AppPlatform/Spring/buildServices@2023-05-01-preview"
+  name      = "default"
+  parent_id = azapi_resource.Spring.id
+
+  depends_on = [azapi_resource_action.buildService]
+}

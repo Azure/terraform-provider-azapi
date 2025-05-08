@@ -147,6 +147,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				Location                      types.String        `tfsdk:"location"`
 				Identity                      types.List          `tfsdk:"identity"`
 				Body                          types.Dynamic       `tfsdk:"body"`
+				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
 				Locks                         types.List          `tfsdk:"locks"`
 				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`

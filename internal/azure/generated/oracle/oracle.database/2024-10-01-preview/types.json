@@ -1,0 +1,7607 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 30,
+    "pattern": ".*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/autonomousDatabases"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/autonomousDatabases",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AutonomousDatabaseBaseProperties",
+    "discriminator": "dataBaseType",
+    "baseProperties": {
+      "adminPassword": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 4,
+        "description": "Admin password."
+      },
+      "autonomousMaintenanceScheduleType": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "The maintenance schedule type of the Autonomous Database Serverless."
+      },
+      "characterSet": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The character set for the autonomous database."
+      },
+      "computeCount": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The compute amount (CPUs) available to the database."
+      },
+      "computeModel": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The compute model of the Autonomous Database."
+      },
+      "cpuCoreCount": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The number of CPU cores to be made available to the database."
+      },
+      "customerContacts": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Customer Contacts."
+      },
+      "dataStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The quantity of data in the database, in terabytes."
+      },
+      "dataStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The size, in gigabytes, of the data volume that will be created and attached to the database."
+      },
+      "dbVersion": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "A valid Oracle Database version for Autonomous Database."
+      },
+      "dbWorkload": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The Autonomous Database workload type"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The user-friendly name for the Autonomous Database."
+      },
+      "isAutoScalingEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates if auto scaling is enabled for the Autonomous Database CPU core count."
+      },
+      "isAutoScalingForStorageEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates if auto scaling is enabled for the Autonomous Database storage."
+      },
+      "peerDbIds": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "The list of Azure resource IDs of standby databases located in Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous Database Serverless instances, standby databases located in the same region as the source primary database do not have Azure IDs."
+      },
+      "peerDbId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 4,
+        "description": "The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
+      },
+      "isLocalDataGuardEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates whether the Autonomous Database has local or called in-region Data Guard enabled."
+      },
+      "isRemoteDataGuardEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates whether the Autonomous Database has Cross Region Data Guard enabled."
+      },
+      "localDisasterRecoveryType": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "Indicates the local disaster recovery (DR) type of the Autonomous Database Serverless instance.Autonomous Data Guard (ADG) DR type provides business critical DR with a faster recovery time objective (RTO) during failover or switchover.Backup-based DR type provides lower cost DR with a slower RTO during failover or switchover."
+      },
+      "timeDisasterRecoveryRoleChanged": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the Disaster Recovery role was switched for the standby Autonomous Database."
+      },
+      "remoteDisasterRecoveryConfiguration": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "Indicates remote disaster recovery configuration"
+      },
+      "localStandbyDb": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 2,
+        "description": "Local Autonomous Disaster Recovery standby database details."
+      },
+      "failedDataRecoveryInSeconds": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Indicates the number of seconds of data loss for a Data Guard failover."
+      },
+      "isMtlsConnectionRequired": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Specifies if the Autonomous Database requires mTLS connections."
+      },
+      "isPreviewVersionWithServiceTermsAccepted": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 4,
+        "description": "Specifies if the Autonomous Database preview version is being provisioned."
+      },
+      "licenseModel": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED."
+      },
+      "ncharacterSet": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The character set for the Autonomous Database."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional information about the current lifecycle state."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 2,
+        "description": "Views lifecycleState"
+      },
+      "scheduledOperations": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "The list of scheduled operations."
+      },
+      "privateEndpointIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The private endpoint Ip address for the resource."
+      },
+      "privateEndpointLabel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource's private endpoint label."
+      },
+      "ociUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "HTTPS link to OCI resources exposed to Azure Customer via Azure Interface."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client subnet"
+      },
+      "vnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VNET for network connectivity"
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time that the database was created."
+      },
+      "timeMaintenanceBegin": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time when maintenance will begin."
+      },
+      "timeMaintenanceEnd": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time when maintenance will end."
+      },
+      "actualUsedDataStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The current amount of storage in use for user and system data, in terabytes (TB)."
+      },
+      "allocatedStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The amount of storage currently allocated for the database tables and billed for, rounded up."
+      },
+      "apexDetails": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 2,
+        "description": "Information about Oracle APEX Application Development."
+      },
+      "availableUpgradeVersions": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 2,
+        "description": "List of Oracle Database versions available for a database upgrade. If there are no version upgrades available, this list is empty."
+      },
+      "connectionStrings": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 2,
+        "description": "The connection string used to connect to the Autonomous Database."
+      },
+      "connectionUrls": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 2,
+        "description": "The URLs for accessing Oracle Application Express (APEX) and SQL Developer Web with a browser from a Compute instance within your VCN or that has a direct connection to your VCN."
+      },
+      "dataSafeStatus": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 2,
+        "description": "Status of the Data Safe registration for this Autonomous Database."
+      },
+      "databaseEdition": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "The Oracle Database Edition that applies to the Autonomous databases."
+      },
+      "autonomousDatabaseId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Autonomous Database ID"
+      },
+      "inMemoryAreaInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The area assigned to In-Memory tables in Autonomous Database."
+      },
+      "nextLongTermBackupTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time when the next long-term backup would be created."
+      },
+      "longTermBackupSchedule": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Details for the long-term backup schedule."
+      },
+      "isPreview": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates if the Autonomous Database version is a preview version."
+      },
+      "localAdgAutoFailoverMaxDataLossLimit": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local Autonomous Data Guard"
+      },
+      "memoryPerOracleComputeUnitInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The amount of memory (in GBs) enabled per ECPU or OCPU."
+      },
+      "openMode": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "Indicates the Autonomous Database mode."
+      },
+      "operationsInsightsStatus": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 2,
+        "description": "Status of Operations Insights for this Autonomous Database."
+      },
+      "permissionLevel": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "The Autonomous Database permission level."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private endpoint for the resource."
+      },
+      "provisionableCpus": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 2,
+        "description": "An array of CPU values that an Autonomous Database can be scaled to."
+      },
+      "role": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 0,
+        "description": "The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled."
+      },
+      "serviceConsoleUrl": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 2,
+        "description": "The URL of the Service Console for the Autonomous Database."
+      },
+      "sqlWebDeveloperUrl": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 2,
+        "description": "The SQL Web Developer URL for the Oracle Autonomous Database."
+      },
+      "supportedRegionsToCloneTo": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 2,
+        "description": "The list of regions that support the creation of an Autonomous Database clone or an Autonomous Data Guard standby database."
+      },
+      "timeDataGuardRoleChanged": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the Autonomous Data Guard role was switched for the Autonomous Database."
+      },
+      "timeDeletionOfFreeAutonomousDatabase": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the Always Free database will be automatically deleted because of inactivity."
+      },
+      "timeLocalDataGuardEnabled": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time that Autonomous Data Guard was enabled for an Autonomous Database where the standby was provisioned in the same region as the primary database."
+      },
+      "timeOfLastFailover": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last failover operation."
+      },
+      "timeOfLastRefresh": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time when last refresh happened."
+      },
+      "timeOfLastRefreshPoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The refresh point timestamp (UTC)."
+      },
+      "timeOfLastSwitchover": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last switchover operation for the Autonomous Database."
+      },
+      "timeReclamationOfFreeAutonomousDatabase": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the Always Free database will be stopped because of inactivity."
+      },
+      "usedDataStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The storage space consumed by Autonomous Database in GBs."
+      },
+      "usedDataStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The amount of storage that has been used, in terabytes."
+      },
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Database ocid"
+      },
+      "backupRetentionPeriodInDays": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Retention period, in days, for long-term backups"
+      },
+      "whitelistedIps": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']"
+      }
+    },
+    "elements": {
+      "Clone": {
+        "$ref": "#/172"
+      },
+      "CloneFromBackupTimestamp": {
+        "$ref": "#/191"
+      },
+      "CrossRegionDisasterRecovery": {
+        "$ref": "#/197"
+      },
+      "Regular": {
+        "$ref": "#/203"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Early"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regular"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 512
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ECPU"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OCPU"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 128
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomerContact",
+    "properties": {
+      "email": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "The email address used by Oracle to send notifications regarding databases and infrastructure."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 320
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 384
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 20,
+    "maxValue": 393216
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OLTP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DW"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AJD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "APEX"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adg"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupBased"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DisasterRecoveryConfigurationDetails",
+    "properties": {
+      "disasterRecoveryType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "Indicates the disaster recovery (DR) type of the Autonomous Database Serverless instance. Autonomous Data Guard (ADG) DR type provides business critical DR with a faster recovery time objective (RTO) during failover or switchover. Backup-based DR type provides lower cost DR with a slower RTO during failover or switchover."
+      },
+      "timeSnapshotStandbyEnabledTill": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time and date stored as an RFC 3339 formatted timestamp string. For example, 2022-01-01T12:00:00.000Z would set a limit for the snapshot standby to be converted back to a cross-region standby database."
+      },
+      "isSnapshotStandby": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates if user wants to convert to a snapshot standby. For example, true would set a standby database to snapshot standby database. False would set a snapshot standby database back to regular standby database."
+      },
+      "isReplicateAutomaticBackups": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "If true, 7 days worth of backups are replicated across regions for Cross-Region ADB or Backup-Based DR between Primary and Standby. If false, the backups taken on the Primary are not replicated to the Standby database."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adg"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupBased"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseStandbySummary",
+    "properties": {
+      "lagTimeInSeconds": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The amount of time, in seconds, that the data of the standby database lags the data of the primary database. Can be used to determine the potential data loss in the event of a failover."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The current state of the Autonomous Database."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Additional information about the current lifecycle state."
+      },
+      "timeDataGuardRoleChanged": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The date and time the Autonomous Data Guard role was switched for the standby Autonomous Database."
+      },
+      "timeDisasterRecoveryRoleChanged": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The date and time the Disaster Recovery role was switched for the standby Autonomous Database."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RestoreInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RestoreFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScaleInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailableNeedsAttention"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restarting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Recreating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RoleChangeInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inaccessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standby"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LicenseIncluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BringYourOwnLicense"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RestoreInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RestoreFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScaleInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailableNeedsAttention"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restarting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Recreating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RoleChangeInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inaccessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standby"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduledOperationsType",
+    "properties": {
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "Day of week"
+      },
+      "scheduledStartTime": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "auto start time. value must be of ISO-8601 format HH:mm"
+      },
+      "scheduledStopTime": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "auto stop time. value must be of ISO-8601 format HH:mm"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DayOfWeek",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "Name of the day of the week."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApexDetailsType",
+    "properties": {
+      "apexVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Oracle APEX Application Development version."
+      },
+      "ordsVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Oracle REST Data Services (ORDS) version."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionStringType",
+    "properties": {
+      "allConnectionStrings": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Returns all connection strings that can be used to connect to the Autonomous Database."
+      },
+      "dedicated": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The database service provides the least level of resources to each SQL statement, but supports the most number of concurrent SQL statements."
+      },
+      "high": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The High database service provides the highest level of resources to each SQL statement resulting in the highest performance, but supports the fewest number of concurrent SQL statements."
+      },
+      "low": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The Low database service provides the least level of resources to each SQL statement, but supports the most number of concurrent SQL statements."
+      },
+      "medium": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The Medium database service provides a lower level of resources to each SQL statement potentially resulting a lower level of performance, but supports more concurrent SQL statements."
+      },
+      "profiles": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 0,
+        "description": "A list of connection string profiles to allow clients to group, filter and select connection string values based on structured metadata."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AllConnectionStringType",
+    "properties": {
+      "high": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The High database service provides the highest level of resources to each SQL statement resulting in the highest performance, but supports the fewest number of concurrent SQL statements."
+      },
+      "low": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The Low database service provides the least level of resources to each SQL statement, but supports the most number of concurrent SQL statements."
+      },
+      "medium": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The Medium database service provides a lower level of resources to each SQL statement potentially resulting a lower level of performance, but supports more concurrent SQL statements."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 10,
+    "maxLength": 255
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProfileType",
+    "properties": {
+      "consumerGroup": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Consumer group used by the connection."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "A user-friendly name for the connection."
+      },
+      "hostFormat": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 1,
+        "description": "Host format used in connection string."
+      },
+      "isRegional": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True for a regional connection string, applicable to cross-region DG only."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 1,
+        "description": "Protocol used by the connection."
+      },
+      "sessionMode": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "Specifies whether the listener performs a direct hand-off of the session, or redirects the session."
+      },
+      "syntaxFormat": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 1,
+        "description": "Specifies whether the connection string is using the long (LONG), Easy Connect (EZCONNECT), or Easy Connect Plus (EZCONNECTPLUS) format."
+      },
+      "tlsAuthentication": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Specifies whether the TLS handshake is using one-way (SERVER) or mutual (MUTUAL) authentication."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Connection string value."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tpurgent"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fqdn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ip"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TCP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TCPS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Direct"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Redirect"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Long"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ezconnect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ezconnectplus"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Server"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mutual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/105"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionUrlType",
+    "properties": {
+      "apexUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Oracle Application Express (APEX) URL."
+      },
+      "databaseTransformsUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The URL of the Database Transforms for the Autonomous Database."
+      },
+      "graphStudioUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The URL of the Graph Studio for the Autonomous Database."
+      },
+      "machineLearningNotebookUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The URL of the Oracle Machine Learning (OML) Notebook for the Autonomous Database."
+      },
+      "mongoDbUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The URL of the MongoDB API for the Autonomous Database."
+      },
+      "ordsUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "The Oracle REST Data Services (ORDS) URL of the Web Access for the Autonomous Database."
+      },
+      "sqlDevWebUrl": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Oracle SQL Developer Web URL."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 10,
+    "maxLength": 512
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Registering"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Registered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deregistering"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRegistered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardEdition"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnterpriseEdition"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LongTermBackUpScheduleDetails",
+    "properties": {
+      "repeatCadence": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "The frequency of the long-term backup schedule"
+      },
+      "timeOfBackup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp for the long-term backup schedule. For a MONTHLY cadence, months having fewer days than the provided date will have the backup taken on the last day of that month."
+      },
+      "retentionPeriodInDays": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "Retention period, in days, for backups."
+      },
+      "isDisabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates if the long-term backup schedule should be deleted. The default value is `FALSE`."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OneTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monthly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yearly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 90,
+    "maxValue": 2558
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 3600
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadWrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotEnabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedEnabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FailedDisabling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restricted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unrestricted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/36"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DisabledStandby"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupCopy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SnapshotStandby"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 10,
+    "maxLength": 2048
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 1024
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/170"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseCloneProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 4,
+        "description": "The source of the database."
+      },
+      "sourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID of the Autonomous Database that was cloned to create the current Autonomous Database."
+      },
+      "cloneType": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 5,
+        "description": "The Autonomous Database clone type."
+      },
+      "isReconnectCloneEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates if the refreshable clone can be reconnected to its source database."
+      },
+      "isRefreshableClone": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates if the Autonomous Database is a refreshable clone."
+      },
+      "refreshableModel": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 4,
+        "description": "The refresh mode of the clone."
+      },
+      "refreshableStatus": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 2,
+        "description": "The refresh status of the clone."
+      },
+      "timeUntilReconnectCloneEnabled": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time and date as an RFC3339 formatted string, e.g., 2022-01-01T12:00:00.000Z, to set the limit for a refreshable clone to be reconnected to its source database."
+      },
+      "dataBaseType": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 1,
+        "description": "Database type to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Database"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupFromId"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupFromTimestamp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CloneToRefreshable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossRegionDataguard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossRegionDisasterRecovery"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Metadata"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Refreshing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRefreshing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Clone"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseFromBackupTimestampProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 5,
+        "description": "The source of the database."
+      },
+      "sourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ID of the source Autonomous Database that you will clone to create a new Autonomous Database."
+      },
+      "cloneType": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 5,
+        "description": "The Autonomous Database clone type."
+      },
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 4,
+        "description": "The timestamp specified for the point-in-time clone of the source Autonomous Database. The timestamp must be in the past."
+      },
+      "useLatestAvailableBackupTimeStamp": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 4,
+        "description": "Clone from latest available backup timestamp."
+      },
+      "dataBaseType": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 1,
+        "description": "Database type to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupFromTimestamp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Metadata"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CloneFromBackupTimestamp"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseCrossRegionDisasterRecoveryProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 5,
+        "description": "The source of the database."
+      },
+      "sourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure resource ID of the source Autonomous Database that will be used to create a new peer database for the DR association."
+      },
+      "sourceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 4,
+        "description": "The name of the region where source Autonomous Database exists."
+      },
+      "sourceOcid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 4,
+        "description": "The source database ocid"
+      },
+      "remoteDisasterRecoveryType": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 1,
+        "description": "Indicates the cross-region disaster recovery (DR) type of the standby Autonomous Database Serverless instance. Autonomous Data Guard (ADG) DR type provides business critical DR with a faster recovery time objective (RTO) during failover or switchover. Backup-based DR type provides lower cost DR with a slower RTO during failover or switchover."
+      },
+      "isReplicateAutomaticBackups": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "If true, 7 days worth of backups are replicated across regions for Cross-Region ADB or Backup-Based DR between Primary and Standby. If false, the backups taken on the Primary are not replicated to the Standby database."
+      },
+      "dataBaseType": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 1,
+        "description": "Database type to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossRegionDisasterRecovery"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Adg"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupBased"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossRegionDisasterRecovery"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseProperties",
+    "properties": {
+      "dataBaseType": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 1,
+        "description": "Database type to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regular"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/autonomousDatabases@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": ".*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/cloudExadataInfrastructures"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/cloudExadataInfrastructures",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 1,
+        "description": "CloudExadataInfrastructure zones"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudExadataInfrastructureProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Exadata infra ocid"
+      },
+      "computeCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The number of compute servers for the cloud Exadata infrastructure."
+      },
+      "storageCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The number of storage servers for the cloud Exadata infrastructure."
+      },
+      "totalStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total storage allocated to the cloud Exadata infrastructure resource, in gigabytes (GB)."
+      },
+      "availableStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The available storage can be allocated to the cloud Exadata infrastructure resource, in gigabytes (GB)."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the cloud Exadata infrastructure resource was created."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional information about the current lifecycle state."
+      },
+      "maintenanceWindow": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 0,
+        "description": "maintenanceWindow property"
+      },
+      "estimatedPatchingTime": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 2,
+        "description": "The estimated total time required in minutes for all patching operations (database server, storage server, and network switch patching)."
+      },
+      "customerContacts": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "The list of customer email addresses that receive information from Oracle about the specified OCI Database service resource. Oracle uses these email addresses to send notifications about planned and unplanned software maintenance updates, information about system hardware, and other information needed by administrators. Up to 10 email addresses can be added to the customer contacts for a cloud Exadata infrastructure instance."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 2,
+        "description": "CloudExadataInfrastructure provisioning state"
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 2,
+        "description": "CloudExadataInfrastructure lifecycle state"
+      },
+      "shape": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The model name of the cloud Exadata infrastructure resource."
+      },
+      "ociUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "HTTPS link to OCI resources exposed to Azure Customer via Azure Interface."
+      },
+      "cpuCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total number of CPU cores allocated."
+      },
+      "maxCpuCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total number of CPU cores available."
+      },
+      "memorySizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The memory allocated in GBs."
+      },
+      "maxMemoryInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total memory available in GBs."
+      },
+      "dbNodeStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The local node storage to be allocated in GBs."
+      },
+      "maxDbNodeStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total local node storage available in GBs."
+      },
+      "dataStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The quantity of data in the database, in terabytes."
+      },
+      "maxDataStorageInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total available DATA disk group size."
+      },
+      "dbServerVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The software version of the database servers (dom0) in the Exadata infrastructure."
+      },
+      "storageServerVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The software version of the storage servers (cells) in the Exadata infrastructure."
+      },
+      "activatedStorageCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The requested number of additional storage servers activated for the Exadata infrastructure."
+      },
+      "additionalStorageCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The requested number of additional storage servers for the Exadata infrastructure."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The name for the Exadata infrastructure."
+      },
+      "lastMaintenanceRunId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the last maintenance run."
+      },
+      "nextMaintenanceRunId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the next maintenance run."
+      },
+      "monthlyDbServerVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Monthly Db Server version"
+      },
+      "monthlyStorageServerVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Monthly Storage Server version"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceWindow",
+    "properties": {
+      "preference": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 0,
+        "description": "The maintenance window scheduling preference."
+      },
+      "months": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Months during the year when maintenance should be performed."
+      },
+      "weeksOfMonth": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "Weeks during the month when maintenance should be performed. Weeks start on the 1st, 8th, 15th, and 22nd days of the month, and have a duration of 7 days. Weeks start and end based on calendar dates, not days of the week. For example, to allow maintenance during the 2nd week of the month (from the 8th day to the 14th day of the month), use the value 2. Maintenance cannot be scheduled for the fifth week of months that contain more than 28 days. Note that this parameter works in conjunction with the  daysOfWeek and hoursOfDay parameters to allow you to specify specific days of the week and hours that maintenance will be performed."
+      },
+      "daysOfWeek": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 0,
+        "description": "Days during the week when maintenance should be performed."
+      },
+      "hoursOfDay": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 0,
+        "description": "The window of hours during the day when maintenance should be performed. The window is a 4 hour slot. Valid values are - 0 - represents time slot 0:00 - 3:59 UTC - 4 - represents time slot 4:00 - 7:59 UTC - 8 - represents time slot 8:00 - 11:59 UTC - 12 - represents time slot 12:00 - 15:59 UTC - 16 - represents time slot 16:00 - 19:59 UTC - 20 - represents time slot 20:00 - 23:59 UTC"
+      },
+      "leadTimeInWeeks": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Lead time window allows user to set a lead time to prepare for a down time. The lead time is in weeks and valid value is between 1 to 4."
+      },
+      "patchingMode": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 0,
+        "description": "Cloud Exadata infrastructure node patching method."
+      },
+      "customActionTimeoutInMins": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "Determines the amount of time the system will wait before the start of each database server patching operation. Custom action timeout is in minutes and valid value is between 15 to 120 (inclusive)."
+      },
+      "isCustomActionTimeoutEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "If true, enables the configuration of a custom action timeout (waiting period) between database server patching operations."
+      },
+      "isMonthlyPatchingEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "is Monthly Patching Enabled"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoPreference"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CustomPreference"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Month",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 1,
+        "description": "Name of the month of the year."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "January"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "February"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "March"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "April"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "May"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "June"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "July"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "August"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "September"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "October"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "November"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "December"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/227"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/36"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/90"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/36"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rolling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonRolling"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 120
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EstimatedPatchingTime",
+    "properties": {
+      "estimatedDbServerPatchingTime": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 2,
+        "description": "The estimated time required in minutes for database server patching."
+      },
+      "estimatedNetworkSwitchesPatchingTime": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 2,
+        "description": "The estimated time required in minutes for network switch patching."
+      },
+      "estimatedStorageServerPatchingTime": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 2,
+        "description": "The estimated time required in minutes for storage server patching."
+      },
+      "totalEstimatedPatchingTime": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 2,
+        "description": "The estimated total time required in minutes for all patching operations."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 3000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/cloudExadataInfrastructures@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/221"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/cloudVmClusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/cloudVmClusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudVmClusterProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Cloud VM Cluster ocid"
+      },
+      "listenerPort": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The port number configured for the listener on the cloud VM cluster."
+      },
+      "nodeCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The number of nodes in the cloud VM cluster."
+      },
+      "storageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The data disk group size to be allocated in GBs per VM."
+      },
+      "dataStorageSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The data disk group size to be allocated in TBs."
+      },
+      "dbNodeStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The local node storage to be allocated in GBs."
+      },
+      "memorySizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The memory to be allocated in GBs."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time that the cloud VM cluster was created."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional information about the current lifecycle state."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The time zone of the cloud VM cluster. For details, see [Exadata Infrastructure Time Zones](/Content/Database/References/timezones.htm)."
+      },
+      "zoneId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the zone the cloud VM cluster is associated with."
+      },
+      "hostname": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 1,
+        "description": "The hostname for the cloud VM cluster."
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The domain name for the cloud VM cluster."
+      },
+      "cpuCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "The number of CPU cores enabled on the cloud VM cluster."
+      },
+      "ocpuCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part."
+      },
+      "clusterName": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 0,
+        "description": "The cluster name for cloud VM cluster. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive."
+      },
+      "dataStoragePercentage": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The percentage assigned to DATA storage (user data and database files). The remaining percentage is assigned to RECO storage (database redo logs, archive logs, and recovery manager backups). Accepted values are 35, 40, 60 and 80. The default is 80 percent assigned to DATA storage. See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on the impact of the configuration settings on storage."
+      },
+      "isLocalBackupEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "If true, database backup on local Exadata storage is configured for the cloud VM cluster. If false, database backup on local Exadata storage is not available in the cloud VM cluster."
+      },
+      "cloudExadataInfrastructureId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Cloud Exadata Infrastructure ID"
+      },
+      "isSparseDiskgroupEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "If true, sparse disk group is configured for the cloud VM cluster. If false, sparse disk group is not created."
+      },
+      "systemVersion": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Operating system version of the image."
+      },
+      "sshPublicKeys": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 1,
+        "description": "The public key portion of one or more key pairs used for SSH access to the cloud VM cluster."
+      },
+      "licenseModel": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED."
+      },
+      "diskRedundancy": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 2,
+        "description": "The type of redundancy configured for the cloud Vm cluster. NORMAL is 2-way redundancy. HIGH is 3-way redundancy."
+      },
+      "scanIpIds": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 2,
+        "description": "The Single Client Access Name (SCAN) IP addresses associated with the cloud VM cluster. SCAN IP addresses are typically used for load balancing and are not assigned to any interface. Oracle Clusterware directs the requests to the appropriate nodes in the cluster. **Note:** For a single-node DB system, this list is empty."
+      },
+      "vipIds": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 2,
+        "description": "The virtual IP (VIP) addresses associated with the cloud VM cluster. The Cluster Ready Services (CRS) creates and maintains one VIP address for each node in the Exadata Cloud Service instance to enable failover. If one node fails, the VIP is reassigned to another active node in the cluster. **Note:** For a single-node DB system, this list is empty."
+      },
+      "scanDnsName": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 2,
+        "description": "The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster."
+      },
+      "scanListenerPortTcp": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The TCP Single Client Access Name (SCAN) port. The default port is 1521."
+      },
+      "scanListenerPortTcpSsl": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The TCPS Single Client Access Name (SCAN) port. The default port is 2484."
+      },
+      "scanDnsRecordId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster."
+      },
+      "shape": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The model name of the Exadata hardware running the cloud VM cluster."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 2,
+        "description": "CloudVmCluster provisioning state"
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 2,
+        "description": "CloudVmCluster lifecycle state"
+      },
+      "vnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "VNET for network connectivity"
+      },
+      "giVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Oracle Grid Infrastructure (GI) software version"
+      },
+      "ociUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "HTTPS link to OCI resources exposed to Azure Customer via Azure Interface."
+      },
+      "nsgUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "HTTPS link to OCI Network Security Group exposed to Azure Customer via the Azure Interface."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Client subnet"
+      },
+      "backupSubnetCidr": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 0,
+        "description": "Client OCI backup subnet CIDR, default is 192.168.252.0/22"
+      },
+      "nsgCidrs": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "CIDR blocks for additional NSG ingress rules. The VNET CIDRs used to provision the VM Cluster will be added by default."
+      },
+      "dataCollectionOptions": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "Indicates user preferences for the various diagnostic collection options for the VM cluster/Cloud VM cluster/VMBM DBCS."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Display Name"
+      },
+      "computeNodes": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 4,
+        "description": "The list of compute servers to be added to the cloud VM cluster."
+      },
+      "iormConfigCache": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 2,
+        "description": "iormConfigCache details for cloud VM cluster."
+      },
+      "lastUpdateHistoryEntryId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the last maintenance update history entry."
+      },
+      "dbServers": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 0,
+        "description": "The list of DB servers."
+      },
+      "compartmentId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Cluster compartmentId"
+      },
+      "subnetOcid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Cluster subnet ocid"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 23
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 11
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LicenseIncluded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BringYourOwnLicense"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Normal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 72
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 32
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NsgCidr",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 1,
+        "description": "Conceptually, this is the range of IP addresses that a packet coming into the instance can come from."
+      },
+      "destinationPortRange": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Destination port range to specify particular destination ports for TCP rules."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 128
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PortRange",
+    "properties": {
+      "min": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 1,
+        "description": "The minimum port number, which must not be greater than the maximum port number."
+      },
+      "max": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 1,
+        "description": "The maximum port number, which must not be less than the minimum port number. To specify a single port number, set both the min and max to the same value."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65535
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/298"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataCollectionOptions",
+    "properties": {
+      "isDiagnosticsEventsEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates whether diagnostic collection is enabled for the VM cluster/Cloud VM cluster/VMBM DBCS."
+      },
+      "isHealthMonitoringEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates whether health monitoring is enabled for the VM cluster / Cloud VM cluster / VMBM DBCS."
+      },
+      "isIncidentLogsEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Indicates whether incident logs and trace collection are enabled for the VM cluster / Cloud VM cluster / VMBM DBCS."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExadataIormConfig",
+    "properties": {
+      "dbPlans": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 0,
+        "description": "An array of IORM settings for all the database in the Exadata DB system."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Additional information about the current lifecycleState."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 0,
+        "description": "The current state of IORM configuration for the Exadata DB system."
+      },
+      "objective": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 0,
+        "description": "The current value for the IORM objective. The default is AUTO."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbIormConfig",
+    "properties": {
+      "dbName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The database name. For the default DbPlan, the dbName is default."
+      },
+      "flashCacheLimit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The flash cache limit for this database. This value is internally configured based on the share value assigned to the database."
+      },
+      "share": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "The relative priority of this database."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 32
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/306"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BootStrapping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LowLatency"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HighThroughput"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Balanced"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Auto"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/cloudVmClusters@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/270"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/oracleSubscriptions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/oracleSubscriptions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/326"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "plan": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 0,
+        "description": "Details of the resource plan."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OracleSubscriptionProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 2,
+        "description": "OracleSubscriptionProvisioningState provisioning state"
+      },
+      "saasSubscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "SAAS subscription ID generated by Marketplace"
+      },
+      "cloudAccountId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Cloud Account Id"
+      },
+      "cloudAccountState": {
+        "type": {
+          "$ref": "#/336"
+        },
+        "flags": 2,
+        "description": "Cloud Account provisioning state."
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Term Unit. P1Y, P3Y, etc, see Durations https://en.wikipedia.org/wiki/ISO_8601"
+      },
+      "productCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 4,
+        "description": "Product code for the term unit"
+      },
+      "intent": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 4,
+        "description": "Intent for the update operation"
+      },
+      "azureSubscriptionIds": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 2,
+        "description": "Azure subscriptions associated with this OracleSubscription"
+      },
+      "addSubscriptionOperationState": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 2,
+        "description": "State of the add Azure subscription operation on Oracle subscription"
+      },
+      "lastOperationStatusDetail": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Status details of the last operation on Oracle subscription"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Retain"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reset"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Plan",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A user defined name of the 3rd Party Artifact that is being procured."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic"
+      },
+      "product": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding."
+      },
+      "promotionCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A publisher provided promotion code as provisioned in Data Market for the said product/artifact."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the desired product/artifact."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/oracleSubscriptions@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/327"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/autonomousDatabases/autonomousDatabaseBackups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/autonomousDatabases/autonomousDatabaseBackups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseBackupProperties",
+    "properties": {
+      "autonomousDatabaseOcid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the Autonomous Database."
+      },
+      "databaseSizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The size of the database in terabytes at the time the backup was taken."
+      },
+      "dbVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A valid Oracle Database version for Autonomous Database."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user-friendly name for the backup. The name does not have to be unique."
+      },
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the Autonomous Database backup."
+      },
+      "isAutomatic": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates whether the backup is user-initiated or automatic."
+      },
+      "isRestorable": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Indicates whether the backup can be used to restore the associated Autonomous Database."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional information about the current lifecycle state."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 2,
+        "description": "The current state of the backup."
+      },
+      "retentionPeriodInDays": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Retention period, in days"
+      },
+      "sizeInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The backup size in terabytes (TB)."
+      },
+      "timeAvailableTil": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Timestamp until when the backup will be available."
+      },
+      "timeStarted": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the backup started."
+      },
+      "timeEnded": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time the backup completed."
+      },
+      "backupType": {
+        "type": {
+          "$ref": "#/360"
+        },
+        "flags": 2,
+        "description": "The type of backup."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incremental"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LongTerm"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/autonomousDatabases/autonomousDatabaseBackups@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/349"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": ".*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/cloudVmClusters/virtualNetworkAddresses"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/cloudVmClusters/virtualNetworkAddresses",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/367"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/368"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/371"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualNetworkAddressProperties",
+    "properties": {
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Virtual network Address address."
+      },
+      "vmOcid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Virtual Machine OCID."
+      },
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Application VIP OCID."
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Virtual network address fully qualified domain name."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional information about the current lifecycle state of the application virtual IP (VIP) address."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/382"
+        },
+        "flags": 2,
+        "description": "virtual network address lifecycle state."
+      },
+      "timeAssigned": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time when the create operation for the application virtual IP (VIP) address completed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/378"
+      },
+      {
+        "$ref": "#/379"
+      },
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/cloudVmClusters/virtualNetworkAddresses@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/370"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/autonomousDatabaseCharacterSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/autonomousDatabaseCharacterSets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseCharacterSetProperties",
+    "properties": {
+      "characterSet": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The Oracle Autonomous Database supported character sets."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/autonomousDatabaseCharacterSets@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/386"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/autonomousDatabaseNationalCharacterSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/autonomousDatabaseNationalCharacterSets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/390"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseNationalCharacterSetProperties",
+    "properties": {
+      "characterSet": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The Oracle Autonomous Database supported national character sets."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/autonomousDatabaseNationalCharacterSets@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/391"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/autonomousDbVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/autonomousDbVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/394"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/395"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/397"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDbVersionProperties",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Supported Autonomous Db versions."
+      },
+      "dbWorkload": {
+        "type": {
+          "$ref": "#/402"
+        },
+        "flags": 0,
+        "description": "The Autonomous Database workload type"
+      },
+      "isDefaultForFree": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True if this version of the Oracle Database software's default is free."
+      },
+      "isDefaultForPaid": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True if this version of the Oracle Database software's default is paid."
+      },
+      "isFreeTierEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True if this version of the Oracle Database software can be used for Always-Free Autonomous Databases."
+      },
+      "isPaidEnabled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True if this version of the Oracle Database software has payments enabled."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OLTP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DW"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AJD"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "APEX"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/398"
+      },
+      {
+        "$ref": "#/399"
+      },
+      {
+        "$ref": "#/400"
+      },
+      {
+        "$ref": "#/401"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/autonomousDbVersions@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/396"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/dbSystemShapes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/dbSystemShapes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/405"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/407"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbSystemShapeProperties",
+    "properties": {
+      "shapeFamily": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The family of the shape used for the DB system."
+      },
+      "availableCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "The maximum number of CPU cores that can be enabled on the DB system for this shape."
+      },
+      "minimumCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum number of CPU cores that can be enabled on the DB system for this shape."
+      },
+      "runtimeMinimumCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The runtime minimum number of CPU cores that can be enabled on the DB system for this shape."
+      },
+      "coreCountIncrement": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The discrete number by which the CPU core count for this shape can be increased or decreased."
+      },
+      "minStorageCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum number of Exadata storage servers available for the Exadata infrastructure."
+      },
+      "maxStorageCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum number of Exadata storage servers available for the Exadata infrastructure."
+      },
+      "availableDataStoragePerServerInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum data storage available per storage server for this shape. Only applicable to ExaCC Elastic shapes."
+      },
+      "availableMemoryPerNodeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum memory available per database node for this shape. Only applicable to ExaCC Elastic shapes."
+      },
+      "availableDbNodePerNodeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum Db Node storage available per database node for this shape. Only applicable to ExaCC Elastic shapes."
+      },
+      "minCoreCountPerNode": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum number of CPU cores that can be enabled per node for this shape."
+      },
+      "availableMemoryInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum memory that can be enabled for this shape."
+      },
+      "minMemoryPerNodeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum memory that need be allocated per node for this shape."
+      },
+      "availableDbNodeStorageInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum Db Node storage that can be enabled for this shape."
+      },
+      "minDbNodeStoragePerNodeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum Db Node storage that need be allocated per node for this shape."
+      },
+      "availableDataStorageInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum DATA storage that can be enabled for this shape."
+      },
+      "minDataStorageInTbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum data storage that need be allocated for this shape."
+      },
+      "minimumNodeCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The minimum number of database nodes available for this shape."
+      },
+      "maximumNodeCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum number of database nodes available for this shape."
+      },
+      "availableCoreCountPerNode": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The maximum number of CPU cores per database node that can be enabled for this shape. Only applicable to the flex Exadata shape and ExaCC Elastic shapes."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/dbSystemShapes@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/406"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255,
+    "pattern": ".*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/dnsPrivateViews"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/dnsPrivateViews",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/410"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DnsPrivateViewProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The OCID of the view"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The display name of the view resource"
+      },
+      "isProtected": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/418"
+        },
+        "flags": 1,
+        "description": "Views lifecycleState"
+      },
+      "self": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The canonical absolute URL of the resource."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "views timeCreated"
+      },
+      "timeUpdated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "views timeUpdated"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/422"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/414"
+      },
+      {
+        "$ref": "#/415"
+      },
+      {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/419"
+      },
+      {
+        "$ref": "#/420"
+      },
+      {
+        "$ref": "#/421"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/dnsPrivateViews@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/412"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/dnsPrivateZones"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/dnsPrivateZones",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/424"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/425"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DnsPrivateZoneProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The OCID of the Zone"
+      },
+      "isProtected": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/433"
+        },
+        "flags": 1,
+        "description": "Zones lifecycleState"
+      },
+      "self": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The canonical absolute URL of the resource."
+      },
+      "serial": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 1,
+        "description": "The current serial of the zone. As seen in the zone's SOA record."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Version is the never-repeating, totally-orderable, version of the zone, from which the serial field of the zone's SOA record is derived."
+      },
+      "viewId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the private view containing the zone. This value will be null for zones in the global DNS, which are publicly resolvable and not part of a private view."
+      },
+      "zoneType": {
+        "type": {
+          "$ref": "#/436"
+        },
+        "flags": 1,
+        "description": "The type of the zone. Must be either PRIMARY or SECONDARY. SECONDARY is only supported for GLOBAL zones."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Zones timeCreated"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/428"
+      },
+      {
+        "$ref": "#/429"
+      },
+      {
+        "$ref": "#/430"
+      },
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/437"
+      },
+      {
+        "$ref": "#/438"
+      },
+      {
+        "$ref": "#/439"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/dnsPrivateZones@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/426"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/giVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/giVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/442"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/443"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/445"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GiVersionProperties",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "A valid Oracle Grid Infrastructure (GI) software version."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/giVersions@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/444"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/locations/systemVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/locations/systemVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/447"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/448"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/450"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemVersionProperties",
+    "properties": {
+      "systemVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A valid Oracle System Version"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/locations/systemVersions@2024-10-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/449"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/cloudExadataInfrastructures/dbServers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/cloudExadataInfrastructures/dbServers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/452"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/453"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbServerProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "Db server name."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The name for the Db Server."
+      },
+      "compartmentId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the compartment."
+      },
+      "exadataInfrastructureId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The OCID of the Exadata infrastructure."
+      },
+      "cpuCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The number of CPU cores enabled on the Db server."
+      },
+      "dbServerPatchingDetails": {
+        "type": {
+          "$ref": "#/456"
+        },
+        "flags": 2,
+        "description": "dbServerPatching details of the Db server."
+      },
+      "maxMemoryInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total memory available in GBs."
+      },
+      "dbNodeStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The allocated local node storage in GBs on the Db server."
+      },
+      "vmClusterIds": {
+        "type": {
+          "$ref": "#/462"
+        },
+        "flags": 2,
+        "description": "The OCID of the VM Clusters associated with the Db server."
+      },
+      "dbNodeIds": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 2,
+        "description": "The OCID of the Db nodes associated with the Db server."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Lifecycle details of dbServer."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "DbServer provisioning state."
+      },
+      "maxCpuCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total number of CPU cores available."
+      },
+      "autonomousVmClusterIds": {
+        "type": {
+          "$ref": "#/471"
+        },
+        "flags": 2,
+        "description": "The list of OCIDs of the Autonomous VM Clusters associated with the Db server."
+      },
+      "autonomousVirtualMachineIds": {
+        "type": {
+          "$ref": "#/472"
+        },
+        "flags": 2,
+        "description": "The list of OCIDs of the Autonomous Virtual Machines associated with the Db server."
+      },
+      "maxDbNodeStorageInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total max dbNode storage in GBs."
+      },
+      "memorySizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The total memory size in GBs."
+      },
+      "shape": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The shape of the Db server. The shape determines the amount of CPU, storage, and memory resources available."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The date and time that the Db Server was created."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/476"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbServerPatchingDetails",
+    "properties": {
+      "estimatedPatchDuration": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 2,
+        "description": "Estimated Patch Duration"
+      },
+      "patchingStatus": {
+        "type": {
+          "$ref": "#/461"
+        },
+        "flags": 2,
+        "description": "Patching Status"
+      },
+      "timePatchingEnded": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time Patching Ended"
+      },
+      "timePatchingStarted": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time Patching Started"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/457"
+      },
+      {
+        "$ref": "#/458"
+      },
+      {
+        "$ref": "#/459"
+      },
+      {
+        "$ref": "#/460"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceInProgress"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/464"
+      },
+      {
+        "$ref": "#/465"
+      },
+      {
+        "$ref": "#/466"
+      },
+      {
+        "$ref": "#/467"
+      },
+      {
+        "$ref": "#/468"
+      },
+      {
+        "$ref": "#/469"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/473"
+      },
+      {
+        "$ref": "#/474"
+      },
+      {
+        "$ref": "#/475"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/cloudExadataInfrastructures/dbServers@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/454"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oracle.Database/cloudVmClusters/dbNodes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Oracle.Database/cloudVmClusters/dbNodes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/478"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/479"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/481"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbNodeProperties",
+    "properties": {
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "DbNode OCID"
+      },
+      "additionalDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Additional information about the planned maintenance."
+      },
+      "backupIpId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the backup IP address associated with the database node."
+      },
+      "backupVnic2Id": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the second backup VNIC."
+      },
+      "backupVnicId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the backup VNIC."
+      },
+      "cpuCoreCount": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The number of CPU cores enabled on the Db node."
+      },
+      "dbNodeStorageSizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The allocated local node storage in GBs on the Db node."
+      },
+      "dbServerId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the Exacc Db server associated with the database node."
+      },
+      "dbSystemId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The OCID of the DB system."
+      },
+      "faultDomain": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The name of the Fault Domain the instance is contained in."
+      },
+      "hostIpId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the host IP address associated with the database node."
+      },
+      "hostname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The host name for the database node."
+      },
+      "lifecycleState": {
+        "type": {
+          "$ref": "#/491"
+        },
+        "flags": 1,
+        "description": "The current state of the database node."
+      },
+      "lifecycleDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Lifecycle details of Db Node."
+      },
+      "maintenanceType": {
+        "type": {
+          "$ref": "#/493"
+        },
+        "flags": 0,
+        "description": "The type of database node maintenance."
+      },
+      "memorySizeInGbs": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The allocated memory in GBs on the Db node."
+      },
+      "softwareStorageSizeInGb": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The size (in GB) of the block storage volume allocation for the DB system. This attribute applies only for virtual machine DB systems."
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The date and time that the database node was created."
+      },
+      "timeMaintenanceWindowEnd": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "End date and time of maintenance window."
+      },
+      "timeMaintenanceWindowStart": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Start date and time of maintenance window."
+      },
+      "vnic2Id": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The OCID of the second VNIC."
+      },
+      "vnicId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The OCID of the VNIC."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/497"
+        },
+        "flags": 2,
+        "description": "Azure resource provisioning state."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Terminated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/482"
+      },
+      {
+        "$ref": "#/483"
+      },
+      {
+        "$ref": "#/484"
+      },
+      {
+        "$ref": "#/485"
+      },
+      {
+        "$ref": "#/486"
+      },
+      {
+        "$ref": "#/487"
+      },
+      {
+        "$ref": "#/488"
+      },
+      {
+        "$ref": "#/489"
+      },
+      {
+        "$ref": "#/490"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmdbRebootMigration"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/492"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/494"
+      },
+      {
+        "$ref": "#/495"
+      },
+      {
+        "$ref": "#/496"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Oracle.Database/cloudVmClusters/dbNodes@2024-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/480"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabase",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/500"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "changeDisasterRecoveryConfiguration",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/499"
+    },
+    "input": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PeerDbDetails",
+    "properties": {
+      "peerDbId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the current peer database."
+      },
+      "peerDbOcid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Ocid of the Disaster Recovery peer database, which is located in a different region from the current peer database."
+      },
+      "peerDbLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location of the Disaster Recovery peer database."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "failover",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/499"
+    },
+    "input": {
+      "$ref": "#/502"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateAutonomousDatabaseWalletDetails",
+    "properties": {
+      "generateType": {
+        "type": {
+          "$ref": "#/507"
+        },
+        "flags": 0,
+        "description": "The type of wallet to generate."
+      },
+      "isRegional": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "True when requesting regional connection strings in PDB connect info, applicable to cross-region DG only."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The password to encrypt the keys inside the wallet"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Single"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/505"
+      },
+      {
+        "$ref": "#/506"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutonomousDatabaseWalletFile",
+    "properties": {
+      "walletFiles": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The base64 encoded wallet files"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateWallet",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/508"
+    },
+    "input": {
+      "$ref": "#/504"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RestoreAutonomousDatabaseDetails",
+    "properties": {
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The time to restore the database to."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restore",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/499"
+    },
+    "input": {
+      "$ref": "#/510"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "shrink",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/499"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "switchover",
+    "resourceType": "Oracle.Database/autonomousDatabases",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/499"
+    },
+    "input": {
+      "$ref": "#/502"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudExadataInfrastructure",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/515"
+        },
+        "flags": 1,
+        "description": "CloudExadataInfrastructure zones"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/516"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "addStorageCapacity",
+    "resourceType": "Oracle.Database/cloudExadataInfrastructures",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/514"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddRemoveDbNode",
+    "properties": {
+      "dbServers": {
+        "type": {
+          "$ref": "#/519"
+        },
+        "flags": 1,
+        "description": "Db servers ocids"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/10"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudVmCluster",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/521"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "addVms",
+    "resourceType": "Oracle.Database/cloudVmClusters",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/520"
+    },
+    "input": {
+      "$ref": "#/518"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateIpAddressesFilter",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Subnet OCID"
+      },
+      "vnicId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "VCN OCID"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateIpAddressProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "PrivateIpAddresses displayName"
+      },
+      "hostnameLabel": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "PrivateIpAddresses hostnameLabel"
+      },
+      "ocid": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "PrivateIpAddresses Id"
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "PrivateIpAddresses ipAddress"
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "PrivateIpAddresses subnetId"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/524"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listPrivateIpAddresses",
+    "resourceType": "Oracle.Database/cloudVmClusters",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/525"
+    },
+    "input": {
+      "$ref": "#/523"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "removeVms",
+    "resourceType": "Oracle.Database/cloudVmClusters",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/520"
+    },
+    "input": {
+      "$ref": "#/518"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureSubscriptions",
+    "properties": {
+      "azureSubscriptionIds": {
+        "type": {
+          "$ref": "#/529"
+        },
+        "flags": 1,
+        "description": "Azure Subscription Ids to be updated"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "addAzureSubscriptions",
+    "resourceType": "Oracle.Database/oracleSubscriptions",
+    "apiVersion": "2024-10-01-preview",
+    "input": {
+      "$ref": "#/528"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActivationLinks",
+    "properties": {
+      "newCloudAccountActivationLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "New Cloud Account Activation Link"
+      },
+      "existingCloudAccountActivationLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Existing Cloud Account Activation Link"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listActivationLinks",
+    "resourceType": "Oracle.Database/oracleSubscriptions",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/531"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudAccountDetails",
+    "properties": {
+      "cloudAccountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Cloud Account name"
+      },
+      "cloudAccountHomeRegion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Cloud Account Home region"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCloudAccountDetails",
+    "resourceType": "Oracle.Database/oracleSubscriptions",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/533"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SaasSubscriptionDetails",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchased SaaS subscription ID"
+      },
+      "subscriptionName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "SaaS subscription name"
+      },
+      "timeCreated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Creation Date and Time"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchased offer ID"
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchased offer's plan ID"
+      },
+      "saasSubscriptionStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Indicates the status of the Subscription."
+      },
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Publisher ID"
+      },
+      "purchaserEmailId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchaser Email ID"
+      },
+      "purchaserTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchaser Tenant ID"
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Purchase Term Unit"
+      },
+      "isAutoRenew": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "AutoRenew flag"
+      },
+      "isFreeTrial": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "FreeTrial flag"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSaasSubscriptionDetails",
+    "resourceType": "Oracle.Database/oracleSubscriptions",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/535"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbNodeAction",
+    "properties": {
+      "action": {
+        "type": {
+          "$ref": "#/542"
+        },
+        "flags": 1,
+        "description": "Db action"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Start"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stop"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SoftReset"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reset"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/538"
+      },
+      {
+        "$ref": "#/539"
+      },
+      {
+        "$ref": "#/540"
+      },
+      {
+        "$ref": "#/541"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DbNode",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/481"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "action",
+    "resourceType": "Oracle.Database/cloudVmClusters/dbNodes",
+    "apiVersion": "2024-10-01-preview",
+    "output": {
+      "$ref": "#/543"
+    },
+    "input": {
+      "$ref": "#/537"
+    }
+  }
+]

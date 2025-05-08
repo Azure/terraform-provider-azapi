@@ -15,7 +15,13 @@ type UserAgentPolicy struct {
 }
 
 func (c UserAgentPolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Set(HeaderUserAgent, c.UserAgent)
+	userAgent := c.UserAgent
+
+	if requestUserAgent := req.Raw().Header.Get(HeaderUserAgent); requestUserAgent != "" {
+		userAgent = userAgent + " " + requestUserAgent
+	}
+
+	req.Raw().Header.Set(HeaderUserAgent, userAgent)
 	return req.Next()
 }
 

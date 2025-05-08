@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -16,6 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
@@ -32,23 +34,24 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String        `tfsdk:"id"`
-	Name                  types.String        `tfsdk:"name"`
-	ParentID              types.String        `tfsdk:"parent_id"`
-	ResourceID            types.String        `tfsdk:"resource_id"`
-	Type                  types.String        `tfsdk:"type"`
-	Body                  types.Dynamic       `tfsdk:"body"`
-	IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
-	Locks                 types.List          `tfsdk:"locks"`
-	Output                types.Dynamic       `tfsdk:"output"`
-	Timeouts              timeouts.Value      `tfsdk:"timeouts"`
-	Retry                 retry.RetryValue    `tfsdk:"retry"`
-	UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
-	UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
-	ReadHeaders           map[string]string   `tfsdk:"read_headers"`
-	ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
+	ID                    types.String     `tfsdk:"id"`
+	Name                  types.String     `tfsdk:"name"`
+	ParentID              types.String     `tfsdk:"parent_id"`
+	ResourceID            types.String     `tfsdk:"resource_id"`
+	Type                  types.String     `tfsdk:"type"`
+	Body                  types.Dynamic    `tfsdk:"body"`
+	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
+	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
+	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
+	Locks                 types.List       `tfsdk:"locks"`
+	Output                types.Dynamic    `tfsdk:"output"`
+	Timeouts              timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                 retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	UpdateHeaders         types.Map        `tfsdk:"update_headers"`
+	UpdateQueryParameters types.Map        `tfsdk:"update_query_parameters"`
+	ReadHeaders           types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -81,7 +84,7 @@ func (r *AzapiUpdateResource) UpgradeState(ctx context.Context) map[int64]resour
 func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
 		MarkdownDescription: "This resource can manage a subset of any existing Azure resource manager resource's properties.\n\n" +
-			"-> **Note** This resource is used to add or modify properties on an existing resource. When delete `azapi_update_resource`, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
+			"-> **Note** This resource is used to add or modify properties on an existing resource. When `azapi_update_resource` is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.",
 		Description: "This resource can manage a subset of any existing Azure resource manager resource's properties.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -151,6 +154,12 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				},
 			},
 
+			"sensitive_body": schema.DynamicAttribute{
+				Optional:            true,
+				WriteOnly:           true,
+				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
 			"ignore_casing": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
@@ -187,7 +196,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				MarkdownDescription: docstrings.Output("azapi_update_resource"),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"update_headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -286,25 +295,55 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		return
 	}
 
-	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type) {
-		plan.Output = basetypes.NewDynamicUnknown()
-	} else {
+	// Output is a computed field, it defaults to unknown if there's any plan change
+	// It sets to the state if the state exists, and will set to unknown if the output needs to be updated
+	if state != nil {
 		plan.Output = state.Output
+
+		if !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type) {
+			plan.Output = basetypes.NewDynamicUnknown()
+		}
+
+		// Set output as unknown to trigger a plan diff, if ephemral body has changed
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
+		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
+			return
+		}
+		if diff {
+			tflog.Info(ctx, `"sensitive_body" has changed`)
+			plan.Output = types.DynamicUnknown()
+		}
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
 }
 
 func (r *AzapiUpdateResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
 func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
-	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
+	// See if we can skip the external API call (changes are to state only)
+	var plan, state AzapiUpdateResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
+	if skip.CanSkipExternalRequest(plan, state, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+		return
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
+
+	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
 }
 
-func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics) {
-	var model AzapiUpdateResourceModel
+func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Config, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics, privateData PrivateData) {
+	var config, model AzapiUpdateResourceModel
+	diagnostics.Append(requestConfig.Get(ctx, &config)...)
 	if diagnostics.Append(plan.Get(ctx, &model)...); diagnostics.HasError() {
 		return
 	}
@@ -347,19 +386,12 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		id = buildId
 	}
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -375,24 +407,39 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 		return
 	}
 
-	requestBody = utils.MergeObject(existing, requestBody)
+	if requestBody != nil {
+		requestBody = utils.MergeObject(existing, requestBody)
+	} else {
+		requestBody = existing
+	}
+
+	SensitiveBody := make(map[string]interface{})
+	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
+		return
+	}
+	if SensitiveBody != nil {
+		requestBody = utils.MergeObject(requestBody, SensitiveBody)
+	}
 
 	if id.ResourceDef != nil {
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
 	}
 
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(model.UpdateHeaders, model.UpdateQueryParameters))
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(AsMapOfString(model.UpdateHeaders), AsMapOfLists(model.UpdateQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -411,6 +458,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {
@@ -420,6 +468,14 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan,
 	model.Output = output
 
 	diagnostics.Append(state.Set(ctx, model)...)
+
+	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+	if err != nil {
+		diagnostics.AddError("Invalid sensitive_body", err.Error())
+		return
+	}
+	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
+
 }
 
 func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
@@ -443,20 +499,12 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 		return
 	}
 
-	var client clients.Requester
-	client = r.ProviderData.ResourceClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.ResourceClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -495,6 +543,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	var defaultOutput interface{}
 	if !r.ProviderData.Features.DisableDefaultOutput {
 		defaultOutput = id.ResourceDef.GetReadOnly(responseBody)
+		defaultOutput = utils.RemoveFields(defaultOutput, volatileFieldList())
 	}
 	output, err := buildOutputFromBody(responseBody, model.ResponseExportValues, defaultOutput)
 	if err != nil {

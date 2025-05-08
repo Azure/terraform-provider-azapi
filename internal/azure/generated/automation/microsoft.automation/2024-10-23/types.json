@@ -1,0 +1,6921 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 1,
+        "description": "Software update configuration properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SoftwareUpdateConfigurationProperties",
+    "properties": {
+      "updateConfiguration": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "update specific properties for the Software update configuration"
+      },
+      "scheduleInfo": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Schedule information for the Software update configuration"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Provisioning state for the software update configuration, which only appears in the response."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Details of provisioning error"
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Creation time of the resource, which only appears in the response."
+      },
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "CreatedBy property, which only appears in the response."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last time resource was modified, which only appears in the response."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "LastModifiedBy property, which only appears in the response."
+      },
+      "tasks": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 0,
+        "description": "Tasks information for the Software update configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateConfiguration",
+    "properties": {
+      "operatingSystem": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "operating system of target machines"
+      },
+      "windows": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "Windows specific update configuration."
+      },
+      "linux": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Linux specific update configuration."
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601"
+      },
+      "azureVirtualMachines": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "List of azure resource Ids for azure virtual machines targeted by the software update configuration."
+      },
+      "nonAzureComputerNames": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "List of names of non-azure machines targeted by the software update configuration."
+      },
+      "targets": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Group targets for the software update configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WindowsProperties",
+    "properties": {
+      "includedUpdateClassifications": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Update classification included in the software update configuration. A comma separated string with required values"
+      },
+      "excludedKbNumbers": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "KB numbers excluded from the software update configuration."
+      },
+      "includedKbNumbers": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "KB numbers included from the software update configuration."
+      },
+      "rebootSetting": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Reboot setting for the software update configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unclassified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Security"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpdateRollup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FeaturePack"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServicePack"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Definition"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updates"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxProperties",
+    "properties": {
+      "includedPackageClassifications": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Update classifications included in the software update configuration."
+      },
+      "excludedPackageNameMasks": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "packages excluded from the software update configuration."
+      },
+      "includedPackageNameMasks": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "packages included from the software update configuration."
+      },
+      "rebootSetting": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Reboot setting for the software update configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unclassified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Critical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Security"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetProperties",
+    "properties": {
+      "azureQueries": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "List of Azure queries in the software update configuration."
+      },
+      "nonAzureQueries": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "List of non Azure queries in the software update configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureQueryProperties",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "List of Subscription or Resource Group ARM Ids."
+      },
+      "locations": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "List of locations to scope the query to."
+      },
+      "tagSettings": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "Tag settings for the VM."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TagSettingsProperties",
+    "properties": {
+      "tags": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "Dictionary of tags with its list of values."
+      },
+      "filterOperator": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Filter VMs by Any or All specified tags."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TagSettingsPropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/37"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Any"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/33"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NonAzureQueryProperties",
+    "properties": {
+      "functionAlias": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Log Analytics Saved Search name."
+      },
+      "workspaceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Workspace Id for Log Analytics in which the saved Search is resided."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SUCScheduleProperties",
+    "properties": {
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the start time of the schedule."
+      },
+      "startTimeOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets the start time's offset in minutes."
+      },
+      "expiryTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the end time of the schedule."
+      },
+      "expiryTimeOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the expiry time's offset in minutes."
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets a value indicating whether this schedule is enabled."
+      },
+      "nextRun": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the next run time of the schedule."
+      },
+      "nextRunOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the next run time's offset in minutes."
+      },
+      "interval": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the interval of the schedule."
+      },
+      "frequency": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Gets or sets the frequency of the schedule."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the time zone of the schedule."
+      },
+      "advancedSchedule": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Gets or sets the advanced schedule."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the last modified time."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OneTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Day"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hour"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Week"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Month"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Minute"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedSchedule",
+    "properties": {
+      "weekDays": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "Days of the week that the job should execute on."
+      },
+      "monthDays": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Days of the month that the job should execute on. Must be between 1 and 31."
+      },
+      "monthlyOccurrences": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "Occurrences of days within a month."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/46"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedScheduleMonthlyOccurrence",
+    "properties": {
+      "occurrence": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Occurrence of the week within the month. Must be between 1 and 5"
+      },
+      "day": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 0,
+        "description": "Day of the occurrence. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/58"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorResponse",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Error code"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Error message indicating why the operation failed."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SoftwareUpdateConfigurationTasks",
+    "properties": {
+      "preTask": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "Pre task properties."
+      },
+      "postTask": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "Post task properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskProperties",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "Gets or sets the parameters of the task."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the runbook."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskPropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Gets or sets account create or update properties."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the location of the resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Sets the identity property for automation account"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationAccountCreateOrUpdatePropertiesOrAutomationAccountProperties",
+    "properties": {
+      "sku": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "Gets or sets account SKU."
+      },
+      "encryption": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Set the encryption properties for the automation account"
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet"
+      },
+      "disableLocalAuth": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Indicates whether requests using non-AAD authentication are blocked"
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified by."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 2,
+        "description": "Gets status of account."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the last modified time."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the description."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 2,
+        "description": "List of Automation operations supported by the Automation resource provider."
+      },
+      "automationHybridServiceUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "URL of automation hybrid service which is used for hybrid worker on-boarding."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "Gets or sets the SKU name of the account."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the SKU family."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the SKU capacity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionProperties",
+    "properties": {
+      "keyVaultProperties": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Key vault properties."
+      },
+      "keySource": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Encryption Key Source"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "User identity used for CMK."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultProperties",
+    "properties": {
+      "keyvaultUri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The URI of the key vault key used to encrypt data."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The name of key used to encrypt data."
+      },
+      "keyVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The key version of the key used to encrypt data."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Keyvault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionPropertiesIdentity",
+    "properties": {
+      "userAssignedIdentity": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "The user identity used for CMK. It will be an ARM resource id in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ok"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unavailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Private endpoint which the connection belongs to."
+      },
+      "groupIds": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "Gets the groupIds."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "Connection State of the Private Endpoint Connection."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointProperty",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource id of the private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionStateProperty",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The private link service connection status."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The private link service connection description."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Any action that is required beyond basic workflow (approve/ reject/ disconnect)"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/92"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity. The value must be an UUID."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentitiesProperties",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/115"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutomationAccountCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/75"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/certificates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/certificates",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "Gets or sets the properties of the certificate."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CertificateCreateOrUpdatePropertiesOrCertificateProperties",
+    "properties": {
+      "base64Value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 5,
+        "description": "Gets or sets the base64 encoded value of the certificate."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the certificate."
+      },
+      "thumbprint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the thumbprint of the certificate."
+      },
+      "isExportable": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets the is exportable flag of the certificate."
+      },
+      "expiryTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the expiry time of the certificate."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/certificates@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/121"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/connections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/connections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "Gets or sets the properties of the connection."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionCreateOrUpdatePropertiesOrConnectionProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the connection."
+      },
+      "connectionType": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 1,
+        "description": "Gets or sets the connectionType of the connection."
+      },
+      "fieldDefinitionValues": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Gets or sets the field definition properties of the connection."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionTypeAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the connection type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionCreateOrUpdatePropertiesFieldDefinitionValues",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/connections@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/126"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/connectionTypes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/connectionTypes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "Gets or sets the value of the connection type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionTypeCreateOrUpdatePropertiesOrConnectionTypeProperties",
+    "properties": {
+      "isGlobal": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets a Boolean value to indicate if the connection type is global."
+      },
+      "fieldDefinitions": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "Gets or sets the field definitions of the connection type."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the description."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FieldDefinition",
+    "properties": {
+      "isEncrypted": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets the isEncrypted flag of the connection field definition."
+      },
+      "isOptional": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets the isOptional flag of the connection field definition."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Gets or sets the type of the connection field definition."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionTypeCreateOrUpdatePropertiesFieldDefinitions",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/135"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/connectionTypes@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/133"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/credentials"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/credentials",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 1,
+        "description": "Gets or sets the properties of the credential."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialCreateOrUpdatePropertiesOrCredentialProperties",
+    "properties": {
+      "userName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Gets or sets the user name of the credential."
+      },
+      "password": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 5,
+        "description": "Gets or sets the password of the credential."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the credential."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/credentials@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/140"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/configurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/configurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 1,
+        "description": "Gets or sets configuration create or update properties."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscConfigurationCreateOrUpdatePropertiesOrDscConfigurationProperties",
+    "properties": {
+      "logVerbose": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets verbose log option."
+      },
+      "logProgress": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 4,
+        "description": "Gets or sets progress log option."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 1,
+        "description": "Gets or sets the source."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Gets or sets the configuration parameters."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the configuration."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 2,
+        "description": "Gets or sets the provisioning state of the configuration."
+      },
+      "jobCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the job count of the configuration."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 2,
+        "description": "Gets or sets the state of the configuration."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "nodeConfigurationCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets the number of compiled node configurations."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContentSource",
+    "properties": {
+      "hash": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Gets or sets the hash."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "Gets or sets the content source type."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the value of the content. This is based on the content source type."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the version of the content."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContentHash",
+    "properties": {
+      "algorithm": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Gets or sets the content hash algorithm used to hash the content."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Gets or sets expected hash value of the content."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "embeddedContent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "uri"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscConfigurationParameter",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the type of the parameter."
+      },
+      "isMandatory": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets a Boolean value to indicate whether the parameter is mandatory or not."
+      },
+      "position": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Get or sets the position of the parameter."
+      },
+      "defaultValue": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the default value of parameter."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscConfigurationCreateOrUpdatePropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/152"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Edit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Published"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscConfigurationCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/configurations@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/145"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/nodeConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/nodeConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "Node configuration properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 4,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscNodeConfigurationCreateOrUpdateParametersPropertiesOrDscNodeConfigurationProperties",
+    "properties": {
+      "source": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 1,
+        "description": "Gets or sets the source."
+      },
+      "configuration": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 1,
+        "description": "Gets or sets the configuration of the node."
+      },
+      "incrementNodeConfigurationBuild": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "If a new build version of NodeConfiguration is required."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets creation time."
+      },
+      "nodeCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Number of nodes with this node configuration assigned"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContentSourceOrDscNodeConfigurationPropertiesSource",
+    "properties": {
+      "hash": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 4,
+        "description": "Gets or sets the hash."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 4,
+        "description": "Gets or sets the content source type."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "Gets or sets the value of the content. This is based on the content source type."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "Gets or sets the version of the content."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "embeddedContent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "uri"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscConfigurationAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the Dsc configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscNodeConfigurationCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/nodeConfigurations@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/163"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Gets or sets hybrid runbook worker group create or update properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HybridRunbookWorkerCreateOrUpdateParametersOrHybridRunbookWorkerProperties",
+    "properties": {
+      "vmResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure Resource Manager Id for a virtual machine."
+      },
+      "ip": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the assigned machine IP address."
+      },
+      "registeredDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the registration time of the worker machine."
+      },
+      "lastSeenDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last Heartbeat from the Worker"
+      },
+      "workerType": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "Type of the HybridWorker."
+      },
+      "workerName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Name of the HybridWorker."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HybridV1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HybridV2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/174"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "Gets or sets hybrid runbook worker group create or update properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HybridRunbookWorkerGroupCreateOrUpdatePropertiesOrHybridRunbookWorkerGroupProperties",
+    "properties": {
+      "credential": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 0,
+        "description": "Sets the credential of a worker group."
+      },
+      "groupType": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 2,
+        "description": "Type of the HybridWorkerGroup."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunAsCredentialAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the credential."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/183"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/jobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/jobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 1,
+        "description": "Gets or sets the list of job properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobCreatePropertiesOrJobProperties",
+    "properties": {
+      "runbook": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runbook."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "Gets or sets the parameters of the job."
+      },
+      "runOn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runOn which specifies the group name where the job is to be executed."
+      },
+      "startedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the job started by."
+      },
+      "jobRuntimeEnvironment": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "Runtime Environment Property"
+      },
+      "jobId": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 2,
+        "description": "Gets or sets the id of the job."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time of the job."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 2,
+        "description": "Gets or sets the status of the job."
+      },
+      "statusDetails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the status details of the job."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the start time of the job."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the end time of the job."
+      },
+      "exception": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the exception of the job."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time of the job."
+      },
+      "lastStatusModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last status modified time of the job."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 2,
+        "description": "The current provisioning state of the job."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the runbook."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobCreatePropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobRuntimeEnvironment",
+    "properties": {
+      "runtimeEnvironmentName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of Runtime Environment."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Activating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resuming"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Removing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Processing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/jobs@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/193"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/jobSchedules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/jobSchedules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 1,
+        "description": "Gets or sets the list of job schedule properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobScheduleCreatePropertiesOrJobScheduleProperties",
+    "properties": {
+      "schedule": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 1,
+        "description": "Gets or sets the schedule."
+      },
+      "runbook": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 1,
+        "description": "Gets or sets the runbook."
+      },
+      "runOn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the hybrid worker group that the scheduled job should run on."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 0,
+        "description": "Gets or sets a list of job properties."
+      },
+      "jobScheduleId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the id of job schedule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduleAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the Schedule."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobScheduleCreatePropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/jobSchedules@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/221"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/modules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/modules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 1,
+        "description": "Gets or sets the module create properties."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModuleCreateOrUpdatePropertiesOrModuleProperties",
+    "properties": {
+      "contentLink": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 1,
+        "description": "Gets or sets the module content link."
+      },
+      "isGlobal": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets the isGlobal flag of the module."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the version of the module."
+      },
+      "sizeInBytes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the size in bytes of the module."
+      },
+      "activityCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the activity count of the module."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 2,
+        "description": "Gets or sets the provisioning state of the module."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 2,
+        "description": "Gets or sets the error info of the module."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the description."
+      },
+      "isComposite": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets type of module, if its composite or not."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContentLink",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the uri of content."
+      },
+      "contentHash": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Gets or sets the hash."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the version of the content."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartingImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RunningImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentRetrieved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentDownloaded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentValidated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionTypeImported"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleDataStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivitiesStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleImportRunbookComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModuleErrorInfo",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the error message."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModuleCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/modules@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/228"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/runtimeEnvironments/packages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/runtimeEnvironments/packages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/252"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 1,
+        "description": "Gets or sets the package create properties."
+      },
+      "allOf": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 4,
+        "description": "The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PackageCreateOrUpdatePropertiesOrPackageProperties",
+    "properties": {
+      "contentLink": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 1,
+        "description": "Gets or sets the package content link."
+      },
+      "default": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets the isGlobal flag of the package."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the version of the Package."
+      },
+      "sizeInBytes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the size in bytes of the Package."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 2,
+        "description": "Gets or sets the provisioning state of the Package."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 2,
+        "description": "Gets or sets the error info of the Package."
+      },
+      "allOf": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Metadata pertaining to creation and last modification of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartingImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RunningImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentRetrieved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentDownloaded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentValidated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionTypeImported"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleDataStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivitiesStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleImportRunbookComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/267"
+      },
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PackageErrorInfo",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Package import error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Package import error message."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResource",
+    "properties": {
+      "tags": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/runtimeEnvironments/packages@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/253"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/privateEndpointConnections@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/279"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/python2Packages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/python2Packages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 1,
+        "description": "Gets or sets the module create properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PythonPackageCreatePropertiesOrModuleProperties",
+    "properties": {
+      "contentLink": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 1,
+        "description": "Gets or sets the module content link."
+      },
+      "isGlobal": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets the isGlobal flag of the module."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the version of the module."
+      },
+      "sizeInBytes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the size in bytes of the module."
+      },
+      "activityCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the activity count of the module."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 2,
+        "description": "Gets or sets the provisioning state of the module."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 2,
+        "description": "Gets or sets the error info of the module."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the description."
+      },
+      "isComposite": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets type of module, if its composite or not."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartingImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RunningImportModuleRunbook"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentRetrieved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentDownloaded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentValidated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConnectionTypeImported"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContentStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleDataStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivitiesStored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ModuleImportRunbookComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/289"
+      },
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PythonPackageCreateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/python2Packages@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/283"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/python3Packages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/python3Packages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 1,
+        "description": "Gets or sets the module create properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PythonPackageCreateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/python3Packages@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/306"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "content"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/runbooks/draft"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/runbooks/draft",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "testJob"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/runbooks/draft"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/runbooks/draft",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 0,
+        "description": "Gets or sets the parameters of the test job."
+      },
+      "runOn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runOn which specifies the group name where the job is to be executed."
+      },
+      "runtimeEnvironment": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 4,
+        "description": "The runtime Environment Name on which job needs to be tested"
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time of the test job."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the status of the test job."
+      },
+      "statusDetails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the status details of the test job."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the start time of the test job."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the end time of the test job."
+      },
+      "exception": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the exception of the test job."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time of the test job."
+      },
+      "lastStatusModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last status modified time of the test job."
+      },
+      "logActivityTrace": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The activity-level tracing options of the runbook."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TestJobCreateParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "microsoft.automation/automationaccounts/runbooks/draft",
+    "discriminator": "name",
+    "baseProperties": {},
+    "elements": {
+      "content": {
+        "$ref": "#/312"
+      },
+      "testJob": {
+        "$ref": "#/316"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/runbooks/draft@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/318"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z-_0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/runbooks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/runbooks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 1,
+        "description": "Gets or sets runbook create or update properties."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 0,
+        "description": "Gets or sets the tags attached to the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookCreateOrUpdatePropertiesOrRunbookProperties",
+    "properties": {
+      "logVerbose": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets verbose log option."
+      },
+      "logProgress": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets progress log option."
+      },
+      "runtimeEnvironment": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Environment of the runbook."
+      },
+      "runbookType": {
+        "type": {
+          "$ref": "#/335"
+        },
+        "flags": 1,
+        "description": "Gets or sets the type of the runbook."
+      },
+      "draft": {
+        "type": {
+          "$ref": "#/336"
+        },
+        "flags": 0,
+        "description": "Gets or sets the draft runbook properties."
+      },
+      "publishContentLink": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "Gets or sets the published runbook content link."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the runbook."
+      },
+      "logActivityTrace": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the activity-level tracing options of the runbook."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 2,
+        "description": "Gets or sets the state of the runbook."
+      },
+      "jobCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the job count of the runbook."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 2,
+        "description": "Gets or sets the runbook parameters."
+      },
+      "outputTypes": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 2,
+        "description": "Gets or sets the runbook output types."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 2,
+        "description": "Gets or sets the provisioning state of the runbook."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified by."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Script"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Graph"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerShellWorkflow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerShell"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GraphPowerShellWorkflow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GraphPowerShell"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Python2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Python3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Python"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PowerShell72"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookDraft",
+    "properties": {
+      "inEdit": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets whether runbook is in edit mode."
+      },
+      "draftContentLink": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "Gets or sets the draft runbook content link."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the creation time of the runbook draft."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the last modified time of the runbook draft."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runbook draft parameters."
+      },
+      "outputTypes": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runbook output types."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookParameter",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the type of the parameter."
+      },
+      "isMandatory": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets a Boolean value to indicate whether the parameter is mandatory or not."
+      },
+      "position": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Get or sets the position of the parameter."
+      },
+      "defaultValue": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the default value of parameter."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookDraftParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/337"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Edit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Published"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookPropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/337"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunbookCreateOrUpdateParametersTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/runbooks@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/323"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/runtimeEnvironments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/runtimeEnvironments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/349"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/352"
+        },
+        "flags": 0,
+        "description": "Gets or sets the Runtime Environment properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/355"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeEnvironmentProperties",
+    "properties": {
+      "runtime": {
+        "type": {
+          "$ref": "#/353"
+        },
+        "flags": 0,
+        "description": "Runtime properties."
+      },
+      "defaultPackages": {
+        "type": {
+          "$ref": "#/354"
+        },
+        "flags": 0,
+        "description": "List of Default packages for Environment"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeProperties",
+    "properties": {
+      "language": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Language of Runtime Environment"
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Version of Language"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefaultPackages",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/runtimeEnvironments@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/351"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/schedules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/schedules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/357"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/358"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/360"
+        },
+        "flags": 1,
+        "description": "Gets or sets the list of schedule properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduleCreateOrUpdatePropertiesOrScheduleProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the schedule."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Gets or sets the start time of the schedule."
+      },
+      "expiryTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the end time of the schedule."
+      },
+      "interval": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Gets or sets the interval of the schedule."
+      },
+      "frequency": {
+        "type": {
+          "$ref": "#/367"
+        },
+        "flags": 1,
+        "description": "Gets or sets the frequency of the schedule."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the time zone of the schedule."
+      },
+      "advancedSchedule": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "Gets or sets the AdvancedSchedule."
+      },
+      "startTimeOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets the start time's offset in minutes."
+      },
+      "expiryTimeOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the expiry time's offset in minutes."
+      },
+      "isEnabled": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Gets or sets a value indicating whether this schedule is enabled."
+      },
+      "nextRun": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the next run time of the schedule."
+      },
+      "nextRunOffsetMinutes": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "Gets or sets the next run time's offset in minutes."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OneTime"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Day"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hour"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Week"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Month"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Minute"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/365"
+      },
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/schedules@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/359"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/sourceControls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/sourceControls",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/370"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/372"
+        },
+        "flags": 1,
+        "description": "The properties of the source control."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceControlCreateOrUpdatePropertiesOrSourceControlProperties",
+    "properties": {
+      "repoUrl": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 0,
+        "description": "The repo url of the source control."
+      },
+      "branch": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 0,
+        "description": "The repo branch of the source control. Include branch as empty string for VsoTfvc."
+      },
+      "folderPath": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 0,
+        "description": "The folder path of the source control. Path must be relative."
+      },
+      "autoSync": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The auto async of the source control. Default is false."
+      },
+      "publishRunbook": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The auto publish of the source control. Default is true."
+      },
+      "sourceType": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive."
+      },
+      "securityToken": {
+        "type": {
+          "$ref": "#/379"
+        },
+        "flags": 4,
+        "description": "The authorization token for the repo of the source control."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 0,
+        "description": "The user description of the source control."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The last modified time."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 2000
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 255
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VsoGit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VsoTfvc"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GitHub"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceControlSecurityTokenProperties",
+    "properties": {
+      "accessToken": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 0,
+        "description": "The access token."
+      },
+      "refreshToken": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 0,
+        "description": "The refresh token."
+      },
+      "tokenType": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 0,
+        "description": "The token type. Must be either PersonalAccessToken or Oauth."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 1024
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PersonalAccessToken"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Oauth"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 512
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/sourceControls@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/371"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/sourceControls/sourceControlSyncJobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/sourceControls/sourceControlSyncJobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/387"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/389"
+        },
+        "flags": 1,
+        "description": "The properties of the source control sync job."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceControlSyncJobCreatePropertiesOrSourceControlSyncJobByIdProperties",
+    "properties": {
+      "commitId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 5,
+        "description": "The commit id of the source control sync job. If not syncing to a commitId, enter an empty string."
+      },
+      "sourceControlSyncJobId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The source control sync job id."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The creation time of the job."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/393"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the job."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The start time of the job."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The end time of the job."
+      },
+      "syncType": {
+        "type": {
+          "$ref": "#/396"
+        },
+        "flags": 2,
+        "description": "The sync type."
+      },
+      "exception": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The exceptions that occurred while running the sync job."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/391"
+      },
+      {
+        "$ref": "#/392"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartialSync"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FullSync"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/394"
+      },
+      {
+        "$ref": "#/395"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/sourceControls/sourceControlSyncJobs@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/388"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/variables"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/variables",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/398"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/399"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/401"
+        },
+        "flags": 1,
+        "description": "Gets or sets the properties of the variable."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VariableCreateOrUpdatePropertiesOrVariableProperties",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the value of the variable."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description of the variable."
+      },
+      "isEncrypted": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets the encrypted flag of the variable."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/variables@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/400"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/watchers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/watchers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/403"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/406"
+        },
+        "flags": 0,
+        "description": "Gets or sets the watcher properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/408"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WatcherProperties",
+    "properties": {
+      "executionFrequencyInSeconds": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets or sets the frequency at which the watcher is invoked."
+      },
+      "scriptName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the script the watcher is attached to, i.e. the name of an existing runbook."
+      },
+      "scriptParameters": {
+        "type": {
+          "$ref": "#/407"
+        },
+        "flags": 0,
+        "description": "Gets or sets the parameters of the script."
+      },
+      "scriptRunOn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the hybrid worker group the watcher will run on."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets the current status of the watcher."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Details of the user who last modified the watcher."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the description."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WatcherPropertiesScriptParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WatcherTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/watchers@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/405"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/webhooks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/webhooks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/410"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 1,
+        "description": "Gets or sets the properties of the webhook."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WebhookCreateOrUpdatePropertiesOrWebhookProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Gets or sets the value of the enabled flag of webhook."
+      },
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the uri."
+      },
+      "expiryTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the expiry time."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/414"
+        },
+        "flags": 0,
+        "description": "Gets or sets the parameters of the job."
+      },
+      "runbook": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runbook."
+      },
+      "runOn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the hybrid worker group the webhook job will run on."
+      },
+      "lastInvokedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last invoked time."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the creation time."
+      },
+      "lastModifiedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the last modified time."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Details of the user who last modified the Webhook"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Gets or sets the description."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WebhookCreateOrUpdatePropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/webhooks@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/412"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Automation/automationAccounts/nodes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-10-23"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Automation/automationAccounts/nodes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/416"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/417"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/419"
+        },
+        "flags": 2,
+        "description": "The properties of a DscNode."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscNodeProperties",
+    "properties": {
+      "lastSeen": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the last seen time of the node."
+      },
+      "registrationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the registration time of the node."
+      },
+      "ip": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the ip of the node."
+      },
+      "accountId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the account id of the node."
+      },
+      "nodeConfiguration": {
+        "type": {
+          "$ref": "#/420"
+        },
+        "flags": 0,
+        "description": "Gets or sets the configuration of the node."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the status of the node."
+      },
+      "nodeId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the node id."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the etag of the resource."
+      },
+      "totalCount": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Gets the total number of records matching filter criteria."
+      },
+      "extensionHandler": {
+        "type": {
+          "$ref": "#/422"
+        },
+        "flags": 0,
+        "description": "Gets or sets the list of extensionHandler properties for a Node."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscNodeConfigurationAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the dsc node configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DscNodeExtensionHandlerAssociationProperty",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the name of the extension handler."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the version of the extension handler."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/421"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Automation/automationAccounts/nodes@2024-10-23",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/418"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedRunbookListResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 0,
+        "description": "List of deleted runbooks in automation account."
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the next link."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedRunbook",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/426"
+        },
+        "flags": 0,
+        "description": "Gets or sets the runbook properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource id."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets name of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the location of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedRunbookProperties",
+    "properties": {
+      "runbookId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the Runbook Id."
+      },
+      "runbookType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Type of the runbook."
+      },
+      "runtime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets runtime of the runbook."
+      },
+      "runtimeEnvironment": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Environment of the runbook."
+      },
+      "creationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the creation time."
+      },
+      "deletionTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the last modified time."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/425"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listDeletedRunbooks",
+    "resourceType": "Microsoft.Automation/automationAccounts",
+    "apiVersion": "2024-10-23",
+    "output": {
+      "$ref": "#/424"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyListResult",
+    "properties": {
+      "keys": {
+        "type": {
+          "$ref": "#/437"
+        },
+        "flags": 0,
+        "description": "Lists the automation keys."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Key",
+    "properties": {
+      "KeyName": {
+        "type": {
+          "$ref": "#/433"
+        },
+        "flags": 2,
+        "description": "Automation key name."
+      },
+      "Permissions": {
+        "type": {
+          "$ref": "#/436"
+        },
+        "flags": 2,
+        "description": "Automation key permissions."
+      },
+      "Value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Value of the Automation Key used for registration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Read"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/430"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listKeys",
+    "resourceType": "Microsoft.Automation/automationAccounts",
+    "apiVersion": "2024-10-23",
+    "output": {
+      "$ref": "#/429"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GraphicalRunbookContent",
+    "properties": {
+      "rawContent": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 0,
+        "description": "Raw graphical Runbook content."
+      },
+      "graphRunbookJson": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Graphical Runbook content as JSON"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RawGraphicalRunbookContent",
+    "properties": {
+      "schemaVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Schema version of the serializer."
+      },
+      "runbookDefinition": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Serialized Graphical runbook"
+      },
+      "runbookType": {
+        "type": {
+          "$ref": "#/443"
+        },
+        "flags": 0,
+        "description": "Runbook Type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GraphPowerShell"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GraphPowerShellWorkflow"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/441"
+      },
+      {
+        "$ref": "#/442"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "convertGraphRunbookContent",
+    "resourceType": "Microsoft.Automation/automationAccounts",
+    "apiVersion": "2024-10-23",
+    "output": {
+      "$ref": "#/439"
+    },
+    "input": {
+      "$ref": "#/439"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HybridRunbookWorkerMoveParameters",
+    "properties": {
+      "hybridRunbookWorkerGroupName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Gets or sets the target hybrid runbook worker group."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "move",
+    "resourceType": "Microsoft.Automation/automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers",
+    "apiVersion": "2024-10-23",
+    "input": {
+      "$ref": "#/445"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "suspend",
+    "resourceType": "Microsoft.Automation/automationAccounts/jobs",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Automation/automationAccounts/jobs",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resume",
+    "resourceType": "Microsoft.Automation/automationAccounts/jobs",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "publish",
+    "resourceType": "Microsoft.Automation/automationAccounts/runbooks",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resume",
+    "resourceType": "Microsoft.Automation/automationAccounts/runbooks/draft",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Automation/automationAccounts/runbooks/draft",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "suspend",
+    "resourceType": "Microsoft.Automation/automationAccounts/runbooks/draft",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.Automation/automationAccounts/watchers",
+    "apiVersion": "2024-10-23"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.Automation/automationAccounts/watchers",
+    "apiVersion": "2024-10-23"
+  }
+]

@@ -1,0 +1,1698 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9-]{3,64}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sovereign/landingZoneAccounts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-27-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LandingZoneAccountResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The state that reflects the current stage in the creation, updating, or deletion process of the landing zone account."
+      },
+      "storageAccount": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The storage account that will host the generated infrastructure as code (IaC) for a landing zone deployment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts@2025-02-27-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-27-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LandingZoneConfigurationResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 2,
+        "description": "The state that reflects the current stage in the creation, updating, or deletion process of the landing zone configuration."
+      },
+      "authoringStatus": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The status that indicates the current phase of the configuration process for a deployment."
+      },
+      "ddosProtectionCreationOption": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Parameter used to deploy a DDoS protection plan: Select 'Yes' to enable deployment, 'No' to skip it, or 'Existing' to reuse an existing DDoS protection plan."
+      },
+      "existingDdosProtectionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the DDoS protection plan when reusing an existing one."
+      },
+      "logAnalyticsWorkspaceCreationOption": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "Parameter used to deploy a log analytics workspace: Select 'Yes' to enable deployment, 'No' to skip it, or 'Existing' to reuse an existing log analytics workspace."
+      },
+      "existingLogAnalyticsWorkspaceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the log analytics workspace when reusing an existing one."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Tags are key-value pairs that can be assigned to a resource to organize and manage it more effectively. Example: {'name': 'a tag name', 'value': 'a tag value'}"
+      },
+      "firewallCreationOption": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "Parameter used for deploying a Firewall: Select 'No' to skip deployment, 'Standard' to deploy the Standard SKU, or 'Premium' to deploy the Premium SKU."
+      },
+      "firewallSubnetCidrBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Firewall subnet address used for deploying a firewall. Specify the Firewall subnet using IPv4 CIDR notation."
+      },
+      "gatewaySubnetCidrBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The gateway subnet address used for deploying a virtual network. Specify the subnet using IPv4 CIDR notation."
+      },
+      "logRetentionInDays": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "Parameter to define the retention period for logs, in days. The minimum duration is 30 days and the maximum is 730 days."
+      },
+      "hubNetworkCidrBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Virtual Network address. Specify the address using IPv4 CIDR notation."
+      },
+      "azureBastionCreationOption": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 1,
+        "description": "Parameter used to deploy a Bastion: Select 'Yes' to enable deployment, 'No' to skip it, or 'Existing' to reuse an existing Bastion."
+      },
+      "existingAzureBastionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the Bastion when reusing an existing one."
+      },
+      "azureBastionSubnetCidrBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Bastion subnet address. Specify the address using IPv4 CIDR notation."
+      },
+      "landingZonesMgChildren": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The child management groups of 'Landing Zones' management group and their assigned policies."
+      },
+      "topLevelMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the parent management group."
+      },
+      "landingZonesMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Landing Zones' management group."
+      },
+      "platformMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Platform' management group."
+      },
+      "platformManagementMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Management' management group under 'Platform' management group."
+      },
+      "platformConnectivityMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Connectivity' management group under 'Platform' management group."
+      },
+      "platformIdentityMgMetadata": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Identity' management group under 'Platform' management group."
+      },
+      "decommissionedMgMetadata": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Decommissioned' management group and indicator to create it or not."
+      },
+      "sandboxMgMetadata": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The assigned policies of the 'Sandbox' management group and indicator to create it or not."
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 1,
+        "description": "The managed identity to be assigned to this landing zone configuration."
+      },
+      "platformMgChildren": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "The names of the 'Platform' child management groups and their assigned policies, excluding the default ones: 'Connectivity', 'Identity', and 'Management'"
+      },
+      "namingConventionFormula": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default naming convention applied to all resources for this landing zone configuration. Example - {DeploymentPrefix}-Contoso-{ResourceTypeAbbreviation}{DeploymentSuffix}-{Environment}-testing"
+      },
+      "customNamingConvention": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The custom naming convention applied to specific resource types for this landing zone configuration, which overrides the default naming convention for those resource types. Example - 'customNamingConvention': [{'resourceType': 'azureFirewalls', 'formula': '{DeploymentPrefix}-afwl-{DeploymentSuffix}'}]"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyForUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UseExisting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UseExisting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Tags",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A tag name."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A tag value."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/58"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 30,
+    "maxValue": 730
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Yes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UseExisting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LandingZoneManagementGroupProperties",
+    "properties": {
+      "policyInitiativesAssignmentProperties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "Array of policy initiatives applied to the management group."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Management group name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PolicyInitiativeAssignmentProperties",
+    "properties": {
+      "policyInitiativeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The fully qualified id of the policy initiative."
+      },
+      "assignmentParameters": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "The parameters of the assigned policy initiative."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PolicyInitiativeAssignmentPropertiesAssignmentParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/71"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagementGroupProperties",
+    "properties": {
+      "policyInitiativesAssignmentProperties": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 1,
+        "description": "Array of policy initiatives applied to the management group."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DecommissionedManagementGroupProperties",
+    "properties": {
+      "policyInitiativesAssignmentProperties": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "Array of policy initiatives applied to the management group."
+      },
+      "create": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "This parameter determines whether the 'Decommissioned' management group will be created. If set to true, the group will be created; if set to false, it will not be created. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SandboxManagementGroupProperties",
+    "properties": {
+      "policyInitiativesAssignmentProperties": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "Array of policy initiatives applied to the management group."
+      },
+      "create": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "This parameter determines whether the 'Sandbox' management group will be created. If set to true, the group will be created; if set to false, it will not be created. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedIdentityProperties",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 1,
+        "description": "The type of managed identity."
+      },
+      "userAssignedIdentityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource id of the managed identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlatformManagementGroupProperties",
+    "properties": {
+      "policyInitiativesAssignmentProperties": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 1,
+        "description": "Array of policy initiatives applied to the management group."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Management group name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/86"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomNamingConvention",
+    "properties": {
+      "resourceType": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 1,
+        "description": "The type of the resource."
+      },
+      "formula": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The custom naming formula for the resource type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azureFirewalls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "workspaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "automationAccounts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dashboards"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAssignedIdentities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "bastionHosts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ddosProtectionPlans"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "networkSecurityGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "virtualNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "routeTables"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations@2025-02-27-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/37"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Sovereign/landingZoneAccounts/landingZoneRegistrations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-27-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts/landingZoneRegistrations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LandingZoneRegistrationResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 2,
+        "description": "The state that reflects the current stage in the creation, updating, or deletion process of the landing zone registration resource type."
+      },
+      "existingTopLevelMgId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the top level management group"
+      },
+      "existingLandingZoneConfigurationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id of the associated landing zone configuration."
+      },
+      "managedIdentity": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The managed identity to be assigned to this landing zone registration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Sovereign/landingZoneAccounts/landingZoneRegistrations@2025-02-27-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/105"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateLandingZoneConfigurationCopyRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the duplicate landing zone configuration resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreateLandingZoneConfigurationCopyResponse",
+    "properties": {
+      "copiedLandingZoneConfigurationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ID of the duplicate landing zone configuration resource."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "createCopy",
+    "resourceType": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations",
+    "apiVersion": "2025-02-27-preview",
+    "output": {
+      "$ref": "#/116"
+    },
+    "input": {
+      "$ref": "#/115"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateLandingZoneRequest",
+    "properties": {
+      "infrastructureAsCodeOutputOptions": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 1,
+        "description": "The export options available for code generation."
+      },
+      "existingManagementSubscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Existing 'Management' subscription ID to be linked with this deployment when reusing instead of creating a new subscription."
+      },
+      "existingIdentitySubscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Existing 'Identity' subscription ID to be linked with this deployment when reusing instead of creating a new subscription."
+      },
+      "existingConnectivitySubscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Existing 'Connectivity' subscription ID to be linked with this deployment when reusing instead of creating a new subscription."
+      },
+      "subscriptionBillingScope": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The complete resource ID of the billing scope linked to the EA, MCA, or MPA account where you want to create the subscription."
+      },
+      "existingTopLevelMgParentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional parent for the management group hierarchy, serving as an intermediate root management group parent if specified. If left empty, the default will be to deploy under the tenant root management group."
+      },
+      "deploymentPrefix": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "The prefix that will be added to all resources created by this deployment. Use between 2 and 5 characters, consisting only of letters, digits, '-', '.', or '_'. No other special characters are supported."
+      },
+      "deploymentSuffix": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "The optional suffix that will be appended to all resources created by this deployment, maximum 5 characters."
+      },
+      "topLevelMgDisplayName": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 1,
+        "description": "The display name assigned to the top management group of the landing zone deployment hierarchy. It is recommended to use unique names for each landing zone deployment."
+      },
+      "deploymentLocation": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "The Azure region where the landing zone will be deployed. All Azure regions are supported."
+      },
+      "organization": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the organization or agency for which the landing zone is being deployed. This is optional."
+      },
+      "environment": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The environment where the landing zone is being deployed, such as ppe, prod, test, etc."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bicep"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ARM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 5,
+    "pattern": "^([a-zA-Z0-9-]*)$"
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 5
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^([a-zA-Z0-9]+)$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateLandingZoneResponse",
+    "properties": {
+      "topLevelMgDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The parent management group name of the landing zone deployment."
+      },
+      "landingZoneConfigurationName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the Landing zone configuration resource."
+      },
+      "generatedCodeUrl": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The url to access the generated code."
+      },
+      "storageAccountName": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The storage account name to access the generated code."
+      },
+      "containerName": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The storage account container to access the generated code."
+      },
+      "blobName": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The storage account blob name to access the generated code."
+      },
+      "generatedArmTemplate": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "The generated code content in JSON string format."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateLandingZone",
+    "resourceType": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations",
+    "apiVersion": "2025-02-27-preview",
+    "output": {
+      "$ref": "#/126"
+    },
+    "input": {
+      "$ref": "#/118"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateAuthoringStatusRequest",
+    "properties": {
+      "authoringStatus": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 1,
+        "description": "The authoring status value to be updated. Possible values include: 'Authoring', 'ReadyForUse' and 'Disabled'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyForUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateAuthoringStatusResponse",
+    "properties": {
+      "landingZoneConfigurationName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the landing zone configuration resource."
+      },
+      "authoringStatus": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 1,
+        "description": "The authoring status value to be updated."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Authoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyForUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "updateAuthoringStatus",
+    "resourceType": "Microsoft.Sovereign/landingZoneAccounts/landingZoneConfigurations",
+    "apiVersion": "2025-02-27-preview",
+    "output": {
+      "$ref": "#/134"
+    },
+    "input": {
+      "$ref": "#/129"
+    }
+  }
+]

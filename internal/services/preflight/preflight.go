@@ -7,16 +7,16 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/terraform-provider-azapi/internal/azure"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	aztypes "github.com/Azure/terraform-provider-azapi/internal/azure/types"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
+	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 )
 
 type RequestBodyModel struct {
@@ -34,60 +34,39 @@ func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId strin
 		return "", fmt.Errorf("failed to generate parentID placeholder because the resource definition is invalid")
 	}
 
-	parentId := ""
+	scopeId := ""
 	switch resourceDef.ScopeTypes[0] {
 	case aztypes.Tenant:
-		parentId = "/"
+		scopeId = "/"
 	case aztypes.ManagementGroup:
-		parentId = "/providers/Microsoft.Management/managementGroups/" + NamePlaceholder()
+		scopeId = "/providers/Microsoft.Management/managementGroups/" + NamePlaceholder()
 	case aztypes.Subscription:
-		parentId = fmt.Sprintf("/subscriptions/%s", subscriptionId)
+		scopeId = fmt.Sprintf("/subscriptions/%s", subscriptionId)
 	case aztypes.ResourceGroup:
-		parentId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s", subscriptionId, NamePlaceholder())
+		scopeId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s", subscriptionId, NamePlaceholder())
 	default:
 		return "", fmt.Errorf("failed to generate parentID placeholder because the scope type is not supported")
 	}
+
+	// for top-level resources, the parent ID is the same as the scope ID
+	resourceType := strings.Split(resourceDef.Name, "@")[0]
+	if utils.IsTopLevelResourceType(resourceType) {
+		return scopeId, nil
+	}
+
+	parts := strings.Split(resourceType, "/")
+
+	parentId := fmt.Sprintf("%s/providers/%s", scopeId, parts[0])
+	for i := 1; i < len(parts)-1; i++ {
+		parentId += fmt.Sprintf("/%s/%s", parts[i], NamePlaceholder())
+	}
+
 	return parentId, nil
 }
 
 // NamePlaceholder generates a random name placeholder
 func NamePlaceholder() string {
 	return acctest.RandStringFromCharSet(8, acctest.CharSetAlpha)
-}
-
-// IsSupported checks if the resource type is supported for preflight validation
-// The resource type should be a top-level resource type, and the specified parentID should be a resource group, subscription, tenant or management group
-// If the parentID is not specified, the resource type should be able to deploy only at the tenant, management group, subscription or resource group level
-func IsSupported(resourceType string, parentId string) bool {
-	azureResourceType, apiVersion, err := utils.GetAzureResourceTypeApiVersion(resourceType)
-	if err != nil {
-		return false
-	}
-
-	if !utils.IsTopLevelResourceType(azureResourceType) {
-		return false
-	}
-
-	// if the parentID is specified, it should be a resource group, subscription, tenant or management group
-	if parentId != "" {
-		parentResourceType := utils.GetResourceType(parentId)
-		return strings.EqualFold(arm.ResourceGroupResourceType.String(), parentResourceType) ||
-			strings.EqualFold(arm.SubscriptionResourceType.String(), parentResourceType) ||
-			strings.EqualFold(arm.TenantResourceType.String(), parentResourceType) ||
-			strings.EqualFold("Microsoft.Management/managementGroups", parentResourceType)
-	}
-
-	// if the parentID is not specified, the resource type should be able to deploy only at the tenant, management group, subscription or resource group level
-
-	resourceDef, err := azure.GetResourceDefinition(azureResourceType, apiVersion)
-	if err != nil || resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
-		return false
-	}
-
-	deployedScope := resourceDef.ScopeTypes[0]
-
-	return deployedScope == aztypes.Tenant || deployedScope == aztypes.ManagementGroup ||
-		deployedScope == aztypes.Subscription || deployedScope == aztypes.ResourceGroup
 }
 
 // Validate validates the resource using the preflight API
@@ -99,7 +78,15 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 
 	payload := RequestBodyModel{}
 	payload.Provider, payload.Type, _ = strings.Cut(azureResourceType, "/")
-	payload.Scope = parentId
+	id, err := parse.NewResourceIDSkipScopeValidation(name, parentId, resourceType)
+	if err != nil {
+		return err
+	}
+	scopeId, err := ScopeID(id.ID())
+	if err != nil {
+		return err
+	}
+	payload.Scope = scopeId
 	if location != "" {
 		payload.Location = location
 	}
@@ -118,6 +105,30 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 
 	_, err = client.Action(ctx, "/providers/Microsoft.Resources", "validateResources", "2020-10-01", "POST", payload, clients.DefaultRequestOptions())
 	return err
+}
+
+func ScopeID(resourceId string) (string, error) {
+	armId, err := arm.ParseResourceID(resourceId)
+	if err != nil {
+		return "", err
+	}
+	if armId.Parent == nil {
+		return "/", nil
+	}
+	scopeId := armId.Parent
+	for scopeId.Parent != nil &&
+		!strings.EqualFold(scopeId.ResourceType.String(), arm.SubscriptionResourceType.String()) &&
+		!strings.EqualFold(scopeId.ResourceType.String(), arm.ResourceGroupResourceType.String()) &&
+		!strings.EqualFold(scopeId.ResourceType.String(), arm.TenantResourceType.String()) &&
+		!strings.EqualFold(scopeId.ResourceType.String(), "Microsoft.Management/managementGroups") {
+		scopeId = scopeId.Parent
+	}
+
+	if scopeId == nil || scopeId.ResourceType.String() == arm.TenantResourceType.String() {
+		return "/", nil
+	}
+
+	return scopeId.String(), nil
 }
 
 func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *map[string]interface{}) error {

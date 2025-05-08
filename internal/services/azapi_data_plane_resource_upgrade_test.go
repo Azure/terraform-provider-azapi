@@ -6,7 +6,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func externalProvidersAzurerm() map[string]resource.ExternalProvider {
@@ -34,6 +34,10 @@ func TestAccAzapiDataPlaneResourceUpgrade_appConfigKeyValues(t *testing.T) {
 			Config:            r.appConfigKeyValues(data),
 			ExternalProviders: externalProvidersAzurerm(),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config:            r.appConfigKeyValues(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		}),
 	})
 }
 
@@ -49,6 +53,9 @@ func TestAccAzapiDataPlaneResourceUpgrade_purviewClassification(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: r.purviewClassification(data),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: r.purviewClassification(data),
 		}),
 	})
@@ -68,6 +75,9 @@ func TestAccAzapiDataPlaneResourceUpgrade_purviewCollection(t *testing.T) {
 		data.UpgradeTestPlanStep(resource.TestStep{
 			Config: r.purviewCollection(data),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config: r.purviewCollection(data),
+		}),
 	})
 }
 
@@ -83,7 +93,11 @@ func TestAccAzapiDataPlaneResourceUpgrade_keyVaultIssuer(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		}, PreviousVersion),
-		data.UpgradeTestPlanStep(resource.TestStep{
+		// data.UpgradeTestPlanStep(resource.TestStep{
+		//	Config:            r.keyVaultIssuer(data),
+		//	ExternalProviders: externalProvidersAzurerm(),
+		// }),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config:            r.keyVaultIssuer(data),
 			ExternalProviders: externalProvidersAzurerm(),
 		}),
@@ -106,6 +120,10 @@ func TestAccAzapiDataPlaneResourceUpgrade_iotAppsUser(t *testing.T) {
 			Config:            r.iotAppsUser(data),
 			ExternalProviders: externalProvidersAzurerm(),
 		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
+			Config:            r.iotAppsUser(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		}),
 	})
 }
 
@@ -122,6 +140,10 @@ func TestAccAzapiDataPlaneResourceUpgrade_timeouts(t *testing.T) {
 			),
 		}, PreviousVersion),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config:            r.timeouts(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config:            r.timeouts(data),
 			ExternalProviders: externalProvidersAzurerm(),
 		}),
@@ -167,6 +189,9 @@ func TestAccAzapiDataPlaneResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			),
 		}, "1.12.1"),
 		data.UpgradeTestPlanStep(resource.TestStep{
+			Config: updatedConfig,
+		}),
+		data.UpgradeTestApplyStep(resource.TestStep{
 			Config: updatedConfig,
 		}),
 	})

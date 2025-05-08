@@ -1,5 +1,7 @@
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/attr"
+
 var _ TypeBase = &AnyType{}
 
 type AnyType struct {
@@ -18,7 +20,7 @@ func (t *AnyType) AsTypeBase() *TypeBase {
 	return &typeBase
 }
 
-func (t *AnyType) Validate(body interface{}, path string) []error {
+func (t *AnyType) Validate(body attr.Value, path string) []error {
 	return nil
 }
 

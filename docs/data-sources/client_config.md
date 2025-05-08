@@ -39,8 +39,10 @@ output "tenant_id" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
-- `subscription_id` (String)
-- `tenant_id` (String)
+- `object_id` (String) The object ID of the identity. E.g. `00000000-0000-0000-0000-000000000000`
+- `subscription_id` (String) The subscription ID. E.g. `00000000-0000-0000-0000-000000000000`
+- `subscription_resource_id` (String) The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`
+- `tenant_id` (String) The tenant ID. E.g. `00000000-0000-0000-0000-000000000000`
 
 <a id="nestedblock--timeouts"></a>
 ### Nested Schema for `timeouts`

@@ -24,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -35,6 +36,7 @@ import (
 
 var _ provider.Provider = &Provider{}
 var _ provider.ProviderWithFunctions = &Provider{}
+var _ provider.ProviderWithEphemeralResources = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -75,6 +77,7 @@ type providerData struct {
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
+	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
 
 func (model providerData) GetClientId() (*string, error) {
@@ -192,17 +195,17 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 					Attributes: map[string]schema.Attribute{
 						"active_directory_authority_host": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.",
+							MarkdownDescription: "The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.",
 						},
 
 						"resource_manager_endpoint": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.",
+							MarkdownDescription: "The Azure Resource Manager endpoint to use. This can also be sourced from the `ARM_RESOURCE_MANAGER_ENDPOINT` Environment Variable. Defaults to `https://management.azure.com/` for public cloud.",
 						},
 
 						"resource_manager_audience": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "The Azure Active Directory login endpoint to use. This can also be sourced from the `ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` Environment Variable. Defaults to `https://login.microsoftonline.com/` for public cloud.",
+							MarkdownDescription: "The resource ID to obtain AD tokens for. This can also be sourced from the `ARM_RESOURCE_MANAGER_AUDIENCE` Environment Variable. Defaults to `https://management.core.windows.net/` for public cloud.",
 						},
 					},
 				},
@@ -259,12 +262,12 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 			// OIDC specific fields
 			"oidc_request_token": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` Environment Variables.",
+				MarkdownDescription: "The bearer token for the request to the OIDC provider. This can also be sourced from the `ARM_OIDC_REQUEST_TOKEN`, `ACTIONS_ID_TOKEN_REQUEST_TOKEN`, or `SYSTEM_ACCESSTOKEN` Environment Variables.",
 			},
 
 			"oidc_request_url": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_URL` Environment Variables.",
+				MarkdownDescription: "The URL for the OIDC provider from which to request an ID token. This can also be sourced from the `ARM_OIDC_REQUEST_URL`, `ACTIONS_ID_TOKEN_REQUEST_URL`, or `SYSTEM_OIDCREQUESTURI` Environment Variables.",
 			},
 
 			"oidc_token": schema.StringAttribute{
@@ -279,7 +282,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"oidc_azure_service_connection_id": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID` environment variable.",
+				MarkdownDescription: "The Azure Pipelines Service Connection ID to use for authentication. This can also be sourced from the `ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID`, `ARM_OIDC_AZURE_SERVICE_CONNECTION_ID`, or `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` Environment Variables.",
 			},
 
 			"use_oidc": schema.BoolAttribute{
@@ -357,12 +360,17 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"enable_preflight": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation.",
+				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation. This can also be sourced from the `ARM_ENABLE_PREFLIGHT` Environment Variable.",
 			},
 
 			"disable_default_output": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output.",
+				Description: "Disable default output. The default is false. When set to false, the provider will output the read-only properties if `response_export_values` is not specified in the resource block. When set to true, the provider will disable this output. This can also be sourced from the `ARM_DISABLE_DEFAULT_OUTPUT` Environment Variable.",
+			},
+
+			"maximum_busy_retry_attempts": schema.Int32Attribute{
+				Optional:            true,
+				MarkdownDescription: "The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `3`. The resource-specific retry configuration may additionally be used to retry on other errors and conditions.",
 			},
 		},
 	}
@@ -493,6 +501,8 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 			model.OIDCRequestToken = types.StringValue(v)
 		} else if v := os.Getenv("ACTIONS_ID_TOKEN_REQUEST_TOKEN"); v != "" {
 			model.OIDCRequestToken = types.StringValue(v)
+		} else if v := os.Getenv("SYSTEM_ACCESSTOKEN"); v != "" {
+			model.OIDCRequestToken = types.StringValue(v)
 		}
 	}
 
@@ -517,7 +527,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	}
 
 	if model.OIDCAzureServiceConnectionID.IsNull() {
-		if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+		if v := os.Getenv("ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
+		} else if v := os.Getenv("ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"); v != "" {
+			model.OIDCAzureServiceConnectionID = types.StringValue(v)
+		} else if v := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID"); v != "" {
 			model.OIDCAzureServiceConnectionID = types.StringValue(v)
 		}
 	}
@@ -575,10 +589,18 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	}
 
 	if model.EnablePreflight.IsNull() {
-		model.EnablePreflight = types.BoolValue(false)
+		if v := os.Getenv("ARM_ENABLE_PREFLIGHT"); v != "" {
+			model.EnablePreflight = types.BoolValue(v == "true")
+		} else {
+			model.EnablePreflight = types.BoolValue(false)
+		}
 	}
 	if model.DisableDefaultOutput.IsNull() {
-		model.DisableDefaultOutput = types.BoolValue(false)
+		if v := os.Getenv("ARM_DISABLE_DEFAULT_OUTPUT"); v != "" {
+			model.DisableDefaultOutput = types.BoolValue(v == "true")
+		} else {
+			model.DisableDefaultOutput = types.BoolValue(false)
+		}
 	}
 
 	var cloudConfig cloud.Configuration
@@ -642,11 +664,15 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
 		return
 	}
-
+	maxGoSdkRetryAttempts := int32(3)
+	if !model.MaximumBusyRetryAttempts.IsNull() {
+		maxGoSdkRetryAttempts = model.MaximumBusyRetryAttempts.ValueInt32()
+	}
 	copt := &clients.Option{
 		Cred:                 cred,
 		CloudCfg:             cloudConfig,
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
+		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
 			DefaultTags:          tags.ExpandTags(model.DefaultTags),
 			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
@@ -672,6 +698,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 
 	response.ResourceData = client
 	response.DataSourceData = client
+	response.EphemeralResourceData = client
 }
 
 func (p Provider) Functions(ctx context.Context) []func() function.Function {
@@ -727,6 +754,14 @@ func (p Provider) Resources(ctx context.Context) []func() resource.Resource {
 		},
 		func() resource.Resource {
 			return &services.DataPlaneResource{}
+		},
+	}
+}
+
+func (p Provider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
+	return []func() ephemeral.EphemeralResource{
+		func() ephemeral.EphemeralResource {
+			return &services.ActionEphemeral{}
 		},
 	}
 }

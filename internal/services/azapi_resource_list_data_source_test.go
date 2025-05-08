@@ -5,7 +5,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance/check"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 type ListDataSource struct{}
@@ -130,6 +130,10 @@ data "azapi_resource_list" "test" {
 
 func (r ListDataSource) defaultOutput() string {
 	return `
+provider "azapi" {
+  disable_default_output = false
+}
+
 data "azapi_client_config" "current" {}
 
 data "azapi_resource_list" "test" {

@@ -13,10 +13,12 @@ import (
 )
 
 type ClientConfigDataSourceModel struct {
-	ID             types.String   `tfsdk:"id"`
-	TenantID       types.String   `tfsdk:"tenant_id"`
-	SubscriptionID types.String   `tfsdk:"subscription_id"`
-	Timeouts       timeouts.Value `tfsdk:"timeouts"`
+	ID                     types.String   `tfsdk:"id"`
+	TenantID               types.String   `tfsdk:"tenant_id"`
+	SubscriptionID         types.String   `tfsdk:"subscription_id"`
+	SubscriptionResourceID types.String   `tfsdk:"subscription_resource_id"`
+	ObjectID               types.String   `tfsdk:"object_id"`
+	Timeouts               timeouts.Value `tfsdk:"timeouts"`
 }
 
 type ClientConfigDataSource struct {
@@ -44,11 +46,23 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 			},
 
 			"tenant_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The tenant ID. E.g. `00000000-0000-0000-0000-000000000000`",
 			},
 
 			"subscription_id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
+				MarkdownDescription: "The subscription ID. E.g. `00000000-0000-0000-0000-000000000000`",
+			},
+
+			"subscription_resource_id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "The resource ID of the subscription. E.g. `/subscriptions/00000000-0000-0000-0000-000000000000`",
+			},
+
+			"object_id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "The object ID of the identity. E.g. `00000000-0000-0000-0000-000000000000`",
 			},
 		},
 
@@ -71,15 +85,17 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 	if response.Diagnostics.HasError() {
 		return
 	}
-
 	ctx, cancel := context.WithTimeout(ctx, readTimeout)
 	defer cancel()
 
 	subscriptionId := r.ProviderData.Account.GetSubscriptionId()
 	tenantId := r.ProviderData.Account.GetTenantId()
+	objectId := r.ProviderData.Account.GetObjectId(ctx)
 
 	model.ID = types.StringValue(fmt.Sprintf("clientConfigs/subscriptionId=%s;tenantId=%s", subscriptionId, tenantId))
 	model.SubscriptionID = types.StringValue(subscriptionId)
+	model.SubscriptionResourceID = types.StringValue(fmt.Sprintf("/subscriptions/%s", subscriptionId))
 	model.TenantID = types.StringValue(tenantId)
+	model.ObjectID = types.StringValue(objectId)
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

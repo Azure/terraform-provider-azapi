@@ -290,6 +290,7 @@ func attrValueFromJSON(b []byte, typ attr.Type) (attr.Value, error) {
 // - []interface{}: tuple
 // - map[string]interface{}: object
 // - nil: null (dynamic)
+// - <unknown>: unknown (dynamic)
 func FromJSONImplied(b []byte) (types.Dynamic, error) {
 	_, v, err := attrValueFromJSONImplied(b)
 	if err != nil {
@@ -301,6 +302,9 @@ func FromJSONImplied(b []byte) (types.Dynamic, error) {
 func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 	if string(b) == "null" {
 		return types.DynamicType, types.DynamicNull(), nil
+	}
+	if string(b) == "<unknown>" {
+		return types.DynamicType, types.DynamicUnknown(), nil
 	}
 
 	var object map[string]json.RawMessage
@@ -430,4 +434,34 @@ func IsFullyKnown(val attr.Value) bool {
 	default:
 		return true
 	}
+}
+
+func MergeDynamic(a, b types.Dynamic) (types.Dynamic, error) {
+	aJson, err := ToJSONWithUnknownValueHandler(a, func(val attr.Value) ([]byte, error) {
+		return json.Marshal("<unknown>")
+	})
+	if err != nil {
+		return types.Dynamic{}, err
+	}
+	bJson, err := ToJSONWithUnknownValueHandler(b, func(val attr.Value) ([]byte, error) {
+		return json.Marshal("<unknown>")
+	})
+	if err != nil {
+		return types.Dynamic{}, err
+	}
+	var aObj, bObj interface{}
+	if err = json.Unmarshal(aJson, &aObj); err != nil {
+		return types.Dynamic{}, err
+	}
+	if err = json.Unmarshal(bJson, &bObj); err != nil {
+		return types.Dynamic{}, err
+	}
+
+	merged := utils.MergeObject(aObj, bObj)
+	mergedJson, err := json.Marshal(merged)
+	if err != nil {
+		return types.Dynamic{}, err
+	}
+
+	return FromJSONImplied(mergedJson)
 }

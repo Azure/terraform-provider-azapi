@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -18,9 +19,9 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/internal/skip"
 	"github.com/Azure/terraform-provider-azapi/internal/tf"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/cenkalti/backoff/v4"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -38,28 +39,28 @@ import (
 )
 
 type DataPlaneResourceModel struct {
-	ID                            types.String        `tfsdk:"id"`
-	Name                          types.String        `tfsdk:"name"`
-	ParentID                      types.String        `tfsdk:"parent_id"`
-	Type                          types.String        `tfsdk:"type"`
-	Body                          types.Dynamic       `tfsdk:"body"`
-	IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
-	ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
-	ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
-	ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
-	Retry                         retry.RetryValue    `tfsdk:"retry"`
-	Locks                         types.List          `tfsdk:"locks"`
-	Output                        types.Dynamic       `tfsdk:"output"`
-	Timeouts                      timeouts.Value      `tfsdk:"timeouts"`
-	CreateHeaders                 map[string]string   `tfsdk:"create_headers"`
-	CreateQueryParameters         map[string][]string `tfsdk:"create_query_parameters"`
-	UpdateHeaders                 map[string]string   `tfsdk:"update_headers"`
-	UpdateQueryParameters         map[string][]string `tfsdk:"update_query_parameters"`
-	DeleteHeaders                 map[string]string   `tfsdk:"delete_headers"`
-	DeleteQueryParameters         map[string][]string `tfsdk:"delete_query_parameters"`
-	ReadHeaders                   map[string]string   `tfsdk:"read_headers"`
-	ReadQueryParameters           map[string][]string `tfsdk:"read_query_parameters"`
+	ID                            types.String     `tfsdk:"id"`
+	Name                          types.String     `tfsdk:"name"`
+	ParentID                      types.String     `tfsdk:"parent_id"`
+	Type                          types.String     `tfsdk:"type"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
+	ReplaceTriggersRefs           types.List       `tfsdk:"replace_triggers_refs"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	Locks                         types.List       `tfsdk:"locks"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	CreateHeaders                 types.Map        `tfsdk:"create_headers" skip_on:"update"`
+	CreateQueryParameters         types.Map        `tfsdk:"create_query_parameters" skip_on:"update"`
+	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
+	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
+	DeleteHeaders                 types.Map        `tfsdk:"delete_headers" skip_on:"update"`
+	DeleteQueryParameters         types.Map        `tfsdk:"delete_query_parameters" skip_on:"update"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type DataPlaneResource struct {
@@ -72,6 +73,7 @@ var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
 var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
+	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
 	if v, ok := request.ProviderData.(*clients.Client); ok {
 		r.ProviderData = v
 	}
@@ -164,7 +166,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 
-			"retry": retry.SingleNestedAttribute(ctx),
+			"retry": retry.RetrySchema(ctx),
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
@@ -176,9 +178,9 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					"\n" +
 					"```hcl\n" +
 					"resource \"azapi_data_plane_resource\" \"example\" {\n" +
-					"  name      = var.name\n" +
-					"  type      = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
-					"  body      = {\n" +
+					"  name = var.name\n" +
+					"  type = \"Microsoft.AppConfiguration/configurationStores/keyValues@1.0\"\n" +
+					"  body = {\n" +
 					"    properties = {\n" +
 					"      sku   = var.sku\n" +
 					"      zones = var.zones\n" +
@@ -355,6 +357,19 @@ func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateR
 }
 
 func (r *DataPlaneResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+	// See if we can skip the external API call (changes are to state only)
+	var state, plan DataPlaneResourceModel
+	if response.Diagnostics.Append(request.Plan.Get(ctx, &plan)...); response.Diagnostics.HasError() {
+		return
+	}
+	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
+		return
+	}
+	if skip.CanSkipExternalRequest(state, plan, "update") {
+		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
+	}
+	tflog.Debug(ctx, "azapi_resource.CreateUpdate proceeding with external request as no skippable changes were detected")
 	r.CreateUpdate(ctx, request.Plan, &response.State, &response.Diagnostics)
 }
 
@@ -370,18 +385,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		return
 	}
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
 	isNewResource := state == nil || state.Raw.IsNull()
 
 	var timeout time.Duration
@@ -397,13 +402,17 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 			return
 		}
 	}
+
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
+
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
-		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+		_, err = r.ProviderData.DataPlaneClient.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_data_plane_resource", id.ID()).Error())
 			return
@@ -419,34 +428,24 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
 		return
 	}
-
-	for _, id := range AsStringList(model.Locks) {
-		locks.ByID(id)
-		defer locks.UnlockByID(id)
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
+		locks.ByID(lockId)
+		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(model.CreateHeaders, model.CreateQueryParameters))
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(AsMapOfString(model.CreateHeaders), AsMapOfLists(model.CreateQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
 		return
 	}
 
-	// Create a new retry client to handle specific case of transient 404 after resource creation
-	clientRetry404 := r.ProviderData.DataPlaneClient.WithRetry(
-		backoff.NewExponentialBackOff(
-			backoff.WithInitialInterval(5*time.Second),
-			backoff.WithMaxInterval(30*time.Second),
-			backoff.WithMaxElapsedTime(Retry404MaxElapsedTime()),
-		),
-		nil,
-		[]int{404},
-		[]func(d interface{}) bool{
-			func(d interface{}) bool {
-				return d == nil
-			},
-		},
-	)
-	responseBody, err := clientRetry404.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	// Create a new retry client to handle specific case of transient 403/404 after resource creation
+	// If a read after create retry is not specified, use the default.
+	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, true)
+
+	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -489,20 +488,12 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 		response.Diagnostics.AddError("Error parsing ID", err.Error())
 		return
 	}
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
-	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(model.ReadHeaders, model.ReadQueryParameters))
+	// Ensure that the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+
+	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -565,25 +556,11 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		return
 	}
 
-	var client clients.DataPlaneRequester
-	client = r.ProviderData.DataPlaneClient
-	if !model.Retry.IsNull() && !model.Retry.IsUnknown() {
-		bkof, regexps := clients.NewRetryableErrors(
-			model.Retry.GetIntervalSeconds(),
-			model.Retry.GetMaxIntervalSeconds(),
-			model.Retry.GetMultiplier(),
-			model.Retry.GetRandomizationFactor(),
-			model.Retry.GetErrorMessageRegex(),
-		)
-		client = r.ProviderData.DataPlaneClient.WithRetry(bkof, regexps, nil, nil)
-	}
-
 	deleteTimeout, diags := model.Timeouts.Delete(ctx, 30*time.Minute)
 	response.Diagnostics.Append(diags...)
 	if response.Diagnostics.HasError() {
 		return
 	}
-
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()
 
@@ -593,12 +570,19 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		return
 	}
 
-	for _, lockId := range AsStringList(model.Locks) {
+	ctx = tflog.SetField(ctx, "resource_id", id.ID())
+
+	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
+	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+
+	lockIds := AsStringList(model.Locks)
+	slices.Sort(lockIds)
+	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(model.DeleteHeaders, model.DeleteQueryParameters))
+	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(AsMapOfString(model.DeleteHeaders), AsMapOfLists(model.DeleteQueryParameters)))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

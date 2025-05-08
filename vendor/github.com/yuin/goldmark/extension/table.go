@@ -184,11 +184,11 @@ func (b *tableParagraphTransformer) Transform(node *gast.Paragraph, reader text.
 func (b *tableParagraphTransformer) parseRow(segment text.Segment,
 	alignments []ast.Alignment, isHeader bool, reader text.Reader, pc parser.Context) *ast.TableRow {
 	source := reader.Source()
+	segment = segment.TrimLeftSpace(source)
+	segment = segment.TrimRightSpace(source)
 	line := segment.Value(source)
 	pos := 0
-	pos += util.TrimLeftSpaceLength(line)
 	limit := len(line)
-	limit -= util.TrimRightSpaceLength(line)
 	row := ast.NewTableRow(alignments)
 	if len(line) > 0 && line[pos] == '|' {
 		pos++
@@ -492,7 +492,7 @@ func (r *TableHTMLRenderer) renderTableCell(
 		tag = "th"
 	}
 	if entering {
-		fmt.Fprintf(w, "<%s", tag)
+		_, _ = fmt.Fprintf(w, "<%s", tag)
 		if n.Alignment != ast.AlignNone {
 			amethod := r.TableConfig.TableCellAlignMethod
 			if amethod == TableCellAlignDefault {
@@ -505,7 +505,7 @@ func (r *TableHTMLRenderer) renderTableCell(
 			switch amethod {
 			case TableCellAlignAttribute:
 				if _, ok := n.AttributeString("align"); !ok { // Skip align render if overridden
-					fmt.Fprintf(w, ` align="%s"`, n.Alignment.String())
+					_, _ = fmt.Fprintf(w, ` align="%s"`, n.Alignment.String())
 				}
 			case TableCellAlignStyle:
 				v, ok := n.AttributeString("style")
@@ -528,7 +528,7 @@ func (r *TableHTMLRenderer) renderTableCell(
 		}
 		_ = w.WriteByte('>')
 	} else {
-		fmt.Fprintf(w, "</%s>\n", tag)
+		_, _ = fmt.Fprintf(w, "</%s>\n", tag)
 	}
 	return gast.WalkContinue, nil
 }

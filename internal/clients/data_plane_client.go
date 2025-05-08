@@ -18,8 +18,10 @@ import (
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/cenkalti/backoff/v4"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 type DataPlaneClient struct {
@@ -48,6 +50,22 @@ var (
 	_ DataPlaneRequester = &DataPlaneClient{}
 	_ DataPlaneRequester = &DataPlaneClientRetryableErrors{}
 )
+
+func (retryclient *DataPlaneClientRetryableErrors) updateContext(ctx context.Context) context.Context {
+	ctx = tflog.SetField(ctx, "backoff_max_elapsed_time", retryclient.backoff.MaxElapsedTime.String())
+	ctx = tflog.SetField(ctx, "backoff_initial_interval", retryclient.backoff.InitialInterval.String())
+	ctx = tflog.SetField(ctx, "backoff_max_interval", retryclient.backoff.MaxInterval.String())
+	ctx = tflog.SetField(ctx, "backoff_multiplier", retryclient.backoff.Multiplier)
+	ctx = tflog.SetField(ctx, "backoff_randomization_factor", retryclient.backoff.RandomizationFactor)
+	ctx = tflog.SetField(ctx, "retryable_http_status_codes", retryclient.statusCodes)
+	ctx = tflog.SetField(ctx, "retryable_data_callback_funcs_length", len(retryclient.dataCallbackFuncs))
+	re := make([]string, len(retryclient.errors))
+	for i, r := range retryclient.errors {
+		re[i] = r.String()
+	}
+	ctx = tflog.SetField(ctx, "retryable_errors", re)
+	return ctx
+}
 
 // NewDataPlaneClientRetryableErrors creates a new ResourceClientRetryableErrors.
 func NewDataPlaneClientRetryableErrors(client DataPlaneRequester, bkof *backoff.ExponentialBackOff, errRegExps []regexp.Regexp, statusCodes []int, dataCallbackFuncs []func(any) bool) *DataPlaneClientRetryableErrors {
@@ -330,94 +348,178 @@ func (retryclient *DataPlaneClientRetryableErrors) CreateOrUpdateThenPoll(ctx co
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "CreateOrUpdateThenPoll")
+	ctx = retryclient.updateContext(ctx)
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.CreateOrUpdateThenPoll(ctx, id, body, options)
 			if err != nil {
-				if isDataPlaneRetryable(*retryclient, data, err) {
+				if isDataPlaneRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
+					i++
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
+				tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Get(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "Get")
+	ctx = retryclient.updateContext(ctx)
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.Get(ctx, id, options)
 			if err != nil {
-				if isDataPlaneRetryable(*retryclient, data, err) {
+				if isDataPlaneRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
+					i++
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) DeleteThenPoll(ctx context.Context, id parse.DataPlaneResourceId, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "DeleteThenPoll")
+	ctx = retryclient.updateContext(ctx)
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.DeleteThenPoll(ctx, id, options)
 			if err != nil {
-				if isDataPlaneRetryable(*retryclient, data, err) {
+				if isDataPlaneRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
+					i++
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
 func (retryclient *DataPlaneClientRetryableErrors) Action(ctx context.Context, resourceID string, action string, apiVersion string, method string, body interface{}, options RequestOptions) (interface{}, error) {
 	if retryclient.backoff == nil {
 		return nil, errors.New("retry is not configured, please call WithRetry() first")
 	}
+	ctx = tflog.SetField(ctx, "request", "Action")
+	ctx = retryclient.updateContext(ctx)
+	tflog.Debug(ctx, "retryclient: Begin")
+	i := 0
 	op := backoff.OperationWithData[interface{}](
 		func() (interface{}, error) {
 			data, err := retryclient.client.Action(ctx, resourceID, action, apiVersion, method, body, options)
 			if err != nil {
-				if isDataPlaneRetryable(*retryclient, data, err) {
+				if isDataPlaneRetryable(ctx, *retryclient, data, err) {
+					tflog.Debug(ctx, "retryclient: Retry attempt", map[string]interface{}{
+						"err":     err,
+						"attempt": i,
+					})
+					i++
 					return data, err
 				}
+				tflog.Debug(ctx, "retryclient: PermanentError", map[string]interface{}{
+					"err":     err,
+					"attempt": i,
+				})
 				return nil, &backoff.PermanentError{Err: err}
 			}
+			tflog.Debug(ctx, "retryclient: Success", map[string]interface{}{
+				"attempt": i,
+			})
 			return data, err
 		})
 	exbo := backoff.WithContext(retryclient.backoff, ctx)
-	return backoff.RetryWithData[interface{}](op, exbo)
+	return backoff.RetryWithData(op, exbo)
 }
 
-func isDataPlaneRetryable(retryclient DataPlaneClientRetryableErrors, data interface{}, err error) bool {
+func isDataPlaneRetryable(ctx context.Context, retryclient DataPlaneClientRetryableErrors, data interface{}, err error) bool {
 	for _, e := range retryclient.errors {
 		if e.MatchString(err.Error()) {
+			tflog.Debug(ctx, "isDataPlaneRetryable: Error is retryable by regex", map[string]interface{}{
+				"err":    err,
+				"regexp": e.String(),
+			})
 			return true
 		}
 	}
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
 		if slices.Contains(retryclient.statusCodes, respErr.StatusCode) {
+			tflog.Debug(ctx, "isDataPlaneRetryable: Error is retryable by status code", map[string]interface{}{
+				"err":        err,
+				"statusCode": respErr.StatusCode,
+			})
 			return true
 		}
 	}
-	for _, f := range retryclient.dataCallbackFuncs {
+	for i, f := range retryclient.dataCallbackFuncs {
 		if f(data) {
+			tflog.Debug(ctx, "isDataPlaneRetryable: Error is retryable by function callback", map[string]interface{}{
+				"err":               err,
+				"callback_func_idx": i,
+			})
 			return true
 		}
 	}
 	return false
+}
+
+// ConfigureClientWithCustomRetry configures the client with a custom retry configuration if supplied.
+// If the retry configuration is null or unknown, it will use the default retry configuration.
+// If the supplied context has a deadline, it will use the deadline as the max elapsed time when a custom retry is provided.
+func (client *DataPlaneClient) ConfigureClientWithCustomRetry(ctx context.Context, rtry retry.RetryValue, useReadAfterCreateValues bool) DataPlaneRequester {
+	backOff, errRegExps, statusCodes := configureCustomRetry(ctx, rtry, useReadAfterCreateValues)
+	return client.WithRetry(backOff, errRegExps, statusCodes, nil)
 }

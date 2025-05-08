@@ -3,6 +3,10 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=4.20.0"
+    }
   }
 }
 
@@ -149,12 +153,13 @@ resource "azurerm_network_interface" "example" {
 }
 
 resource "azurerm_windows_virtual_machine" "example" {
-  name                = var.resource_name
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  size                = "Standard_F2"
-  admin_username      = var.vm_admin_username
-  admin_password      = var.vm_admin_password
+  name                              = var.resource_name
+  resource_group_name               = azurerm_resource_group.example.name
+  location                          = azurerm_resource_group.example.location
+  size                              = "Standard_F2"
+  admin_username                    = var.vm_admin_username
+  admin_password                    = var.vm_admin_password
+  vm_agent_platform_updates_enabled = true
   network_interface_ids = [
     azurerm_network_interface.example.id,
   ]

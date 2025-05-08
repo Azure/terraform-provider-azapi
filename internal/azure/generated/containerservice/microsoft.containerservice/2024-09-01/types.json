@@ -1,0 +1,7066 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable optimistic concurrency per the normal etag convention."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The managed cluster SKU."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The extended location of the Virtual Machine."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The identity of the managed cluster, if configured."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Properties of a managed cluster."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSKU",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The name of a managed cluster SKU."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "If not specified, the default is 'Free'. See [AKS Pricing Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Base"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtendedLocation",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the extended location."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The type of the extended location."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EdgeZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of the system assigned identity which is used by master components."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant id of the system assigned identity which is used by master components."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "For more information see [use managed identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity)."
+      },
+      "delegatedResources": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "The delegated identity resources assigned to this managed cluster. This can only be set by another Azure Resource Provider, and managed cluster only accept one delegated identity resource. Internal use only."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The keys must be ARM resource IDs in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedResource",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ARM resource id of the delegated resource - internal use only."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The tenant id of the delegated resource - internal use only."
+      },
+      "referralResource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The delegation id of the referral delegation (optional) - internal use only."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The source resource location - internal use only."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DelegatedResources",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentitiesValue",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/23"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The current provisioning state."
+      },
+      "powerState": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The Power State of the cluster."
+      },
+      "maxAgentPools": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The max number of agent pools for the managed cluster."
+      },
+      "kubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example, upgrades between 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details."
+      },
+      "currentKubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it. If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used."
+      },
+      "dnsPrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This cannot be updated once the Managed Cluster has been created."
+      },
+      "fqdnSubdomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This cannot be updated once the Managed Cluster has been created."
+      },
+      "fqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The FQDN of the master pool."
+      },
+      "privateFQDN": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The FQDN of private cluster."
+      },
+      "azurePortalFQDN": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses, which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal to function properly."
+      },
+      "agentPoolProfiles": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "The agent pool properties."
+      },
+      "linuxProfile": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "The profile for Linux VMs in the Managed Cluster."
+      },
+      "windowsProfile": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The profile for Windows VMs in the Managed Cluster."
+      },
+      "servicePrincipalProfile": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Information about a service principal identity for the cluster to use for manipulating Azure APIs."
+      },
+      "addonProfiles": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "The profile of managed cluster add-on."
+      },
+      "podIdentityProfile": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 0,
+        "description": "See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity integration."
+      },
+      "oidcIssuerProfile": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "The OIDC issuer profile of the Managed Cluster."
+      },
+      "nodeResourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the resource group containing agent pool nodes."
+      },
+      "nodeResourceGroupProfile": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Profile of the node resource group configuration."
+      },
+      "enableRBAC": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Kubernetes Role-Based Access Control."
+      },
+      "supportPlan": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'."
+      },
+      "enablePodSecurityPolicy": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "(DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "The network configuration profile."
+      },
+      "aadProfile": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "The Azure Active Directory configuration."
+      },
+      "autoUpgradeProfile": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 0,
+        "description": "The auto upgrade configuration."
+      },
+      "upgradeSettings": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "Settings for upgrading a cluster."
+      },
+      "autoScalerProfile": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "Parameters to be applied to the cluster-autoscaler when enabled"
+      },
+      "apiServerAccessProfile": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "The access profile for managed cluster API server."
+      },
+      "diskEncryptionSetID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'"
+      },
+      "identityProfile": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 0,
+        "description": "The user identity associated with the managed cluster. This identity will be used by the kubelet. Only one user assigned identity is allowed. The only accepted key is \"kubeletidentity\", with value of \"resourceId\": \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\"."
+      },
+      "privateLinkResources": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 0,
+        "description": "Private link resources associated with the cluster."
+      },
+      "disableLocalAccounts": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview)."
+      },
+      "httpProxyConfig": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 0,
+        "description": "Configurations for provisioning the cluster with HTTP proxy servers."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "Security profile for the managed cluster."
+      },
+      "storageProfile": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 0,
+        "description": "Storage profile for the managed cluster."
+      },
+      "ingressProfile": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 0,
+        "description": "Ingress profile for the managed cluster."
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "Allow or deny public network access for AKS"
+      },
+      "workloadAutoScalerProfile": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 0,
+        "description": "Workload Auto-scaler profile for the managed cluster."
+      },
+      "azureMonitorProfile": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "Azure Monitor addon profiles for monitoring the managed cluster."
+      },
+      "serviceMeshProfile": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "Service mesh profile for a managed cluster."
+      },
+      "resourceUID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds (i.e: create, delete, create sequence)"
+      },
+      "metricsProfile": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 0,
+        "description": "Optional cluster metrics configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PowerState",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Tells whether the cluster is Running or Stopped"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfile",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Windows agent pool names must be 6 characters or less."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable optimistic concurrency per the normal etag convention."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions"
+      },
+      "osDiskSizeGB": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified."
+      },
+      "osDiskType": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os)."
+      },
+      "kubeletDiskType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage."
+      },
+      "workloadRuntime": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Determines the type of workload a node can run."
+      },
+      "vnetSubnetID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"
+      },
+      "podSubnetID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"
+      },
+      "maxPods": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum number of pods that can run on a node."
+      },
+      "osType": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The operating system type. The default is Linux."
+      },
+      "osSKU": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows."
+      },
+      "maxCount": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum number of nodes for auto-scaling"
+      },
+      "minCount": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The minimum number of nodes for auto-scaling"
+      },
+      "enableAutoScaling": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable auto-scaler"
+      },
+      "scaleDownMode": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "This also effects the cluster autoscaler behavior. If not specified, it defaults to Delete."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The type of Agent Pool."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools"
+      },
+      "orchestratorVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see [upgrading a node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool)."
+      },
+      "currentOrchestratorVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used."
+      },
+      "nodeImageVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of node image"
+      },
+      "upgradeSettings": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Settings for upgrading the agentpool"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state."
+      },
+      "powerState": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded"
+      },
+      "availabilityZones": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is 'VirtualMachineScaleSets'."
+      },
+      "enableNodePublicIP": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see [assigning a public IP per node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false."
+      },
+      "nodePublicIPPrefixID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"
+      },
+      "scaleSetPriority": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "The Virtual Machine Scale Set priority. If not specified, the default is 'Regular'."
+      },
+      "scaleSetEvictionPolicy": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'."
+      },
+      "spotMaxPrice": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see [spot VMs pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing)"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "The tags to be persisted on the agent pool virtual machine scale set."
+      },
+      "nodeLabels": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The node labels to be persisted across all nodes in agent pool."
+      },
+      "nodeTaints": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule."
+      },
+      "proximityPlacementGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID for Proximity Placement Group."
+      },
+      "kubeletConfig": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The Kubelet configuration on the agent pool nodes."
+      },
+      "linuxOSConfig": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The OS configuration of Linux agent nodes."
+      },
+      "enableEncryptionAtHost": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption"
+      },
+      "enableUltraSSD": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable UltraSSD"
+      },
+      "enableFIPS": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "See [Add a FIPS-enabled node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details."
+      },
+      "gpuInstanceProfile": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU."
+      },
+      "creationData": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "CreationData to be used to specify the source Snapshot ID if the node pool will be created/upgraded using a snapshot."
+      },
+      "capacityReservationGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AKS will associate the specified agent pool with the Capacity Reservation Group."
+      },
+      "hostGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}. For more information see [Azure dedicated hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts)."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Network-related settings of an agent pool."
+      },
+      "windowsProfile": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The Windows agent pool's specific profile."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The security settings of an agent pool."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-z][a-z0-9]{0,11}$"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 2048
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ephemeral"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Temporary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OCIContainer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WasmWasi"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ubuntu"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureLinux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CBLMariner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2019"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2022"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VirtualMachineScaleSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilitySet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentPoolUpgradeSettings",
+    "properties": {
+      "maxSurge": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade"
+      },
+      "drainTimeoutInMinutes": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the default is 30 minutes."
+      },
+      "nodeSoakDurationInMinutes": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node. If not specified, the default is 0 minutes."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 1440
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 30
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Spot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regular"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfilePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfilePropertiesNodeLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KubeletConfig",
+    "properties": {
+      "cpuManagerPolicy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is 'none'. See [Kubernetes CPU management policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies) for more information. Allowed values are 'none' and 'static'."
+      },
+      "cpuCfsQuota": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The default is true."
+      },
+      "cpuCfsQuotaPeriod": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'."
+      },
+      "imageGcHighThreshold": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "To disable image garbage collection, set to 100. The default is 85%"
+      },
+      "imageGcLowThreshold": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "This cannot be set higher than imageGcHighThreshold. The default is 80%"
+      },
+      "topologyManagerPolicy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "For more information see [Kubernetes Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'."
+      },
+      "allowedUnsafeSysctls": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in `*`)."
+      },
+      "failSwapOn": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If set to true it will make the Kubelet fail to start if swap is enabled on the node."
+      },
+      "containerLogMaxSizeMB": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum size (e.g. 10Mi) of container log file before it is rotated."
+      },
+      "containerLogMaxFiles": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The maximum number of container log files that can be present for a container. The number must be ≥ 2."
+      },
+      "podMaxPids": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum number of processes per pod."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LinuxOSConfig",
+    "properties": {
+      "sysctls": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Sysctl settings for Linux agent nodes."
+      },
+      "transparentHugePageEnabled": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see [Transparent Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge)."
+      },
+      "transparentHugePageDefrag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more information see [Transparent Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge)."
+      },
+      "swapFileSizeMB": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The size in MB of a swap file that will be created on each node."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SysctlConfig",
+    "properties": {
+      "netCoreSomaxconn": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.somaxconn."
+      },
+      "netCoreNetdevMaxBacklog": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.netdev_max_backlog."
+      },
+      "netCoreRmemDefault": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.rmem_default."
+      },
+      "netCoreRmemMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.rmem_max."
+      },
+      "netCoreWmemDefault": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.wmem_default."
+      },
+      "netCoreWmemMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.wmem_max."
+      },
+      "netCoreOptmemMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.core.optmem_max."
+      },
+      "netIpv4TcpMaxSynBacklog": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_max_syn_backlog."
+      },
+      "netIpv4TcpMaxTwBuckets": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_max_tw_buckets."
+      },
+      "netIpv4TcpFinTimeout": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_fin_timeout."
+      },
+      "netIpv4TcpKeepaliveTime": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_keepalive_time."
+      },
+      "netIpv4TcpKeepaliveProbes": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_keepalive_probes."
+      },
+      "netIpv4TcpkeepaliveIntvl": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_keepalive_intvl."
+      },
+      "netIpv4TcpTwReuse": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.tcp_tw_reuse."
+      },
+      "netIpv4IpLocalPortRange": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.ip_local_port_range."
+      },
+      "netIpv4NeighDefaultGcThresh1": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.neigh.default.gc_thresh1."
+      },
+      "netIpv4NeighDefaultGcThresh2": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.neigh.default.gc_thresh2."
+      },
+      "netIpv4NeighDefaultGcThresh3": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.ipv4.neigh.default.gc_thresh3."
+      },
+      "netNetfilterNfConntrackMax": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.netfilter.nf_conntrack_max."
+      },
+      "netNetfilterNfConntrackBuckets": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Sysctl setting net.netfilter.nf_conntrack_buckets."
+      },
+      "fsInotifyMaxUserWatches": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting fs.inotify.max_user_watches."
+      },
+      "fsFileMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting fs.file-max."
+      },
+      "fsAioMaxNr": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting fs.aio-max-nr."
+      },
+      "fsNrOpen": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting fs.nr_open."
+      },
+      "kernelThreadsMax": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting kernel.threads-max."
+      },
+      "vmMaxMapCount": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting vm.max_map_count."
+      },
+      "vmSwappiness": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting vm.swappiness."
+      },
+      "vmVfsCachePressure": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Sysctl setting vm.vfs_cache_pressure."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 10,
+    "maxValue": 90
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 131072,
+    "maxValue": 2097152
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 65536,
+    "maxValue": 524288
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG1g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG2g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG3g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG4g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG7g"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CreationData",
+    "properties": {
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is the ARM ID of the source object to be used to create the target object."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentPoolNetworkProfile",
+    "properties": {
+      "nodePublicIPTags": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "IPTags of instance-level public IPs."
+      },
+      "allowedHostPorts": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The port ranges that are allowed to access. The specified ranges are allowed to overlap."
+      },
+      "applicationSecurityGroups": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "The IDs of the application security groups which agent pool will associate when created."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IPTag",
+    "properties": {
+      "ipTagType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The IP tag type. Example: RoutingPreference."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the IP tag associated with the public IP. Example: Internet."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/91"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PortRange",
+    "properties": {
+      "portStart": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The minimum port that is included in the range. It should be ranged from 1 to 65535, and be less than or equal to portEnd."
+      },
+      "portEnd": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The maximum port that is included in the range. It should be ranged from 1 to 65535, and be greater than or equal to portStart."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The network protocol of the port."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65535
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TCP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UDP"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentPoolWindowsProfile",
+    "properties": {
+      "disableOutboundNat": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The default value is false. Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows agent pool does not have node public IP enabled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentPoolSecurityProfile",
+    "properties": {
+      "enableVTPM": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys and measurements held locally on the node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the default is false."
+      },
+      "enableSecureBoot": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more details, see aka.ms/aks/trustedlaunch.  If not specified, the default is false."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerServiceLinuxProfile",
+    "properties": {
+      "adminUsername": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 1,
+        "description": "The administrator username to use for Linux VMs."
+      },
+      "ssh": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 1,
+        "description": "The SSH configuration for Linux-based VMs running on Azure."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z][-A-Za-z0-9_]*$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerServiceSshConfiguration",
+    "properties": {
+      "publicKeys": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 1,
+        "description": "The list of SSH public keys used to authenticate with Linux-based VMs. A maximum of 1 key may be specified."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerServiceSshPublicKey",
+    "properties": {
+      "keyData": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without headers."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterWindowsProfile",
+    "properties": {
+      "adminUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Specifies the name of the administrator account. <br><br> **Restriction:** Cannot end in \".\" <br><br> **Disallowed values:** \"administrator\", \"admin\", \"user\", \"user1\", \"test\", \"user2\", \"test1\", \"user3\", \"admin1\", \"1\", \"123\", \"a\", \"actuser\", \"adm\", \"admin2\", \"aspnet\", \"backup\", \"console\", \"david\", \"guest\", \"john\", \"owner\", \"root\", \"server\", \"sql\", \"support\", \"support_388945a0\", \"sys\", \"test2\", \"test3\", \"user4\", \"user5\". <br><br> **Minimum-length:** 1 character <br><br> **Max-length:** 20 characters"
+      },
+      "adminPassword": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the password of the administrator account. <br><br> **Minimum-length:** 8 characters <br><br> **Max-length:** 123 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\\W_]) <br><br> **Disallowed values:** \"abc@123\", \"P@$$w0rd\", \"P@ssw0rd\", \"P@ssword123\", \"Pa$$word\", \"pass@word1\", \"Password!\", \"Password1\", \"Password22\", \"iloveyou!\""
+      },
+      "licenseType": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "The license type to use for Windows VMs. See [Azure Hybrid User Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details."
+      },
+      "enableCSIProxy": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy)."
+      },
+      "gmsaProfile": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "The Windows gMSA Profile in the Managed Cluster."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows_Server"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WindowsGmsaProfile",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Specifies whether to enable Windows gMSA in the managed cluster."
+      },
+      "dnsServer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server in the vnet which is used to create the managed cluster."
+      },
+      "rootDomainName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the root domain name for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server in the vnet which is used to create the managed cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterServicePrincipalProfile",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ID for the service principal."
+      },
+      "secret": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The secret password associated with the service principal in plain text."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAddonProfile",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether the add-on is enabled or not."
+      },
+      "config": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Key-value pairs for configuring an add-on."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 2,
+        "description": "Information of user assigned identity used by this add-on."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAddonProfileConfig",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAddonProfileIdentity",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The client ID of the user assigned identity."
+      },
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The object ID of the user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPropertiesAddonProfiles",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityProfile",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether the pod identity addon is enabled."
+      },
+      "allowNetworkPluginKubenet": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities) for more information."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "The pod identities to use in the cluster."
+      },
+      "userAssignedIdentityExceptions": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "The pod identity exceptions to allow."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentity",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the pod identity."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The namespace of the pod identity."
+      },
+      "bindingSelector": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The binding selector to use for the AzureIdentityBinding resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 1,
+        "description": "The user assigned identity details."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "The current provisioning state of the pod identity."
+      },
+      "provisioningInfo": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 2
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The client ID of the user assigned identity."
+      },
+      "objectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The object ID of the user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Assigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityProvisioningInfo",
+    "properties": {
+      "error": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Pod identity assignment error (if any)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityProvisioningError",
+    "properties": {
+      "error": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Details about the error."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityProvisioningErrorBody",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "An identifier for the error. Codes are invariant and are intended to be consumed programmatically."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message describing the error, intended to be suitable for display in a user interface."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The target of the particular error. For example, the name of the property in error."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "A list of additional details about the error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/130"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/119"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityException",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the pod identity exception."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The namespace of the pod identity exception."
+      },
+      "podLabels": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "The pod labels to match."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPodIdentityExceptionPodLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterOidcIssuerProfile",
+    "properties": {
+      "issuerURL": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The OIDC issuer url of the Managed Cluster."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether the OIDC issuer is enabled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterNodeResourceGroupProfile",
+    "properties": {
+      "restrictionLevel": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The restriction level applied to the cluster's node resource group. If not specified, the default is 'Unrestricted'"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unrestricted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "KubernetesOfficial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AKSLongTermSupport"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerServiceNetworkProfile",
+    "properties": {
+      "networkPlugin": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Network plugin used for building the Kubernetes network."
+      },
+      "networkPluginMode": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "The mode the network plugin should use."
+      },
+      "networkPolicy": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "Network policy used for building the Kubernetes network."
+      },
+      "networkMode": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "This cannot be specified if networkPlugin is anything other than 'azure'."
+      },
+      "networkDataplane": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "Network dataplane used in the Kubernetes cluster."
+      },
+      "advancedNetworking": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Advanced Networking profile for enabling observability and security feature suite on a cluster. For more information see aka.ms/aksadvancednetworking."
+      },
+      "podCidr": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "A CIDR notation IP range from which to assign pod IPs when kubenet is used."
+      },
+      "serviceCidr": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges."
+      },
+      "dnsServiceIP": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr."
+      },
+      "outboundType": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "This can only be set at cluster creation time and cannot be changed later. For more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype)."
+      },
+      "loadBalancerSku": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between load balancer SKUs."
+      },
+      "loadBalancerProfile": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Profile of the cluster load balancer."
+      },
+      "natGatewayProfile": {
+        "type": {
+          "$ref": "#/190"
+        },
+        "flags": 0,
+        "description": "Profile of the cluster NAT gateway."
+      },
+      "podCidrs": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking."
+      },
+      "serviceCidrs": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking. They must not overlap with any Subnet IP ranges."
+      },
+      "ipFamilies": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 0,
+        "description": "IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "kubenet"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "overlay"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "calico"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cilium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "transparent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "bridge"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cilium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedNetworking",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Indicates the enablement of Advanced Networking functionalities of observability and security on AKS clusters. When this is set to true, all observability and security features will be set to enabled unless explicitly disabled. If not specified, the default is false."
+      },
+      "observability": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "Observability profile to enable advanced network metrics and flow logs with historical contexts."
+      },
+      "security": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "Security profile to enable security features on cilium based cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedNetworkingObservability",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Indicates the enablement of Advanced Networking observability functionalities on clusters."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdvancedNetworkingSecurity",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "This feature allows user to configure network policy based on DNS (FQDN) names. It can be enabled only on cilium based clusters. If not specified, the default is false."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^([0-9]{1,3}\\.){3}[0-9]{1,3}(\\/([0-9]|[1-2][0-9]|3[0-2]))?$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "loadBalancer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userDefinedRouting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "managedNATGateway"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "userAssignedNATGateway"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterLoadBalancerProfile",
+    "properties": {
+      "managedOutboundIPs": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "Desired managed outbound IPs for the cluster load balancer."
+      },
+      "outboundIPPrefixes": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Desired outbound IP Prefix resources for the cluster load balancer."
+      },
+      "outboundIPs": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 0,
+        "description": "Desired outbound IP resources for the cluster load balancer."
+      },
+      "effectiveOutboundIPs": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 0,
+        "description": "The effective outbound IP resources of the cluster load balancer."
+      },
+      "allocatedOutboundPorts": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 0,
+        "description": "The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports."
+      },
+      "idleTimeoutInMinutes": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 0,
+        "description": "Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The default value is 30 minutes."
+      },
+      "enableMultipleStandardLoadBalancers": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Enable multiple standard load balancers per AKS cluster or not."
+      },
+      "backendPoolType": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 0,
+        "description": "The type of the managed inbound Load Balancer BackendPool."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterLoadBalancerProfileManagedOutboundIPs",
+    "properties": {
+      "count": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1."
+      },
+      "countIPv6": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 0,
+        "description": "The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack and 1 for dual-stack."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 100
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterLoadBalancerProfileOutboundIPPrefixes",
+    "properties": {
+      "publicIPPrefixes": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "A list of public IP prefix resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceReference",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The fully qualified Azure resource id."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/180"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterLoadBalancerProfileOutboundIPs",
+    "properties": {
+      "publicIPs": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
+        "description": "A list of public IP resources."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/180"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/180"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 64000
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 4,
+    "maxValue": 120
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeIPConfiguration"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeIP"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterNATGatewayProfile",
+    "properties": {
+      "managedOutboundIPProfile": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 0,
+        "description": "Profile of the managed outbound IP resources of the cluster NAT gateway."
+      },
+      "effectiveOutboundIPs": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 0,
+        "description": "The effective outbound IP resources of the cluster NAT gateway."
+      },
+      "idleTimeoutInMinutes": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 0,
+        "description": "Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The default value is 4 minutes."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterManagedOutboundIPProfile",
+    "properties": {
+      "count": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "The desired number of outbound IPs created/managed by Azure. Allowed values must be in the range of 1 to 16 (inclusive). The default value is 1."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 16
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/180"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/198"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAADProfile",
+    "properties": {
+      "managed": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable managed AAD."
+      },
+      "enableAzureRBAC": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Azure RBAC for Kubernetes authorization."
+      },
+      "adminGroupObjectIDs": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "The list of AAD group object IDs that will have admin role of the cluster."
+      },
+      "clientAppID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "(DEPRECATED) The client AAD application ID. Learn more at https://aka.ms/aks/aad-legacy."
+      },
+      "serverAppID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "(DEPRECATED) The server AAD application ID. Learn more at https://aka.ms/aks/aad-legacy."
+      },
+      "serverAppSecret": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "(DEPRECATED) The server AAD application secret. Learn more at https://aka.ms/aks/aad-legacy."
+      },
+      "tenantID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment subscription."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAutoUpgradeProfile",
+    "properties": {
+      "upgradeChannel": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 0,
+        "description": "For more information see [setting the AKS cluster auto-upgrade channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel)."
+      },
+      "nodeOSUpgradeChannel": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "Manner in which the OS on your nodes is updated. The default is NodeImage."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "rapid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "stable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "patch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "node-image"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unmanaged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeImage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecurityPatch"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterUpgradeSettings",
+    "properties": {
+      "overrideSettings": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "Settings for overrides."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpgradeOverrideSettings",
+    "properties": {
+      "forceUpgrade": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to force upgrade the cluster. Note that this option instructs upgrade operation to bypass upgrade protections such as checking for deprecated API usage. Enable this option only with caution."
+      },
+      "until": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Until when the overrides are effective. Note that this only matches the start time of an upgrade, and the effectiveness won't change once an upgrade starts even if the `until` expires as upgrade proceeds. This field is not set by default. It must be set for the overrides to take effect."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPropertiesAutoScalerProfile",
+    "properties": {
+      "balance-similar-node-groups": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Valid values are 'true' and 'false'"
+      },
+      "daemonset-eviction-for-empty-nodes": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If set to true, all daemonset pods on empty nodes will be evicted before deletion of the node. If the daemonset pod cannot be evicted another node will be chosen for scaling. If set to false, the node will be deleted without ensuring that daemonset pods are deleted or evicted."
+      },
+      "daemonset-eviction-for-occupied-nodes": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If set to true, all daemonset pods on occupied nodes will be evicted before deletion of the node. If the daemonset pod cannot be evicted another node will be chosen for scaling. If set to false, the node will be deleted without ensuring that daemonset pods are deleted or evicted."
+      },
+      "ignore-daemonsets-utilization": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "If set to true, the resources used by daemonset will be taken into account when making scaling down decisions."
+      },
+      "expander": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 0,
+        "description": "If not specified, the default is 'random'. See [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders) for more information."
+      },
+      "max-empty-bulk-delete": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is 10."
+      },
+      "max-graceful-termination-sec": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is 600."
+      },
+      "max-node-provision-time": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '15m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "max-total-unready-percentage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is 45. The maximum is 100 and the minimum is 0."
+      },
+      "new-pod-scale-up-delay": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "For scenarios like burst/batch scale where you don't want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they're a certain age. The default is '0s'. Values must be an integer followed by a unit ('s' for seconds, 'm' for minutes, 'h' for hours, etc)."
+      },
+      "ok-total-unready-count": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This must be an integer. The default is 3."
+      },
+      "scan-interval": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '10'. Values must be an integer number of seconds."
+      },
+      "scale-down-delay-after-add": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "scale-down-delay-after-delete": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is the scan-interval. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "scale-down-delay-after-failure": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '3m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "scale-down-unneeded-time": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "scale-down-unready-time": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '20m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported."
+      },
+      "scale-down-utilization-threshold": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is '0.5'."
+      },
+      "skip-nodes-with-local-storage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is true."
+      },
+      "skip-nodes-with-system-pods": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is true."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "least-waste"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "most-pods"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "priority"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "random"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAPIServerAccessProfile",
+    "properties": {
+      "authorizedIPRanges": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 0,
+        "description": "IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server authorized IP ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges)."
+      },
+      "enablePrivateCluster": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "For more details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters)."
+      },
+      "privateDNSZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The default is System. For more details see [configure private DNS zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are 'system' and 'none'."
+      },
+      "enablePrivateClusterPublicFQDN": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to create additional public FQDN for private cluster or not."
+      },
+      "disableRunCommand": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to disable run command for the cluster or not."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterPropertiesIdentityProfile",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/120"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the private link resource."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the private link resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource type."
+      },
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The group ID of the resource."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 0,
+        "description": "The RequiredMembers of the resource"
+      },
+      "privateLinkServiceID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private link service ID of the resource, this field is exposed only to NRP internally."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/225"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterHttpProxyConfig",
+    "properties": {
+      "httpProxy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The HTTP proxy server endpoint to use."
+      },
+      "httpsProxy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The HTTPS proxy server endpoint to use."
+      },
+      "noProxy": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 0,
+        "description": "The endpoints that should not go through proxy."
+      },
+      "trustedCa": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Alternative CA cert to use for connecting to proxy servers."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSecurityProfile",
+    "properties": {
+      "defender": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 0,
+        "description": "Microsoft Defender settings for the security profile."
+      },
+      "azureKeyVaultKms": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 0,
+        "description": "Azure Key Vault [key management service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) settings for the security profile."
+      },
+      "workloadIdentity": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "Workload identity settings for the security profile. Workload identity enables Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for more details."
+      },
+      "imageCleaner": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Image Cleaner settings for the security profile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSecurityProfileDefender",
+    "properties": {
+      "logAnalyticsWorkspaceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID of the Log Analytics workspace to be associated with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace resource ID. When Microsoft Defender is disabled, leave the field empty."
+      },
+      "securityMonitoring": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 0,
+        "description": "Microsoft Defender threat detection for Cloud settings for the security profile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSecurityProfileDefenderSecurityMonitoring",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Defender threat detection"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureKeyVaultKms",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Azure Key Vault key management service. The default is false."
+      },
+      "keyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifier of Azure Key Vault key. See [key identifier format](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name) for more details. When Azure Key Vault key management service is enabled, this field is required and must be a valid key identifier. When Azure Key Vault key management service is disabled, leave the field empty."
+      },
+      "keyVaultNetworkAccess": {
+        "type": {
+          "$ref": "#/236"
+        },
+        "flags": 0,
+        "description": "Network access of key vault. The possible values are `Public` and `Private`. `Public` means the key vault allows public access from all networks. `Private` means the key vault disables public access and enables private link. The default value is `Public`."
+      },
+      "keyVaultResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID of key vault. When keyVaultNetworkAccess is `Private`, this field is required and must be a valid resource ID. When keyVaultNetworkAccess is `Public`, leave the field empty."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSecurityProfileWorkloadIdentity",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable workload identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterSecurityProfileImageCleaner",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Image Cleaner on AKS cluster."
+      },
+      "intervalHours": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Image Cleaner scanning interval in hours."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterStorageProfile",
+    "properties": {
+      "diskCSIDriver": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "AzureDisk CSI Driver settings for the storage profile."
+      },
+      "fileCSIDriver": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "AzureFile CSI Driver settings for the storage profile."
+      },
+      "snapshotController": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "Snapshot Controller settings for the storage profile."
+      },
+      "blobCSIDriver": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 0,
+        "description": "AzureBlob CSI Driver settings for the storage profile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterStorageProfileDiskCSIDriver",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable AzureDisk CSI Driver. The default value is true."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterStorageProfileFileCSIDriver",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable AzureFile CSI Driver. The default value is true."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterStorageProfileSnapshotController",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable Snapshot Controller. The default value is true."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterStorageProfileBlobCSIDriver",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable AzureBlob CSI Driver. The default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterIngressProfile",
+    "properties": {
+      "webAppRouting": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 0,
+        "description": "App Routing settings for the ingress profile. You can find an overview and onboarding guide for this feature at https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterIngressProfileWebAppRouting",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable the Application Routing add-on."
+      },
+      "dnsZoneResourceIds": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application Routing add-on is enabled. Public and private DNS zones can be in different resource groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in the same resource group."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 2,
+        "description": "Managed identity of the Application Routing add-on. This is the identity that should be granted permissions, for example, to manage the associated Azure DNS resource and get certificates from Azure Key Vault. See [this overview of the add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more instructions."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 5
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterWorkloadAutoScalerProfile",
+    "properties": {
+      "keda": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile."
+      },
+      "verticalPodAutoscaler": {
+        "type": {
+          "$ref": "#/252"
+        },
+        "flags": 0,
+        "description": "VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterWorkloadAutoScalerProfileKeda",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether to enable KEDA."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether to enable VPA. Default value is false."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAzureMonitorProfile",
+    "properties": {
+      "metrics": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAzureMonitorProfileMetrics",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether to enable or disable the Azure Managed Prometheus addon for Prometheus monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling."
+      },
+      "kubeStateMetrics": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for details."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAzureMonitorProfileKubeStateMetrics",
+    "properties": {
+      "metricLabelsAllowlist": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Comma-separated list of additional Kubernetes label keys that will be used in the resource's labels metric (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By default the metric contains only resource name and namespace labels."
+      },
+      "metricAnnotationsAllowList": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Comma-separated list of Kubernetes annotation keys that will be used in the resource's labels metric (Example: 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only resource name and namespace labels."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceMeshProfile",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 1,
+        "description": "Mode of the service mesh."
+      },
+      "istio": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 0,
+        "description": "Istio service mesh configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Istio"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioServiceMesh",
+    "properties": {
+      "components": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 0,
+        "description": "Istio components configuration."
+      },
+      "certificateAuthority": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "Istio Service Mesh Certificate Authority (CA) configuration. For now, we only support plugin certificates as described here https://aka.ms/asm-plugin-ca"
+      },
+      "revisions": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 0,
+        "description": "The list of revisions of the Istio control plane. When an upgrade is not in progress, this holds one value. When canary upgrade is in progress, this can only hold two consecutive values. For more information, see: https://learn.microsoft.com/en-us/azure/aks/istio-upgrade"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioComponents",
+    "properties": {
+      "ingressGateways": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 0,
+        "description": "Istio ingress gateways."
+      },
+      "egressGateways": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 0,
+        "description": "Istio egress gateways."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioIngressGateway",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 1,
+        "description": "Mode of an ingress gateway."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether to enable the ingress gateway."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "External"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Internal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/262"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioEgressGateway",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Whether to enable the egress gateway."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/267"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioCertificateAuthority",
+    "properties": {
+      "plugin": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 0,
+        "description": "Plugin certificates information for Service Mesh."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IstioPluginCertificateAuthority",
+    "properties": {
+      "keyVaultId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the Key Vault."
+      },
+      "certObjectName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Intermediate certificate object name in Azure Key Vault."
+      },
+      "keyObjectName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Intermediate certificate private key object name in Azure Key Vault."
+      },
+      "rootCertObjectName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Root certificate object name in Azure Key Vault."
+      },
+      "certChainObjectName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Certificate chain object name in Azure Key Vault."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "maxLength": 2
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterMetricsProfile",
+    "properties": {
+      "costAnalysis": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 0,
+        "description": "The cost analysis configuration for the cluster"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterCostAnalysis",
+    "properties": {
+      "enabled": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/maintenanceConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/maintenanceConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "The system metadata relating to this resource."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 0,
+        "description": "Properties of a default maintenance configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceConfigurationProperties",
+    "properties": {
+      "timeInWeek": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "If two array entries specify the same day of the week, the applied configuration is the union of times in both entries."
+      },
+      "notAllowedTime": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 0,
+        "description": "Time slots on which upgrade is not allowed."
+      },
+      "maintenanceWindow": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Maintenance window for the maintenance configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TimeInWeek",
+    "properties": {
+      "day": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "The day of the week."
+      },
+      "hourSlots": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "Each integer hour represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 23
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/300"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/291"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TimeSpan",
+    "properties": {
+      "start": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The start of a time span"
+      },
+      "end": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The end of a time span"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/303"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceWindow",
+    "properties": {
+      "schedule": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 1,
+        "description": "Recurrence schedule for the maintenance window."
+      },
+      "durationHours": {
+        "type": {
+          "$ref": "#/337"
+        },
+        "flags": 1,
+        "description": "Length of maintenance window range from 4 to 24 hours."
+      },
+      "utcOffset": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 0,
+        "description": "The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for PST. If not specified, the default is '+00:00'."
+      },
+      "startDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The date the maintenance window activates. If the current date is before this date, the maintenance window is inactive and will not be used for upgrades. If not specified, the maintenance window will be active right away."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 1,
+        "description": "The start time of the maintenance window. Accepted values are from '00:00' to '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'."
+      },
+      "notAllowedDates": {
+        "type": {
+          "$ref": "#/341"
+        },
+        "flags": 0,
+        "description": "Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Schedule",
+    "properties": {
+      "daily": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "For schedules like: 'recur every day' or 'recur every 3 days'."
+      },
+      "weekly": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 0,
+        "description": "For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'."
+      },
+      "absoluteMonthly": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'."
+      },
+      "relativeMonthly": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DailySchedule",
+    "properties": {
+      "intervalDays": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 1,
+        "description": "Specifies the number of days between each set of occurrences."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 7
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WeeklySchedule",
+    "properties": {
+      "intervalWeeks": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 1,
+        "description": "Specifies the number of weeks between each set of occurrences."
+      },
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 1,
+        "description": "Specifies on which day of the week the maintenance occurs."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 4
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AbsoluteMonthlySchedule",
+    "properties": {
+      "intervalMonths": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 1,
+        "description": "Specifies the number of months between each set of occurrences."
+      },
+      "dayOfMonth": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 1,
+        "description": "The date of the month."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 6
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 31
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelativeMonthlySchedule",
+    "properties": {
+      "intervalMonths": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 1,
+        "description": "Specifies the number of months between each set of occurrences."
+      },
+      "weekIndex": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 1,
+        "description": "Specifies on which week of the month the dayOfWeek applies."
+      },
+      "dayOfWeek": {
+        "type": {
+          "$ref": "#/336"
+        },
+        "flags": 1,
+        "description": "Specifies on which day of the week the maintenance occurs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "First"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Second"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Third"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fourth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Last"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/324"
+      },
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 4,
+    "maxValue": 24
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(-|\\+)[0-9]{2}:[0-9]{2}$"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^\\d{2}:\\d{2}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DateSpan",
+    "properties": {
+      "start": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The start date of the date span."
+      },
+      "end": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The end date of the date span."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/maintenanceConfigurations@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/289"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 12,
+    "pattern": "^[a-z][a-z0-9]{0,11}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/agentPools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/agentPools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 0,
+        "description": "Properties of an agent pool."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfileProperties",
+    "properties": {
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable optimistic concurrency per the normal etag convention."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions"
+      },
+      "osDiskSizeGB": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified."
+      },
+      "osDiskType": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 0,
+        "description": "The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os)."
+      },
+      "kubeletDiskType": {
+        "type": {
+          "$ref": "#/353"
+        },
+        "flags": 0,
+        "description": "Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage."
+      },
+      "workloadRuntime": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 0,
+        "description": "Determines the type of workload a node can run."
+      },
+      "vnetSubnetID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"
+      },
+      "podSubnetID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"
+      },
+      "maxPods": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum number of pods that can run on a node."
+      },
+      "osType": {
+        "type": {
+          "$ref": "#/359"
+        },
+        "flags": 0,
+        "description": "The operating system type. The default is Linux."
+      },
+      "osSKU": {
+        "type": {
+          "$ref": "#/365"
+        },
+        "flags": 0,
+        "description": "Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows."
+      },
+      "maxCount": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The maximum number of nodes for auto-scaling"
+      },
+      "minCount": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The minimum number of nodes for auto-scaling"
+      },
+      "enableAutoScaling": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable auto-scaler"
+      },
+      "scaleDownMode": {
+        "type": {
+          "$ref": "#/368"
+        },
+        "flags": 0,
+        "description": "This also effects the cluster autoscaler behavior. If not specified, it defaults to Delete."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/371"
+        },
+        "flags": 0,
+        "description": "The type of Agent Pool."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 0,
+        "description": "A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools"
+      },
+      "orchestratorVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see [upgrading a node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool)."
+      },
+      "currentOrchestratorVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used."
+      },
+      "nodeImageVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of node image"
+      },
+      "upgradeSettings": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Settings for upgrading the agentpool"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state."
+      },
+      "powerState": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded"
+      },
+      "availabilityZones": {
+        "type": {
+          "$ref": "#/375"
+        },
+        "flags": 0,
+        "description": "The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is 'VirtualMachineScaleSets'."
+      },
+      "enableNodePublicIP": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see [assigning a public IP per node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false."
+      },
+      "nodePublicIPPrefixID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"
+      },
+      "scaleSetPriority": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 0,
+        "description": "The Virtual Machine Scale Set priority. If not specified, the default is 'Regular'."
+      },
+      "scaleSetEvictionPolicy": {
+        "type": {
+          "$ref": "#/381"
+        },
+        "flags": 0,
+        "description": "This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'."
+      },
+      "spotMaxPrice": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see [spot VMs pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing)"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/382"
+        },
+        "flags": 0,
+        "description": "The tags to be persisted on the agent pool virtual machine scale set."
+      },
+      "nodeLabels": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 0,
+        "description": "The node labels to be persisted across all nodes in agent pool."
+      },
+      "nodeTaints": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 0,
+        "description": "The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule."
+      },
+      "proximityPlacementGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID for Proximity Placement Group."
+      },
+      "kubeletConfig": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The Kubelet configuration on the agent pool nodes."
+      },
+      "linuxOSConfig": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The OS configuration of Linux agent nodes."
+      },
+      "enableEncryptionAtHost": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption"
+      },
+      "enableUltraSSD": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Whether to enable UltraSSD"
+      },
+      "enableFIPS": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "See [Add a FIPS-enabled node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details."
+      },
+      "gpuInstanceProfile": {
+        "type": {
+          "$ref": "#/390"
+        },
+        "flags": 0,
+        "description": "GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU."
+      },
+      "creationData": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "CreationData to be used to specify the source Snapshot ID if the node pool will be created/upgraded using a snapshot."
+      },
+      "capacityReservationGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AKS will associate the specified agent pool with the Capacity Reservation Group."
+      },
+      "hostGroupID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}. For more information see [Azure dedicated hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts)."
+      },
+      "networkProfile": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "Network-related settings of an agent pool."
+      },
+      "windowsProfile": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The Windows agent pool's specific profile."
+      },
+      "securityProfile": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The security settings of an agent pool."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Managed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ephemeral"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/348"
+      },
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Temporary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OCIContainer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WasmWasi"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ubuntu"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureLinux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CBLMariner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2019"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2022"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VirtualMachineScaleSets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailabilitySet"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "System"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Spot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Regular"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/379"
+      },
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfilePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAgentPoolProfilePropertiesNodeLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG1g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG2g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG3g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG4g"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MIG7g"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/385"
+      },
+      {
+        "$ref": "#/386"
+      },
+      {
+        "$ref": "#/387"
+      },
+      {
+        "$ref": "#/388"
+      },
+      {
+        "$ref": "#/389"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/agentPools@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/346"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/393"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/395"
+        },
+        "flags": 0,
+        "description": "The properties of a private endpoint connection."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/401"
+        },
+        "flags": 2,
+        "description": "The current provisioning state."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/402"
+        },
+        "flags": 0,
+        "description": "The resource of private endpoint."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/403"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/396"
+      },
+      {
+        "$ref": "#/397"
+      },
+      {
+        "$ref": "#/398"
+      },
+      {
+        "$ref": "#/399"
+      },
+      {
+        "$ref": "#/400"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the private endpoint"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/408"
+        },
+        "flags": 0,
+        "description": "The private link service connection status."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The private link service connection description."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/404"
+      },
+      {
+        "$ref": "#/405"
+      },
+      {
+        "$ref": "#/406"
+      },
+      {
+        "$ref": "#/407"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/privateEndpointConnections@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/394"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/snapshots"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/snapshots",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/410"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 0,
+        "description": "Properties of a snapshot."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/425"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SnapshotProperties",
+    "properties": {
+      "creationData": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "CreationData to be used to specify the source agent pool resource ID to create this snapshot."
+      },
+      "snapshotType": {
+        "type": {
+          "$ref": "#/415"
+        },
+        "flags": 0,
+        "description": "The type of a snapshot. The default is NodePool."
+      },
+      "kubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of Kubernetes."
+      },
+      "nodeImageVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The version of node image."
+      },
+      "osType": {
+        "type": {
+          "$ref": "#/418"
+        },
+        "flags": 2,
+        "description": "The operating system type. The default is Linux."
+      },
+      "osSku": {
+        "type": {
+          "$ref": "#/424"
+        },
+        "flags": 2,
+        "description": "Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The size of the VM."
+      },
+      "enableFIPS": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 2,
+        "description": "Whether to use a FIPS-enabled OS."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodePool"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/414"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Linux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ubuntu"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureLinux"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CBLMariner"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2019"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Windows2022"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/419"
+      },
+      {
+        "$ref": "#/420"
+      },
+      {
+        "$ref": "#/421"
+      },
+      {
+        "$ref": "#/422"
+      },
+      {
+        "$ref": "#/423"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/snapshots@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/412"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 24,
+    "pattern": "^([A-Za-z0-9-])+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/428"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/429"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/431"
+        },
+        "flags": 1,
+        "description": "Properties for trusted access role binding"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrustedAccessRoleBindingProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/437"
+        },
+        "flags": 2,
+        "description": "The current provisioning state of trusted access role binding."
+      },
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ARM resource ID of source resource that trusted access is configured for."
+      },
+      "roles": {
+        "type": {
+          "$ref": "#/438"
+        },
+        "flags": 1,
+        "description": "A list of roles to bind, each item is a resource type qualified role name. For example: 'Microsoft.MachineLearningServices/workspaces/reader'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/433"
+      },
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/436"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/430"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 24,
+    "pattern": "^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/locations/meshRevisionProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/locations/meshRevisionProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/441"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/442"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/444"
+        },
+        "flags": 2,
+        "description": "Mesh revision profile properties for a mesh"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MeshRevisionProfileProperties",
+    "properties": {
+      "meshRevisions": {
+        "type": {
+          "$ref": "#/450"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MeshRevision",
+    "properties": {
+      "revision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The revision of the mesh release."
+      },
+      "upgrades": {
+        "type": {
+          "$ref": "#/446"
+        },
+        "flags": 0,
+        "description": "List of revisions available for upgrade of a specific mesh revision"
+      },
+      "compatibleWith": {
+        "type": {
+          "$ref": "#/449"
+        },
+        "flags": 0,
+        "description": "List of items this revision of service mesh is compatible with, and their associated versions."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CompatibleVersions",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The product/service name."
+      },
+      "versions": {
+        "type": {
+          "$ref": "#/448"
+        },
+        "flags": 0,
+        "description": "Product/service versions compatible with a service mesh add-on revision."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/447"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/445"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/locations/meshRevisionProfiles@2024-09-01",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/443"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/meshUpgradeProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/meshUpgradeProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/452"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/453"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/455"
+        },
+        "flags": 2,
+        "description": "Mesh upgrade profile properties for a major.minor release."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MeshUpgradeProfileProperties",
+    "properties": {
+      "revision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The revision of the mesh release."
+      },
+      "upgrades": {
+        "type": {
+          "$ref": "#/456"
+        },
+        "flags": 0,
+        "description": "List of revisions available for upgrade of a specific mesh revision"
+      },
+      "compatibleWith": {
+        "type": {
+          "$ref": "#/457"
+        },
+        "flags": 0,
+        "description": "List of items this revision of service mesh is compatible with, and their associated versions."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/447"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/meshUpgradeProfiles@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/454"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][-_a-zA-Z0-9]{0,39}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/managedClusters/agentPools/machines"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/managedClusters/agentPools/machines",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/459"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/460"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/461"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 2,
+        "description": "The properties of the machine"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineProperties",
+    "properties": {
+      "network": {
+        "type": {
+          "$ref": "#/464"
+        },
+        "flags": 2,
+        "description": "network properties of the machine"
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure resource id of the machine. It can be used to GET underlying VM Instance"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineNetworkProperties",
+    "properties": {
+      "ipAddresses": {
+        "type": {
+          "$ref": "#/469"
+        },
+        "flags": 2,
+        "description": "IPv4, IPv6 addresses of the machine"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MachineIpAddress",
+    "properties": {
+      "family": {
+        "type": {
+          "$ref": "#/468"
+        },
+        "flags": 2,
+        "description": "To determine if address belongs IPv4 or IPv6 family"
+      },
+      "ip": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "IPv4 or IPv6 address of the machine"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/466"
+      },
+      {
+        "$ref": "#/467"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/465"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/managedClusters/agentPools/machines@2024-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/462"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterAccessProfile",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/472"
+        },
+        "flags": 0,
+        "description": "AccessProfile of a managed cluster."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/474"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessProfile",
+    "properties": {
+      "kubeConfig": {
+        "type": {
+          "$ref": "#/473"
+        },
+        "flags": 0,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCredential",
+    "resourceType": "Microsoft.ContainerService/managedClusters/accessProfiles",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/471"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResults",
+    "properties": {
+      "kubeconfigs": {
+        "type": {
+          "$ref": "#/478"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CredentialResult",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the credential."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/473"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/477"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listClusterAdminCredential",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/476"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listClusterUserCredential",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/476"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listClusterMonitoringUserCredential",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/476"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resetServicePrincipalProfile",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "input": {
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resetAADProfile",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "input": {
+      "$ref": "#/200"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rotateClusterCertificates",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "abort",
+    "resourceType": "Microsoft.ContainerService/managedclusters",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rotateServiceAccountSigningKeys",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunCommandRequest",
+    "properties": {
+      "command": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The command to run."
+      },
+      "context": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A base64 encoded zip file containing the files required by the command."
+      },
+      "clusterToken": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AuthToken issued for AKS AAD Server App."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunCommandResult",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The command id."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/491"
+        },
+        "flags": 0,
+        "description": "Properties of command result."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommandResultProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "provisioning State"
+      },
+      "exitCode": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The exit code of the command"
+      },
+      "startedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time when the command started."
+      },
+      "finishedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time when the command finished."
+      },
+      "logs": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The command output."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "An explanation of why provisioningState is set to failed (if so)."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "runCommand",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/490"
+    },
+    "input": {
+      "$ref": "#/489"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resolvePrivateLinkServiceId",
+    "resourceType": "Microsoft.ContainerService/managedClusters",
+    "apiVersion": "2024-09-01",
+    "output": {
+      "$ref": "#/225"
+    },
+    "input": {
+      "$ref": "#/225"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "abort",
+    "resourceType": "Microsoft.ContainerService/managedclusters/agentPools",
+    "apiVersion": "2024-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentPoolDeleteMachinesParameter",
+    "properties": {
+      "machineNames": {
+        "type": {
+          "$ref": "#/496"
+        },
+        "flags": 1,
+        "description": "The agent pool machine names."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteMachines",
+    "resourceType": "Microsoft.ContainerService/managedClusters/agentPools",
+    "apiVersion": "2024-09-01",
+    "input": {
+      "$ref": "#/495"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "upgradeNodeImageVersion",
+    "resourceType": "Microsoft.ContainerService/managedClusters/agentPools",
+    "apiVersion": "2024-09-01"
+  }
+]

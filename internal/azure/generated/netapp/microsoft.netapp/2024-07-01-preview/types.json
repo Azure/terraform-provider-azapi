@@ -1,0 +1,6212 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9\\-_]{0,127}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "NetApp Account properties"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "The identity used for the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccountProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "activeDirectories": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Active Directories"
+      },
+      "encryption": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Encryption settings"
+      },
+      "disableShowmount": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Shows the status of disableShowmount for all volumes under the subscription, null equals false"
+      },
+      "nfsV4IDDomain": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes."
+      },
+      "isMultiAdEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "This will have true value only if account is Multiple AD enabled."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActiveDirectory",
+    "properties": {
+      "activeDirectoryId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Id of the Active Directory"
+      },
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A domain user account with permission to create machine accounts"
+      },
+      "password": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Plain text password of Active Directory domain administrator, value is masked in the response"
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the Active Directory domain"
+      },
+      "dns": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "Status of the Active Directory"
+      },
+      "statusDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Any details in regards to the Status of the Active Directory"
+      },
+      "smbServerName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes"
+      },
+      "organizationalUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Organizational Unit (OU) within the Windows Active Directory"
+      },
+      "site": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Active Directory site the service will limit Domain Controller discovery to"
+      },
+      "backupOperators": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier"
+      },
+      "administrators": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier"
+      },
+      "kdcIP": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "kdc server IP address for the active directory machine. This optional parameter is used only while creating kerberos volume."
+      },
+      "adName": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Name of the active directory machine. This optional parameter is used only while creating kerberos volume"
+      },
+      "serverRootCACertificate": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is used only for dual protocol with LDAP user-mapping volumes."
+      },
+      "aesEncryption": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled, AES encryption will be enabled for SMB communication."
+      },
+      "ldapSigning": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies whether or not the LDAP traffic needs to be signed."
+      },
+      "securityOperators": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares for SQL). A list of unique usernames without domain specifier"
+      },
+      "ldapOverTLS": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies whether or not the LDAP traffic needs to be secured via TLS."
+      },
+      "allowLocalNfsUsersWithLdap": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes."
+      },
+      "encryptDCConnections": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted."
+      },
+      "ldapSearchScope": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "LDAP Search scope options"
+      },
+      "preferredServersForLdapClient": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4 addresses can be passed."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "maxLength": 64
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)((, ?)(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true,
+    "minLength": 1,
+    "maxLength": 10240
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LdapSearchScopeOpt",
+    "properties": {
+      "userDN": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "This specifies the user DN, which overrides the base DN for user lookups."
+      },
+      "groupDN": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "This specifies the group DN, which overrides the base DN for group lookups."
+      },
+      "groupMembershipFilter": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "This specifies the custom LDAP search filter to be used when looking up group membership from LDAP server."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 255
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 32,
+    "pattern": "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)((, ?)(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))?)?$"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/6"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccountEncryption",
+    "properties": {
+      "keySource": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.NetApp, Microsoft.KeyVault"
+      },
+      "keyVaultProperties": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KeyVault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultProperties",
+    "properties": {
+      "keyVaultId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the Azure Key Vault configuration"
+      },
+      "keyVaultUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Uri of KeyVault."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of KeyVault key."
+      },
+      "keyVaultResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of KeyVault."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Status of the KeyVault connection."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InUse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID (object ID) of the identity used to authenticate with key vault. Read-only."
+      },
+      "userAssignedIdentity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type has 'UserAssigned'. It should match key of identity.userAssignedIdentities."
+      },
+      "federatedClientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ClientId of the multi-tenant AAD Application. Used to access cross-tenant KeyVaults."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 255,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/48"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9\\-_]{0,63}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 1,
+        "description": "Capacity pool properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolProperties",
+    "properties": {
+      "poolId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the Pool"
+      },
+      "size": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 1,
+        "description": "Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776)."
+      },
+      "serviceLevel": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 1,
+        "description": "The service level of the file system"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "totalThroughputMibps": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Total throughput of pool in MiB/s"
+      },
+      "utilizedThroughputMibps": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Utilized throughput of pool in MiB/s"
+      },
+      "customThroughputMibps": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Maximum throughput in MiB/s that can be achieved by this pool and this will be accepted as input only for manual qosType pool with Flexible service level"
+      },
+      "qosType": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The qos type of the pool"
+      },
+      "coolAccess": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled (true) the pool can contain cool Access enabled volumes."
+      },
+      "encryptionType": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ultra"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flexible"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Auto"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Single"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Double"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/66"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z][a-zA-Z0-9\\-_]{0,63}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Availability Zone"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Volume properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeProperties",
+    "properties": {
+      "fileSystemId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "Unique FileSystem Identifier."
+      },
+      "creationToken": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "A unique file path for the volume. Used when creating mount targets"
+      },
+      "serviceLevel": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The service level of the file system"
+      },
+      "usageThreshold": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 1,
+        "description": "Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB."
+      },
+      "exportPolicy": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "Set of export policy rules"
+      },
+      "protocolTypes": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "Set of protocol types, default NFSv3, CIFS for SMB protocol"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "snapshotId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource identifier used to identify the Snapshot."
+      },
+      "deleteBaseSnapshot": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create operation has finished.  Defaults to false"
+      },
+      "backupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource identifier used to identify the Backup."
+      },
+      "baremetalTenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique Baremetal Tenant Identifier."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes"
+      },
+      "networkFeatures": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "The original value of the network features type available to the volume at the time it was created."
+      },
+      "effectiveNetworkFeatures": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 2,
+        "description": "The effective value of the network features type available to the volume, or current effective state of update."
+      },
+      "networkSiblingSetId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "Network Sibling Set ID for the the group of volumes sharing networking resources."
+      },
+      "storageToNetworkProximity": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 2,
+        "description": "Provides storage to network proximity information for the volume."
+      },
+      "mountTargets": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 2,
+        "description": "List of mount targets"
+      },
+      "volumeType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection. For creating clone volume, set type to ShortTermClone"
+      },
+      "dataProtection": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "DataProtection type volumes include an object containing details of the replication"
+      },
+      "acceptGrowCapacityPoolForShortTermCloneSplit": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "While auto splitting the short term clone volume, if the parent pool does not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted."
+      },
+      "isRestoring": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Restoring"
+      },
+      "snapshotDirectoryVisible": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's snapshots (defaults to true)."
+      },
+      "kerberosEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later"
+      },
+      "securityStyle": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol"
+      },
+      "smbEncryption": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version 2020-08-01 or later"
+      },
+      "smbAccessBasedEnumeration": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume"
+      },
+      "smbNonBrowsable": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume"
+      },
+      "smbContinuouslyAvailable": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Enables continuously available share property for smb volume. Only applicable for SMB volume"
+      },
+      "throughputMibps": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType volume"
+      },
+      "actualThroughputMibps": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel"
+      },
+      "encryptionKeySource": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'"
+      },
+      "keyVaultPrivateEndpointResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'."
+      },
+      "ldapEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies whether LDAP is enabled or not for a given NFS volume."
+      },
+      "coolAccess": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies whether Cool Access(tiering) is enabled for the volume."
+      },
+      "coolnessPeriod": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Specifies the number of days after which data that is not accessed by clients will be tiered."
+      },
+      "coolAccessRetrievalPolicy": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values for this field are: \n Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.\n OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random reads.\n Never - No client-driven data is pulled from cool tier to standard storage."
+      },
+      "unixPermissions": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 0,
+        "description": "UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other users.  Avoid passing null value for unixPermissions in volume update operation, As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain as its last saved value only."
+      },
+      "cloneProgress": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "When a volume is being restored from another volume's snapshot, will show the percentage completion of this cloning process. When this value is empty/null there is no cloning process currently happening on this volume. This value will update every 5 minutes during cloning."
+      },
+      "fileAccessLogs": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 2,
+        "description": "Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present on the volume."
+      },
+      "avsDataStore": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose"
+      },
+      "dataStoreResourceId": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 2,
+        "description": "Data store resource unique identifier"
+      },
+      "isDefaultQuotaEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies if default quota is enabled for the volume."
+      },
+      "defaultUserQuotaInKiBs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies ."
+      },
+      "defaultGroupQuotaInKiBs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies."
+      },
+      "maximumNumberOfFiles": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed if volume quota is more than 4TiB."
+      },
+      "volumeGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Volume Group Name"
+      },
+      "capacityPoolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Pool Resource Id used in case of creating a volume through volume group"
+      },
+      "proximityPlacementGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Proximity placement group associated with the volume"
+      },
+      "t2Network": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "T2 network information"
+      },
+      "volumeSpecName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Volume spec name is the application specific designation or identifier for the particular volume in a volume group for e.g. data, log"
+      },
+      "encrypted": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01."
+      },
+      "placementRules": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "Application specific placement rules for the particular volume"
+      },
+      "enableSubvolumes": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "Flag indicating whether subvolume operations are enabled on the volume"
+      },
+      "provisionedAvailabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The availability zone where the volume is provisioned. This refers to the logical availability zone where the volume resides."
+      },
+      "isLargeVolume": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Specifies whether volume is a Large Volume or Regular Volume."
+      },
+      "originatingResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id of the snapshot or backup that the volume is restored from."
+      },
+      "inheritedSizeInBytes": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Space shared by short term clone volume with parent volume in bytes."
+      },
+      "language": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Language supported for volume."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 80,
+    "pattern": "^[a-zA-Z][a-zA-Z0-9\\-]{0,79}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ultra"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Flexible"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 53687091200,
+    "maxValue": 2638827906662400
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumePropertiesExportPolicy",
+    "properties": {
+      "rules": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Export policy rule"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportPolicyRule",
+    "properties": {
+      "ruleIndex": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Order index"
+      },
+      "unixReadOnly": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Read only access"
+      },
+      "unixReadWrite": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Read and write access"
+      },
+      "kerberos5ReadOnly": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5 Read only access. To be use with swagger version 2020-05-01 or later"
+      },
+      "kerberos5ReadWrite": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5 Read and write access. To be use with swagger version 2020-05-01 or later"
+      },
+      "kerberos5iReadOnly": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5i Read only access. To be use with swagger version 2020-05-01 or later"
+      },
+      "kerberos5iReadWrite": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5i Read and write access. To be use with swagger version 2020-05-01 or later"
+      },
+      "kerberos5pReadOnly": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5p Read only access. To be use with swagger version 2020-05-01 or later"
+      },
+      "kerberos5pReadWrite": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Kerberos5p Read and write access. To be use with swagger version 2020-05-01 or later"
+      },
+      "cifs": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Allows CIFS protocol"
+      },
+      "nfsv3": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Allows NFSv3 protocol. Enable only for NFSv3 type volumes"
+      },
+      "nfsv41": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Allows NFSv4.1 protocol. Enable only for NFSv4.1 type volumes"
+      },
+      "allowedClients": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names"
+      },
+      "hasRootAccess": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Has root access to volume"
+      },
+      "chownMode": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change ownership of files that they own."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restricted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unrestricted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/98"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic_Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic_Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AcrossT2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MountTargetProperties",
+    "properties": {
+      "mountTargetId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the MountTarget"
+      },
+      "fileSystemId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "UUID v4 used to identify the MountTarget"
+      },
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The mount target's IPv4 address"
+      },
+      "smbServerFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SMB server's Fully Qualified Domain Name, FQDN"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/119"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumePropertiesDataProtection",
+    "properties": {
+      "backup": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 0,
+        "description": "Backup Properties"
+      },
+      "replication": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Replication properties"
+      },
+      "snapshot": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Snapshot properties."
+      },
+      "volumeRelocation": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "VolumeRelocation properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeBackupProperties",
+    "properties": {
+      "backupPolicyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Backup Policy Resource ID"
+      },
+      "policyEnforced": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Policy Enforced"
+      },
+      "backupVaultId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Backup Vault Resource ID"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReplicationObject",
+    "properties": {
+      "replicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Id"
+      },
+      "endpointType": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Indicates whether the local volume is the source or destination for the Volume Replication"
+      },
+      "replicationSchedule": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Schedule"
+      },
+      "remoteVolumeResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the remote volume. Required for cross region and cross zone replication"
+      },
+      "remotePath": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The full path to a volume that is to be migrated into ANF. Required for Migration volumes"
+      },
+      "remoteVolumeRegion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The remote region for the other end of the Volume Replication."
+      },
+      "destinationReplications": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 2,
+        "description": "A list of destination replications"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "src"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "_10minutely"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hourly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "daily"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RemotePath",
+    "properties": {
+      "externalHostName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Path to a ONTAP Host"
+      },
+      "serverName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of a server on the ONTAP Host"
+      },
+      "volumeName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of a volume on the server"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DestinationReplication",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource ID of the remote volume"
+      },
+      "replicationType": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "Indicates whether the replication is cross zone or cross region."
+      },
+      "region": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The remote region for the destination volume."
+      },
+      "zone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The remote zone for the destination volume."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossRegionReplication"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CrossZoneReplication"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/132"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeSnapshotProperties",
+    "properties": {
+      "snapshotPolicyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Snapshot Policy ResourceId"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeRelocationProperties",
+    "properties": {
+      "relocationRequested": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Has relocation been requested for this volume"
+      },
+      "readyToBeFinalized": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Has relocation finished and is ready to be cleaned up"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Declined"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ntfs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "unix"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.KeyVault"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 2,
+    "maxValue": 183
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnRead"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 4,
+    "maxLength": 4
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementKeyValuePairs",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Key for an application specific parameter for the placement of volumes in the volume group"
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Value for an application specific parameter for the placement of volumes in the volume group"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "c.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "utf8mb4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ar"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ar.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hr.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "cs.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "da"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "da.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nl"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "nl.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fi"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fi.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "fr.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "de"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "de.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "he"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "he.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hu"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hu.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "it"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "it.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-v1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-v1.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.pck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.pck.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.932"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.932.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.pck-v2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ja-jp.pck-v2.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ko"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ko.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "no"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "no.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pl"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pl.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "pt.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "c"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ro"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ro.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ru"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ru.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh.gbk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh.gbk.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-tw.big5"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-tw.big5.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-tw"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "zh-tw.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sk.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sl"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sl.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "es"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "es.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sv"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sv.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tr.utf-8"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en-us"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "en-us.utf-8"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/195"
+      },
+      {
+        "$ref": "#/196"
+      },
+      {
+        "$ref": "#/197"
+      },
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/218"
+      },
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/224"
+      },
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/86"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 0,
+        "description": "Snapshot Properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SnapshotProperties",
+    "properties": {
+      "snapshotId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the Snapshot"
+      },
+      "created": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The creation date of the snapshot"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/246"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/snapshotPolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/snapshotPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/252"
+        },
+        "flags": 1,
+        "description": "Snapshot policy Properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/257"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SnapshotPolicyProperties",
+    "properties": {
+      "hourlySchedule": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "Schedule for hourly snapshots"
+      },
+      "dailySchedule": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "Schedule for daily snapshots"
+      },
+      "weeklySchedule": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Schedule for weekly snapshots"
+      },
+      "monthlySchedule": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "Schedule for monthly snapshots"
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The property to decide policy is enabled or not"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HourlySchedule",
+    "properties": {
+      "snapshotsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Hourly snapshot count to keep"
+      },
+      "minute": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which minute snapshot should be taken"
+      },
+      "usedBytes": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Resource size in bytes, current storage usage for the volume in bytes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DailySchedule",
+    "properties": {
+      "snapshotsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Daily snapshot count to keep"
+      },
+      "hour": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which hour in UTC timezone a snapshot should be taken"
+      },
+      "minute": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which minute snapshot should be taken"
+      },
+      "usedBytes": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Resource size in bytes, current storage usage for the volume in bytes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WeeklySchedule",
+    "properties": {
+      "snapshotsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Weekly snapshot count to keep"
+      },
+      "day": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Indicates which weekdays snapshot should be taken, accepts a comma separated list of week day names in english"
+      },
+      "hour": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which hour in UTC timezone a snapshot should be taken"
+      },
+      "minute": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which minute snapshot should be taken"
+      },
+      "usedBytes": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Resource size in bytes, current storage usage for the volume in bytes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MonthlySchedule",
+    "properties": {
+      "snapshotsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Monthly snapshot count to keep"
+      },
+      "daysOfMonth": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Indicates which days of the month snapshot should be taken. A comma delimited string."
+      },
+      "hour": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which hour in UTC timezone a snapshot should be taken"
+      },
+      "minute": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Indicates which minute snapshot should be taken"
+      },
+      "usedBytes": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Resource size in bytes, current storage usage for the volume in bytes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/snapshotPolicies@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/251"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/backupPolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 1,
+        "description": "Backup policy Properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupPolicyProperties",
+    "properties": {
+      "backupPolicyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Backup Policy Resource ID"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "dailyBackupsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Daily backups count to keep"
+      },
+      "weeklyBackupsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Weekly backups count to keep"
+      },
+      "monthlyBackupsToKeep": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Monthly backups count to keep"
+      },
+      "volumesAssigned": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Volumes using current backup policy"
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The property to decide policy is enabled or not"
+      },
+      "volumeBackups": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 2,
+        "description": "A list of volumes assigned to this policy"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeBackups",
+    "properties": {
+      "volumeName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Volume name"
+      },
+      "volumeResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ResourceId used to identify the Volume"
+      },
+      "backupsCount": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Total count of backups for volume"
+      },
+      "policyEnabled": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Policy enabled"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupPolicies@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/261"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 0,
+        "description": "Volume Quota Rule Properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeQuotaRulesProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 2,
+        "description": "Gets the status of the VolumeQuotaRule at the time the operation was called."
+      },
+      "quotaSizeInKiBs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Size of quota"
+      },
+      "quotaType": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 0,
+        "description": "Type of quota"
+      },
+      "quotaTarget": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Patching"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moving"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultUserQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultGroupQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IndividualUserQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IndividualGroupQuota"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/269"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/volumeGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/volumeGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Volume group properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeGroupProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "groupMetaData": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 0,
+        "description": "Volume group details"
+      },
+      "volumes": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 0,
+        "description": "List of volumes from group"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeGroupMetaData",
+    "properties": {
+      "groupDescription": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Group Description"
+      },
+      "applicationType": {
+        "type": {
+          "$ref": "#/293"
+        },
+        "flags": 0,
+        "description": "Application Type"
+      },
+      "applicationIdentifier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Application specific identifier"
+      },
+      "globalPlacementRules": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 0,
+        "description": "Application specific placement rules for the volume group"
+      },
+      "volumesCount": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Number of volumes in volume group"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SAP-HANA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ORACLE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/167"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeGroupVolumeProperties",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 0,
+        "description": "Availability Zone"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Volume properties"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/295"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/volumeGroups@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/288"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "Subvolume Properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubvolumeProperties",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to the subvolume"
+      },
+      "size": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Truncate subvolume to the provided size in bytes"
+      },
+      "parentPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "parent path to the subvolume"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/302"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9\\-_.]{0,255}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupVaults/backups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 1,
+        "description": "Backup Properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupProperties",
+    "properties": {
+      "backupId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the Backup"
+      },
+      "creationDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The creation date of the backup"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      },
+      "size": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "Size of backup in bytes"
+      },
+      "label": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Label for backup"
+      },
+      "backupType": {
+        "type": {
+          "$ref": "#/312"
+        },
+        "flags": 2,
+        "description": "Type of backup Manual or Scheduled"
+      },
+      "failureReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Failure reason"
+      },
+      "volumeResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ResourceId used to identify the Volume"
+      },
+      "useExistingSnapshot": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for manual backups"
+      },
+      "snapshotName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the snapshot"
+      },
+      "backupPolicyResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ResourceId used to identify the backup policy"
+      },
+      "isLargeVolume": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Specifies if the backup is for a large volume."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupVaults/backups@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/308"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9\\-_]{0,63}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/backupVaults"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupVaults",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "Backup Vault Properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupVaultProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure lifecycle management"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/netAppAccounts/backupVaults@2024-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/317"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/locations/quotaLimits"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/locations/quotaLimits",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 2,
+        "description": "SubscriptionQuotaItem properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubscriptionQuotaItemProperties",
+    "properties": {
+      "current": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The current quota value."
+      },
+      "default": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The default quota value."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/locations/quotaLimits@2024-07-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/323"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/locations/regionInfos"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.NetApp/locations/regionInfos",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/326"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/327"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/330"
+        },
+        "flags": 2,
+        "description": "regionInfo properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegionInfo",
+    "properties": {
+      "storageToNetworkProximity": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 0,
+        "description": "Provides storage to network proximity information in the region."
+      },
+      "availabilityZoneMappings": {
+        "type": {
+          "$ref": "#/341"
+        },
+        "flags": 0,
+        "description": "Provides logical availability zone mappings for the subscription for a region."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AcrossT2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T1AndT2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T1AndAcrossT2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T2AndAcrossT2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "T1AndT2AndAcrossT2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RegionInfoAvailabilityZoneMappingsItem",
+    "properties": {
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Logical availability zone."
+      },
+      "isAvailable": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Available availability zone"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.NetApp/locations/regionInfos@2024-07-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/329"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceNameAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource name to verify."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 1,
+        "description": "Resource type used for verification."
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource group name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/344"
+      },
+      {
+        "$ref": "#/345"
+      },
+      {
+        "$ref": "#/346"
+      },
+      {
+        "$ref": "#/347"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckAvailabilityResponse",
+    "properties": {
+      "isAvailable": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "<code>true</code> indicates name is valid and available. <code>false</code> indicates the name is invalid, unavailable, or both."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/352"
+        },
+        "flags": 0,
+        "description": "<code>Invalid</code> indicates the name provided does not match Azure App Service naming requirements. <code>AlreadyExists</code> indicates that the name is already in use and is therefore unavailable."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that resource name is already in use, and direct them to select a different name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AlreadyExists"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.NetApp/locations",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/349"
+    },
+    "input": {
+      "$ref": "#/343"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FilePathAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "File path to verify."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes"
+      },
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure Resource logical availability zone which is used within zone mapping lookup for the subscription and region. The lookup will retrieve the physical zone where volume is placed."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkFilePathAvailability",
+    "resourceType": "Microsoft.NetApp/locations",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/349"
+    },
+    "input": {
+      "$ref": "#/354"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaAvailabilityRequest",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the resource to verify."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/361"
+        },
+        "flags": 1,
+        "description": "Resource type used for verification."
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource group name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkQuotaAvailability",
+    "resourceType": "Microsoft.NetApp/locations",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/349"
+    },
+    "input": {
+      "$ref": "#/356"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryNetworkSiblingSetRequest",
+    "properties": {
+      "networkSiblingSetId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Network Sibling Set ID for a group of volumes sharing networking resources in a subnet."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkSiblingSet",
+    "properties": {
+      "networkSiblingSetId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Network Sibling Set ID for a group of volumes sharing networking resources in a subnet."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}"
+      },
+      "networkSiblingSetStateId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Network sibling set state Id identifying the current state of the sibling set."
+      },
+      "networkFeatures": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 0,
+        "description": "Network features available to the volume, or current state of update."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 2,
+        "description": "Gets the status of the NetworkSiblingSet at the time the operation was called."
+      },
+      "nicInfoList": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 0,
+        "description": "List of NIC information"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic_Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/365"
+      },
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NicInfo",
+    "properties": {
+      "ipAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ipAddress"
+      },
+      "volumeResourceIds": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 0,
+        "description": "Volume resource Ids"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/375"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "queryNetworkSiblingSet",
+    "resourceType": "Microsoft.NetApp/locations",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/364"
+    },
+    "input": {
+      "$ref": "#/363"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateNetworkSiblingSetRequest",
+    "properties": {
+      "networkSiblingSetId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "Network Sibling Set ID for a group of volumes sharing networking resources in a subnet."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}"
+      },
+      "networkSiblingSetStateId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Network sibling set state Id identifying the current state of the sibling set."
+      },
+      "networkFeatures": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 1,
+        "description": "Network features available to the volume."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic_Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_Basic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/383"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "updateNetworkSiblingSet",
+    "resourceType": "Microsoft.NetApp/locations",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/364"
+    },
+    "input": {
+      "$ref": "#/379"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "renewCredentials",
+    "resourceType": "Microsoft.NetApp/netAppAccounts",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionTransitionRequest",
+    "properties": {
+      "virtualNetworkId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier for the virtual network"
+      },
+      "privateEndpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier of the private endpoint to reach the Azure Key Vault"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "transitiontocmk",
+    "resourceType": "Microsoft.NetApp/netAppAccounts",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/387"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getKeyVaultStatus",
+    "resourceType": "Microsoft.NetApp/netAppAccounts",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ChangeKeyVault",
+    "properties": {
+      "keyVaultUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The URI of the key vault/managed HSM that should be used for encryption."
+      },
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the key that should be used for encryption."
+      },
+      "keyVaultResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the key vault/managed HSM that should be used for encryption."
+      },
+      "keyVaultPrivateEndpoints": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 1,
+        "description": "Pairs of virtual network ID and private endpoint ID. Every virtual network that has volumes encrypted with customer-managed keys needs its own key vault private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultPrivateEndpoint",
+    "properties": {
+      "virtualNetworkId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifier for the virtual network id"
+      },
+      "privateEndpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifier of the private endpoint to reach the Azure Key Vault"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/391"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "changeKeyVault",
+    "resourceType": "Microsoft.NetApp/netAppAccounts",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/390"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupsMigrationRequest",
+    "properties": {
+      "backupVaultId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ResourceId of the Backup Vault"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "migrateBackups",
+    "resourceType": "Microsoft.NetApp/netAppAccounts",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/394"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Volume",
+    "properties": {
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique read-only string that changes whenever the resource is updated."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/397"
+        },
+        "flags": 0,
+        "description": "Availability Zone"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "Volume properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/398"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "populateAvailabilityZone",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/396"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeRevert",
+    "properties": {
+      "snapshotId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource id of the snapshot"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "revert",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/400"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resetCifsPassword",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "splitCloneFromParent",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BreakFileLocksRequest",
+    "properties": {
+      "clientIp": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "To clear file locks on a volume for a particular client"
+      },
+      "confirmRunningDisruptiveOperation": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want to process, set to true."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "breakFileLocks",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/404"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GetGroupIdListForLdapUserRequest",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "username is required to fetch the group to which user is part of"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GetGroupIdListForLdapUserResponse",
+    "properties": {
+      "groupIdsForLdapUser": {
+        "type": {
+          "$ref": "#/408"
+        },
+        "flags": 0,
+        "description": "Group Id list"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getGroupIdListForLdapUser",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/407"
+    },
+    "input": {
+      "$ref": "#/406"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListQuotaReportResponse",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/417"
+        },
+        "flags": 0,
+        "description": "List of volume quota report records"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URL to get the next set of results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaReport",
+    "properties": {
+      "quotaType": {
+        "type": {
+          "$ref": "#/416"
+        },
+        "flags": 0,
+        "description": "Type of quota"
+      },
+      "quotaTarget": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>"
+      },
+      "quotaLimitUsedInKiBs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Specifies the current usage in kibibytes for the user/group quota."
+      },
+      "quotaLimitTotalInKiBs": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Specifies the total size limit in kibibytes for the user/group quota."
+      },
+      "percentageUsed": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Percentage of used size compared to total size."
+      },
+      "isDerivedQuota": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "Flag to indicate whether the quota is derived from default quota."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultUserQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DefaultGroupQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IndividualUserQuota"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IndividualGroupQuota"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/412"
+      },
+      {
+        "$ref": "#/413"
+      },
+      {
+        "$ref": "#/414"
+      },
+      {
+        "$ref": "#/415"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/411"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listQuotaReport",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/410"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BreakReplicationRequest",
+    "properties": {
+      "forceBreakReplication": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "If replication is in status transferring and you want to force break the replication, set to true"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "breakReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/419"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReestablishReplicationRequest",
+    "properties": {
+      "sourceVolumeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource id of the source volume for the replication"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reestablishReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/421"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListReplications",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/432"
+        },
+        "flags": 0,
+        "description": "A list of replications"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Replication",
+    "properties": {
+      "replicationId": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "UUID v4 used to identify the replication."
+      },
+      "endpointType": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 0,
+        "description": "Indicates whether the local volume is the source or destination for the Volume Replication"
+      },
+      "replicationSchedule": {
+        "type": {
+          "$ref": "#/431"
+        },
+        "flags": 0,
+        "description": "Schedule"
+      },
+      "remoteVolumeResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of the remote volume."
+      },
+      "remoteVolumeRegion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The remote region for the other end of the Volume Replication."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "src"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "dst"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/425"
+      },
+      {
+        "$ref": "#/426"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "_10minutely"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hourly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "daily"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/428"
+      },
+      {
+        "$ref": "#/429"
+      },
+      {
+        "$ref": "#/430"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/424"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listReplications",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/423"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resyncReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AuthorizeRequest",
+    "properties": {
+      "remoteVolumeResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource id of the remote volume"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "authorizeReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/436"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reinitializeReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PeerClusterForVolumeMigrationRequest",
+    "properties": {
+      "peerIpAddresses": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 1,
+        "description": "A list of IC-LIF IPs that can be used to connect to the On-prem cluster"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterPeerCommandResponse",
+    "properties": {
+      "peerAcceptCommand": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A command that needs to be run on the external ONTAP to accept cluster peering.  Will only be present if <code>clusterPeeringStatus</code> is <code>pending</code>"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "peerExternalCluster",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/441"
+    },
+    "input": {
+      "$ref": "#/439"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SvmPeerCommandResponse",
+    "properties": {
+      "svmPeeringCommand": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A command that needs to be run on the external ONTAP to accept svm peering.  Will only be present if <code>svmPeeringStatus</code> is <code>pending</code>"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "authorizeExternalReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/443"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "finalizeExternalReplication",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "performReplicationTransfer",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PoolChangeRequest",
+    "properties": {
+      "newPoolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource id of the pool to move volume to"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "poolChange",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/447"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelocateVolumeRequest",
+    "properties": {
+      "creationToken": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "New creation token for the volume that controls the mount point name"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "relocate",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/449"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "finalizeRelocation",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "revertRelocation",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "migrateBackups",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/394"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SnapshotRestoreFiles",
+    "properties": {
+      "filePaths": {
+        "type": {
+          "$ref": "#/456"
+        },
+        "flags": 1,
+        "description": "List of files to be restored"
+      },
+      "destinationPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Destination folder where the files will be restored"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 1024
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/455"
+    },
+    "minLength": 1,
+    "maxLength": 10
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restoreFiles",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/454"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubvolumeModel",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource Id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/459"
+        },
+        "flags": 0,
+        "description": "It represents the minimal properties of the subvolume."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubvolumeModelProperties",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to the subvolume"
+      },
+      "parentPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Path to the parent subvolume"
+      },
+      "size": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Size of subvolume"
+      },
+      "bytesUsed": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 0,
+        "description": "Bytes used"
+      },
+      "permissions": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Permissions of the subvolume"
+      },
+      "creationTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Creation time and date"
+      },
+      "accessedTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Most recent access time and date"
+      },
+      "modifiedTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Most recent modification time and date"
+      },
+      "changedTimeStamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Most recent change time and date"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure lifecycle management"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getMetadata",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/subvolumes",
+    "apiVersion": "2024-07-01-preview",
+    "output": {
+      "$ref": "#/458"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackupRestoreFiles",
+    "properties": {
+      "fileList": {
+        "type": {
+          "$ref": "#/462"
+        },
+        "flags": 1,
+        "description": "List of files to be restored"
+      },
+      "restoreFilePath": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 0,
+        "description": "Destination folder where the files will be restored. The path name should start with a forward slash. If it is omitted from request then restore is done at the root folder of the destination volume by default"
+      },
+      "destinationVolumeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Id of the destination volume on which the files need to be restored"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/455"
+    },
+    "minLength": 1,
+    "maxLength": 8
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^\\/.*$"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restoreFiles",
+    "resourceType": "Microsoft.NetApp/netAppAccounts/backupVaults/backups",
+    "apiVersion": "2024-07-01-preview",
+    "input": {
+      "$ref": "#/461"
+    }
+  }
+]

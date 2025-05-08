@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Insights/alertrules"
+    "value": "Microsoft.Insights/logprofiles"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Insights/alertrules",
+    "name": "Microsoft.Insights/logprofiles",
     "properties": {
       "id": {
         "type": {
@@ -47,672 +47,6 @@
           "$ref": "#/4"
         },
         "flags": 1,
-        "description": "The alert rule properties of the resource."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Resource location"
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/46"
-        },
-        "flags": 0,
-        "description": "Resource tags"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AlertRule",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "the name of the alert rule."
-      },
-      "description": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the description of the alert rule that will be included in the alert email."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the provisioning state."
-      },
-      "isEnabled": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 1,
-        "description": "the flag that indicates whether the alert rule is enabled."
-      },
-      "condition": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "the condition that results in the alert rule being activated."
-      },
-      "action": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 0,
-        "description": "action that is performed when the alert rule becomes active, and when an alert condition is resolved."
-      },
-      "actions": {
-        "type": {
-          "$ref": "#/45"
-        },
-        "flags": 0,
-        "description": "the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved."
-      },
-      "lastUpdatedTime": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Last time the rule was updated in ISO8601 format."
-      }
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "RuleCondition",
-    "discriminator": "odata.type",
-    "baseProperties": {
-      "dataSource": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource."
-      }
-    },
-    "elements": {
-      "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition": {
-        "$ref": "#/13"
-      },
-      "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition": {
-        "$ref": "#/16"
-      },
-      "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition": {
-        "$ref": "#/25"
-      }
-    }
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "RuleDataSource",
-    "discriminator": "odata.type",
-    "baseProperties": {
-      "resourceUri": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule."
-      },
-      "legacyResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule."
-      },
-      "resourceLocation": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the location of the resource."
-      },
-      "metricNamespace": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the namespace of the metric."
-      }
-    },
-    "elements": {
-      "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource": {
-        "$ref": "#/8"
-      },
-      "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource": {
-        "$ref": "#/11"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleManagementEventDataSource",
-    "properties": {
-      "eventName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the event name."
-      },
-      "eventSource": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the event source."
-      },
-      "level": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the level."
-      },
-      "operationName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the operation that should be checked for. If no name is provided, any operation will match."
-      },
-      "resourceGroupName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the resource group name."
-      },
-      "resourceProviderName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the resource provider name."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The status of the operation that should be checked for. If no status is provided, any status will match."
-      },
-      "subStatus": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the substatus."
-      },
-      "claims": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
-        "description": "the claims."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 1,
-        "description": "specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleManagementEventClaimsDataSource",
-    "properties": {
-      "emailAddress": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the email address."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleMetricDataSource",
-    "properties": {
-      "metricName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the name of the metric that defines what the rule monitors."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/12"
-        },
-        "flags": 1,
-        "description": "specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "LocationThresholdRuleCondition",
-    "properties": {
-      "windowSize": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified then it must be between 5 minutes and 1 day."
-      },
-      "failedLocationCount": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 1,
-        "description": "the number of locations that must fail to activate the alert."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 1,
-        "description": "specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric)."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType",
-    "minValue": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagementEventRuleCondition",
-    "properties": {
-      "aggregation": {
-        "type": {
-          "$ref": "#/17"
-        },
-        "flags": 0,
-        "description": "How the data that is collected should be combined over time and when the alert is activated. Note that for management event alerts aggregation is optional – if it is not provided then any event will cause the alert to activate."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 1,
-        "description": "specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric)."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagementEventAggregationCondition",
-    "properties": {
-      "operator": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 0,
-        "description": "the condition operator."
-      },
-      "threshold": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 0,
-        "description": "The threshold value that activates the alert."
-      },
-      "windowSize": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified then it must be between 5 minutes and 1 day."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GreaterThan"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GreaterThanOrEqual"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LessThan"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LessThanOrEqual"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/20"
-      },
-      {
-        "$ref": "#/21"
-      }
-    ]
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ThresholdRuleCondition",
-    "properties": {
-      "operator": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 1,
-        "description": "the operator used to compare the data and the threshold."
-      },
-      "threshold": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 1,
-        "description": "the threshold value that activates the alert."
-      },
-      "windowSize": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified then it must be between 5 minutes and 1 day."
-      },
-      "timeAggregation": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 0,
-        "description": "the time aggregation operator. How the data that are collected should be combined over time. The default value is the PrimaryAggregationType of the Metric."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/37"
-        },
-        "flags": 1,
-        "description": "specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric)."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GreaterThan"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GreaterThanOrEqual"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LessThan"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "LessThanOrEqual"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Average"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Minimum"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Maximum"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Total"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Last"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/34"
-      },
-      {
-        "$ref": "#/35"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "RuleAction",
-    "discriminator": "odata.type",
-    "baseProperties": {},
-    "elements": {
-      "Microsoft.Azure.Management.Insights.Models.RuleEmailAction": {
-        "$ref": "#/39"
-      },
-      "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction": {
-        "$ref": "#/42"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleEmailAction",
-    "properties": {
-      "sendToServiceOwners": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "Whether the administrators (service and co-administrators) of the service should be notified when the alert is activated."
-      },
-      "customEmails": {
-        "type": {
-          "$ref": "#/40"
-        },
-        "flags": 0,
-        "description": "the list of administrator's custom email addresses to notify of the activation of the alert."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 1,
-        "description": "specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.RuleEmailAction"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleWebhookAction",
-    "properties": {
-      "serviceUri": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "the service uri to Post the notification when the alert activates or resolves."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/43"
-        },
-        "flags": 0,
-        "description": "the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload."
-      },
-      "odata.type": {
-        "type": {
-          "$ref": "#/44"
-        },
-        "flags": 1,
-        "description": "specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "RuleWebhookActionProperties",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/38"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Insights/alertrules@2016-03-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Insights/logprofiles"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2016-03-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Insights/logprofiles",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/48"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/49"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/51"
-        },
-        "flags": 1,
         "description": "The log profile properties of the resource."
       },
       "location": {
@@ -724,7 +58,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/10"
         },
         "flags": 0,
         "description": "Resource tags"
@@ -751,21 +85,21 @@
       },
       "locations": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/5"
         },
         "flags": 1,
         "description": "List of regions for which Activity Log events should be stored or streamed. It is a comma separated list of valid ARM locations including the 'global' location."
       },
       "categories": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/6"
         },
         "flags": 1,
         "description": "the categories of the logs. These categories are created as is convenient to the user. Some values are: 'Write', 'Delete', and/or 'Action.'"
       },
       "retentionPolicy": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/7"
         },
         "flags": 1,
         "description": "the retention policy for the events in the log."
@@ -790,19 +124,26 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/8"
         },
         "flags": 1,
         "description": "a value indicating whether the retention policy is enabled."
       },
       "days": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/9"
         },
         "flags": 1,
         "description": "the number of days for the retention in days. A value of 0 will retain the events indefinitely."
       }
     }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
   },
   {
     "$type": "ObjectType",
@@ -817,7 +158,7 @@
     "name": "Microsoft.Insights/logprofiles@2016-03-01",
     "scopeType": 4,
     "body": {
-      "$ref": "#/50"
+      "$ref": "#/3"
     },
     "flags": 0
   }
