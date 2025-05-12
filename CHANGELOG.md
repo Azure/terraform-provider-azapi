@@ -1,5 +1,8 @@
 ## v2.4.0 (unreleased)
 
+FEATURES:
+- **New Provider Function**: unique_string
+
 ENHANCEMENTS:
 - `azapi_resource` resource: Support schema validation in `terraform validate`.
 - `azapi_resource` resource: Preflight validation supports nested resources.
