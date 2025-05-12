@@ -403,7 +403,11 @@ func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.Val
 		}
 	}
 
-	if diags := validateDuplicatedDefinitions(config, config.Body); diags.HasError() {
+	if diags := validateDuplicatedDefinitions(config, config.Body, "body"); diags.HasError() {
+		response.Diagnostics.Append(diags...)
+		return
+	}
+	if diags := validateDuplicatedDefinitions(config, config.SensitiveBody, "sensitive_body"); diags.HasError() {
 		response.Diagnostics.Append(diags...)
 		return
 	}
@@ -1253,7 +1257,7 @@ func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diag
 	return diag.Diagnostics{}
 }
 
-func validateDuplicatedDefinitions(model *AzapiResourceModel, body types.Dynamic) diag.Diagnostics {
+func validateDuplicatedDefinitions(model *AzapiResourceModel, body types.Dynamic, attributePath string) diag.Diagnostics {
 	diags := diag.Diagnostics{}
 	if body.IsNull() || body.IsUnknown() || body.IsUnderlyingValueNull() || body.IsUnderlyingValueUnknown() {
 		return diags
@@ -1261,13 +1265,13 @@ func validateDuplicatedDefinitions(model *AzapiResourceModel, body types.Dynamic
 
 	if bodyObject, ok := body.UnderlyingValue().(types.Object); ok {
 		if !model.Tags.IsNull() && !model.Tags.IsUnknown() && bodyObject.Attributes()["tags"] != nil {
-			diags.AddError("Invalid configuration", `can't specify both the argument "tags" and "tags" in the argument "body"`)
+			diags.AddError("Invalid configuration", fmt.Sprintf(`can't specify both the argument "tags" and "tags" in the argument "%s"`, attributePath))
 		}
 		if !model.Location.IsNull() && !model.Location.IsUnknown() && bodyObject.Attributes()["location"] != nil {
-			diags.AddError("Invalid configuration", `can't specify both the argument "location" and "location" in the argument "body"`)
+			diags.AddError("Invalid configuration", fmt.Sprintf(`can't specify both the argument "location" and "location" in the argument "%s"`, attributePath))
 		}
 		if !model.Identity.IsNull() && !model.Identity.IsUnknown() && bodyObject.Attributes()["identity"] != nil {
-			diags.AddError("Invalid configuration", `can't specify both the argument "identity" and "identity" in the argument "body"`)
+			diags.AddError("Invalid configuration", fmt.Sprintf(`can't specify both the argument "identity" and "identity" in the argument "%s"`, attributePath))
 		}
 	}
 	return diags

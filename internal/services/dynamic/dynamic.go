@@ -437,6 +437,12 @@ func IsFullyKnown(val attr.Value) bool {
 }
 
 func MergeDynamic(a, b types.Dynamic) (types.Dynamic, error) {
+	if a.IsNull() || a.IsUnderlyingValueNull() {
+		return b, nil
+	}
+	if b.IsNull() || b.IsUnderlyingValueNull() {
+		return a, nil
+	}
 	aJson, err := ToJSONWithUnknownValueHandler(a, func(val attr.Value) ([]byte, error) {
 		return json.Marshal("<unknown>")
 	})
