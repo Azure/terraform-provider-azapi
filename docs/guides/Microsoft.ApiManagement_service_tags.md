@@ -104,6 +104,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/tags?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
