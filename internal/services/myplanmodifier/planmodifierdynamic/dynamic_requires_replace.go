@@ -23,6 +23,8 @@ func RequiresReplace() planmodifier.Dynamic {
 
 // RequiresReplaceIfNotNull is a plan modifier that sets RequiresReplace
 // on the attribute if the planned value is different from the state value.
+// When this function is called, the equality of the planned and state values
+// has already been checked by the PlanModifyDynamic method.
 // It will not trigger replacement when either the planned or state value is null.
 func RequiresReplaceIfNotNull() planmodifier.Dynamic {
 	return RequiresReplaceIf(
@@ -31,7 +33,7 @@ func RequiresReplaceIfNotNull() planmodifier.Dynamic {
 				resp.RequiresReplace = false
 				return
 			}
-			resp.RequiresReplace = !req.PlanValue.Equal(req.StateValue)
+			resp.RequiresReplace = true
 		},
 		"If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.",
 		"If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.",
