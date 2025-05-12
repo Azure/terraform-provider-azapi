@@ -23,9 +23,9 @@ func RequiresReplace() planmodifier.Dynamic {
 
 // RequiresReplaceIfNotNull is a plan modifier that sets RequiresReplace
 // on the attribute if the planned value is different from the state value.
-// When this function is called, the equality of the planned and state values
-// has already been checked by the PlanModifyDynamic method.
 // It will not trigger replacement when either the planned or state value is null.
+// When this function is called, the equality of the planned and state values
+// has already been checked by the PlanModifyDynamic method, so we can assume they are different values.
 func RequiresReplaceIfNotNull() planmodifier.Dynamic {
 	return RequiresReplaceIf(
 		func(_ context.Context, req planmodifier.DynamicRequest, resp *RequiresReplaceIfFuncResponse) {
