@@ -51,6 +51,8 @@ func Test_RequiresReplaceIfNotNull(t *testing.T) {
 		},
 	}
 
+	// We need to create a dummy state and plan because the PlanModifierDynamic
+	// method checks for a null state and plan, returning early if they are null.
 	state := tftypes.NewValue(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"test": tftypes.String,
