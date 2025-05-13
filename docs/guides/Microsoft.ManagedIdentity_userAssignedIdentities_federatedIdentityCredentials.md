@@ -73,7 +73,7 @@ resource "azapi_resource" "federatedIdentityCredential" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@api-version`. The available api-versions for this resource are: [`2022-01-31-preview`, `2023-01-31`, `2023-07-31-preview`, `2024-11-30`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@api-version`. The available api-versions for this resource are: [`2022-01-31-preview`, `2023-01-31`, `2023-07-31-preview`, `2024-11-30`, `2025-01-31-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}`
@@ -91,5 +91,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{resourceName}?api-version=2024-11-30
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{resourceName}?api-version=2025-01-31-preview
  ```

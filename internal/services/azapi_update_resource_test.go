@@ -396,13 +396,15 @@ resource "azapi_resource" "vnet" {
         {
           name = "first"
           properties = {
-            addressPrefix = "10.0.3.0/24"
+            addressPrefix         = "10.0.3.0/24"
+            defaultOutboundAccess = false
           }
         },
         {
           name = "second"
           properties = {
-            addressPrefix = "10.0.4.0/24"
+            addressPrefix         = "10.0.4.0/24"
+            defaultOutboundAccess = false
           }
         }
       ]
