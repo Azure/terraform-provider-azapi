@@ -20,6 +20,11 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "deploy_region" {
+  type    = list(string)
+  default = ["westeurope"]
+}
+
 data "azapi_client_config" "current" {
 }
 
@@ -141,7 +146,6 @@ resource "azapi_resource" "rule" {
   parent_id = azapi_resource.ruleCollection.id
   name      = var.resource_name
   body = {
-    kind = "Custom"
     properties = {
       description = "example rule"
       destination = {
@@ -154,6 +158,40 @@ resource "azapi_resource" "rule" {
       }
     }
   }
+  retry = {
+    error_message_regex = [
+      "Deleting failed(.+)resource has been deployed" # This retries deletion in case a rule might fail to delete immediately after undeploy during `terraform destroy`.
+    ]
+  }
   schema_validation_enabled = false
   response_export_values    = ["*"]
+}
+
+resource "azapi_resource_action" "deploy" {
+  type        = "Microsoft.Network/networkManagers@2024-05-01"
+  action      = "commit"
+  when        = "apply"
+  resource_id = azapi_resource.networkManager.id
+  body = {
+    configurationIds = [azapi_resource.routingConfiguration.id] # Optional, to remove all configurations from the specified regions, leave the field as empty array
+    targetLocations  = var.deploy_region                        # Required
+    commitType       = "Routing"                                # Required, possible values are "SecurityAdmin", "Connectivity", "Routing"
+  }
+  response_export_values = ["*"]
+  depends_on             = [azapi_resource.rule]
+}
+
+# this one is to remove the deployment when `terraform destroy` is called
+resource "azapi_resource_action" "undeploy" {
+  type        = "Microsoft.Network/networkManagers@2024-05-01"
+  action      = "commit"
+  when        = "destroy"
+  resource_id = azapi_resource.networkManager.id
+  body = {
+    configurationIds = []                # Optional, to remove all configurations from the specified regions, leave the field as empty array
+    targetLocations  = var.deploy_region # Required
+    commitType       = "Routing"         # Required, possible values are "SecurityAdmin", "Connectivity", "Routing"
+  }
+  response_export_values = ["*"]
+  depends_on             = [azapi_resource.rule]
 }
