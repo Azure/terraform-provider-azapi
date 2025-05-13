@@ -20,7 +20,7 @@ variable "location" {
   default = "westeurope"
 }
 
-variable "deploy_region" {
+variable "deploy_locations" {
   type    = list(string)
   default = ["westeurope"]
 }
@@ -174,7 +174,7 @@ resource "azapi_resource_action" "deploy" {
   resource_id = azapi_resource.networkManager.id
   body = {
     configurationIds = [azapi_resource.routingConfiguration.id] # Optional, to remove all configurations from the specified regions, leave the field as empty array
-    targetLocations  = var.deploy_region                        # Required
+    targetLocations  = var.deploy_locations                     # Required
     commitType       = "Routing"                                # Required, possible values are "SecurityAdmin", "Connectivity", "Routing"
   }
   response_export_values = ["*"]
@@ -188,9 +188,9 @@ resource "azapi_resource_action" "undeploy" {
   when        = "destroy"
   resource_id = azapi_resource.networkManager.id
   body = {
-    configurationIds = []                # Optional, to remove all configurations from the specified regions, leave the field as empty array
-    targetLocations  = var.deploy_region # Required
-    commitType       = "Routing"         # Required, possible values are "SecurityAdmin", "Connectivity", "Routing"
+    configurationIds = []                   # Optional, to remove all configurations from the specified regions, leave the field as empty array
+    targetLocations  = var.deploy_locations # Required
+    commitType       = "Routing"            # Required, possible values are "SecurityAdmin", "Connectivity", "Routing"
   }
   response_export_values = ["*"]
   depends_on             = [azapi_resource.rule]
