@@ -2655,5 +2655,245 @@
       "$ref": "#/3"
     },
     "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "current"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/defenderForStorageSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/defenderForStorageSettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "Defender for Storage resource properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefenderForStorageSettingProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Indicates whether Defender for Storage is enabled on this storage account."
+      },
+      "malwareScanning": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "Properties of Malware Scanning."
+      },
+      "sensitiveDataDiscovery": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Properties of Sensitive Data Discovery."
+      },
+      "overrideSubscriptionLevelSettings": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Indicates whether the settings defined for this storage account should override the settings defined for the subscription."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MalwareScanningProperties",
+    "properties": {
+      "onUpload": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "Properties of On Upload malware scanning."
+      },
+      "scanResultsEventGridTopicResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional. Resource id of an Event Grid Topic to send scan results to."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnUploadProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Indicates whether On Upload malware scanning should be enabled."
+      },
+      "capGBPerMonth": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "Defines the max GB to be scanned per Month. Set to -1 if no capping is needed."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Optional. Determine which blobs get scanned by On Upload malware scanning. An Or operation is performed between each filter type."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnUploadFilters",
+    "properties": {
+      "excludeBlobsWithPrefix": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "Optional. A list of prefixes to exclude from on-upload malware scanning.\nFormat: `container-name/blob-name` (start with the container name; do not include the storage account name).\nExclude entire containers: Use prefix of container names you want to exclude without a trailing `/`.\nExclude a single container: Add a trailing slash `/` after the container name to avoid excluding other containers with similar prefixes."
+      },
+      "excludeBlobsWithSuffix": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Optional. A list of suffixes to exclude from on-upload malware scanning. Suffixes match only the end of blob names, and should be used for file extensions or blob name endings only."
+      },
+      "excludeBlobsLargerThan": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive integer value. Blobs larger than this value will be excluded from scanning."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperationStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The operation status code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Additional information regarding the success/failure of the operation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SensitiveDataDiscoveryProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Indicates whether Sensitive Data Discovery should be enabled."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/defenderForStorageSettings@2024-08-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/171"
+    },
+    "flags": 0
   }
 ]

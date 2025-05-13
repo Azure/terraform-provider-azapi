@@ -4567,5 +4567,260 @@
       "$ref": "#/218"
     },
     "flags": 0
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "fetchUpgradeStatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2024-06-01-preview"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startRollback",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeResumeApplicationUpgradeParameters",
+    "properties": {
+      "upgradeDomainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The upgrade domain name. Expected to be the next upgrade domain if the application is upgrading."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resumeUpgrade",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2024-06-01-preview",
+    "input": {
+      "$ref": "#/305"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedAzResiliencyStatus",
+    "properties": {
+      "baseResourceStatus": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 0,
+        "description": "List of Managed VM Sizes for Service Fabric Managed Clusters."
+      },
+      "isClusterZoneResilient": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "URL to get the next set of Managed VM Sizes if there are any."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceAzStatus",
+    "properties": {
+      "resourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size properties."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size id."
+      },
+      "isZoneResilient": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "VM Size name."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Zone resiliency status details for the resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/308"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getazresiliencystatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/307"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedMaintenanceWindowStatus",
+    "properties": {
+      "isWindowEnabled": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If maintenance window is enabled on this cluster."
+      },
+      "isRegionReady": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Indicates if the region is ready to configure maintenance windows."
+      },
+      "isWindowActive": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If maintenance window is active."
+      },
+      "canApplyUpdates": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If updates can be applied."
+      },
+      "lastWindowStatusUpdateAtUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window update time in UTC."
+      },
+      "lastWindowStartTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window start time in UTC."
+      },
+      "lastWindowEndTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window end time in UTC."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getMaintenanceWindowStatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2024-06-01-preview",
+    "output": {
+      "$ref": "#/311"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "applyMaintenanceWindow",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2024-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeActionParameters",
+    "properties": {
+      "nodes": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 0,
+        "description": "List of node names from the node type."
+      },
+      "force": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Force the action to go through."
+      },
+      "updateType": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "Specifies the way the operation will be performed."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ByUpgradeDomain"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2024-06-01-preview",
+    "input": {
+      "$ref": "#/314"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reimage",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2024-06-01-preview",
+    "input": {
+      "$ref": "#/314"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteNode",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2024-06-01-preview",
+    "input": {
+      "$ref": "#/314"
+    }
   }
 ]

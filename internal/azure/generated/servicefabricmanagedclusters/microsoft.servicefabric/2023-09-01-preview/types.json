@@ -4260,5 +4260,219 @@
       "$ref": "#/209"
     },
     "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedAzResiliencyStatus",
+    "properties": {
+      "baseResourceStatus": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 0,
+        "description": "List of Managed VM Sizes for Service Fabric Managed Clusters."
+      },
+      "isClusterZoneResilient": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "URL to get the next set of Managed VM Sizes if there are any."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceAzStatus",
+    "properties": {
+      "resourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size properties."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size id."
+      },
+      "isZoneResilient": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "VM Size name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/290"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getazresiliencystatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2023-09-01-preview",
+    "output": {
+      "$ref": "#/289"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedMaintenanceWindowStatus",
+    "properties": {
+      "isWindowEnabled": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If maintenance window is enabled on this cluster."
+      },
+      "isRegionReady": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "Indicates if the region is ready to configure maintenance windows."
+      },
+      "isWindowActive": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If maintenance window is active."
+      },
+      "canApplyUpdates": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 2,
+        "description": "If updates can be applied."
+      },
+      "lastWindowStatusUpdateAtUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window update time in UTC."
+      },
+      "lastWindowStartTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window start time in UTC."
+      },
+      "lastWindowEndTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window end time in UTC."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getMaintenanceWindowStatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2023-09-01-preview",
+    "output": {
+      "$ref": "#/293"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "applyMaintenanceWindow",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2023-09-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeActionParameters",
+    "properties": {
+      "nodes": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 0,
+        "description": "List of node names from the node type."
+      },
+      "force": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Force the action to go through."
+      },
+      "updateType": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Specifies the way the operation will be performed."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ByUpgradeDomain"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2023-09-01-preview",
+    "input": {
+      "$ref": "#/296"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reimage",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2023-09-01-preview",
+    "input": {
+      "$ref": "#/296"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteNode",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2023-09-01-preview",
+    "input": {
+      "$ref": "#/296"
+    }
   }
 ]
