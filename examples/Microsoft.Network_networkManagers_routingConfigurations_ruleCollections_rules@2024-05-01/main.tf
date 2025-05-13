@@ -179,6 +179,9 @@ resource "azapi_resource_action" "deploy" {
   }
   response_export_values = ["*"]
   depends_on             = [azapi_resource.rule]
+  lifecycle {
+    replace_triggered_by = [azapi_resource.rule.body.destination, azapi_resource.rule.body.nextHop] # trigger a new deployment when the rule is changed
+  }
 }
 
 # this one is to remove the deployment when `terraform destroy` is called
