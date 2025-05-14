@@ -66,7 +66,7 @@ resource "azapi_resource" "dashboard" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Portal/dashboards@api-version`. The available api-versions for this resource are: [`2015-08-01-preview`, `2018-10-01-preview`, `2019-01-01-preview`, `2020-09-01-preview`, `2022-12-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Portal/dashboards@api-version`. The available api-versions for this resource are: [`2015-08-01-preview`, `2018-10-01-preview`, `2019-01-01-preview`, `2020-09-01-preview`, `2022-12-01-preview`, `2025-04-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -84,5 +84,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{resourceName}?api-version=2022-12-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{resourceName}?api-version=2025-04-01-preview
  ```

@@ -77,7 +77,7 @@ resource "azapi_resource" "workspace" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.OperationalInsights/workspaces@api-version`. The available api-versions for this resource are: [`2015-11-01-preview`, `2020-03-01-preview`, `2020-08-01`, `2020-10-01`, `2021-06-01`, `2021-12-01-preview`, `2022-10-01`, `2023-09-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.OperationalInsights/workspaces@api-version`. The available api-versions for this resource are: [`2015-11-01-preview`, `2020-03-01-preview`, `2020-08-01`, `2020-10-01`, `2021-06-01`, `2021-12-01-preview`, `2022-10-01`, `2023-09-01`, `2025-02-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -95,5 +95,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{resourceName}?api-version=2023-09-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{resourceName}?api-version=2025-02-01
  ```
