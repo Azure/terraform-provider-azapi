@@ -1035,34 +1035,30 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "What to do when evaluating an enforcement policy that requires an external evaluation and the token is missing. Possible values are Audit and Deny."
+        "description": "What to do when evaluating an enforcement policy that requires an external evaluation and the token is missing. Possible values are Audit and Deny and language expressions are supported."
       },
       "resultLifespan": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The lifespan of the endpoint invocation result after which it's no longer valid. Value is expected to follow the ISO 8601 duration format."
+        "description": "The lifespan of the endpoint invocation result after which it's no longer valid. Value is expected to follow the ISO 8601 duration format and language expressions are supported."
       },
       "endpointSettings": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "The settings of an external endpoint providing evaluation results."
       },
       "roleDefinitionIds": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "An array of the role definition Ids the assignment's MSI will need in order to invoke the endpoint."
       }
     }
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^P(\\d+Y)?(\\d+M)?(\\d+D)?(T(\\d+H)?(\\d+M)?(\\d+(\\.\\d+)?S)?)?$"
   },
   {
     "$type": "ObjectType",
@@ -1125,28 +1121,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/84"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/85"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/86"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "The policy definition version properties."
@@ -1166,7 +1162,7 @@
     "properties": {
       "policyType": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static."
@@ -1208,7 +1204,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "The parameter definitions for parameters used in the policy rule. The keys are the parameter names."
@@ -1249,6 +1245,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/89"
+      },
+      {
         "$ref": "#/90"
       },
       {
@@ -1256,9 +1255,6 @@
       },
       {
         "$ref": "#/92"
-      },
-      {
-        "$ref": "#/93"
       },
       {
         "$ref": "#/2"
@@ -1279,7 +1275,7 @@
     "scopeType": 7,
     "readOnlyScopes": 1,
     "body": {
-      "$ref": "#/88"
+      "$ref": "#/87"
     },
     "flags": 0
   },
@@ -1311,21 +1307,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/96"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/97"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "The policy set definition properties."
@@ -1345,7 +1341,7 @@
     "properties": {
       "policyType": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/104"
         },
         "flags": 0,
         "description": "The type of policy set definition. Possible values are NotSpecified, BuiltIn, Custom, and Static."
@@ -1373,21 +1369,21 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/105"
         },
         "flags": 0,
         "description": "The policy set definition parameters that can be used in policy definition references."
       },
       "policyDefinitions": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/109"
         },
         "flags": 1,
         "description": "An array of policy definition references."
       },
       "policyDefinitionGroups": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "The metadata describing groups of policy definition references within the policy set definition."
@@ -1401,7 +1397,7 @@
       },
       "versions": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "A list of available versions for this policy set definition."
@@ -1428,6 +1424,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/100"
+      },
+      {
         "$ref": "#/101"
       },
       {
@@ -1435,9 +1434,6 @@
       },
       {
         "$ref": "#/103"
-      },
-      {
-        "$ref": "#/104"
       },
       {
         "$ref": "#/2"
@@ -1486,7 +1482,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The parameter values for the referenced policy rule. The keys are the parameter names."
@@ -1500,7 +1496,7 @@
       },
       "groupNames": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "The name of the groups that this policy definition reference belongs to."
@@ -1524,7 +1520,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/107"
+      "$ref": "#/106"
     }
   },
   {
@@ -1571,7 +1567,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/111"
+      "$ref": "#/110"
     }
   },
   {
@@ -1586,7 +1582,7 @@
     "scopeType": 7,
     "readOnlyScopes": 1,
     "body": {
-      "$ref": "#/99"
+      "$ref": "#/98"
     },
     "flags": 0
   },
@@ -1611,28 +1607,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/84"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/114"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/115"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/117"
         },
         "flags": 0,
         "description": "The policy set definition version properties."
@@ -1652,7 +1648,7 @@
     "properties": {
       "policyType": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/122"
         },
         "flags": 0,
         "description": "The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static."
@@ -1680,21 +1676,21 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "The policy set definition parameters that can be used in policy definition references."
       },
       "policyDefinitions": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/124"
         },
         "flags": 1,
         "description": "An array of policy definition references."
       },
       "policyDefinitionGroups": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/125"
         },
         "flags": 0,
         "description": "The metadata describing groups of policy definition references within the policy set definition."
@@ -1728,6 +1724,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/118"
+      },
+      {
         "$ref": "#/119"
       },
       {
@@ -1735,9 +1734,6 @@
       },
       {
         "$ref": "#/121"
-      },
-      {
-        "$ref": "#/122"
       },
       {
         "$ref": "#/2"
@@ -1755,13 +1751,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/107"
+      "$ref": "#/106"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/111"
+      "$ref": "#/110"
     }
   },
   {
@@ -1770,7 +1766,7 @@
     "scopeType": 7,
     "readOnlyScopes": 1,
     "body": {
-      "$ref": "#/117"
+      "$ref": "#/116"
     },
     "flags": 0
   }

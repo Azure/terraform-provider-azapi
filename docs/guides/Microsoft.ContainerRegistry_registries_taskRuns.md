@@ -111,7 +111,7 @@ resource "azapi_resource" "taskRun" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ContainerRegistry/registries/taskRuns@api-version`. The available api-versions for this resource are: [`2019-06-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ContainerRegistry/registries/taskRuns@api-version`. The available api-versions for this resource are: [`2019-06-01-preview`, `2025-03-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}`
@@ -120,6 +120,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/registries/taskRuns?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
@@ -127,5 +129,5 @@ The following arguments are supported:
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/taskRuns/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/taskRuns/{resourceName}?api-version=2019-06-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/taskRuns/{resourceName}?api-version=2025-03-01-preview
  ```

@@ -64,7 +64,7 @@ resource "azapi_resource" "proximityPlacementGroup" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Compute/proximityPlacementGroups@api-version`. The available api-versions for this resource are: [`2018-04-01`, `2018-06-01`, `2018-10-01`, `2019-03-01`, `2019-07-01`, `2019-12-01`, `2020-06-01`, `2020-12-01`, `2021-03-01`, `2021-04-01`, `2021-07-01`, `2021-11-01`, `2022-03-01`, `2022-08-01`, `2022-11-01`, `2023-03-01`, `2023-07-01`, `2023-09-01`, `2024-03-01`, `2024-07-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Compute/proximityPlacementGroups@api-version`. The available api-versions for this resource are: [`2018-04-01`, `2018-06-01`, `2018-10-01`, `2019-03-01`, `2019-07-01`, `2019-12-01`, `2020-06-01`, `2020-12-01`, `2021-03-01`, `2021-04-01`, `2021-07-01`, `2021-11-01`, `2022-03-01`, `2022-08-01`, `2022-11-01`, `2023-03-01`, `2023-07-01`, `2023-09-01`, `2024-03-01`, `2024-07-01`, `2024-11-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -73,6 +73,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/proximityPlacementGroups?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
@@ -80,5 +82,5 @@ The following arguments are supported:
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{resourceName}?api-version=2024-07-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{resourceName}?api-version=2024-11-01
  ```

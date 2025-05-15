@@ -132,7 +132,7 @@ resource "azapi_resource" "project" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.DataMigration/services/projects@api-version`. The available api-versions for this resource are: [`2017-11-15-preview`, `2018-03-15-preview`, `2018-03-31-preview`, `2018-04-19`, `2018-07-15-preview`, `2021-06-30`, `2021-10-30-preview`, `2022-01-30-preview`, `2022-03-30-preview`, `2023-07-15-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.DataMigration/services/projects@api-version`. The available api-versions for this resource are: [`2017-11-15-preview`, `2018-03-15-preview`, `2018-03-31-preview`, `2018-04-19`, `2018-07-15-preview`, `2021-06-30`, `2021-10-30-preview`, `2022-01-30-preview`, `2022-03-30-preview`, `2023-07-15-preview`, `2025-03-15-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/services/{resourceName}`
@@ -141,6 +141,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataMigration/services/projects?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
@@ -148,5 +150,5 @@ The following arguments are supported:
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/services/{resourceName}/projects/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/services/{resourceName}/projects/{resourceName}?api-version=2023-07-15-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataMigration/services/{resourceName}/projects/{resourceName}?api-version=2025-03-15-preview
  ```

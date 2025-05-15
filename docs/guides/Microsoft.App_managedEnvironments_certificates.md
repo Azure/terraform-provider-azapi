@@ -121,7 +121,7 @@ resource "azapi_resource" "certificate" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.App/managedEnvironments/certificates@api-version`. The available api-versions for this resource are: [`2022-01-01-preview`, `2022-03-01`, `2022-06-01-preview`, `2022-10-01`, `2022-11-01-preview`, `2023-04-01-preview`, `2023-05-01`, `2023-05-02-preview`, `2023-08-01-preview`, `2023-11-02-preview`, `2024-02-02-preview`, `2024-03-01`, `2024-08-02-preview`, `2024-10-02-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.App/managedEnvironments/certificates@api-version`. The available api-versions for this resource are: [`2022-01-01-preview`, `2022-03-01`, `2022-06-01-preview`, `2022-10-01`, `2022-11-01-preview`, `2023-04-01-preview`, `2023-05-01`, `2023-05-02-preview`, `2023-08-01-preview`, `2023-11-02-preview`, `2024-02-02-preview`, `2024-03-01`, `2024-08-02-preview`, `2024-10-02-preview`, `2025-01-01`, `2025-02-02-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{resourceName}`
@@ -130,6 +130,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/managedEnvironments/certificates?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
@@ -137,5 +139,5 @@ The following arguments are supported:
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{resourceName}/certificates/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{resourceName}/certificates/{resourceName}?api-version=2024-10-02-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{resourceName}/certificates/{resourceName}?api-version=2025-02-02-preview
  ```

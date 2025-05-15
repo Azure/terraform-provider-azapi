@@ -97,7 +97,7 @@ resource "azapi_resource" "database" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.DBforPostgreSQL/flexibleServers/databases@api-version`. The available api-versions for this resource are: [`2020-11-05-preview`, `2021-06-01`, `2021-06-01-preview`, `2022-01-20-preview`, `2022-03-08-preview`, `2022-12-01`, `2023-03-01-preview`, `2023-06-01-preview`, `2023-12-01-preview`, `2024-03-01-preview`, `2024-08-01`, `2024-11-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.DBforPostgreSQL/flexibleServers/databases@api-version`. The available api-versions for this resource are: [`2020-11-05-preview`, `2021-06-01`, `2021-06-01-preview`, `2022-01-20-preview`, `2022-03-08-preview`, `2022-12-01`, `2023-03-01-preview`, `2023-06-01-preview`, `2023-12-01-preview`, `2024-03-01-preview`, `2024-08-01`, `2024-11-01-preview`, `2025-01-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{resourceName}`
@@ -106,6 +106,8 @@ The following arguments are supported:
 
 * `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/flexibleServers/databases?pivots=deployment-language-terraform).
 
+For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
+
 ## Import
 
  ```shell
@@ -113,5 +115,5 @@ The following arguments are supported:
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{resourceName}/databases/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{resourceName}/databases/{resourceName}?api-version=2024-11-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{resourceName}/databases/{resourceName}?api-version=2025-01-01-preview
  ```

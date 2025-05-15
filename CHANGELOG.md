@@ -8,6 +8,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Preflight validation supports nested resources.
 - `azapi` resources/data sources: Support `User-Agent` header, which is used to specify the user agent which is appended to the default user agent.
 - `azapi_resource`, `azapi_update_resource` resources: Support `sensitive_body` field, which is used to specify the write-only properties in the request body.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/0ce6ee9ce836e6847eaa92a6ac4ecd7ef4b89d0b
 
 BUG FIXES:
 - Fix a bug that `azapi_update_resource` resource produced inconsistent results when only `error_message_regex` is changed.
