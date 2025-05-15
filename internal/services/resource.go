@@ -273,7 +273,6 @@ func unmarshalBody(input types.Dynamic, out interface{}) error {
 
 // ephemeralBodyChangeInPlan checks if the sensitive_body has changed in the plan modify phase.
 func ephemeralBodyChangeInPlan(ctx context.Context, d PrivateData, ephemeralBody types.Dynamic) (ok bool, diags diag.Diagnostics) {
-	tflog.Warn(ctx, fmt.Sprintf("sensitive_bodyChangeInPlan: sensitive_body: %s", ephemeralBody.String()))
 	// 1. sensitive_body is unknown (e.g. referencing an knonw-after-apply value)
 	if !dynamic.IsFullyKnown(ephemeralBody) {
 		return true, nil
