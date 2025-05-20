@@ -194,7 +194,7 @@ resource "azapi_resource" "virtualMachineScaleSet" {
     }
     sku = {
       capacity = 1
-      name     = "Standard_D2a_v4"
+      name     = "Standard_D1_v2"
       tier     = "Standard"
     }
   }
@@ -212,8 +212,8 @@ resource "azapi_resource" "standbyVirtualMachinePool" {
     properties = {
       attachedVirtualMachineScaleSetId = azapi_resource.virtualMachineScaleSet.id
       elasticityProfile = {
-        maxReadyCapacity = 10
-        minReadyCapacity = 5
+        maxReadyCapacity = 2
+        minReadyCapacity = 1
       }
       virtualMachineState = "Running"
     }
