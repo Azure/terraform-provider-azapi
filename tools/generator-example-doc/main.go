@@ -76,7 +76,7 @@ func init() {
 
 func main() {
 	inputDir := flag.String("input-dir", "./examples", "directory to scan for example files")
-	outputDir := flag.String("output-dir", "./docs/guides", "directory to write documentation files")
+	outputDir := flag.String("output-dir", "./docs/resources", "directory to write documentation files")
 
 	flag.Parse()
 	if *inputDir == "" || *outputDir == "" {
