@@ -461,6 +461,25 @@ func TestAccGenericResource_unknownName(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_unknownNameWithSensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.unknownNameWithSensitiveBody(data),
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"random": {
+					Source:            "registry.terraform.io/hashicorp/random",
+					VersionConstraint: "= 3.6.1",
+				},
+			},
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1864,6 +1883,50 @@ resource "azapi_resource" "test" {
       }
       softDeleteRetentionInDays = 7
       tenantId                  = data.azapi_client_config.current.tenant_id
+    }
+  }
+}
+`, r.template(data))
+}
+
+func (r GenericResource) unknownNameWithSensitiveBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_client_config" "current" {}
+
+resource "random_string" "suffix" {
+  length  = 3
+  special = false
+  upper   = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  name      = "acctest${random_string.suffix.result}"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      accessPolicies = [
+      ]
+      createMode                   = "default"
+      enableRbacAuthorization      = false
+      enableSoftDelete             = true
+      enabledForDeployment         = false
+      enabledForDiskEncryption     = false
+      enabledForTemplateDeployment = false
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      softDeleteRetentionInDays = 7
+      tenantId                  = data.azapi_client_config.current.tenant_id
+    }
+  }
+  sensitive_body = {
+    properties = {
+      publicNetworkAccess = "Enabled"
     }
   }
 }
