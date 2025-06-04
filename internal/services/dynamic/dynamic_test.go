@@ -717,7 +717,9 @@ func Test_MergeDynamic(t *testing.T) {
 			out, err := MergeDynamic(lhs, rhs)
 			require.NoError(t, err)
 
-			actual, err := ToJSON(out)
+			actual, err := ToJSONWithUnknownValueHandler(out, func(val attr.Value) ([]byte, error) {
+				return json.Marshal("<unknown>")
+			})
 			require.NoError(t, err)
 
 			require.Equal(t, utils.NormalizeJson(string(actual)), utils.NormalizeJson(tc.expect))
