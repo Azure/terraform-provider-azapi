@@ -52,6 +52,7 @@ const FlagMoveState = "move_state"
 type AzapiResourceModel struct {
 	Body                          types.Dynamic    `tfsdk:"body"`
 	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
+	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
 	ID                            types.String     `tfsdk:"id"`
 	Identity                      types.List       `tfsdk:"identity"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
@@ -179,6 +180,12 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				WriteOnly:           true,
 				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
+			"sensitive_body_version": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.SensitiveBodyVersion(),
 			},
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
@@ -491,14 +498,16 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
-	// Set output as unknown to trigger a plan diff, if ephemral body has changed
-	diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
-	if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
-		return
-	}
-	if diff {
-		tflog.Info(ctx, `"sensitive_body" has changed`)
-		plan.Output = types.DynamicUnknown()
+	if state != nil {
+		// Set output as unknown to trigger a plan diff, if ephemral body has changed
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody, config.SensitiveBodyVersion, state.SensitiveBodyVersion)
+		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
+			return
+		}
+		if diff {
+			tflog.Info(ctx, `"sensitive_body" has changed`)
+			plan.Output = types.DynamicUnknown()
+		}
 	}
 
 	if dynamic.IsFullyKnown(plan.Body) {
@@ -665,12 +674,16 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	if diagnostics.Append(expandBody(body, *plan)...); diagnostics.HasError() {
 		return
 	}
-	SensitiveBody := make(map[string]interface{})
-	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+	sensitiveBodyVersionInState := types.MapNull(types.StringType)
+	if state != nil {
+		sensitiveBodyVersionInState = state.SensitiveBodyVersion
+	}
+	sensitiveBody, err := unmarshalSensitiveBody(config.SensitiveBody, plan.SensitiveBodyVersion, sensitiveBodyVersionInState)
+	if err != nil {
 		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
 		return
 	}
-	body = utils.MergeObject(body, SensitiveBody).(map[string]interface{})
+	body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
 
 	if !isNewResource {
 		// handle the case that identity block was once set, now it's removed
@@ -779,12 +792,16 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 	diagnostics.Append(responseState.Set(ctx, plan)...)
 
-	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
-	if err != nil {
-		diagnostics.AddError("Invalid sensitive_body", err.Error())
-		return
+	if plan.SensitiveBodyVersion.IsNull() {
+		writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+		if err != nil {
+			diagnostics.AddError("Invalid sensitive_body", err.Error())
+			return
+		}
+		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
+	} else {
+		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
-	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
 }
 
 func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
@@ -1204,6 +1221,7 @@ func (r *AzapiResource) defaultAzapiResourceModel() AzapiResourceModel {
 		Type:                          types.StringNull(),
 		Location:                      types.StringNull(),
 		Body:                          types.Dynamic{},
+		SensitiveBodyVersion:          types.MapNull(types.StringType),
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
