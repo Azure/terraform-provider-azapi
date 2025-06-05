@@ -165,6 +165,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+- `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. When the version is changed, the property will be included in the request body, otherwise it will be ignored.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.

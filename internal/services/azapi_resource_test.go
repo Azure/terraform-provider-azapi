@@ -632,6 +632,54 @@ func TestAccGenericResource_SensitiveBody(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_SensitiveBodyVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	ignores := defaultIgnores()
+	ignores = append(ignores, "tags")
+	ignores = append(ignores, "sensitive_body_version")
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.SensitiveBodyWithHash(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+		{
+			Config: r.SensitiveBodyWithVersion(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value2"),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+		{
+			Config: r.SensitiveBodyWithVersionMultipleTags(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value2"),
+				check.That(data.ResourceName).Key("output.tags.tag3").DoesNotExist(),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+		{
+			Config: r.SensitiveBodyWithHashMultipleTags(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value3"),
+				check.That(data.ResourceName).Key("output.tags.tag3").HasValue("tag3-value"),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -2258,4 +2306,121 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) SensitiveBodyWithHash(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value"
+    }
+  }
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) SensitiveBodyWithVersion(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value2"
+    }
+  }
+
+  sensitive_body_version = {
+    "tags.tag2" = "2"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) SensitiveBodyWithVersionMultipleTags(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value3"
+      tag3 = "tag3-value"
+    }
+  }
+
+  sensitive_body_version = {
+    "tags.tag2" = "2"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) SensitiveBodyWithHashMultipleTags(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value3"
+      tag3 = "tag3-value"
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
 }

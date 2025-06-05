@@ -41,6 +41,7 @@ type AzapiUpdateResourceModel struct {
 	Type                  types.String     `tfsdk:"type"`
 	Body                  types.Dynamic    `tfsdk:"body"`
 	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
+	SensitiveBodyVersion  types.Map        `tfsdk:"sensitive_body_version"`
 	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
 	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
@@ -158,6 +159,12 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional:            true,
 				WriteOnly:           true,
 				MarkdownDescription: docstrings.SensitiveBody(),
+			},
+
+			"sensitive_body_version": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.SensitiveBodyVersion(),
 			},
 
 			"ignore_casing": schema.BoolAttribute{
@@ -305,7 +312,7 @@ func (r *AzapiUpdateResource) ModifyPlan(ctx context.Context, request resource.M
 		}
 
 		// Set output as unknown to trigger a plan diff, if ephemral body has changed
-		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody)
+		diff, diags := ephemeralBodyChangeInPlan(ctx, request.Private, config.SensitiveBody, config.SensitiveBodyVersion, state.SensitiveBodyVersion)
 		if response.Diagnostics = append(response.Diagnostics, diags...); response.Diagnostics.HasError() {
 			return
 		}
@@ -343,8 +350,11 @@ func (r *AzapiUpdateResource) Update(ctx context.Context, request resource.Updat
 
 func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Config, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics, privateData PrivateData) {
 	var config, model AzapiUpdateResourceModel
+	var stateModel *AzapiUpdateResourceModel
 	diagnostics.Append(requestConfig.Get(ctx, &config)...)
-	if diagnostics.Append(plan.Get(ctx, &model)...); diagnostics.HasError() {
+	diagnostics.Append(plan.Get(ctx, &model)...)
+	diagnostics.Append(state.Get(ctx, &stateModel)...)
+	if diagnostics.HasError() {
 		return
 	}
 
@@ -413,13 +423,17 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		requestBody = existing
 	}
 
-	SensitiveBody := make(map[string]interface{})
-	if err := unmarshalBody(config.SensitiveBody, &SensitiveBody); err != nil {
+	sensitiveBodyVersionInState := types.MapNull(types.StringType)
+	if stateModel != nil {
+		sensitiveBodyVersionInState = stateModel.SensitiveBodyVersion
+	}
+	sensitiveBody, err := unmarshalSensitiveBody(config.SensitiveBody, model.SensitiveBodyVersion, sensitiveBodyVersionInState)
+	if err != nil {
 		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
 		return
 	}
-	if SensitiveBody != nil {
-		requestBody = utils.MergeObject(requestBody, SensitiveBody)
+	if sensitiveBody != nil {
+		requestBody = utils.MergeObject(requestBody, sensitiveBody)
 	}
 
 	if id.ResourceDef != nil {
@@ -468,14 +482,16 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	model.Output = output
 
 	diagnostics.Append(state.Set(ctx, model)...)
-
-	writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
-	if err != nil {
-		diagnostics.AddError("Invalid sensitive_body", err.Error())
-		return
+	if model.SensitiveBodyVersion.IsNull() {
+		writeOnlyBytes, err := dynamic.ToJSON(config.SensitiveBody)
+		if err != nil {
+			diagnostics.AddError("Invalid sensitive_body", err.Error())
+			return
+		}
+		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
+	} else {
+		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
-	diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, writeOnlyBytes)...)
-
 }
 
 func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {

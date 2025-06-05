@@ -1101,3 +1101,64 @@ func Test_RemoveFields(t *testing.T) {
 		}
 	}
 }
+
+func Test_FilterFields(t *testing.T) {
+	testcases := []struct {
+		OldJson    string
+		Fields     []string
+		ExpectJson string
+	}{
+		{
+			OldJson: `
+{
+	"map": {
+		"key1": "value1",
+		"key2": "value2"
+	},
+	"list": [
+		{
+			"name": "item1",
+			"value": "value1"
+		},
+		{
+			"name": "item2",
+			"value": "value2"
+		}
+	],
+	"key1": "value1",
+	"key2": "value2"
+}`,
+			Fields: []string{"map.key1", "list[1].name", "key1"},
+			ExpectJson: `
+{
+	"map": {
+		"key1": "value1"
+	},
+	"list": [
+		{
+			"name": "item2"
+		}
+	],
+	"key1": "value1"
+}`,
+		},
+	}
+
+	for _, testcase := range testcases {
+		var old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		fieldsToKeep := make(map[string]bool)
+		for _, field := range testcase.Fields {
+			fieldsToKeep[field] = true
+		}
+
+		result := utils.FilterFields(old, fieldsToKeep, "")
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+		}
+	}
+}

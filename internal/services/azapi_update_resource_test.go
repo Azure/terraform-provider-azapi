@@ -174,6 +174,47 @@ func TestAccGenericUpdateResource_SensitiveBody(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_SensitiveBodyVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.SensitiveBodyWithHash(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+			),
+		},
+		{
+			Config: r.SensitiveBodyWithVersion(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value2"),
+			),
+		},
+		{
+			Config: r.SensitiveBodyWithVersionMultipleTags(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value2"),
+				check.That(data.ResourceName).Key("output.tags.tag3").DoesNotExist(),
+			),
+		},
+		{
+			Config: r.SensitiveBodyWithHashMultipleTags(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That(data.ResourceName).Key("output.tags.tag1").HasValue("tag1-value"),
+				check.That(data.ResourceName).Key("output.tags.tag2").HasValue("tag2-value3"),
+				check.That(data.ResourceName).Key("output.tags.tag3").HasValue("tag3-value"),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -689,6 +730,164 @@ resource "azapi_update_resource" "test" {
   sensitive_body = {
     properties = {
       publicNetworkAccess = true
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) SensitiveBodyWithHash(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "factory" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+      properties = {
+        publicNetworkAccess = "Enabled"
+        repoConfiguration   = null
+      }
+    }
+  lifecycle {
+	ignore_changes = [tags]
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  resource_id = azapi_resource.factory.id
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value"
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) SensitiveBodyWithVersion(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "factory" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+      properties = {
+        publicNetworkAccess = "Enabled"
+        repoConfiguration   = null
+      }
+    }
+  lifecycle {
+	ignore_changes = [tags]
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  resource_id = azapi_resource.factory.id
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value2"
+    }
+  }
+
+  sensitive_body_version = {
+    "tags.tag2" = "2"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) SensitiveBodyWithVersionMultipleTags(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "factory" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+      properties = {
+        publicNetworkAccess = "Enabled"
+        repoConfiguration   = null
+      }
+    }
+  lifecycle {
+	ignore_changes = [tags]
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  resource_id = azapi_resource.factory.id
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value3"
+      tag3 = "tag3-value"
+    }
+  }
+
+  sensitive_body_version = {
+    "tags.tag2" = "2"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) SensitiveBodyWithHashMultipleTags(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "factory" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  name      = "acctest-%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+      properties = {
+        publicNetworkAccess = "Enabled"
+        repoConfiguration   = null
+      }
+    }
+  lifecycle {
+	ignore_changes = [tags]
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type = "Microsoft.DataFactory/factories@2018-06-01"
+  resource_id = azapi_resource.factory.id
+  body = {
+    tags = {
+      tag1 = "tag1-value"
+    }
+  }
+  sensitive_body = {
+    tags = {
+      tag2 = "tag2-value3"
+      tag3 = "tag3-value"
     }
   }
 }
