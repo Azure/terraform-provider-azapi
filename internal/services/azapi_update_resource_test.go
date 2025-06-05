@@ -741,23 +741,23 @@ func (r GenericUpdateResource) SensitiveBodyWithHash(data acceptance.TestData) s
 %[1]s
 
 resource "azapi_resource" "factory" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type      = "Microsoft.DataFactory/factories@2018-06-01"
   name      = "acctest-%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
-      properties = {
-        publicNetworkAccess = "Enabled"
-        repoConfiguration   = null
-      }
+    properties = {
+      publicNetworkAccess = "Enabled"
+      repoConfiguration   = null
     }
+  }
   lifecycle {
-	ignore_changes = [tags]
+    ignore_changes = [tags]
   }
 }
 
 resource "azapi_update_resource" "test" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type        = "Microsoft.DataFactory/factories@2018-06-01"
   resource_id = azapi_resource.factory.id
   body = {
     tags = {
@@ -778,23 +778,23 @@ func (r GenericUpdateResource) SensitiveBodyWithVersion(data acceptance.TestData
 %[1]s
 
 resource "azapi_resource" "factory" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type      = "Microsoft.DataFactory/factories@2018-06-01"
   name      = "acctest-%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
-      properties = {
-        publicNetworkAccess = "Enabled"
-        repoConfiguration   = null
-      }
+    properties = {
+      publicNetworkAccess = "Enabled"
+      repoConfiguration   = null
     }
+  }
   lifecycle {
-	ignore_changes = [tags]
+    ignore_changes = [tags]
   }
 }
 
 resource "azapi_update_resource" "test" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type        = "Microsoft.DataFactory/factories@2018-06-01"
   resource_id = azapi_resource.factory.id
   body = {
     tags = {
@@ -819,23 +819,23 @@ func (r GenericUpdateResource) SensitiveBodyWithVersionMultipleTags(data accepta
 %[1]s
 
 resource "azapi_resource" "factory" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type      = "Microsoft.DataFactory/factories@2018-06-01"
   name      = "acctest-%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
-      properties = {
-        publicNetworkAccess = "Enabled"
-        repoConfiguration   = null
-      }
+    properties = {
+      publicNetworkAccess = "Enabled"
+      repoConfiguration   = null
     }
+  }
   lifecycle {
-	ignore_changes = [tags]
+    ignore_changes = [tags]
   }
 }
 
 resource "azapi_update_resource" "test" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type        = "Microsoft.DataFactory/factories@2018-06-01"
   resource_id = azapi_resource.factory.id
   body = {
     tags = {
@@ -861,23 +861,23 @@ func (r GenericUpdateResource) SensitiveBodyWithHashMultipleTags(data acceptance
 %[1]s
 
 resource "azapi_resource" "factory" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type      = "Microsoft.DataFactory/factories@2018-06-01"
   name      = "acctest-%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
-      properties = {
-        publicNetworkAccess = "Enabled"
-        repoConfiguration   = null
-      }
+    properties = {
+      publicNetworkAccess = "Enabled"
+      repoConfiguration   = null
     }
+  }
   lifecycle {
-	ignore_changes = [tags]
+    ignore_changes = [tags]
   }
 }
 
 resource "azapi_update_resource" "test" {
-  type = "Microsoft.DataFactory/factories@2018-06-01"
+  type        = "Microsoft.DataFactory/factories@2018-06-01"
   resource_id = azapi_resource.factory.id
   body = {
     tags = {
