@@ -303,9 +303,6 @@ func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 	if string(b) == "null" {
 		return types.DynamicType, types.DynamicNull(), nil
 	}
-	if string(b) == "<unknown>" {
-		return types.DynamicType, types.DynamicUnknown(), nil
-	}
 
 	var object map[string]json.RawMessage
 	if err := json.Unmarshal(b, &object); err == nil {
@@ -359,6 +356,9 @@ func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 	case float64:
 		return types.NumberType, types.NumberValue(big.NewFloat(v)), nil
 	case string:
+		if v == "<unknown>" {
+			return types.DynamicType, types.DynamicUnknown(), nil
+		}
 		return types.StringType, types.StringValue(v), nil
 	case nil:
 		return types.DynamicType, types.DynamicNull(), nil

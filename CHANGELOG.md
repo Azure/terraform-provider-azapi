@@ -1,4 +1,9 @@
-## v2.4.0 (unreleased)
+## v2.5.0 (unreleased)
+
+BUG FIXES:
+- Fix a bug that schema validation fails to validate unknown string values when both `body` and `sensitive_body` are specified.
+
+## v2.4.0
 
 FEATURES:
 - **New Provider Function**: unique_string
