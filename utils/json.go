@@ -314,6 +314,40 @@ func RemoveFields(input interface{}, fields []string) interface{} {
 	}
 }
 
+func FilterFields(input interface{}, fieldsToKeep map[string]bool, path string) interface{} {
+	if input == nil {
+		return input
+	}
+	if fieldsToKeep[path] {
+		return input
+	}
+	switch v := input.(type) {
+	case map[string]interface{}:
+		res := make(map[string]interface{})
+		for key, value := range v {
+			out := FilterFields(value, fieldsToKeep, strings.TrimPrefix(path+"."+key, "."))
+			if out != nil {
+				res[key] = out
+			}
+		}
+		if len(res) == 0 {
+			return nil
+		}
+		return res
+	case []interface{}:
+		res := make([]interface{}, 0)
+		for index, item := range v {
+			out := FilterFields(item, fieldsToKeep, fmt.Sprintf("%s[%d]", path, index))
+			if out != nil {
+				res = append(res, out)
+			}
+		}
+		return res
+	default:
+		return nil
+	}
+}
+
 func isZeroValue(value interface{}) bool {
 	if value == nil {
 		return true
