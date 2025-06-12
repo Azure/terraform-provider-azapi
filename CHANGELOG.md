@@ -1,5 +1,8 @@
 ## v2.5.0 (unreleased)
 
+ENHANCEMENTS:
+- `azapi_resource` resource: ignore the order of the `identity_ids` array.
+
 BUG FIXES:
 - Fix a bug that schema validation fails to validate unknown string values when both `body` and `sensitive_body` are specified.
 

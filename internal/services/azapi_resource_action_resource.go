@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -356,7 +357,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 		return
 	}
 
-	lockIds := AsStringList(model.Locks)
+	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
 	for _, lockId := range lockIds {
 		locks.ByID(lockId)
@@ -366,7 +367,7 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return

@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -391,7 +392,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -426,20 +427,20 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
 	}
 
-	lockIds := AsStringList(model.Locks)
+	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
 	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(AsMapOfString(model.UpdateHeaders), AsMapOfLists(model.UpdateQueryParameters)))
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(common.AsMapOfString(model.UpdateHeaders), common.AsMapOfLists(model.UpdateQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -504,7 +505,7 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))

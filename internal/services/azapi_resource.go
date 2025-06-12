@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -351,6 +352,9 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 							Validators: []validator.List{
 								listvalidator.ValueStringsAre(myvalidator.StringIsUserAssignedIdentityID()),
 							},
+							PlanModifiers: []planmodifier.List{
+								myplanmodifier.ListUseStateWhen(identity.IdentityIDsSemanticallyEqual),
+							},
 							MarkdownDescription: docstrings.IdentityIds(),
 						},
 
@@ -468,10 +472,10 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	// if the config identity type and identity ids are not changed, use the state identity
-	if !config.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
-		configIdentity := identity.FromList(config.Identity)
+	if !plan.Identity.IsNull() && state != nil && !state.Identity.IsNull() {
+		planIdentity := identity.FromList(plan.Identity)
 		stateIdentity := identity.FromList(state.Identity)
-		if configIdentity.Type.Equal(stateIdentity.Type) && configIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
+		if planIdentity.Type.Equal(stateIdentity.Type) && planIdentity.IdentityIDs.Equal(stateIdentity.IdentityIDs) {
 			plan.Identity = state.Identity
 		}
 	}
@@ -517,7 +521,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		// Check if any paths in replace_triggers_refs have changed
 		if state != nil && plan != nil && !plan.ReplaceTriggersRefs.IsNull() {
 			refPaths := make(map[string]string)
-			for pathIndex, refPath := range AsStringList(plan.ReplaceTriggersRefs) {
+			for pathIndex, refPath := range common.AsStringList(plan.ReplaceTriggersRefs) {
 				refPaths[fmt.Sprintf("%d", pathIndex)] = refPath
 			}
 
@@ -643,7 +647,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
-		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters)))
+		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters)))
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
@@ -682,16 +686,16 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	// create/update the resource
-	lockIds := AsStringList(plan.Locks)
+	lockIds := common.AsStringList(plan.Locks)
 	slices.Sort(lockIds)
 	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}
 
-	options := clients.NewRequestOptions(AsMapOfString(plan.CreateHeaders), AsMapOfLists(plan.CreateQueryParameters))
+	options := clients.NewRequestOptions(common.AsMapOfString(plan.CreateHeaders), common.AsMapOfLists(plan.CreateQueryParameters))
 	if !isNewResource {
-		options = clients.NewRequestOptions(AsMapOfString(plan.UpdateHeaders), AsMapOfLists(plan.UpdateQueryParameters))
+		options = clients.NewRequestOptions(common.AsMapOfString(plan.UpdateHeaders), common.AsMapOfLists(plan.UpdateQueryParameters))
 	}
 	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, options)
 	if err != nil {
@@ -699,7 +703,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			"err": err,
 		})
 		if isNewResource {
-			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters))); err == nil {
+			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters))); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 
@@ -738,7 +742,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry, true)
 
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
-	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(plan.ReadHeaders), AsMapOfLists(plan.ReadQueryParameters)))
+	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -813,7 +817,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.ReadHeaders), AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -953,14 +957,14 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	lockIds := AsStringList(model.Locks)
+	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
 	for _, lockId := range lockIds {
 		locks.ByID(lockId)
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.DeleteHeaders), AsMapOfLists(model.DeleteQueryParameters)))
+	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.DeleteHeaders), common.AsMapOfLists(model.DeleteQueryParameters)))
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}
@@ -983,7 +987,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(state.ReadHeaders), AsMapOfLists(state.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
