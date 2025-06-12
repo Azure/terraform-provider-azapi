@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"math/rand/v2"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -677,6 +679,28 @@ func TestAccGenericResource_SensitiveBodyVersion(t *testing.T) {
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+	})
+}
+
+func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.multipleIdentityIds(data, false),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:             r.multipleIdentityIds(data, true),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.multipleIdentityIds(data, true),
+			ExpectNonEmptyPlan: false,
+		},
 	})
 }
 
@@ -2423,4 +2447,67 @@ resource "azapi_resource" "test" {
   }
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) multipleIdentityIds(data acceptance.TestData, random bool) string {
+	identityIds := []string{
+		"azapi_resource.userAssignedIdentity1.id",
+		"azapi_resource.userAssignedIdentity2.id",
+		"azapi_resource.userAssignedIdentity3.id",
+	}
+
+	if random {
+		// shuffle the identityIds to ensure the order is not fixed
+		rand.Shuffle(len(identityIds), func(i, j int) {
+			identityIds[i], identityIds[j] = identityIds[j], identityIds[i]
+		})
+	}
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "userAssignedIdentity1" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest1%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+}
+
+resource "azapi_resource" "userAssignedIdentity2" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest2%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+}
+
+resource "azapi_resource" "userAssignedIdentity3" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31"
+  name      = "acctest3%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+
+  location = "%[3]s"
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [%s]
+  }
+
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+
+  tags = {
+    "Key" = "Value"
+  }
+}
+`, r.template(data), data.RandomString, data.LocationPrimary, strings.Join(identityIds, ", "))
 }

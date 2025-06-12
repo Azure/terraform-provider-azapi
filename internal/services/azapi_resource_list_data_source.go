@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -137,7 +138,7 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
+	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
 		return

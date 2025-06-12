@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
@@ -258,7 +259,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(AsMapOfString(model.Headers), AsMapOfLists(model.QueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
