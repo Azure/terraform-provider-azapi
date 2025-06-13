@@ -106,6 +106,7 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Type                  types.String        `tfsdk:"type"`
 				Body                  types.Dynamic       `tfsdk:"body"`
 				SensitiveBody         types.Dynamic       `tfsdk:"sensitive_body"`
+				SensitiveBodyVersion  types.Map           `tfsdk:"sensitive_body_version"`
 				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
 				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
@@ -155,6 +156,7 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,
 				Retry:                 retry.NewRetryValueNull(),
+				SensitiveBodyVersion:  types.MapNull(types.StringType),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)

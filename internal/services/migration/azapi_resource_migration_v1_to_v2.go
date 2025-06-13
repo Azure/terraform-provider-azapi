@@ -149,6 +149,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				Identity                      types.List          `tfsdk:"identity"`
 				Body                          types.Dynamic       `tfsdk:"body"`
 				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
+				SensitiveBodyVersion          types.Map           `tfsdk:"sensitive_body_version"`
 				Locks                         types.List          `tfsdk:"locks"`
 				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
@@ -211,6 +212,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				Output:                        outputVal,
 				Tags:                          oldState.Tags,
 				Timeouts:                      oldState.Timeouts,
+				SensitiveBodyVersion:          types.MapNull(types.StringType),
 			}
 
 			response.Diagnostics.Append(response.State.Set(ctx, newState)...)
