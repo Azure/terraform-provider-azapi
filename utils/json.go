@@ -48,12 +48,39 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 		}
 	case []interface{}:
 		if newArr, ok := new.([]interface{}); ok {
-			if len(oldValue) != len(newArr) {
+			if len(oldValue) == 0 || len(newArr) == 0 {
 				return newArr
 			}
+
+			hasIdentifier := identifierOfArrayItem(oldValue[0]) != "" && identifierOfArrayItem(newArr[0]) != ""
+			if !hasIdentifier {
+				if len(oldValue) != len(newArr) {
+					return newArr
+				}
+				res := make([]interface{}, 0)
+				for index := range oldValue {
+					res = append(res, MergeObject(oldValue[index], newArr[index]))
+				}
+				return res
+			}
+
 			res := make([]interface{}, 0)
-			for index := range oldValue {
-				res = append(res, MergeObject(oldValue[index], newArr[index]))
+			used := make([]bool, len(newArr))
+
+			for _, oldItem := range oldValue {
+				found := false
+				for index, newItem := range newArr {
+					if areSameArrayItems(oldItem, newItem) && !used[index] {
+						res = append(res, MergeObject(oldItem, newItem))
+						used[index] = true
+						found = true
+						break
+					}
+				}
+				if found {
+					continue
+				}
+				res = append(res, oldItem)
 			}
 			return res
 		}

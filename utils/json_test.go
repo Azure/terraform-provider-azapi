@@ -424,24 +424,31 @@ func Test_UpdateObject(t *testing.T) {
 }
 
 func Test_MergeObject(t *testing.T) {
-	oldJson := `
- {
+	testcases := []struct {
+		Name       string
+		OldJson    string
+		NewJson    string
+		ExpectJson string
+	}{
+		{
+			Name: "Merge simple objects",
+			OldJson: ` 
+{
 	"a":1,
     "b": {
 		"b1": "b1",
 		"b2": []
 	}
 }
-`
-
-	newJson := `
+`,
+			NewJson: `
 {
 	"b": {
 		"b3": "b3"
 	}
 }
-`
-	expectedJson := `
+`,
+			ExpectJson: `
 {
 	"a":1,
     "b": {
@@ -449,18 +456,66 @@ func Test_MergeObject(t *testing.T) {
 		"b2": [],
 		"b3": "b3"
 	}
+}`,
+		},
+		{
+			Name: "Merge objects with arrays",
+			OldJson: `
+{
+  "array": [
+    {
+      "name": "item1",
+      "key1": "value1"
+    },
+    {
+      "name": "item2",
+      "key2": "value2"
+    }
+  ]
+}`,
+			NewJson: `
+{
+  "array": [
+    {
+      "name": "item2",
+      "key2": "value3"
+    },
+    {
+      "name": "item1",
+      "key1": "value2"
+    }
+  ]
+}`,
+			ExpectJson: `
+{
+  "array": [
+    {
+      "name": "item1",
+      "key1": "value2"
+    },
+    {
+      "name": "item2",
+      "key2": "value3"
+    }
+  ]
 }
-`
-	var new, old, expected interface{}
-	_ = json.Unmarshal([]byte(oldJson), &old)
-	_ = json.Unmarshal([]byte(newJson), &new)
-	_ = json.Unmarshal([]byte(expectedJson), &expected)
+`,
+		},
+	}
 
-	result := utils.MergeObject(old, new)
-	if !reflect.DeepEqual(result, expected) {
-		expectedJson, _ := json.Marshal(expected)
-		resultJson, _ := json.Marshal(result)
-		t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
+	for _, testcase := range testcases {
+		t.Logf("Running test case: %s", testcase.Name)
+		var new, old, expected interface{}
+		_ = json.Unmarshal([]byte(testcase.OldJson), &old)
+		_ = json.Unmarshal([]byte(testcase.NewJson), &new)
+		_ = json.Unmarshal([]byte(testcase.ExpectJson), &expected)
+
+		result := utils.MergeObject(old, new)
+		if !reflect.DeepEqual(result, expected) {
+			expectedJson, _ := json.Marshal(expected)
+			resultJson, _ := json.Marshal(result)
+			t.Fatalf("Test %s: Expected %s but got %s", testcase.Name, expectedJson, resultJson)
+		}
 	}
 }
 

@@ -417,8 +417,9 @@ func (r GenericUpdateResource) ignoreOrderInArray(data acceptance.TestData) stri
 	return fmt.Sprintf(`
 %[1]s
 
-resource "azapi_resource" "vnet" {
-  type      = "Microsoft.Network/virtualNetworks@2023-09-01"
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctest%[2]d"
   location  = azapi_resource.resourceGroup.location
@@ -434,41 +435,94 @@ resource "azapi_resource" "vnet" {
         ]
       }
       subnets = [
-        {
-          name = "first"
-          properties = {
-            addressPrefix         = "10.0.3.0/24"
-            defaultOutboundAccess = false
-          }
-        },
-        {
-          name = "second"
-          properties = {
-            addressPrefix         = "10.0.4.0/24"
-            defaultOutboundAccess = false
-          }
-        }
+      ]
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
+}
+
+resource "azapi_resource" "subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  parent_id = azapi_resource.virtualNetwork.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      addressPrefix = "10.0.2.0/24"
+      delegations = [
+      ]
+      defaultOutboundAccess             = false
+      privateEndpointNetworkPolicies    = "Enabled"
+      privateLinkServiceNetworkPolicies = "Enabled"
+      serviceEndpointPolicies = [
+      ]
+      serviceEndpoints = [
       ]
     }
   }
 }
 
-resource "azapi_update_resource" "test" {
-  type        = "Microsoft.Network/virtualNetworks@2022-07-01"
-  resource_id = azapi_resource.vnet.id
+resource "azapi_resource" "networkInterface" {
+  type      = "Microsoft.Network/networkInterfaces@2022-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]d"
+  location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
-      subnets = [
+      enableAcceleratedNetworking = false
+      enableIPForwarding          = false
+      ipConfigurations = [
         {
-          name = "second"
+          name = "testconfiguration1"
           properties = {
-            addressPrefix = "10.0.4.0/24"
+            primary                   = true
+            privateIPAddressVersion   = "IPv4"
+            privateIPAllocationMethod = "Dynamic"
+            subnet = {
+              id = azapi_resource.subnet.id
+            }
           }
         },
         {
-          name = "first"
+          name = "testconfiguration2"
           properties = {
-            addressPrefix = "10.0.3.0/24"
+            privateIPAddressVersion   = "IPv4"
+            privateIPAllocationMethod = "Dynamic"
+            subnet = {
+              id = azapi_resource.subnet.id
+            }
+          }
+        },
+      ]
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      body.properties.ipConfigurations[0].properties.primary,
+      body.properties.ipConfigurations[1].properties.primary,
+    ]
+  }
+
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Network/networkInterfaces@2022-07-01"
+  resource_id = azapi_resource.networkInterface.id
+  body = {
+    properties = {
+      ipConfigurations = [
+        {
+          name = "testconfiguration2"
+          properties = {
+            primary = true
+          }
+        },
+        {
+          name = "testconfiguration1"
+          properties = {
+            primary = false
           }
         }
       ]

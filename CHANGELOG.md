@@ -5,6 +5,7 @@ ENHANCEMENTS:
 
 BUG FIXES:
 - Fix a bug that schema validation fails to validate unknown string values when both `body` and `sensitive_body` are specified.
+- Fix a bug that `azapi_update_resource` does not update the correct items in an array when the order of the items is different from the remote state.
 
 ## v2.4.0
 
