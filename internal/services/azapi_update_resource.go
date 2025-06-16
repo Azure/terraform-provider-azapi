@@ -7,6 +7,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/Azure/terraform-provider-azapi/internal/azure/fix"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/Azure/terraform-provider-azapi/internal/docstrings"
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
@@ -440,6 +441,7 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	if id.ResourceDef != nil {
 		requestBody = (*id.ResourceDef).GetWriteOnly(utils.NormalizeObject(requestBody))
 	}
+	requestBody = fix.GetWriteOnlyFix(requestBody)
 
 	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
