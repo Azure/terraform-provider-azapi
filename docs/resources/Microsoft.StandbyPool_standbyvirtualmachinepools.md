@@ -14,7 +14,6 @@ This article demonstrates how to use `azapi` provider to manage the Microsoft St
 ### basic
 
 ```hcl
-
 terraform {
   required_providers {
     azapi = {
