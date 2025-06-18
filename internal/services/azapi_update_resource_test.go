@@ -215,6 +215,20 @@ func TestAccGenericUpdateResource_SensitiveBodyVersion(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_BadUserAssignedIdentitiesSchema(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.BadUserAssignedIdentitiesSchema(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (r GenericUpdateResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -942,6 +956,65 @@ resource "azapi_update_resource" "test" {
     tags = {
       tag2 = "tag2-value3"
       tag3 = "tag3-value"
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) BadUserAssignedIdentitiesSchema(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+
+resource "azapi_resource" "managedIdentity1" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "actest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body      = {}
+}
+
+resource "azapi_resource" "managedIdentity2" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "actest2-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body      = {}
+}
+
+
+resource "azapi_resource" "apiManagementInstance" {
+  type      = "Microsoft.ApiManagement/service@2020-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type = "UserAssigned"
+    identity_ids = [
+      azapi_resource.managedIdentity1.id,
+      azapi_resource.managedIdentity2.id
+    ]
+  }
+
+  body = {
+    sku = {
+      capacity = 1
+      name     = "Developer"
+    }
+    properties = {
+      virtualNetworkType = "None"
+      publisherEmail     = "publisherEmail@contoso.com"
+      publisherName      = "publisherName"
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.ApiManagement/service@2020-12-01"
+  resource_id = azapi_resource.apiManagementInstance.id
+  body = {
+    properties = {
     }
   }
 }
