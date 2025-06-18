@@ -105,6 +105,9 @@ resource "azapi_resource" "vnet_withIPAM" {
       }
     }
   }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
   schema_validation_enabled = false
   ignore_casing             = false
   ignore_missing_property   = false
