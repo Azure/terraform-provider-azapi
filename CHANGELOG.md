@@ -3,6 +3,7 @@
 ENHANCEMENTS:
 - `azapi_resource` resource: ignore the changes when the `body` field matches the remote state even if the `body` field or `api-version` field is changed.
 - `azapi_resource` resource: ignore the order of the `identity_ids` array.
+- `azapi_resource` resource: support `ignore_null_property` field, which is used to ignore the null properties in the `body` field.
 
 BUG FIXES:
 - Fix a bug that schema validation fails to validate unknown string values when both `body` and `sensitive_body` are specified.

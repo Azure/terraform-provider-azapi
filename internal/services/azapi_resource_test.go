@@ -730,6 +730,24 @@ func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.automationAccountComplete(data, "2023-11-01"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:             r.automationAccountCompleteWithNullProperties(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+	})
+}
+
 func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -2588,6 +2606,35 @@ resource "azapi_resource" "test" {
         keySource = "Microsoft.Automation"
       }
       publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountCompleteWithNullProperties(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth    = false
+      encryption          = null
+      publicNetworkAccess = null
       sku = {
         capacity = null
         family   = null

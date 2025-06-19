@@ -58,6 +58,7 @@ type AzapiResourceModel struct {
 	Identity                      types.List       `tfsdk:"identity"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	IgnoreNullProperty            types.Bool       `tfsdk:"ignore_null_property"`
 	Location                      types.String     `tfsdk:"location"`
 	Locks                         types.List       `tfsdk:"locks"`
 	Name                          types.String     `tfsdk:"name"`
@@ -238,6 +239,13 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Computed:            true,
 				Default:             defaults.BoolDefault(true),
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
+			},
+
+			"ignore_null_property": schema.BoolAttribute{
+				Optional:            true,
+				Computed:            true,
+				Default:             defaults.BoolDefault(true),
+				MarkdownDescription: docstrings.IgnoreNullProperty(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -505,6 +513,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		option := utils.UpdateJsonOption{
 			IgnoreCasing:          plan.IgnoreCasing.ValueBool(),
 			IgnoreMissingProperty: plan.IgnoreMissingProperty.ValueBool(),
+			IgnoreNullProperty:    plan.IgnoreNullProperty.ValueBool(),
 		}
 		remoteBody := utils.UpdateObject(configBody, responseBody, option)
 		// suppress the change if the remote body is equal to the config body
@@ -725,6 +734,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 	}
 
+	if plan.IgnoreNullProperty.ValueBool() {
+		out := utils.RemoveNullProperty(body)
+		v, ok := out.(map[string]interface{})
+		if ok {
+			body = v
+		}
+	}
+
 	// create/update the resource
 	lockIds := common.AsStringList(plan.Locks)
 	slices.Sort(lockIds)
@@ -876,6 +893,9 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	state.Name = types.StringValue(id.Name)
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+	if state.IgnoreNullProperty.IsNull() {
+		state.IgnoreNullProperty = types.BoolValue(true)
+	}
 
 	requestBody := make(map[string]interface{})
 	if err := unmarshalBody(model.Body, &requestBody); err != nil {
@@ -929,6 +949,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
+		IgnoreNullProperty:    model.IgnoreNullProperty.ValueBool(),
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
@@ -1256,6 +1277,7 @@ func (r *AzapiResource) defaultAzapiResourceModel() AzapiResourceModel {
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
+		IgnoreNullProperty:            types.BoolValue(true),
 		Locks:                         types.ListNull(types.StringType),
 		Output:                        types.DynamicNull(),
 		ReplaceTriggersExternalValues: types.DynamicNull(),

@@ -91,6 +91,7 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 type UpdateJsonOption struct {
 	IgnoreCasing          bool
 	IgnoreMissingProperty bool
+	IgnoreNullProperty    bool
 }
 
 // UpdateObject is used to get an updated object which has same schema as old, but with new value
@@ -104,6 +105,8 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 			res := make(map[string]interface{})
 			for key, value := range oldValue {
 				switch {
+				case value == nil && option.IgnoreNullProperty:
+					res[key] = nil
 				case newMap[key] != nil:
 					res[key] = UpdateObject(value, newMap[key], option)
 				case option.IgnoreMissingProperty || isZeroValue(value):
@@ -372,6 +375,32 @@ func FilterFields(input interface{}, fieldsToKeep map[string]bool, path string) 
 		return res
 	default:
 		return nil
+	}
+}
+
+func RemoveNullProperty(input interface{}) interface{} {
+	if input == nil {
+		return input
+	}
+	switch v := input.(type) {
+	case map[string]interface{}:
+		res := make(map[string]interface{})
+		for key, value := range v {
+			if value != nil {
+				res[key] = RemoveNullProperty(value)
+			}
+		}
+		return res
+	case []interface{}:
+		res := make([]interface{}, 0)
+		for _, item := range v {
+			if item != nil {
+				res = append(res, RemoveNullProperty(item))
+			}
+		}
+		return res
+	default:
+		return input
 	}
 }
 
