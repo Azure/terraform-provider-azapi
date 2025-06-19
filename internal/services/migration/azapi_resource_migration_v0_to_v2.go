@@ -153,6 +153,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				SchemaValidationEnabled       types.Bool          `tfsdk:"schema_validation_enabled"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
+				IgnoreNullProperty            types.Bool          `tfsdk:"ignore_null_property"`
 				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
 				ReplaceTriggersRefs           types.List          `tfsdk:"replace_triggers_refs"`
 				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
@@ -206,6 +207,7 @@ func AzapiResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgrader {
 				SchemaValidationEnabled:       oldState.SchemaValidationEnabled,
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
+				IgnoreNullProperty:            types.BoolValue(true),
 				ReplaceTriggersExternalValues: types.DynamicNull(),
 				ReplaceTriggersRefs:           types.ListNull(types.StringType),
 				ResponseExportValues:          responseExportValues,
