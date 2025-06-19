@@ -704,6 +704,59 @@ func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.automationAccountBasic(data, "2023-11-01"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:             r.automationAccountBasic(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountComplete(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountComplete(data, "2023-11-01"),
+			ExpectNonEmptyPlan: false,
+		},
+	})
+}
+
+func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.automationAccountAzureRM(data),
+		},
+		{
+			Config:             r.automationAccountAzureRMMovedBasic(data, "2023-11-01"),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountAzureRMMovedBasic(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountAzureRMMovedComplete(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountAzureRMMovedComplete(data, "2023-11-01"),
+			ExpectNonEmptyPlan: false,
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -2510,4 +2563,197 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, data.LocationPrimary, strings.Join(identityIds, ", "))
+}
+
+func (r GenericResource) automationAccountComplete(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountBasic(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      publicNetworkAccess = true
+      sku = {
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountAzureRM(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+resource "azurerm_automation_account" "automationAccount" {
+  name      = "acctest%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  sku_name            = "Basic"
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) automationAccountAzureRMMovedBasic(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+# resource "azurerm_automation_account" "automationAccount" {
+#   name      = "acctest%[2]s"
+#   location            = azapi_resource.resourceGroup.location
+#   resource_group_name = azapi_resource.resourceGroup.name
+#   sku_name            = "Basic"
+# 
+#   identity {
+#     type = "SystemAssigned"
+#   }
+# }
+
+moved {
+  from = azurerm_automation_account.automationAccount
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      publicNetworkAccess = true
+      sku = {
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountAzureRMMovedComplete(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+# resource "azurerm_automation_account" "automationAccount" {
+#   name      = "acctest%[2]s"
+#   location            = azapi_resource.resourceGroup.location
+#   resource_group_name = azapi_resource.resourceGroup.name
+#   sku_name            = "Basic"
+# 
+#   identity {
+#     type = "SystemAssigned"
+#   }
+# }
+
+moved {
+  from = azurerm_automation_account.automationAccount
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
 }

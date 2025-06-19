@@ -487,6 +487,33 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 	}
 
+	// In the below two cases, we think the config is still matched with the remote state, and there's no need to update the resource:
+	// 1. If the api-version is changed, but the body is not changed
+	// 2. If the body only removes/adds properties that are equal to the remote state
+	if dynamic.IsFullyKnown(plan.Body) && state != nil && (!dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type)) {
+		// GET the existing resource with config's api-version
+		responseBody, err := r.ProviderData.ResourceClient.Get(ctx, state.ID.ValueString(), apiVersion, clients.DefaultRequestOptions())
+		if err != nil {
+			response.Diagnostics.AddError("Failed to retrieve resource", fmt.Sprintf("Retrieving existing resource %s: %+v", state.ID.ValueString(), err))
+			return
+		}
+		configBody := make(map[string]interface{})
+		if err := unmarshalBody(plan.Body, &configBody); err != nil {
+			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
+			return
+		}
+		option := utils.UpdateJsonOption{
+			IgnoreCasing:          plan.IgnoreCasing.ValueBool(),
+			IgnoreMissingProperty: plan.IgnoreMissingProperty.ValueBool(),
+		}
+		remoteBody := utils.UpdateObject(configBody, responseBody, option)
+		// suppress the change if the remote body is equal to the config body
+		if reflect.DeepEqual(remoteBody, configBody) {
+			plan.Body = state.Body
+			plan.Type = state.Type
+		}
+	}
+
 	isNewResource := state == nil
 	if !dynamic.IsFullyKnown(plan.Body) || isNewResource || !plan.Identity.Equal(state.Identity) ||
 		!plan.Type.Equal(state.Type) ||
