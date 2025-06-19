@@ -2614,10 +2614,10 @@ resource "azapi_resource" "test" {
   }
   body = {
     properties = {
-      disableLocalAuth = false
+      disableLocalAuth    = false
       publicNetworkAccess = true
       sku = {
-        name     = "Basic"
+        name = "Basic"
       }
     }
   }
@@ -2638,7 +2638,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_automation_account" "automationAccount" {
-  name      = "acctest%[2]s"
+  name                = "acctest%[2]s"
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   sku_name            = "Basic"
@@ -2689,10 +2689,10 @@ resource "azapi_resource" "test" {
   }
   body = {
     properties = {
-      disableLocalAuth = false
+      disableLocalAuth    = false
       publicNetworkAccess = true
       sku = {
-        name     = "Basic"
+        name = "Basic"
       }
     }
   }
