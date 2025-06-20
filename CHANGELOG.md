@@ -1,6 +1,7 @@
 ## v2.5.0 (unreleased)
 
 ENHANCEMENTS:
+- `azapi_resource` resource: ignore the changes when the `body` field matches the remote state even if the `body` field or `api-version` field is changed.
 - `azapi_resource` resource: ignore the order of the `identity_ids` array.
 - `azapi_update_resource` resource: remove the readonly fields from `identity.userAssignedIdentities` in the request body.
 
