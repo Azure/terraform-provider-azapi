@@ -757,6 +757,37 @@ func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_modifyPlanSubnet(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.modifyPlanSubnet(data),
+		},
+		{
+			Config:             r.modifyPlanSubnetUpdate(data),
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
+func TestAccGenericResource_modifyPlanAccount(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.modifyPlanAccount(data),
+		},
+		{
+			Config:             r.modifyPlanAccountUpdate(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func (GenericResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.ResourceIDWithResourceType(state.ID, resourceType)
@@ -2756,4 +2787,211 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) modifyPlanSubnet(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2019-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16"
+        ]
+      }
+      subnets = []
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
+  schema_validation_enabled = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  parent_id = azapi_resource.virtualNetwork.id
+  name      = "example-subnet"
+  body = {
+    properties = {
+      addressPrefix                  = "10.0.2.0/24"
+      privateEndpointNetworkPolicies = "Disabled"
+      defaultOutboundAccess          = false
+      delegations                    = []
+      routeTable                     = null
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) modifyPlanSubnetUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2019-11-01"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16"
+        ]
+      }
+      subnets = []
+    }
+  }
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
+  schema_validation_enabled = false
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
+  parent_id = azapi_resource.virtualNetwork.id
+  name      = "example-subnet"
+  body = {
+    properties = {
+      addressPrefix                  = "10.0.2.0/24"
+      privateEndpointNetworkPolicies = "Disabled"
+      defaultOutboundAccess          = false
+      serviceEndpoints = [
+        {
+          service   = "Microsoft.Storage"
+          locations = ["westus", "eastus"]
+        }
+      ]
+      delegations = []
+      routeTable  = null
+    }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) modifyPlanAccount(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2020-08-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      hostingMode = "default"
+      networkRuleSet = {
+        ipRules = []
+      }
+      partitionCount      = 1
+      publicNetworkAccess = "enabled"
+      replicaCount        = 1
+    }
+    sku = {
+      name = "standard"
+    }
+  }
+  ignore_casing = true
+}
+
+data "azapi_resource_action" "getSearchServiceKeys" {
+  type        = "Microsoft.Search/searchServices@2023-11-01"
+  resource_id = azapi_resource.searchService.id
+  action      = "listQueryKeys"
+  response_export_values = {
+    key = "value[0].key"
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2025-04-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      apiProperties = {
+        qnaAzureSearchEndpointId  = azapi_resource.searchService.id
+        qnaAzureSearchEndpointKey = data.azapi_resource_action.getSearchServiceKeys.output.key
+      }
+    }
+
+    sku = {
+      name = "S"
+    }
+    kind = "TextAnalytics"
+  }
+  ignore_missing_property = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) modifyPlanAccountUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2020-08-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      hostingMode = "default"
+      networkRuleSet = {
+        ipRules = []
+      }
+      partitionCount      = 1
+      publicNetworkAccess = "enabled"
+      replicaCount        = 1
+    }
+    sku = {
+      name = "standard"
+    }
+  }
+  ignore_casing = true
+}
+
+data "azapi_resource_action" "getSearchServiceKeys" {
+  type        = "Microsoft.Search/searchServices@2023-11-01"
+  resource_id = azapi_resource.searchService.id
+  action      = "listQueryKeys"
+  response_export_values = {
+    key = "value[0].key"
+  }
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts@2025-04-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      apiProperties = {
+        qnaAzureSearchEndpointId  = azapi_resource.searchService.id
+        qnaAzureSearchEndpointKey = data.azapi_resource_action.getSearchServiceKeys.output.key
+        websiteName               = "foo"
+      }
+    }
+
+    sku = {
+      name = "S"
+    }
+    kind = "TextAnalytics"
+  }
+  ignore_missing_property = true
+}
+`, r.template(data), data.RandomString)
 }
