@@ -785,6 +785,7 @@ func TestAccGenericResource_modifyPlanSubnet(t *testing.T) {
 		},
 		{
 			Config:             r.modifyPlanSubnetUpdate(data),
+			PlanOnly:           true,
 			ExpectNonEmptyPlan: true,
 		},
 	})

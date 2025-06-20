@@ -519,7 +519,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 		option := utils.UpdateJsonOption{
 			IgnoreCasing:          plan.IgnoreCasing.ValueBool(),
-			IgnoreMissingProperty: plan.IgnoreMissingProperty.ValueBool(),
+			IgnoreMissingProperty: false,
 			IgnoreNullProperty:    plan.IgnoreNullProperty.ValueBool(),
 		}
 		remoteBody := utils.UpdateObject(configBody, responseBody, option)
