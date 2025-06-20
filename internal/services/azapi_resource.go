@@ -454,6 +454,11 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	}
 
 	defer func() {
+		if plan.Output.IsUnknown() {
+			plan.Body = config.Body
+			plan.Type = config.Type
+		}
+
 		response.Plan.Set(ctx, plan)
 	}()
 
