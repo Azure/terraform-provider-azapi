@@ -505,6 +505,13 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			response.Diagnostics.AddError("Failed to retrieve resource", fmt.Sprintf("Retrieving existing resource %s: %+v", state.ID.ValueString(), err))
 			return
 		}
+		stateBody := make(map[string]interface{})
+		if err := unmarshalBody(state.Body, &stateBody); err != nil {
+			response.Diagnostics.AddError("Invalid state body", fmt.Sprintf(`The argument "body" in state is invalid: %s`, err.Error()))
+			return
+		}
+		// stateBody contains sensitive properties that are not returned in GET response
+		responseBody = utils.MergeObject(responseBody, stateBody)
 		configBody := make(map[string]interface{})
 		if err := unmarshalBody(plan.Body, &configBody); err != nil {
 			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))
