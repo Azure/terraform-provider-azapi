@@ -59,7 +59,7 @@ func (r *ActionEphemeral) Configure(ctx context.Context, request ephemeral.Confi
 
 func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRequest, response *ephemeral.SchemaResponse) {
 	response.Schema = schema.Schema{
-		MarkdownDescription: "Performs an action on an existing Azure resource.  ",
+		MarkdownDescription: "This ephemeral resource allows you to perform an action on an existing Azure resource and its state will not be persisted to the Terraform state. It is useful for performing actions that retrieve sensitive information, e.g., retrieving access keys from an Azure Storage Account. Please note that when deleting this resource, no action will be performed.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,

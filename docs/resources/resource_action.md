@@ -2,12 +2,12 @@
 page_title: "azapi_resource_action Resource - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  
+  This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the when argument is set to destroy.
 ---
 
 # azapi_resource_action (Resource)
 
-
+This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the `when` argument is set to `destroy`.
 
 ## Example Usage
 
