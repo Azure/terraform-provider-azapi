@@ -754,22 +754,27 @@ func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.automationAccountAzureRM(data),
+			Config:            r.automationAccountAzureRM(data),
+			ExternalProviders: knownExternalProvidersAzurerm(),
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedBasic(data, "2023-11-01"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedBasic(data, "2024-10-23"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedComplete(data, "2024-10-23"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedComplete(data, "2023-11-01"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 	})
