@@ -730,13 +730,32 @@ func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.automationAccountCompleteWithNullPropertiesSetup(data, "2024-10-23"),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:             r.automationAccountCompleteWithNullProperties(data, "2024-10-23"),
+			ExpectNonEmptyPlan: false,
+		},
+	})
+}
+
 func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.automationAccountAzureRM(data),
+			Config:            r.automationAccountAzureRM(data),
+			ExternalProviders: knownExternalProvidersAzurerm(),
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedBasic(data, "2023-11-01"),
@@ -744,14 +763,17 @@ func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedBasic(data, "2024-10-23"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedComplete(data, "2024-10-23"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedComplete(data, "2023-11-01"),
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 			ExpectNonEmptyPlan: false,
 		},
 	})
@@ -767,6 +789,7 @@ func TestAccGenericResource_modifyPlanSubnet(t *testing.T) {
 		},
 		{
 			Config:             r.modifyPlanSubnetUpdate(data),
+			PlanOnly:           true,
 			ExpectNonEmptyPlan: true,
 		},
 	})
@@ -1978,7 +2001,7 @@ resource "azapi_resource" "namespace" {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
       publicNetworkAccess  = "Enabled"
-      zoneRedundant        = true
+      zoneRedundant        = false
     }
     sku = {
       capacity = 1
@@ -2626,6 +2649,71 @@ resource "azapi_resource" "test" {
       }
     }
   }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountCompleteWithNullPropertiesSetup(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+  ignore_null_property = true
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountCompleteWithNullProperties(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth    = false
+      encryption          = null
+      publicNetworkAccess = null
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+  ignore_null_property = true
 }
 `, r.template(data), data.RandomString, apiVersion)
 }

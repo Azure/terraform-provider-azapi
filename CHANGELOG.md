@@ -3,6 +3,7 @@
 ENHANCEMENTS:
 - `azapi_resource` resource: ignore the changes when the `body` field matches the remote state even if the `body` field or `api-version` field is changed.
 - `azapi_resource` resource: ignore the order of the `identity_ids` array.
+- `azapi_resource` resource: support `ignore_null_property` field, which is used to ignore the null properties in the `body` field.
 - `azapi_update_resource` resource: remove the readonly fields from `identity.userAssignedIdentities` in the request body.
 
 BUG FIXES:
