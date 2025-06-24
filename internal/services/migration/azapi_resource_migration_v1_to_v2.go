@@ -206,7 +206,7 @@ func AzapiResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgrader {
 				SchemaValidationEnabled:       oldState.SchemaValidationEnabled,
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
-				IgnoreNullProperty:            types.BoolValue(true),
+				IgnoreNullProperty:            types.BoolValue(false),
 				ReplaceTriggersExternalValues: types.DynamicNull(),
 				ReplaceTriggersRefs:           types.ListNull(types.StringType),
 				ResponseExportValues:          responseExportValues,

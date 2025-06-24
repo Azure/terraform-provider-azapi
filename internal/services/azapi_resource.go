@@ -244,7 +244,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 			"ignore_null_property": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
-				Default:             defaults.BoolDefault(true),
+				Default:             defaults.BoolDefault(false),
 				MarkdownDescription: docstrings.IgnoreNullProperty(),
 			},
 
@@ -907,7 +907,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	state.ParentID = types.StringValue(id.ParentId)
 	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 	if state.IgnoreNullProperty.IsNull() {
-		state.IgnoreNullProperty = types.BoolValue(true)
+		state.IgnoreNullProperty = types.BoolValue(false)
 	}
 
 	requestBody := make(map[string]interface{})
@@ -1290,7 +1290,7 @@ func (r *AzapiResource) defaultAzapiResourceModel() AzapiResourceModel {
 		Identity:                      types.ListNull(identity.Model{}.ModelType()),
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
-		IgnoreNullProperty:            types.BoolValue(true),
+		IgnoreNullProperty:            types.BoolValue(false),
 		Locks:                         types.ListNull(types.StringType),
 		Output:                        types.DynamicNull(),
 		ReplaceTriggersExternalValues: types.DynamicNull(),

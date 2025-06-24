@@ -95,7 +95,7 @@ This resource can manage any Azure Resource Manager resource.
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 - `ignore_null_property` (Boolean) When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
-These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `true`.
+These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 - `location` (String) The location of the Azure resource.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `name` (String) Specifies the name of the azure resource. Changing this forces a new resource to be created.

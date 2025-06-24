@@ -736,7 +736,7 @@ func TestAccGenericResource_IgnoreNullProperty(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.automationAccountComplete(data, "2023-11-01"),
+			Config: r.automationAccountCompleteWithNullPropertiesSetup(data, "2024-10-23"),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -756,11 +756,6 @@ func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 		{
 			Config:            r.automationAccountAzureRM(data),
 			ExternalProviders: knownExternalProvidersAzurerm(),
-		},
-		{
-			Config:            r.automationAccountAzureRMMovedBasic(data, "2023-11-01"),
-			ExternalProviders: knownExternalProvidersAzurerm(),
-			Config:            r.automationAccountAzureRM(data),
 		},
 		{
 			Config:             r.automationAccountAzureRMMovedBasic(data, "2023-11-01"),
@@ -2006,7 +2001,7 @@ resource "azapi_resource" "namespace" {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
       publicNetworkAccess  = "Enabled"
-      zoneRedundant        = true
+      zoneRedundant        = false
     }
     sku = {
       capacity = 1
@@ -2658,6 +2653,41 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString, apiVersion)
 }
 
+func (r GenericResource) automationAccountCompleteWithNullPropertiesSetup(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+  ignore_null_property = true
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
 func (r GenericResource) automationAccountCompleteWithNullProperties(data acceptance.TestData, apiVersion string) string {
 	return fmt.Sprintf(`
 %s
@@ -2683,6 +2713,7 @@ resource "azapi_resource" "test" {
       }
     }
   }
+  ignore_null_property = true
 }
 `, r.template(data), data.RandomString, apiVersion)
 }
