@@ -3,12 +3,12 @@
 page_title: "azapi_resource_action Ephemeral Resource - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  Performs an action on an existing Azure resource.
+  This ephemeral resource allows you to perform an action on an existing Azure resource and its state will not be persisted to the Terraform state. It is useful for performing actions that retrieve sensitive information, e.g., retrieving access keys from an Azure Storage Account. Please note that when deleting this resource, no action will be performed.
 ---
 
 # azapi_resource_action (Ephemeral Resource)
 
-Performs an action on an existing Azure resource.
+This ephemeral resource allows you to perform an action on an existing Azure resource and its state will not be persisted to the Terraform state. It is useful for performing actions that retrieve sensitive information, e.g., retrieving access keys from an Azure Storage Account. Please note that when deleting this resource, no action will be performed.
 
 ## Example Usage
 

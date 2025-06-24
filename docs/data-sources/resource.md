@@ -7,7 +7,9 @@ description: |-
 
 # azapi_resource (Data Source)
 
-This resource can access any existing Azure resource manager resource.## Example Usage
+This resource can access any existing Azure resource manager resource.
+
+## Example Usage
 
 ```terraform
 terraform {

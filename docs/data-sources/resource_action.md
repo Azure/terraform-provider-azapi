@@ -2,10 +2,12 @@
 page_title: "azapi_resource_action Data Source - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  
+  This data source allows you to perform an action on an existing Azure resource. It is useful for performing actions that reads information from an Azure resource, e.g., retrieving access keys from an Azure Storage Account. It should not be used to perform actions that modify the state of an Azure resource, because it will be called multiple times during a Terraform run.
 ---
 
 # azapi_resource_action (Data Source)
+
+This data source allows you to perform an action on an existing Azure resource. It is useful for performing actions that reads information from an Azure resource, e.g., retrieving access keys from an Azure Storage Account. It should not be used to perform actions that modify the state of an Azure resource, because it will be called multiple times during a Terraform run.
 
 ## Example Usage
 
