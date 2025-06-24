@@ -2,10 +2,12 @@
 page_title: "azapi_resource_list Data Source - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  
+  This data source allows you to list resources of a specific type under a given scope (e.g., subscription, resource group).
 ---
 
 # azapi_resource_list (Data Source)
+
+This data source allows you to list resources of a specific type under a given scope (e.g., subscription, resource group).
 
 ## Example Usage
 

@@ -2,10 +2,12 @@
 page_title: "azapi_client_config Data Source - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  
+  This data source provides information about the current Azure client configuration, including the tenant ID, subscription ID, and object ID of the identity used by the provider.
 ---
 
 # azapi_client_config (Data Source)
+
+This data source provides information about the current Azure client configuration, including the tenant ID, subscription ID, and object ID of the identity used by the provider.
 
 ## Example Usage
 

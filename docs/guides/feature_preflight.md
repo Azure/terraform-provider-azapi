@@ -22,6 +22,8 @@ provider "azapi" {
 }
 ```
 
+- The Preflight validation API requires write permissions. Make sure that the service principal or user running Terraform has the necessary permissions to perform write operations on the resources you are validating.
+
 ## Preflight Validation
 
 When you run `terraform plan`, the AzAPI provider will validate the configuration of your resources before applying changes. If there are any errors, Terraform will display an error message with details about the issue.

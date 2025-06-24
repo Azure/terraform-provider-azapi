@@ -57,6 +57,7 @@ func (r *ResourceActionDataSource) Metadata(ctx context.Context, request datasou
 
 func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This data source allows you to perform an action on an existing Azure resource. It is useful for performing actions that reads information from an Azure resource, e.g., retrieving access keys from an Azure Storage Account. It should not be used to perform actions that modify the state of an Azure resource, because it will be called multiple times during a Terraform run.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,

@@ -517,6 +517,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 		}
 		// stateBody contains sensitive properties that are not returned in GET response
 		responseBody = utils.MergeObject(responseBody, stateBody)
+
 		configBody := make(map[string]interface{})
 		if err := unmarshalBody(plan.Body, &configBody); err != nil {
 			response.Diagnostics.AddError("Invalid body", fmt.Sprintf(`The argument "body" is invalid: %s`, err.Error()))

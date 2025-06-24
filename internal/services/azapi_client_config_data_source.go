@@ -40,6 +40,7 @@ func (r *ClientConfigDataSource) Metadata(ctx context.Context, request datasourc
 
 func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This data source provides information about the current Azure client configuration, including the tenant ID, subscription ID, and object ID of the identity used by the provider.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,

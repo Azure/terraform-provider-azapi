@@ -53,6 +53,7 @@ func (r *ResourceListDataSource) Metadata(ctx context.Context, request datasourc
 
 func (r *ResourceListDataSource) Schema(ctx context.Context, request datasource.SchemaRequest, response *datasource.SchemaResponse) {
 	response.Schema = schema.Schema{
+		MarkdownDescription: "This data source allows you to list resources of a specific type under a given scope (e.g., subscription, resource group).",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
