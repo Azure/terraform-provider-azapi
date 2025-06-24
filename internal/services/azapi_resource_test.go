@@ -727,6 +727,11 @@ func TestAccGenericResource_BodySemanticallyEqualToRemote(t *testing.T) {
 			Config:             r.automationAccountComplete(data, "2023-11-01"),
 			ExpectNonEmptyPlan: false,
 		},
+		{
+			Config:             r.automationAccountCompleteStrictChangeDetection(data, "2023-11-01"),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
 	})
 }
 
@@ -753,6 +758,11 @@ func TestAccGenericResource_MovingFromAzureRM(t *testing.T) {
 		{
 			Config:             r.automationAccountAzureRMMovedComplete(data, "2023-11-01"),
 			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.automationAccountAzureRMMovedCompleteStrictChangeDetection(data, "2023-11-01"),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
 		},
 	})
 }
@@ -2630,6 +2640,44 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString, apiVersion)
 }
 
+func (r GenericResource) automationAccountCompleteStrictChangeDetection(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azapi" {
+  enable_strict_change_detection = true
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
 func (r GenericResource) automationAccountBasic(data acceptance.TestData, apiVersion string) string {
 	return fmt.Sprintf(`
 %s
@@ -2734,6 +2782,68 @@ resource "azapi_resource" "test" {
 func (r GenericResource) automationAccountAzureRMMovedComplete(data acceptance.TestData, apiVersion string) string {
 	return fmt.Sprintf(`
 %s
+
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+}
+
+# resource "azurerm_automation_account" "automationAccount" {
+#   name      = "acctest%[2]s"
+#   location            = azapi_resource.resourceGroup.location
+#   resource_group_name = azapi_resource.resourceGroup.name
+#   sku_name            = "Basic"
+# 
+#   identity {
+#     type = "SystemAssigned"
+#   }
+# }
+
+moved {
+  from = azurerm_automation_account.automationAccount
+  to   = azapi_resource.test
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@%[3]s"
+  name      = "acctest%[2]s"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    identity_ids = []
+    type         = "SystemAssigned"
+  }
+  body = {
+    properties = {
+      disableLocalAuth = false
+      encryption = {
+        identity = {
+          userAssignedIdentity = null
+        }
+        keySource = "Microsoft.Automation"
+      }
+      publicNetworkAccess = true
+      sku = {
+        capacity = null
+        family   = null
+        name     = "Basic"
+      }
+    }
+  }
+}
+`, r.template(data), data.RandomString, apiVersion)
+}
+
+func (r GenericResource) automationAccountAzureRMMovedCompleteStrictChangeDetection(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azapi" {
+  enable_strict_change_detection = true
+}
 
 provider "azurerm" {
   features {
