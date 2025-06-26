@@ -1,0 +1,1242 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 50,
+    "pattern": "^[A-Za-z0-9-]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VideoIndexer/accounts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VideoIndexer/accounts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "List of account properties"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Managed service identity (system assigned and/or user assigned identities)"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccountPropertiesForPutRequest",
+    "properties": {
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The account's tenant id"
+      },
+      "accountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The account's data-plane ID. This can be set only when connecting an existing classic account"
+      },
+      "accountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The account's name"
+      },
+      "storageServices": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The storage services details"
+      },
+      "openAiServices": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The openAi services details"
+      },
+      "totalSecondsIndexed": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "An integer representing the total seconds that have been indexed on the account"
+      },
+      "totalMinutesIndexed": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 2,
+        "description": "An integer representing the total minutes that have been indexed on the account"
+      },
+      "publicNetworkAccess": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Whether or not public network access is allowed for the account."
+      },
+      "privateEndpointConnections": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "List of private endpoint connections associated with the account."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "Gets the status of the account at the time the operation was called."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageServicesForPutRequest",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The storage services resource id"
+      },
+      "userAssignedIdentity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user assigned identity to be used to grant permissions"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OpenAiServicesForPutRequest",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The openAi services resource id"
+      },
+      "userAssignedIdentity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The user assigned identity to be used to grant permissions"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnection",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointConnectionProperties",
+    "properties": {
+      "groupIds": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The group ids for the private endpoint resource."
+      },
+      "privateEndpoint": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The private endpoint resource."
+      },
+      "privateLinkServiceConnectionState": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "A collection of information about the state of the connection between service consumer and provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The provisioning state of the private endpoint connection resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateEndpoint",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ARM identifier for private endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkServiceConnectionState",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The reason for approval/rejection of the connection."
+      },
+      "actionsRequired": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A message indicating if changes on the service provider require any updates on the consumer."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VideoIndexer/accounts@2025-04-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VideoIndexer/accounts/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VideoIndexer/accounts/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VideoIndexer/accounts/privateEndpointConnections@2025-04-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/58"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.VideoIndexer/accounts/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.VideoIndexer/accounts/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResourceProperties",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private link resource group id."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "The private link resource required member names."
+      },
+      "requiredZoneNames": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The private link resource private link DNS zone name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.VideoIndexer/accounts/privateLinkResources@2025-04-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/62"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateAccessTokenParameters",
+    "properties": {
+      "permissionType": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 1,
+        "description": "The requested permission"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 1,
+        "description": "The requested media type"
+      },
+      "videoId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The video ID"
+      },
+      "projectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The project ID"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contributor"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reader"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Video"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Account"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Project"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccessToken",
+    "properties": {
+      "accessToken": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "The access token."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateAccessToken",
+    "resourceType": "Microsoft.VideoIndexer/accounts",
+    "apiVersion": "2025-04-01",
+    "output": {
+      "$ref": "#/75"
+    },
+    "input": {
+      "$ref": "#/67"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateRestrictedViewerAccessTokenParameters",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 1,
+        "description": "The requested media type"
+      },
+      "videoId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The video ID"
+      },
+      "projectId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The project ID"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Video"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Account"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Project"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateRestrictedViewerAccessToken",
+    "resourceType": "Microsoft.VideoIndexer/accounts",
+    "apiVersion": "2025-04-01",
+    "output": {
+      "$ref": "#/75"
+    },
+    "input": {
+      "$ref": "#/78"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateExtensionAccessTokenParameters",
+    "properties": {
+      "permissionType": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 1,
+        "description": "The requested permission"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 1,
+        "description": "The requested media type"
+      },
+      "extensionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extension's resource ID"
+      },
+      "videoId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The video ID"
+      },
+      "tokenLifetimeInSeconds": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Lifetime of the access token (in seconds). Default value: 3600 (1 hour), Max value: 43200 (12 hours). Setting this value is enabled for tokens in 'Video' scope."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contributor"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reader"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Video"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Account"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Project"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateExtensionAccessToken",
+    "resourceType": "Microsoft.VideoIndexer/accounts",
+    "apiVersion": "2025-04-01",
+    "output": {
+      "$ref": "#/75"
+    },
+    "input": {
+      "$ref": "#/84"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateExtensionRestrictedViewerAccessTokenParameters",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The requested media type"
+      },
+      "extensionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extension's resource ID"
+      },
+      "videoId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The video ID"
+      },
+      "tokenLifetimeInSeconds": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Lifetime of the access token (in seconds). Default value: 3600 (1 hour), Max value: 43200 (12 hours). Setting this value is enabled for tokens in 'Video' scope."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Video"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Account"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Project"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateExtensionRestrictedViewerAccessToken",
+    "resourceType": "Microsoft.VideoIndexer/accounts",
+    "apiVersion": "2025-04-01",
+    "output": {
+      "$ref": "#/75"
+    },
+    "input": {
+      "$ref": "#/93"
+    }
+  }
+]

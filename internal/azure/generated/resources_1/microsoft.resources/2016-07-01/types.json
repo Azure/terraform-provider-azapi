@@ -1,0 +1,891 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Resources/deployments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2016-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Resources/deployments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The deployment properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentPropertiesOrDeploymentPropertiesExtended",
+    "properties": {
+      "template": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The template content. It can be a JObject or a well formed JSON string. Use only one of Template or TemplateLink."
+      },
+      "templateLink": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The template URI. Use only one of Template or TemplateLink."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Deployment parameters. It can be a JObject or a well formed JSON string. Use only one of Parameters or ParametersLink."
+      },
+      "parametersLink": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The parameters URI. Use only one of Parameters or ParametersLink."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "The deployment mode."
+      },
+      "debugSetting": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The debug setting of the deployment."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The state of the provisioning."
+      },
+      "correlationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The correlation ID of the deployment."
+      },
+      "timestamp": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The timestamp of the template deployment."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "Key/value pairs that represent deployment output."
+      },
+      "providers": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The list of resource providers needed for the deployment."
+      },
+      "dependencies": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 2,
+        "description": "The list of deployment dependencies."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "The deployment error."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TemplateLink",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "URI referencing the template."
+      },
+      "contentVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If included it must match the ContentVersion in the template."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ParametersLink",
+    "properties": {
+      "uri": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "URI referencing the template."
+      },
+      "contentVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If included it must match the ContentVersion in the template."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incremental"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DebugSetting",
+    "properties": {
+      "detailLevel": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The debug detail level."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Provider",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The provider id."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The namespace of the provider."
+      },
+      "registrationState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The registration state of the provider."
+      },
+      "resourceTypes": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The collection of provider resource types."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProviderResourceType",
+    "properties": {
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource type."
+      },
+      "locations": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The collection of locations where this resource type can be created in."
+      },
+      "aliases": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The aliases that are supported by this resource type."
+      },
+      "apiVersions": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The api version."
+      },
+      "zoneMappings": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The properties."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AliasType",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The alias name."
+      },
+      "paths": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The paths for an alias."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AliasPathType",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The path of an alias."
+      },
+      "apiVersions": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The api versions."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ZoneMapping",
+    "properties": {
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The location of the zone mapping."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProviderResourceTypeProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/13"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Dependency",
+    "properties": {
+      "dependsOn": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The list of dependencies."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ID of the dependency."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dependency resource type."
+      },
+      "resourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dependency resource name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BasicDependency",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ID of the dependency."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dependency resource type."
+      },
+      "resourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The dependency resource name."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/28"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/27"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorResponse",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/33"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Resources/deployments@2016-07-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.Resources/deployments",
+    "apiVersion": "2016-07-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Deployment",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The deployment properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentProperties",
+    "properties": {
+      "template": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The template content. It can be a JObject or a well formed JSON string. Use only one of Template or TemplateLink."
+      },
+      "templateLink": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The template URI. Use only one of Template or TemplateLink."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Deployment parameters. It can be a JObject or a well formed JSON string. Use only one of Parameters or ParametersLink."
+      },
+      "parametersLink": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The parameters URI. Use only one of Parameters or ParametersLink."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The deployment mode."
+      },
+      "debugSetting": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The debug setting of the deployment."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incremental"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentValidateResult",
+    "properties": {
+      "error": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Validation error."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "The template deployment properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceManagementErrorWithDetails",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The error code returned from the server."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The error message returned from the server."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The target of the error."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Validation error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentPropertiesExtended",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The state of the provisioning."
+      },
+      "correlationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The correlation ID of the deployment."
+      },
+      "timestamp": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of the template deployment."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Key/value pairs that represent deployment output."
+      },
+      "providers": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The list of resource providers needed for the deployment."
+      },
+      "dependencies": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "The list of deployment dependencies."
+      },
+      "template": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The template content. Use only one of Template or TemplateLink."
+      },
+      "templateLink": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The URI referencing the template. Use only one of Template or TemplateLink."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Deployment parameters. Use only one of Parameters or ParametersLink."
+      },
+      "parametersLink": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The URI referencing the parameters. Use only one of Parameters or ParametersLink."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "The deployment mode."
+      },
+      "debugSetting": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "The debug setting of the deployment."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 2,
+        "description": "The deployment error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/27"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incremental"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Complete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validate",
+    "resourceType": "Microsoft.Resources/deployments",
+    "apiVersion": "2016-07-01",
+    "output": {
+      "$ref": "#/42"
+    },
+    "input": {
+      "$ref": "#/37"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentExportResult",
+    "properties": {
+      "template": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The template content."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "exportTemplate",
+    "resourceType": "Microsoft.Resources/deployments",
+    "apiVersion": "2016-07-01",
+    "output": {
+      "$ref": "#/52"
+    }
+  }
+]

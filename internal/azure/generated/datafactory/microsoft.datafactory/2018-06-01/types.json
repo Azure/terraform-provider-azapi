@@ -8754,6 +8754,13 @@
         "flags": 0,
         "description": "Specifies whether the connections to the server are encrypted using SSL. The default value is false."
       },
+      "enableServerCertificateValidation": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Specifies whether the connections to the server will validate server certificate, the default value is True. Only used for Version 2.0"
+      },
       "trustedCertPath": {
         "type": {
           "$ref": "#/11"
@@ -11566,35 +11573,42 @@
           "$ref": "#/11"
         },
         "flags": 0,
-        "description": "The consumer key for OAuth 1.0 authentication."
+        "description": "The consumer key for OAuth 2.0 authentication."
       },
       "consumerSecret": {
         "type": {
           "$ref": "#/100"
         },
         "flags": 0,
-        "description": "The consumer secret for OAuth 1.0 authentication."
+        "description": "The consumer secret for OAuth 2.0 authentication."
       },
       "accessToken": {
         "type": {
           "$ref": "#/100"
         },
         "flags": 0,
-        "description": "The access token for OAuth 1.0 authentication."
+        "description": "The access token for OAuth 2.0 authentication."
       },
       "accessTokenSecret": {
         "type": {
           "$ref": "#/100"
         },
         "flags": 0,
-        "description": "The access token secret for OAuth 1.0 authentication."
+        "description": "The access token secret is deprecated for OAuth 1.0 authentication. Only used for version 1.0."
+      },
+      "refreshToken": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "The refresh token for OAuth 2.0 authentication."
       },
       "useEncryptedEndpoints": {
         "type": {
           "$ref": "#/11"
         },
         "flags": 0,
-        "description": "Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true."
+        "description": "Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Only used for version 1.0."
       },
       "encryptedCredential": {
         "type": {
@@ -13896,6 +13910,13 @@
         },
         "flags": 0,
         "description": "Specifies whether the connections to the server are encrypted using SSL. The default value is false."
+      },
+      "enableServerCertificateValidation": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Specifies whether the connections to the server will validate server certificate, the default value is True. Only used for Version 2.0"
       },
       "trustedCertPath": {
         "type": {
@@ -20894,21 +20915,21 @@
       },
       "activities": {
         "type": {
-          "$ref": "#/1830"
+          "$ref": "#/1834"
         },
         "flags": 0,
         "description": "List of activities in pipeline."
       },
       "parameters": {
         "type": {
-          "$ref": "#/1831"
+          "$ref": "#/1835"
         },
         "flags": 0,
         "description": "List of parameters for pipeline."
       },
       "variables": {
         "type": {
-          "$ref": "#/1837"
+          "$ref": "#/1841"
         },
         "flags": 0,
         "description": "List of variables for pipeline."
@@ -20922,28 +20943,28 @@
       },
       "annotations": {
         "type": {
-          "$ref": "#/1838"
+          "$ref": "#/1842"
         },
         "flags": 0,
         "description": "List of tags that can be used for describing the Pipeline."
       },
       "runDimensions": {
         "type": {
-          "$ref": "#/1839"
+          "$ref": "#/1843"
         },
         "flags": 0,
         "description": "Dimensions emitted by Pipeline."
       },
       "folder": {
         "type": {
-          "$ref": "#/1840"
+          "$ref": "#/1844"
         },
         "flags": 0,
         "description": "The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level."
       },
       "policy": {
         "type": {
-          "$ref": "#/1841"
+          "$ref": "#/1845"
         },
         "flags": 0,
         "description": "Pipeline Policy."
@@ -21059,62 +21080,65 @@
       "DataLakeAnalyticsU-SQL": {
         "$ref": "#/1609"
       },
-      "DatabricksNotebook": {
+      "DatabricksJob": {
         "$ref": "#/1613"
       },
+      "DatabricksNotebook": {
+        "$ref": "#/1617"
+      },
       "DatabricksSparkJar": {
-        "$ref": "#/1619"
+        "$ref": "#/1623"
       },
       "DatabricksSparkPython": {
-        "$ref": "#/1625"
+        "$ref": "#/1629"
       },
       "Delete": {
-        "$ref": "#/1631"
+        "$ref": "#/1635"
       },
       "ExecuteDataFlow": {
-        "$ref": "#/1634"
+        "$ref": "#/1638"
       },
       "ExecuteSSISPackage": {
-        "$ref": "#/1644"
+        "$ref": "#/1648"
       },
       "ExecuteWranglingDataflow": {
-        "$ref": "#/1671"
+        "$ref": "#/1675"
       },
       "GetMetadata": {
-        "$ref": "#/1679"
+        "$ref": "#/1683"
       },
       "HDInsightHive": {
-        "$ref": "#/1694"
+        "$ref": "#/1698"
       },
       "HDInsightMapReduce": {
-        "$ref": "#/1705"
+        "$ref": "#/1709"
       },
       "HDInsightPig": {
-        "$ref": "#/1716"
+        "$ref": "#/1720"
       },
       "HDInsightSpark": {
-        "$ref": "#/1725"
+        "$ref": "#/1729"
       },
       "HDInsightStreaming": {
-        "$ref": "#/1734"
+        "$ref": "#/1738"
       },
       "Lookup": {
-        "$ref": "#/1746"
+        "$ref": "#/1750"
       },
       "Script": {
-        "$ref": "#/1749"
+        "$ref": "#/1753"
       },
       "SparkJob": {
-        "$ref": "#/1777"
+        "$ref": "#/1781"
       },
       "SqlServerStoredProcedure": {
-        "$ref": "#/1798"
+        "$ref": "#/1802"
       },
       "SynapseNotebook": {
-        "$ref": "#/1801"
+        "$ref": "#/1805"
       },
       "WebActivity": {
-        "$ref": "#/1819"
+        "$ref": "#/1823"
       }
     }
   },
@@ -28602,10 +28626,10 @@
       },
       "value": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/11"
         },
         "flags": 0,
-        "description": "Value for Constant/Field Type: string."
+        "description": "Value for Constant/Field Type: object."
       },
       "operators": {
         "type": {
@@ -32972,11 +32996,77 @@
   },
   {
     "$type": "ObjectType",
-    "name": "DatabricksNotebookActivity",
+    "name": "DatabricksJobActivity",
     "properties": {
       "typeProperties": {
         "type": {
           "$ref": "#/1614"
+        },
+        "flags": 1,
+        "description": "Databricks Job activity properties."
+      },
+      "linkedServiceName": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Linked service reference."
+      },
+      "policy": {
+        "type": {
+          "$ref": "#/1057"
+        },
+        "flags": 0,
+        "description": "Activity policy."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1616"
+        },
+        "flags": 1,
+        "description": "Type of activity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabricksJobActivityTypeProperties",
+    "properties": {
+      "jobId": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 1,
+        "description": "The Id of the Databricks Job to be executed. Type: string (or Expression with resultType string)."
+      },
+      "jobParameters": {
+        "type": {
+          "$ref": "#/1615"
+        },
+        "flags": 0,
+        "description": "Job parameters to be used for each run of this job. If the job takes a parameter that is not specified, the default value from the job will be used."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabricksJobActivityTypePropertiesJobParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/11"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DatabricksJob"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatabricksNotebookActivity",
+    "properties": {
+      "typeProperties": {
+        "type": {
+          "$ref": "#/1618"
         },
         "flags": 1,
         "description": "Databricks Notebook activity properties."
@@ -32997,7 +33087,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1618"
+          "$ref": "#/1622"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33017,14 +33107,14 @@
       },
       "baseParameters": {
         "type": {
-          "$ref": "#/1615"
+          "$ref": "#/1619"
         },
         "flags": 0,
         "description": "Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the default value from the notebook will be used."
       },
       "libraries": {
         "type": {
-          "$ref": "#/1617"
+          "$ref": "#/1621"
         },
         "flags": 0,
         "description": "A list of libraries to be installed on the cluster that will execute the job."
@@ -33050,7 +33140,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1616"
+      "$ref": "#/1620"
     }
   },
   {
@@ -33063,7 +33153,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1620"
+          "$ref": "#/1624"
         },
         "flags": 1,
         "description": "Databricks SparkJar activity properties."
@@ -33084,7 +33174,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1624"
+          "$ref": "#/1628"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33104,14 +33194,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/1621"
+          "$ref": "#/1625"
         },
         "flags": 0,
         "description": "Parameters that will be passed to the main method."
       },
       "libraries": {
         "type": {
-          "$ref": "#/1623"
+          "$ref": "#/1627"
         },
         "flags": 0,
         "description": "A list of libraries to be installed on the cluster that will execute the job."
@@ -33135,7 +33225,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1622"
+      "$ref": "#/1626"
     }
   },
   {
@@ -33148,7 +33238,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1626"
+          "$ref": "#/1630"
         },
         "flags": 1,
         "description": "Databricks SparkPython activity properties."
@@ -33169,7 +33259,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1630"
+          "$ref": "#/1634"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33189,14 +33279,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/1627"
+          "$ref": "#/1631"
         },
         "flags": 0,
         "description": "Command line parameters that will be passed to the Python file."
       },
       "libraries": {
         "type": {
-          "$ref": "#/1629"
+          "$ref": "#/1633"
         },
         "flags": 0,
         "description": "A list of libraries to be installed on the cluster that will execute the job."
@@ -33220,7 +33310,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1628"
+      "$ref": "#/1632"
     }
   },
   {
@@ -33233,7 +33323,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1632"
+          "$ref": "#/1636"
         },
         "flags": 1,
         "description": "Delete activity properties."
@@ -33254,7 +33344,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1633"
+          "$ref": "#/1637"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33319,7 +33409,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1635"
+          "$ref": "#/1639"
         },
         "flags": 1,
         "description": "Execute data flow activity properties."
@@ -33340,7 +33430,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1643"
+          "$ref": "#/1647"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33353,14 +33443,14 @@
     "properties": {
       "dataFlow": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 1,
         "description": "Data flow reference."
       },
       "staging": {
         "type": {
-          "$ref": "#/1640"
+          "$ref": "#/1644"
         },
         "flags": 0,
         "description": "Staging info for execute data flow activity."
@@ -33374,14 +33464,14 @@
       },
       "continuationSettings": {
         "type": {
-          "$ref": "#/1641"
+          "$ref": "#/1645"
         },
         "flags": 0,
         "description": "Continuation settings for execute data flow activity."
       },
       "compute": {
         "type": {
-          "$ref": "#/1642"
+          "$ref": "#/1646"
         },
         "flags": 0,
         "description": "Compute properties for data flow activity."
@@ -33422,7 +33512,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1638"
+          "$ref": "#/1642"
         },
         "flags": 1,
         "description": "Data flow reference type."
@@ -33443,7 +33533,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/1639"
+          "$ref": "#/1643"
         },
         "flags": 0,
         "description": "Data flow parameters"
@@ -33461,7 +33551,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1637"
+        "$ref": "#/1641"
       },
       {
         "$ref": "#/2"
@@ -33553,7 +33643,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1645"
+          "$ref": "#/1649"
         },
         "flags": 1,
         "description": "Execute SSIS package activity properties."
@@ -33574,7 +33664,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1670"
+          "$ref": "#/1674"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -33587,7 +33677,7 @@
     "properties": {
       "packageLocation": {
         "type": {
-          "$ref": "#/1646"
+          "$ref": "#/1650"
         },
         "flags": 1,
         "description": "SSIS package location."
@@ -33615,7 +33705,7 @@
       },
       "executionCredential": {
         "type": {
-          "$ref": "#/1656"
+          "$ref": "#/1660"
         },
         "flags": 0,
         "description": "The package execution credential."
@@ -33629,42 +33719,42 @@
       },
       "projectParameters": {
         "type": {
-          "$ref": "#/1658"
+          "$ref": "#/1662"
         },
         "flags": 0,
         "description": "The project level parameters to execute the SSIS package."
       },
       "packageParameters": {
         "type": {
-          "$ref": "#/1659"
+          "$ref": "#/1663"
         },
         "flags": 0,
         "description": "The package level parameters to execute the SSIS package."
       },
       "projectConnectionManagers": {
         "type": {
-          "$ref": "#/1661"
+          "$ref": "#/1665"
         },
         "flags": 0,
         "description": "The project level connection managers to execute the SSIS package."
       },
       "packageConnectionManagers": {
         "type": {
-          "$ref": "#/1663"
+          "$ref": "#/1667"
         },
         "flags": 0,
         "description": "The package level connection managers to execute the SSIS package."
       },
       "propertyOverrides": {
         "type": {
-          "$ref": "#/1665"
+          "$ref": "#/1669"
         },
         "flags": 0,
         "description": "The property overrides to execute the SSIS package."
       },
       "logLocation": {
         "type": {
-          "$ref": "#/1666"
+          "$ref": "#/1670"
         },
         "flags": 0,
         "description": "SSIS package execution log location."
@@ -33684,14 +33774,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1651"
+          "$ref": "#/1655"
         },
         "flags": 0,
         "description": "The type of SSIS package location."
       },
       "typeProperties": {
         "type": {
-          "$ref": "#/1652"
+          "$ref": "#/1656"
         },
         "flags": 0,
         "description": "SSIS package location properties."
@@ -33718,16 +33808,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1647"
+        "$ref": "#/1651"
       },
       {
-        "$ref": "#/1648"
+        "$ref": "#/1652"
       },
       {
-        "$ref": "#/1649"
+        "$ref": "#/1653"
       },
       {
-        "$ref": "#/1650"
+        "$ref": "#/1654"
       },
       {
         "$ref": "#/2"
@@ -33747,7 +33837,7 @@
       },
       "accessCredential": {
         "type": {
-          "$ref": "#/1653"
+          "$ref": "#/1657"
         },
         "flags": 0,
         "description": "The package access credential."
@@ -33761,7 +33851,7 @@
       },
       "configurationAccessCredential": {
         "type": {
-          "$ref": "#/1653"
+          "$ref": "#/1657"
         },
         "flags": 0,
         "description": "The configuration file access credential."
@@ -33789,7 +33879,7 @@
       },
       "childPackages": {
         "type": {
-          "$ref": "#/1655"
+          "$ref": "#/1659"
         },
         "flags": 0,
         "description": "The embedded child package list."
@@ -33860,7 +33950,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1654"
+      "$ref": "#/1658"
     }
   },
   {
@@ -33908,7 +33998,7 @@
     "name": "ExecuteSsisPackageActivityTypePropertiesProjectParameters",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1657"
+      "$ref": "#/1661"
     }
   },
   {
@@ -33916,7 +34006,7 @@
     "name": "ExecuteSsisPackageActivityTypePropertiesPackageParameters",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1657"
+      "$ref": "#/1661"
     }
   },
   {
@@ -33924,7 +34014,7 @@
     "name": "SsisConnectionManager",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1657"
+      "$ref": "#/1661"
     }
   },
   {
@@ -33932,7 +34022,7 @@
     "name": "ExecuteSsisPackageActivityTypePropertiesProjectConnectionManagers",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1660"
+      "$ref": "#/1664"
     }
   },
   {
@@ -33940,7 +34030,7 @@
     "name": "SsisConnectionManager",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1657"
+      "$ref": "#/1661"
     }
   },
   {
@@ -33948,7 +34038,7 @@
     "name": "ExecuteSsisPackageActivityTypePropertiesPackageConnectionManagers",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1662"
+      "$ref": "#/1666"
     }
   },
   {
@@ -33976,7 +34066,7 @@
     "name": "ExecuteSsisPackageActivityTypePropertiesPropertyOverrides",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1664"
+      "$ref": "#/1668"
     }
   },
   {
@@ -33992,14 +34082,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1668"
+          "$ref": "#/1672"
         },
         "flags": 1,
         "description": "The type of SSIS log location."
       },
       "typeProperties": {
         "type": {
-          "$ref": "#/1669"
+          "$ref": "#/1673"
         },
         "flags": 1,
         "description": "SSIS package execution log location properties."
@@ -34014,7 +34104,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1667"
+        "$ref": "#/1671"
       },
       {
         "$ref": "#/2"
@@ -34027,7 +34117,7 @@
     "properties": {
       "accessCredential": {
         "type": {
-          "$ref": "#/1653"
+          "$ref": "#/1657"
         },
         "flags": 0,
         "description": "The package execution log access credential."
@@ -34051,7 +34141,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1672"
+          "$ref": "#/1676"
         },
         "flags": 1,
         "description": "Execute power query activity properties."
@@ -34065,7 +34155,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1678"
+          "$ref": "#/1682"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -34078,28 +34168,28 @@
     "properties": {
       "sinks": {
         "type": {
-          "$ref": "#/1674"
+          "$ref": "#/1678"
         },
         "flags": 0,
         "description": "(Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName."
       },
       "queries": {
         "type": {
-          "$ref": "#/1677"
+          "$ref": "#/1681"
         },
         "flags": 0,
         "description": "List of mapping for Power Query mashup query to sink dataset(s)."
       },
       "dataFlow": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 1,
         "description": "Data flow reference."
       },
       "staging": {
         "type": {
-          "$ref": "#/1640"
+          "$ref": "#/1644"
         },
         "flags": 0,
         "description": "Staging info for execute data flow activity."
@@ -34113,14 +34203,14 @@
       },
       "continuationSettings": {
         "type": {
-          "$ref": "#/1641"
+          "$ref": "#/1645"
         },
         "flags": 0,
         "description": "Continuation settings for execute data flow activity."
       },
       "compute": {
         "type": {
-          "$ref": "#/1642"
+          "$ref": "#/1646"
         },
         "flags": 0,
         "description": "Compute properties for data flow activity."
@@ -34210,7 +34300,7 @@
       },
       "flowlet": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 0,
         "description": "Flowlet Reference"
@@ -34222,7 +34312,7 @@
     "name": "ExecutePowerQueryActivityTypePropertiesSinks",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1673"
+      "$ref": "#/1677"
     }
   },
   {
@@ -34238,7 +34328,7 @@
       },
       "dataflowSinks": {
         "type": {
-          "$ref": "#/1676"
+          "$ref": "#/1680"
         },
         "flags": 0,
         "description": "List of sinks mapped to Power Query mashup query."
@@ -34248,13 +34338,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1673"
+      "$ref": "#/1677"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1675"
+      "$ref": "#/1679"
     }
   },
   {
@@ -34267,7 +34357,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1680"
+          "$ref": "#/1684"
         },
         "flags": 1,
         "description": "GetMetadata activity properties."
@@ -34288,7 +34378,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1693"
+          "$ref": "#/1697"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -34308,7 +34398,7 @@
       },
       "fieldList": {
         "type": {
-          "$ref": "#/1681"
+          "$ref": "#/1685"
         },
         "flags": 0,
         "description": "Fields of metadata to get from dataset."
@@ -34322,7 +34412,7 @@
       },
       "formatSettings": {
         "type": {
-          "$ref": "#/1682"
+          "$ref": "#/1686"
         },
         "flags": 0,
         "description": "GetMetadata activity format settings."
@@ -34342,19 +34432,19 @@
     "baseProperties": {},
     "elements": {
       "BinaryReadSettings": {
-        "$ref": "#/1683"
-      },
-      "DelimitedTextReadSettings": {
-        "$ref": "#/1685"
-      },
-      "JsonReadSettings": {
         "$ref": "#/1687"
       },
-      "ParquetReadSettings": {
+      "DelimitedTextReadSettings": {
         "$ref": "#/1689"
       },
-      "XmlReadSettings": {
+      "JsonReadSettings": {
         "$ref": "#/1691"
+      },
+      "ParquetReadSettings": {
+        "$ref": "#/1693"
+      },
+      "XmlReadSettings": {
+        "$ref": "#/1695"
       }
     }
   },
@@ -34371,7 +34461,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1684"
+          "$ref": "#/1688"
         },
         "flags": 1,
         "description": "The read setting type."
@@ -34402,7 +34492,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1686"
+          "$ref": "#/1690"
         },
         "flags": 1,
         "description": "The read setting type."
@@ -34426,7 +34516,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1688"
+          "$ref": "#/1692"
         },
         "flags": 1,
         "description": "The read setting type."
@@ -34450,7 +34540,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1690"
+          "$ref": "#/1694"
         },
         "flags": 1,
         "description": "The read setting type."
@@ -34502,7 +34592,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1692"
+          "$ref": "#/1696"
         },
         "flags": 1,
         "description": "The read setting type."
@@ -34523,7 +34613,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1695"
+          "$ref": "#/1699"
         },
         "flags": 1,
         "description": "HDInsight Hive activity properties."
@@ -34544,7 +34634,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1704"
+          "$ref": "#/1708"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -34557,21 +34647,21 @@
     "properties": {
       "storageLinkedServices": {
         "type": {
-          "$ref": "#/1696"
+          "$ref": "#/1700"
         },
         "flags": 0,
         "description": "Storage linked service references."
       },
       "arguments": {
         "type": {
-          "$ref": "#/1697"
+          "$ref": "#/1701"
         },
         "flags": 0,
         "description": "User specified arguments to HDInsightActivity."
       },
       "getDebugInfo": {
         "type": {
-          "$ref": "#/1701"
+          "$ref": "#/1705"
         },
         "flags": 0,
         "description": "Debug info option."
@@ -34592,14 +34682,14 @@
       },
       "defines": {
         "type": {
-          "$ref": "#/1702"
+          "$ref": "#/1706"
         },
         "flags": 0,
         "description": "Allows user to specify defines for Hive job request."
       },
       "variables": {
         "type": {
-          "$ref": "#/1703"
+          "$ref": "#/1707"
         },
         "flags": 0,
         "description": "User specified arguments under hivevar namespace."
@@ -34641,13 +34731,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1698"
+        "$ref": "#/1702"
       },
       {
-        "$ref": "#/1699"
+        "$ref": "#/1703"
       },
       {
-        "$ref": "#/1700"
+        "$ref": "#/1704"
       },
       {
         "$ref": "#/2"
@@ -34680,7 +34770,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1706"
+          "$ref": "#/1710"
         },
         "flags": 1,
         "description": "HDInsight MapReduce activity properties."
@@ -34701,7 +34791,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1715"
+          "$ref": "#/1719"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -34714,21 +34804,21 @@
     "properties": {
       "storageLinkedServices": {
         "type": {
-          "$ref": "#/1707"
+          "$ref": "#/1711"
         },
         "flags": 0,
         "description": "Storage linked service references."
       },
       "arguments": {
         "type": {
-          "$ref": "#/1708"
+          "$ref": "#/1712"
         },
         "flags": 0,
         "description": "User specified arguments to HDInsightActivity."
       },
       "getDebugInfo": {
         "type": {
-          "$ref": "#/1712"
+          "$ref": "#/1716"
         },
         "flags": 0,
         "description": "Debug info option."
@@ -34756,14 +34846,14 @@
       },
       "jarLibs": {
         "type": {
-          "$ref": "#/1713"
+          "$ref": "#/1717"
         },
         "flags": 0,
         "description": "Jar libs."
       },
       "defines": {
         "type": {
-          "$ref": "#/1714"
+          "$ref": "#/1718"
         },
         "flags": 0,
         "description": "Allows user to specify defines for the MapReduce job request."
@@ -34798,13 +34888,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1709"
+        "$ref": "#/1713"
       },
       {
-        "$ref": "#/1710"
+        "$ref": "#/1714"
       },
       {
-        "$ref": "#/1711"
+        "$ref": "#/1715"
       },
       {
         "$ref": "#/2"
@@ -34835,7 +34925,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1717"
+          "$ref": "#/1721"
         },
         "flags": 1,
         "description": "HDInsight Pig activity properties."
@@ -34856,7 +34946,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1724"
+          "$ref": "#/1728"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -34869,7 +34959,7 @@
     "properties": {
       "storageLinkedServices": {
         "type": {
-          "$ref": "#/1718"
+          "$ref": "#/1722"
         },
         "flags": 0,
         "description": "Storage linked service references."
@@ -34883,7 +34973,7 @@
       },
       "getDebugInfo": {
         "type": {
-          "$ref": "#/1722"
+          "$ref": "#/1726"
         },
         "flags": 0,
         "description": "Debug info option."
@@ -34904,7 +34994,7 @@
       },
       "defines": {
         "type": {
-          "$ref": "#/1723"
+          "$ref": "#/1727"
         },
         "flags": 0,
         "description": "Allows user to specify defines for Pig job request."
@@ -34933,13 +35023,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1719"
+        "$ref": "#/1723"
       },
       {
-        "$ref": "#/1720"
+        "$ref": "#/1724"
       },
       {
-        "$ref": "#/1721"
+        "$ref": "#/1725"
       },
       {
         "$ref": "#/2"
@@ -34964,7 +35054,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1726"
+          "$ref": "#/1730"
         },
         "flags": 1,
         "description": "HDInsight spark activity properties."
@@ -34985,7 +35075,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1733"
+          "$ref": "#/1737"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -35012,14 +35102,14 @@
       },
       "arguments": {
         "type": {
-          "$ref": "#/1727"
+          "$ref": "#/1731"
         },
         "flags": 0,
         "description": "The user-specified arguments to HDInsightSparkActivity."
       },
       "getDebugInfo": {
         "type": {
-          "$ref": "#/1731"
+          "$ref": "#/1735"
         },
         "flags": 0,
         "description": "Debug info option."
@@ -35047,7 +35137,7 @@
       },
       "sparkConfig": {
         "type": {
-          "$ref": "#/1732"
+          "$ref": "#/1736"
         },
         "flags": 0,
         "description": "Spark configuration property."
@@ -35076,13 +35166,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1728"
+        "$ref": "#/1732"
       },
       {
-        "$ref": "#/1729"
+        "$ref": "#/1733"
       },
       {
-        "$ref": "#/1730"
+        "$ref": "#/1734"
       },
       {
         "$ref": "#/2"
@@ -35107,7 +35197,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1735"
+          "$ref": "#/1739"
         },
         "flags": 1,
         "description": "HDInsight streaming activity properties."
@@ -35128,7 +35218,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1745"
+          "$ref": "#/1749"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -35141,21 +35231,21 @@
     "properties": {
       "storageLinkedServices": {
         "type": {
-          "$ref": "#/1736"
+          "$ref": "#/1740"
         },
         "flags": 0,
         "description": "Storage linked service references."
       },
       "arguments": {
         "type": {
-          "$ref": "#/1737"
+          "$ref": "#/1741"
         },
         "flags": 0,
         "description": "User specified arguments to HDInsightActivity."
       },
       "getDebugInfo": {
         "type": {
-          "$ref": "#/1741"
+          "$ref": "#/1745"
         },
         "flags": 0,
         "description": "Debug info option."
@@ -35190,7 +35280,7 @@
       },
       "filePaths": {
         "type": {
-          "$ref": "#/1742"
+          "$ref": "#/1746"
         },
         "flags": 1,
         "description": "Paths to streaming job files. Can be directories."
@@ -35211,14 +35301,14 @@
       },
       "commandEnvironment": {
         "type": {
-          "$ref": "#/1743"
+          "$ref": "#/1747"
         },
         "flags": 0,
         "description": "Command line environment values."
       },
       "defines": {
         "type": {
-          "$ref": "#/1744"
+          "$ref": "#/1748"
         },
         "flags": 0,
         "description": "Allows user to specify defines for streaming job request."
@@ -35253,13 +35343,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1738"
+        "$ref": "#/1742"
       },
       {
-        "$ref": "#/1739"
+        "$ref": "#/1743"
       },
       {
-        "$ref": "#/1740"
+        "$ref": "#/1744"
       },
       {
         "$ref": "#/2"
@@ -35296,7 +35386,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1747"
+          "$ref": "#/1751"
         },
         "flags": 1,
         "description": "Lookup activity properties."
@@ -35317,7 +35407,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1748"
+          "$ref": "#/1752"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -35361,7 +35451,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1750"
+          "$ref": "#/1754"
         },
         "flags": 1,
         "description": "Script activity properties."
@@ -35382,7 +35472,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1776"
+          "$ref": "#/1780"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -35402,14 +35492,14 @@
       },
       "scripts": {
         "type": {
-          "$ref": "#/1771"
+          "$ref": "#/1775"
         },
         "flags": 0,
         "description": "Array of script blocks. Type: array."
       },
       "logSettings": {
         "type": {
-          "$ref": "#/1772"
+          "$ref": "#/1776"
         },
         "flags": 0,
         "description": "Log settings of script activity."
@@ -35443,7 +35533,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/1770"
+          "$ref": "#/1774"
         },
         "flags": 0,
         "description": "Array of script parameters. Type: array."
@@ -35463,7 +35553,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1765"
+          "$ref": "#/1769"
         },
         "flags": 0,
         "description": "The type of the parameter."
@@ -35477,7 +35567,7 @@
       },
       "direction": {
         "type": {
-          "$ref": "#/1769"
+          "$ref": "#/1773"
         },
         "flags": 0,
         "description": "The direction of the parameter."
@@ -35543,18 +35633,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1753"
-      },
-      {
-        "$ref": "#/1754"
-      },
-      {
-        "$ref": "#/1755"
-      },
-      {
-        "$ref": "#/1756"
-      },
-      {
         "$ref": "#/1757"
       },
       {
@@ -35579,6 +35657,18 @@
         "$ref": "#/1764"
       },
       {
+        "$ref": "#/1765"
+      },
+      {
+        "$ref": "#/1766"
+      },
+      {
+        "$ref": "#/1767"
+      },
+      {
+        "$ref": "#/1768"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -35599,13 +35689,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1766"
+        "$ref": "#/1770"
       },
       {
-        "$ref": "#/1767"
+        "$ref": "#/1771"
       },
       {
-        "$ref": "#/1768"
+        "$ref": "#/1772"
       },
       {
         "$ref": "#/2"
@@ -35615,13 +35705,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1752"
+      "$ref": "#/1756"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1751"
+      "$ref": "#/1755"
     }
   },
   {
@@ -35630,7 +35720,7 @@
     "properties": {
       "logDestination": {
         "type": {
-          "$ref": "#/1775"
+          "$ref": "#/1779"
         },
         "flags": 1,
         "description": "The destination of logs. Type: string."
@@ -35656,10 +35746,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1773"
+        "$ref": "#/1777"
       },
       {
-        "$ref": "#/1774"
+        "$ref": "#/1778"
       },
       {
         "$ref": "#/2"
@@ -35676,7 +35766,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1778"
+          "$ref": "#/1782"
         },
         "flags": 1,
         "description": "Execute spark job activity properties."
@@ -35697,7 +35787,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1797"
+          "$ref": "#/1801"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -35710,14 +35800,14 @@
     "properties": {
       "sparkJob": {
         "type": {
-          "$ref": "#/1779"
+          "$ref": "#/1783"
         },
         "flags": 1,
         "description": "Synapse spark job reference."
       },
       "args": {
         "type": {
-          "$ref": "#/1782"
+          "$ref": "#/1786"
         },
         "flags": 0,
         "description": "User specified arguments to SynapseSparkJobDefinitionActivity."
@@ -35745,28 +35835,28 @@
       },
       "files": {
         "type": {
-          "$ref": "#/1783"
+          "$ref": "#/1787"
         },
         "flags": 0,
         "description": "(Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main definition file, which will override the 'files' of the spark job definition you provide."
       },
       "pythonCodeReference": {
         "type": {
-          "$ref": "#/1784"
+          "$ref": "#/1788"
         },
         "flags": 0,
         "description": "Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of the spark job definition you provide."
       },
       "filesV2": {
         "type": {
-          "$ref": "#/1785"
+          "$ref": "#/1789"
         },
         "flags": 0,
         "description": "Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of the spark job definition you provide."
       },
       "targetBigDataPool": {
         "type": {
-          "$ref": "#/1786"
+          "$ref": "#/1790"
         },
         "flags": 0,
         "description": "The name of the big data pool which will be used to execute the spark batch job, which will override the 'targetBigDataPool' of the spark job definition you provide."
@@ -35801,21 +35891,21 @@
       },
       "configurationType": {
         "type": {
-          "$ref": "#/1792"
+          "$ref": "#/1796"
         },
         "flags": 0,
         "description": "The type of the spark config."
       },
       "targetSparkConfiguration": {
         "type": {
-          "$ref": "#/1793"
+          "$ref": "#/1797"
         },
         "flags": 0,
         "description": "The spark configuration of the spark job."
       },
       "sparkConfig": {
         "type": {
-          "$ref": "#/1796"
+          "$ref": "#/1800"
         },
         "flags": 0,
         "description": "Spark configuration property."
@@ -35828,7 +35918,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1781"
+          "$ref": "#/1785"
         },
         "flags": 1,
         "description": "Synapse spark job reference type."
@@ -35850,7 +35940,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1780"
+        "$ref": "#/1784"
       },
       {
         "$ref": "#/2"
@@ -35887,7 +35977,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1788"
+          "$ref": "#/1792"
         },
         "flags": 1,
         "description": "Big data pool reference type."
@@ -35909,7 +35999,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1787"
+        "$ref": "#/1791"
       },
       {
         "$ref": "#/2"
@@ -35932,13 +36022,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1789"
+        "$ref": "#/1793"
       },
       {
-        "$ref": "#/1790"
+        "$ref": "#/1794"
       },
       {
-        "$ref": "#/1791"
+        "$ref": "#/1795"
       },
       {
         "$ref": "#/2"
@@ -35951,7 +36041,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1795"
+          "$ref": "#/1799"
         },
         "flags": 1,
         "description": "Spark configuration reference type."
@@ -35973,7 +36063,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1794"
+        "$ref": "#/1798"
       },
       {
         "$ref": "#/2"
@@ -35998,7 +36088,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1799"
+          "$ref": "#/1803"
         },
         "flags": 1,
         "description": "SQL stored procedure activity properties."
@@ -36019,7 +36109,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1800"
+          "$ref": "#/1804"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -36056,7 +36146,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1802"
+          "$ref": "#/1806"
         },
         "flags": 1,
         "description": "Execute Synapse notebook activity properties."
@@ -36077,7 +36167,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1818"
+          "$ref": "#/1822"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -36090,21 +36180,21 @@
     "properties": {
       "notebook": {
         "type": {
-          "$ref": "#/1803"
+          "$ref": "#/1807"
         },
         "flags": 1,
         "description": "Synapse notebook reference."
       },
       "sparkPool": {
         "type": {
-          "$ref": "#/1786"
+          "$ref": "#/1790"
         },
         "flags": 0,
         "description": "The name of the big data pool which will be used to execute the notebook."
       },
       "parameters": {
         "type": {
-          "$ref": "#/1812"
+          "$ref": "#/1816"
         },
         "flags": 0,
         "description": "Notebook parameters."
@@ -36139,21 +36229,21 @@
       },
       "configurationType": {
         "type": {
-          "$ref": "#/1816"
+          "$ref": "#/1820"
         },
         "flags": 0,
         "description": "The type of the spark config."
       },
       "targetSparkConfiguration": {
         "type": {
-          "$ref": "#/1793"
+          "$ref": "#/1797"
         },
         "flags": 0,
         "description": "The spark configuration of the spark job."
       },
       "sparkConfig": {
         "type": {
-          "$ref": "#/1817"
+          "$ref": "#/1821"
         },
         "flags": 0,
         "description": "Spark configuration property."
@@ -36166,7 +36256,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1805"
+          "$ref": "#/1809"
         },
         "flags": 1,
         "description": "Synapse notebook reference type."
@@ -36188,7 +36278,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1804"
+        "$ref": "#/1808"
       },
       {
         "$ref": "#/2"
@@ -36208,7 +36298,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1811"
+          "$ref": "#/1815"
         },
         "flags": 0,
         "description": "Notebook parameter type."
@@ -36235,16 +36325,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1807"
+        "$ref": "#/1811"
       },
       {
-        "$ref": "#/1808"
+        "$ref": "#/1812"
       },
       {
-        "$ref": "#/1809"
+        "$ref": "#/1813"
       },
       {
-        "$ref": "#/1810"
+        "$ref": "#/1814"
       },
       {
         "$ref": "#/2"
@@ -36256,7 +36346,7 @@
     "name": "SynapseNotebookActivityTypePropertiesParameters",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1806"
+      "$ref": "#/1810"
     }
   },
   {
@@ -36275,13 +36365,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1813"
+        "$ref": "#/1817"
       },
       {
-        "$ref": "#/1814"
+        "$ref": "#/1818"
       },
       {
-        "$ref": "#/1815"
+        "$ref": "#/1819"
       },
       {
         "$ref": "#/2"
@@ -36306,7 +36396,7 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1820"
+          "$ref": "#/1824"
         },
         "flags": 1,
         "description": "Web activity properties."
@@ -36327,7 +36417,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1829"
+          "$ref": "#/1833"
         },
         "flags": 1,
         "description": "Type of activity."
@@ -36340,7 +36430,7 @@
     "properties": {
       "method": {
         "type": {
-          "$ref": "#/1825"
+          "$ref": "#/1829"
         },
         "flags": 1,
         "description": "Rest API method for target endpoint."
@@ -36354,7 +36444,7 @@
       },
       "headers": {
         "type": {
-          "$ref": "#/1826"
+          "$ref": "#/1830"
         },
         "flags": 0,
         "description": "Represents the headers that will be sent to the request. For example, to set the language and type on a request: \"headers\" : { \"Accept-Language\": \"en-us\", \"Content-Type\": \"application/json\" }. Type: string (or Expression with resultType string)."
@@ -36396,14 +36486,14 @@
       },
       "datasets": {
         "type": {
-          "$ref": "#/1827"
+          "$ref": "#/1831"
         },
         "flags": 0,
         "description": "List of datasets passed to web endpoint."
       },
       "linkedServices": {
         "type": {
-          "$ref": "#/1828"
+          "$ref": "#/1832"
         },
         "flags": 0,
         "description": "List of linked services passed to web endpoint."
@@ -36437,16 +36527,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1821"
+        "$ref": "#/1825"
       },
       {
-        "$ref": "#/1822"
+        "$ref": "#/1826"
       },
       {
-        "$ref": "#/1823"
+        "$ref": "#/1827"
       },
       {
-        "$ref": "#/1824"
+        "$ref": "#/1828"
       },
       {
         "$ref": "#/2"
@@ -36497,7 +36587,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1836"
+          "$ref": "#/1840"
         },
         "flags": 1,
         "description": "Variable type."
@@ -36527,13 +36617,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1833"
+        "$ref": "#/1837"
       },
       {
-        "$ref": "#/1834"
+        "$ref": "#/1838"
       },
       {
-        "$ref": "#/1835"
+        "$ref": "#/1839"
       },
       {
         "$ref": "#/2"
@@ -36545,7 +36635,7 @@
     "name": "VariableDefinitionSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/1832"
+      "$ref": "#/1836"
     }
   },
   {
@@ -36581,7 +36671,7 @@
     "properties": {
       "elapsedTimeMetric": {
         "type": {
-          "$ref": "#/1842"
+          "$ref": "#/1846"
         },
         "flags": 0,
         "description": "Pipeline ElapsedTime Metric Policy."
@@ -36638,21 +36728,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1844"
+          "$ref": "#/1848"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1845"
+          "$ref": "#/1849"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1847"
+          "$ref": "#/1851"
         },
         "flags": 1,
         "description": "Properties of the trigger."
@@ -36680,14 +36770,14 @@
       },
       "runtimeState": {
         "type": {
-          "$ref": "#/1851"
+          "$ref": "#/1855"
         },
         "flags": 2,
         "description": "Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger."
       },
       "annotations": {
         "type": {
-          "$ref": "#/1852"
+          "$ref": "#/1856"
         },
         "flags": 0,
         "description": "List of tags that can be used for describing the trigger."
@@ -36695,25 +36785,25 @@
     },
     "elements": {
       "BlobEventsTrigger": {
-        "$ref": "#/1853"
+        "$ref": "#/1857"
       },
       "BlobTrigger": {
-        "$ref": "#/1863"
-      },
-      "ChainingTrigger": {
         "$ref": "#/1867"
       },
-      "CustomEventsTrigger": {
+      "ChainingTrigger": {
         "$ref": "#/1871"
       },
+      "CustomEventsTrigger": {
+        "$ref": "#/1875"
+      },
       "ScheduleTrigger": {
-        "$ref": "#/1876"
+        "$ref": "#/1880"
       },
       "RerunTumblingWindowTrigger": {
-        "$ref": "#/1912"
+        "$ref": "#/1916"
       },
       "TumblingWindowTrigger": {
-        "$ref": "#/1916"
+        "$ref": "#/1920"
       }
     }
   },
@@ -36733,13 +36823,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1848"
+        "$ref": "#/1852"
       },
       {
-        "$ref": "#/1849"
+        "$ref": "#/1853"
       },
       {
-        "$ref": "#/1850"
+        "$ref": "#/1854"
       },
       {
         "$ref": "#/2"
@@ -36758,21 +36848,21 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1854"
+          "$ref": "#/1858"
         },
         "flags": 1,
         "description": "Blob Events Trigger properties."
       },
       "pipelines": {
         "type": {
-          "$ref": "#/1861"
+          "$ref": "#/1865"
         },
         "flags": 0,
         "description": "Pipelines that need to be started."
       },
       "type": {
         "type": {
-          "$ref": "#/1862"
+          "$ref": "#/1866"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -36806,7 +36896,7 @@
       },
       "events": {
         "type": {
-          "$ref": "#/1858"
+          "$ref": "#/1862"
         },
         "flags": 1,
         "description": "The type of events that cause this trigger to fire."
@@ -36832,10 +36922,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1855"
+        "$ref": "#/1859"
       },
       {
-        "$ref": "#/1856"
+        "$ref": "#/1860"
       },
       {
         "$ref": "#/2"
@@ -36845,7 +36935,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1857"
+      "$ref": "#/1861"
     }
   },
   {
@@ -36861,7 +36951,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/1860"
+          "$ref": "#/1864"
         },
         "flags": 0,
         "description": "Pipeline parameters."
@@ -36879,7 +36969,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1859"
+      "$ref": "#/1863"
     }
   },
   {
@@ -36892,21 +36982,21 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1864"
+          "$ref": "#/1868"
         },
         "flags": 1,
         "description": "Blob Trigger properties."
       },
       "pipelines": {
         "type": {
-          "$ref": "#/1865"
+          "$ref": "#/1869"
         },
         "flags": 0,
         "description": "Pipelines that need to be started."
       },
       "type": {
         "type": {
-          "$ref": "#/1866"
+          "$ref": "#/1870"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -36943,7 +37033,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1859"
+      "$ref": "#/1863"
     }
   },
   {
@@ -36956,21 +37046,21 @@
     "properties": {
       "pipeline": {
         "type": {
-          "$ref": "#/1859"
+          "$ref": "#/1863"
         },
         "flags": 1,
         "description": "Pipeline for which runs are created when all upstream pipelines complete successfully."
       },
       "typeProperties": {
         "type": {
-          "$ref": "#/1868"
+          "$ref": "#/1872"
         },
         "flags": 1,
         "description": "Chaining Trigger properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1870"
+          "$ref": "#/1874"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -36983,7 +37073,7 @@
     "properties": {
       "dependsOn": {
         "type": {
-          "$ref": "#/1869"
+          "$ref": "#/1873"
         },
         "flags": 1,
         "description": "Upstream Pipelines."
@@ -37013,21 +37103,21 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1872"
+          "$ref": "#/1876"
         },
         "flags": 1,
         "description": "Custom Events Trigger properties."
       },
       "pipelines": {
         "type": {
-          "$ref": "#/1874"
+          "$ref": "#/1878"
         },
         "flags": 0,
         "description": "Pipelines that need to be started."
       },
       "type": {
         "type": {
-          "$ref": "#/1875"
+          "$ref": "#/1879"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -37054,7 +37144,7 @@
       },
       "events": {
         "type": {
-          "$ref": "#/1873"
+          "$ref": "#/1877"
         },
         "flags": 1,
         "description": "The list of event types that cause this trigger to fire."
@@ -37077,7 +37167,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1859"
+      "$ref": "#/1863"
     }
   },
   {
@@ -37090,21 +37180,21 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1877"
+          "$ref": "#/1881"
         },
         "flags": 1,
         "description": "Schedule Trigger properties."
       },
       "pipelines": {
         "type": {
-          "$ref": "#/1910"
+          "$ref": "#/1914"
         },
         "flags": 0,
         "description": "Pipelines that need to be started."
       },
       "type": {
         "type": {
-          "$ref": "#/1911"
+          "$ref": "#/1915"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -37117,7 +37207,7 @@
     "properties": {
       "recurrence": {
         "type": {
-          "$ref": "#/1878"
+          "$ref": "#/1882"
         },
         "flags": 1,
         "description": "Recurrence schedule configuration."
@@ -37130,7 +37220,7 @@
     "properties": {
       "frequency": {
         "type": {
-          "$ref": "#/1886"
+          "$ref": "#/1890"
         },
         "flags": 0,
         "description": "The frequency."
@@ -37165,7 +37255,7 @@
       },
       "schedule": {
         "type": {
-          "$ref": "#/1887"
+          "$ref": "#/1891"
         },
         "flags": 0,
         "description": "The recurrence schedule."
@@ -37207,18 +37297,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1879"
-      },
-      {
-        "$ref": "#/1880"
-      },
-      {
-        "$ref": "#/1881"
-      },
-      {
-        "$ref": "#/1882"
-      },
-      {
         "$ref": "#/1883"
       },
       {
@@ -37226,6 +37304,18 @@
       },
       {
         "$ref": "#/1885"
+      },
+      {
+        "$ref": "#/1886"
+      },
+      {
+        "$ref": "#/1887"
+      },
+      {
+        "$ref": "#/1888"
+      },
+      {
+        "$ref": "#/1889"
       },
       {
         "$ref": "#/2"
@@ -37238,35 +37328,35 @@
     "properties": {
       "minutes": {
         "type": {
-          "$ref": "#/1888"
+          "$ref": "#/1892"
         },
         "flags": 0,
         "description": "The minutes."
       },
       "hours": {
         "type": {
-          "$ref": "#/1889"
+          "$ref": "#/1893"
         },
         "flags": 0,
         "description": "The hours."
       },
       "weekDays": {
         "type": {
-          "$ref": "#/1898"
+          "$ref": "#/1902"
         },
         "flags": 0,
         "description": "The days of the week."
       },
       "monthDays": {
         "type": {
-          "$ref": "#/1899"
+          "$ref": "#/1903"
         },
         "flags": 0,
         "description": "The month days."
       },
       "monthlyOccurrences": {
         "type": {
-          "$ref": "#/1909"
+          "$ref": "#/1913"
         },
         "flags": 0,
         "description": "The monthly occurrences."
@@ -37320,18 +37410,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1890"
-      },
-      {
-        "$ref": "#/1891"
-      },
-      {
-        "$ref": "#/1892"
-      },
-      {
-        "$ref": "#/1893"
-      },
-      {
         "$ref": "#/1894"
       },
       {
@@ -37339,13 +37417,25 @@
       },
       {
         "$ref": "#/1896"
+      },
+      {
+        "$ref": "#/1897"
+      },
+      {
+        "$ref": "#/1898"
+      },
+      {
+        "$ref": "#/1899"
+      },
+      {
+        "$ref": "#/1900"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1897"
+      "$ref": "#/1901"
     }
   },
   {
@@ -37360,7 +37450,7 @@
     "properties": {
       "day": {
         "type": {
-          "$ref": "#/1908"
+          "$ref": "#/1912"
         },
         "flags": 0,
         "description": "The day of the week."
@@ -37409,18 +37499,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1901"
-      },
-      {
-        "$ref": "#/1902"
-      },
-      {
-        "$ref": "#/1903"
-      },
-      {
-        "$ref": "#/1904"
-      },
-      {
         "$ref": "#/1905"
       },
       {
@@ -37428,19 +37506,31 @@
       },
       {
         "$ref": "#/1907"
+      },
+      {
+        "$ref": "#/1908"
+      },
+      {
+        "$ref": "#/1909"
+      },
+      {
+        "$ref": "#/1910"
+      },
+      {
+        "$ref": "#/1911"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1900"
+      "$ref": "#/1904"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1859"
+      "$ref": "#/1863"
     }
   },
   {
@@ -37453,14 +37543,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1913"
+          "$ref": "#/1917"
         },
         "flags": 1,
         "description": "Rerun Trigger properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1915"
+          "$ref": "#/1919"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -37494,7 +37584,7 @@
       },
       "rerunConcurrency": {
         "type": {
-          "$ref": "#/1914"
+          "$ref": "#/1918"
         },
         "flags": 1,
         "description": "The max number of parallel time windows (ready for execution) for which a rerun is triggered."
@@ -37516,21 +37606,21 @@
     "properties": {
       "pipeline": {
         "type": {
-          "$ref": "#/1859"
+          "$ref": "#/1863"
         },
         "flags": 1,
         "description": "Pipeline for which runs are created when an event is fired for trigger window that is ready."
       },
       "typeProperties": {
         "type": {
-          "$ref": "#/1917"
+          "$ref": "#/1921"
         },
         "flags": 1,
         "description": "Tumbling Window Trigger properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1935"
+          "$ref": "#/1939"
         },
         "flags": 1,
         "description": "Trigger type."
@@ -37543,7 +37633,7 @@
     "properties": {
       "frequency": {
         "type": {
-          "$ref": "#/1921"
+          "$ref": "#/1925"
         },
         "flags": 1,
         "description": "The frequency of the time windows."
@@ -37578,21 +37668,21 @@
       },
       "maxConcurrency": {
         "type": {
-          "$ref": "#/1914"
+          "$ref": "#/1918"
         },
         "flags": 1,
         "description": "The max number of parallel time windows (ready for execution) for which a new run is triggered."
       },
       "retryPolicy": {
         "type": {
-          "$ref": "#/1922"
+          "$ref": "#/1926"
         },
         "flags": 0,
         "description": "Retry policy that will be applied for failed pipeline runs."
       },
       "dependsOn": {
         "type": {
-          "$ref": "#/1934"
+          "$ref": "#/1938"
         },
         "flags": 0,
         "description": "Triggers that this trigger depends on. Only tumbling window triggers are supported."
@@ -37615,13 +37705,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1918"
+        "$ref": "#/1922"
       },
       {
-        "$ref": "#/1919"
+        "$ref": "#/1923"
       },
       {
-        "$ref": "#/1920"
+        "$ref": "#/1924"
       },
       {
         "$ref": "#/2"
@@ -37655,10 +37745,10 @@
     "baseProperties": {},
     "elements": {
       "SelfDependencyTumblingWindowTriggerReference": {
-        "$ref": "#/1924"
+        "$ref": "#/1928"
       },
       "TumblingWindowTriggerDependencyReference": {
-        "$ref": "#/1928"
+        "$ref": "#/1932"
       }
     }
   },
@@ -37668,21 +37758,21 @@
     "properties": {
       "offset": {
         "type": {
-          "$ref": "#/1925"
+          "$ref": "#/1929"
         },
         "flags": 1,
         "description": "Timespan applied to the start time of a tumbling window when evaluating dependency."
       },
       "size": {
         "type": {
-          "$ref": "#/1926"
+          "$ref": "#/1930"
         },
         "flags": 0,
         "description": "The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used."
       },
       "type": {
         "type": {
-          "$ref": "#/1927"
+          "$ref": "#/1931"
         },
         "flags": 1,
         "description": "The type of dependency reference."
@@ -37711,28 +37801,28 @@
     "properties": {
       "offset": {
         "type": {
-          "$ref": "#/1929"
+          "$ref": "#/1933"
         },
         "flags": 0,
         "description": "Timespan applied to the start time of a tumbling window when evaluating dependency."
       },
       "size": {
         "type": {
-          "$ref": "#/1926"
+          "$ref": "#/1930"
         },
         "flags": 0,
         "description": "The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used."
       },
       "referenceTrigger": {
         "type": {
-          "$ref": "#/1930"
+          "$ref": "#/1934"
         },
         "flags": 1,
         "description": "Referenced trigger."
       },
       "type": {
         "type": {
-          "$ref": "#/1933"
+          "$ref": "#/1937"
         },
         "flags": 1,
         "description": "The type of dependency reference."
@@ -37751,7 +37841,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/1932"
+          "$ref": "#/1936"
         },
         "flags": 1,
         "description": "Trigger reference type."
@@ -37773,7 +37863,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/1931"
+        "$ref": "#/1935"
       },
       {
         "$ref": "#/2"
@@ -37787,7 +37877,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1923"
+      "$ref": "#/1927"
     }
   },
   {
@@ -37799,7 +37889,7 @@
     "name": "Microsoft.DataFactory/factories/triggers@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1846"
+      "$ref": "#/1850"
     },
     "flags": 0
   },
@@ -37831,21 +37921,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1937"
+          "$ref": "#/1941"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1938"
+          "$ref": "#/1942"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1940"
+          "$ref": "#/1944"
         },
         "flags": 1,
         "description": "Data flow properties."
@@ -37873,14 +37963,14 @@
       },
       "annotations": {
         "type": {
-          "$ref": "#/1941"
+          "$ref": "#/1945"
         },
         "flags": 0,
         "description": "List of tags that can be used for describing the data flow."
       },
       "folder": {
         "type": {
-          "$ref": "#/1942"
+          "$ref": "#/1946"
         },
         "flags": 0,
         "description": "The folder that this data flow is in. If not specified, Data flow will appear at the root level."
@@ -37888,13 +37978,13 @@
     },
     "elements": {
       "Flowlet": {
-        "$ref": "#/1943"
+        "$ref": "#/1947"
       },
       "MappingDataFlow": {
-        "$ref": "#/1953"
+        "$ref": "#/1957"
       },
       "WranglingDataFlow": {
-        "$ref": "#/1960"
+        "$ref": "#/1964"
       }
     }
   },
@@ -37923,14 +38013,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1944"
+          "$ref": "#/1948"
         },
         "flags": 0,
         "description": "Flowlet type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1952"
+          "$ref": "#/1956"
         },
         "flags": 1,
         "description": "Type of data flow."
@@ -37943,21 +38033,21 @@
     "properties": {
       "sources": {
         "type": {
-          "$ref": "#/1946"
+          "$ref": "#/1950"
         },
         "flags": 0,
         "description": "List of sources in Flowlet."
       },
       "sinks": {
         "type": {
-          "$ref": "#/1948"
+          "$ref": "#/1952"
         },
         "flags": 0,
         "description": "List of sinks in Flowlet."
       },
       "transformations": {
         "type": {
-          "$ref": "#/1950"
+          "$ref": "#/1954"
         },
         "flags": 0,
         "description": "List of transformations in Flowlet."
@@ -37971,7 +38061,7 @@
       },
       "scriptLines": {
         "type": {
-          "$ref": "#/1951"
+          "$ref": "#/1955"
         },
         "flags": 0,
         "description": "Flowlet script lines."
@@ -38019,7 +38109,7 @@
       },
       "flowlet": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 0,
         "description": "Flowlet Reference"
@@ -38029,7 +38119,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1945"
+      "$ref": "#/1949"
     }
   },
   {
@@ -38080,7 +38170,7 @@
       },
       "flowlet": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 0,
         "description": "Flowlet Reference"
@@ -38090,7 +38180,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1947"
+      "$ref": "#/1951"
     }
   },
   {
@@ -38127,7 +38217,7 @@
       },
       "flowlet": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 0,
         "description": "Flowlet Reference"
@@ -38137,7 +38227,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1949"
+      "$ref": "#/1953"
     }
   },
   {
@@ -38156,14 +38246,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1954"
+          "$ref": "#/1958"
         },
         "flags": 0,
         "description": "Mapping data flow type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1959"
+          "$ref": "#/1963"
         },
         "flags": 1,
         "description": "Type of data flow."
@@ -38176,21 +38266,21 @@
     "properties": {
       "sources": {
         "type": {
-          "$ref": "#/1955"
+          "$ref": "#/1959"
         },
         "flags": 0,
         "description": "List of sources in data flow."
       },
       "sinks": {
         "type": {
-          "$ref": "#/1956"
+          "$ref": "#/1960"
         },
         "flags": 0,
         "description": "List of sinks in data flow."
       },
       "transformations": {
         "type": {
-          "$ref": "#/1957"
+          "$ref": "#/1961"
         },
         "flags": 0,
         "description": "List of transformations in data flow."
@@ -38204,7 +38294,7 @@
       },
       "scriptLines": {
         "type": {
-          "$ref": "#/1958"
+          "$ref": "#/1962"
         },
         "flags": 0,
         "description": "Data flow script lines."
@@ -38214,19 +38304,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1945"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/1947"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
       "$ref": "#/1949"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1951"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/1953"
     }
   },
   {
@@ -38245,14 +38335,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1961"
+          "$ref": "#/1965"
         },
         "flags": 0,
         "description": "PowerQuery data flow type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1964"
+          "$ref": "#/1968"
         },
         "flags": 1,
         "description": "Type of data flow."
@@ -38265,7 +38355,7 @@
     "properties": {
       "sources": {
         "type": {
-          "$ref": "#/1963"
+          "$ref": "#/1967"
         },
         "flags": 0,
         "description": "List of sources in Power Query."
@@ -38334,7 +38424,7 @@
       },
       "flowlet": {
         "type": {
-          "$ref": "#/1636"
+          "$ref": "#/1640"
         },
         "flags": 0,
         "description": "Flowlet Reference"
@@ -38344,7 +38434,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1962"
+      "$ref": "#/1966"
     }
   },
   {
@@ -38356,7 +38446,7 @@
     "name": "Microsoft.DataFactory/factories/dataflows@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1939"
+      "$ref": "#/1943"
     },
     "flags": 0
   },
@@ -38387,28 +38477,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1966"
+          "$ref": "#/1970"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1967"
+          "$ref": "#/1971"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1968"
+          "$ref": "#/1972"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1970"
+          "$ref": "#/1974"
         },
         "flags": 1,
         "description": "Managed Virtual Network properties."
@@ -38450,7 +38540,7 @@
     "name": "Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1969"
+      "$ref": "#/1973"
     },
     "flags": 0
   },
@@ -38475,28 +38565,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1966"
+          "$ref": "#/1970"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1972"
+          "$ref": "#/1976"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1973"
+          "$ref": "#/1977"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1975"
+          "$ref": "#/1979"
         },
         "flags": 1,
         "description": "Managed private endpoint properties."
@@ -38516,14 +38606,14 @@
     "properties": {
       "connectionState": {
         "type": {
-          "$ref": "#/1976"
+          "$ref": "#/1980"
         },
         "flags": 0,
         "description": "The managed private endpoint connection state"
       },
       "fqdns": {
         "type": {
-          "$ref": "#/1977"
+          "$ref": "#/1981"
         },
         "flags": 0,
         "description": "Fully qualified domain names"
@@ -38599,7 +38689,7 @@
     "name": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1974"
+      "$ref": "#/1978"
     },
     "flags": 0
   },
@@ -38624,28 +38714,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/1966"
+          "$ref": "#/1970"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/1979"
+          "$ref": "#/1983"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1980"
+          "$ref": "#/1984"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1982"
+          "$ref": "#/1986"
         },
         "flags": 1,
         "description": "Properties of credentials."
@@ -38673,7 +38763,7 @@
       },
       "annotations": {
         "type": {
-          "$ref": "#/1983"
+          "$ref": "#/1987"
         },
         "flags": 0,
         "description": "List of tags that can be used for describing the Credential."
@@ -38681,10 +38771,10 @@
     },
     "elements": {
       "ManagedIdentity": {
-        "$ref": "#/1984"
+        "$ref": "#/1988"
       },
       "ServicePrincipal": {
-        "$ref": "#/1987"
+        "$ref": "#/1991"
       }
     }
   },
@@ -38700,14 +38790,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1985"
+          "$ref": "#/1989"
         },
         "flags": 0,
         "description": "Managed identity credential properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1986"
+          "$ref": "#/1990"
         },
         "flags": 1,
         "description": "Type of credential."
@@ -38737,14 +38827,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/1988"
+          "$ref": "#/1992"
         },
         "flags": 1,
         "description": "Service Principal credential properties."
       },
       "type": {
         "type": {
-          "$ref": "#/1989"
+          "$ref": "#/1993"
         },
         "flags": 1,
         "description": "Type of credential."
@@ -38787,7 +38877,7 @@
     "name": "Microsoft.DataFactory/factories/credentials@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1981"
+      "$ref": "#/1985"
     },
     "flags": 0
   },
@@ -38819,21 +38909,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1991"
+          "$ref": "#/1995"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1992"
+          "$ref": "#/1996"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/1994"
+          "$ref": "#/1998"
         },
         "flags": 0,
         "description": "Core resource properties"
@@ -38853,14 +38943,14 @@
     "properties": {
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/1995"
+          "$ref": "#/1999"
         },
         "flags": 0,
         "description": "The state of a private link connection"
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/1996"
+          "$ref": "#/2000"
         },
         "flags": 0,
         "description": "The resource of private endpoint."
@@ -38918,7 +39008,7 @@
     "name": "Microsoft.DataFactory/factories/privateEndpointConnections@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/1993"
+      "$ref": "#/1997"
     },
     "flags": 0
   },
@@ -38950,21 +39040,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/1998"
+          "$ref": "#/2002"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/1999"
+          "$ref": "#/2003"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/2001"
+          "$ref": "#/2005"
         },
         "flags": 1,
         "description": "Properties of the global parameter."
@@ -38991,7 +39081,7 @@
     "name": "Microsoft.DataFactory/factories/globalParameters@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/2000"
+      "$ref": "#/2004"
     },
     "flags": 0
   },
@@ -39023,21 +39113,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/2003"
+          "$ref": "#/2007"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/2004"
+          "$ref": "#/2008"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/2006"
+          "$ref": "#/2010"
         },
         "flags": 1,
         "description": "Properties of the change data capture."
@@ -39057,7 +39147,7 @@
     "properties": {
       "folder": {
         "type": {
-          "$ref": "#/2007"
+          "$ref": "#/2011"
         },
         "flags": 0,
         "description": "The folder that this CDC is in. If not specified, CDC will appear at the root level."
@@ -39071,21 +39161,21 @@
       },
       "sourceConnectionsInfo": {
         "type": {
-          "$ref": "#/2020"
+          "$ref": "#/2024"
         },
         "flags": 1,
         "description": "List of sources connections that can be used as sources in the CDC."
       },
       "targetConnectionsInfo": {
         "type": {
-          "$ref": "#/2038"
+          "$ref": "#/2042"
         },
         "flags": 1,
         "description": "List of target connections that can be used as sources in the CDC."
       },
       "policy": {
         "type": {
-          "$ref": "#/2039"
+          "$ref": "#/2043"
         },
         "flags": 1,
         "description": "CDC policy"
@@ -39125,14 +39215,14 @@
     "properties": {
       "sourceEntities": {
         "type": {
-          "$ref": "#/2015"
+          "$ref": "#/2019"
         },
         "flags": 0,
         "description": "List of source tables for a source connection."
       },
       "connection": {
         "type": {
-          "$ref": "#/2016"
+          "$ref": "#/2020"
         },
         "flags": 0,
         "description": "Source connection details."
@@ -39152,7 +39242,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/2010"
+          "$ref": "#/2014"
         },
         "flags": 0,
         "description": "Table properties."
@@ -39165,14 +39255,14 @@
     "properties": {
       "schema": {
         "type": {
-          "$ref": "#/2012"
+          "$ref": "#/2016"
         },
         "flags": 0,
         "description": "List of columns for the source table."
       },
       "dslConnectorProperties": {
         "type": {
-          "$ref": "#/2014"
+          "$ref": "#/2018"
         },
         "flags": 0,
         "description": "List of name/value pairs for connection properties."
@@ -39202,7 +39292,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2011"
+      "$ref": "#/2015"
     }
   },
   {
@@ -39228,13 +39318,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2013"
+      "$ref": "#/2017"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2009"
+      "$ref": "#/2013"
     }
   },
   {
@@ -39257,7 +39347,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/2018"
+          "$ref": "#/2022"
         },
         "flags": 1,
         "description": "Type of connection via linked service or dataset."
@@ -39271,7 +39361,7 @@
       },
       "commonDslConnectorProperties": {
         "type": {
-          "$ref": "#/2019"
+          "$ref": "#/2023"
         },
         "flags": 0,
         "description": "List of name/value pairs for connection properties."
@@ -39286,7 +39376,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2017"
+        "$ref": "#/2021"
       },
       {
         "$ref": "#/2"
@@ -39296,13 +39386,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2013"
+      "$ref": "#/2017"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2008"
+      "$ref": "#/2012"
     }
   },
   {
@@ -39311,28 +39401,28 @@
     "properties": {
       "targetEntities": {
         "type": {
-          "$ref": "#/2022"
+          "$ref": "#/2026"
         },
         "flags": 0,
         "description": "List of source tables for a target connection."
       },
       "connection": {
         "type": {
-          "$ref": "#/2016"
+          "$ref": "#/2020"
         },
         "flags": 0,
         "description": "Source connection details."
       },
       "dataMapperMappings": {
         "type": {
-          "$ref": "#/2036"
+          "$ref": "#/2040"
         },
         "flags": 0,
         "description": "List of table mappings."
       },
       "relationships": {
         "type": {
-          "$ref": "#/2037"
+          "$ref": "#/2041"
         },
         "flags": 0,
         "description": "List of relationship info among the tables."
@@ -39342,7 +39432,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2009"
+      "$ref": "#/2013"
     }
   },
   {
@@ -39365,14 +39455,14 @@
       },
       "sourceConnectionReference": {
         "type": {
-          "$ref": "#/2024"
+          "$ref": "#/2028"
         },
         "flags": 0,
         "description": "The connection reference for the source connection."
       },
       "attributeMappingInfo": {
         "type": {
-          "$ref": "#/2027"
+          "$ref": "#/2031"
         },
         "flags": 0,
         "description": "This holds the user provided attribute mapping information."
@@ -39399,7 +39489,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/2026"
+          "$ref": "#/2030"
         },
         "flags": 0,
         "description": "Type of connection via linked service or dataset."
@@ -39414,7 +39504,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2025"
+        "$ref": "#/2029"
       },
       {
         "$ref": "#/2"
@@ -39427,7 +39517,7 @@
     "properties": {
       "attributeMappings": {
         "type": {
-          "$ref": "#/2035"
+          "$ref": "#/2039"
         },
         "flags": 0,
         "description": "List of attribute mappings."
@@ -39447,7 +39537,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/2032"
+          "$ref": "#/2036"
         },
         "flags": 0,
         "description": "Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as 'Derived'."
@@ -39468,14 +39558,14 @@
       },
       "attributeReference": {
         "type": {
-          "$ref": "#/2033"
+          "$ref": "#/2037"
         },
         "flags": 0,
         "description": "Reference of the source column used in the mapping. It is used for 'Direct' mapping type only."
       },
       "attributeReferences": {
         "type": {
-          "$ref": "#/2034"
+          "$ref": "#/2038"
         },
         "flags": 0,
         "description": "List of references for source columns. It is used for 'Derived' and 'Aggregate' type mappings only."
@@ -39498,13 +39588,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2029"
+        "$ref": "#/2033"
       },
       {
-        "$ref": "#/2030"
+        "$ref": "#/2034"
       },
       {
-        "$ref": "#/2031"
+        "$ref": "#/2035"
       },
       {
         "$ref": "#/2"
@@ -39531,7 +39621,7 @@
       },
       "entityConnectionReference": {
         "type": {
-          "$ref": "#/2024"
+          "$ref": "#/2028"
         },
         "flags": 0,
         "description": "The connection reference for the connection."
@@ -39541,19 +39631,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2033"
+      "$ref": "#/2037"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2028"
+      "$ref": "#/2032"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2023"
+      "$ref": "#/2027"
     }
   },
   {
@@ -39565,7 +39655,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2021"
+      "$ref": "#/2025"
     }
   },
   {
@@ -39581,7 +39671,7 @@
       },
       "recurrence": {
         "type": {
-          "$ref": "#/2040"
+          "$ref": "#/2044"
         },
         "flags": 0,
         "description": "Defines the frequency and interval for running the CDC for batch mode."
@@ -39594,7 +39684,7 @@
     "properties": {
       "frequency": {
         "type": {
-          "$ref": "#/2044"
+          "$ref": "#/2048"
         },
         "flags": 0,
         "description": "Frequency of period in terms of 'Hour', 'Minute' or 'Second'."
@@ -39624,13 +39714,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2041"
+        "$ref": "#/2045"
       },
       {
-        "$ref": "#/2042"
+        "$ref": "#/2046"
       },
       {
-        "$ref": "#/2043"
+        "$ref": "#/2047"
       },
       {
         "$ref": "#/2"
@@ -39642,7 +39732,7 @@
     "name": "Microsoft.DataFactory/factories/adfcdcs@2018-06-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/2005"
+      "$ref": "#/2009"
     },
     "flags": 0
   },
@@ -39714,7 +39804,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/2048"
+          "$ref": "#/2052"
         },
         "flags": 0,
         "description": "The resource tags."
@@ -39745,10 +39835,10 @@
     "resourceType": "Microsoft.DataFactory/locations",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2047"
+      "$ref": "#/2051"
     },
     "input": {
-      "$ref": "#/2046"
+      "$ref": "#/2050"
     }
   },
   {
@@ -39797,10 +39887,10 @@
     "resourceType": "Microsoft.DataFactory/locations",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2051"
+      "$ref": "#/2055"
     },
     "input": {
-      "$ref": "#/2050"
+      "$ref": "#/2054"
     }
   },
   {
@@ -39856,10 +39946,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2054"
+      "$ref": "#/2058"
     },
     "input": {
-      "$ref": "#/2053"
+      "$ref": "#/2057"
     }
   },
   {
@@ -39909,7 +39999,7 @@
     "properties": {
       "policy": {
         "type": {
-          "$ref": "#/2056"
+          "$ref": "#/2060"
         },
         "flags": 0,
         "description": "The user access policy."
@@ -39936,10 +40026,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2057"
+      "$ref": "#/2061"
     },
     "input": {
-      "$ref": "#/2056"
+      "$ref": "#/2060"
     }
   },
   {
@@ -39948,10 +40038,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2051"
+      "$ref": "#/2055"
     },
     "input": {
-      "$ref": "#/2050"
+      "$ref": "#/2054"
     }
   },
   {
@@ -39960,7 +40050,7 @@
     "properties": {
       "exposureControlRequests": {
         "type": {
-          "$ref": "#/2061"
+          "$ref": "#/2065"
         },
         "flags": 1,
         "description": "List of exposure control features."
@@ -39970,7 +40060,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2050"
+      "$ref": "#/2054"
     }
   },
   {
@@ -39979,7 +40069,7 @@
     "properties": {
       "exposureControlResponses": {
         "type": {
-          "$ref": "#/2063"
+          "$ref": "#/2067"
         },
         "flags": 1,
         "description": "List of exposure control feature values."
@@ -39989,7 +40079,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2051"
+      "$ref": "#/2055"
     }
   },
   {
@@ -39998,10 +40088,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2062"
+      "$ref": "#/2066"
     },
     "input": {
-      "$ref": "#/2060"
+      "$ref": "#/2064"
     }
   },
   {
@@ -40031,14 +40121,14 @@
       },
       "filters": {
         "type": {
-          "$ref": "#/2086"
+          "$ref": "#/2090"
         },
         "flags": 0,
         "description": "List of filters."
       },
       "orderBy": {
         "type": {
-          "$ref": "#/2101"
+          "$ref": "#/2105"
         },
         "flags": 0,
         "description": "List of OrderBy option."
@@ -40051,21 +40141,21 @@
     "properties": {
       "operand": {
         "type": {
-          "$ref": "#/2079"
+          "$ref": "#/2083"
         },
         "flags": 1,
         "description": "Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status."
       },
       "operator": {
         "type": {
-          "$ref": "#/2084"
+          "$ref": "#/2088"
         },
         "flags": 1,
         "description": "Operator to be used for filter."
       },
       "values": {
         "type": {
-          "$ref": "#/2085"
+          "$ref": "#/2089"
         },
         "flags": 1,
         "description": "List of filter values."
@@ -40124,18 +40214,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2067"
-      },
-      {
-        "$ref": "#/2068"
-      },
-      {
-        "$ref": "#/2069"
-      },
-      {
-        "$ref": "#/2070"
-      },
-      {
         "$ref": "#/2071"
       },
       {
@@ -40158,6 +40236,18 @@
       },
       {
         "$ref": "#/2078"
+      },
+      {
+        "$ref": "#/2079"
+      },
+      {
+        "$ref": "#/2080"
+      },
+      {
+        "$ref": "#/2081"
+      },
+      {
+        "$ref": "#/2082"
       },
       {
         "$ref": "#/2"
@@ -40184,16 +40274,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2080"
+        "$ref": "#/2084"
       },
       {
-        "$ref": "#/2081"
+        "$ref": "#/2085"
       },
       {
-        "$ref": "#/2082"
+        "$ref": "#/2086"
       },
       {
-        "$ref": "#/2083"
+        "$ref": "#/2087"
       },
       {
         "$ref": "#/2"
@@ -40209,7 +40299,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2066"
+      "$ref": "#/2070"
     }
   },
   {
@@ -40218,14 +40308,14 @@
     "properties": {
       "orderBy": {
         "type": {
-          "$ref": "#/2097"
+          "$ref": "#/2101"
         },
         "flags": 1,
         "description": "Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status."
       },
       "order": {
         "type": {
-          "$ref": "#/2100"
+          "$ref": "#/2104"
         },
         "flags": 1,
         "description": "Sorting order of the parameter."
@@ -40272,18 +40362,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2088"
-      },
-      {
-        "$ref": "#/2089"
-      },
-      {
-        "$ref": "#/2090"
-      },
-      {
-        "$ref": "#/2091"
-      },
-      {
         "$ref": "#/2092"
       },
       {
@@ -40297,6 +40375,18 @@
       },
       {
         "$ref": "#/2096"
+      },
+      {
+        "$ref": "#/2097"
+      },
+      {
+        "$ref": "#/2098"
+      },
+      {
+        "$ref": "#/2099"
+      },
+      {
+        "$ref": "#/2100"
       },
       {
         "$ref": "#/2"
@@ -40315,10 +40405,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2098"
+        "$ref": "#/2102"
       },
       {
-        "$ref": "#/2099"
+        "$ref": "#/2103"
       },
       {
         "$ref": "#/2"
@@ -40328,7 +40418,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2087"
+      "$ref": "#/2091"
     }
   },
   {
@@ -40337,7 +40427,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2107"
+          "$ref": "#/2111"
         },
         "flags": 1,
         "description": "List of pipeline runs."
@@ -40385,21 +40475,21 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/2104"
+          "$ref": "#/2108"
         },
         "flags": 2,
         "description": "The full or partial list of parameter name, value pair used in the pipeline run."
       },
       "runDimensions": {
         "type": {
-          "$ref": "#/2105"
+          "$ref": "#/2109"
         },
         "flags": 2,
         "description": "Run dimensions emitted by Pipeline run."
       },
       "invokedBy": {
         "type": {
-          "$ref": "#/2106"
+          "$ref": "#/2110"
         },
         "flags": 2,
         "description": "Entity that started the pipeline run."
@@ -40511,7 +40601,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2103"
+      "$ref": "#/2107"
     }
   },
   {
@@ -40520,10 +40610,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2102"
+      "$ref": "#/2106"
     },
     "input": {
-      "$ref": "#/2065"
+      "$ref": "#/2069"
     }
   },
   {
@@ -40552,7 +40642,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2112"
+          "$ref": "#/2116"
         },
         "flags": 1,
         "description": "List of triggers."
@@ -40572,7 +40662,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1847"
+          "$ref": "#/1851"
         },
         "flags": 1,
         "description": "Properties of the trigger."
@@ -40610,7 +40700,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2111"
+      "$ref": "#/2115"
     }
   },
   {
@@ -40619,10 +40709,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2110"
+      "$ref": "#/2114"
     },
     "input": {
-      "$ref": "#/2109"
+      "$ref": "#/2113"
     }
   },
   {
@@ -40631,7 +40721,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2124"
+          "$ref": "#/2128"
         },
         "flags": 1,
         "description": "List of trigger runs."
@@ -40679,7 +40769,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/2119"
+          "$ref": "#/2123"
         },
         "flags": 2,
         "description": "Trigger run status."
@@ -40693,28 +40783,28 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/2120"
+          "$ref": "#/2124"
         },
         "flags": 2,
         "description": "List of property name and value related to trigger run. Name, value pair depends on type of trigger."
       },
       "triggeredPipelines": {
         "type": {
-          "$ref": "#/2121"
+          "$ref": "#/2125"
         },
         "flags": 2,
         "description": "List of pipeline name and run Id triggered by the trigger run."
       },
       "runDimension": {
         "type": {
-          "$ref": "#/2122"
+          "$ref": "#/2126"
         },
         "flags": 2,
         "description": "Run dimension for which trigger was fired."
       },
       "dependencyStatus": {
         "type": {
-          "$ref": "#/2123"
+          "$ref": "#/2127"
         },
         "flags": 2,
         "description": "Status of the upstream pipelines."
@@ -40740,13 +40830,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2116"
+        "$ref": "#/2120"
       },
       {
-        "$ref": "#/2117"
+        "$ref": "#/2121"
       },
       {
-        "$ref": "#/2118"
+        "$ref": "#/2122"
       },
       {
         "$ref": "#/2"
@@ -40788,7 +40878,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2115"
+      "$ref": "#/2119"
     }
   },
   {
@@ -40797,10 +40887,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2114"
+      "$ref": "#/2118"
     },
     "input": {
-      "$ref": "#/2065"
+      "$ref": "#/2069"
     }
   },
   {
@@ -40830,7 +40920,7 @@
       },
       "integrationRuntime": {
         "type": {
-          "$ref": "#/2127"
+          "$ref": "#/2131"
         },
         "flags": 0,
         "description": "Set to use integration runtime setting for data flow debug session."
@@ -40883,10 +40973,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2128"
+      "$ref": "#/2132"
     },
     "input": {
-      "$ref": "#/2126"
+      "$ref": "#/2130"
     }
   },
   {
@@ -40895,7 +40985,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2132"
+          "$ref": "#/2136"
         },
         "flags": 0,
         "description": "Array with all active debug sessions."
@@ -40984,7 +41074,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2131"
+      "$ref": "#/2135"
     }
   },
   {
@@ -40993,7 +41083,7 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2130"
+      "$ref": "#/2134"
     }
   },
   {
@@ -41009,42 +41099,42 @@
       },
       "dataFlow": {
         "type": {
-          "$ref": "#/2135"
+          "$ref": "#/2139"
         },
         "flags": 0,
         "description": "Data flow instance."
       },
       "dataFlows": {
         "type": {
-          "$ref": "#/2136"
+          "$ref": "#/2140"
         },
         "flags": 0,
         "description": "List of Data flows"
       },
       "datasets": {
         "type": {
-          "$ref": "#/2138"
+          "$ref": "#/2142"
         },
         "flags": 0,
         "description": "List of datasets."
       },
       "linkedServices": {
         "type": {
-          "$ref": "#/2140"
+          "$ref": "#/2144"
         },
         "flags": 0,
         "description": "List of linked services."
       },
       "staging": {
         "type": {
-          "$ref": "#/1640"
+          "$ref": "#/1644"
         },
         "flags": 0,
         "description": "Staging info for debug session."
       },
       "debugSettings": {
         "type": {
-          "$ref": "#/2141"
+          "$ref": "#/2145"
         },
         "flags": 0,
         "description": "Data flow debug settings."
@@ -41060,7 +41150,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/1940"
+          "$ref": "#/1944"
         },
         "flags": 1,
         "description": "Data flow properties."
@@ -41077,7 +41167,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2135"
+      "$ref": "#/2139"
     }
   },
   {
@@ -41103,7 +41193,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2137"
+      "$ref": "#/2141"
     }
   },
   {
@@ -41129,7 +41219,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2139"
+      "$ref": "#/2143"
     }
   },
   {
@@ -41138,14 +41228,14 @@
     "properties": {
       "sourceSettings": {
         "type": {
-          "$ref": "#/2143"
+          "$ref": "#/2147"
         },
         "flags": 0,
         "description": "Source setting for data flow debug."
       },
       "parameters": {
         "type": {
-          "$ref": "#/2144"
+          "$ref": "#/2148"
         },
         "flags": 0,
         "description": "Data flow parameters."
@@ -41185,7 +41275,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2142"
+      "$ref": "#/2146"
     }
   },
   {
@@ -41215,10 +41305,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2145"
+      "$ref": "#/2149"
     },
     "input": {
-      "$ref": "#/2134"
+      "$ref": "#/2138"
     }
   },
   {
@@ -41240,7 +41330,7 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "input": {
-      "$ref": "#/2147"
+      "$ref": "#/2151"
     }
   },
   {
@@ -41256,14 +41346,14 @@
       },
       "command": {
         "type": {
-          "$ref": "#/2153"
+          "$ref": "#/2157"
         },
         "flags": 0,
         "description": "The command type."
       },
       "commandPayload": {
         "type": {
-          "$ref": "#/2154"
+          "$ref": "#/2158"
         },
         "flags": 0,
         "description": "The command payload object."
@@ -41286,13 +41376,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2150"
+        "$ref": "#/2154"
       },
       {
-        "$ref": "#/2151"
+        "$ref": "#/2155"
       },
       {
-        "$ref": "#/2152"
+        "$ref": "#/2156"
       },
       {
         "$ref": "#/2"
@@ -41319,7 +41409,7 @@
       },
       "columns": {
         "type": {
-          "$ref": "#/2155"
+          "$ref": "#/2159"
         },
         "flags": 0,
         "description": "Array of column names."
@@ -41365,10 +41455,10 @@
     "resourceType": "Microsoft.DataFactory/factories",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2156"
+      "$ref": "#/2160"
     },
     "input": {
-      "$ref": "#/2149"
+      "$ref": "#/2153"
     }
   },
   {
@@ -41384,7 +41474,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/2159"
+          "$ref": "#/2163"
         },
         "flags": 1,
         "description": "Integration runtime properties."
@@ -41405,7 +41495,7 @@
       },
       "state": {
         "type": {
-          "$ref": "#/2170"
+          "$ref": "#/2174"
         },
         "flags": 2,
         "description": "The state of integration runtime."
@@ -41413,10 +41503,10 @@
     },
     "elements": {
       "Managed": {
-        "$ref": "#/2171"
+        "$ref": "#/2175"
       },
       "SelfHosted": {
-        "$ref": "#/2187"
+        "$ref": "#/2191"
       }
     }
   },
@@ -41464,18 +41554,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2160"
-      },
-      {
-        "$ref": "#/2161"
-      },
-      {
-        "$ref": "#/2162"
-      },
-      {
-        "$ref": "#/2163"
-      },
-      {
         "$ref": "#/2164"
       },
       {
@@ -41494,6 +41572,18 @@
         "$ref": "#/2169"
       },
       {
+        "$ref": "#/2170"
+      },
+      {
+        "$ref": "#/2171"
+      },
+      {
+        "$ref": "#/2172"
+      },
+      {
+        "$ref": "#/2173"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -41504,14 +41594,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/2172"
+          "$ref": "#/2176"
         },
         "flags": 1,
         "description": "Managed integration runtime status type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/2186"
+          "$ref": "#/2190"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -41531,21 +41621,21 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/2182"
+          "$ref": "#/2186"
         },
         "flags": 2,
         "description": "The list of nodes for managed integration runtime."
       },
       "otherErrors": {
         "type": {
-          "$ref": "#/2183"
+          "$ref": "#/2187"
         },
         "flags": 2,
         "description": "The errors that occurred on this integration runtime."
       },
       "lastOperation": {
         "type": {
-          "$ref": "#/2184"
+          "$ref": "#/2188"
         },
         "flags": 2,
         "description": "The last operation result that occurred on this integration runtime."
@@ -41565,14 +41655,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/2178"
+          "$ref": "#/2182"
         },
         "flags": 2,
         "description": "The managed integration runtime node status."
       },
       "errors": {
         "type": {
-          "$ref": "#/2181"
+          "$ref": "#/2185"
         },
         "flags": 0,
         "description": "The errors that occurred on this integration runtime node."
@@ -41602,16 +41692,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2174"
+        "$ref": "#/2178"
       },
       {
-        "$ref": "#/2175"
+        "$ref": "#/2179"
       },
       {
-        "$ref": "#/2176"
+        "$ref": "#/2180"
       },
       {
-        "$ref": "#/2177"
+        "$ref": "#/2181"
       },
       {
         "$ref": "#/2"
@@ -41638,7 +41728,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/2180"
+          "$ref": "#/2184"
         },
         "flags": 2,
         "description": "Managed integration runtime error parameters."
@@ -41664,19 +41754,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2179"
+      "$ref": "#/2183"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2173"
+      "$ref": "#/2177"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2179"
+      "$ref": "#/2183"
     }
   },
   {
@@ -41713,7 +41803,7 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/2185"
+          "$ref": "#/2189"
         },
         "flags": 2,
         "description": "Managed integration runtime error parameters."
@@ -41746,14 +41836,14 @@
     "properties": {
       "typeProperties": {
         "type": {
-          "$ref": "#/2188"
+          "$ref": "#/2192"
         },
         "flags": 1,
         "description": "Self-hosted integration runtime status type properties."
       },
       "type": {
         "type": {
-          "$ref": "#/2215"
+          "$ref": "#/2219"
         },
         "flags": 1,
         "description": "Type of integration runtime."
@@ -41780,7 +41870,7 @@
       },
       "internalChannelEncryption": {
         "type": {
-          "$ref": "#/2192"
+          "$ref": "#/2196"
         },
         "flags": 2,
         "description": "It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist)."
@@ -41794,7 +41884,7 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/2207"
+          "$ref": "#/2211"
         },
         "flags": 0,
         "description": "The list of nodes for this integration runtime."
@@ -41822,21 +41912,21 @@
       },
       "capabilities": {
         "type": {
-          "$ref": "#/2208"
+          "$ref": "#/2212"
         },
         "flags": 2,
         "description": "Object with additional information about integration runtime capabilities."
       },
       "serviceUrls": {
         "type": {
-          "$ref": "#/2209"
+          "$ref": "#/2213"
         },
         "flags": 2,
         "description": "The URLs for the services used in integration runtime backend service."
       },
       "autoUpdate": {
         "type": {
-          "$ref": "#/2212"
+          "$ref": "#/2216"
         },
         "flags": 2,
         "description": "Whether Self-hosted integration runtime auto update has been turned on."
@@ -41850,7 +41940,7 @@
       },
       "links": {
         "type": {
-          "$ref": "#/2214"
+          "$ref": "#/2218"
         },
         "flags": 0,
         "description": "The list of linked integration runtimes that are created to share with this integration runtime."
@@ -41901,13 +41991,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2189"
+        "$ref": "#/2193"
       },
       {
-        "$ref": "#/2190"
+        "$ref": "#/2194"
       },
       {
-        "$ref": "#/2191"
+        "$ref": "#/2195"
       },
       {
         "$ref": "#/2"
@@ -41941,14 +42031,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/2201"
+          "$ref": "#/2205"
         },
         "flags": 2,
         "description": "Status of the integration runtime node."
       },
       "capabilities": {
         "type": {
-          "$ref": "#/2202"
+          "$ref": "#/2206"
         },
         "flags": 2,
         "description": "The integration runtime capabilities dictionary"
@@ -42004,7 +42094,7 @@
       },
       "lastUpdateResult": {
         "type": {
-          "$ref": "#/2206"
+          "$ref": "#/2210"
         },
         "flags": 2,
         "description": "The result of the last integration runtime node update."
@@ -42081,18 +42171,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2194"
-      },
-      {
-        "$ref": "#/2195"
-      },
-      {
-        "$ref": "#/2196"
-      },
-      {
-        "$ref": "#/2197"
-      },
-      {
         "$ref": "#/2198"
       },
       {
@@ -42100,6 +42178,18 @@
       },
       {
         "$ref": "#/2200"
+      },
+      {
+        "$ref": "#/2201"
+      },
+      {
+        "$ref": "#/2202"
+      },
+      {
+        "$ref": "#/2203"
+      },
+      {
+        "$ref": "#/2204"
       },
       {
         "$ref": "#/2"
@@ -42130,13 +42220,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2203"
+        "$ref": "#/2207"
       },
       {
-        "$ref": "#/2204"
+        "$ref": "#/2208"
       },
       {
-        "$ref": "#/2205"
+        "$ref": "#/2209"
       },
       {
         "$ref": "#/2"
@@ -42146,7 +42236,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2193"
+      "$ref": "#/2197"
     }
   },
   {
@@ -42175,10 +42265,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2210"
+        "$ref": "#/2214"
       },
       {
-        "$ref": "#/2211"
+        "$ref": "#/2215"
       },
       {
         "$ref": "#/2"
@@ -42229,7 +42319,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2213"
+      "$ref": "#/2217"
     }
   },
   {
@@ -42242,7 +42332,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2158"
+      "$ref": "#/2162"
     }
   },
   {
@@ -42302,7 +42392,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2217"
+      "$ref": "#/2221"
     }
   },
   {
@@ -42311,7 +42401,7 @@
     "properties": {
       "keyName": {
         "type": {
-          "$ref": "#/2222"
+          "$ref": "#/2226"
         },
         "flags": 0,
         "description": "The name of the authentication key to regenerate."
@@ -42330,10 +42420,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2220"
+        "$ref": "#/2224"
       },
       {
-        "$ref": "#/2221"
+        "$ref": "#/2225"
       },
       {
         "$ref": "#/2"
@@ -42366,10 +42456,10 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2223"
+      "$ref": "#/2227"
     },
     "input": {
-      "$ref": "#/2219"
+      "$ref": "#/2223"
     }
   },
   {
@@ -42378,7 +42468,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2223"
+      "$ref": "#/2227"
     }
   },
   {
@@ -42387,7 +42477,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2158"
+      "$ref": "#/2162"
     }
   },
   {
@@ -42415,7 +42505,7 @@
       },
       "nodes": {
         "type": {
-          "$ref": "#/2231"
+          "$ref": "#/2235"
         },
         "flags": 0,
         "description": "Integration runtime node monitoring data."
@@ -42490,7 +42580,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2230"
+      "$ref": "#/2234"
     }
   },
   {
@@ -42499,7 +42589,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2229"
+      "$ref": "#/2233"
     }
   },
   {
@@ -42527,7 +42617,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "input": {
-      "$ref": "#/2234"
+      "$ref": "#/2238"
     }
   },
   {
@@ -42570,10 +42660,10 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2158"
+      "$ref": "#/2162"
     },
     "input": {
-      "$ref": "#/2236"
+      "$ref": "#/2240"
     }
   },
   {
@@ -42616,7 +42706,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2238"
+      "$ref": "#/2242"
     }
   },
   {
@@ -42638,7 +42728,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2258"
+          "$ref": "#/2262"
         },
         "flags": 0,
         "description": "List of SSIS object metadata."
@@ -42681,16 +42771,16 @@
     },
     "elements": {
       "Environment": {
-        "$ref": "#/2243"
-      },
-      "Folder": {
         "$ref": "#/2247"
       },
+      "Folder": {
+        "$ref": "#/2251"
+      },
       "Package": {
-        "$ref": "#/2249"
+        "$ref": "#/2253"
       },
       "Project": {
-        "$ref": "#/2253"
+        "$ref": "#/2257"
       }
     }
   },
@@ -42707,14 +42797,14 @@
       },
       "variables": {
         "type": {
-          "$ref": "#/2245"
+          "$ref": "#/2249"
         },
         "flags": 0,
         "description": "Variable in environment"
       },
       "type": {
         "type": {
-          "$ref": "#/2246"
+          "$ref": "#/2250"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -42779,7 +42869,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2244"
+      "$ref": "#/2248"
     }
   },
   {
@@ -42792,7 +42882,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/2248"
+          "$ref": "#/2252"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -42830,14 +42920,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/2251"
+          "$ref": "#/2255"
         },
         "flags": 0,
         "description": "Parameters in package"
       },
       "type": {
         "type": {
-          "$ref": "#/2252"
+          "$ref": "#/2256"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -42937,7 +43027,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2250"
+      "$ref": "#/2254"
     }
   },
   {
@@ -42964,21 +43054,21 @@
       },
       "environmentRefs": {
         "type": {
-          "$ref": "#/2255"
+          "$ref": "#/2259"
         },
         "flags": 0,
         "description": "Environment reference in project"
       },
       "parameters": {
         "type": {
-          "$ref": "#/2256"
+          "$ref": "#/2260"
         },
         "flags": 0,
         "description": "Parameters in project"
       },
       "type": {
         "type": {
-          "$ref": "#/2257"
+          "$ref": "#/2261"
         },
         "flags": 1,
         "description": "Type of metadata."
@@ -43022,13 +43112,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2254"
+      "$ref": "#/2258"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2250"
+      "$ref": "#/2254"
     }
   },
   {
@@ -43038,7 +43128,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2242"
+      "$ref": "#/2246"
     }
   },
   {
@@ -43047,10 +43137,10 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2241"
+      "$ref": "#/2245"
     },
     "input": {
-      "$ref": "#/2240"
+      "$ref": "#/2244"
     }
   },
   {
@@ -43072,7 +43162,7 @@
     "resourceType": "Microsoft.DataFactory/factories/integrationRuntimes/nodes",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2260"
+      "$ref": "#/2264"
     }
   },
   {
@@ -43102,10 +43192,10 @@
     "resourceType": "Microsoft.DataFactory/factories/pipelines",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2263"
+      "$ref": "#/2267"
     },
     "input": {
-      "$ref": "#/2262"
+      "$ref": "#/2266"
     }
   },
   {
@@ -43120,7 +43210,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/2268"
+          "$ref": "#/2272"
         },
         "flags": 1,
         "description": "List of activity runs."
@@ -43237,7 +43327,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/2267"
+      "$ref": "#/2271"
     }
   },
   {
@@ -43246,10 +43336,10 @@
     "resourceType": "Microsoft.DataFactory/factories/pipelineruns",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2266"
+      "$ref": "#/2270"
     },
     "input": {
-      "$ref": "#/2065"
+      "$ref": "#/2069"
     }
   },
   {
@@ -43265,7 +43355,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/2276"
+          "$ref": "#/2280"
         },
         "flags": 2,
         "description": "Event Subscription Status."
@@ -43296,19 +43386,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/2271"
-      },
-      {
-        "$ref": "#/2272"
-      },
-      {
-        "$ref": "#/2273"
-      },
-      {
-        "$ref": "#/2274"
-      },
-      {
         "$ref": "#/2275"
+      },
+      {
+        "$ref": "#/2276"
+      },
+      {
+        "$ref": "#/2277"
+      },
+      {
+        "$ref": "#/2278"
+      },
+      {
+        "$ref": "#/2279"
       },
       {
         "$ref": "#/2"
@@ -43321,7 +43411,7 @@
     "resourceType": "Microsoft.DataFactory/factories/triggers",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2270"
+      "$ref": "#/2274"
     }
   },
   {
@@ -43330,7 +43420,7 @@
     "resourceType": "Microsoft.DataFactory/factories/triggers",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2270"
+      "$ref": "#/2274"
     }
   },
   {
@@ -43339,7 +43429,7 @@
     "resourceType": "Microsoft.DataFactory/factories/triggers",
     "apiVersion": "2018-06-01",
     "output": {
-      "$ref": "#/2270"
+      "$ref": "#/2274"
     }
   },
   {

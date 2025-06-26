@@ -1,0 +1,2262 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z0-9-]{1,42}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HealthModelProperties",
+    "properties": {
+      "dataplaneEndpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The data plane endpoint for interacting with health data"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "discovery": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Configure to automatically discover entities from a given scope, such as a Service Group. The discovered entities will be linked to the root entity of the health model."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ModelDiscoverySettings",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The scope from which entities should be automatically discovered. For example, the resource id of a Service Group."
+      },
+      "addRecommendedSignals": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "Whether to add all recommended signals to the discovered entities."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Which Managed Identity of the health model to use for discovery. Defaults to SystemAssigned, if not set. Can be set to 'SystemAssigned' or to the resource id of a user-assigned managed identity which is linked to the health model."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 4096
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{1,258}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels/authenticationsettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels/authenticationsettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AuthenticationSettingProperties",
+    "discriminator": "authenticationKind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Display name"
+      }
+    },
+    "elements": {
+      "ManagedIdentity": {
+        "$ref": "#/51"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 260
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedIdentityAuthenticationSettingProperties",
+    "properties": {
+      "managedIdentityName": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Name of the managed identity to use. Either 'SystemAssigned' or the resourceId of a user-assigned identity."
+      },
+      "authenticationKind": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Kind of the authentication setting"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 500
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels/authenticationsettings@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/42"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels/discoveryrules"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels/discoveryrules",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveryRuleProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Display name"
+      },
+      "resourceGraphQuery": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Azure Resource Graph query text in KQL syntax. The query must return at least a column named 'id' which contains the resource ID of the discovered resources."
+      },
+      "authenticationSetting": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Reference to the name of the authentication setting which is used for querying Azure Resource Graph. The same authentication setting will also be assigned to any discovered entities."
+      },
+      "discoverRelationships": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 1,
+        "description": "Whether to create relationships between the discovered entities based on a set of built-in rules. These relationships cannot be manually deleted."
+      },
+      "addRecommendedSignals": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 1,
+        "description": "Whether to add all recommended signals to the discovered entities."
+      },
+      "deletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date when the discovery rule was (soft-)deleted."
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Error message if the last discovery operation failed."
+      },
+      "numberOfDiscoveredEntities": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 2,
+        "description": "Number of discovered entities in the last discovery operation."
+      },
+      "entityName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Name of the entity which represents the discovery rule. Note: It might take a few minutes after creating the discovery rule until the entity is created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 5000
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels/discoveryrules@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/57"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels/entities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels/entities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EntityProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Display name"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Entity kind"
+      },
+      "canvasPosition": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Positioning of the entity on the model canvas"
+      },
+      "icon": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Visual icon definition. If not set, a default icon is used."
+      },
+      "healthObjective": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Health objective as a percentage of time the entity should be healthy."
+      },
+      "impact": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Impact of the entity in health state propagation"
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Optional set of labels (key-value pairs)"
+      },
+      "signals": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Signal groups which are assigned to this entity"
+      },
+      "discoveredBy": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Discovered by which discovery rule. If set, the entity cannot be deleted manually."
+      },
+      "deletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date when the entity was (soft-)deleted"
+      },
+      "healthState": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 2,
+        "description": "Health state of this entity"
+      },
+      "alerts": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Alert configuration for this entity"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EntityCoordinates",
+    "properties": {
+      "x": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "X Coordinate"
+      },
+      "y": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "Y Coordinate"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IconDefinition",
+    "properties": {
+      "iconName": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "Name of the built-in icon, or 'Custom' to use customData"
+      },
+      "customData": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "Custom data. Base64-encoded SVG data. If set, this overrides the built-in icon."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 100
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Limited"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suppressed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EntityPropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/13"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalGroup",
+    "properties": {
+      "azureResource": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Azure Resource Signal Group"
+      },
+      "azureLogAnalytics": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "Log Analytics Signal Group"
+      },
+      "azureMonitorWorkspace": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Azure Monitor Workspace Signal Group"
+      },
+      "dependencies": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Settings for dependency signals to control how the health state of child entities influences the health state of the parent entity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceSignalGroup",
+    "properties": {
+      "signalAssignments": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator."
+      },
+      "authenticationSetting": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Reference to the name of the authentication setting which is used for querying the data source"
+      },
+      "azureResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalAssignment",
+    "properties": {
+      "signalDefinitions": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 1,
+        "description": "Signal definitions referenced by their names. All definitions are combined with an AND operator."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/39"
+    },
+    "minLength": 1,
+    "maxLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/95"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogAnalyticsSignalGroup",
+    "properties": {
+      "signalAssignments": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator."
+      },
+      "authenticationSetting": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Reference to the name of the authentication setting which is used for querying the data source"
+      },
+      "logAnalyticsWorkspaceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Log Analytics Workspace resource ID"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/95"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureMonitorWorkspaceSignalGroup",
+    "properties": {
+      "signalAssignments": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator."
+      },
+      "authenticationSetting": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Reference to the name of the authentication setting which is used for querying the data source"
+      },
+      "azureMonitorWorkspaceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure Monitor workspace resource ID"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/95"
+    },
+    "maxLength": 50
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DependenciesSignalGroup",
+    "properties": {
+      "aggregationType": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 1,
+        "description": "Aggregation type for child dependencies."
+      },
+      "degradedThreshold": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Degraded threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number that is greater than 0, or a percentage between 1-100%. The entity will be considered degraded when the number of not healthy child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when AggregationType is 'Thresholds'."
+      },
+      "unhealthyThreshold": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Unhealthy threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number that is greater than 0, or a percentage between 1-100%. The entity will be considered unhealthy when the number of not healthy child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when AggregationType is 'Thresholds'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WorstOf"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thresholds"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Healthy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Degraded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EntityAlerts",
+    "properties": {
+      "unhealthy": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Alert to be triggered on state change to unhealthy"
+      },
+      "degraded": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Alert to be triggered on state change to degraded"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertConfiguration",
+    "properties": {
+      "severity": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 1,
+        "description": "The severity of triggered alert."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 0,
+        "description": "The alert rule description."
+      },
+      "actionGroupIds": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "Optional list of action group resource IDs to be notified when the alert is triggered."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 1000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1,
+    "maxLength": 5
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels/entities@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/76"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels/relationships"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels/relationships",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelationshipProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Display name"
+      },
+      "parentEntityName": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Resource name of the parent entity"
+      },
+      "childEntityName": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Resource name of the child entity"
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "Optional set of labels (key-value pairs)"
+      },
+      "discoveredBy": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Discovered by which discovery rule. If set, the relationship cannot be deleted manually."
+      },
+      "deletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date when the relationship was (soft-)deleted"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelationshipPropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/13"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels/relationships@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/125"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CloudHealth/healthmodels/signaldefinitions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CloudHealth/healthmodels/signaldefinitions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SignalDefinitionProperties",
+    "discriminator": "signalKind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "Display name"
+      },
+      "refreshInterval": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "Interval in which the signal is being evaluated. Defaults to PT1M (1 minute)."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Optional set of labels (key-value pairs)"
+      },
+      "dataUnit": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))"
+      },
+      "evaluationRules": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 1,
+        "description": "Evaluation rules for the signal definition"
+      },
+      "deletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date when the signal definition was (soft-)deleted"
+      }
+    },
+    "elements": {
+      "AzureResourceMetric": {
+        "$ref": "#/169"
+      },
+      "LogAnalyticsQuery": {
+        "$ref": "#/179"
+      },
+      "PrometheusMetricsQuery": {
+        "$ref": "#/181"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT5M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT10M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT30M"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT1H"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PT2H"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SignalDefinitionPropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/13"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EvaluationRule",
+    "properties": {
+      "dynamicDetectionRule": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Configure to use ML-based dynamic thresholds. When used, degradedRule and unhealthyRule must not be set."
+      },
+      "degradedRule": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Degraded rule with static threshold. When used, dynamicDetectionRule must not be set."
+      },
+      "unhealthyRule": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be set."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DynamicDetectionRule",
+    "properties": {
+      "dynamicThresholdModel": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 1,
+        "description": "ML model to use for dynamic thresholds"
+      },
+      "modelSensitivity": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 1,
+        "description": "ML model sensitivity. Lowest value = high sensitivity. Supported step size = 0.5"
+      },
+      "dynamicThresholdDirection": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 1,
+        "description": "Threshold direction"
+      },
+      "trainingStartTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Start time of the training in UTC."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AnomalyDetection"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 5
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LowerThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterOrLowerThan"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ThresholdRule",
+    "properties": {
+      "operator": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 1,
+        "description": "Operator how to compare the signal value with the threshold"
+      },
+      "threshold": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "Threshold value"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LowerThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LowerOrEquals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterOrEquals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceMetricSignalDefinitionProperties",
+    "properties": {
+      "metricNamespace": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 1,
+        "description": "Metric namespace"
+      },
+      "metricName": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 1,
+        "description": "Name of the metric"
+      },
+      "timeGrain": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "Time range of signal. ISO duration format like PT10M."
+      },
+      "aggregationType": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 1,
+        "description": "Type of aggregation to apply to the metric"
+      },
+      "dimension": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Optional: Dimension to split by"
+      },
+      "dimensionFilter": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set."
+      },
+      "signalKind": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 1,
+        "description": "Kind of the signal definition"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 256
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Average"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Count"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Minimum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Maximum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Total"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureResourceMetric"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogAnalyticsQuerySignalDefinitionProperties",
+    "properties": {
+      "queryText": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Query text in KQL syntax"
+      },
+      "timeGrain": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Time range of signal. ISO duration format like PT10M. If not specified, the KQL query must define a time range."
+      },
+      "valueColumnName": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Name of the column in the result set to evaluate against the thresholds. Defaults to the first column in the result set if not specified. The column must be numeric."
+      },
+      "signalKind": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "Kind of the signal definition"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogAnalyticsQuery"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrometheusMetricsSignalDefinitionProperties",
+    "properties": {
+      "queryText": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Query text in PromQL syntax"
+      },
+      "timeGrain": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "Time range of signal. ISO duration format like PT10M."
+      },
+      "signalKind": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 1,
+        "description": "Kind of the signal definition"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrometheusMetricsQuery"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CloudHealth/healthmodels/signaldefinitions@2025-05-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/137"
+    },
+    "flags": 0
+  }
+]

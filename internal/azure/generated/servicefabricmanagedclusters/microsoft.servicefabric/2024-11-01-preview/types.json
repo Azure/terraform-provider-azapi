@@ -1903,6 +1903,13 @@
     "$type": "ObjectType",
     "name": "ApplicationResourceProperties",
     "properties": {
+      "managedIdentities": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "List of user assigned identities for the application, each mapped to a friendly name."
+      },
       "provisioningState": {
         "type": {
           "$ref": "#/0"
@@ -1919,25 +1926,44 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/140"
         },
         "flags": 0,
         "description": "List of application parameters with overridden values from their default values specified in the application manifest."
       },
       "upgradePolicy": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/141"
         },
         "flags": 0,
         "description": "Describes the policy for a monitored application upgrade."
-      },
-      "managedIdentities": {
-        "type": {
-          "$ref": "#/151"
-        },
-        "flags": 0,
-        "description": "List of user assigned identities for the application, each mapped to a friendly name."
       }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationUserAssignedIdentity",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The friendly name of user assigned identity."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The principal id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/138"
     }
   },
   {
@@ -1954,7 +1980,7 @@
     "properties": {
       "applicationHealthPolicy": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "Defines a health policy used to evaluate the health of an application or one of its children entities."
@@ -1968,7 +1994,7 @@
       },
       "rollingUpgradeMonitoringPolicy": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/145"
         },
         "flags": 0,
         "description": "The policy used for monitoring the application upgrade"
@@ -1982,7 +2008,7 @@
       },
       "upgradeMode": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/151"
         },
         "flags": 0,
         "description": "The mode used to monitor health during a rolling upgrade. The values are Monitored, and UnmonitoredAuto."
@@ -2023,14 +2049,14 @@
       },
       "defaultServiceTypeHealthPolicy": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/143"
         },
         "flags": 0,
         "description": "The health policy used by default to evaluate the health of a service type."
       },
       "serviceTypeHealthPolicyMap": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/144"
         },
         "flags": 0,
         "description": "The map with service type health policy per service type name. The map is empty by default."
@@ -2069,7 +2095,7 @@
     "name": "ApplicationHealthPolicyServiceTypeHealthPolicyMap",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/141"
+      "$ref": "#/143"
     }
   },
   {
@@ -2078,7 +2104,7 @@
     "properties": {
       "failureAction": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/148"
         },
         "flags": 1,
         "description": "The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations. Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically. Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode."
@@ -2132,10 +2158,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/144"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/145"
+        "$ref": "#/147"
       },
       {
         "$ref": "#/0"
@@ -2154,41 +2180,15 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/147"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/148"
+        "$ref": "#/150"
       },
       {
         "$ref": "#/0"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ApplicationUserAssignedIdentity",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The friendly name of user assigned identity."
-      },
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The principal id of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/150"
-    }
   },
   {
     "$type": "ObjectType",

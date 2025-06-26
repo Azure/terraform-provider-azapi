@@ -375,7 +375,7 @@
       },
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
@@ -395,24 +395,24 @@
     "properties": {
       "baseProfile": {
         "type": {
-          "$ref": "#/1"
+          "$ref": "#/33"
         },
         "flags": 0,
-        "description": "baseProfile, Resource properties that common across all resources"
+        "description": "JSON object that contains VM properties that are common across all VMs in this batch (if you want to create 100 VMs in this request, and they all have same vmSize, then include vmSize in baseProfile)"
       },
       "resourceOverrides": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/35"
         },
         "flags": 0,
-        "description": "resourceOverrides, properties per resource that needs to be overwritted from baseProfile"
+        "description": "JSON array, that contains VM properties that should to be overridden for each VM in the batch (if you want to create 100 VMs, they all need a distinct computerName property, you pass computerNames for each VM in batch in this array), service will merge baseProfile with VM specific overrides and create a merged VMProfile."
       },
       "resourceCount": {
         "type": {
           "$ref": "#/27"
         },
         "flags": 1,
-        "description": "Number of resources to be created"
+        "description": "Number of VMs to be created"
       },
       "resourcePrefix": {
         "type": {
@@ -424,9 +424,28 @@
     }
   },
   {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProvisionPayloadBaseProfile",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/32"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceProvisionPayloadResourceOverridesItem",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/32"
+    }
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/1"
+      "$ref": "#/34"
     }
   },
   {
@@ -435,7 +454,7 @@
     "properties": {
       "optimizationPreference": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "Details that could optimize the user's request"
@@ -465,13 +484,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/34"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/36"
+        "$ref": "#/39"
       },
       {
         "$ref": "#/1"
@@ -505,7 +524,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/39"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The results from the start request if no errors exist"
@@ -524,7 +543,7 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/38"
+      "$ref": "#/41"
     },
     "input": {
       "$ref": "#/30"
@@ -536,14 +555,14 @@
     "properties": {
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -563,7 +582,7 @@
     "properties": {
       "ids": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/46"
         },
         "flags": 1,
         "description": "The resource ids used for the request"
@@ -603,7 +622,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "The results from the deallocate request if no errors exist"
@@ -622,10 +641,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/44"
+      "$ref": "#/47"
     },
     "input": {
-      "$ref": "#/41"
+      "$ref": "#/44"
     }
   },
   {
@@ -634,14 +653,14 @@
     "properties": {
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -655,7 +674,7 @@
       },
       "forceDeletion": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "Forced delete resource item"
@@ -692,7 +711,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "The results from the start request if no errors exist"
@@ -711,10 +730,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/49"
+      "$ref": "#/52"
     },
     "input": {
-      "$ref": "#/47"
+      "$ref": "#/50"
     }
   },
   {
@@ -723,14 +742,14 @@
     "properties": {
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -771,7 +790,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/57"
         },
         "flags": 0,
         "description": "The results from the Hibernate request if no errors exist"
@@ -790,10 +809,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/53"
+      "$ref": "#/56"
     },
     "input": {
-      "$ref": "#/52"
+      "$ref": "#/55"
     }
   },
   {
@@ -802,14 +821,14 @@
     "properties": {
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -850,7 +869,7 @@
       },
       "results": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "The results from the start request if no errors exist"
@@ -869,10 +888,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/57"
+      "$ref": "#/60"
     },
     "input": {
-      "$ref": "#/56"
+      "$ref": "#/59"
     }
   },
   {
@@ -881,7 +900,7 @@
     "properties": {
       "operationIds": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/64"
         },
         "flags": 1,
         "description": "The list of operation ids to query errors of"
@@ -900,7 +919,7 @@
     "properties": {
       "results": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/69"
         },
         "flags": 1,
         "description": "An array of operationids and their corresponding errors if any"
@@ -941,7 +960,7 @@
       },
       "operationErrors": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "A list of errors associated with the operationid"
@@ -1013,13 +1032,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/64"
+      "$ref": "#/67"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/63"
+      "$ref": "#/66"
     }
   },
   {
@@ -1028,10 +1047,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/62"
+      "$ref": "#/65"
     },
     "input": {
-      "$ref": "#/60"
+      "$ref": "#/63"
     }
   },
   {
@@ -1040,7 +1059,7 @@
     "properties": {
       "operationIds": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/72"
         },
         "flags": 1,
         "description": "The list of operation ids to get the status of"
@@ -1066,7 +1085,7 @@
     "properties": {
       "results": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/74"
         },
         "flags": 1,
         "description": "An array of resource operations based on their operation ids"
@@ -1085,42 +1104,42 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/70"
+      "$ref": "#/73"
     },
     "input": {
-      "$ref": "#/68"
+      "$ref": "#/71"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "SubmitCreateRequest",
+    "name": "SubmitDeallocateRequest",
     "properties": {
       "schedule": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/77"
         },
         "flags": 1,
         "description": "The schedule for the request"
       },
-      "resourceConfigParameters": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 1,
-        "description": "resource creation payload"
-      },
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
-        "flags": 0,
+        "flags": 1,
         "description": "The execution parameters for the request"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "The resources for the request"
       },
       "correlationid": {
         "type": {
           "$ref": "#/1"
         },
-        "flags": 0,
+        "flags": 1,
         "description": "CorrelationId item"
       }
     }
@@ -1159,7 +1178,7 @@
       },
       "deadlineType": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/81"
         },
         "flags": 1,
         "description": "The deadlinetype of the operation, this can either be InitiateAt or CompleteBy"
@@ -1182,13 +1201,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/75"
+        "$ref": "#/78"
       },
       {
-        "$ref": "#/76"
+        "$ref": "#/79"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/80"
       },
       {
         "$ref": "#/1"
@@ -1197,113 +1216,14 @@
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "virtualMachinesSubmitCreate",
-    "resourceType": "Microsoft.ComputeSchedule/locations",
-    "apiVersion": "2025-05-01",
-    "output": {
-      "$ref": "#/38"
-    },
-    "input": {
-      "$ref": "#/73"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SubmitDeallocateRequest",
-    "properties": {
-      "schedule": {
-        "type": {
-          "$ref": "#/74"
-        },
-        "flags": 1,
-        "description": "The schedule for the request"
-      },
-      "executionParameters": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 1,
-        "description": "The execution parameters for the request"
-      },
-      "resources": {
-        "type": {
-          "$ref": "#/42"
-        },
-        "flags": 1,
-        "description": "The resources for the request"
-      },
-      "correlationid": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 1,
-        "description": "CorrelationId item"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
     "name": "virtualMachinesSubmitDeallocate",
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/44"
+      "$ref": "#/47"
     },
     "input": {
-      "$ref": "#/80"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SubmitDeleteRequest",
-    "properties": {
-      "schedule": {
-        "type": {
-          "$ref": "#/74"
-        },
-        "flags": 1,
-        "description": "The schedule for the request"
-      },
-      "executionParameters": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 1,
-        "description": "The execution parameters for the request"
-      },
-      "resources": {
-        "type": {
-          "$ref": "#/42"
-        },
-        "flags": 1,
-        "description": "The resources for the request"
-      },
-      "correlationid": {
-        "type": {
-          "$ref": "#/1"
-        },
-        "flags": 0,
-        "description": "CorrelationId item"
-      },
-      "forceDeletion": {
-        "type": {
-          "$ref": "#/48"
-        },
-        "flags": 0,
-        "description": "Forced delete resource item"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "virtualMachinesSubmitDelete",
-    "resourceType": "Microsoft.ComputeSchedule/locations",
-    "apiVersion": "2025-05-01",
-    "output": {
-      "$ref": "#/49"
-    },
-    "input": {
-      "$ref": "#/82"
+      "$ref": "#/76"
     }
   },
   {
@@ -1312,21 +1232,21 @@
     "properties": {
       "schedule": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/77"
         },
         "flags": 1,
         "description": "The schedule for the request"
       },
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -1346,10 +1266,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/53"
+      "$ref": "#/56"
     },
     "input": {
-      "$ref": "#/84"
+      "$ref": "#/83"
     }
   },
   {
@@ -1358,21 +1278,21 @@
     "properties": {
       "schedule": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/77"
         },
         "flags": 1,
         "description": "The schedule for the request"
       },
       "executionParameters": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/36"
         },
         "flags": 1,
         "description": "The execution parameters for the request"
       },
       "resources": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/45"
         },
         "flags": 1,
         "description": "The resources for the request"
@@ -1392,10 +1312,10 @@
     "resourceType": "Microsoft.ComputeSchedule/locations",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/57"
+      "$ref": "#/60"
     },
     "input": {
-      "$ref": "#/86"
+      "$ref": "#/85"
     }
   }
 ]
