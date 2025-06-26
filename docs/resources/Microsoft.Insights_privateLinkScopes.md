@@ -64,7 +64,7 @@ resource "azapi_resource" "privateLinkScope" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Insights/privateLinkScopes@api-version`. The available api-versions for this resource are: [`2019-10-17-preview`, `2021-07-01-preview`, `2023-06-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Insights/privateLinkScopes@api-version`. The available api-versions for this resource are: [`2019-10-17-preview`, `2021-07-01-preview`, `2021-09-01`, `2023-06-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`

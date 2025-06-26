@@ -1899,12 +1899,16 @@ resource "azurerm_application_insights" "test" {
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   application_type    = "web"
+
+  lifecycle {
+    ignore_changes = [workspace_id]
+  }
 }
 
 resource "azurerm_key_vault" "test" {
-  name                = "acckeyvault%[2]s"
-  location            = azapi_resource.resourceGroup.location
-  resource_group_name = azapi_resource.resourceGroup.name
+  name                     = "acckeyvault%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
   tenant_id                = data.azurerm_client_config.current.tenant_id
   sku_name                 = "standard"
   purge_protection_enabled = true

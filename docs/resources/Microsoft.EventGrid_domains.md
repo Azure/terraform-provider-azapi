@@ -70,7 +70,7 @@ resource "azapi_resource" "domain" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.EventGrid/domains@api-version`. The available api-versions for this resource are: [`2018-09-15-preview`, `2019-02-01-preview`, `2019-06-01`, `2020-01-01-preview`, `2020-04-01-preview`, `2020-06-01`, `2020-10-15-preview`, `2021-06-01-preview`, `2021-10-15-preview`, `2021-12-01`, `2022-06-15`, `2023-06-01-preview`, `2023-12-15-preview`, `2024-06-01-preview`, `2024-12-15-preview`, `2025-02-15`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.EventGrid/domains@api-version`. The available api-versions for this resource are: [`2018-09-15-preview`, `2019-02-01-preview`, `2019-06-01`, `2020-01-01-preview`, `2020-04-01-preview`, `2020-06-01`, `2020-10-15-preview`, `2021-06-01-preview`, `2021-10-15-preview`, `2021-12-01`, `2022-06-15`, `2023-06-01-preview`, `2023-12-15-preview`, `2024-06-01-preview`, `2024-12-15-preview`, `2025-02-15`, `2025-04-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -88,5 +88,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{resourceName}?api-version=2025-02-15
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{resourceName}?api-version=2025-04-01-preview
  ```
