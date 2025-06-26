@@ -1899,43 +1899,29 @@ resource "azurerm_application_insights" "test" {
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
   application_type    = "web"
-  lifecycle {
-    ignore_changes = [workspace_id]
-  }
 }
 
 resource "azurerm_key_vault" "test" {
   name                = "acckeyvault%[2]s"
   location            = azapi_resource.resourceGroup.location
   resource_group_name = azapi_resource.resourceGroup.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  sku_name            = "standard"
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-    key_permissions = [
-      "Create",
-      "Get",
-      "Delete",
-      "Purge",
-      "GetRotationPolicy",
-    ]
-  }
-  lifecycle {
-    ignore_changes = [access_policy]
-  }
+  tenant_id                = data.azurerm_client_config.current.tenant_id
+  sku_name                 = "standard"
+  purge_protection_enabled = true
 }
 
-resource "azurerm_user_assigned_identity" "test" {
-  name                = "acctestUAI-%[2]s"
-  location            = azapi_resource.resourceGroup.location
-  resource_group_name = azapi_resource.resourceGroup.name
-}
+resource "azurerm_key_vault_access_policy" "test" {
+  key_vault_id = azurerm_key_vault.test.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_key_vault.test.id
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = azurerm_user_assigned_identity.test.principal_id
+  key_permissions = [
+    "Create",
+    "Get",
+    "Delete",
+    "Purge",
+    "GetRotationPolicy",
+  ]
 }
 
 resource "azurerm_storage_account" "test" {
@@ -1955,19 +1941,13 @@ resource "azurerm_machine_learning_workspace" "test" {
   key_vault_id            = azurerm_key_vault.test.id
   storage_account_id      = azurerm_storage_account.test.id
 
-  identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.test.id,
-    ]
-  }
-  primary_user_assigned_identity = azurerm_user_assigned_identity.test.id
-  public_network_access_enabled  = true
   managed_network {
     isolation_mode = "AllowOnlyApprovedOutbound"
   }
 
-  depends_on = [azurerm_role_assignment.test]
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
 resource "azapi_resource" "test" {
@@ -2001,7 +1981,6 @@ resource "azapi_resource" "namespace" {
       disableLocalAuth     = false
       isAutoInflateEnabled = false
       publicNetworkAccess  = "Enabled"
-      zoneRedundant        = false
     }
     sku = {
       capacity = 1
