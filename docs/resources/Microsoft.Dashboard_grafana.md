@@ -72,7 +72,7 @@ resource "azapi_resource" "grafana" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Dashboard/grafana@api-version`. The available api-versions for this resource are: [`2021-09-01-preview`, `2022-05-01-preview`, `2022-08-01`, `2022-10-01-preview`, `2023-09-01`, `2023-10-01-preview`, `2024-10-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Dashboard/grafana@api-version`. The available api-versions for this resource are: [`2021-09-01-preview`, `2022-05-01-preview`, `2022-08-01`, `2022-10-01-preview`, `2023-09-01`, `2023-10-01-preview`, `2024-10-01`, `2024-11-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -90,5 +90,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{resourceName}?api-version=2024-10-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{resourceName}?api-version=2024-11-01-preview
  ```

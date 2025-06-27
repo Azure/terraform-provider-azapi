@@ -158,7 +158,7 @@ resource "azapi_resource" "dnsForwardingRuleset" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/dnsForwardingRulesets@api-version`. The available api-versions for this resource are: [`2020-04-01-preview`, `2022-07-01`, `2023-07-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/dnsForwardingRulesets@api-version`. The available api-versions for this resource are: [`2020-04-01-preview`, `2022-07-01`, `2023-07-01-preview`, `2025-05-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -176,5 +176,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{resourceName}?api-version=2023-07-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{resourceName}?api-version=2025-05-01
  ```

@@ -71,7 +71,7 @@ resource "azapi_resource" "loadTest" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.LoadTestService/loadTests@api-version`. The available api-versions for this resource are: [`2021-12-01-preview`, `2022-04-15-preview`, `2022-12-01`, `2023-12-01-preview`, `2024-12-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.LoadTestService/loadTests@api-version`. The available api-versions for this resource are: [`2022-12-01`, `2023-12-01-preview`, `2024-12-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`

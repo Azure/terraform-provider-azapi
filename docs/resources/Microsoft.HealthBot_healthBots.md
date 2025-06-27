@@ -65,7 +65,7 @@ resource "azapi_resource" "healthBot" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.HealthBot/healthBots@api-version`. The available api-versions for this resource are: [`2020-10-20`, `2020-10-20-preview`, `2020-12-08`, `2020-12-08-preview`, `2021-06-10`, `2021-08-24`, `2022-08-08`, `2023-05-01`, `2024-02-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.HealthBot/healthBots@api-version`. The available api-versions for this resource are: [`2020-10-20`, `2020-10-20-preview`, `2020-12-08`, `2020-12-08-preview`, `2021-06-10`, `2021-08-24`, `2022-08-08`, `2023-05-01`, `2024-02-01`, `2025-05-25`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -83,5 +83,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{resourceName}?api-version=2024-02-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthBot/healthBots/{resourceName}?api-version=2025-05-25
  ```

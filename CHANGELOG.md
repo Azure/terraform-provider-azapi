@@ -4,7 +4,9 @@ ENHANCEMENTS:
 - `azapi_resource` resource: ignore the changes when the `body` field matches the remote state even if the `body` field or `api-version` field is changed.
 - `azapi_resource` resource: ignore the order of the `identity_ids` array.
 - `azapi_resource` resource: support `ignore_null_property` field, which is used to ignore the null properties in the `body` field.
+- `azapi_resource` resource: support `sensitive_body_version` field, which is used to manually control the version of the sensitive body.
 - `azapi_update_resource` resource: remove the readonly fields from `identity.userAssignedIdentities` in the request body.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a50156f9eb062a517a48bfb86067afc0a8f4c4dc
 
 BUG FIXES:
 - Fix a bug that schema validation fails to validate unknown string values when both `body` and `sensitive_body` are specified.

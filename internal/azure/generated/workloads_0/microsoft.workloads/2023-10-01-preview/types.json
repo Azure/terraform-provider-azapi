@@ -1,0 +1,2694 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9]+-?[A-Za-z0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/connectors"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/connectors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Managed service identity (user assigned identities)"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Defines the connector resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedServiceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 1,
+        "description": "Type of manage identity"
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "User assigned identities dictionary"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectorProperties",
+    "properties": {
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Defines the ID of the connector's source resource."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "Indicates any errors on the connector resource."
+      },
+      "managedResourceGroupConfiguration": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Managed resource group configuration"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectorErrorDefinition",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Service specific error code which serves as the substatus for the HTTP error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Description of the error."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Internal error details."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRGConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Managed resource group name"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/connectors@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^.+"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Workloads/connectors/acssBackups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Workloads/connectors/acssBackups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Defines the backup connection properties for a virtual instance for SAP."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AcssBackupConnectionProperties",
+    "properties": {
+      "backupData": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Information about the recovery services vault and backup policy used for backup."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 2,
+        "description": "Defines the provisioning states."
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "Defines the errors related to backup connection resource of virtual instance for SAP."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "BackupData",
+    "discriminator": "backupType",
+    "baseProperties": {
+      "recoveryServicesVault": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "The properties of the recovery services vault used for backup."
+      }
+    },
+    "elements": {
+      "HANA": {
+        "$ref": "#/47"
+      },
+      "SQL": {
+        "$ref": "#/219"
+      },
+      "VM": {
+        "$ref": "#/221"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RecoveryServicesVaultProperties",
+    "discriminator": "vaultType",
+    "baseProperties": {},
+    "elements": {
+      "Existing": {
+        "$ref": "#/43"
+      },
+      "New": {
+        "$ref": "#/45"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExistingRecoveryServicesVault",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of the recovery services vault that has been created."
+      },
+      "vaultType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 1,
+        "description": "The vault type, whether it is existing or has to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Existing"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NewRecoveryServicesVault",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the recovery services vault has to be created."
+      },
+      "resourceGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the resource group where the recovery services vault has to be created."
+      },
+      "vaultType": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "The vault type, whether it is existing or has to be created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HanaBackupData",
+    "properties": {
+      "sslConfiguration": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "Path of the SSL key store."
+      },
+      "backupPolicy": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Defines the policy properties for database backup."
+      },
+      "hdbuserstoreKeyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the HANA Database User Store Key."
+      },
+      "instanceNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets or sets the database instance number."
+      },
+      "dbInstanceSnapshotBackupPolicy": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Defines the policy properties for database backup."
+      },
+      "backupType": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 1,
+        "description": "The type of backup, VM, SQL or HANA."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SSLConfiguration",
+    "properties": {
+      "sslKeyStore": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specify the name of the keystore file that contains the client's identity (eg. sapsrv.pse). The script will search for the file in the appropriate directory depending on the crypto provider mentioned. If this argument is not provided, it is automatically determined by searching in the configuration files."
+      },
+      "sslTrustStore": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specify the name of the trust store file that contains the server’s public certificates (eg. sapsrv.pse). The script will search for the file in the appropriate directory depending on the crypto provider mentioned. If this argument is not provided, it is automatically determined by searching in the configuration files."
+      },
+      "sslHostNameInCertificate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specify the hostname as mentioned in the SSL certificate. If this argument is not provided, it is automatically determined by searching in the SSL certificate."
+      },
+      "sslCryptoProvider": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "Specify the crypto provider being used (commoncrypto/openssl). If this argument is not provided, it is automatically determined by searching in the configuration files."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "commoncrypto"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "openssl"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DBBackupPolicyProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the DB backup policy."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "Azure VM (Mercury) workload-specific backup policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureVmWorkloadProtectionPolicy",
+    "properties": {
+      "workLoadType": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "Type of workload for the backup management"
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "Common settings for the backup management"
+      },
+      "subProtectionPolicy": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 0,
+        "description": "List of sub-protection policies which includes schedule and retention"
+      },
+      "makePolicyConsistent": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Fix the policy inconsistency"
+      },
+      "protectedItemsCount": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Number of items associated with this policy."
+      },
+      "backupManagementType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      },
+      "resourceGuardOperationRequests": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "ResourceGuard Operation Requests"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FileFolder"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureSqlDb"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SQLDB"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exchange"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sharepoint"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VMwareVM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemState"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Client"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GenericDataSource"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SQLDataBase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureFileShare"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SAPHanaDatabase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SAPAseDatabase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SAPHanaDBInstance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Settings",
+    "properties": {
+      "timeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "TimeZone optional input as string. For example: TimeZone = \"Pacific Standard Time\"."
+      },
+      "issqlcompression": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "SQL compression flag"
+      },
+      "isCompression": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Workload compression flag. This has been added so that 'isSqlCompression'\r\nwill be deprecated once clients upgrade to consider this flag."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubProtectionPolicy",
+    "properties": {
+      "policyType": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Type of backup policy type"
+      },
+      "schedulePolicy": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "Backup schedule specified as part of backup policy."
+      },
+      "retentionPolicy": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Retention policy with the details on backup copy retention ranges."
+      },
+      "tieringPolicy": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 0,
+        "description": "Tiering policy to automatically move RPs to another tier.\r\nKey is Target Tier, defined in RecoveryPointTierType enum.\r\nTiering policy specifies the criteria to move RP to the target tier."
+      },
+      "snapshotBackupAdditionalDetails": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "Hana DB instance snapshot backup additional details."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Differential"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CopyOnlyFull"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Incremental"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SnapshotFull"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SnapshotCopyOnlyFull"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "SchedulePolicy",
+    "discriminator": "schedulePolicyType",
+    "baseProperties": {},
+    "elements": {
+      "LogSchedulePolicy": {
+        "$ref": "#/84"
+      },
+      "LongTermSchedulePolicy": {
+        "$ref": "#/87"
+      },
+      "SimpleSchedulePolicy": {
+        "$ref": "#/89"
+      },
+      "SimpleSchedulePolicyV2": {
+        "$ref": "#/107"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogSchedulePolicy",
+    "properties": {
+      "scheduleFrequencyInMins": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Frequency of the log schedule operation of this policy in minutes."
+      },
+      "schedulePolicyType": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LogSchedulePolicy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LongTermSchedulePolicy",
+    "properties": {
+      "schedulePolicyType": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LongTermSchedulePolicy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimpleSchedulePolicy",
+    "properties": {
+      "scheduleRunFrequency": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Frequency of the schedule operation of this policy."
+      },
+      "scheduleRunDays": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 0,
+        "description": "List of days of week this schedule has to be run."
+      },
+      "scheduleRunTimes": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "List of times of day this schedule has to be run."
+      },
+      "hourlySchedule": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Hourly Schedule of this Policy"
+      },
+      "scheduleWeeklyFrequency": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "At every number weeks this schedule has to be run."
+      },
+      "schedulePolicyType": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hourly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HourlySchedule",
+    "properties": {
+      "interval": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Interval at which backup needs to be triggered. For hourly the value\r\n can be 4/6/8/12"
+      },
+      "scheduleWindowStartTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "To specify start time of the backup window"
+      },
+      "scheduleWindowDuration": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "To specify duration of the backup window"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SimpleSchedulePolicy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimpleSchedulePolicyV2",
+    "properties": {
+      "scheduleRunFrequency": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Frequency of the schedule operation of this policy."
+      },
+      "hourlySchedule": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "hourly schedule of this policy"
+      },
+      "dailySchedule": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "Daily schedule of this policy"
+      },
+      "weeklySchedule": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "Weekly schedule of this policy"
+      },
+      "schedulePolicyType": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hourly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DailySchedule",
+    "properties": {
+      "scheduleRunTimes": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "List of times of day this schedule has to be run."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WeeklySchedule",
+    "properties": {
+      "scheduleRunDays": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "Schedule run days."
+      },
+      "scheduleRunTimes": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "List of times of day this schedule has to be run."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/123"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SimpleSchedulePolicyV2"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RetentionPolicy",
+    "discriminator": "retentionPolicyType",
+    "baseProperties": {},
+    "elements": {
+      "LongTermRetentionPolicy": {
+        "$ref": "#/128"
+      },
+      "SimpleRetentionPolicy": {
+        "$ref": "#/198"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LongTermRetentionPolicy",
+    "properties": {
+      "dailySchedule": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Daily retention schedule of the protection policy."
+      },
+      "weeklySchedule": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Weekly retention schedule of the protection policy."
+      },
+      "monthlySchedule": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 0,
+        "description": "Monthly retention schedule of the protection policy."
+      },
+      "yearlySchedule": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "Yearly retention schedule of the protection policy."
+      },
+      "retentionPolicyType": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DailyRetentionSchedule",
+    "properties": {
+      "retentionTimes": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "Retention times of retention policy."
+      },
+      "retentionDuration": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "Retention duration of retention Policy."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RetentionDuration",
+    "properties": {
+      "count": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Count of duration types. Retention duration is obtained by the counting the duration type Count times.\r\nFor example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks."
+      },
+      "durationType": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Retention duration type of retention policy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Days"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weeks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Months"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Years"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WeeklyRetentionSchedule",
+    "properties": {
+      "daysOfTheWeek": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "List of days of week for weekly retention policy."
+      },
+      "retentionTimes": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "Retention times of retention policy."
+      },
+      "retentionDuration": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "Retention duration of retention Policy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/146"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MonthlyRetentionSchedule",
+    "properties": {
+      "retentionScheduleFormatType": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Retention schedule format type for monthly retention policy."
+      },
+      "retentionScheduleDaily": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Daily retention format for monthly retention policy."
+      },
+      "retentionScheduleWeekly": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Weekly retention format for monthly retention policy."
+      },
+      "retentionTimes": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 0,
+        "description": "Retention times of retention policy."
+      },
+      "retentionDuration": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "Retention duration of retention Policy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DailyRetentionFormat",
+    "properties": {
+      "daysOfTheMonth": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "List of days of the month."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Day",
+    "properties": {
+      "date": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Date of the month"
+      },
+      "isLast": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Whether Date is last date of month"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/155"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WeeklyRetentionFormat",
+    "properties": {
+      "daysOfTheWeek": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "List of days of the week."
+      },
+      "weeksOfTheMonth": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "List of weeks of month."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "First"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Second"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Third"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fourth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Last"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/173"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "YearlyRetentionSchedule",
+    "properties": {
+      "retentionScheduleFormatType": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "Retention schedule format for yearly retention policy."
+      },
+      "monthsOfYear": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "List of months of year of yearly retention policy."
+      },
+      "retentionScheduleDaily": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Daily retention format for yearly retention policy."
+      },
+      "retentionScheduleWeekly": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Weekly retention format for yearly retention policy."
+      },
+      "retentionTimes": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "Retention times of retention policy."
+      },
+      "retentionDuration": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "Retention duration of retention Policy."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "January"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "February"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "March"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "April"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "May"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "June"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "July"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "August"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "September"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "October"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "November"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "December"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/194"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LongTermRetentionPolicy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SimpleRetentionPolicy",
+    "properties": {
+      "retentionDuration": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "Retention duration of the protection policy."
+      },
+      "retentionPolicyType": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SimpleRetentionPolicy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TieringPolicy",
+    "properties": {
+      "tieringMode": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 0,
+        "description": "Tiering Mode to control automatic tiering of recovery points. Supported values are:\r\n1. TierRecommended: Tier all recovery points recommended to be tiered\r\n2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.\r\n3. DoNotTier: Do not tier any recovery points"
+      },
+      "duration": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Number of days/weeks/months/years to retain backups in current tier before tiering.\r\nUsed only if TieringMode is set to TierAfter"
+      },
+      "durationType": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "Retention duration type: days/weeks/months/years\r\nUsed only if TieringMode is set to TierAfter"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TierRecommended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TierAfter"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DoNotTier"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Days"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weeks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Months"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Years"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubProtectionPolicyTieringPolicy",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/200"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SnapshotBackupAdditionalDetails",
+    "properties": {
+      "instantRpRetentionRangeInDays": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Retention range for instant Rp in days."
+      },
+      "instantRPDetails": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Instant RP details for the snapshot."
+      },
+      "userAssignedManagedIdentityDetails": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "User Assigned managed identity details used for snapshot policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedManagedIdentityDetails",
+    "properties": {
+      "identityArmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      },
+      "identityName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      },
+      "userAssignedIdentityProperties": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 0,
+        "description": "User assigned managed identity properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentityProperties",
+    "properties": {
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/73"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HANA"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SqlBackupData",
+    "properties": {
+      "backupPolicy": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "Defines the policy properties for database backup."
+      },
+      "backupType": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 1,
+        "description": "The type of backup, VM, SQL or HANA."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SQL"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMBackupData",
+    "properties": {
+      "backupPolicy": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 1,
+        "description": "Defines the policy properties for virtual machine backup."
+      },
+      "diskExclusionProperties": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 0,
+        "description": "Defines the disk exclusion properties for virtual machine backup."
+      },
+      "backupType": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 1,
+        "description": "The type of backup, VM, SQL or HANA."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMBackupPolicyProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the VM Backup policy."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 0,
+        "description": "IaaS VM workload-specific backup policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureIaaSVMProtectionPolicy",
+    "properties": {
+      "instantRPDetails": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 0,
+        "description": "Instant recovery point additional details."
+      },
+      "schedulePolicy": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "Backup schedule specified as part of backup policy."
+      },
+      "retentionPolicy": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 0,
+        "description": "Retention policy with the details on backup copy retention ranges."
+      },
+      "tieringPolicy": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 0,
+        "description": "Tiering policy to automatically move RPs to another tier\r\nKey is Target Tier, defined in RecoveryPointTierType enum.\r\nTiering policy specifies the criteria to move RP to the target tier."
+      },
+      "instantRpRetentionRangeInDays": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Instant RP retention policy range in days"
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time zone optional input as string. For example: \"Pacific Standard Time\"."
+      },
+      "policyType": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 0,
+        "description": "The policy type."
+      },
+      "protectedItemsCount": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Number of items associated with this policy."
+      },
+      "backupManagementType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types."
+      },
+      "resourceGuardOperationRequests": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "ResourceGuard Operation Requests"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InstantRPAdditionalDetails",
+    "properties": {
+      "azureBackupRGNamePrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure backup resource group name prefix."
+      },
+      "azureBackupRGNameSuffix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure backup resource group name suffix."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureIaaSVMProtectionPolicyTieringPolicy",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/200"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "V1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "V2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskExclusionProperties",
+    "properties": {
+      "diskLunList": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 1,
+        "description": "List of Disks' Logical Unit Numbers (LUN) to be used for VM Protection."
+      },
+      "isInclusionList": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "Flag to indicate whether DiskLunList is to be included/ excluded from backup."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/85"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Workloads/connectors/acssBackups@2023-10-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/39"
+    },
+    "flags": 0
+  }
+]

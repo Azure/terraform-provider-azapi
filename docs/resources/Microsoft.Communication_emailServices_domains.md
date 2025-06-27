@@ -80,7 +80,7 @@ resource "azapi_resource" "domain" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Communication/emailServices/domains@api-version`. The available api-versions for this resource are: [`2021-10-01-preview`, `2022-07-01-preview`, `2023-03-01-preview`, `2023-03-31`, `2023-04-01`, `2023-04-01-preview`, `2023-06-01-preview`, `2024-09-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Communication/emailServices/domains@api-version`. The available api-versions for this resource are: [`2021-10-01-preview`, `2022-07-01-preview`, `2023-03-01-preview`, `2023-03-31`, `2023-04-01`, `2023-04-01-preview`, `2023-06-01-preview`, `2024-09-01-preview`, `2025-05-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{resourceName}`
@@ -98,5 +98,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{resourceName}/domains/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{resourceName}/domains/{resourceName}?api-version=2024-09-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{resourceName}/domains/{resourceName}?api-version=2025-05-01-preview
  ```

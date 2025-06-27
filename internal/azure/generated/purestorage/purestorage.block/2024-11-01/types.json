@@ -1,0 +1,2373 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 127,
+    "pattern": "^[a-zA-Z0-9\\-_]{1,127}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/reservations"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/reservations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReservationProperties",
+    "properties": {
+      "reservationInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Pure Storage's internal ID for the reservation"
+      },
+      "marketplace": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Marketplace details"
+      },
+      "user": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "User details"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseMarketplaceDetails",
+    "properties": {
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Marketplace subscription ID"
+      },
+      "subscriptionStatus": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Marketplace subscription status"
+      },
+      "offerDetails": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 1,
+        "description": "Offer details of the marketplace subscription"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingFulfillmentStart"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Subscribed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unsubscribed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseOfferDetails",
+    "properties": {
+      "publisherId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Publisher ID for the marketplace offer"
+      },
+      "offerId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Offer ID for the marketplace offer"
+      },
+      "planId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Plan ID for the marketplace offer"
+      },
+      "planName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Plan Name for the marketplace offer"
+      },
+      "termUnit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Term Unit for the marketplace offer"
+      },
+      "termId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Term ID for the marketplace offer"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserDetails",
+    "properties": {
+      "firstName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "First name"
+      },
+      "lastName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Last name"
+      },
+      "emailAddress": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "Email address"
+      },
+      "upn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Principal name"
+      },
+      "phoneNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Phone number"
+      },
+      "companyDetails": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Company details"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseCompanyDetails",
+    "properties": {
+      "companyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Company name"
+      },
+      "address": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Company address"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LiftrBaseAddress",
+    "properties": {
+      "addressLine1": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Address line 1"
+      },
+      "addressLine2": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Address line 2"
+      },
+      "city": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the city"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "State (if any)"
+      },
+      "country": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the country"
+      },
+      "postalCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Postal code"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/reservations@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/storagePools"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/storagePools",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StoragePoolProperties",
+    "properties": {
+      "storagePoolInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Pure Storage's internal ID of the storage pool"
+      },
+      "availabilityZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure Availability Zone the Pool is located in"
+      },
+      "vnetInjection": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 1,
+        "description": "Network properties of the storage pool"
+      },
+      "dataRetentionPeriod": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "How long a destroyed object is kept before being eradicated, in seconds"
+      },
+      "provisionedBandwidthMbPerSec": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total bandwidth provisioned for the pool, in MB/s"
+      },
+      "provisionedIops": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Total I/O operations per second (IOPS) provisioned for the pool"
+      },
+      "avs": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "AVS connection state summary"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      },
+      "reservationResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Pure Storage Cloud service (reservation resource) this storage pool belongs to"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VnetInjection",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Virtual Network subnet where the storage pool will be connected"
+      },
+      "vnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Virtual Network in which the subnet is located"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureVmwareService",
+    "properties": {
+      "avsEnabled": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "If true, an AVS SDDC is successfully connected to the storage pool"
+      },
+      "sddcResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the AVS SDDC the storage pool is connected to"
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/57"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/storagePools@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/38"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z0-9\\-]{0,62}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/storagePools/avsStorageContainers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/storagePools/avsStorageContainers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsStorageContainerProperties",
+    "properties": {
+      "space": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Storage space usage"
+      },
+      "resourceName": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 3,
+        "description": "Name of the storage container"
+      },
+      "provisionedLimit": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Maximum amount of bytes that can be provisioned in this storage container; it must be a multiple of 512; each time a volume is provisioned in this container, its provisionedSize will be counted against the provisionLimit and the provisioning will fail if it goes over (minimum: 1048576 (1MiB), maximum: 4503599627370496 (4PiB)); by default it is unrestricted"
+      },
+      "datastore": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "VMware datastore associated with this storage container (if any)"
+      },
+      "mounted": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "Whether the datastore is mounted in VMware or not"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Space",
+    "properties": {
+      "totalUsed": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total space occupied by customer data (i.e., being billed for), in bytes"
+      },
+      "unique": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Unique space occupied by customer data, in bytes; for a volume, this is the amount of storage that would be freed by deleting the volume, since snapshot and shared data would be kept"
+      },
+      "snapshots": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Space occupied by data unique to one or more snapshots, in bytes"
+      },
+      "shared": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Space occupied by duplicated data, meaning data shared with other volumes and snapshots as a result of data deduplication, in bytes"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "pattern": "(^[a-zA-Z][a-zA-Z0-9\\-]{0,62}[a-zA-Z0-9])?$"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/storagePools/avsStorageContainers@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/64"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-fA-F0-9\\-]{1,64}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/storagePools/avsStorageContainers/volumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/storagePools/avsStorageContainers/volumes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeProperties",
+    "properties": {
+      "storagePoolInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Pure Storage's internal ID for the storage pool containing the volume"
+      },
+      "storagePoolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure Resource ID of the storage pool containing this volume"
+      },
+      "volumeInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Pure Storage's internal ID for the volume"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable name of the volume"
+      },
+      "space": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Storage space usage"
+      },
+      "softDeletion": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 1,
+        "description": "Volume's soft-deletion state"
+      },
+      "createdTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Volume creation date, as an RFC 3339 timestamp"
+      },
+      "provisionedSize": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Currently provisioned size of the volume, in bytes"
+      },
+      "volumeType": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "Specify which control plane handles the lifecycle of the volume"
+      },
+      "avs": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 2,
+        "description": "AVS-specific volume information"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SoftDeletion",
+    "properties": {
+      "destroyed": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "If false, the resource is active; if true, the resource has been destroyed; resources can be soft-deleted by setting destroyed to true, and recovered by setting it to false"
+      },
+      "eradicationTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date at which the resource will be eradicated and impossible to recover, as an RFC 3339 timestamp; invalid if destroyed is false;"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "avs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsDiskDetails",
+    "properties": {
+      "diskId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "VMware ID of the disk/volume"
+      },
+      "diskName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "VMware name of the disk/volume"
+      },
+      "folder": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the top-level folder in the datastore that contains the disk/volume"
+      },
+      "avsVmInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "VMware ID assigned to the disk/volume"
+      },
+      "avsVmResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the AVS VM connected to this disk/volume"
+      },
+      "avsVmName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the AVS VM connected to this disk/volume"
+      },
+      "avsStorageContainerResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the AVS storage container containing this disk/volume"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/storagePools/avsStorageContainers/volumes@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/72"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/storagePools/avsVms"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/storagePools/avsVms",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsVmProperties",
+    "properties": {
+      "storagePoolInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Pure Storage's internal ID for the storage pool"
+      },
+      "storagePoolResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure resource ID of the storage pool"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable name of the AVS VM"
+      },
+      "createdTimestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Date at which the AVS VM was created, as an RFC 3339 timestamp"
+      },
+      "softDeletion": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "AVS VM's soft-deletion state"
+      },
+      "volumeContainerType": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 2,
+        "description": "Specify which control plane handles the lifecycle of the volume container"
+      },
+      "avs": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 2,
+        "description": "AVS VM details"
+      },
+      "space": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Contains properties related to used Flash space"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "avs"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsVmDetails",
+    "properties": {
+      "vmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "ID of the AVS VM using this set of volumes"
+      },
+      "vmName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the VMware VM using this set of volumes"
+      },
+      "vmType": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 1,
+        "description": "Type of the VMware VM using this set of volumes"
+      },
+      "avsVmInternalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Pure Storage's internal ID for this AVS VM"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "vvol"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/storagePools/avsVms@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/85"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PureStorage.Block/storagePools/avsVms/avsVmVolumes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorage.Block/storagePools/avsVms/avsVmVolumes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "PureStorage.Block/storagePools/avsVms/avsVmVolumes@2024-11-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/99"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReservationBillingUsageReport",
+    "properties": {
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Latest formatted billing report for this reservation"
+      },
+      "billingUsageProperties": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 1,
+        "description": "A list of detailed billing usage properties"
+      },
+      "overallStatusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Overall status message of the billing usage report"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BillingUsageProperty",
+    "properties": {
+      "propertyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Unique identifier for the billing usage property"
+      },
+      "propertyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the billing usage property"
+      },
+      "currentValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Current value of the billing usage property"
+      },
+      "previousValue": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Previous value of the billing usage property"
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 1,
+        "description": "Severity level of the usage"
+      },
+      "statusMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Status message for the billing usage against a property"
+      },
+      "subProperties": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "Optional list of sub-properties providing additional details"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "alert"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "information"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "none"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/102"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getBillingReport",
+    "resourceType": "PureStorage.Block/reservations",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/101"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReservationBillingStatus",
+    "properties": {
+      "timestamp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Timestamp for the latest update of this billing status, in RFC 3339 format"
+      },
+      "totalUsedCapacityReported": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total used capacity as reported by associated storage pools. In bytes"
+      },
+      "lowDrrPoolCount": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "How many associated storage pools reported low data reduction ratio (DRR)"
+      },
+      "drrWeightedAverage": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Weighted average of the data-reduction ratio for all associated pools"
+      },
+      "totalNonReducibleReported": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The sum of total used capacity for all pools with low DRR, if the DRR penalty applies. In bytes"
+      },
+      "extraUsedCapacityNonReducible": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Extra capacity added because of low DRR storage pools; In bytes"
+      },
+      "extraUsedCapacityLowUsageRounding": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Extra capacity added when rounding up low-usage pools to 30TiB. In bytes"
+      },
+      "extraUsedCapacityNonReduciblePlanDiscount": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Extra capacity discounted due to plan forgiving some low-DRR usage. In bytes"
+      },
+      "totalUsedCapacityBilled": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total used capacity actually billed. In bytes"
+      },
+      "totalUsedCapacityIncludedPlan": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total used capacity included in plan. In bytes"
+      },
+      "totalUsedCapacityOverage": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total used capacity reported at on-demand price. In bytes"
+      },
+      "totalPerformanceReported": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The sum of all performance settings across the pools under this reservation. In MB per second"
+      },
+      "totalPerformanceIncludedPlan": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total performance amount included in plan. In bytes per second"
+      },
+      "totalPerformanceOverage": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Total performance amount reported at on-demand price. In MB per second"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getBillingStatus",
+    "resourceType": "PureStorage.Block/reservations",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/111"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LimitDetails",
+    "properties": {
+      "storagePool": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 1,
+        "description": "Limits used for storage pool resources"
+      },
+      "volume": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 1,
+        "description": "Limits used for volume resources"
+      },
+      "protectionPolicy": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 1,
+        "description": "internal"
+      },
+      "performancePolicy": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 1,
+        "description": "internal"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StoragePoolLimits",
+    "properties": {
+      "provisionedBandwidthMbPerSec": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Allowed provisioned bandwidth range for a storage pool, in MB/s"
+      },
+      "provisionedIops": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Allowed provisioned IOPS range for a storage pool, as a number of operations"
+      },
+      "physicalAvailabilityZones": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 1,
+        "description": "List of physical availability zones in the region in which storage pools can be deployed; some Azure regions do not support the necessary resources in all availability zones"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RangeLimits",
+    "properties": {
+      "min": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Minimum value of the property"
+      },
+      "max": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Maximum value of the property"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VolumeLimits",
+    "properties": {
+      "provisionedSize": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Provisioned size limits for a volume, in bytes"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProtectionPolicyLimits",
+    "properties": {
+      "frequency": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "internal"
+      },
+      "retention": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "internal"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PerformancePolicyLimits",
+    "properties": {
+      "iopsLimit": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "internal"
+      },
+      "bandwidthLimit": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "internal"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getResourceLimits",
+    "resourceType": "PureStorage.Block/reservations",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/113"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "disableAvsConnection",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StoragePoolEnableAvsConnectionPost",
+    "properties": {
+      "sddcResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the AVS SDDC to connect to"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "enableAvsConnection",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01",
+    "input": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StoragePoolFinalizeAvsConnectionPost",
+    "properties": {
+      "serviceInitializationDataEnc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Encoded AVS connection information"
+      },
+      "serviceInitializationData": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Explicit AVS connection information"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceInitializationData",
+    "properties": {
+      "serviceAccountUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Service account username"
+      },
+      "serviceAccountPassword": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Service account password"
+      },
+      "vSphereIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AVS instance's vSphere IP address"
+      },
+      "vSphereCertificate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "AVS instance's vSphere certificate"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "finalizeAvsConnection",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01",
+    "input": {
+      "$ref": "#/124"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsConnection",
+    "properties": {
+      "serviceInitializationCompleted": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "Indicates whether service initialization is complete"
+      },
+      "serviceInitializationHandleEnc": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Encoded service account credentials alongside connection information"
+      },
+      "serviceInitializationHandle": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Explicit service account credentials"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceInitializationHandle",
+    "properties": {
+      "sddcResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the AVS SDDC the pool is connecting to"
+      },
+      "serviceAccountUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Requested service account username"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getAvsConnection",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/128"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvsStatus",
+    "properties": {
+      "avsEnabled": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 1,
+        "description": "If true, an AVS connection has been successfully completed"
+      },
+      "currentConnectionStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Human-readable current AVS connection status"
+      },
+      "sddcResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the AVS SDDC the pool is connected to"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getAvsStatus",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/131"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HealthResponse",
+    "properties": {
+      "health": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "Health metrics"
+      },
+      "alerts": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 1,
+        "description": "List of health alerts"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HealthDetails",
+    "properties": {
+      "usedCapacityPercentage": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "How full the pool is right now, in %, compared to the maximum size it can grow to; estimated based on current usage and data reduction ratio"
+      },
+      "bandwidthUsage": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 1,
+        "description": "Bandwidth usage metrics"
+      },
+      "iopsUsage": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "IOPS usage metrics"
+      },
+      "space": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "Storage space usage"
+      },
+      "dataReductionRatio": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Data reduction ratio achieved on this pool"
+      },
+      "estimatedMaxCapacity": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Estimated maximum capacity of the pool, in bytes, based on current usage and data reduction ratio"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BandwidthUsage",
+    "properties": {
+      "current": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Number of bytes written and read per second (maximum value over the last 10 minutes)"
+      },
+      "provisioned": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Bandwidth value currently provisioned for the storage pool, in MB/s"
+      },
+      "max": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Maximum bandwidth value that can be provisioned for the storage pool"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IopsUsage",
+    "properties": {
+      "current": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Current number of IOPS (maximum value over the last 10 minutes)"
+      },
+      "provisioned": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "IOPS value currently provisioned for the storage pool"
+      },
+      "max": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Maximum IOPS value that can be provisioned for the storage pool"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Alert",
+    "properties": {
+      "level": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 1,
+        "description": "Severity level"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A short description of the alert"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "info"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/137"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getHealthStatus",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01",
+    "output": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "repairAvsConnection",
+    "resourceType": "PureStorage.Block/storagePools",
+    "apiVersion": "2024-11-01"
+  }
+]

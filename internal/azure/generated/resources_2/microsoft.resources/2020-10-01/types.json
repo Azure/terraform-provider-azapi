@@ -1,0 +1,1032 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Resources/deploymentScripts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-10-01"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "Microsoft.Resources/deploymentScripts",
+    "discriminator": "kind",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The location of the ACI and the storage account for the deployment script."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The system metadata related to this resource."
+      }
+    },
+    "elements": {
+      "AzureCLI": {
+        "$ref": "#/22"
+      },
+      "AzurePowerShell": {
+        "$ref": "#/50"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Type of the managed identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ID of the Azure Active Directory."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "The list of user-assigned managed identities associated with the resource. Key is the Azure resource Id of the managed identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Azure Active Directory principal ID associated with this identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Client App Id associated with this identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentScriptTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureCliScript",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "Properties of the Azure CLI script object."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "Type of the script."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureCliScriptProperties",
+    "properties": {
+      "azCliVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure CLI module version to be used."
+      },
+      "containerSettings": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Container settings."
+      },
+      "storageAccountSettings": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Storage Account settings."
+      },
+      "cleanupPreference": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
+        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "State of the script execution. This only appears in the response."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Contains the results of script execution."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 2,
+        "description": "List of script outputs."
+      },
+      "primaryScriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Uri for the script. This is the entry point for the external script."
+      },
+      "supportingScriptUris": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Supporting files for the external script."
+      },
+      "scriptContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Script body."
+      },
+      "arguments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'"
+      },
+      "environmentVariables": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "The environment variables to pass over to the script."
+      },
+      "forceUpdateTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be current time stamp or a GUID."
+      },
+      "retentionInterval": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P1D means one day)."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerConfiguration",
+    "properties": {
+      "containerGroupName": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. To specify a 'containerGroupName', add the following object to properties: { \"containerSettings\": { \"containerGroupName\": \"contoso-container\" } }. If you do not want to specify a 'containerGroupName' then do not add 'containerSettings' property."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageAccountConfiguration",
+    "properties": {
+      "storageAccountName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The storage account name."
+      },
+      "storageAccountKey": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The storage account access key."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnSuccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnExpiration"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProvisioningResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptStatus",
+    "properties": {
+      "containerInstanceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ACI resource Id."
+      },
+      "storageAccountId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Storage account resource Id."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Start time of the script execution."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "End time of the script execution."
+      },
+      "expirationTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time the deployment script resource will expire."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Error that is relayed from the script execution."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorResponse",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentScriptPropertiesBaseOutputs",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnvironmentVariable",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the environment variable."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the environment variable."
+      },
+      "secureValue": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The value of the secure environment variable."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureCLI"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzurePowerShellScript",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 1,
+        "description": "Properties of the Azure PowerShell script object."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "Type of the script."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzurePowerShellScriptProperties",
+    "properties": {
+      "azPowerShellVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure PowerShell module version to be used."
+      },
+      "containerSettings": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Container settings."
+      },
+      "storageAccountSettings": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "Storage Account settings."
+      },
+      "cleanupPreference": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 2,
+        "description": "State of the script execution. This only appears in the response."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Contains the results of script execution."
+      },
+      "outputs": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "List of script outputs."
+      },
+      "primaryScriptUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Uri for the script. This is the entry point for the external script."
+      },
+      "supportingScriptUris": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "Supporting files for the external script."
+      },
+      "scriptContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Script body."
+      },
+      "arguments": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'"
+      },
+      "environmentVariables": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The environment variables to pass over to the script."
+      },
+      "forceUpdateTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be current time stamp or a GUID."
+      },
+      "retentionInterval": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P1D means one day)."
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnSuccess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "OnExpiration"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProvisioningResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeploymentScriptPropertiesBaseOutputs",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/43"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzurePowerShell"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Resources/deploymentScripts@2020-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Resources/deploymentScripts/logs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2020-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Resources/deploymentScripts/logs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 2,
+        "description": "Script log properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogProperties",
+    "properties": {
+      "log": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Script execution logs in text format."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Resources/deploymentScripts/logs@2020-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/71"
+    },
+    "flags": 1
+  }
+]

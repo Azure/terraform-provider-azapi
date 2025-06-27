@@ -127,10 +127,10 @@ resource "azapi_resource" "accountFilter" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Media/mediaServices/accountFilters@api-version`. The available api-versions for this resource are: [`2018-07-01`, `2019-05-01-preview`, `2020-05-01`, `2021-06-01`, `2021-11-01`, `2022-08-01`, `2023-01-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Media/mediaServices/accountFilters@api-version`. The available api-versions for this resource are: [].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
-  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{resourceName}`
+  
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
@@ -142,8 +142,8 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{resourceName}/accountFilters/{resourceName}
+ terraform import azapi_resource.example 
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{resourceName}/accountFilters/{resourceName}?api-version=2023-01-01
+ terraform import azapi_resource.example ?api-version=API_VERSION
  ```
