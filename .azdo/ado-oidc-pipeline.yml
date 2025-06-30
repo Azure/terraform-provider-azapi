@@ -37,7 +37,7 @@ steps:
         $env:ARM_TENANT_ID = $env:tenantId
         $env:ARM_CLIENT_ID = $env:servicePrincipalId
         $env:ARM_OIDC_REQUEST_TOKEN = "$(System.AccessToken)"
-        $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID = $(AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)
+        $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID = $(env.AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)
         $env:ARM_USE_OIDC = 'true'
         $env:ARM_USE_CLI = 'false'
         $env:TESTARGS = '-run TestAccAuth_oidc'
@@ -57,7 +57,7 @@ steps:
         $env:ARM_CLIENT_ID = $env:servicePrincipalId
         $env:SYSTEM_ACCESSTOKEN = "$(System.AccessToken)"
         $env:SYSTEM_OIDCREQUESTURI = "$(System.OidcRequestUri)"
-        $env:ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID = $(AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)
+        $env:ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID = $(env.AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)
         $env:ARM_USE_OIDC = 'true'
         $env:ARM_USE_CLI = 'false'
         $env:TESTARGS = '-run TestAccAuth_oidc'
