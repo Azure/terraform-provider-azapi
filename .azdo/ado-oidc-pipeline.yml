@@ -57,7 +57,7 @@ steps:
         $env:ARM_CLIENT_ID = $env:servicePrincipalId
         $env:SYSTEM_ACCESSTOKEN = "$(System.AccessToken)"
         $env:SYSTEM_OIDCREQUESTURI = "$(System.OidcRequestUri)"
-        $env:ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID = $env.AZURESUBSCRIPTION_SERVICE_CONNECTION_ID
+        $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID = $env:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID
         $env:ARM_USE_OIDC = 'true'
         $env:ARM_USE_CLI = 'false'
         $env:TESTARGS = '-run TestAccAuth_oidc'
@@ -66,7 +66,7 @@ steps:
         # print environment variables for debugging
         Write-Host "ARM_TENANT_ID: $env:ARM_TENANT_ID"
         Write-Host "ARM_CLIENT_ID: $env:ARM_CLIENT_ID"
-        Write-Host "ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID: $env:ARM_ADO_PIPELINE_SERVICE_CONNECTION_ID"
+        Write-Host "ARM_OIDC_AZURE_SERVICE_CONNECTION_ID: $env:ARM_OIDC_AZURE_SERVICE_CONNECTION_ID"
 
       addSpnToEnvironment: true
       useGlobalConfig: true
