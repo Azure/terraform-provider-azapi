@@ -76,7 +76,7 @@ type providerData struct {
 	DefaultLocation              types.String `tfsdk:"default_location"`
 	DefaultTags                  types.Map    `tfsdk:"default_tags"`
 	EnablePreflight              types.Bool   `tfsdk:"enable_preflight"`
-	EnableStrictChangeDetection  types.Bool   `tfsdk:"enable_strict_change_detection"`
+	IgnoreNoOpChanges            types.Bool   `tfsdk:"ignore_no_op_changes"`
 	DisableDefaultOutput         types.Bool   `tfsdk:"disable_default_output"`
 	MaximumBusyRetryAttempts     types.Int32  `tfsdk:"maximum_busy_retry_attempts"`
 }
@@ -364,9 +364,9 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Description: "Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation. This can also be sourced from the `ARM_ENABLE_PREFLIGHT` Environment Variable.",
 			},
 
-			"enable_strict_change_detection": schema.BoolAttribute{
+			"ignore_no_op_changes": schema.BoolAttribute{
 				Optional:    true,
-				Description: "Enable strict change Detection. The default is false. When set to true, changes in the `azapi_resource` will not be suppressed even if the `body` in the new API version matches the remote state. This can also be sourced from the `ARM_ENABLE_STRICT_CHANGE_DETECTION` Environment Variable.",
+				Description: "Ignore no-op changes for `azapi_resource`. The default is true. When set to true, the provider will suppress changes in the `azapi_resource` if the `body` in the new API version still matches the remote state. When set to false, the provider will not suppress these changes. This can also be sourced from the `ARM_IGNORE_NO_OP_CHANGES` Environment Variable.",
 			},
 
 			"disable_default_output": schema.BoolAttribute{
@@ -602,11 +602,11 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		}
 	}
 
-	if model.EnableStrictChangeDetection.IsNull() {
-		if v := os.Getenv("ARM_ENABLE_STRICT_CHANGE_DETECTION"); v != "" {
-			model.EnableStrictChangeDetection = types.BoolValue(v == "true")
+	if model.IgnoreNoOpChanges.IsNull() {
+		if v := os.Getenv("ARM_IGNORE_NO_OP_CHANGES"); v != "" {
+			model.IgnoreNoOpChanges = types.BoolValue(v == "true")
 		} else {
-			model.EnableStrictChangeDetection = types.BoolValue(false)
+			model.IgnoreNoOpChanges = types.BoolValue(true)
 		}
 	}
 
@@ -689,12 +689,12 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		ApplicationUserAgent: buildUserAgent(request.TerraformVersion, model.PartnerID.ValueString(), model.DisableTerraformPartnerID.ValueBool()),
 		MaxGoSdkRetries:      maxGoSdkRetryAttempts,
 		Features: features.UserFeatures{
-			DefaultTags:                 tags.ExpandTags(model.DefaultTags),
-			DefaultLocation:             location.Normalize(model.DefaultLocation.ValueString()),
-			DefaultNaming:               model.DefaultName.ValueString(),
-			EnablePreflight:             model.EnablePreflight.ValueBool(),
-			EnableStrictChangeDetection: model.EnableStrictChangeDetection.ValueBool(),
-			DisableDefaultOutput:        model.DisableDefaultOutput.ValueBool(),
+			DefaultTags:          tags.ExpandTags(model.DefaultTags),
+			DefaultLocation:      location.Normalize(model.DefaultLocation.ValueString()),
+			DefaultNaming:        model.DefaultName.ValueString(),
+			EnablePreflight:      model.EnablePreflight.ValueBool(),
+			IgnoreNoOpChanges:    model.IgnoreNoOpChanges.ValueBool(),
+			DisableDefaultOutput: model.DisableDefaultOutput.ValueBool(),
 		},
 		SkipProviderRegistration:    model.SkipProviderRegistration.ValueBool(),
 		DisableCorrelationRequestID: model.DisableCorrelationRequestID.ValueBool(),

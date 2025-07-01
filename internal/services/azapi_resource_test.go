@@ -2668,7 +2668,7 @@ func (r GenericResource) automationAccountCompleteStrictChangeDetection(data acc
 %s
 
 provider "azapi" {
-  enable_strict_change_detection = true
+  ignore_no_op_changes = false
 }
 
 resource "azapi_resource" "test" {
@@ -2930,7 +2930,7 @@ func (r GenericResource) automationAccountAzureRMMovedCompleteStrictChangeDetect
 %s
 
 provider "azapi" {
-  enable_strict_change_detection = true
+  ignore_no_op_changes = false
 }
 
 provider "azurerm" {

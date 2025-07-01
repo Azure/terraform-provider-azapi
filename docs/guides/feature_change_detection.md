@@ -10,11 +10,11 @@ description: |-
 
 The `azapi_resource` resource is used to manage the full lifecycle of Azure resources. 
 
-In the `azapi` v2.5.0 release, the `azapi_resource` resource introduced an enhanced change detection feature, it will only show the changes if the remote resource state is different from the desired state defined in your configuration, and the resource must be updated to match the desired state. This feature is designed to reduce noise in the plan output and make it easier to identify actual changes that need to be applied. This feature is enabled by default and it can be disabled by setting the `enable_strict_change_detection` attribute to `true` in the provider block:
+In the `azapi` v2.5.0 release, the `azapi_resource` resource introduced an enhanced change detection feature, it will only show the changes if the remote resource state is different from the desired state defined in your configuration, and the resource must be updated to match the desired state. This feature is designed to reduce noise in the plan output and make it easier to identify actual changes that need to be applied. This feature is enabled by default, and it can be disabled by setting the `ignore_no_op_changes` attribute to `false` in the provider block:
 
 ```hcl
 provider "azapi" {
-  enable_strict_change_detection = true
+  ignore_no_op_changes = false
 }
 ```
 
