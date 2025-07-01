@@ -503,7 +503,7 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 	// In the below two cases, we think the config is still matched with the remote state, and there's no need to update the resource:
 	// 1. If the api-version is changed, but the body is not changed
 	// 2. If the body only removes/adds properties that are equal to the remote state
-	if dynamic.IsFullyKnown(plan.Body) && state != nil && (!dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type)) {
+	if r.ProviderData.Features.IgnoreNoOpChanges && dynamic.IsFullyKnown(plan.Body) && state != nil && (!dynamic.SemanticallyEqual(plan.Body, state.Body) || !plan.Type.Equal(state.Type)) {
 		// GET the existing resource with config's api-version
 		responseBody, err := r.ProviderData.ResourceClient.Get(ctx, state.ID.ValueString(), apiVersion, clients.DefaultRequestOptions())
 		if err != nil {

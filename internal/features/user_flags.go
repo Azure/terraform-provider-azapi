@@ -5,6 +5,7 @@ type UserFeatures struct {
 	DefaultLocation      string
 	DefaultNaming        string
 	EnablePreflight      bool
+	IgnoreNoOpChanges    bool
 	DisableDefaultOutput bool
 }
 
@@ -14,6 +15,7 @@ func Default() UserFeatures {
 		DefaultLocation:      "",
 		DefaultNaming:        "",
 		EnablePreflight:      false,
+		IgnoreNoOpChanges:    true,
 		DisableDefaultOutput: false,
 	}
 }
