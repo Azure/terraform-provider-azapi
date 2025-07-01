@@ -95,9 +95,6 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
 				MarkdownDescription: docstrings.Type(),
 			},
 
