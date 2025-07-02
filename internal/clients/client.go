@@ -21,6 +21,7 @@ type Client struct {
 
 	ResourceClient  *ResourceClient
 	DataPlaneClient *DataPlaneClient
+	GeneralClient   *GeneralClient
 
 	Account ResourceManagerAccount
 	Option  *Option
@@ -135,6 +136,26 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 		return err
 	}
 	client.DataPlaneClient = dataPlaneClient
+
+	GeneralClient := NewGeneralClient(o.Cred, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: o.CloudCfg,
+			// Disable the default telemetry policy, because it has a length limitation for user agent
+			Telemetry: policy.TelemetryOptions{
+				Disabled: true,
+			},
+			Logging: policy.LogOptions{
+				IncludeBody:        true,
+				AllowedHeaders:     allowedHeaders,
+				AllowedQueryParams: allowedQueryParams,
+			},
+			PerCallPolicies:  perCallPolicies,
+			PerRetryPolicies: perRetryPolicies,
+			Retry:            policy.RetryOptions{MaxRetries: o.MaxGoSdkRetries},
+		},
+		DisableRPRegistration: o.SkipProviderRegistration,
+	})
+	client.GeneralClient = GeneralClient
 
 	client.Account = NewResourceManagerAccount(o.TenantId, o.SubscriptionId, ParsedTokenClaimsObjectIDProvider(o.Cred, o.CloudCfg))
 
