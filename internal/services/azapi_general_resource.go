@@ -80,19 +80,19 @@ var _ resource.ResourceWithConfigure = &GeneralResource{}
 var _ resource.ResourceWithModifyPlan = &GeneralResource{}
 
 func (r *GeneralResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
-	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
+	tflog.Debug(ctx, "Configuring azapi_general_resource")
 	if v, ok := request.ProviderData.(*clients.Client); ok {
 		r.ProviderData = v
 	}
 }
 
 func (r *GeneralResource) Metadata(ctx context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
-	response.TypeName = request.ProviderTypeName + "_data_plane_resource"
+	response.TypeName = request.ProviderTypeName + "_general_resource"
 }
 
 func (r *GeneralResource) Schema(ctx context.Context, request resource.SchemaRequest, response *resource.SchemaResponse) {
 	response.Schema = schema.Schema{
-		MarkdownDescription: "This resource can manage some Azure data plane resources.",
+		MarkdownDescription: "This resource can manage general resources.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -113,7 +113,6 @@ func (r *GeneralResource) Schema(ctx context.Context, request resource.SchemaReq
 			"api_version": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "The API version to use for the data plane resource. If not specified, the provider will not add the api-version to the request, which may be required.",
-				Default:             defaults.StringDefault(""),
 			},
 
 			"auth_endpoint": schema.StringAttribute{
@@ -371,7 +370,7 @@ func (r *GeneralResource) Update(ctx context.Context, request resource.UpdateReq
 }
 
 func (r *GeneralResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, state *tfsdk.State, diagnostics *diag.Diagnostics) {
-	var model *GeneralResourceModel
+	var model GeneralResourceModel
 	if diagnostics.Append(plan.Get(ctx, &model)...); diagnostics.HasError() {
 		return
 	}
@@ -406,7 +405,7 @@ func (r *GeneralResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, sta
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.GeneralClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	serviceConfig, err := generateServiceConfig(model)
+	serviceConfig, err := generateServiceConfig(&model)
 	if err != nil {
 		diagnostics.AddError("Failed to generate service configuration", err.Error())
 		return
@@ -438,7 +437,7 @@ func (r *GeneralResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, sta
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, urlParsed.String(), model.ApiVersion.String(), serviceConfig, body, clients.NewRequestOptions(common.AsMapOfString(model.CreateHeaders), common.AsMapOfLists(model.CreateQueryParameters)))
+	_, err = client.CreateOrUpdateThenPoll(ctx, urlParsed.String(), model.ApiVersion.ValueString(), serviceConfig, body, clients.NewRequestOptions(common.AsMapOfString(model.CreateHeaders), common.AsMapOfLists(model.CreateQueryParameters)))
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", urlParsed.String(), err).Error())
 		return
@@ -448,7 +447,7 @@ func (r *GeneralResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, sta
 	// If a read after create retry is not specified, use the default.
 	clientGetAfterPut := r.ProviderData.GeneralClient.ConfigureClientWithCustomRetry(ctx, model.Retry, true)
 
-	responseBody, err := clientGetAfterPut.Get(ctx, urlParsed.String(), model.ApiVersion.String(), serviceConfig, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := clientGetAfterPut.Get(ctx, urlParsed.String(), model.ApiVersion.ValueString(), serviceConfig, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", urlParsed.String()))
@@ -471,7 +470,7 @@ func (r *GeneralResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, sta
 }
 
 func (r *GeneralResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
-	var model *GeneralResourceModel
+	var model GeneralResourceModel
 	if response.Diagnostics.Append(request.State.Get(ctx, &model)...); response.Diagnostics.HasError() {
 		return
 	}
@@ -496,13 +495,13 @@ func (r *GeneralResource) Read(ctx context.Context, request resource.ReadRequest
 	// Ensure that the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.GeneralClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	serviceConfig, err := generateServiceConfig(model)
+	serviceConfig, err := generateServiceConfig(&model)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to generate service configuration", err.Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, urlParsed.String(), model.ApiVersion.String(), serviceConfig, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, urlParsed.String(), model.ApiVersion.ValueString(), serviceConfig, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", urlParsed.String()))
@@ -555,7 +554,7 @@ func (r *GeneralResource) Read(ctx context.Context, request resource.ReadRequest
 }
 
 func (r *GeneralResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
-	var model *GeneralResourceModel
+	var model GeneralResourceModel
 	response.Diagnostics.Append(request.State.Get(ctx, &model)...)
 	if response.Diagnostics.HasError() {
 		return
@@ -580,7 +579,7 @@ func (r *GeneralResource) Delete(ctx context.Context, request resource.DeleteReq
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
 	client := r.ProviderData.GeneralClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
 
-	serviceConfig, err := generateServiceConfig(model)
+	serviceConfig, err := generateServiceConfig(&model)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to generate service configuration", err.Error())
 		return
@@ -605,11 +604,11 @@ func generateServiceConfig(model *GeneralResourceModel) (cloud.ServiceConfigurat
 		return cloud.ServiceConfiguration{}, err
 	}
 	authAudience := model.AuthAudience.ValueString()
-	if authAudience != "" {
+	if authAudience == "" {
 		authAudience = urlParsed.Scheme + urlSchemeDivider + urlParsed.Hostname()
 	}
 	authEndpoint := model.AuthEndpoint.ValueString()
-	if authEndpoint != "" {
+	if authEndpoint == "" {
 		authEndpoint = urlParsed.Scheme + urlSchemeDivider + urlParsed.Hostname()
 	}
 

@@ -3,7 +3,6 @@ package clients
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"regexp"
 	"slices"
@@ -139,8 +138,7 @@ func (retryclient *GeneralClientRetryableErrors) updateContext(ctx context.Conte
 
 func (client *GeneralClient) Get(ctx context.Context, url, apiVersion string, svcConfig cloud.ServiceConfiguration, options RequestOptions) (interface{}, error) {
 	// build request
-	urlPath := fmt.Sprintf("https://%s", url)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, urlPath)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, url)
 	if err != nil {
 		return nil, err
 	}
@@ -187,8 +185,7 @@ func (client *GeneralClient) Get(ctx context.Context, url, apiVersion string, sv
 
 func (client *GeneralClient) CreateOrUpdateThenPoll(ctx context.Context, url, apiVersion string, svcConfig cloud.ServiceConfiguration, body any, options RequestOptions) (interface{}, error) {
 	// build request
-	urlPath := fmt.Sprintf("https://%s", url)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, urlPath)
+	req, err := runtime.NewRequest(ctx, http.MethodPut, url)
 	if err != nil {
 		return nil, err
 	}
@@ -244,14 +241,11 @@ func (client *GeneralClient) CreateOrUpdateThenPoll(ctx context.Context, url, ap
 }
 
 func (client *GeneralClient) Action(ctx context.Context, url, apiVersion, method string, svcConfig cloud.ServiceConfiguration, body any, options RequestOptions) (interface{}, error) {
-	// build request
-	urlPath := fmt.Sprintf("https://%s", url)
-
 	if method == "" {
 		method = http.MethodGet
 	}
 
-	req, err := runtime.NewRequest(ctx, method, urlPath)
+	req, err := runtime.NewRequest(ctx, method, url)
 	if err != nil {
 		return nil, err
 	}
@@ -322,8 +316,7 @@ func (client *GeneralClient) Action(ctx context.Context, url, apiVersion, method
 
 func (client *GeneralClient) DeleteThenPoll(ctx context.Context, url, apiVersion string, svcConfig cloud.ServiceConfiguration, options RequestOptions) (interface{}, error) {
 	// build request
-	urlPath := fmt.Sprintf("https://%s", url)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, urlPath)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, url)
 	if err != nil {
 		return nil, err
 	}
