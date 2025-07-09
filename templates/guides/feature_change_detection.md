@@ -32,7 +32,7 @@ resource "azapi_resource" "example" {
   # type    = "Microsoft.Compute/virtualMachines@2021-07-01"
 
   # Current configuration
-  type      = "Microsoft.Compute/virtualMachines@2024-07-01"
+  type = "Microsoft.Compute/virtualMachines@2024-07-01"
 
   # No changes in the body
   body = {}
@@ -46,7 +46,7 @@ In this example, we are removing some properties that is not needed anymore from
 
 ```hcl
 resource "azapi_resource" "example" {
-  type      = "Microsoft.Compute/virtualMachines@2024-07-01"
+  type = "Microsoft.Compute/virtualMachines@2024-07-01"
 
   # Previously applied configuration
   # body = {
@@ -65,7 +65,7 @@ In this example, we are adding some properties to the body of a virtual machine 
 
 ```hcl
 resource "azapi_resource" "example" {
-  type      = "Microsoft.Compute/virtualMachines@2024-07-01"
+  type = "Microsoft.Compute/virtualMachines@2024-07-01"
 
   # Previously applied configuration
   # body = {}
@@ -82,7 +82,7 @@ But in the following example, the added property is different from the remote st
 
 ```hcl
 resource "azapi_resource" "example" {
-  type      = "Microsoft.Compute/virtualMachines@2024-07-01"
+  type = "Microsoft.Compute/virtualMachines@2024-07-01"
 
   # Previously applied configuration
   # body = {}
