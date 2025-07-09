@@ -31,6 +31,18 @@ func TestAccActionResource_basic(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_retry(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.retry(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func TestAccActionResource_basicWhenDestroy(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
@@ -389,6 +401,26 @@ resource "azapi_resource_action" "test" {
     name = "%s"
   }
   sensitive_response_export_values = ["*"]
+}
+`, data.RandomString)
+}
+
+func (r ActionResource) retry(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type = "Microsoft.Resources/resourceGroups@2025-04-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/acctest%s"
+  method = "GET"
+  retry = {
+    error_message_regex  = ["ResourceGroupNotFound"]
+
+  }
+
+  timeouts {
+    create = "2m"
+  }
 }
 `, data.RandomString)
 }

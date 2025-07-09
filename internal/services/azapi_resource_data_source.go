@@ -257,9 +257,13 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
 	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
+	client := r.ProviderData.ResourceClient
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.Headers),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())

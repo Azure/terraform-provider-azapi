@@ -189,10 +189,13 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		defer locks.UnlockByID(lockId)
 	}
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
+	client := r.ProviderData.ResourceClient
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.Headers),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, method, requestBody, requestOptions)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
 		return

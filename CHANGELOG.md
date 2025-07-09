@@ -1,4 +1,9 @@
-## v2.5.0 (unreleased)
+## v2.6.0 (unreleased)
+
+DEPRECATIONS:
+- `retry` block: The `multiplier` and `randomization_factor` are deprecated and will be removed in the next major release. Please remove them from the `retry` block. The provider will use the default values for these fields.
+
+## v2.5.0
 
 ENHANCEMENTS:
 - `azapi_resource` resource: ignore the changes when the `body` field matches the remote state even if the `body` field or `api-version` field is changed.

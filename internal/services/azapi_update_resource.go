@@ -400,10 +400,13 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	client := r.ProviderData.ResourceClient
+	readRequestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	existing, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 		return
@@ -450,13 +453,19 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, clients.NewRequestOptions(common.AsMapOfString(model.UpdateHeaders), common.AsMapOfLists(model.UpdateQueryParameters)))
+	updateRequestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.UpdateHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.UpdateQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, requestBody, updateRequestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to update resource", fmt.Errorf("updating %q: %+v", id, err).Error())
 		return
 	}
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, readRequestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -520,10 +529,13 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	client := r.ProviderData.ResourceClient
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
