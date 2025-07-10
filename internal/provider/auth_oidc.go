@@ -66,7 +66,7 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 	if w.tokenFilePath != "" {
 		idTokenData, err := os.ReadFile(w.tokenFilePath)
 		if err != nil {
-			return "", fmt.Errorf("reading token file: %v", err)
+			return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot read token file %s: %v", w.tokenFilePath, err))
 		}
 
 		return string(idTokenData), nil
@@ -74,7 +74,7 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, w.requestUrl, http.NoBody)
 	if err != nil {
-		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: failed to build request"))
+		return "", azidentity.NewCredentialUnavailableError("getAssertion: failed to build request")
 	}
 
 	query, err := url.ParseQuery(req.URL.RawQuery)
