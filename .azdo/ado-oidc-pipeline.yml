@@ -84,3 +84,23 @@ steps:
       addSpnToEnvironment: true
       useGlobalConfig: true
       failOnStandardError: true
+
+  - task: AzureCLI@2
+    displayName: Acc Tests with OIDC configuration
+    inputs:
+      azureSubscription: 'azapi-oidc-test'
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $env:ARM_TENANT_ID = $env:tenantId
+        $env:ARM_CLIENT_ID = $env:servicePrincipalId
+        $env:ARM_OIDC_REQUEST_TOKEN = "$(System.AccessToken)"
+        $env:ARM_OIDC_REQUEST_URL = $(System.OidcRequestUri)
+        $env:ARM_USE_OIDC = 'true'
+        $env:ARM_USE_CLI = 'false'
+        $env:TESTARGS = '-run TestAccAuth_oidc'
+        
+        make acctests
+      addSpnToEnvironment: true
+      useGlobalConfig: true
+      failOnStandardError: true
