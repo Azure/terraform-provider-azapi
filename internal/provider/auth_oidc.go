@@ -66,7 +66,7 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 	if w.tokenFilePath != "" {
 		idTokenData, err := os.ReadFile(w.tokenFilePath)
 		if err != nil {
-			return "", fmt.Errorf("reading token file: %v", err)
+			return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot read token file %s: %v", w.tokenFilePath, err))
 		}
 
 		return string(idTokenData), nil
@@ -74,12 +74,12 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, w.requestUrl, http.NoBody)
 	if err != nil {
-		return "", fmt.Errorf("getAssertion: failed to build request")
+		return "", azidentity.NewCredentialUnavailableError("getAssertion: failed to build request")
 	}
 
 	query, err := url.ParseQuery(req.URL.RawQuery)
 	if err != nil {
-		return "", fmt.Errorf("getAssertion: cannot parse URL query")
+		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot parse URL query: %v", err))
 	}
 
 	if query.Get("audience") == "" {
@@ -93,18 +93,18 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("getAssertion: cannot request token: %v", err)
+		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot request token: %v", err))
 	}
 
 	// #nosec 307
 	defer resp.Body.Close()
 	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
 	if err != nil {
-		return "", fmt.Errorf("getAssertion: cannot parse response: %v", err)
+		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot parse response: %v", err))
 	}
 
 	if c := resp.StatusCode; c < 200 || c > 299 {
-		return "", fmt.Errorf("getAssertion: received HTTP status %d with response: %s", resp.StatusCode, body)
+		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: received HTTP status %d with response: %s", resp.StatusCode, body))
 	}
 
 	var tokenRes struct {
@@ -112,11 +112,11 @@ func (w *OidcCredential) getAssertion(ctx context.Context) (string, error) {
 		Value *string `json:"value"`
 	}
 	if err := json.Unmarshal(body, &tokenRes); err != nil {
-		return "", fmt.Errorf("getAssertion: cannot unmarshal response: %v", err)
+		return "", azidentity.NewCredentialUnavailableError(fmt.Sprintf("getAssertion: cannot unmarshal response: %v", err))
 	}
 
 	if tokenRes.Value == nil {
-		return "", fmt.Errorf("getAssertion: nil JWT assertion received from OIDC provider")
+		return "", azidentity.NewCredentialUnavailableError("getAssertion: nil JWT assertion received from OIDC provider")
 	}
 
 	return *tokenRes.Value, nil
