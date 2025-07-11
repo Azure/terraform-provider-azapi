@@ -407,8 +407,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+	client := r.ProviderData.DataPlaneClient
 
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
@@ -436,17 +435,28 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, clients.NewRequestOptions(common.AsMapOfString(model.CreateHeaders), common.AsMapOfLists(model.CreateQueryParameters)))
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.CreateHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.CreateQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	_, err = client.CreateOrUpdateThenPoll(ctx, id, body, requestOptions)
 	if err != nil {
 		diagnostics.AddError("Failed to create/update resource", fmt.Errorf("creating/updating %q: %+v", id, err).Error())
 		return
 	}
 
-	// Create a new retry client to handle specific case of transient 403/404 after resource creation
-	// If a read after create retry is not specified, use the default.
-	clientGetAfterPut := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, true)
-
-	responseBody, err := clientGetAfterPut.Get(ctx, id, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	requestOptions = clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
+		RetryOptions: clients.CombineRetryOptions(
+			// Create a new retry option to handle specific case of transient 403/404 after resource creation
+			// If a read after create retry is not specified, use the default.
+			clients.NewRetryOptionsForReadAfterCreate(),
+			clients.NewRetryOptions(model.Retry),
+		),
+	}
+	responseBody, err := client.Get(ctx, id, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -491,10 +501,13 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	}
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	// Ensure that the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	responseBody, err := client.Get(ctx, id, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	client := r.ProviderData.DataPlaneClient
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	responseBody, err := client.Get(ctx, id, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
@@ -573,8 +586,7 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.DataPlaneClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+	client := r.ProviderData.DataPlaneClient
 
 	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
@@ -583,7 +595,12 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.DeleteThenPoll(ctx, id, clients.NewRequestOptions(common.AsMapOfString(model.DeleteHeaders), common.AsMapOfLists(model.DeleteQueryParameters)))
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.DeleteHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	_, err = client.DeleteThenPoll(ctx, id, requestOptions)
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

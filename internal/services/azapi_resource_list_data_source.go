@@ -136,10 +136,13 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 
 	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
-
-	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.Headers), common.AsMapOfLists(model.QueryParameters)))
+	client := r.ProviderData.ResourceClient
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.Headers),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, requestOptions)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
 		return

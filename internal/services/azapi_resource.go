@@ -699,13 +699,16 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	// Ensure the context deadline has been set before calling ConfigureClientWithCustomRetry().
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry, false)
+	client := r.ProviderData.ResourceClient
 
 	if isNewResource {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
-		_, err = r.ProviderData.ResourceClient.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters)))
+		requestOptions := clients.RequestOptions{
+			Headers:         common.AsMapOfString(plan.ReadHeaders),
+			QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
+		}
+		_, err = client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 		if err == nil {
 			diagnostics.AddError("Resource already exists", tf.ImportAsExistsError("azapi_resource", id.ID()).Error())
 			return
@@ -763,17 +766,27 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		defer locks.UnlockByID(lockId)
 	}
 
-	options := clients.NewRequestOptions(common.AsMapOfString(plan.CreateHeaders), common.AsMapOfLists(plan.CreateQueryParameters))
-	if !isNewResource {
-		options = clients.NewRequestOptions(common.AsMapOfString(plan.UpdateHeaders), common.AsMapOfLists(plan.UpdateQueryParameters))
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(plan.CreateHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(plan.Retry),
 	}
-	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, options)
+	if !isNewResource {
+		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
+		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
+	}
+	_, err = client.CreateOrUpdate(ctx, id.AzureResourceId, id.ApiVersion, body, requestOptions)
 	if err != nil {
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate client call create/update resource failed", map[string]interface{}{
 			"err": err,
 		})
 		if isNewResource {
-			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters))); err == nil {
+			requestOptions := clients.RequestOptions{
+				Headers:         common.AsMapOfString(plan.ReadHeaders),
+				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
+				RetryOptions:    clients.NewRetryOptions(plan.Retry),
+			}
+			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
 
@@ -809,10 +822,16 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		return
 	}
 
-	clientGetAfterPut := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, plan.Retry, true)
-
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
-	responseBody, err := clientGetAfterPut.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(plan.ReadHeaders), common.AsMapOfLists(plan.ReadQueryParameters)))
+	requestOptions = clients.RequestOptions{
+		Headers:         common.AsMapOfString(plan.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
+		RetryOptions: clients.CombineRetryOptions(
+			clients.NewRetryOptionsForReadAfterCreate(),
+			clients.NewRetryOptions(plan.Retry),
+		),
+	}
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -889,9 +908,15 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+	client := r.ProviderData.ResourceClient
 
-	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.ReadHeaders), common.AsMapOfLists(model.ReadQueryParameters)))
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.ReadHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+
+	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
@@ -1033,7 +1058,7 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	ctx, cancel := context.WithTimeout(ctx, deleteTimeout)
 	defer cancel()
 
-	client := r.ProviderData.ResourceClient.ConfigureClientWithCustomRetry(ctx, model.Retry, false)
+	client := r.ProviderData.ResourceClient
 
 	lockIds := common.AsStringList(model.Locks)
 	slices.Sort(lockIds)
@@ -1042,7 +1067,12 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		defer locks.UnlockByID(lockId)
 	}
 
-	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(model.DeleteHeaders), common.AsMapOfLists(model.DeleteQueryParameters)))
+	requestOptions := clients.RequestOptions{
+		Headers:         common.AsMapOfString(model.DeleteHeaders),
+		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
+		RetryOptions:    clients.NewRetryOptions(model.Retry),
+	}
+	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
 	}

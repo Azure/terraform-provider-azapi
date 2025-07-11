@@ -50,6 +50,7 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 				Default: int64default.StaticInt64(DefaultMaxIntervalSeconds),
 			},
 			"multiplier": schema.Float64Attribute{
+				DeprecationMessage:  "The `multiplier` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
 				Description:         "The multiplier to apply to the interval between retries. Default is `1.5`.",
@@ -57,6 +58,7 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 				Default:             float64default.StaticFloat64(DefaultMultiplier),
 			},
 			"randomization_factor": schema.Float64Attribute{
+				DeprecationMessage:  "The `randomization_factor` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
 				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",

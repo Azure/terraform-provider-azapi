@@ -52,8 +52,6 @@ The schema of these retry attributes is as follows:
 - `error_message_regex` - A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 - `interval_seconds` - The initial number of seconds to wait before the 1st retry. The default value is `10`.
 - `max_interval_seconds` - The maximum number of seconds to wait before retrying a request. The default value is `180`.
-- `multiplier` - The multiplier to apply to the interval between retries. The default value is `1.5`.
-- `randomization_factor` - The randomization factor to apply to the interval between retries. The default value is `0.5`. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Set to zero `0.0` for no randomization.
 
 ## Default resource-specific retry configuration
 
