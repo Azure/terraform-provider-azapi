@@ -37,12 +37,16 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 		return nil
 	}
 
-	statusCodes := make([]int, 0)
+	statusCodeSet := make(map[int]bool)
 	for _, opt := range opts {
-		if opt == nil {
-			continue
+		for _, code := range opt.StatusCodes {
+			statusCodeSet[code] = true
 		}
-		statusCodes = append(statusCodes, opt.StatusCodes...)
+	}
+
+	statusCodes := make([]int, 0)
+	for code := range statusCodeSet {
+		statusCodes = append(statusCodes, code)
 	}
 
 	var maxRetries int32 = 0
@@ -71,13 +75,11 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 
 	shouldRetry := func(resp *http.Response, err error) bool {
 		for _, opt := range opts {
-			if opt == nil {
+			if opt == nil || opt.ShouldRetry == nil {
 				continue
 			}
-			if opt.ShouldRetry != nil {
-				if opt.ShouldRetry(resp, err) {
-					return true
-				}
+			if opt.ShouldRetry(resp, err) {
+				return true
 			}
 		}
 		return false
@@ -99,6 +101,8 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 	// Add default read after create values for the default retry configuration.
 	statusCodes = append(statusCodes, DefaultRetryableReadAfterCreateStatusCodes...)
 	return &policy.RetryOptions{
+		// Set a very high max retries to make sure context deadline is respected.
+		MaxRetries:  math.MaxInt16,
 		StatusCodes: statusCodes,
 	}
 }
@@ -117,23 +121,25 @@ func NewRetryOptions(rtry retry.RetryValue) *policy.RetryOptions {
 		MaxRetries:  math.MaxInt16,
 		StatusCodes: DefaultRetryableStatusCodes,
 		ShouldRetry: func(resp *http.Response, err error) bool {
+			// Get the error message to check against regex patterns,
+			// If use the err.Error() string first, else get the response error from the HTTP response.
+			var errorMsg string
 			if err != nil {
-				// Check if the error message matches any of the retryable error regexps.
-				for _, re := range rtry.GetErrorMessagesRegex() {
-					if re.MatchString(err.Error()) {
-						return true
-					}
-				}
+				errorMsg = err.Error()
 			} else {
 				responseErr := runtime.NewResponseError(resp)
 				if responseErr != nil {
-					// Check if the error message matches any of the retryable error regexps.
-					for _, re := range rtry.GetErrorMessagesRegex() {
-						if re.MatchString(responseErr.Error()) {
-							log.Printf("[DEBUG] Retrying request due to error: %s matches regex %s", responseErr.Error(), re.String())
-							return true
-						}
-					}
+					errorMsg = responseErr.Error()
+				}
+			}
+			// Check if the error message matches any of the retryable error regexps
+			if errorMsg == "" {
+				return false
+			}
+			for _, re := range rtry.GetErrorMessagesRegex() {
+				if re.MatchString(errorMsg) {
+					log.Printf("[DEBUG] Retrying request due to error: %s matches regex %s", errorMsg, re.String())
+					return true
 				}
 			}
 			return false

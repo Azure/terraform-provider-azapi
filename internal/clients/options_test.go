@@ -98,7 +98,7 @@ func Test_NewRetryOptionsForReadAfterCreate(t *testing.T) {
 		{
 			name: "default read after create",
 			expected: &policy.RetryOptions{
-				MaxRetries:  0,
+				MaxRetries:  math.MaxInt16,
 				StatusCodes: append(clients.DefaultRetryableStatusCodes, clients.DefaultRetryableReadAfterCreateStatusCodes...),
 			},
 		},
