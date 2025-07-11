@@ -96,10 +96,9 @@ func Test_NewRetryOptionsForReadAfterCreate(t *testing.T) {
 		expected *policy.RetryOptions
 	}{
 		{
-			name:  "default read after create",
-			input: 10,
+			name: "default read after create",
 			expected: &policy.RetryOptions{
-				MaxRetries:  10,
+				MaxRetries:  0,
 				StatusCodes: append(clients.DefaultRetryableStatusCodes, clients.DefaultRetryableReadAfterCreateStatusCodes...),
 			},
 		},
@@ -107,7 +106,7 @@ func Test_NewRetryOptionsForReadAfterCreate(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := clients.NewRetryOptionsForReadAfterCreate(tc.input)
+			result := clients.NewRetryOptionsForReadAfterCreate()
 			if result == nil && tc.expected == nil {
 				return
 			}

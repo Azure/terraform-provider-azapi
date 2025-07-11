@@ -827,7 +827,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		Headers:         common.AsMapOfString(plan.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
 		RetryOptions: clients.CombineRetryOptions(
-			clients.NewRetryOptionsForReadAfterCreate(r.ProviderData.Option.MaxGoSdkRetries),
+			clients.NewRetryOptionsForReadAfterCreate(),
 			clients.NewRetryOptions(plan.Retry),
 		),
 	}

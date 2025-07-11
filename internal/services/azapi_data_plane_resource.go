@@ -452,7 +452,7 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, plan tfsdk.Plan, s
 		RetryOptions: clients.CombineRetryOptions(
 			// Create a new retry option to handle specific case of transient 403/404 after resource creation
 			// If a read after create retry is not specified, use the default.
-			clients.NewRetryOptionsForReadAfterCreate(r.ProviderData.Option.MaxGoSdkRetries),
+			clients.NewRetryOptionsForReadAfterCreate(),
 			clients.NewRetryOptions(model.Retry),
 		),
 	}
