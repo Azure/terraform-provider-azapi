@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/locks"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
+	"github.com/Azure/terraform-provider-azapi/internal/services/customization"
 	"github.com/Azure/terraform-provider-azapi/internal/services/defaults"
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
@@ -1072,9 +1073,17 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
 		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
-	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
-	if err != nil && !utils.ResponseErrorWasNotFound(err) {
-		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
+
+	if customizedResource := customization.GetCustomization(id.AzureResourceType); customizedResource != nil && (*customizedResource).DeleteFunc() != nil {
+		err = (*customizedResource).DeleteFunc()(ctx, *r.ProviderData, id, requestOptions)
+		if err != nil {
+			response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
+		}
+	} else {
+		_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
+		if err != nil && !utils.ResponseErrorWasNotFound(err) {
+			response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())
+		}
 	}
 }
 
