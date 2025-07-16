@@ -98,8 +98,12 @@ func (opt Option) getClientCert() ([]*x509.Certificate, crypto.PrivateKey, error
 			return nil, nil, fmt.Errorf("failed to read client certificate at %q: %v", file, err)
 		}
 
-		if len(certData) != 0 && string(certData) != string(b) {
-			return nil, nil, fmt.Errorf("mismatch value of client certificate between the specified value and read value from %q", file)
+		if len(certData) == 0 {
+			certData = b
+		} else {
+			if string(certData) != string(b) {
+				return nil, nil, fmt.Errorf("mismatch value of client certificate between the specified value and read value from %q", file)
+			}
 		}
 	}
 	if len(certData) == 0 {
