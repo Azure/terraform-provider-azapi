@@ -734,6 +734,7 @@ func buildUserAgent(terraformVersion string, partnerID string, disableTerraformP
 }
 
 func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOptions) (azcore.TokenCredential, error) {
+	log.Printf("[DEBUG] Building token credential")
 	var auxTenants []string
 	if elements := model.AuxiliaryTenantIDs.Elements(); len(elements) != 0 {
 		for _, element := range elements {
@@ -766,7 +767,7 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 		AdditionallyAllowedTenants: auxTenants,
 	})
 	for _, warning := range warnings {
-		log.Printf("[DEBUG] %v", warning)
+		log.Printf("[DEBUG] Auth warning: %v", warning)
 	}
 	return cred, err
 }
