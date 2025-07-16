@@ -39,7 +39,9 @@ func NewCredential(credsOpts []CredentialOption, option *NewCredentialOption) (t
 				creds = append(creds, cred)
 			}
 		case AssertionPlainCredentialOption:
-			if cred, err := azidentity.NewClientAssertionCredential(opt.TenantId, opt.ClientId,
+			if opt.Assertion == "" {
+				logger.Printf("failed to new plain assertion credential: empty assertion")
+			} else if cred, err := azidentity.NewClientAssertionCredential(opt.TenantId, opt.ClientId,
 				func(ctx context.Context) (string, error) { return opt.Assertion, nil },
 				&azidentity.ClientAssertionCredentialOptions{
 					ClientOptions:              opt.ClientOptions,

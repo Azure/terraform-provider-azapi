@@ -743,7 +743,7 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 	}
 
 	cred, err := aztfauth.NewCredential(aztfauth.Option{
-		Logger:                     log.New(os.Stderr, "[DEBUG] ", log.LstdFlags),
+		Logger:                     log.New(os.Stderr, "[DEBUG] ", log.LstdFlags|log.Lmsgprefix),
 		TenantId:                   model.TenantID.ValueString(),
 		ClientId:                   model.ClientID.ValueString(),
 		ClientIdFile:               model.ClientIDFilePath.ValueString(),

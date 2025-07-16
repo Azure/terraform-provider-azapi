@@ -15,7 +15,7 @@ require (
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-testing v1.11.0
 	github.com/jmespath/go-jmespath v0.4.0
-	github.com/magodo/entrauth v0.0.0-20250716090246-bbeb22c5ed4b
+	github.com/magodo/entrauth v0.0.0-20250716091817-4d7c8c38af98
 	github.com/stretchr/testify v1.10.0
 	github.com/zclconf/go-cty v1.15.0
 )
