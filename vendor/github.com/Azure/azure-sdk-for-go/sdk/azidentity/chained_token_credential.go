@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	glog "log"
 	"strings"
 	"sync"
 
@@ -102,6 +103,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			break
 		}
 		errs = append(errs, err)
+		glog.Printf("[WARN] error %v (%T)", err, cred)
 		// continue to the next source iff this one returned credentialUnavailableError
 		if !errors.As(err, &unavailableErr) {
 			break
