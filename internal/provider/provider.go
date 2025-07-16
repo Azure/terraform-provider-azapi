@@ -742,7 +742,8 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 		}
 	}
 
-	cred, warnings, err := aztfauth.NewCredential(aztfauth.Option{
+	cred, err := aztfauth.NewCredential(aztfauth.Option{
+		Logger:                     log.New(os.Stderr, "[DEBUG] ", log.LstdFlags),
 		TenantId:                   model.TenantID.ValueString(),
 		ClientId:                   model.ClientID.ValueString(),
 		ClientIdFile:               model.ClientIDFilePath.ValueString(),
@@ -766,8 +767,6 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 		ClientOptions:              clientOpt,
 		AdditionallyAllowedTenants: auxTenants,
 	})
-	for _, warning := range warnings {
-		log.Printf("[DEBUG] Auth warning: %v", warning)
-	}
+
 	return cred, err
 }

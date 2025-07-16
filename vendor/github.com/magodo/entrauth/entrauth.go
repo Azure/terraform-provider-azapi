@@ -3,13 +3,25 @@ package entrauth
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+type NewCredentialOption struct {
+	Logger             *log.Logger
+	ChainedTokenOption azidentity.ChainedTokenCredentialOptions
+}
+
 // NewCredential news a chained token credential. The exact credentials and their orders being chained are determined by the `credOpts`.
-func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedTokenCredentialOptions) (token *azidentity.ChainedTokenCredential, warnings []error, err error) {
+func NewCredential(credsOpts []CredentialOption, option *NewCredentialOption) (token *azidentity.ChainedTokenCredential, err error) {
+	logger := log.New(io.Discard, "", 0)
+	if option.Logger != nil {
+		logger = option.Logger
+	}
+
 	var creds []azcore.TokenCredential
 	for _, option := range credsOpts {
 		switch opt := option.(type) {
@@ -21,8 +33,9 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 					DisableInstanceDiscovery:   opt.DisableInstanceDiscovery,
 					Cache:                      opt.Cache,
 				}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new client secret credential: %v", err))
+				logger.Printf("failed to new client secret credential: %v", err)
 			} else {
+				logger.Printf("new client secret credential succeeded")
 				creds = append(creds, cred)
 			}
 		case AssertionPlainCredentialOption:
@@ -34,8 +47,9 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 					DisableInstanceDiscovery:   opt.DisableInstanceDiscovery,
 					Cache:                      opt.Cache,
 				}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new plain assertion credential: %v", err))
+				logger.Printf("failed to new plain assertion credential: %v", err)
 			} else {
+				logger.Printf("new plain assertion credential succeeded")
 				creds = append(creds, cred)
 			}
 		case AssertionFileCredentialOption:
@@ -50,8 +64,9 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 				DisableInstanceDiscovery:   opt.DisableInstanceDiscovery,
 				Cache:                      opt.Cache,
 			}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new file (based) assertion credential: %v", err))
+				logger.Printf("failed to new file (based) assertion credential: %v", err)
 			} else {
+				logger.Printf("new file (based) assertion credential succeeded")
 				creds = append(creds, cred)
 			}
 		case ClientCertificateCredentialOption:
@@ -63,8 +78,9 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 					Cache:                      opt.Cache,
 					SendCertificateChain:       opt.SendCertificateChain,
 				}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new client certificate credential: %v", err))
+				logger.Printf("failed to new client certificate credential: %v", err)
 			} else {
+				logger.Printf("new client certificate credential succeeded")
 				creds = append(creds, cred)
 			}
 		case AssertionRequestCredentialOption:
@@ -75,21 +91,31 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 			switch opt.Type {
 			case AssertionRequestTypeGithub:
 				cred, err = newAssertionRequestGithubCredential(opt)
+				if err != nil {
+					logger.Printf("failed to new request (based) assertion for Github credential: %v", err)
+				} else {
+					logger.Printf("new request (based) assertion for Github credential succeeded")
+					creds = append(creds, cred)
+				}
 			case AssertionRequestTypeAzureDevOps:
 				cred, err = newAssertionRequestAzureDevOpsCredential(opt)
-			}
-			if err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new request (based) assertion credential: %v", err))
-			} else {
-				creds = append(creds, cred)
+				if err != nil {
+					logger.Printf("failed to new request (based) assertion for AzureDevOps credential: %v", err)
+				} else {
+					logger.Printf("new request (based) assertion for AzureDevOps credential succeeded")
+					creds = append(creds, cred)
+				}
+			default:
+				logger.Printf("unknown request (based) assertion credential type: %v", opt.Type)
 			}
 		case ManagedIdentityCredentialOption:
 			if cred, err := azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
 				ClientOptions: opt.ClientOptions,
 				ID:            opt.ID,
 			}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new managed identity credential: %v", err))
+				logger.Printf("failed to new managed identity credential: %v", err)
 			} else {
+				logger.Printf("new managed identity credential succeeded")
 				creds = append(creds, cred)
 			}
 		case AzureCLICredentialOption:
@@ -98,8 +124,9 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 				TenantID:                   opt.TenantId,
 				Subscription:               opt.SubscriptionId,
 			}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new Azure CLI credential: %v", err))
+				logger.Printf("failed to new Azure CLI credential: %v", err)
 			} else {
+				logger.Printf("new Azure CLI credential succeeded")
 				creds = append(creds, cred)
 			}
 		case AzureDevCLICredentialOption:
@@ -107,17 +134,17 @@ func NewCredential(credsOpts []CredentialOption, option *azidentity.ChainedToken
 				AdditionallyAllowedTenants: opt.AdditionallyAllowedTenants,
 				TenantID:                   opt.TenantId,
 			}); err != nil {
-				warnings = append(warnings, fmt.Errorf("failed to new Azure Dev CLI credential: %v", err))
+				logger.Printf("failed to new Azure Dev CLI credential: %v", err)
 			} else {
+				logger.Printf("new Azure Dev CLI credential succeeded")
 				creds = append(creds, cred)
 			}
 		default:
-			return nil, warnings, fmt.Errorf("unexpected entrauth.CredentialOption: %T", opt)
+			return nil, fmt.Errorf("unexpected entrauth.CredentialOption: %T", opt)
 		}
 	}
 
-	chained, err := azidentity.NewChainedTokenCredential(creds, option)
-	return chained, warnings, err
+	return azidentity.NewChainedTokenCredential(creds, &option.ChainedTokenOption)
 }
 
 func newAssertionRequestAzureDevOpsCredential(opt AssertionRequestCredentialOption) (azcore.TokenCredential, error) {

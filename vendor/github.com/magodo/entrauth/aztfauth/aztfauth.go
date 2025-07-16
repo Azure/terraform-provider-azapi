@@ -5,6 +5,8 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"strings"
 
@@ -14,6 +16,8 @@ import (
 )
 
 type Option struct {
+	Logger *log.Logger
+
 	TenantId     string
 	TenantIdFile string
 
@@ -292,66 +296,72 @@ type Credential struct {
 	cred *azidentity.ChainedTokenCredential
 }
 
-func NewCredential(opt Option) (cred azcore.TokenCredential, warnings []error, err error) {
+func NewCredential(opt Option) (cred azcore.TokenCredential, err error) {
+	logger := log.New(io.Discard, "", 0)
+	if opt.Logger != nil {
+		logger = opt.Logger
+	}
+
 	var credOpts []entrauth.CredentialOption
 	if opt.UseOIDCToken {
 		if credOpt, err := opt.buildOIDCTokenCredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build oidc token cred option: %v", err)
 		}
 	}
 	if opt.UseOIDCTokenFile {
 		if credOpt, err := opt.buildOIDCTokenFileCredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build oidc token file cred option: %v", err)
 		}
 	}
 	if opt.UseOIDCTokenRequest {
 		if credOpt, err := opt.buildOIDCTokenReqCredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build oidc token request cred option: %v", err)
 		}
 	}
 	if opt.UseClientSecret {
 		if credOpt, err := opt.buildClientSecretCredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build client secret cred option: %v", err)
 		}
 	}
 	if opt.UseClientCert {
 		if credOpt, err := opt.buildClientCertificateCredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build client certificate cred option: %v", err)
 		}
 	}
 	if opt.UseMSI {
 		if credOpt, err := opt.buildMSICredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build MSI cred option: %v", err)
 		}
 	}
 	if opt.UseAzureCLI {
 		if credOpt, err := opt.buildAzureCLICredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build Azure CLI cred option: %v", err)
 		}
 	}
 	if opt.UseAzureDevCLI {
 		if credOpt, err := opt.buildAzureDevCLICredOpt(); err == nil {
 			credOpts = append(credOpts, credOpt)
 		} else {
-			warnings = append(warnings, err)
+			logger.Printf("failed to build Azure Dev CLI cred option: %v", err)
 		}
 	}
 
-	cred, nwarnings, err := entrauth.NewCredential(credOpts, &azidentity.ChainedTokenCredentialOptions{RetrySources: true})
-	warnings = append(warnings, nwarnings...)
-	return cred, warnings, err
+	return entrauth.NewCredential(credOpts, &entrauth.NewCredentialOption{
+		Logger:             logger,
+		ChainedTokenOption: azidentity.ChainedTokenCredentialOptions{RetrySources: true},
+	})
 }
