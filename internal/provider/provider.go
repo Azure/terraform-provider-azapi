@@ -750,7 +750,7 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 		ClientSecretFile:           model.ClientSecretFilePath.ValueString(),
 		UseClientCert:              true,
 		ClientCertBase64:           model.ClientCertificate.ValueString(),
-		ClientCertFile:             model.ClientCertificatePath.ValueString(),
+		ClientCertPfxFile:          model.ClientCertificatePath.ValueString(),
 		ClientCertPassword:         []byte(model.ClientCertificatePassword.ValueString()),
 		UseOIDCToken:               model.UseOIDC.ValueBool(),
 		OIDCToken:                  model.OIDCToken.ValueString(),

@@ -26,7 +26,7 @@ type Option struct {
 
 	UseClientCert        bool
 	ClientCertBase64     string
-	ClientCertFile       string
+	ClientCertPfxFile    string
 	ClientCertPassword   []byte
 	SendCertificateChain bool
 
@@ -92,15 +92,10 @@ func (opt Option) getClientCert() ([]*x509.Certificate, crypto.PrivateKey, error
 		}
 		certData = vv
 	}
-	if file := opt.ClientCertFile; file != "" {
+	if file := opt.ClientCertPfxFile; file != "" {
 		b, err := os.ReadFile(file)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to read client certificate at %q: %v", file, err)
-		}
-
-		// Try base64 decode it
-		if v, err := base64.StdEncoding.DecodeString(string(b)); err == nil {
-			b = v
 		}
 
 		if len(certData) != 0 && string(certData) != string(b) {
