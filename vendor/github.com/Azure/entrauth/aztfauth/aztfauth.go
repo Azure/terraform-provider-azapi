@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/magodo/entrauth"
+	"github.com/Azure/entrauth"
 )
 
 type Option struct {

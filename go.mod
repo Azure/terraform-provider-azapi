@@ -3,6 +3,7 @@ module github.com/Azure/terraform-provider-azapi
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1
+	github.com/Azure/entrauth v0.0.0-20250717031544-5435286359f8
 	github.com/go-git/go-git/v5 v5.14.0
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/go-uuid v1.0.3
@@ -15,7 +16,6 @@ require (
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-testing v1.11.0
 	github.com/jmespath/go-jmespath v0.4.0
-	github.com/magodo/entrauth v0.0.0-20250716091817-4d7c8c38af98
 	github.com/stretchr/testify v1.10.0
 	github.com/zclconf/go-cty v1.15.0
 )
