@@ -39,6 +39,9 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 
 	statusCodeSet := make(map[int]bool)
 	for _, opt := range opts {
+		if opt == nil {
+			continue
+		}
 		for _, code := range opt.StatusCodes {
 			statusCodeSet[code] = true
 		}
