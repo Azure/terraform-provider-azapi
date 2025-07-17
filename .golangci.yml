@@ -1,12 +1,13 @@
 run:
   timeout: 60m
-  go: 1.23
-  modules-download-mode: mod
-  skip-dirs:
-    - /sdk/ # Excluding sdk folders as these are externally generated
+  go: "1.24"
+  modules-download-mode: vendor
 
 issues:
+  max-issues-per-linter: 0
   max-same-issues: 0
+  exclude-dirs:
+    - /sdk/ # Excluding sdk folders as these are externally generated
 
 linters:
   disable-all: true
@@ -36,8 +37,6 @@ linters:
     # - whitespace # Disabled for performance reasons - Ignores cache and takes 12+ minutes to run on the repo for _any_ change
 
 linters-settings:
-  errcheck:
-    exclude-functions:
   misspell:
     ignore-words:
       - hdinsight
