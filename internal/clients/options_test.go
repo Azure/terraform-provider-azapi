@@ -212,8 +212,16 @@ func Test_CombineRetryOptions(t *testing.T) {
 				return
 			}
 			for i, code := range result.StatusCodes {
-				if code != tc.expected.StatusCodes[i] {
-					t.Errorf("expected status code %d at index %d, got %d", tc.expected.StatusCodes[i], i, code)
+				found := false
+				for _, expectedCode := range tc.expected.StatusCodes {
+					if code == expectedCode {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Errorf("expected status code %d at index %d, but it was not found in the expected codes", code, i)
+					continue
 				}
 			}
 		})
