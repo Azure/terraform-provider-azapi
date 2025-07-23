@@ -36,6 +36,19 @@ variable "location" {
   default = "westeurope"
 }
 
+# SQL Server administrator credentials
+variable "administrator_login" {
+  type        = string
+  description = "The administrator login name for the SQL server"
+  sensitive   = true
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the SQL server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -49,8 +62,8 @@ resource "azapi_resource" "server" {
   location  = var.location
   body = {
     properties = {
-      administratorLogin            = "umtacc"
-      administratorLoginPassword    = "random81jdpwd_$#fs"
+      administratorLogin            = var.administrator_login
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"

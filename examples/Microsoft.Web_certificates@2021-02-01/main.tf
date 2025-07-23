@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "certificate_password" {
+  type        = string
+  description = "The password for the PFX certificate"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "certificate" {
   body = {
     properties = {
       pfxBlob  = filebase64("testdata/app_service_certificate.pfx")
-      password = "terraform"
+      password = var.certificate_password
     }
   }
 }

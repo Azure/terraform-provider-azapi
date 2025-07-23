@@ -28,6 +28,22 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login" {
+  type        = string
+  description = "The administrator login name for the PostgreSQL server"
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the PostgreSQL server"
+  sensitive   = true
+}
+
+variable "admin_login" {
+  type        = string
+  description = "The administrator login name for the PostgreSQL server admin"
+}
+
 data "azurerm_client_config" "current" {
 }
 
@@ -44,8 +60,8 @@ resource "azapi_resource" "server" {
   location  = var.location
   body = {
     properties = {
-      administratorLogin         = "acctestun"
-      administratorLoginPassword = "H@Sh1CoR3!"
+      administratorLogin         = var.administrator_login
+      administratorLoginPassword = var.administrator_login_password
       createMode                 = "Default"
       infrastructureEncryption   = "Disabled"
       minimalTlsVersion          = "TLS1_2"
@@ -76,7 +92,7 @@ resource "azapi_resource" "administrator" {
   body = {
     properties = {
       administratorType = "ActiveDirectory"
-      login             = "sqladmin"
+      login             = var.admin_login
       sid               = data.azurerm_client_config.current.client_id
       tenantId          = data.azurerm_client_config.current.tenant_id
     }

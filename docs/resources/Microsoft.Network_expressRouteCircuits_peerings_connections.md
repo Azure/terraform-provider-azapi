@@ -36,6 +36,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "express_route_connection_shared_key" {
+  type        = string
+  description = "The shared key for the Express Route circuit peering connections"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -134,7 +140,7 @@ resource "azapi_resource" "peering" {
       peeringType                = "AzurePrivatePeering"
       primaryPeerAddressPrefix   = "192.168.1.0/30"
       secondaryPeerAddressPrefix = "192.168.1.0/30"
-      sharedKey                  = "ItsASecret"
+      sharedKey                  = var.express_route_connection_shared_key
       state                      = "Enabled"
       vlanId                     = 100
     }
@@ -155,7 +161,7 @@ resource "azapi_resource" "peering2" {
       peeringType                = "AzurePrivatePeering"
       primaryPeerAddressPrefix   = "192.168.1.0/30"
       secondaryPeerAddressPrefix = "192.168.1.0/30"
-      sharedKey                  = "ItsASecret"
+      sharedKey                  = var.express_route_connection_shared_key
       state                      = "Enabled"
       vlanId                     = 100
     }

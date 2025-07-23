@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "vm_admin_password" {
+  type        = string
+  description = "The administrator password for the SQL virtual machine"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -157,7 +163,7 @@ resource "azapi_resource" "virtualMachine" {
     properties = {
       osProfile = {
         adminUsername            = "testadmin"
-        adminPassword            = "Password1234!"
+        adminPassword            = var.vm_admin_password
         allowExtensionOperations = true
         computerName             = "winhost01"
         secrets                  = []

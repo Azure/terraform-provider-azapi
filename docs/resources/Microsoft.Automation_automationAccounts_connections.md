@@ -44,6 +44,16 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "service_principal_application_id" {
+  type        = string
+  description = "The Application ID of the Azure service principal for the automation account connection"
+}
+
+variable "service_principal_certificate_thumbprint" {
+  type        = string
+  description = "The certificate thumbprint for the Azure service principal authentication"
+}
+
 data "azurerm_client_config" "current" {
 }
 
@@ -84,8 +94,8 @@ resource "azapi_resource" "connection" {
       }
       description = ""
       fieldDefinitionValues = {
-        ApplicationId         = "00000000-0000-0000-0000-000000000000"
-        CertificateThumbprint = "AEB97B81A68E8988850972916A8B8B6CD8F39813\n"
+        ApplicationId         = var.service_principal_application_id
+        CertificateThumbprint = var.service_principal_certificate_thumbprint
         SubscriptionId        = data.azurerm_client_config.current.subscription_id
         TenantId              = data.azurerm_client_config.current.tenant_id
       }

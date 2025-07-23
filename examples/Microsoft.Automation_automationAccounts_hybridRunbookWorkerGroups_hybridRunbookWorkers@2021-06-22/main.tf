@@ -20,6 +20,18 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "automation_worker_password" {
+  type        = string
+  description = "The password for the automation account hybrid runbook worker"
+  sensitive   = true
+}
+
+variable "vm_admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -101,7 +113,7 @@ resource "azapi_resource" "credential" {
   body = {
     properties = {
       description = ""
-      password    = "test_pwd"
+      password    = var.automation_worker_password
       userName    = "test_user"
     }
   }
@@ -184,7 +196,7 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword            = "P@$$w0rd1234!"
+        adminPassword            = var.vm_admin_password
         adminUsername            = "adminuser"
         allowExtensionOperations = true
         computerName             = var.resource_name

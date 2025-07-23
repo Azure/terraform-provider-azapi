@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "sql_administrator_password" {
+  type        = string
+  description = "The administrator password for the SQL server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "mradministrator"
-      administratorLoginPassword    = "thisIsDog11"
+      administratorLoginPassword    = var.sql_administrator_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"

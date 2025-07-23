@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine scale set"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine scale set"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -143,8 +154,8 @@ resource "azapi_resource" "virtualMachineScaleSet" {
           ]
         }
         osProfile = {
-          adminPassword      = "Passwword1234"
-          adminUsername      = "myadmin"
+          adminPassword      = var.admin_password
+          adminUsername      = var.admin_username
           computerNamePrefix = "testvm-230630033559396108"
           linuxConfiguration = {
             disablePasswordAuthentication = false

@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "openid_client_id" {
+  type        = string
+  description = "The client ID for the OpenID Connect provider"
+}
+
+variable "openid_client_secret" {
+  type        = string
+  description = "The client secret for the OpenID Connect provider"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -63,8 +74,8 @@ resource "azapi_resource" "openidConnectProvider" {
   name      = var.resource_name
   body = {
     properties = {
-      clientId         = "00001111-2222-3333-230630032559684401"
-      clientSecret     = "230630032559684401-cwdavsxbacsaxZX-230630032559684401"
+      clientId         = var.openid_client_id
+      clientSecret     = var.openid_client_secret
       description      = ""
       displayName      = "Initial Name"
       metadataEndpoint = "https://azacceptance.hashicorptest.com/example/foo"

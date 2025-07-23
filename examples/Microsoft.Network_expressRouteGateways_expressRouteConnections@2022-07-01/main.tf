@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "shared_key" {
+  type        = string
+  description = "The shared key for the ExpressRoute connection"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -116,7 +122,7 @@ resource "azapi_resource" "peering" {
       peeringType                = "AzurePrivatePeering"
       primaryPeerAddressPrefix   = "192.168.1.0/30"
       secondaryPeerAddressPrefix = "192.168.2.0/30"
-      sharedKey                  = "ItsASecret"
+      sharedKey                  = var.shared_key
       state                      = "Enabled"
       vlanId                     = 100
     }

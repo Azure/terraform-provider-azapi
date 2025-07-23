@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login" {
+  type        = string
+  description = "The administrator login name for the MySQL server"
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the MySQL server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -60,8 +71,8 @@ resource "azapi_resource" "server" {
   location  = var.location
   body = {
     properties = {
-      administratorLogin         = "acctestun"
-      administratorLoginPassword = "H@Sh1CoR3!"
+      administratorLogin         = var.administrator_login
+      administratorLoginPassword = var.administrator_login_password
       createMode                 = "Default"
       infrastructureEncryption   = "Disabled"
       minimalTlsVersion          = "TLS1_2"

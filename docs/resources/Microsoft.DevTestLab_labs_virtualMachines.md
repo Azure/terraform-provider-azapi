@@ -36,6 +36,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "vm_password" {
+  type        = string
+  description = "The password for the DevTest Lab virtual machine"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -112,7 +118,7 @@ resource "azapi_resource" "virtualMachine" {
       }
       notes       = ""
       osType      = "Windows"
-      password    = "Pa$w0rd1234!"
+      password    = var.vm_password
       size        = "Standard_F2"
       storageType = "Standard"
       userName    = "acct5stU5er"

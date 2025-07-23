@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the lab virtual machine"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -53,7 +59,7 @@ resource "azapi_resource" "lab" {
           installGpuDrivers = "Disabled"
         }
         adminUser = {
-          password = "Password1234!"
+          password = var.admin_password
           username = "testadmin"
         }
         createOption = "Image"

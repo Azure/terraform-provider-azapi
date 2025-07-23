@@ -28,6 +28,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the SQL server"
+  sensitive   = true
+}
+
 data "azurerm_client_config" "current" {
 }
 
@@ -45,7 +51,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "4dm1n157r470r"
-      administratorLoginPassword    = "4-v3ry-53cr37-p455w0rd"
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"

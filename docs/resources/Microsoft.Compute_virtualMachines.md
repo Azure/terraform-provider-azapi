@@ -36,6 +36,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
+}
+
 locals {
   os_disk_name            = "myosdisk1"
   data_disk_name          = "mydatadisk1"
@@ -171,8 +182,8 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword = "Password1234!"
-        adminUsername = "testadmin"
+        adminPassword = var.admin_password
+        adminUsername = var.admin_username
         computerName  = "hostname230630032848831819"
         linuxConfiguration = {
           disablePasswordAuthentication = false
@@ -244,6 +255,17 @@ variable "resource_name" {
 variable "location" {
   type    = string
   default = "westeurope"
+}
+
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
 }
 
 variable "attached_resource_name" {
@@ -360,8 +382,8 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword = "Password1234!"
-        adminUsername = "testadmin"
+        adminPassword = var.admin_password
+        adminUsername = var.admin_username
         computerName  = "hostname230630032848831819"
         linuxConfiguration = {
           disablePasswordAuthentication = false
@@ -557,6 +579,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -660,8 +693,8 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword = "Password1234!"
-        adminUsername = "testadmin"
+        adminPassword = var.admin_password
+        adminUsername = var.admin_username
         computerName  = "hostname230630032848831819"
         linuxConfiguration = {
           disablePasswordAuthentication = false
@@ -713,6 +746,17 @@ variable "resource_name" {
 variable "location" {
   type    = string
   default = "westeurope"
+}
+
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
 }
 
 locals {
@@ -827,8 +871,8 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword = "Password1234!"
-        adminUsername = "testadmin"
+        adminPassword = var.admin_password
+        adminUsername = var.admin_username
         computerName  = "hostname230630032848831819"
         linuxConfiguration = {
           disablePasswordAuthentication = false

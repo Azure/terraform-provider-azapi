@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "identity_provider_client_id" {
+  type        = string
+  description = "The client ID for the Twitter identity provider"
+}
+
+variable "identity_provider_client_secret" {
+  type        = string
+  description = "The client secret for the Twitter identity provider"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -80,8 +91,8 @@ resource "azapi_resource" "identityProvider" {
   name      = "twitter"
   body = {
     properties = {
-      clientId     = "00000000000000000000000000000000"
-      clientSecret = "00000000000000000000000000000000"
+      clientId     = var.identity_provider_client_id
+      clientSecret = var.identity_provider_client_secret
       type         = "twitter"
     }
   }
