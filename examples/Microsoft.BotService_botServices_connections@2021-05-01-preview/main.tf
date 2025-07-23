@@ -31,6 +31,7 @@ variable "location" {
 variable "client_secret" {
   type        = string
   description = "The client secret for the bot service connection."
+  sensitive   = true
 }
 
 data "azurerm_client_config" "current" {
