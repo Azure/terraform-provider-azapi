@@ -31,6 +31,7 @@ variable "location" {
 variable "service_principal_application_id" {
   type        = string
   description = "The Application ID of the Azure service principal for the automation account connection"
+  sensitive   = false
 }
 
 variable "service_principal_certificate_thumbprint" {
