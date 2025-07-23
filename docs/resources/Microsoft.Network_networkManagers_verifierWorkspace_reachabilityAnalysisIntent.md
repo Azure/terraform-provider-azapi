@@ -40,7 +40,6 @@ variable "location" {
 variable "admin_username" {
   type        = string
   description = "The admin username for the virtual machine"
-  sensitive   = true
 }
 
 variable "admin_password" {

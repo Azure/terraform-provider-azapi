@@ -47,11 +47,7 @@ variable "location" {
 variable "service_principal_application_id" {
   type        = string
   description = "The Application ID of the Azure service principal for the automation account connection"
-}
-
-variable "service_principal_certificate_thumbprint" {
-  type        = string
-  description = "The certificate thumbprint for the Azure service principal authentication"
+  sensitive   = false
 }
 
 data "azurerm_client_config" "current" {
@@ -95,7 +91,7 @@ resource "azapi_resource" "connection" {
       description = ""
       fieldDefinitionValues = {
         ApplicationId         = var.service_principal_application_id
-        CertificateThumbprint = var.service_principal_certificate_thumbprint
+        CertificateThumbprint = "AEB97B81A68E8988850972916A8B8B6CD8F39813\n"
         SubscriptionId        = data.azurerm_client_config.current.subscription_id
         TenantId              = data.azurerm_client_config.current.tenant_id
       }
