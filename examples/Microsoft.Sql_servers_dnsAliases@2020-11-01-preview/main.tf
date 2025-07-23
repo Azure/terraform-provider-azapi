@@ -24,7 +24,6 @@ variable "location" {
 variable "administrator_login" {
   type        = string
   description = "The administrator login name for the SQL server"
-  sensitive   = true
 }
 
 variable "administrator_login_password" {
