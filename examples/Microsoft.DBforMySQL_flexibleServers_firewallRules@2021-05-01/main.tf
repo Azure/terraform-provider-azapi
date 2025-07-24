@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "mysql_administrator_password" {
+  type        = string
+  description = "The administrator password for the MySQL flexible server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "flexibleServer" {
   body = {
     properties = {
       administratorLogin         = "adminTerraform"
-      administratorLoginPassword = "QAZwsx123"
+      administratorLoginPassword = var.mysql_administrator_password
       backup = {
         backupRetentionDays = 7
         geoRedundantBackup  = "Disabled"

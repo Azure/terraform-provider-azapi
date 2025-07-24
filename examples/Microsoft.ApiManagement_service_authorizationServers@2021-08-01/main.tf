@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "oauth_client_id" {
+  type        = string
+  description = "The OAuth client ID for the authorization server"
+}
+
+variable "oauth_client_secret" {
+  type        = string
+  description = "The OAuth client secret for the authorization server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -69,9 +80,9 @@ resource "azapi_resource" "authorizationServer" {
       ]
       clientAuthenticationMethod = [
       ]
-      clientId                   = "42424242-4242-4242-4242-424242424242"
+      clientId                   = var.oauth_client_id
       clientRegistrationEndpoint = "https://azacceptance.hashicorptest.com/client/register"
-      clientSecret               = ""
+      clientSecret               = var.oauth_client_secret
       defaultScope               = ""
       description                = ""
       displayName                = "Test Group"

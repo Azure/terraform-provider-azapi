@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the virtual machine"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
+}
+
 locals {
   os_disk_name = "myosdisk1"
 
@@ -132,8 +143,8 @@ resource "azapi_resource" "virtualMachine" {
         ]
       }
       osProfile = {
-        adminPassword = "Password1234!"
-        adminUsername = "testadmin"
+        adminPassword = var.admin_password
+        adminUsername = var.admin_username
         computerName  = "hostname230630032848831819"
         linuxConfiguration = {
           disablePasswordAuthentication = false

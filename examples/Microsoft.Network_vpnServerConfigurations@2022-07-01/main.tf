@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "radius_server_secret" {
+  type        = string
+  description = "The RADIUS server secret for VPN server configuration"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -38,12 +44,12 @@ resource "azapi_resource" "vpnServerConfiguration" {
       radiusServerAddress = ""
       radiusServerRootCertificates = [
       ]
-      radiusServerSecret = ""
+      radiusServerSecret = var.radius_server_secret
       radiusServers = [
         {
           radiusServerAddress = "10.105.1.1"
           radiusServerScore   = 15
-          radiusServerSecret  = "vindicators-the-return-of-worldender"
+          radiusServerSecret  = var.radius_server_secret
         },
       ]
       vpnAuthenticationTypes = [

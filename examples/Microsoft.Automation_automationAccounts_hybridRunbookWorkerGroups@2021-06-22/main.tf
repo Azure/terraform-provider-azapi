@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "credential_password" {
+  type        = string
+  description = "The password for the automation account credential"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -53,7 +59,7 @@ resource "azapi_resource" "credential" {
   body = {
     properties = {
       description = ""
-      password    = "test_pwd"
+      password    = var.credential_password
       userName    = "test_user"
     }
   }

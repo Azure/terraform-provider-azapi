@@ -36,6 +36,23 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "vm_username" {
+  type        = string
+  description = "The username for the HDInsight cluster virtual machines"
+}
+
+variable "vm_password" {
+  type        = string
+  description = "The password for the HDInsight cluster virtual machines"
+  sensitive   = true
+}
+
+variable "rest_credential_password" {
+  type        = string
+  description = "The REST API credential password for the HDInsight cluster gateway"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -125,7 +142,7 @@ resource "azapi_resource" "cluster" {
         configurations = {
           gateway = {
             "restAuthCredential.isEnabled" = true
-            "restAuthCredential.password"  = "TerrAform123!"
+            "restAuthCredential.password"  = var.rest_credential_password
             "restAuthCredential.username"  = "acctestusrgw"
           }
         }
@@ -141,8 +158,8 @@ resource "azapi_resource" "cluster" {
             name = "headnode"
             osProfile = {
               linuxOperatingSystemProfile = {
-                password = "AccTestvdSC4daf986!"
-                username = "acctestusrvm"
+                password = var.vm_password
+                username = var.vm_username
               }
             }
             targetInstanceCount = 2
@@ -154,8 +171,8 @@ resource "azapi_resource" "cluster" {
             name = "workernode"
             osProfile = {
               linuxOperatingSystemProfile = {
-                password = "AccTestvdSC4daf986!"
-                username = "acctestusrvm"
+                password = var.vm_password
+                username = var.vm_username
               }
             }
             targetInstanceCount = 3
@@ -167,8 +184,8 @@ resource "azapi_resource" "cluster" {
             name = "zookeepernode"
             osProfile = {
               linuxOperatingSystemProfile = {
-                password = "AccTestvdSC4daf986!"
-                username = "acctestusrvm"
+                password = var.vm_password
+                username = var.vm_username
               }
             }
             targetInstanceCount = 3

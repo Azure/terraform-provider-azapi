@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "admin_username" {
+  type        = string
+  description = "The administrator username for the Service Fabric managed cluster"
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The administrator password for the Service Fabric managed cluster"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -36,8 +47,8 @@ resource "azapi_resource" "managedCluster" {
       addonFeatures = [
         "DnsService",
       ]
-      adminPassword             = "NotV3ryS3cur3P@$$w0rd"
-      adminUserName             = "testUser"
+      adminPassword             = var.admin_password
+      adminUserName             = var.admin_username
       clientConnectionPort      = 12345
       clusterUpgradeCadence     = "Wave0"
       dnsName                   = var.resource_name

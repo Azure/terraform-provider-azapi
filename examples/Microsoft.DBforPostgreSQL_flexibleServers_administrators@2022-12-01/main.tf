@@ -28,6 +28,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login" {
+  type        = string
+  description = "The administrator login for the PostgreSQL flexible server"
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the PostgreSQL flexible server"
+  sensitive   = true
+}
+
 data "azurerm_client_config" "current" {
 }
 
@@ -44,8 +55,8 @@ resource "azapi_resource" "flexibleServer" {
   location  = var.location
   body = {
     properties = {
-      administratorLogin         = "adminTerraform"
-      administratorLoginPassword = "QAZwsx123"
+      administratorLogin         = var.administrator_login
+      administratorLoginPassword = var.administrator_login_password
       authConfig = {
         activeDirectoryAuth = "Enabled"
         passwordAuth        = "Enabled"

@@ -20,6 +20,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the PostgreSQL server group"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -33,7 +39,7 @@ resource "azapi_resource" "serverGroupsv2" {
   location  = var.location
   body = {
     properties = {
-      administratorLoginPassword      = "H@Sh1CoR3!"
+      administratorLoginPassword      = var.administrator_login_password
       coordinatorEnablePublicIpAccess = true
       coordinatorServerEdition        = "GeneralPurpose"
       coordinatorStorageQuotaInMb     = 131072

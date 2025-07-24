@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "sql_administrator_login" {
+  type        = string
+  description = "The SQL administrator login for the Synapse workspace"
+}
+
+variable "sql_administrator_login_password" {
+  type        = string
+  description = "The SQL administrator login password for the Synapse workspace"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -87,8 +98,8 @@ resource "azapi_resource" "workspace" {
       }
       managedVirtualNetwork         = ""
       publicNetworkAccess           = "Enabled"
-      sqlAdministratorLogin         = "sqladminuser"
-      sqlAdministratorLoginPassword = "H@Sh1CoR3!"
+      sqlAdministratorLogin         = var.sql_administrator_login
+      sqlAdministratorLoginPassword = var.sql_administrator_login_password
     }
   }
   schema_validation_enabled = false

@@ -20,6 +20,23 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "sql_admin_username" {
+  type        = string
+  description = "The administrator username for the SQL server credential"
+}
+
+variable "sql_admin_password" {
+  type        = string
+  description = "The administrator password for the SQL server credential"
+  sensitive   = true
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the SQL server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +51,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "4dministr4t0r"
-      administratorLoginPassword    = "superSecur3!!!"
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"
@@ -88,8 +105,8 @@ resource "azapi_resource" "credential" {
   name      = var.resource_name
   body = {
     properties = {
-      password = "test"
-      username = "test"
+      password = var.sql_admin_password
+      username = var.sql_admin_username
     }
   }
   schema_validation_enabled = false

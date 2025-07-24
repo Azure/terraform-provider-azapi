@@ -28,6 +28,12 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "client_secret" {
+  type        = string
+  description = "The client secret for the bot service connection."
+  sensitive   = true
+}
+
 data "azurerm_client_config" "current" {
 }
 
@@ -74,7 +80,7 @@ resource "azapi_resource" "connection" {
     kind = "bot"
     properties = {
       clientId          = azapi_resource.botService.output.properties.msaAppId
-      clientSecret      = "86546868-e7ed-429f-b0e5-3a1caea7db64"
+      clientSecret      = var.client_secret
       scopes            = ""
       serviceProviderId = data.azapi_resource_action.listAuthServiceProviders.output.value[36].properties.id
     }

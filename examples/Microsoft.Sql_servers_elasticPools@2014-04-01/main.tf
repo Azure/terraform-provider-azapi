@@ -20,6 +20,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "administrator_login" {
+  type        = string
+  description = "The administrator login name for the SQL server"
+}
+
+variable "administrator_login_password" {
+  type        = string
+  description = "The administrator login password for the SQL server"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -33,8 +44,8 @@ resource "azapi_resource" "server" {
   location  = var.location
   body = {
     properties = {
-      administratorLogin         = "4dm1n157r470r"
-      administratorLoginPassword = "4-v3ry-53cr37-p455w0rd"
+      administratorLogin         = var.administrator_login
+      administratorLoginPassword = var.administrator_login_password
       version                    = "12.0"
     }
   }
