@@ -91,6 +91,12 @@ func TestResourceID(t *testing.T) {
 		},
 
 		{
+			// contains character '|' which is not allowed in resource Ids
+			Input: "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/group1/providers/Microsoft.EventHub/clusters/cluster1|test",
+			Valid: false,
+		},
+
+		{
 			// a valid extension resource Id
 			Input: "/providers/Microsoft.Management/managementGroups/myMgmtGroup/providers/Microsoft.Authorization/policyDefinitions/test",
 			Valid: true,

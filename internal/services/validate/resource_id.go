@@ -21,11 +21,15 @@ func ResourceID(input interface{}, key string) (warnings []string, errors []erro
 
 	r := regexp.MustCompile("^http[s]?:.*")
 	if r.MatchString(v) {
-		errors = append(errors, fmt.Errorf("expected %q not to contain protocol", key))
+		errors = append(errors, fmt.Errorf("expected %q not to contain protocol, got %q", key, v))
 	}
 	r = regexp.MustCompile(".*api-version=.*")
 	if r.MatchString(v) {
-		errors = append(errors, fmt.Errorf("expected %q not to contain api-version", key))
+		errors = append(errors, fmt.Errorf("expected %q not to contain api-version query parameter, got %q", key, v))
+	}
+
+	if strings.Contains(v, "|") {
+		errors = append(errors, fmt.Errorf("expected %q not to contain character '|', got %q", key, v))
 	}
 
 	if _, err := arm.ParseResourceID(v); err != nil {
