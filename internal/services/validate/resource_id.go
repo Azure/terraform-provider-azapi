@@ -29,7 +29,7 @@ func ResourceID(input interface{}, key string) (warnings []string, errors []erro
 	}
 
 	if strings.Contains(v, "|") {
-		errors = append(errors, fmt.Errorf("expected %q not to contain character '|', got %q", key, v))
+		errors = append(errors, fmt.Errorf("expected %q not to contain character '|', got %q. This usually indicates a synthetic resource ID created by the AzureRM provider, which is not the expected format for an Azure Resource ID. Please use the actual resource ID instead", key, v))
 	}
 
 	if _, err := arm.ParseResourceID(v); err != nil {
