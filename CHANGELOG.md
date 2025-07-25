@@ -3,6 +3,12 @@
 DEPRECATIONS:
 - `retry` block: The `multiplier` and `randomization_factor` are deprecated and will be removed in the next major release. Please remove them from the `retry` block. The provider will use the default values for these fields.
 
+ENHANCEMENTS:
+- Use `aztfauth` for the shared authentication logic.
+
+BUG FIXES:
+- Fix a bug that invalid resource ID containing `|` character is not detected when validating the configuration.
+
 ## v2.5.0
 
 ENHANCEMENTS:
