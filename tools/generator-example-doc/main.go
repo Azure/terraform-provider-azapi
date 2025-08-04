@@ -88,6 +88,7 @@ func main() {
 		log.Fatalf("Error reading input directory: %s", err)
 	}
 
+	errs := make([]error, 0)
 	for _, resourceTypeDir := range resourceTypeDirs {
 		if !resourceTypeDir.IsDir() {
 			continue
@@ -98,7 +99,8 @@ func main() {
 
 		content, err := generateDocumentation(path.Join(*inputDir, resourceTypeDir.Name()))
 		if err != nil {
-			log.Fatalf("Error generating documentation for %s: %s", resourceTypeDir.Name(), err)
+			errs = append(errs, fmt.Errorf("error generating documentation for %s: %w", resourceTypeDir.Name(), err))
+			continue
 		}
 
 		resourceTypeName := strings.Split(resourceTypeDir.Name(), "@")[0]
@@ -109,6 +111,13 @@ func main() {
 			log.Printf("Error writing documentation for %s: %s", resourceTypeDir.Name(), err)
 		}
 	}
+	if len(errs) > 0 {
+		log.Printf("Errors occurred while generating documentation:\n")
+		for _, err := range errs {
+			log.Printf("- %s\n", err)
+		}
+		os.Exit(1)
+	}
 }
 
 func generateDocumentation(inputDir string) (string, error) {
@@ -118,14 +127,18 @@ func generateDocumentation(inputDir string) (string, error) {
 	resourceProviderName := strings.Split(resourceType, "/")[0]
 	resourceTypeWithoutRP := strings.Join(strings.Split(resourceType, "/")[1:], "/")
 
+	errs := make([]error, 0)
 	resourceProviderFriendlyName := GetResourceProviderFriendlyName(resourceProviderName)
 	if resourceProviderFriendlyName == "" {
-		return "", fmt.Errorf("resource provider %s friendly name not found, please add it to resource_providers.json", resourceProviderName)
+		errs = append(errs, fmt.Errorf("resource provider %s friendly name not found, please add it to resource_providers.json", resourceProviderName))
 	}
 
 	resourceTypeFriendlyName := GetResourceTypeFriendlyName(resourceType)
 	if resourceTypeFriendlyName == "" {
-		return "", fmt.Errorf("resource type %s friendly name not found, please add it to resource_types.json", resourceType)
+		errs = append(errs, fmt.Errorf("resource type %s friendly name not found, please add it to resource_types.json", resourceType))
+	}
+	if len(errs) > 0 {
+		return "", fmt.Errorf("failed to get resource provider or resource type friendly name: %v", errs)
 	}
 
 	apiVersions := azure.GetApiVersions(resourceType)
