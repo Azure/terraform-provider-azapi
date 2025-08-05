@@ -1,0 +1,103 @@
+
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+variable "resource_name" {
+  type    = string
+  default = "acctest0001"
+}
+
+variable "location" {
+  type    = string
+  default = "westus"
+}
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
+}
+
+resource "azapi_resource" "service" {
+  type      = "Microsoft.ApiManagement/service@2022-08-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "${var.resource_name}-service"
+  location  = var.location
+  body = {
+    properties = {
+      certificates = []
+      customProperties = {
+        "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30" = "false"
+        "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10" = "false"
+        "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11" = "false"
+        "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10"         = "false"
+        "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11"         = "false"
+      }
+      disableGateway      = false
+      publicNetworkAccess = "Enabled"
+      publisherEmail      = "pub1@email.com"
+      publisherName       = "pub1"
+      virtualNetworkType  = "None"
+    }
+    sku = {
+      capacity = 0
+      name     = "Consumption"
+    }
+  }
+}
+
+resource "azapi_resource" "api" {
+  type      = "Microsoft.ApiManagement/service/apis@2022-08-01"
+  parent_id = azapi_resource.service.id
+  name      = "${var.resource_name}-api;rev=1"
+  body = {
+    properties = {
+      apiRevisionDescription = ""
+      apiType                = "http"
+      apiVersionDescription  = ""
+      authenticationSettings = {}
+      displayName            = "api1"
+      path                   = "api1"
+      protocols              = ["https"]
+      subscriptionRequired   = true
+      type                   = "http"
+    }
+  }
+}
+
+resource "azapi_resource" "tag" {
+  type      = "Microsoft.ApiManagement/service/tags@2022-08-01"
+  parent_id = azapi_resource.service.id
+  name      = "${var.resource_name}-tag"
+  body = {
+    properties = {
+      displayName = "${var.resource_name}-tag"
+    }
+  }
+}
+
+resource "azapi_resource" "tag_1" {
+  type      = "Microsoft.ApiManagement/service/apis/tags@2022-08-01"
+  parent_id = azapi_resource.api.id
+  name      = "${var.resource_name}-tag"
+}
+
+resource "azapi_resource" "tagDescription" {
+  type      = "Microsoft.ApiManagement/service/apis/tagDescriptions@2022-08-01"
+  parent_id = azapi_resource.api.id
+  name      = "${var.resource_name}-tag"
+  body = {
+    properties = {
+      description             = "tag description"
+      externalDocsDescription = "external tag description"
+      externalDocsUrl         = "https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs"
+    }
+  }
+}
