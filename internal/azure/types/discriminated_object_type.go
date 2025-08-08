@@ -169,8 +169,9 @@ func (t *DiscriminatedObjectType) Validate(body attr.Value, path string) []error
 		return errors
 	}
 
-	if discriminatorStr, ok := otherProperties[t.Discriminator].(types.String); ok {
-		discriminator := discriminatorStr.ValueString()
+	switch discriminatorV := otherProperties[t.Discriminator].(type) {
+	case types.String:
+		discriminator := discriminatorV.ValueString()
 		switch {
 		case t.Elements[discriminator] == nil:
 			options := make([]string, 0)
@@ -181,7 +182,9 @@ func (t *DiscriminatedObjectType) Validate(body attr.Value, path string) []error
 		case t.Elements[discriminator].Type != nil:
 			errors = append(errors, (*t.Elements[discriminator].Type).Validate(types.ObjectValueMust(otherPropertyTypes, otherProperties), path)...)
 		}
-	} else {
+	case types.Dynamic:
+		// If the discriminator is dynamic, we cannot validate it here.
+	default:
 		errors = append(errors, utils.ErrorMismatch(path+"."+t.Discriminator, "string", fmt.Sprintf("%T", otherProperties[t.Discriminator])))
 	}
 

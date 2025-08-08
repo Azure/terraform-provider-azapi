@@ -593,6 +593,19 @@ func TestAccGenericResource_defaultOutput(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_unknownDiscriminator(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             r.unknownDiscriminator(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func TestAccGenericResource_moveResource(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -3173,6 +3186,129 @@ resource "azapi_resource" "test" {
     kind = "TextAnalytics"
   }
   ignore_missing_property = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) unknownDiscriminator(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
+    }
+  }
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_application_insights" "test" {
+  name                = "accappinsights%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  application_type    = "web"
+
+  lifecycle {
+    ignore_changes = [workspace_id]
+  }
+}
+
+resource "azurerm_key_vault" "test" {
+  name                     = "acckeyvault%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
+  tenant_id                = data.azurerm_client_config.current.tenant_id
+  sku_name                 = "standard"
+  purge_protection_enabled = true
+}
+
+resource "azurerm_key_vault_access_policy" "test" {
+  key_vault_id = azurerm_key_vault.test.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "Create",
+    "Get",
+    "Delete",
+    "Purge",
+    "GetRotationPolicy",
+  ]
+}
+
+resource "azurerm_storage_account" "test" {
+  name                            = "acctestsa%[2]s"
+  location                        = azapi_resource.resourceGroup.location
+  resource_group_name             = azapi_resource.resourceGroup.name
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  allow_nested_items_to_be_public = false
+}
+
+resource "azurerm_machine_learning_workspace" "test" {
+  name                    = "acctestmlws%[2]s"
+  location                = azapi_resource.resourceGroup.location
+  resource_group_name     = azapi_resource.resourceGroup.name
+  application_insights_id = azurerm_application_insights.test.id
+  key_vault_id            = azurerm_key_vault.test.id
+  storage_account_id      = azurerm_storage_account.test.id
+
+  managed_network {
+    isolation_mode = "AllowOnlyApprovedOutbound"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azurerm_search_service" "test" {
+  name                = "acctestsearch%[2]s"
+  location            = azapi_resource.resourceGroup.location
+  resource_group_name = azapi_resource.resourceGroup.name
+  sku                 = "standard"
+}
+
+resource "azapi_resource" "connection" {
+  for_each = var.connections
+
+  type      = "Microsoft.MachineLearningServices/workspaces/connections@2025-06-01"
+  parent_id = azurerm_machine_learning_workspace.test.id
+  name      = each.key
+  body = {
+    properties = {
+      authType      = each.value.type
+      category      = "CognitiveSearch"
+      expiryTime    = null
+      isSharedToAll = true
+      metadata = {
+        ApiType              = "Azure"
+        ApiVersion           = "2024-05-01-preview"
+        DeploymentApiVersion = "2023-11-01"
+        ResourceId           = azurerm_search_service.test.id
+        type                 = "azure_ai_search"
+      }
+      sharedUserList = []
+      target         = "https://${azurerm_search_service.test.name}.search.windows.net/"
+    }
+  }
+}
+
+variable "connections" {
+  type = map(object({
+    type = string
+  }))
+  default = {
+    "myconnection" = {
+      type = "AAD"
+    }
+  }
 }
 `, r.template(data), data.RandomString)
 }
