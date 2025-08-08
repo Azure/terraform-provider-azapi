@@ -97,7 +97,17 @@ func FlattenIdentity(identity interface{}) *Model {
 			}
 		}
 
-		identityType := identityMap["type"].(string)
+		// should not be nil, but check just in case
+		if identityMap["type"] == nil {
+			return nil
+		}
+
+		identityType, ok := identityMap["type"].(string)
+		if !ok {
+			// should not happen, but check just in case
+			return nil
+		}
+
 		switch {
 		case strings.Contains(identityType, ","):
 			identityType = string(SystemAssignedUserAssigned)
