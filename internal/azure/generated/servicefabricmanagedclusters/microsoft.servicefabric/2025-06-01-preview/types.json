@@ -1,0 +1,5514 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "The managed cluster resource properties"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.\","
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 1,
+        "description": "The sku of the managed cluster"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterProperties",
+    "properties": {
+      "dnsName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The cluster dns name."
+      },
+      "fqdn": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The fully qualified domain name associated with the public load balancer of the cluster."
+      },
+      "ipv4Address": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The IPv4 address associated with the public load balancer of the cluster."
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "A service generated unique identifier for the cluster resource."
+      },
+      "clusterState": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The current state of the cluster."
+      },
+      "clusterCertificateThumbprints": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "List of thumbprints of the cluster certificates."
+      },
+      "clientConnectionPort": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The port used for client connections to the cluster."
+      },
+      "httpGatewayConnectionPort": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The port used for HTTP connections to the cluster."
+      },
+      "adminUserName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "VM admin user name."
+      },
+      "adminPassword": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "VM admin user password."
+      },
+      "loadBalancingRules": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Load balancing rules that are applied to the public load balancer of the cluster."
+      },
+      "allowRdpAccess": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Setting this to true enables RDP access to the VM. The default NSG rule opens RDP port to Internet which can be overridden with custom Network Security Rules. The default value for this setting is false."
+      },
+      "networkSecurityRules": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "Custom Network Security Rules that are applied to the Virtual Network of the cluster."
+      },
+      "clients": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "Client certificates that are allowed to manage the cluster."
+      },
+      "azureActiveDirectory": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The AAD authentication settings of the cluster."
+      },
+      "fabricSettings": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 0,
+        "description": "The list of custom fabric settings to configure the cluster."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the managed cluster resource."
+      },
+      "clusterCodeVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Service Fabric runtime version of the cluster. This property is required when **clusterUpgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing clusters use **availableClusterVersions**."
+      },
+      "clusterUpgradeMode": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "The upgrade mode of the cluster when new Service Fabric runtime version is available."
+      },
+      "clusterUpgradeCadence": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 0,
+        "description": "Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. Only applies when **clusterUpgradeMode** is set to 'Automatic'."
+      },
+      "addonFeatures": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "List of add-on features to enable on the cluster."
+      },
+      "enableAutoOSUpgrade": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Enables automatic OS upgrade for node types created using OS images with version 'latest'. The default value for this setting is false."
+      },
+      "zonalResiliency": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates if the cluster has zone resiliency."
+      },
+      "applicationTypeVersionsCleanupPolicy": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The policy used to clean up unused versions."
+      },
+      "enableIpv6": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Setting this to true creates IPv6 address space for the default VNet used by the cluster. This setting cannot be changed once the cluster is created. The default value for this setting is false."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If specified, the node types for the cluster are created in this subnet instead of the default VNet. The **networkSecurityRules** specified for the cluster are also applied to this subnet. This setting cannot be changed once the cluster is created."
+      },
+      "ipTags": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The list of IP tags associated with the default public IP address of the cluster."
+      },
+      "ipv6Address": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "IPv6 address for the cluster if IPv6 is enabled."
+      },
+      "enableServicePublicIP": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Setting this to true will link the IPv4 address as the ServicePublicIP of the IPv6 address. It can only be set to True if IPv6 is enabled on the cluster."
+      },
+      "auxiliarySubnets": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "Auxiliary subnets for the cluster."
+      },
+      "serviceEndpoints": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "Service endpoints for subnets in the cluster."
+      },
+      "zonalUpdateMode": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "Indicates the update mode for Cross Az clusters."
+      },
+      "useCustomVnet": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "For new clusters, this parameter indicates that it uses Bring your own VNet, but the subnet is specified at node type level; and for such clusters, the subnetId property is required for node types."
+      },
+      "publicIPPrefixId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specify the resource id of a public IPv4 prefix that the load balancer will allocate a public IPv4 address from. This setting cannot be changed once the cluster is created."
+      },
+      "publicIPv6PrefixId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specify the resource id of a public IPv6 prefix that the load balancer will allocate a public IPv6 address from. This setting cannot be changed once the cluster is created."
+      },
+      "ddosProtectionPlanId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specify the resource id of a DDoS network protection plan that will be associated with the virtual network of the cluster."
+      },
+      "upgradeDescription": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 0,
+        "description": "The policy to use when upgrading the cluster."
+      },
+      "httpGatewayTokenAuthConnectionPort": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The port used for token-auth based HTTPS connections to the cluster. Cannot be set to the same port as HttpGatewayEndpoint."
+      },
+      "enableHttpGatewayExclusiveAuthMode": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "If true, token-based authentication is not allowed on the HttpGatewayEndpoint. This is required to support TLS versions 1.3 and above. If token-based authentication is used, HttpGatewayTokenAuthConnectionPort must be defined."
+      },
+      "autoGeneratedDomainNameLabelScope": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "This property is the entry point to using a public CA cert for your cluster cert. It specifies the level of reuse allowed for the custom FQDN created, matching the subject of the public CA cert."
+      },
+      "allocatedOutboundPorts": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The number of outbound ports allocated for SNAT for each node in the backend pool of the default load balancer. The default value is 0 which provides dynamic port allocation based on pool size."
+      },
+      "VMImage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The VM image the node types are configured with. This property controls the Service Fabric component packages to be used for the cluster. Allowed values are: 'Windows'. The default value is 'Windows'."
+      },
+      "enableOutboundOnlyNodeTypes": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Enable the creation of node types with only outbound traffic enabled. If set, a separate load balancer backend pool will be created for node types with inbound traffic enabled. Can only be set at the time of cluster creation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WaitingForNodes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deploying"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BaselineUpgrade"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UpgradeFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/5"
+      },
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancingRule",
+    "properties": {
+      "frontendPort": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values are between 1 and 65534."
+      },
+      "backendPort": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 1,
+        "description": "The port used for internal connections on the endpoint. Acceptable values are between 1 and 65535."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "The reference to the transport protocol used by the load balancing rule."
+      },
+      "probePort": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The prob port used by the load balancing rule. Acceptable values are between 1 and 65535."
+      },
+      "probeProtocol": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "the reference to the load balancer probe used by the load balancing rule."
+      },
+      "probeRequestPath": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The probe request path. Only supported for HTTP/HTTPS probes."
+      },
+      "loadDistribution": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The load distribution policy for this rule."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65534
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "udp"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "https"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkSecurityRule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Network security rule name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Network security rule description."
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "Network protocol this rule applies to."
+      },
+      "sourceAddressPrefixes": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The CIDR or source IP ranges."
+      },
+      "destinationAddressPrefixes": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 0,
+        "description": "The destination address prefixes. CIDR or destination IP ranges."
+      },
+      "sourcePortRanges": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "The source port ranges."
+      },
+      "destinationPortRanges": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The destination port ranges."
+      },
+      "sourceAddressPrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from."
+      },
+      "destinationAddressPrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used."
+      },
+      "sourcePortRange": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports."
+      },
+      "destinationPortRange": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "he destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports."
+      },
+      "access": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "The network traffic is allowed or denied."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 1,
+        "description": "The priority of the rule. The value can be in the range 1000 to 3000. Values outside this range are reserved for Service Fabric ManagerCluster Resource Provider. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule."
+      },
+      "direction": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 1,
+        "description": "Network security rule direction."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "https"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "tcp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "udp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "icmp"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ah"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "esp"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deny"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1000,
+    "maxValue": 3000
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inbound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "outbound"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/26"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClientCertificate",
+    "properties": {
+      "isAdmin": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only operations on the cluster."
+      },
+      "thumbprint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Certificate thumbprint."
+      },
+      "commonName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Certificate common name."
+      },
+      "issuerThumbprint": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Issuer thumbprint for the certificate. Only used together with CommonName."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/47"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureActiveDirectory",
+    "properties": {
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure active directory tenant id."
+      },
+      "clusterApplication": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure active directory cluster application id."
+      },
+      "clientApplication": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure active directory client application id."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SettingsSectionDescription",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The section name of the fabric settings."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 1,
+        "description": "The collection of parameters in the section."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SettingsParameterDescription",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The parameter name of fabric setting."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The parameter value of fabric setting."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/51"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wave0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wave1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wave2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DnsService"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BackupRestoreService"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceMonitorService"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/75"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTypeVersionsCleanupPolicy",
+    "properties": {
+      "maxUnusedVersionsToKeep": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "Number of unused versions per application type to keep."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IpTag",
+    "properties": {
+      "ipTagType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "IP tag type. Example: FirstPartyUsage."
+      },
+      "tag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "IP tag associated with the public IP. Example: SQL, Storage etc."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/79"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Subnet",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Subnet name."
+      },
+      "enableIpv6": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates wether to enable Ipv6 or not. If not provided, it will take the same configuration as the cluster."
+      },
+      "privateEndpointNetworkPolicies": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "Enable or Disable apply network policies on private end point in the subnet."
+      },
+      "privateLinkServiceNetworkPolicies": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Enable or Disable apply network policies on private link service in the subnet."
+      },
+      "networkSecurityGroupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Full resource id for the network security group."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/81"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceEndpoint",
+    "properties": {
+      "service": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The type of the endpoint service."
+      },
+      "locations": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "A list of locations."
+      },
+      "networkIdentifier": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the resource id of the service endpoint to be used in the cluster."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fast"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterUpgradePolicy",
+    "properties": {
+      "forceRestart": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or data)."
+      },
+      "healthPolicy": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "The cluster health policy defines a health policy used to evaluate the health of the cluster during a cluster upgrade."
+      },
+      "deltaHealthPolicy": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 0,
+        "description": "The cluster delta health policy defines a health policy used to evaluate the health of the cluster during a cluster upgrade."
+      },
+      "monitoringPolicy": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "The cluster monitoring policy describes the parameters for monitoring an upgrade in Monitored mode."
+      },
+      "upgradeReplicaSetCheckTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues.\nWhen this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues.\nThe timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.\nThis value must be between 00:00:00 and 49710.06:28:15 (unsigned 32 bit integer for seconds)"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterHealthPolicy",
+    "properties": {
+      "maxPercentUnhealthyNodes": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.\n\nThe percentage represents the maximum tolerated percentage of nodes that can be unhealthy before the cluster is considered in error.\nIf the percentage is respected but there is at least one unhealthy node, the health is evaluated as Warning.\nThe percentage is calculated by dividing the number of unhealthy nodes over the total number of nodes in the cluster.\nThe computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.\n\nIn large clusters, some nodes will always be down or out for repairs, so this percentage should be configured to tolerate that."
+      },
+      "maxPercentUnhealthyApplications": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy applications before reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.\n\nThe percentage represents the maximum tolerated percentage of applications that can be unhealthy before the cluster is considered in error.\nIf the percentage is respected but there is at least one unhealthy application, the health is evaluated as Warning.\nThis is calculated by dividing the number of unhealthy applications over the total number of application instances in the cluster, excluding applications of application types that are included in the ApplicationTypeHealthPolicyMap.\nThe computation rounds up to tolerate one failure on small numbers of applications. Default percentage is zero."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 100
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterUpgradeDeltaHealthPolicy",
+    "properties": {
+      "maxPercentDeltaUnhealthyNodes": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of nodes health degradation allowed during cluster upgrades.\nThe delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at the time of the health evaluation.\nThe check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits."
+      },
+      "maxPercentUpgradeDomainDeltaUnhealthyNodes": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The maximum allowed percentage of upgrade domain nodes health degradation allowed during cluster upgrades.\nThe delta is measured between the state of the upgrade domain nodes at the beginning of upgrade and the state of the upgrade domain nodes at the time of the health evaluation.\nThe check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make sure the state of the upgrade domains is within tolerated limits."
+      },
+      "maxPercentDeltaUnhealthyApplications": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The maximum allowed percentage of applications health degradation allowed during cluster upgrades.\nThe delta is measured between the state of the applications at the beginning of upgrade and the state of the applications at the time of the health evaluation.\nThe check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits. System services are not included in this.\nNOTE: This value will overwrite the value specified in properties.UpgradeDescription.HealthPolicy.MaxPercentUnhealthyApplications"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterMonitoringPolicy",
+    "properties": {
+      "healthCheckWaitDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The length of time to wait after completing an upgrade domain before performing health checks. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format."
+      },
+      "healthCheckStableDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format."
+      },
+      "healthCheckRetryTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time to retry health evaluation when the application or cluster is unhealthy before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format."
+      },
+      "upgradeTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time the overall upgrade has to complete before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format."
+      },
+      "upgradeDomainTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time each upgrade domain has to complete before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TenantReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubscriptionReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceGroupReuse"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoReuse"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 1,
+        "description": "Sku Name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters/applicationTypes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applicationTypes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "The application type name properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTypeResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state, which only appears in the response."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTypeResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applicationTypes@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/124"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters/applicationTypes/versions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applicationTypes/versions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/131"
+        },
+        "flags": 0,
+        "description": "The properties of the application type version resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTypeVersionResourceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state, which only appears in the response"
+      },
+      "appPackageUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The URL to the application package"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationTypeVersionResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applicationTypes/versions@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/130"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters/applications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "The application resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 0,
+        "description": "Describes the managed identities for an Azure resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationResourceProperties",
+    "properties": {
+      "managedIdentities": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "List of user assigned identities for the application, each mapped to a friendly name."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state, which only appears in the response"
+      },
+      "version": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The version of the application type as defined in the application manifest.\nThis name must be the full Arm Resource ID for the referenced application type version."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "List of application parameters with overridden values from their default values specified in the application manifest."
+      },
+      "upgradePolicy": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "Describes the policy for a monitored application upgrade."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationUserAssignedIdentity",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The friendly name of user assigned identity."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The principal id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/138"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationResourcePropertiesParameters",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationUpgradePolicy",
+    "properties": {
+      "applicationHealthPolicy": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Defines a health policy used to evaluate the health of an application or one of its children entities."
+      },
+      "forceRestart": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or data)."
+      },
+      "rollingUpgradeMonitoringPolicy": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "The policy used for monitoring the application upgrade"
+      },
+      "instanceCloseDelayDuration": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Duration in seconds, to wait before a stateless instance is closed, to allow the active requests to drain gracefully. This would be effective when the instance is closing during the application/cluster upgrade, only for those instances which have a non-zero delay duration configured in the service description."
+      },
+      "upgradeMode": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "The mode used to monitor health during a rolling upgrade. The values are Monitored, and UnmonitoredAuto."
+      },
+      "upgradeReplicaSetCheckTimeout": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. Valid values are between 0 and 42949672925 inclusive. (unsigned 32-bit integer). Unit is in seconds."
+      },
+      "recreateApplication": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Determines whether the application should be recreated on update. If value=true, the rest of the upgrade policy parameters are not allowed."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationHealthPolicy",
+    "properties": {
+      "considerWarningAsError": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Indicates whether warnings are treated with the same severity as errors."
+      },
+      "maxPercentUnhealthyDeployedApplications": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100.\nThe percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application is considered in error.\nThis is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application is currently deployed on in the cluster.\nThe computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero."
+      },
+      "defaultServiceTypeHealthPolicy": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "The health policy used by default to evaluate the health of a service type."
+      },
+      "serviceTypeHealthPolicyMap": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "The map with service type health policy per service type name. The map is empty by default."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceTypeHealthPolicy",
+    "properties": {
+      "maxPercentUnhealthyServices": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy services.\n\nThe percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is considered in error.\nIf the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.\nThis is calculated by dividing the number of unhealthy services of the specific service type over the total number of services of the specific service type.\nThe computation rounds up to tolerate one failure on small numbers of services."
+      },
+      "maxPercentUnhealthyPartitionsPerService": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy partitions per service.\n\nThe percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered in error.\nIf the percentage is respected but there is at least one unhealthy partition, the health is evaluated as Warning.\nThe percentage is calculated by dividing the number of unhealthy partitions over the total number of partitions in the service.\nThe computation rounds up to tolerate one failure on small numbers of partitions."
+      },
+      "maxPercentUnhealthyReplicasPerPartition": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "The maximum allowed percentage of unhealthy replicas per partition.\n\nThe percentage represents the maximum tolerated percentage of replicas that can be unhealthy before the partition is considered in error.\nIf the percentage is respected but there is at least one unhealthy replica, the health is evaluated as Warning.\nThe percentage is calculated by dividing the number of unhealthy replicas over the total number of replicas in the partition.\nThe computation rounds up to tolerate one failure on small numbers of replicas."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationHealthPolicyServiceTypeHealthPolicyMap",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/143"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RollingUpgradeMonitoringPolicy",
+    "properties": {
+      "failureAction": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 1,
+        "description": "The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations. Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically. Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode."
+      },
+      "healthCheckWaitDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time to wait after completing an upgrade domain before applying health policies. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
+      },
+      "healthCheckStableDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
+      },
+      "healthCheckRetryTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
+      },
+      "upgradeTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time the overall upgrade has to complete before FailureAction is executed. Cannot be larger than 12 hours. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
+      },
+      "upgradeDomainTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time each upgrade domain has to complete before FailureAction is executed. Cannot be larger than 12 hours. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rollback"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monitored"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UnmonitoredAuto"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApplicationResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of the managed identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant id of the managed identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "The type of managed identity for the resource."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/159"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applications@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/136"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters/applications/services"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applications/services",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 0,
+        "description": "The service resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ServiceResourceProperties",
+    "discriminator": "serviceKind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The current deployment or provisioning state, which only appears in the response"
+      },
+      "serviceTypeName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the service type"
+      },
+      "partitionDescription": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 1,
+        "description": "Describes how the service is partitioned."
+      },
+      "servicePackageActivationMode": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "The activation Mode of the service package"
+      },
+      "serviceDnsName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Dns name used for the service. If this is specified, then the DNS name can be used to return the IP addresses of service endpoints for application layer protocols (e.g., HTTP).\nWhen updating serviceDnsName, old name may be temporarily resolvable. However, rely on new name.\nWhen removing serviceDnsName, removed name may temporarily be resolvable. Do not rely on the name being unresolvable."
+      },
+      "placementConstraints": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: \"NodeColor == blue)\"."
+      },
+      "correlationScheme": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "A list that describes the correlation of the service with other services."
+      },
+      "serviceLoadMetrics": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 0,
+        "description": "The service load metrics is given as an array of ServiceLoadMetric objects."
+      },
+      "servicePlacementPolicies": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "A list that describes the correlation of the service with other services."
+      },
+      "defaultMoveCost": {
+        "type": {
+          "$ref": "#/205"
+        },
+        "flags": 0,
+        "description": "Specifies the move cost for the service."
+      },
+      "scalingPolicies": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 0,
+        "description": "Scaling policies for this service."
+      }
+    },
+    "elements": {
+      "Stateful": {
+        "$ref": "#/218"
+      },
+      "Stateless": {
+        "$ref": "#/221"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "Partition",
+    "discriminator": "partitionScheme",
+    "baseProperties": {},
+    "elements": {
+      "Named": {
+        "$ref": "#/167"
+      },
+      "Singleton": {
+        "$ref": "#/170"
+      },
+      "UniformInt64Range": {
+        "$ref": "#/172"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamedPartitionScheme",
+    "properties": {
+      "names": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 1,
+        "description": "Array for the names of the partitions."
+      },
+      "partitionScheme": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Named"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SingletonPartitionScheme",
+    "properties": {
+      "partitionScheme": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Singleton"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UniformInt64RangePartitionScheme",
+    "properties": {
+      "count": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The number of partitions."
+      },
+      "lowKey": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The lower bound of the partition key range that\nshould be split between the partition ‘Count’"
+      },
+      "highKey": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The upper bound of the partition key range that\nshould be split between the partition ‘Count’"
+      },
+      "partitionScheme": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UniformInt64Range"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SharedProcess"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ExclusiveProcess"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceCorrelation",
+    "properties": {
+      "scheme": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "The ServiceCorrelationScheme which describes the relationship between this service and the service specified via ServiceName."
+      },
+      "serviceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Arm Resource ID of the service that the correlation relationship is established with."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AlignedAffinity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonAlignedAffinity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/177"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceLoadMetric",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive."
+      },
+      "weight": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 0,
+        "description": "The service load metric relative weight, compared to other metrics configured for this service, as a number."
+      },
+      "primaryDefaultLoad": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Primary replica."
+      },
+      "secondaryDefaultLoad": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Secondary replica."
+      },
+      "defaultLoad": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zero"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/182"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ServicePlacementPolicy",
+    "discriminator": "type",
+    "baseProperties": {},
+    "elements": {
+      "InvalidDomain": {
+        "$ref": "#/190"
+      },
+      "NonPartiallyPlaceService": {
+        "$ref": "#/192"
+      },
+      "PreferredPrimaryDomain": {
+        "$ref": "#/194"
+      },
+      "RequiredDomain": {
+        "$ref": "#/196"
+      },
+      "RequiredDomainDistribution": {
+        "$ref": "#/198"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePlacementInvalidDomainPolicy",
+    "properties": {
+      "domainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the domain that should not be used for placement."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 1,
+        "description": "The type of placement policy for a service fabric service. Following are the possible values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InvalidDomain"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePlacementNonPartiallyPlaceServicePolicy",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 1,
+        "description": "The type of placement policy for a service fabric service. Following are the possible values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NonPartiallyPlaceService"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePlacementPreferPrimaryDomainPolicy",
+    "properties": {
+      "domainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the domain that should used for placement as per this policy."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 1,
+        "description": "The type of placement policy for a service fabric service. Following are the possible values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PreferredPrimaryDomain"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePlacementRequiredDomainPolicy",
+    "properties": {
+      "domainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the domain that should used for placement as per this policy."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 1,
+        "description": "The type of placement policy for a service fabric service. Following are the possible values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequiredDomain"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServicePlacementRequireDomainDistributionPolicy",
+    "properties": {
+      "domainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the domain that should used for placement as per this policy."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 1,
+        "description": "The type of placement policy for a service fabric service. Following are the possible values."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequiredDomainDistribution"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/189"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zero"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScalingPolicy",
+    "properties": {
+      "scalingMechanism": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 1,
+        "description": "Specifies the mechanism associated with this scaling policy"
+      },
+      "scalingTrigger": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1,
+        "description": "Specifies the trigger associated with this scaling policy."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ScalingMechanism",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "AddRemoveIncrementalNamedPartition": {
+        "$ref": "#/208"
+      },
+      "ScalePartitionInstanceCount": {
+        "$ref": "#/210"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddRemoveIncrementalNamedPartitionScalingMechanism",
+    "properties": {
+      "minPartitionCount": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Minimum number of named partitions of the service."
+      },
+      "maxPartitionCount": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Maximum number of named partitions of the service."
+      },
+      "scaleIncrement": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The number of instances to add or remove during a scaling operation."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AddRemoveIncrementalNamedPartition"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PartitionInstanceCountScaleMechanism",
+    "properties": {
+      "minInstanceCount": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Minimum number of instances of the partition."
+      },
+      "maxInstanceCount": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Maximum number of instances of the partition."
+      },
+      "scaleIncrement": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The number of instances to add or remove during a scaling operation."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScalePartitionInstanceCount"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ScalingTrigger",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "AveragePartitionLoadTrigger": {
+        "$ref": "#/213"
+      },
+      "AverageServiceLoadTrigger": {
+        "$ref": "#/215"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AveragePartitionLoadScalingTrigger",
+    "properties": {
+      "metricName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the metric for which usage should be tracked."
+      },
+      "lowerLoadThreshold": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The lower limit of the load below which a scale in operation should be performed."
+      },
+      "upperLoadThreshold": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The upper limit of the load beyond which a scale out operation should be performed."
+      },
+      "scaleInterval": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The period in seconds on which a decision is made whether to scale or not. This property should come in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AveragePartitionLoadTrigger"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AverageServiceLoadScalingTrigger",
+    "properties": {
+      "metricName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the metric for which usage should be tracked."
+      },
+      "lowerLoadThreshold": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The lower limit of the load below which a scale in operation should be performed."
+      },
+      "upperLoadThreshold": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The upper limit of the load beyond which a scale out operation should be performed."
+      },
+      "scaleInterval": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The period in seconds on which a decision is made whether to scale or not. This property should come in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "useOnlyPrimaryLoad": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Flag determines whether only the load of primary replica should be considered for scaling. If set to true, then trigger will only consider the load of primary replicas of stateful service. If set to false, trigger will consider load of all replicas. This parameter cannot be set to true for stateless service."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 1,
+        "description": "Enumerates the ways that a service can be partitioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AverageServiceLoadTrigger"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/206"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StatefulServiceProperties",
+    "properties": {
+      "hasPersistedState": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of this property is true, if not it is false."
+      },
+      "targetReplicaSetSize": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "The target replica set size as a number."
+      },
+      "minReplicaSetSize": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "The minimum replica set size as a number."
+      },
+      "replicaRestartWaitDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "quorumLossWaitDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "standByReplicaKeepDuration": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "servicePlacementTimeLimit": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The duration for which replicas can stay InBuild before reporting that build is stuck, represented in ISO 8601 format \"hh:mm:ss\"."
+      },
+      "serviceKind": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 1,
+        "description": "The kind of service (Stateless or Stateful)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stateful"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StatelessServiceProperties",
+    "properties": {
+      "instanceCount": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 1,
+        "description": "The instance count."
+      },
+      "minInstanceCount": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "MinInstanceCount is the minimum number of instances that must be up to meet the EnsureAvailability safety check during operations like upgrade or deactivate node. The actual number that is used is max( MinInstanceCount, ceil( MinInstancePercentage/100.0 * InstanceCount) ). Note, if InstanceCount is set to -1, during MinInstanceCount computation -1 is first converted into the number of nodes on which the instances are allowed to be placed according to the placement constraints on the service."
+      },
+      "minInstancePercentage": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "MinInstancePercentage is the minimum percentage of InstanceCount that must be up to meet the EnsureAvailability safety check during operations like upgrade or deactivate node. The actual number that is used is max( MinInstanceCount, ceil( MinInstancePercentage/100.0 * InstanceCount) ). Note, if InstanceCount is set to -1, during MinInstancePercentage computation, -1 is first converted into the number of nodes on which the instances are allowed to be placed according to the placement constraints on the service."
+      },
+      "serviceKind": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 1,
+        "description": "The kind of service (Stateless or Stateful)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": -1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stateless"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters/applications/services@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/164"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/managedClusters/nodeTypes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 0,
+        "description": "The node type properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 0,
+        "description": "The node type sku."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeProperties",
+    "properties": {
+      "isPrimary": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "Indicates the Service Fabric system services for the cluster will run on this node type. This setting cannot be changed once the node type is created."
+      },
+      "vmInstanceCount": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 1,
+        "description": "The number of nodes in the node type. **Values:** -1 - Use when auto scale rules are configured or sku.capacity is defined 0 - Not supported >0 - Use for manual scale."
+      },
+      "dataDiskSizeGB": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Disk size for the managed disk attached to the vms on the node type in GBs."
+      },
+      "dataDiskType": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "Managed data disk type. Specifies the storage account type for the managed disk"
+      },
+      "dataDiskLetter": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 0,
+        "description": "Managed data disk letter. It can not use the reserved letter C or D and it can not change after created."
+      },
+      "placementProperties": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 0,
+        "description": "The placement tags applied to nodes in the node type, which can be used to indicate where certain services (workload) should run."
+      },
+      "capacities": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "The capacity tags applied to the nodes in the node type, the cluster resource manager uses these tags to understand how much resource a node has."
+      },
+      "applicationPorts": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "The range of ports from which cluster assigned port to Service Fabric applications."
+      },
+      "ephemeralPorts": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 0,
+        "description": "The range of ephemeral ports that nodes in this node type should be configured with."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The size of virtual machines in the pool. All virtual machines in a pool are the same size. For example, Standard_D3."
+      },
+      "vmImagePublisher": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The publisher of the Azure Virtual Machines Marketplace image. For example, Canonical or MicrosoftWindowsServer."
+      },
+      "vmImageOffer": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The offer type of the Azure Virtual Machines Marketplace image. For example, UbuntuServer or WindowsServer."
+      },
+      "vmImageSku": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The SKU of the Azure Virtual Machines Marketplace image. For example, 14.04.0-LTS or 2012-R2-Datacenter."
+      },
+      "vmImageVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The version of the Azure Virtual Machines Marketplace image. A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is 'latest'."
+      },
+      "vmSecrets": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "The secrets to install in the virtual machines."
+      },
+      "vmExtensions": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "Set of extensions that should be installed onto the virtual machines."
+      },
+      "vmManagedIdentity": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Identities to assign to the virtual machine scale set under the node type."
+      },
+      "isStateless": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates if the node type can only host Stateless workloads."
+      },
+      "multiplePlacementGroups": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates if scale set associated with the node type can be composed of multiple placement groups."
+      },
+      "frontendConfigurations": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 0,
+        "description": "Indicates the node type uses its own frontend configurations instead of the default one for the cluster. This setting can only be specified for non-primary node types and can not be added or removed after the node type is created."
+      },
+      "networkSecurityRules": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "The Network Security Rules for this node type. This setting can only be specified for node types that are configured with frontend configurations."
+      },
+      "additionalDataDisks": {
+        "type": {
+          "$ref": "#/271"
+        },
+        "flags": 0,
+        "description": "Additional managed data disks."
+      },
+      "enableEncryptionAtHost": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Enable or disable the Host Encryption for the virtual machines on the node type. This will enable the encryption for all the disks including Resource/Temp disk at host itself. Default: The Encryption at host will be disabled unless this property is set to true for the resource."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the node type resource."
+      },
+      "enableAcceleratedNetworking": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether the network interface is accelerated networking-enabled."
+      },
+      "useDefaultPublicLoadBalancer": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether the use public load balancer. If not specified and the node type doesn't have its own frontend configuration, it will be attached to the default load balancer. If the node type uses its own Load balancer and useDefaultPublicLoadBalancer is true, then the frontend has to be an Internal Load Balancer. If the node type uses its own Load balancer and useDefaultPublicLoadBalancer is false or not set, then the custom load balancer must include a public load balancer to provide outbound connectivity."
+      },
+      "useTempDataDisk": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether to use the temporary disk for the service fabric data root, in which case no managed data disk will be attached and the temporary disk will be used. It is only allowed for stateless node types."
+      },
+      "enableOverProvisioning": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether the node type should be overprovisioned. It is only allowed for stateless node types."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 0,
+        "description": "Specifies the availability zones where the node type would span across. If the cluster is not spanning across availability zones, initiates az migration for the cluster."
+      },
+      "isSpotVM": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates whether the node type will be Spot Virtual Machines. Azure will allocate the VMs if there is capacity available and the VMs can be evicted at any time."
+      },
+      "hostGroupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the full host group resource Id. This property is used for deploying on azure dedicated hosts."
+      },
+      "useEphemeralOSDisk": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates whether to use ephemeral os disk. The sku selected on the vmSize property needs to support this feature."
+      },
+      "spotRestoreTimeout": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Indicates the time duration after which the platform will not try to restore the VMSS SPOT instances specified as ISO 8601."
+      },
+      "evictionPolicy": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "Specifies the eviction policy for virtual machines in a SPOT node type. Default is Delete."
+      },
+      "vmImageResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Indicates the resource id of the vm image. This parameter is used for custom vm image."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Indicates the resource id of the subnet for the node type."
+      },
+      "vmSetupActions": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 0,
+        "description": "Specifies the actions to be performed on the vms before bootstrapping the service fabric runtime."
+      },
+      "securityType": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 0,
+        "description": "Specifies the security type of the nodeType. Supported values include Standard, TrustedLaunch and ConfidentialVM."
+      },
+      "securityEncryptionType": {
+        "type": {
+          "$ref": "#/297"
+        },
+        "flags": 0,
+        "description": "Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob and VMGuestStateOnly for encryption of just the VMGuestState blob. Note: It can be set for only Confidential VMs."
+      },
+      "secureBootEnabled": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether secure boot should be enabled on the nodeType. Can only be used with TrustedLaunch and ConfidentialVM SecurityType."
+      },
+      "enableNodePublicIP": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether each node is allocated its own public IPv4 address. This is only supported on secondary node types with custom Load Balancers."
+      },
+      "enableNodePublicIPv6": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether each node is allocated its own public IPv6 address. This is only supported on secondary node types with custom Load Balancers."
+      },
+      "vmSharedGalleryImageId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Indicates the resource id of the vm shared galleries image. This parameter is used for custom vm image."
+      },
+      "natGatewayId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the resource id of a NAT Gateway to attach to the subnet of this node type. Node type must use custom load balancer."
+      },
+      "natConfigurations": {
+        "type": {
+          "$ref": "#/300"
+        },
+        "flags": 0,
+        "description": "Specifies the NAT configuration on default public Load Balancer for the node type. This is only supported for node types use the default public Load Balancer."
+      },
+      "vmImagePlan": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click Want to deploy programmatically, Get Started ->. Enter any required information and then click Save."
+      },
+      "serviceArtifactReferenceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the service artifact reference id used to set same image version for all virtual machines in the scale set when using 'latest' image version."
+      },
+      "dscpConfigurationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the resource id of the DSCP configuration to apply to the node type network interface."
+      },
+      "additionalNetworkInterfaceConfigurations": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 0,
+        "description": "Specifies the settings for any additional secondary network interfaces to attach to the node type."
+      },
+      "computerNamePrefix": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the computer name prefix. Limited to 9 characters. If specified, allows for a longer name to be specified for the node type name."
+      },
+      "vmApplications": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "Specifies the gallery applications that should be made available to the underlying VMSS."
+      },
+      "zoneBalance": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Setting this to true allows stateless node types to scale out without equal distribution across zones."
+      },
+      "isOutboundOnly": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies the node type should be configured for only outbound traffic and not inbound traffic."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": -1,
+    "maxValue": 2147483647
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PremiumV2_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_ZRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z]{1}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypePropertiesPlacementProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypePropertiesCapacities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EndpointRangeDescription",
+    "properties": {
+      "startPort": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Starting port of a range of ports"
+      },
+      "endPort": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "End port of a range of ports"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VaultSecretGroup",
+    "properties": {
+      "sourceVault": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 1,
+        "description": "The relative URL of the Key Vault containing all of the certificates in VaultCertificates."
+      },
+      "vaultCertificates": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 1,
+        "description": "The list of key vault references in SourceVault which contain certificates."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Azure resource identifier."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VaultCertificate",
+    "properties": {
+      "certificateUrl": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add)."
+      },
+      "certificateStore": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "For Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name {UppercaseThumbprint}.crt for the X509 certificate file and {UppercaseThumbprint}.prv for private key. Both of these files are .pem formatted."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/244"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/242"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmssExtension",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the extension."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 1,
+        "description": "Describes the properties of a Virtual Machine Scale Set Extension."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmssExtensionProperties",
+    "properties": {
+      "publisher": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The name of the extension handler publisher."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Specifies the type of the extension; an example is \"CustomScriptExtension\"."
+      },
+      "typeHandlerVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Specifies the version of the script handler."
+      },
+      "autoUpgradeMinorVersion": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true."
+      },
+      "settings": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "Json formatted public settings for the extension."
+      },
+      "protectedSettings": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 0,
+        "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
+      },
+      "forceUpdateTag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed."
+      },
+      "provisionAfterExtensions": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 0,
+        "description": "Collection of extension names after which this extension needs to be provisioned."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The provisioning state, which only appears in the response."
+      },
+      "enableAutomaticUpgrade": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available."
+      },
+      "setupOrder": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 0,
+        "description": "Indicates the setup order for the extension."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BeforeSFRuntime"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/252"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/247"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmManagedIdentity",
+    "properties": {
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the virtual machine scale set under the node type. Each entry will be an ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontendConfiguration",
+    "properties": {
+      "ipAddressType": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 0,
+        "description": "The IP address type of this frontend configuration. If omitted the default value is IPv4."
+      },
+      "loadBalancerBackendAddressPoolId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource Id of the Load Balancer backend address pool that the VM instances of the node type are associated with. The format of the resource Id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}'."
+      },
+      "loadBalancerInboundNatPoolId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource Id of the Load Balancer inbound NAT pool that the VM instances of the node type are associated with. The format of the resource Id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}'."
+      },
+      "applicationGatewayBackendAddressPoolId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource Id of application gateway backend address pool. The format of the resource Id is '/subscriptions/<subscriptionId>/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/257"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/26"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmssDataDisk",
+    "properties": {
+      "lun": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 1,
+        "description": "Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. Lun 0 is reserved for the service fabric data disk."
+      },
+      "diskSizeGB": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Disk size for each vm in the node type in GBs."
+      },
+      "diskType": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 1,
+        "description": "Managed data disk type. Specifies the storage account type for the managed disk"
+      },
+      "diskLetter": {
+        "type": {
+          "$ref": "#/238"
+        },
+        "flags": 1,
+        "description": "Managed data disk letter. It can not use the reserved letter C or D and it can not change after created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PremiumV2_LRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StandardSSD_ZRS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_ZRS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/267"
+      },
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Other"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deallocate"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnableContainers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnableHyperV"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/288"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/289"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrustedLaunch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ConfidentialVM"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DiskWithVMGuestState"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VMGuestStateOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeNatConfig",
+    "properties": {
+      "backendPort": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "The internal port for the NAT configuration."
+      },
+      "frontendPortRangeStart": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The port range start for the external endpoint."
+      },
+      "frontendPortRangeEnd": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The port range end for the external endpoint."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65535
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/298"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmImagePlan",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The plan ID."
+      },
+      "product": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element."
+      },
+      "promotionCode": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The promotion code."
+      },
+      "publisher": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The publisher ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdditionalNetworkInterfaceConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the network interface."
+      },
+      "enableAcceleratedNetworking": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Specifies whether the network interface is accelerated networking-enabled."
+      },
+      "dscpConfiguration": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 0,
+        "description": "Specifies the DSCP configuration to apply to the network interface."
+      },
+      "ipConfigurations": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 1,
+        "description": "Specifies the IP configurations of the network interface."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IpConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the network interface."
+      },
+      "applicationGatewayBackendAddressPools": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to backend address pools of application gateways. A node type can reference backend address pools of multiple application gateways. Multiple node types cannot use the same application gateway."
+      },
+      "loadBalancerBackendAddressPools": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to backend address pools of load balancers. A node type can reference backend address pools of one public and one internal load balancer. Multiple node types cannot use the same basic sku load balancer."
+      },
+      "loadBalancerInboundNatPools": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 0,
+        "description": "Specifies an array of references to inbound Nat pools of the load balancers. A node type can reference inbound nat pools of one public and one internal load balancer. Multiple node types cannot use the same basic sku load balancer."
+      },
+      "subnet": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 0,
+        "description": "Specifies the subnet of the network interface."
+      },
+      "privateIPAddressVersion": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 0,
+        "description": "Specifies whether the IP configuration's private IP is IPv4 or IPv6. Default is IPv4."
+      },
+      "publicIPAddressConfiguration": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 0,
+        "description": "The public IP address configuration of the network interface."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/243"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/243"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/243"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/307"
+      },
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublicIPAddressConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the network interface."
+      },
+      "ipTags": {
+        "type": {
+          "$ref": "#/311"
+        },
+        "flags": 0,
+        "description": "Specifies the list of IP tags associated with the public IP address."
+      },
+      "publicIPAddressVersion": {
+        "type": {
+          "$ref": "#/314"
+        },
+        "flags": 0,
+        "description": "Specifies whether the IP configuration's public IP is IPv4 or IPv6. Default is IPv4."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/79"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv4"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPv6"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/303"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/302"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmApplication",
+    "properties": {
+      "configurationReference": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided."
+      },
+      "enableAutomaticUpgrade": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated for the underlying VMSS."
+      },
+      "order": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies the order in which the packages have to be installed."
+      },
+      "packageReferenceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Specifies the GalleryApplicationVersion resource id on the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}."
+      },
+      "vmGalleryTags": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional, Specifies a passthrough value for more generic context. Accepts a JSON-formatted string e.g. '{\"Tag1\":\"Value1\",\"Tag2\":\"Value2\"}'."
+      },
+      "treatFailureAsDeploymentFailure": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Optional, If true, any failure for any operation in the VmApplication will fail the deployment."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/317"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The sku name. Name is internally generated and is used in auto-scale scenarios. Property does not allow to be changed to other values than generated. To avoid deployment errors please omit the property."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Specifies the tier of the node type. Possible Values: **Standard**"
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 1,
+        "description": "The number of nodes in the node type. If present in request it will override properties.vmInstanceCount."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 2147483647
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/managedClusters/nodeTypes@2025-06-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/228"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulationIdContent",
+    "properties": {
+      "simulationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "unique identifier for the fault simulation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulation",
+    "properties": {
+      "simulationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "unique identifier for the fault simulation."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 0,
+        "description": "Fault simulation status"
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The start time of the fault simulation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The end time of the fault simulation."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 0,
+        "description": "Fault simulation details"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Done"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StopFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulationDetails",
+    "properties": {
+      "clusterId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "unique identifier for the cluster resource."
+      },
+      "operationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "unique identifier for the operation associated with the fault simulation."
+      },
+      "nodeTypeFaultSimulation": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 0,
+        "description": "List of node type simulations associated with the cluster fault simulation."
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/349"
+        },
+        "flags": 0,
+        "description": "Fault simulation parameters."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeFaultSimulation",
+    "properties": {
+      "nodeTypeName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Node type name."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 0,
+        "description": "Fault simulation status"
+      },
+      "operationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Current or latest asynchronous operation identifier on the node type."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/347"
+        },
+        "flags": 2,
+        "description": "Current or latest asynchronous operation status on the node type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Starting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Done"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StopFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Created"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Started"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Aborted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/344"
+      },
+      {
+        "$ref": "#/345"
+      },
+      {
+        "$ref": "#/346"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/333"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "FaultSimulationContent",
+    "discriminator": "faultKind",
+    "baseProperties": {
+      "force": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Force the action to go through without any check on the cluster."
+      },
+      "constraints": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 0,
+        "description": "Constraints for Fault Simulation action."
+      }
+    },
+    "elements": {
+      "Zone": {
+        "$ref": "#/351"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulationConstraints",
+    "properties": {
+      "expirationTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The absolute expiration timestamp (UTC) after which this fault simulation should be stopped if it's still active."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ZoneFaultSimulationContent",
+    "properties": {
+      "zones": {
+        "type": {
+          "$ref": "#/352"
+        },
+        "flags": 0,
+        "description": "Indicates the zones of the fault simulation."
+      },
+      "faultKind": {
+        "type": {
+          "$ref": "#/353"
+        },
+        "flags": 1,
+        "description": "The kind of fault to be simulated."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zone"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/323"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulationListResult",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 1,
+        "description": "The FaultSimulation items on this page"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The link to the next page of items"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/324"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/355"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FaultSimulationContentWrapper",
+    "properties": {
+      "parameters": {
+        "type": {
+          "$ref": "#/349"
+        },
+        "flags": 1,
+        "description": "Parameters for Fault Simulation start action."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/358"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stopFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/323"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "applyMaintenanceWindow",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedMaintenanceWindowStatus",
+    "properties": {
+      "isWindowEnabled": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "If maintenance window is enabled on this cluster."
+      },
+      "isRegionReady": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Indicates if the region is ready to configure maintenance windows."
+      },
+      "isWindowActive": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "If maintenance window is active."
+      },
+      "canApplyUpdates": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "If updates can be applied."
+      },
+      "lastWindowStatusUpdateAtUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window update time in UTC."
+      },
+      "lastWindowStartTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window start time in UTC."
+      },
+      "lastWindowEndTimeUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last window end time in UTC."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getMaintenanceWindowStatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/362"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedAzResiliencyStatus",
+    "properties": {
+      "baseResourceStatus": {
+        "type": {
+          "$ref": "#/366"
+        },
+        "flags": 0,
+        "description": "List of Managed VM Sizes for Service Fabric Managed Clusters."
+      },
+      "isClusterZoneResilient": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "URL to get the next set of Managed VM Sizes if there are any."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceAzStatus",
+    "properties": {
+      "resourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size properties."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size id."
+      },
+      "isZoneResilient": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "VM Size name."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Zone resiliency status details for the resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/365"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getazresiliencystatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/364"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "fetchUpgradeStatus",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RuntimeResumeApplicationUpgradeParameters",
+    "properties": {
+      "upgradeDomainName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The upgrade domain name. Expected to be the next upgrade domain if the application is upgrading."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "resumeUpgrade",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/369"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startRollback",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/applications",
+    "apiVersion": "2025-06-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeTypeActionParameters",
+    "properties": {
+      "nodes": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 0,
+        "description": "List of node names from the node type."
+      },
+      "force": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Force the action to go through."
+      },
+      "updateType": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 0,
+        "description": "Specifies the way the operation will be performed."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ByUpgradeDomain"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deallocate",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "deleteNode",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/323"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/355"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "redeploy",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reimage",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restart",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "input": {
+      "$ref": "#/372"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/358"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stopFaultSimulation",
+    "resourceType": "Microsoft.ServiceFabric/managedClusters/nodeTypes",
+    "apiVersion": "2025-06-01-preview",
+    "output": {
+      "$ref": "#/324"
+    },
+    "input": {
+      "$ref": "#/323"
+    }
+  }
+]

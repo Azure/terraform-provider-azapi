@@ -102,7 +102,7 @@ resource "azapi_resource" "application" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.DesktopVirtualization/applicationGroups/applications@api-version`. The available api-versions for this resource are: [`2019-01-23-preview`, `2019-09-24-preview`, `2019-12-10-preview`, `2020-09-21-preview`, `2020-10-19-preview`, `2020-11-02-preview`, `2020-11-10-preview`, `2021-01-14-preview`, `2021-02-01-preview`, `2021-03-09-preview`, `2021-04-01-preview`, `2021-07-12`, `2021-09-03-preview`, `2022-02-10-preview`, `2022-04-01-preview`, `2022-09-09`, `2022-10-14-preview`, `2023-09-05`, `2023-10-04-preview`, `2023-11-01-preview`, `2024-01-16-preview`, `2024-03-06-preview`, `2024-04-03`, `2024-04-08-preview`, `2024-08-08-preview`, `2024-11-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.DesktopVirtualization/applicationGroups/applications@api-version`. The available api-versions for this resource are: [`2019-01-23-preview`, `2019-09-24-preview`, `2019-12-10-preview`, `2020-09-21-preview`, `2020-10-19-preview`, `2020-11-02-preview`, `2020-11-10-preview`, `2021-01-14-preview`, `2021-02-01-preview`, `2021-03-09-preview`, `2021-04-01-preview`, `2021-07-12`, `2021-09-03-preview`, `2022-02-10-preview`, `2022-04-01-preview`, `2022-09-09`, `2022-10-14-preview`, `2023-09-05`, `2023-10-04-preview`, `2023-11-01-preview`, `2024-01-16-preview`, `2024-03-06-preview`, `2024-04-03`, `2024-04-08-preview`, `2024-08-08-preview`, `2024-11-01-preview`, `2025-03-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{resourceName}`
@@ -120,5 +120,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{resourceName}/applications/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{resourceName}/applications/{resourceName}?api-version=2024-11-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{resourceName}/applications/{resourceName}?api-version=2025-03-01-preview
  ```

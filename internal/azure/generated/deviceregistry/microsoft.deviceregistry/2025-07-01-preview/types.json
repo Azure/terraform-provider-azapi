@@ -1,0 +1,5403 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/assetEndpointProfiles"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetEndpointProfileProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "targetAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The local valid URI specifying the network address/DNS name of a southbound device. The scheme part of the targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector type specific configuration."
+      },
+      "endpointProfileType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Defines the configuration for the connector type that is being used with the endpoint profile."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Defines the client authentication mechanism to the server."
+      },
+      "additionalConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF)."
+      },
+      "discoveredAssetEndpointProfileRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to a discovered asset endpoint profile. Populated only if the asset endpoint profile has been created from discovery flow. Discovered asset endpoint profile name must be provided."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for custom resources."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Authentication",
+    "properties": {
+      "method": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 1,
+        "description": "Defines the method to authenticate the user of the client at the server."
+      },
+      "usernamePasswordCredentials": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Defines the username and password references when UsernamePassword user authentication mode is selected."
+      },
+      "x509Credentials": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Defines the certificate reference when Certificate user authentication mode is selected."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Anonymous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Certificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsernamePassword"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UsernamePasswordCredentials",
+    "properties": {
+      "usernameSecretName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the secret containing the username."
+      },
+      "passwordSecretName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the secret containing the password."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "X509Credentials",
+    "properties": {
+      "certificateSecretName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetEndpointProfileStatus",
+    "properties": {
+      "errors": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Array object to transfer and persist errors that originate from the Edge."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetEndpointProfileStatusError",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Error code for classification of errors (ex: 400, 404, 500, etc.)."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human readable helpful error message to provide additional context for error (ex: “targetAddress 'foo' is not a valid url”)."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/14"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExtendedLocation",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extended location type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The extended location name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/assetEndpointProfiles@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/assets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/assets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Enabled/Disabled status of the asset."
+      },
+      "externalAssetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset id provided by the customer."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable description of the asset."
+      },
+      "assetEndpointProfileRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A reference to the asset endpoint profile (connection information) used by brokers to connect to an endpoint that provides data points for this asset. Must provide asset endpoint profile name."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "An integer that is incremented each time the resource is modified."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer name."
+      },
+      "manufacturerUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer URI."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset model name."
+      },
+      "productCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset product code."
+      },
+      "hardwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Revision number of the hardware."
+      },
+      "softwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Revision number of the software."
+      },
+      "documentationUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to the documentation."
+      },
+      "serialNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset serial number."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "A set of key-value pairs that contain custom attributes set by the customer."
+      },
+      "discoveredAssetRefs": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "Reference to a list of discovered assets. Populated only if the asset has been created from discovery flow. Discovered asset names must be provided."
+      },
+      "defaultDatasetsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own configuration that overrides the default settings here."
+      },
+      "defaultEventsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here."
+      },
+      "defaultTopic": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Object that describes the default topic information for the asset."
+      },
+      "datasets": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Array of datasets that are part of the asset. Each dataset describes the data points that make up the set."
+      },
+      "events": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Array of events that are part of the asset. Each event can have per-event configuration."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for custom resources."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetPropertiesAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Topic",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The topic path for messages published to an MQTT broker."
+      },
+      "retain": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Keep"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Dataset",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the dataset."
+      },
+      "datasetConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific JSON string that describes configuration for the specific dataset."
+      },
+      "topic": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Object that describes the topic information for the specific dataset."
+      },
+      "dataPoints": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Array of data points that are part of the dataset. Each data point can have per-data point configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataPoint",
+    "properties": {
+      "observabilityMode": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 0,
+        "description": "An indication of how the data point should be mapped to OpenTelemetry."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the data point."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the asset."
+      },
+      "dataPointConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Counter"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gauge"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Histogram"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/49"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Event",
+    "properties": {
+      "observabilityMode": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "An indication of how the event should be mapped to OpenTelemetry."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the event."
+      },
+      "eventNotifier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the asset."
+      },
+      "eventConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "topic": {
+        "type": {
+          "$ref": "#/45"
+        },
+        "flags": 0,
+        "description": "Object that describes the topic information for the specific event."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetStatus",
+    "properties": {
+      "errors": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Array object to transfer and persist errors that originate from the Edge."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "A read only incremental counter indicating the number of times the configuration has been modified from the perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and would sync back up to the cloud. In steady state, this should equal version."
+      },
+      "datasets": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Array of dataset statuses that describe the status of each dataset."
+      },
+      "events": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 2,
+        "description": "Array of event statuses that describe the status of each event."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetStatusError",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Error code for classification of errors (ex: 400, 404, 500, etc.)."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”)."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetStatusDataset",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the dataset. Must be unique within the status.datasets array. This name is used to correlate between the spec and status dataset information."
+      },
+      "messageSchemaReference": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The message schema reference object."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessageSchemaReference",
+    "properties": {
+      "schemaRegistryNamespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema registry namespace."
+      },
+      "schemaName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema name."
+      },
+      "schemaVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema version."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/67"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AssetStatusEvent",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the event. Must be unique within the status.events array. This name is used to correlate between the spec and status event information."
+      },
+      "messageSchemaReference": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The message schema reference object."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/assets@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/39"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 64,
+    "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/namespaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/namespaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable ID."
+      },
+      "messaging": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Assigned and unassigned messaging endpoints."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Messaging",
+    "properties": {
+      "endpoints": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Dictionary of messaging endpoints."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessagingEndpoint",
+    "properties": {
+      "endpointType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Type of connection used for messaging endpoint."
+      },
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The endpoint address to connect to."
+      },
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The messaging endpoint Azure resource Id."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessagingEndpoints",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/86"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (either system assigned, or none)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/namespaces@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/83"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/schemaRegistries"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaRegistryProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "namespace": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 1,
+        "description": "Schema registry namespace. Uniquely identifies a schema registry within a tenant."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable description of the schema registry."
+      },
+      "storageAccountContainerUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The Storage Account's Container URL where schemas will be stored."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "maxLength": 32,
+    "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/103"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/namespaces/assets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/namespaces/assets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable ID."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Enabled/disabled status of the asset."
+      },
+      "externalAssetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset ID provided by the customer."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable description of the asset."
+      },
+      "deviceRef": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 1,
+        "description": "Reference to the device that provides data for this asset. Must provide device name & endpoint on the device to use."
+      },
+      "assetTypeRefs": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "URIs or type definition IDs."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "An integer that is incremented each time the resource is modified."
+      },
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A timestamp (in UTC) that is updated each time the resource is modified."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer."
+      },
+      "manufacturerUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer URI."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset model."
+      },
+      "productCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset product code."
+      },
+      "hardwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset hardware revision number."
+      },
+      "softwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset software revision number."
+      },
+      "documentationUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset documentation reference."
+      },
+      "serialNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset serial number."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 0,
+        "description": "A set of key-value pairs that contain custom attributes set by the customer."
+      },
+      "discoveredAssetRefs": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "Reference to a list of discovered assets. Populated only if the asset has been created from discovery flow. Discovered asset names must be provided."
+      },
+      "defaultDatasetsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own configuration that overrides the default settings here."
+      },
+      "defaultEventsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here."
+      },
+      "defaultStreamsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration that overrides the default settings here."
+      },
+      "defaultManagementGroupsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all management groups. Each management group can have its own configuration that overrides the default settings here."
+      },
+      "defaultDatasetsDestinations": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Default destinations for a dataset."
+      },
+      "defaultEventsDestinations": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 0,
+        "description": "Default destinations for an event."
+      },
+      "defaultStreamsDestinations": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "Default destinations for a stream."
+      },
+      "datasets": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "Array of datasets that are part of the asset. Each dataset describes the data points that make up the set."
+      },
+      "events": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "Array of events that are part of the asset. Each event can have per-event configuration."
+      },
+      "streams": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "Array of streams that are part of the asset. Each stream can have a per-stream configuration."
+      },
+      "managementGroups": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "Array of management groups that are part of the asset. Each management group can have a per-group configuration."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for custom resources."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceRef",
+    "properties": {
+      "deviceName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the device resource"
+      },
+      "endpointName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of endpoint to use"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetPropertiesAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "DatasetDestination",
+    "discriminator": "target",
+    "baseProperties": {},
+    "elements": {
+      "BrokerStateStore": {
+        "$ref": "#/123"
+      },
+      "Mqtt": {
+        "$ref": "#/126"
+      },
+      "Storage": {
+        "$ref": "#/135"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatasetBrokerStateStoreDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 1,
+        "description": "The MQTT broker state store destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BrokerStateStoreDestinationConfiguration",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The MQTT broker state store destination key."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BrokerStateStore"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatasetMqttDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The MQTT destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MqttDestinationConfiguration",
+    "properties": {
+      "topic": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The MQTT topic."
+      },
+      "retain": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 0,
+        "description": "When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'."
+      },
+      "qos": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "The MQTT QoS setting. Defaults to QoS 1."
+      },
+      "ttl": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The MQTT TTL setting."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Keep"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Qos0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Qos1"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mqtt"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatasetStorageDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "The storage destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StorageDestinationConfiguration",
+    "properties": {
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The storage destination path."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Storage"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "EventDestination",
+    "discriminator": "target",
+    "baseProperties": {},
+    "elements": {
+      "Mqtt": {
+        "$ref": "#/140"
+      },
+      "Storage": {
+        "$ref": "#/142"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventMqttDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The MQTT destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mqtt"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EventStorageDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "The storage destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Storage"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/139"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "StreamDestination",
+    "discriminator": "target",
+    "baseProperties": {},
+    "elements": {
+      "Mqtt": {
+        "$ref": "#/146"
+      },
+      "Storage": {
+        "$ref": "#/148"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamMqttDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 1,
+        "description": "The MQTT destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mqtt"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StreamStorageDestination",
+    "properties": {
+      "configuration": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "The storage destination configuration."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 1,
+        "description": "Target destination."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Storage"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDataset",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the dataset."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to a data source for a given dataset."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "datasetConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific JSON string that describes configuration for the specific dataset."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/152"
+        },
+        "flags": 0,
+        "description": "Destinations for a dataset."
+      },
+      "dataPoints": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 0,
+        "description": "Array of data points that are part of the dataset. Each data point can have per-data point configuration."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDatasetDataPoint",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the data point."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the asset."
+      },
+      "dataPointConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/153"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/151"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceEvent",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the event."
+      },
+      "eventNotifier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the asset."
+      },
+      "eventConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Destinations for an event."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "dataPoints": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 0,
+        "description": "Array of data points that are part of the event. Each data point can have a per-data point configuration."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/139"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceEventDataPoint",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the data point."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the asset."
+      },
+      "dataPointConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/158"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/156"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceStream",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the stream definition."
+      },
+      "streamConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the specific stream."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 0,
+        "description": "Destinations for a stream."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/161"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagementGroup",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the management group."
+      },
+      "managementGroupConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the management group."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "defaultTopic": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Default MQTT topic path on which a client will receive the request for all actions that are part of the management group."
+      },
+      "defaultTimeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Default response timeout for all actions that are part of the management group."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Array of actions that are part of the management group. Each action can have an individual configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagementAction",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the action."
+      },
+      "actionConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the action."
+      },
+      "targetUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The target URI on which a client can invoke the specific action."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "topic": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The MQTT topic path on which a client will receive the request for the action."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "The type of the action."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Response timeout for the action."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Call"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Read"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Write"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/164"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatus",
+    "properties": {
+      "config": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "Defines the asset status config properties."
+      },
+      "datasets": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 2,
+        "description": "Array of dataset statuses that describe the status of each dataset."
+      },
+      "events": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 2,
+        "description": "Array of event statuses that describe the status of each event."
+      },
+      "streams": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 2,
+        "description": "Array of stream statuses that describe the status of each stream."
+      },
+      "managementGroups": {
+        "type": {
+          "$ref": "#/187"
+        },
+        "flags": 2,
+        "description": "Array of management group statuses that describe the status of each management group."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StatusConfig",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "A read-only incremental counter indicating the number of times the configuration has been modified from the perspective of the current actual (edge) state of the CRD. Edge would be the only writer of this value and would sync back up to the cloud. In steady state, this should equal version."
+      },
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A read-only timestamp indicating the last time the configuration has been modified from the perspective of the current actual (edge) state of the CRD. Edge would be the only writer of this value and would sync back up to the cloud."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Object to transfer and persist errors that originate from the edge."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StatusError",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Error code for classification of errors (ex: '400', '404', '500', etc.)."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable helpful error message to provide additional context for error (e.g.,: “Capability ID 'foo' does not exist”)."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 2,
+        "description": "Array of error details that describe the status of each error."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetails",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Multi-part error code for classification and root causing of errors (ex: 400.200.100.432)."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable helpful error message to provide additional context for error (ex: “Authentication method not supported”)."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable helpful detailed text context for debugging (ex: “The following mechanisms are supported...”)."
+      },
+      "correlationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Unique identifier for the transaction to aid in debugging."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/175"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatusDataset",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the dataset. Must be unique within the status.datasets array. This name is used to correlate between the spec and status dataset information."
+      },
+      "messageSchemaReference": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "The message schema reference object."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Object to transfer and persist errors that originate from the edge."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceMessageSchemaReference",
+    "properties": {
+      "schemaRegistryNamespace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema registry namespace."
+      },
+      "schemaName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema name."
+      },
+      "schemaVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The message schema version."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/177"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatusEvent",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the event. Must be unique within the status.events array. This name is used to correlate between the spec and status event information."
+      },
+      "messageSchemaReference": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "The message schema reference object."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Object to transfer and persist errors that originate from the edge."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/180"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatusStream",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the stream. Must be unique within the status.streams array. This name is used to correlate between the spec and status event information."
+      },
+      "messageSchemaReference": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "The message schema reference object."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Object to transfer and persist errors that originate from the edge."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/182"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatusManagementGroup",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the management group. Must be unique within the status.managementGroups array. This name is used to correlate between the spec and status event information."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 2,
+        "description": "Array of action statuses that describe the status of each action."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceAssetStatusManagementAction",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The name of the action. Must be unique within the status.actions array. This name is used to correlate between the spec and status event information."
+      },
+      "requestMessageSchemaReference": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "The request message schema reference object for the action."
+      },
+      "responseMessageSchemaReference": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 2,
+        "description": "The response message schema reference object for the action."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Object to transfer and persist errors that originate from the edge."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/185"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/184"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/namespaces/assets@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/116"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 63,
+    "pattern": "^[0-9a-zA-Z][a-zA-Z0-9-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/namespaces/devices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/namespaces/devices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource Tag."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDeviceProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A unique identifier for the device."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Indicates if the resource is enabled or not."
+      },
+      "externalDeviceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Device ID provided by the customer."
+      },
+      "discoveredDeviceRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to a device. Populated only if the device had been created from discovery flow. Discovered device name must be provided."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device manufacturer."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device model."
+      },
+      "operatingSystem": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device operating system."
+      },
+      "operatingSystemVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device operating system version."
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "Property bag containing the device's unassigned and assigned endpoints."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "A set of key-value pairs that contain custom attributes set by the customer."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 2,
+        "description": "Device status updates."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "An integer that is incremented each time the resource is modified."
+      },
+      "lastTransitionTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A timestamp (in UTC) that is updated each time the resource is modified."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessagingEndpoints",
+    "properties": {
+      "inbound": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 0,
+        "description": "Set of endpoints to connect to the device."
+      },
+      "outbound": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 0,
+        "description": "Set of endpoints a device can connect to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InboundEndpoints",
+    "properties": {
+      "endpointType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Type of connection endpoint."
+      },
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The endpoint address & port. This can be either an IP address (e.g., 192.168.1.1) or a fully qualified domain name (FQDN, e.g., server.example.com)."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Protocol version associated with the endpoint e.g. 1 or 2 for endpointType Microsoft.HTTP, and 3.5 or 5.0 for endpointType Microsoft.Mqtt etc."
+      },
+      "authentication": {
+        "type": {
+          "$ref": "#/203"
+        },
+        "flags": 0,
+        "description": "Defines the client authentication mechanism to the server."
+      },
+      "trustSettings": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 0,
+        "description": "Defines server trust settings for the endpoint."
+      },
+      "additionalConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains configuration to be used by the connector (e.g., OPC UA, ONVIF)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HostAuthentication",
+    "properties": {
+      "method": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 1,
+        "description": "Defines the method to authenticate the user of the client at the server."
+      },
+      "usernamePasswordCredentials": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Defines the username and password references when UsernamePassword user authentication mode is selected."
+      },
+      "x509Credentials": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Defines the certificate reference when Certificate user authentication mode is selected."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Anonymous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Certificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsernamePassword"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrustSettings",
+    "properties": {
+      "trustList": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Defines a secret reference for certificates to trust."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MessagingEndpointsInbound",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/202"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OutboundEndpoints",
+    "properties": {
+      "assigned": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1,
+        "description": "Endpoints the device can connect to."
+      },
+      "unassigned": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "Set of most recently removed endpoints."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceMessagingEndpoint",
+    "properties": {
+      "endpointType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Type of connection used for the messaging endpoint."
+      },
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The endpoint address to connect to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OutboundEndpointsAssigned",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OutboundEndpointsUnassigned",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDevicePropertiesAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceStatus",
+    "properties": {
+      "config": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "Defines the device status config properties."
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 2,
+        "description": "Defines the device status for inbound/outbound endpoints."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceStatusEndpoints",
+    "properties": {
+      "inbound": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 2,
+        "description": "KeyValue pair representing status of inbound endpoints."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceStatusEndpoint",
+    "properties": {
+      "error": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 2,
+        "description": "Defines the error related to this endpoint."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeviceStatusEndpointsInbound",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/217"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/namespaces/devices@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/199"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/namespaces/discoveredAssets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/namespaces/discoveredAssets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredAssetProperties",
+    "properties": {
+      "deviceRef": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 1,
+        "description": "Reference to the device that provides data for this asset. Must provide device name & endpoint on the device to use."
+      },
+      "assetTypeRefs": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 0,
+        "description": "URIs or type definition IDs."
+      },
+      "discoveryId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier used to detect changes in the asset."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "An integer that is incremented each time the resource is modified."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer."
+      },
+      "manufacturerUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset manufacturer URI."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset model."
+      },
+      "productCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset product code."
+      },
+      "hardwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset hardware revision number."
+      },
+      "softwareRevision": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset software revision number."
+      },
+      "documentationUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset documentation reference."
+      },
+      "serialNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Asset serial number."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 0,
+        "description": "A set of key-value pairs that contain custom attributes."
+      },
+      "defaultDatasetsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own configuration that overrides the default settings here."
+      },
+      "defaultEventsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here."
+      },
+      "defaultStreamsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration that overrides the default settings here."
+      },
+      "defaultManagementGroupsConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific default configuration for all management groups. Each management group can have its own configuration that overrides the default settings here."
+      },
+      "defaultDatasetsDestinations": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 0,
+        "description": "Default destinations for a dataset."
+      },
+      "defaultEventsDestinations": {
+        "type": {
+          "$ref": "#/234"
+        },
+        "flags": 0,
+        "description": "Default destinations for an event."
+      },
+      "defaultStreamsDestinations": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 0,
+        "description": "Default destinations for a stream."
+      },
+      "datasets": {
+        "type": {
+          "$ref": "#/240"
+        },
+        "flags": 0,
+        "description": "Array of datasets that are part of the asset. Each dataset spec describes the data points that make up the set."
+      },
+      "events": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 0,
+        "description": "Array of events that are part of the asset. Each event can have per-event configuration."
+      },
+      "streams": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "Array of streams that are part of the asset. Each stream can have a per-stream configuration."
+      },
+      "managementGroups": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 0,
+        "description": "Array of management groups that are part of the asset. Each management group can have a per-group configuration."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredAssetPropertiesAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/139"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredDataset",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the dataset."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Reference to a data source for a given dataset."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "datasetConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific properties that describes configuration for the specific dataset."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 0,
+        "description": "Destinations for a dataset."
+      },
+      "dataPoints": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 0,
+        "description": "Array of data points that are part of the dataset. Each data point can have per-data point configuration."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timestamp (in UTC) indicating when the dataset was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredDatasetDataPoint",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the data point."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the asset."
+      },
+      "dataPointConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UTC timestamp indicating when the data point was added or modified."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/238"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/236"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredEvent",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the event."
+      },
+      "eventNotifier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the asset."
+      },
+      "eventConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 0,
+        "description": "Destinations for an event."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "dataPoints": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 0,
+        "description": "Array of data points that are part of the event. Each data point can have a per-data point configuration."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UTC timestamp indicating when the event was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/139"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredEventDataPoint",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the data point."
+      },
+      "dataSource": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the asset."
+      },
+      "dataPointConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "UTC timestamp indicating when the data point was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/243"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/241"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredStream",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the stream definition."
+      },
+      "streamConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the specific stream."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "destinations": {
+        "type": {
+          "$ref": "#/247"
+        },
+        "flags": 0,
+        "description": "Destinations for a stream."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timestamp (in UTC) indicating when the stream was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/145"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/246"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredManagementGroup",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the management group."
+      },
+      "managementGroupConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the management group."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "defaultTopic": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Default MQTT topic path on which a client will receive the request for all actions that are part of the management group."
+      },
+      "defaultTimeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Default response timeout for all actions that are part of the management group."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 0,
+        "description": "Array of actions that are part of the management group. Each action can have an individual configuration."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timestamp (in UTC) indicating when the management group was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredManagementAction",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the action."
+      },
+      "actionConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains connector-specific configuration for the action."
+      },
+      "targetUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The target URI on which a client can invoke the specific action."
+      },
+      "typeRef": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "URI or type definition ID."
+      },
+      "topic": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The MQTT topic path on which a client will receive the request for the action."
+      },
+      "actionType": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 0,
+        "description": "The type of the action."
+      },
+      "timeoutInSeconds": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Response timeout for the action."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Timestamp (in UTC) indicating when the management action was added or modified."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Call"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Read"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Write"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/250"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/249"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/namespaces/discoveredAssets@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/229"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/namespaces/discoveredDevices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/namespaces/discoveredDevices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "extendedLocation": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The extended location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredDeviceProperties",
+    "properties": {
+      "externalDeviceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A device ID that represents the device in a system external to Azure. Unique within scope of an Azure tenant."
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "Endpoints for discovered devices."
+      },
+      "manufacturer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device manufacturer."
+      },
+      "model": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device model."
+      },
+      "operatingSystem": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device operating system name."
+      },
+      "operatingSystemVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Device operating system version."
+      },
+      "attributes": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 0,
+        "description": "A set of key-value pairs that contain custom attributes."
+      },
+      "discoveryId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier used to detect changes in the discovered device."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 1,
+        "description": "An integer that is incremented each time the resource is modified."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredMessagingEndpoints",
+    "properties": {
+      "inbound": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 0,
+        "description": "Set of endpoints to connect to the device."
+      },
+      "outbound": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "Set of endpoints a device can connect to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredInboundEndpoints",
+    "properties": {
+      "endpointType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Type of connection endpoint."
+      },
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The endpoint address & port. This can be either an IP address (e.g., 192.168.1.1) or a fully qualified domain name (FQDN, e.g., server.example.com)."
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Protocol version associated with the endpoint e.g. 1 or 2 for endpointType Microsoft.HTTP, and 3.5 or 5.0 for endpointType Microsoft.Mqtt etc."
+      },
+      "supportedAuthenticationMethods": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "List of supported authentication methods supported by device for Inbound connections."
+      },
+      "additionalConfiguration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Stringified JSON that contains configuration to be used by the connector (e.g., OPC UA, ONVIF)."
+      },
+      "lastUpdatedOn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp (in UTC) when the endpoint was discovered."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Anonymous"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Certificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsernamePassword"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/274"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredMessagingEndpointsInbound",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/270"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredOutboundEndpoints",
+    "properties": {
+      "assigned": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 1,
+        "description": "Endpoints the device can connect to."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiscoveredOutboundEndpointsAssigned",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceDiscoveredDevicePropertiesAttributes",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/281"
+      },
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/namespaces/discoveredDevices@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/267"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/schemaRegistries/schemas"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/288"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable display name."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable description of the schema."
+      },
+      "format": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 1,
+        "description": "Format of the schema."
+      },
+      "schemaType": {
+        "type": {
+          "$ref": "#/296"
+        },
+        "flags": 1,
+        "description": "Type of the schema."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/303"
+        },
+        "flags": 0,
+        "description": "Schema tags."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JsonSchema/draft-07"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delta/1.0"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MessageSchema"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaPropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/290"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 10,
+    "pattern": "^[0-9]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/306"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaVersionProperties",
+    "properties": {
+      "uuid": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Globally unique, immutable, non-reusable id."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Human-readable description of the schema."
+      },
+      "schemaContent": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Schema content."
+      },
+      "hash": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Hash of the schema content."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions@2025-07-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/308"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 64,
+    "pattern": "^[0-9a-zA-Z][a-zA-Z0-9-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DeviceRegistry/billingContainers"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DeviceRegistry/billingContainers",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/321"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ETag"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BillingContainerProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/327"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/322"
+      },
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/324"
+      },
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DeviceRegistry/billingContainers@2025-07-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/320"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceMigrateRequest",
+    "properties": {
+      "scope": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 0,
+        "description": "Scope of the migrate resources operation."
+      },
+      "resourceIds": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 0,
+        "description": "List of asset resources to be migrated."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resources"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NamespaceMigrateResponse",
+    "properties": {
+      "migrateResults": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 0,
+        "description": "List of migrate results containing result of each asset migrate operation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrateResult",
+    "properties": {
+      "resourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource Id of the asset resource."
+      },
+      "result": {
+        "type": {
+          "$ref": "#/337"
+        },
+        "flags": 2,
+        "description": "The result of the migrate operation."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 0,
+        "description": "The error if the migrate operation is not successful."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Error",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Error code for classification of errors (ex: '400', '404', '500', etc.)."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Human-readable helpful error message to provide additional context for error (e.g.,: “Capability ID 'foo' does not exist”)."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 2,
+        "description": "Array of error details that describe the status of each error."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/175"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/334"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "migrate",
+    "resourceType": "Microsoft.DeviceRegistry/namespaces",
+    "apiVersion": "2025-07-01-preview",
+    "output": {
+      "$ref": "#/333"
+    },
+    "input": {
+      "$ref": "#/329"
+    }
+  }
+]

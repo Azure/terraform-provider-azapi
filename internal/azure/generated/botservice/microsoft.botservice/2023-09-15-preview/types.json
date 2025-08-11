@@ -64,21 +64,21 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "Contains resource tags defined as key/value pairs."
       },
       "sku": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Gets or sets the SKU of the resource."
       },
       "kind": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "Required. Gets or sets the Kind of the resource."
@@ -92,10 +92,17 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/100"
         },
         "flags": 2,
         "description": "Entity zones"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -315,14 +322,14 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/45"
         },
         "flags": 2,
         "description": "List of Private Endpoint Connections configured for the bot"
       },
       "networkSecurityPerimeterConfigurations": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/85"
         },
         "flags": 2,
         "description": "List of Network Security Perimeter configurations for the bot"
@@ -483,6 +490,13 @@
         },
         "flags": 2,
         "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -632,6 +646,126 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
       "$ref": "#/20"
@@ -641,33 +775,40 @@
     "$type": "ObjectType",
     "name": "NetworkSecurityPerimeterConfiguration",
     "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Properties of the Network Security Perimeter configuration"
+      },
       "id": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "Fully qualified identifier of the resource"
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
       },
       "name": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "Name of the resource"
+        "flags": 2,
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "Type of the resource"
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
-      "properties": {
+      "systemData": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/34"
         },
         "flags": 2,
-        "description": "Properties of the Network Security Perimeter configuration"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -677,34 +818,34 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/54"
         },
         "flags": 0
       },
       "provisioningIssues": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "List of Provisioning Issues if any"
       },
       "networkSecurityPerimeter": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/69"
         },
         "flags": 2,
         "description": "Information about Network Security Perimeter"
       },
       "resourceAssociation": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/76"
         },
         "flags": 2,
         "description": "Information about resource association"
       },
       "profile": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/81"
         },
         "flags": 2,
         "description": "Information about profile"
@@ -739,22 +880,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/37"
+        "$ref": "#/48"
       },
       {
-        "$ref": "#/38"
+        "$ref": "#/49"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/50"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/51"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/53"
       },
       {
         "$ref": "#/2"
@@ -774,7 +915,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/56"
         },
         "flags": 2,
         "description": "Properties of Provisioning Issue"
@@ -794,7 +935,7 @@
       },
       "severity": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Provisioning state of Network Security Perimeter configuration propagation"
@@ -808,14 +949,14 @@
       },
       "suggestedResourceIds": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/60"
         },
         "flags": 2,
         "description": "ARM IDs of resources that can be associated to the same perimeter to remediate the issue."
       },
       "suggestedAccessRules": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/74"
         },
         "flags": 0,
         "description": "Access rules that can be added to the same profile to remediate the issue."
@@ -834,10 +975,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/46"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/58"
       },
       {
         "$ref": "#/2"
@@ -863,7 +1004,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/62"
         },
         "flags": 2,
         "description": "Properties of Access Rule"
@@ -876,49 +1017,49 @@
     "properties": {
       "direction": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Direction of Access Rule"
       },
       "addressPrefixes": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "Address prefixes in the CIDR format for inbound rules"
       },
       "subscriptions": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "Subscriptions for inbound rules"
       },
       "networkSecurityPerimeters": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/70"
         },
         "flags": 2,
         "description": "NetworkSecurityPerimeters for inbound rules"
       },
       "fullyQualifiedDomainNames": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/71"
         },
         "flags": 2,
         "description": "FQDN for outbound rules"
       },
       "emailAddresses": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/72"
         },
         "flags": 2,
         "description": "Email addresses for outbound rules"
       },
       "phoneNumbers": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/73"
         },
         "flags": 2,
         "description": "Phone numbers for outbound rules"
@@ -937,10 +1078,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/52"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/64"
       },
       {
         "$ref": "#/2"
@@ -969,7 +1110,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/56"
+      "$ref": "#/67"
     }
   },
   {
@@ -1002,7 +1143,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/58"
+      "$ref": "#/69"
     }
   },
   {
@@ -1026,13 +1167,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/50"
+      "$ref": "#/61"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/44"
+      "$ref": "#/55"
     }
   },
   {
@@ -1048,7 +1189,7 @@
       },
       "accessMode": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Access Mode of the resource association"
@@ -1071,13 +1212,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/66"
+        "$ref": "#/77"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/78"
       },
       {
-        "$ref": "#/68"
+        "$ref": "#/79"
       },
       {
         "$ref": "#/2"
@@ -1097,28 +1238,28 @@
       },
       "accessRulesVersion": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "Current access rules version"
       },
       "accessRules": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "List of Access Rules"
       },
       "diagnosticSettingsVersion": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "Current diagnostic settings version"
       },
       "enabledLogCategories": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/84"
         },
         "flags": 2,
         "description": "List of log categories"
@@ -1131,7 +1272,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/50"
+      "$ref": "#/61"
     }
   },
   {
@@ -1143,12 +1284,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/35"
+      "$ref": "#/46"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "BotTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -1160,14 +1301,14 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 1,
         "description": "The sku name"
       },
       "tier": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/93"
         },
         "flags": 2,
         "description": "Gets the sku tier. This is based on the SKU name."
@@ -1186,10 +1327,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/77"
+        "$ref": "#/88"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/89"
       },
       {
         "$ref": "#/2"
@@ -1208,10 +1349,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/80"
+        "$ref": "#/91"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/92"
       },
       {
         "$ref": "#/2"
@@ -1242,19 +1383,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/83"
+        "$ref": "#/94"
       },
       {
-        "$ref": "#/84"
+        "$ref": "#/95"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/96"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/97"
       },
       {
-        "$ref": "#/87"
+        "$ref": "#/98"
       },
       {
         "$ref": "#/2"
@@ -1273,6 +1414,282 @@
     "scopeType": 8,
     "body": {
       "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 2,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9][\\sa-zA-Z0-9_.-]*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.BotService/botServices/connections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-09-15-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.BotService/botServices/connections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The set of properties specific to bot channel resource"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "Contains resource tags defined as key/value pairs."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Gets or sets the SKU of the resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "Required. Gets or sets the Kind of the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Entity Tag."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 2,
+        "description": "Entity zones"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionSettingProperties",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Id of the Connection Setting."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the Connection Setting."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Client Id associated with the Connection Setting."
+      },
+      "settingId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Setting Id set by the service for the Connection Setting."
+      },
+      "clientSecret": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 0,
+        "description": "Client Secret associated with the Connection Setting"
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Scopes associated with the Connection Setting"
+      },
+      "serviceProviderId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Service Provider Id associated with the Connection Setting"
+      },
+      "serviceProviderDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Service Provider Display Name associated with the Connection Setting"
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Service Provider Parameters associated with the Connection Setting"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Provisioning state of the resource"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionSettingParameter",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Key for the Connection Setting Parameter."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Value associated with the Connection Setting Parameter."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/108"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionSettingTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sdk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "designer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "bot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "function"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azurebot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.BotService/botServices/connections@2023-09-15-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/105"
     },
     "flags": 0
   },
@@ -1356,61 +1773,61 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/91"
+        "$ref": "#/119"
       },
       {
-        "$ref": "#/92"
+        "$ref": "#/120"
       },
       {
-        "$ref": "#/93"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/122"
       },
       {
-        "$ref": "#/95"
+        "$ref": "#/123"
       },
       {
-        "$ref": "#/96"
+        "$ref": "#/124"
       },
       {
-        "$ref": "#/97"
+        "$ref": "#/125"
       },
       {
-        "$ref": "#/98"
+        "$ref": "#/126"
       },
       {
-        "$ref": "#/99"
+        "$ref": "#/127"
       },
       {
-        "$ref": "#/100"
+        "$ref": "#/128"
       },
       {
-        "$ref": "#/101"
+        "$ref": "#/129"
       },
       {
-        "$ref": "#/102"
+        "$ref": "#/130"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/131"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/132"
       },
       {
-        "$ref": "#/105"
+        "$ref": "#/133"
       },
       {
-        "$ref": "#/106"
+        "$ref": "#/134"
       },
       {
-        "$ref": "#/107"
+        "$ref": "#/135"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/136"
       },
       {
-        "$ref": "#/109"
+        "$ref": "#/137"
       },
       {
         "$ref": "#/0"
@@ -1438,28 +1855,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/138"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/139"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/140"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "The set of properties specific to bot channel resource"
@@ -1473,21 +1890,21 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/209"
         },
         "flags": 0,
         "description": "Contains resource tags defined as key/value pairs."
       },
       "sku": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Gets or sets the SKU of the resource."
       },
       "kind": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/215"
         },
         "flags": 0,
         "description": "Required. Gets or sets the Kind of the resource."
@@ -1501,10 +1918,17 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/216"
         },
         "flags": 2,
         "description": "Entity zones"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1537,61 +1961,61 @@
     },
     "elements": {
       "AcsChatChannel": {
-        "$ref": "#/115"
+        "$ref": "#/143"
       },
       "AlexaChannel": {
-        "$ref": "#/117"
+        "$ref": "#/145"
       },
       "DirectLineChannel": {
-        "$ref": "#/120"
-      },
-      "DirectLineSpeechChannel": {
-        "$ref": "#/126"
-      },
-      "EmailChannel": {
-        "$ref": "#/130"
-      },
-      "FacebookChannel": {
-        "$ref": "#/133"
-      },
-      "KikChannel": {
-        "$ref": "#/138"
-      },
-      "LineChannel": {
-        "$ref": "#/141"
-      },
-      "M365Extensions": {
-        "$ref": "#/146"
-      },
-      "MsTeamsChannel": {
         "$ref": "#/148"
       },
-      "Omnichannel": {
-        "$ref": "#/151"
+      "DirectLineSpeechChannel": {
+        "$ref": "#/154"
       },
-      "OutlookChannel": {
-        "$ref": "#/153"
-      },
-      "SearchAssistant": {
-        "$ref": "#/155"
-      },
-      "SkypeChannel": {
+      "EmailChannel": {
         "$ref": "#/157"
       },
-      "SlackChannel": {
+      "FacebookChannel": {
         "$ref": "#/160"
       },
+      "KikChannel": {
+        "$ref": "#/165"
+      },
+      "LineChannel": {
+        "$ref": "#/168"
+      },
+      "M365Extensions": {
+        "$ref": "#/173"
+      },
+      "MsTeamsChannel": {
+        "$ref": "#/175"
+      },
+      "Omnichannel": {
+        "$ref": "#/178"
+      },
+      "OutlookChannel": {
+        "$ref": "#/180"
+      },
+      "SearchAssistant": {
+        "$ref": "#/182"
+      },
+      "SkypeChannel": {
+        "$ref": "#/184"
+      },
+      "SlackChannel": {
+        "$ref": "#/187"
+      },
       "SmsChannel": {
-        "$ref": "#/163"
+        "$ref": "#/190"
       },
       "TelegramChannel": {
-        "$ref": "#/166"
+        "$ref": "#/193"
       },
       "TelephonyChannel": {
-        "$ref": "#/169"
+        "$ref": "#/196"
       },
       "WebChatChannel": {
-        "$ref": "#/176"
+        "$ref": "#/203"
       }
     }
   },
@@ -1601,7 +2025,7 @@
     "properties": {
       "channelName": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/144"
         },
         "flags": 1,
         "description": "The channel name"
@@ -1618,14 +2042,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/146"
         },
         "flags": 0,
         "description": "The set of properties specific to Alexa channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/147"
         },
         "flags": 1,
         "description": "The channel name"
@@ -1676,14 +2100,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/149"
         },
         "flags": 0,
         "description": "The set of properties specific to Direct Line channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/153"
         },
         "flags": 1,
         "description": "The channel name"
@@ -1696,7 +2120,7 @@
     "properties": {
       "sites": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/152"
         },
         "flags": 0,
         "description": "The list of Direct Line sites"
@@ -1842,7 +2266,7 @@
       },
       "trustedOrigins": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/151"
         },
         "flags": 0,
         "description": "List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True."
@@ -1872,7 +2296,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/122"
+      "$ref": "#/150"
     }
   },
   {
@@ -1885,14 +2309,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/127"
+          "$ref": "#/155"
         },
         "flags": 0,
         "description": "The set of properties specific to DirectLine Speech channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/129"
+          "$ref": "#/156"
         },
         "flags": 1,
         "description": "The channel name"
@@ -1919,7 +2343,7 @@
       },
       "cognitiveServiceSubscriptionKey": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The cognitive service subscription key to use with this channel registration."
@@ -1955,10 +2379,6 @@
     }
   },
   {
-    "$type": "StringType",
-    "sensitive": true
-  },
-  {
     "$type": "StringLiteralType",
     "value": "DirectLineSpeechChannel"
   },
@@ -1968,14 +2388,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/158"
         },
         "flags": 0,
         "description": "The set of properties specific to email channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/159"
         },
         "flags": 1,
         "description": "The channel name"
@@ -1995,7 +2415,7 @@
       },
       "authMethod": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "Email channel auth method. 0 Password (Default); 1 Graph."
@@ -2033,14 +2453,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/161"
         },
         "flags": 0,
         "description": "The set of properties specific to bot facebook channel"
       },
       "channelName": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/164"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2053,14 +2473,14 @@
     "properties": {
       "verifyToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 2,
         "description": "Verify token. Value only returned through POST to the action Channel List API, otherwise empty."
       },
       "pages": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/163"
         },
         "flags": 0,
         "description": "The list of Facebook pages"
@@ -2074,7 +2494,7 @@
       },
       "appSecret": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "Facebook application secret. Value only returned through POST to the action Channel List API, otherwise empty."
@@ -2108,7 +2528,7 @@
       },
       "accessToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "Facebook application access token. Value only returned through POST to the action Channel List API, otherwise empty."
@@ -2118,7 +2538,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/135"
+      "$ref": "#/162"
     }
   },
   {
@@ -2131,14 +2551,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "The set of properties specific to Kik channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/167"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2189,14 +2609,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/169"
         },
         "flags": 0,
         "description": "The set of properties specific to line channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/145"
+          "$ref": "#/172"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2209,7 +2629,7 @@
     "properties": {
       "lineRegistrations": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/171"
         },
         "flags": 1,
         "description": "The list of line channel registrations"
@@ -2243,14 +2663,14 @@
       },
       "channelSecret": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "Secret for the line channel registration"
       },
       "channelAccessToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "Access token for the line channel registration"
@@ -2260,7 +2680,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/143"
+      "$ref": "#/170"
     }
   },
   {
@@ -2273,7 +2693,7 @@
     "properties": {
       "channelName": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/174"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2290,14 +2710,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/176"
         },
         "flags": 0,
         "description": "The set of properties specific to Microsoft Teams channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/150"
+          "$ref": "#/177"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2362,7 +2782,7 @@
     "properties": {
       "channelName": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/179"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2379,7 +2799,7 @@
     "properties": {
       "channelName": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/181"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2396,7 +2816,7 @@
     "properties": {
       "channelName": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/183"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2413,14 +2833,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/185"
         },
         "flags": 0,
         "description": "The set of properties specific to Skype channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/186"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2513,14 +2933,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/161"
+          "$ref": "#/188"
         },
         "flags": 0,
         "description": "The set of properties specific to Slack channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/162"
+          "$ref": "#/189"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2540,14 +2960,14 @@
       },
       "clientSecret": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The Slack client secret. Value only returned through POST to the action Channel List API, otherwise empty."
       },
       "verificationToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The Slack verification token. Value only returned through POST to the action Channel List API, otherwise empty."
@@ -2596,7 +3016,7 @@
       },
       "signingSecret": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The Slack signing secret."
@@ -2620,14 +3040,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/164"
+          "$ref": "#/191"
         },
         "flags": 0,
         "description": "The set of properties specific to Sms channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/192"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2654,7 +3074,7 @@
       },
       "authToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The Sms auth token. Value only returned through POST to the action Channel List API, otherwise empty."
@@ -2685,14 +3105,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/194"
         },
         "flags": 0,
         "description": "The set of properties specific to Telegram channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/195"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2705,7 +3125,7 @@
     "properties": {
       "accessToken": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The Telegram access token. Value only returned through POST to the action Channel List API, otherwise empty."
@@ -2736,14 +3156,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/197"
         },
         "flags": 0,
         "description": "The set of properties specific to Telephony channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/202"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2756,14 +3176,14 @@
     "properties": {
       "phoneNumbers": {
         "type": {
-          "$ref": "#/172"
+          "$ref": "#/199"
         },
         "flags": 0,
         "description": "The list of Telephony phone numbers"
       },
       "apiConfigurations": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/201"
         },
         "flags": 0,
         "description": "The list of Telephony api configuration"
@@ -2884,7 +3304,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/171"
+      "$ref": "#/198"
     }
   },
   {
@@ -2938,7 +3358,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/173"
+      "$ref": "#/200"
     }
   },
   {
@@ -2951,14 +3371,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/204"
         },
         "flags": 0,
         "description": "The set of properties specific to Web Chat channel resource"
       },
       "channelName": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/208"
         },
         "flags": 1,
         "description": "The channel name"
@@ -2978,7 +3398,7 @@
       },
       "sites": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/207"
         },
         "flags": 0,
         "description": "The list of Web Chat sites"
@@ -3103,7 +3523,7 @@
       },
       "trustedOrigins": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/206"
         },
         "flags": 0,
         "description": "List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True."
@@ -3133,7 +3553,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/178"
+      "$ref": "#/205"
     }
   },
   {
@@ -3142,7 +3562,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "BotChannelTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -3172,19 +3592,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/183"
+        "$ref": "#/210"
       },
       {
-        "$ref": "#/184"
+        "$ref": "#/211"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/212"
       },
       {
-        "$ref": "#/186"
+        "$ref": "#/213"
       },
       {
-        "$ref": "#/187"
+        "$ref": "#/214"
       },
       {
         "$ref": "#/2"
@@ -3202,272 +3622,7 @@
     "name": "Microsoft.BotService/botServices/channels@2023-09-15-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/113"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "minLength": 2,
-    "maxLength": 64,
-    "pattern": "^[a-zA-Z0-9][\\sa-zA-Z0-9_.-]*$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.BotService/botServices/connections"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2023-09-15-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.BotService/botServices/connections",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/191"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/192"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/193"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/195"
-        },
-        "flags": 0,
-        "description": "The set of properties specific to bot channel resource"
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Specifies the location of the resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/198"
-        },
-        "flags": 0,
-        "description": "Contains resource tags defined as key/value pairs."
-      },
-      "sku": {
-        "type": {
-          "$ref": "#/76"
-        },
-        "flags": 0,
-        "description": "Gets or sets the SKU of the resource."
-      },
-      "kind": {
-        "type": {
-          "$ref": "#/204"
-        },
-        "flags": 0,
-        "description": "Required. Gets or sets the Kind of the resource."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Entity Tag."
-      },
-      "zones": {
-        "type": {
-          "$ref": "#/205"
-        },
-        "flags": 2,
-        "description": "Entity zones"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ConnectionSettingProperties",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Id of the Connection Setting."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Name of the Connection Setting."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Client Id associated with the Connection Setting."
-      },
-      "settingId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Setting Id set by the service for the Connection Setting."
-      },
-      "clientSecret": {
-        "type": {
-          "$ref": "#/128"
-        },
-        "flags": 0,
-        "description": "Client Secret associated with the Connection Setting"
-      },
-      "scopes": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Scopes associated with the Connection Setting"
-      },
-      "serviceProviderId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Service Provider Id associated with the Connection Setting"
-      },
-      "serviceProviderDisplayName": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Service Provider Display Name associated with the Connection Setting"
-      },
-      "parameters": {
-        "type": {
-          "$ref": "#/197"
-        },
-        "flags": 0,
-        "description": "Service Provider Parameters associated with the Connection Setting"
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Provisioning state of the resource"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ConnectionSettingParameter",
-    "properties": {
-      "key": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Key for the Connection Setting Parameter."
-      },
-      "value": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Value associated with the Connection Setting Parameter."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/196"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "sdk"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "designer"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "bot"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "function"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "azurebot"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/199"
-      },
-      {
-        "$ref": "#/200"
-      },
-      {
-        "$ref": "#/201"
-      },
-      {
-        "$ref": "#/202"
-      },
-      {
-        "$ref": "#/203"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.BotService/botServices/connections@2023-09-15-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/194"
+      "$ref": "#/141"
     },
     "flags": 0
   },
@@ -3499,14 +3654,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/218"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/219"
         },
         "flags": 10,
         "description": "The resource api version"
@@ -3517,6 +3672,13 @@
         },
         "flags": 0,
         "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -3525,9 +3687,227 @@
     "name": "Microsoft.BotService/botServices/privateEndpointConnections@2023-09-15-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/209"
+      "$ref": "#/220"
     },
     "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": ".*"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.BotService/botServices/networkSecurityPerimeterConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-09-15-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.BotService/botServices/networkSecurityPerimeterConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 2,
+        "description": "Properties of the Network Security Perimeter configuration"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.BotService/botServices/networkSecurityPerimeterConfigurations@2023-09-15-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/225"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionSetting",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "The set of properties specific to bot channel resource"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Specifies the location of the resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 0,
+        "description": "Contains resource tags defined as key/value pairs."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Gets or sets the SKU of the resource."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/234"
+        },
+        "flags": 0,
+        "description": "Required. Gets or sets the Kind of the resource."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Entity Tag."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 2,
+        "description": "Entity zones"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectionSettingTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "sdk"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "designer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "bot"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "function"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "azurebot"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listWithSecrets",
+    "resourceType": "Microsoft.BotService/botServices/connections",
+    "apiVersion": "2023-09-15-preview",
+    "output": {
+      "$ref": "#/227"
+    }
   },
   {
     "$type": "ObjectType",
@@ -3535,14 +3915,14 @@
     "properties": {
       "resource": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "The set of properties specific to bot channel resource"
       },
       "setting": {
         "type": {
-          "$ref": "#/212"
+          "$ref": "#/238"
         },
         "flags": 0,
         "description": "Channel settings"
@@ -3570,24 +3950,10 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "The set of properties specific to bot channel resource"
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the resource ID."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the name of the resource."
       },
       "location": {
         "type": {
@@ -3596,30 +3962,23 @@
         "flags": 0,
         "description": "Specifies the location of the resource."
       },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the type of the resource."
-      },
       "tags": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/242"
         },
         "flags": 0,
         "description": "Contains resource tags defined as key/value pairs."
       },
       "sku": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Gets or sets the SKU of the resource."
       },
       "kind": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/248"
         },
         "flags": 0,
         "description": "Required. Gets or sets the Kind of the resource."
@@ -3633,10 +3992,38 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/249"
         },
         "flags": 2,
         "description": "Entity zones"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -3660,7 +4047,7 @@
       },
       "sites": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/241"
         },
         "flags": 0,
         "description": "The list of sites"
@@ -3834,7 +4221,7 @@
       },
       "trustedOrigins": {
         "type": {
-          "$ref": "#/214"
+          "$ref": "#/240"
         },
         "flags": 0,
         "description": "List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True."
@@ -3864,12 +4251,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/213"
+      "$ref": "#/239"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "BotChannelTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -3899,19 +4286,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/217"
+        "$ref": "#/243"
       },
       {
-        "$ref": "#/218"
+        "$ref": "#/244"
       },
       {
-        "$ref": "#/219"
+        "$ref": "#/245"
       },
       {
-        "$ref": "#/220"
+        "$ref": "#/246"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/247"
       },
       {
         "$ref": "#/2"
@@ -3930,7 +4317,7 @@
     "resourceType": "Microsoft.BotService/botServices/channels",
     "apiVersion": "2023-09-15-preview",
     "output": {
-      "$ref": "#/211"
+      "$ref": "#/237"
     }
   },
   {
@@ -3946,7 +4333,7 @@
       },
       "key": {
         "type": {
-          "$ref": "#/228"
+          "$ref": "#/254"
         },
         "flags": 1,
         "description": "Determines which key is to be regenerated"
@@ -3965,10 +4352,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/226"
+        "$ref": "#/252"
       },
       {
-        "$ref": "#/227"
+        "$ref": "#/253"
       }
     ]
   },
@@ -3978,24 +4365,10 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/142"
         },
         "flags": 0,
         "description": "The set of properties specific to bot channel resource"
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the resource ID."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the name of the resource."
       },
       "location": {
         "type": {
@@ -4004,30 +4377,23 @@
         "flags": 0,
         "description": "Specifies the location of the resource."
       },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the type of the resource."
-      },
       "tags": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/256"
         },
         "flags": 0,
         "description": "Contains resource tags defined as key/value pairs."
       },
       "sku": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Gets or sets the SKU of the resource."
       },
       "kind": {
         "type": {
-          "$ref": "#/236"
+          "$ref": "#/262"
         },
         "flags": 0,
         "description": "Required. Gets or sets the Kind of the resource."
@@ -4041,16 +4407,44 @@
       },
       "zones": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "Entity zones"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "BotChannelTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -4080,19 +4474,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/231"
+        "$ref": "#/257"
       },
       {
-        "$ref": "#/232"
+        "$ref": "#/258"
       },
       {
-        "$ref": "#/233"
+        "$ref": "#/259"
       },
       {
-        "$ref": "#/234"
+        "$ref": "#/260"
       },
       {
-        "$ref": "#/235"
+        "$ref": "#/261"
       },
       {
         "$ref": "#/2"
@@ -4111,10 +4505,10 @@
     "resourceType": "Microsoft.BotService/botServices/channels",
     "apiVersion": "2023-09-15-preview",
     "output": {
-      "$ref": "#/229"
+      "$ref": "#/255"
     },
     "input": {
-      "$ref": "#/225"
+      "$ref": "#/251"
     }
   },
   {
@@ -4137,7 +4531,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/266"
         },
         "flags": 0,
         "description": "The set of properties specific to sign in url"
@@ -4163,149 +4557,7 @@
     "resourceType": "Microsoft.BotService/botServices",
     "apiVersion": "2023-09-15-preview",
     "output": {
-      "$ref": "#/239"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ConnectionSetting",
-    "properties": {
-      "properties": {
-        "type": {
-          "$ref": "#/195"
-        },
-        "flags": 0,
-        "description": "The set of properties specific to bot channel resource"
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the resource ID."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the name of the resource."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Specifies the location of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Specifies the type of the resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/243"
-        },
-        "flags": 0,
-        "description": "Contains resource tags defined as key/value pairs."
-      },
-      "sku": {
-        "type": {
-          "$ref": "#/76"
-        },
-        "flags": 0,
-        "description": "Gets or sets the SKU of the resource."
-      },
-      "kind": {
-        "type": {
-          "$ref": "#/249"
-        },
-        "flags": 0,
-        "description": "Required. Gets or sets the Kind of the resource."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Entity Tag."
-      },
-      "zones": {
-        "type": {
-          "$ref": "#/250"
-        },
-        "flags": 2,
-        "description": "Entity zones"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "sdk"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "designer"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "bot"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "function"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "azurebot"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/244"
-      },
-      {
-        "$ref": "#/245"
-      },
-      {
-        "$ref": "#/246"
-      },
-      {
-        "$ref": "#/247"
-      },
-      {
-        "$ref": "#/248"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "listWithSecrets",
-    "resourceType": "Microsoft.BotService/botServices/connections",
-    "apiVersion": "2023-09-15-preview",
-    "output": {
-      "$ref": "#/242"
+      "$ref": "#/265"
     }
   },
   {
@@ -4314,7 +4566,7 @@
     "resourceType": "Microsoft.BotService/botServices/networkSecurityPerimeterConfigurations",
     "apiVersion": "2023-09-15-preview",
     "output": {
-      "$ref": "#/35"
+      "$ref": "#/46"
     }
   }
 ]
