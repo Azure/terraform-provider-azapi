@@ -177,12 +177,48 @@ resource "azapi_resource" "virtualMachineScaleSet" {
     }
     sku = {
       capacity = 1
-      name     = "Standard_D1_v2"
+      name     = "Standard_F2"
       tier     = "Standard"
     }
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
+}
+
+data "azurerm_subscription" "primary" {}
+
+data "azurerm_role_definition" "vm-contributor" {
+  name = "Virtual Machine Contributor"
+}
+
+data "azurerm_role_definition" "nw-contributor" {
+  name = "Network Contributor"
+}
+
+data "azurerm_role_definition" "mi-contributor" {
+  name = "Managed Identity Contributor"
+}
+
+data "azuread_service_principal" "test" {
+  display_name = "Standby Pool Resource Provider"
+}
+
+resource "azurerm_role_assignment" "vm-contributor" {
+  scope              = azapi_resource.resourceGroup.id
+  role_definition_id = "${data.azurerm_subscription.primary.id}${data.azurerm_role_definition.vm-contributor.id}"
+  principal_id       = data.azuread_service_principal.test.object_id
+}
+
+resource "azurerm_role_assignment" "nw-contributor" {
+  scope              = azapi_resource.resourceGroup.id
+  role_definition_id = "${data.azurerm_subscription.primary.id}${data.azurerm_role_definition.nw-contributor.id}"
+  principal_id       = data.azuread_service_principal.test.object_id
+}
+
+resource "azurerm_role_assignment" "mi-contributor" {
+  scope              = azapi_resource.resourceGroup.id
+  role_definition_id = "${data.azurerm_subscription.primary.id}${data.azurerm_role_definition.mi-contributor.id}"
+  principal_id       = data.azuread_service_principal.test.object_id
 }
 
 resource "azapi_resource" "standbyVirtualMachinePool" {
@@ -204,4 +240,10 @@ resource "azapi_resource" "standbyVirtualMachinePool" {
   schema_validation_enabled = false
   ignore_casing             = false
   ignore_missing_property   = false
+
+  depends_on = [
+    azurerm_role_assignment.vm-contributor,
+    azurerm_role_assignment.nw-contributor,
+    azurerm_role_assignment.mi-contributor,
+  ]
 }
