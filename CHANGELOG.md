@@ -9,6 +9,7 @@ ENHANCEMENTS:
 BUG FIXES:
 - Fix a bug that invalid resource ID containing `|` character is not detected when validating the configuration.
 - Fix a bug that schema validation fails to validate when the discriminator field is unknown.
+- Fix the crash that occurs when the `identity.type` returns a value that is not a string.
 
 ## v2.5.0
 
