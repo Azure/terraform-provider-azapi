@@ -138,18 +138,6 @@ func TestAccGenericResource_preflightChildResource(t *testing.T) {
 	})
 }
 
-func TestAccGenericResource_apiTest(t *testing.T) {
-	data := acceptance.BuildTestData(t, "azapi_resource", "test")
-	r := GenericResource{}
-	data.ResourceTest(t, r, []resource.TestStep{
-		{
-			Config:             r.preflightChildResouce(data),
-			PlanOnly:           true,
-			ExpectNonEmptyPlan: true,
-		},
-	})
-}
-
 func TestAccGenericResource_preflightResourceGroupScopedTrackedResource(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
