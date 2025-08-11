@@ -126,6 +126,18 @@ func TestAccGenericResource_preflightManagementGroupScopedNestedResource(t *test
 	})
 }
 
+func TestAccGenericResource_preflightChildResource(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             r.preflightChildResouce(data),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func TestAccGenericResource_preflightResourceGroupScopedTrackedResource(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -292,6 +304,38 @@ resource "azapi_resource" "managementGroup" {
   }
 }
 `
+}
+
+func (r GenericResource) preflightChildResouce(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azapi" {
+  enable_preflight = true
+}
+
+%s
+
+resource "azapi_resource" "managed_identity" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview"
+  name      = "test-managed-identity"
+  parent_id = azapi_resource.resourceGroup.id
+  location  = "westeurope"
+}
+
+resource "azapi_resource" "federated_credential" {
+  type      = "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@2025-01-31-preview"
+  name      = "test-federated-credential"
+  parent_id = azapi_resource.managed_identity.id
+  body = {
+    properties = {
+      audiences = [
+        "api://AzureADTokenExchange"
+      ]
+      issuer  = "https://vstoken.dev.azure.com/11111111-1111-11111-1111"
+      subject = "sc://test"
+    }
+  }
+}
+`, r.template(data))
 }
 
 func (r GenericResource) preflightSubscriptionScopedResource(data acceptance.TestData) string {
