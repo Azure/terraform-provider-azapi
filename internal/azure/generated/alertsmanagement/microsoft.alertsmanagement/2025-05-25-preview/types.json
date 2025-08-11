@@ -1,0 +1,499 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AlertsManagement/alerts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-25-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AlertsManagement/alerts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 2,
+        "description": "Alert property bag"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertProperties",
+    "properties": {
+      "essentials": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "This object contains consistent fields across different monitor services."
+      },
+      "context": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Information specific to the monitor service that gives more contextual details about the alert."
+      },
+      "egressConfig": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "Config which would be used for displaying the data in portal."
+      },
+      "customProperties": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Custom properties that can hold any user defined key-value pairs"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Essentials",
+    "properties": {
+      "severity": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "Severity of alert Sev0 being highest and Sev4 being lowest."
+      },
+      "signalType": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "The type of signal the alert is based on, which could be metrics, logs or activity logs."
+      },
+      "alertState": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "Alert object state, which can be modified by the user."
+      },
+      "monitorCondition": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Can be 'Fired' or 'Resolved', which represents whether the underlying conditions have crossed the defined alert rule thresholds."
+      },
+      "targetResource": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Target ARM resource, on which alert got created."
+      },
+      "targetResourceName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the target ARM resource name, on which alert got created."
+      },
+      "targetResourceGroup": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource group of target ARM resource, on which alert got created."
+      },
+      "targetResourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource type of target ARM resource, on which alert got created."
+      },
+      "monitorService": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Monitor service on which the rule(monitor) is set."
+      },
+      "alertRule": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule."
+      },
+      "sourceCreatedId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc."
+      },
+      "smartGroupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Unique Id of the smart group"
+      },
+      "smartGroupingReason": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Verbose reason describing the reason why this alert instance is added to a smart group"
+      },
+      "startDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Creation time(ISO-8601 format) of alert instance."
+      },
+      "lastModifiedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last modification time(ISO-8601 format) of alert instance."
+      },
+      "monitorConditionResolvedDateTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met."
+      },
+      "lastModifiedUserName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user."
+      },
+      "actionStatus": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Action status"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Alert description."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev2"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev3"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sev4"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Metric"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Acknowledged"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Closed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resolved"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application Insights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Administrative"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Security"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Recommendation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Policy"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ActivityLog Autoscale"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log Analytics"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Nagios"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Platform"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SCOM"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceHealth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SmartDetector"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VM Insights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Zabbix"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Resource Health"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionStatus",
+    "properties": {
+      "isSuppressed": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Value indicating whether alert is suppressed."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AlertsManagement/alerts@2025-05-25-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 1
+  }
+]

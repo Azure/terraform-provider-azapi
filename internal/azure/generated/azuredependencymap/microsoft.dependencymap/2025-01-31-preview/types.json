@@ -478,7 +478,7 @@
         "type": {
           "$ref": "#/2"
         },
-        "flags": 1,
+        "flags": 0,
         "description": "Machine arm id"
       },
       "filters": {
@@ -579,10 +579,216 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "ExportDependenciesOperationResult",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The status URL of export dependencies operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource name of the operation status. It must match the last segment of 'id' field."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The overall arm status of the operation. It has one of the terminal states - Succeeded/Failed/Canceled."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "Contains error details if status is Failed/Canceled."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The start time of the operation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The end time of the operation."
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "Properties for export dependencies. These should only be set if the status is Succeeded."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/54"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportDependenciesResultProperties",
+    "properties": {
+      "exportedDataSasUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SAS URI of the blob containing the exported dependencies data."
+      },
+      "statusCode": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "A status code returned by the service with additional context about the export dependencies operation."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/62"
+        },
+        "flags": 0,
+        "description": "Additional information about the exported data."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CompleteMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartialMatch"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExportDependenciesAdditionalInfo",
+    "properties": {
+      "availableDaysCount": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 0,
+        "description": "Number of days for which data was available in the exported results."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
     "$type": "ResourceFunctionType",
     "name": "exportDependencies",
     "resourceType": "Microsoft.DependencyMap/maps",
     "apiVersion": "2025-01-31-preview",
+    "output": {
+      "$ref": "#/51"
+    },
     "input": {
       "$ref": "#/43"
     }
@@ -620,7 +826,7 @@
     "resourceType": "Microsoft.DependencyMap/maps",
     "apiVersion": "2025-01-31-preview",
     "input": {
-      "$ref": "#/52"
+      "$ref": "#/65"
     }
   },
   {
@@ -656,7 +862,7 @@
     "resourceType": "Microsoft.DependencyMap/maps",
     "apiVersion": "2025-01-31-preview",
     "input": {
-      "$ref": "#/54"
+      "$ref": "#/67"
     }
   },
   {
@@ -685,7 +891,7 @@
     "resourceType": "Microsoft.DependencyMap/maps",
     "apiVersion": "2025-01-31-preview",
     "input": {
-      "$ref": "#/56"
+      "$ref": "#/69"
     }
   }
 ]

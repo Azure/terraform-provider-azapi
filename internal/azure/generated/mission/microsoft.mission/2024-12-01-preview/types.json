@@ -1,0 +1,3872 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/approvals"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/approvals",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      },
+      "parent1": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Parameter for optimizing query results"
+      },
+      "parent2": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Parameter for optimizing query results"
+      },
+      "approvers": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "List of approvers for the approval request"
+      },
+      "ticketId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Ticket ID for the approval request"
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Approval request creation time"
+      },
+      "stateChangedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Approval request state change time, time at which approval request state changed from pending to approved or rejected."
+      },
+      "requestMetadata": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "Request metadata for the approval request."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Approver",
+    "properties": {
+      "approverEntraId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Entra ObjectID of the approver"
+      },
+      "actionPerformed": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Action Performed by approver"
+      },
+      "lastUpdatedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "approval request last updated at"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/16"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RequestMetadata",
+    "properties": {
+      "resourceAction": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Action of the item being approved or declined."
+      },
+      "approvalCallbackRoute": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Route name for the approval callback"
+      },
+      "approvalCallbackPayload": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Payload to be sent upon any action on approval request"
+      },
+      "approvalStatus": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "Status of the approval. Uses ApprovalStatus enum."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/approvals@2024-12-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/communities"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/communities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunityProperties",
+    "properties": {
+      "addressSpace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Address Space."
+      },
+      "dnsServers": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "DNS Servers."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "List of resource ids created by communities."
+      },
+      "managedResourceGroupConfiguration": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "Managed resource group name."
+      },
+      "governedServiceList": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "List of services governed by a community."
+      },
+      "communityRoleAssignments": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "Community role assignments"
+      },
+      "approvalSettings": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "Approval requirements for various actions on the community's resources."
+      },
+      "maintenanceModeConfiguration": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "Maintenance Mode configuration."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedResourceGroupConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of managed resource group"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GovernedServiceItem",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "Service ID"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Service name."
+      },
+      "option": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "Governance option for this service (Allow, Deny, ExceptionOnly, or NotApplicable)."
+      },
+      "enforcement": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Initiative enforcement (Enabled or Disabled)."
+      },
+      "auditOnly": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Policies set to auditOnly (True or False)."
+      },
+      "initiatives": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 2,
+        "description": "Initiatives associated with this service."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AKS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AppService"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureFirewalls"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ContainerRegistry"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CosmosDB"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataConnectors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Insights"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "KeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Logic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MicrosoftSQL"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monitoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PostgreSQL"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrivateDNSZones"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceBus"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Storage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ExceptionOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/57"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoleAssignmentItem",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Role definition identifier"
+      },
+      "principals": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 0,
+        "description": "List of principal IDs to which to assign this role definition"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Principal",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The object id associated with the principal"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "The type of the object id. We currently allow users, groups, and service principals"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Group"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServicePrincipal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/86"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/85"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalSettings",
+    "properties": {
+      "endpointCreation": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 0,
+        "description": "Approval required for endpoint creation (Required or NotRequired)."
+      },
+      "endpointUpdate": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "Approval required for endpoint update (Required or NotRequired)."
+      },
+      "endpointDeletion": {
+        "type": {
+          "$ref": "#/102"
+        },
+        "flags": 0,
+        "description": "Approval required for endpoint deletion (Required or NotRequired)."
+      },
+      "connectionCreation": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Approval required for enclave connection creation (Required or NotRequired)."
+      },
+      "connectionUpdate": {
+        "type": {
+          "$ref": "#/108"
+        },
+        "flags": 0,
+        "description": "Approval required for enclave connection update (Required or NotRequired)."
+      },
+      "connectionDeletion": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Approval required for enclave connection deletion (Required or NotRequired)."
+      },
+      "enclaveCreation": {
+        "type": {
+          "$ref": "#/114"
+        },
+        "flags": 0,
+        "description": "Approval required for virtual enclave creation (Required or NotRequired)."
+      },
+      "enclaveDeletion": {
+        "type": {
+          "$ref": "#/117"
+        },
+        "flags": 0,
+        "description": "Approval required for virtual enclave deletion (Required or NotRequired)."
+      },
+      "maintenanceMode": {
+        "type": {
+          "$ref": "#/120"
+        },
+        "flags": 0,
+        "description": "Approval required for toggling maintenance mode (Required or NotRequired)."
+      },
+      "serviceCatalogDeployment": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "Approval required for deploying service catalog templates (Required or NotRequired)."
+      },
+      "notificationOnApprovalCreation": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 0,
+        "description": "Notification will be sent on creation of an Approval Request"
+      },
+      "notificationOnApprovalAction": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 0,
+        "description": "Notification will be sent on any action taken (Approve/Reject) on an Approval Request"
+      },
+      "notificationOnApprovalDeletion": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 0,
+        "description": "Notification will be sent on deletion of an Approval Request"
+      },
+      "mandatoryApprovers": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 0,
+        "description": "List of mandatory approvers for the approval request"
+      },
+      "minimumApproversRequired": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "Minimum number of approvers required for the approval request"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotRequired"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MandatoryApprover",
+    "properties": {
+      "approverEntraId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "EntraId of the approver"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/133"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceModeConfigurationModel",
+    "properties": {
+      "mode": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 1,
+        "description": "Current mode of Maintenance Mode Configuration"
+      },
+      "principals": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "The user, group or service principal object affected by Maintenance Mode"
+      },
+      "justification": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 0,
+        "description": "Justification for entering or exiting Maintenance Mode"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "On"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CanNotDelete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Off"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "General"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Advanced"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/86"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Networking"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Governance"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Off"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/149"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/155"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/communities@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/42"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z][a-zA-Z0-9-_]*[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/communities/communityEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/communities/communityEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/192"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunityEndpointProperties",
+    "properties": {
+      "ruleCollection": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 1,
+        "description": "Community Endpoint Rule Collection."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 2,
+        "description": "List of resource ids created by community endpoint."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/191"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunityEndpointDestinationRule",
+    "properties": {
+      "destinationType": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "Destination Type."
+      },
+      "protocols": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Protocols. Options specified by Endpoint Protocol Enum."
+      },
+      "transitHubResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Transit Hub Resource Id."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Endpoint Rule Name."
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Destination address. Can include multiple CIDR/IP Addresses or fqdn tags or fqdns (for community endpoint) separated by commas."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Port. Can include multiple ports separated by commas or a range indicated by a hyphen."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FQDN"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FQDNTag"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPAddress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PrivateNetwork"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ANY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TCP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UDP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ICMP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ESP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AH"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HTTPS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HTTP"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/178"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/164"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/188"
+      },
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/communities/communityEndpoints@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/162"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/communities/transitHubs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/communities/transitHubs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransitHubProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 0,
+        "description": "The state of the transitHub."
+      },
+      "transitOption": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 0,
+        "description": "The TransitOption of the transitHub."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 2,
+        "description": "List of resource ids modified by transitHubs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingApproval"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingUpdate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransitOption",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 0,
+        "description": "Transit Option Type."
+      },
+      "params": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "Transit Option Params"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ExpressRoute"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gateway"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Peering"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TransitOptionParams",
+    "properties": {
+      "scaleUnits": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "Transit Option Params scaleUnits."
+      },
+      "remoteVirtualNetworkId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Transit Option Params remoteVirtualNetworkId."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/communities/transitHubs@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/196"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/enclaveConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/enclaveConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveConnectionProperties",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/234"
+        },
+        "flags": 2,
+        "description": "The state of the enclaveConnection."
+      },
+      "communityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Community Resource Id."
+      },
+      "sourceResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Source Resource Id."
+      },
+      "sourceCidr": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Source CIDR."
+      },
+      "ipGroup": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Source IP group Resource Id."
+      },
+      "destinationEndpointId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Destination Endpoint Resource Id."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 2,
+        "description": "List of resource ids modified by enclave Connections."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingApproval"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingUpdate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/enclaveConnections@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/225"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/virtualEnclaves"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/virtualEnclaves",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualEnclaveProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      },
+      "enclaveVirtualNetwork": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 1,
+        "description": "Virtual Network."
+      },
+      "enclaveAddressSpaces": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 2,
+        "description": "Enclave Address Spaces"
+      },
+      "communityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Community Resource Id."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/266"
+        },
+        "flags": 2,
+        "description": "List of resource ids created by Virtual Enclave."
+      },
+      "managedResourceGroupConfiguration": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 2,
+        "description": "Managed resource group name."
+      },
+      "bastionEnabled": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Deploy Bastion service (True or False)."
+      },
+      "enclaveRoleAssignments": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 0,
+        "description": "Enclave role assignments"
+      },
+      "workloadRoleAssignments": {
+        "type": {
+          "$ref": "#/268"
+        },
+        "flags": 0,
+        "description": "Workload role assignments"
+      },
+      "enclaveDefaultSettings": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "Enclave default settings."
+      },
+      "maintenanceModeConfiguration": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "Maintenance Mode configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/257"
+      },
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/259"
+      },
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveVirtualNetworkModel",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Network Name."
+      },
+      "networkSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Network Size."
+      },
+      "customCidrRange": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Custom CIDR Range."
+      },
+      "subnetConfigurations": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 0,
+        "description": "Subnet Configurations."
+      },
+      "allowSubnetCommunication": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Allow Subnet Communication."
+      },
+      "connectToAzureServices": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "Connect to Azure Services (True or False)."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubnetConfiguration",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Subnet name."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Subnet Resource ID."
+      },
+      "networkPrefixSize": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 1,
+        "description": "Network prefix size."
+      },
+      "subnetDelegation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Subnet delegation."
+      },
+      "addressPrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Address prefix."
+      },
+      "networkSecurityGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Network security group ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveAddressSpacesModel",
+    "properties": {
+      "enclaveAddressSpace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Enclave Address Space"
+      },
+      "managedAddressSpace": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Managed Address Space"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/85"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/85"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveDefaultSettingsModel",
+    "properties": {
+      "keyVaultResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Key Vault Resource Id."
+      },
+      "storageAccountResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Storage Account Resource Id."
+      },
+      "logAnalyticsResourceIdCollection": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 2,
+        "description": "Log Analytics Resource Ids."
+      },
+      "diagnosticDestination": {
+        "type": {
+          "$ref": "#/274"
+        },
+        "flags": 0,
+        "description": "Diagnostic Destination."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CommunityOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EnclaveOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Both"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/virtualEnclaves@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/250"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/virtualEnclaves/enclaveEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/virtualEnclaves/enclaveEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/278"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/280"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveEndpointProperties",
+    "properties": {
+      "ruleCollection": {
+        "type": {
+          "$ref": "#/290"
+        },
+        "flags": 1,
+        "description": "Enclave Endpoint Rule Collection."
+      },
+      "resourceCollection": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 2,
+        "description": "List of resource ids created by community endpoint."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EnclaveEndpointDestinationRule",
+    "properties": {
+      "protocols": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Protocols. Options specified by Endpoint Protocol Enum."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Endpoint Rule Name."
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Destination address. Can include multiple CIDR/IP Addresses or fqdn tags or fqdns (for community endpoint) separated by commas."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Port. Can include multiple ports separated by commas or a range indicated by a hyphen."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ANY"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TCP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UDP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ICMP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ESP"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AH"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/282"
+      },
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/285"
+      },
+      {
+        "$ref": "#/286"
+      },
+      {
+        "$ref": "#/287"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/288"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/281"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/virtualEnclaves/enclaveEndpoints@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/279"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Mission/virtualEnclaves/workloads"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-12-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Mission/virtualEnclaves/workloads",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/317"
+        },
+        "flags": 2,
+        "description": "Provisioning State."
+      },
+      "resourceGroupCollection": {
+        "type": {
+          "$ref": "#/318"
+        },
+        "flags": 0,
+        "description": "List of resource group ids."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotSpecified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/313"
+      },
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/316"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Mission/virtualEnclaves/workloads@2024-12-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/306"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalActionRequest",
+    "properties": {
+      "approvalStatus": {
+        "type": {
+          "$ref": "#/324"
+        },
+        "flags": 1,
+        "description": "Approval status indicating 'Approved' or 'Rejected'"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/322"
+      },
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalActionResponse",
+    "properties": {
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Confirmation message indicating the result of the operation."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "initiatorCallback",
+    "resourceType": "Microsoft.Mission/approvals",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/321"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckAddressSpaceAvailabilityRequest",
+    "properties": {
+      "communityResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Resource Id of the Community"
+      },
+      "enclaveVirtualNetwork": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 1,
+        "description": "Information about the enclave virtual network"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckAddressSpaceAvailabilityResponse",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 1,
+        "description": "Boolean representing whether the address space is available."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkAddressSpaceAvailability",
+    "resourceType": "Microsoft.Mission/communities",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/328"
+    },
+    "input": {
+      "$ref": "#/327"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalCallbackRequest",
+    "properties": {
+      "resourceRequestAction": {
+        "type": {
+          "$ref": "#/335"
+        },
+        "flags": 1,
+        "description": "Resource request action indicating action which needed to be performed upon calling approval-callback post action"
+      },
+      "approvalStatus": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 1,
+        "description": "Approval status indicating 'Approved' or 'Rejected'"
+      },
+      "approvalCallbackPayload": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Payload requested by client upon approval action"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Create"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Update"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reset"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/331"
+      },
+      {
+        "$ref": "#/332"
+      },
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalCallback",
+    "resourceType": "Microsoft.Mission/communities/communityEndpoints",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/330"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ApprovalDeletionCallbackRequest",
+    "properties": {
+      "resourceRequestAction": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 1,
+        "description": "Resource request action indicating action which needed to be performed upon calling approval-deletion-callback post action"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Create"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Update"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/343"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalDeletionCallback",
+    "resourceType": "Microsoft.Mission/communities/communityEndpoints",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalCallback",
+    "resourceType": "Microsoft.Mission/enclaveConnections",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/330"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalDeletionCallback",
+    "resourceType": "Microsoft.Mission/enclaveConnections",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalCallback",
+    "resourceType": "Microsoft.Mission/virtualEnclaves",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/330"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalDeletionCallback",
+    "resourceType": "Microsoft.Mission/virtualEnclaves",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/340"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalCallback",
+    "resourceType": "Microsoft.Mission/virtualEnclaves/enclaveEndpoints",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/330"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "approvalDeletionCallback",
+    "resourceType": "Microsoft.Mission/virtualEnclaves/enclaveEndpoints",
+    "apiVersion": "2024-12-01-preview",
+    "output": {
+      "$ref": "#/325"
+    },
+    "input": {
+      "$ref": "#/340"
+    }
+  }
+]

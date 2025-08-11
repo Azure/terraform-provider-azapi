@@ -762,7 +762,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "UserAssignedIdentities",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/64"
@@ -851,13 +851,11 @@
   },
   {
     "$type": "StringType",
-    "minLength": 3,
-    "maxLength": 24,
     "pattern": "^[a-zA-Z0-9-]{3,24}$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections"
+    "value": "Microsoft.HardwareSecurityModules/dedicatedHSMs"
   },
   {
     "$type": "StringLiteralType",
@@ -865,7 +863,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections",
+    "name": "Microsoft.HardwareSecurityModules/dedicatedHSMs",
     "properties": {
       "id": {
         "type": {
@@ -895,106 +893,30 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "properties": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Resource properties."
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Modified whenever there is a change in the state of private endpoint connection."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections@2025-03-31",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/78"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9-]{3,24}$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.HardwareSecurityModules/dedicatedHSMs"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-03-31"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.HardwareSecurityModules/dedicatedHSMs",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/80"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/81"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/82"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
       "sku": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/79"
         },
         "flags": 1,
         "description": "SKU details"
       },
       "zones": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/88"
         },
         "flags": 0,
-        "description": "The Dedicated Hsm zones."
+        "description": "The availability zones."
       },
       "properties": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/89"
         },
         "flags": 1,
         "description": "Properties of the dedicated HSM"
       },
       "tags": {
         "type": {
-          "$ref": "#/107"
+          "$ref": "#/102"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1021,7 +943,7 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "SKU of the dedicated HSM"
@@ -1060,25 +982,25 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
         "$ref": "#/85"
       },
       {
         "$ref": "#/86"
-      },
-      {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/89"
-      },
-      {
-        "$ref": "#/90"
-      },
-      {
-        "$ref": "#/91"
       },
       {
         "$ref": "#/2"
@@ -1097,14 +1019,14 @@
     "properties": {
       "networkProfile": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Specifies the network interfaces of the dedicated hsm."
       },
       "managementNetworkProfile": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Specifies the management network interfaces of the dedicated hsm."
@@ -1125,7 +1047,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/101"
         },
         "flags": 2,
         "description": "Provisioning state."
@@ -1138,14 +1060,14 @@
     "properties": {
       "subnet": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "Specifies the identifier of the subnet."
       },
       "networkInterfaces": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM."
@@ -1188,7 +1110,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/97"
+      "$ref": "#/92"
     }
   },
   {
@@ -1223,25 +1145,25 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
         "$ref": "#/99"
       },
       {
         "$ref": "#/100"
-      },
-      {
-        "$ref": "#/101"
-      },
-      {
-        "$ref": "#/102"
-      },
-      {
-        "$ref": "#/103"
-      },
-      {
-        "$ref": "#/104"
-      },
-      {
-        "$ref": "#/105"
       },
       {
         "$ref": "#/2"
@@ -1261,7 +1183,85 @@
     "name": "Microsoft.HardwareSecurityModules/dedicatedHSMs@2025-03-31",
     "scopeType": 8,
     "body": {
-      "$ref": "#/83"
+      "$ref": "#/78"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 24,
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-31"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Modified whenever there is a change in the state of private endpoint connection."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections@2025-03-31",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/107"
     },
     "flags": 0
   },
@@ -1478,18 +1478,6 @@
   },
   {
     "$type": "ResourceFunctionType",
-    "name": "validateBackupProperties",
-    "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
-    "apiVersion": "2025-03-31",
-    "output": {
-      "$ref": "#/111"
-    },
-    "input": {
-      "$ref": "#/109"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
     "name": "backup",
     "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
     "apiVersion": "2025-03-31",
@@ -1533,7 +1521,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/127"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "Backup and Restore operation common properties"
@@ -1546,7 +1534,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/131"
         },
         "flags": 2,
         "description": "Status of the backup/restore operation"
@@ -1608,6 +1596,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/127"
+      },
+      {
         "$ref": "#/128"
       },
       {
@@ -1617,24 +1608,9 @@
         "$ref": "#/130"
       },
       {
-        "$ref": "#/131"
-      },
-      {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "validateRestoreProperties",
-    "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
-    "apiVersion": "2025-03-31",
-    "output": {
-      "$ref": "#/126"
-    },
-    "input": {
-      "$ref": "#/125"
-    }
   },
   {
     "$type": "ResourceFunctionType",
@@ -1642,10 +1618,34 @@
     "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
     "apiVersion": "2025-03-31",
     "output": {
-      "$ref": "#/126"
+      "$ref": "#/125"
     },
     "input": {
+      "$ref": "#/124"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validateBackupProperties",
+    "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
+    "apiVersion": "2025-03-31",
+    "output": {
+      "$ref": "#/111"
+    },
+    "input": {
+      "$ref": "#/109"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validateRestoreProperties",
+    "resourceType": "Microsoft.HardwareSecurityModules/cloudHsmClusters",
+    "apiVersion": "2025-03-31",
+    "output": {
       "$ref": "#/125"
+    },
+    "input": {
+      "$ref": "#/124"
     }
   }
 ]

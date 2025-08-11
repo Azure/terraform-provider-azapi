@@ -63,16 +63,9 @@
         "flags": 1,
         "description": "Describes the connected cluster resource properties."
       },
-      "systemData": {
-        "type": {
-          "$ref": "#/54"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
-      },
       "tags": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -83,6 +76,13 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -786,6 +786,14 @@
   },
   {
     "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
       "createdBy": {
@@ -797,7 +805,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/60"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -818,7 +826,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -828,7 +836,7 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The timestamp of resource modification (UTC)."
+        "description": "The timestamp of resource last modification (UTC)"
       }
     }
   },
@@ -851,9 +859,6 @@
   {
     "$type": "UnionType",
     "elements": [
-      {
-        "$ref": "#/55"
-      },
       {
         "$ref": "#/56"
       },
@@ -864,6 +869,9 @@
         "$ref": "#/58"
       },
       {
+        "$ref": "#/59"
+      },
+      {
         "$ref": "#/0"
       }
     ]
@@ -888,9 +896,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/60"
-      },
-      {
         "$ref": "#/61"
       },
       {
@@ -900,17 +905,12 @@
         "$ref": "#/63"
       },
       {
+        "$ref": "#/64"
+      },
+      {
         "$ref": "#/0"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
   },
   {
     "$type": "ResourceType",

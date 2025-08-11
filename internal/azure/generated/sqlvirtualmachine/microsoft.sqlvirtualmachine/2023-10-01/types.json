@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners"
+    "value": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners",
+    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
     "properties": {
       "id": {
         "type": {
@@ -49,526 +49,26 @@
         "flags": 0,
         "description": "Resource properties."
       },
-      "systemData": {
+      "tags": {
         "type": {
-          "$ref": "#/29"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AvailabilityGroupListenerProperties",
-    "properties": {
-      "provisioningState": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Provisioning state to track the async operation status."
-      },
-      "availabilityGroupName": {
-        "type": {
-          "$ref": "#/0"
+          "$ref": "#/19"
         },
         "flags": 0,
-        "description": "Name of the availability group."
-      },
-      "loadBalancerConfigurations": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 0,
-        "description": "List of load balancer configurations for an availability group listener."
-      },
-      "multiSubnetIpConfigurations": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 0,
-        "description": "List of multi subnet IP configurations for an AG listener."
-      },
-      "createDefaultAvailabilityGroupIfNotExist": {
-        "type": {
-          "$ref": "#/12"
-        },
-        "flags": 0,
-        "description": "Create a default availability group if it does not exist."
-      },
-      "port": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "Listener port."
-      },
-      "availabilityGroupConfiguration": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 0,
-        "description": "Availability Group configuration."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "LoadBalancerConfiguration",
-    "properties": {
-      "privateIpAddress": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 0,
-        "description": "Private IP address."
-      },
-      "publicIpAddressResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Resource id of the public IP."
-      },
-      "loadBalancerResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Resource id of the load balancer."
-      },
-      "probePort": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 0,
-        "description": "Probe port."
-      },
-      "sqlVirtualMachineInstances": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "List of the SQL virtual machine instance resource id's that are enrolled into the availability group listener."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PrivateIPAddress",
-    "properties": {
-      "ipAddress": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Private IP address bound to the availability group listener."
-      },
-      "subnetResourceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Subnet used to include private IP."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/5"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "MultiSubnetIpConfiguration",
-    "properties": {
-      "privateIpAddress": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "Private IP address."
-      },
-      "sqlVirtualMachineInstance": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "SQL virtual machine instance resource id that are enrolled into the availability group listener."
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/10"
-    }
-  },
-  {
-    "$type": "BooleanType"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AgConfiguration",
-    "properties": {
-      "replicas": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 0,
-        "description": "Replica configurations."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AgReplica",
-    "properties": {
-      "sqlVirtualMachineInstanceId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Sql VirtualMachine Instance Id."
-      },
-      "role": {
-        "type": {
-          "$ref": "#/17"
-        },
-        "flags": 0,
-        "description": "Replica Role in availability group."
-      },
-      "commit": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Replica commit mode in availability group."
-      },
-      "failover": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 0,
-        "description": "Replica failover mode in availability group."
-      },
-      "readableSecondary": {
-        "type": {
-          "$ref": "#/27"
-        },
-        "flags": 0,
-        "description": "Replica readable secondary mode in availability group."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Primary"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Secondary"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/16"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Synchronous_Commit"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Asynchronous_Commit"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Automatic"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Manual"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/21"
-      },
-      {
-        "$ref": "#/22"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "No"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "All"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Read_Only"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/24"
-      },
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/14"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/39"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners@2023-10-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2023-10-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/42"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/44"
-        },
-        "flags": 0,
-        "description": "Resource properties."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 1,
-        "description": "Resource location."
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/20"
         },
-        "flags": 0,
-        "description": "Resource tags."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -592,35 +92,35 @@
       },
       "sqlImageSku": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "SQL image sku."
       },
       "scaleType": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/9"
         },
         "flags": 2,
         "description": "Scale type."
       },
       "clusterManagerType": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/11"
         },
         "flags": 2,
         "description": "Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type."
       },
       "clusterConfiguration": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Cluster type."
       },
       "wsfcDomainProfile": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "Cluster Active Directory domain profile."
@@ -639,10 +139,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/45"
+        "$ref": "#/5"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/6"
       },
       {
         "$ref": "#/0"
@@ -657,7 +157,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/48"
+        "$ref": "#/8"
       },
       {
         "$ref": "#/0"
@@ -672,7 +172,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/50"
+        "$ref": "#/10"
       },
       {
         "$ref": "#/0"
@@ -687,7 +187,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/52"
+        "$ref": "#/12"
       },
       {
         "$ref": "#/0"
@@ -735,7 +235,7 @@
       },
       "isSqlServiceAccountGmsa": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "The flag to check if SQL service account is GMSA."
@@ -763,12 +263,15 @@
       },
       "clusterSubnetType": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Cluster subnet type."
       }
     }
+  },
+  {
+    "$type": "BooleanType"
   },
   {
     "$type": "StringLiteralType",
@@ -782,10 +285,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/55"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/17"
       },
       {
         "$ref": "#/0"
@@ -801,11 +304,131 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups@2023-10-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/43"
+      "$ref": "#/3"
     },
     "flags": 0
   },
@@ -836,59 +459,59 @@
       },
       "name": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/32"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/33"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/34"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "identity": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "DO NOT USE. This value will be deprecated. Azure Active Directory identity of the server."
       },
       "properties": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "Resource properties."
       },
-      "systemData": {
+      "tags": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/152"
         },
-        "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 1,
-        "description": "Resource location."
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/20"
         },
-        "flags": 0,
-        "description": "Resource tags."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -898,21 +521,21 @@
     "properties": {
       "principalId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "The Azure Active Directory principal id."
       },
       "type": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource."
       },
       "tenantId": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "The Azure Active Directory tenant id."
@@ -945,16 +568,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/66"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/68"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/69"
+        "$ref": "#/41"
       },
       {
         "$ref": "#/0"
@@ -988,28 +611,28 @@
       },
       "sqlServerLicenseType": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "SQL Server license type."
       },
       "sqlManagement": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/51"
         },
         "flags": 0,
         "description": "SQL Server Management type. NOTE: This parameter is not used anymore. API will automatically detect the Sql Management, refrain from using it."
       },
       "leastPrivilegeMode": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "SQL IaaS Agent least privilege mode."
       },
       "sqlImageSku": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/60"
         },
         "flags": 0,
         "description": "SQL Server edition type."
@@ -1023,7 +646,7 @@
       },
       "wsfcDomainCredentials": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "Domain credentials for setting up Windows Server Failover Cluster for SQL availability group."
@@ -1037,77 +660,77 @@
       },
       "autoPatchingSettings": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/62"
         },
         "flags": 0,
         "description": "Auto patching settings for applying critical security updates to SQL virtual machine."
       },
       "autoBackupSettings": {
         "type": {
-          "$ref": "#/103"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "Auto backup settings for SQL Server."
       },
       "keyVaultCredentialSettings": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/92"
         },
         "flags": 0,
         "description": "Key vault credential settings."
       },
       "serverConfigurationsManagementSettings": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "SQL Server configuration management settings."
       },
       "storageConfigurationSettings": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "Storage Configuration Settings."
       },
       "troubleshootingStatus": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/125"
         },
         "flags": 2,
         "description": "Troubleshooting status"
       },
       "assessmentSettings": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/130"
         },
         "flags": 0,
         "description": "SQL best practices Assessment Settings."
       },
       "enableAutomaticUpgrade": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable automatic upgrade of Sql IaaS extension Agent."
       },
       "additionalVmPatch": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/143"
         },
         "flags": 2,
         "description": "Additional VM Patching solution enabled on the Virtual Machine"
       },
       "virtualMachineIdentitySettings": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/144"
         },
         "flags": 0,
         "description": "Virtual Machine Identity details used for Sql IaaS extension configurations."
       },
       "osType": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/151"
         },
         "flags": 2,
         "description": "Operating System of the current SQL Virtual Machine."
@@ -1130,13 +753,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/72"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/73"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/74"
+        "$ref": "#/46"
       },
       {
         "$ref": "#/0"
@@ -1159,13 +782,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/76"
+        "$ref": "#/48"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/49"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/50"
       },
       {
         "$ref": "#/0"
@@ -1184,10 +807,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/80"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/53"
       },
       {
         "$ref": "#/0"
@@ -1218,19 +841,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/83"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/84"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/87"
+        "$ref": "#/59"
       },
       {
         "$ref": "#/0"
@@ -1270,35 +893,35 @@
     "properties": {
       "enable": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable autopatching on SQL virtual machine."
       },
       "dayOfWeek": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/71"
         },
         "flags": 0,
         "description": "Day of week to apply the patch on."
       },
       "maintenanceWindowStartingHour": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Hour of the day when patching is initiated. Local VM time."
       },
       "maintenanceWindowDuration": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Duration of patching."
       },
       "additionalVmPatch": {
         "type": {
-          "$ref": "#/102"
+          "$ref": "#/75"
         },
         "flags": 0,
         "description": "Additional Patch to be enable or enabled on the SQL Virtual Machine."
@@ -1341,30 +964,33 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/91"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/92"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/93"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/95"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/96"
+        "$ref": "#/68"
       },
       {
-        "$ref": "#/97"
+        "$ref": "#/69"
       },
       {
-        "$ref": "#/98"
+        "$ref": "#/70"
       }
     ]
+  },
+  {
+    "$type": "IntegerType"
   },
   {
     "$type": "StringLiteralType",
@@ -1378,10 +1004,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/100"
+        "$ref": "#/73"
       },
       {
-        "$ref": "#/101"
+        "$ref": "#/74"
       },
       {
         "$ref": "#/0"
@@ -1394,21 +1020,21 @@
     "properties": {
       "enable": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable autobackup on SQL virtual machine."
       },
       "enableEncryption": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable encryption for backup on SQL virtual machine."
       },
       "retentionPeriod": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Retention period of backup: 1-90 days."
@@ -1443,49 +1069,49 @@
       },
       "backupSystemDbs": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Include or exclude system databases from auto backup."
       },
       "backupScheduleType": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "Backup schedule type."
       },
       "fullBackupFrequency": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "Frequency of full backups. In both cases, full backups begin during the next scheduled time window."
       },
       "daysOfWeek": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "Days of the week for the backups when FullBackupFrequency is set to Weekly."
       },
       "fullBackupStartTime": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Start time of a given day during which full backups can take place. 0-23 hours."
       },
       "fullBackupWindowHours": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Duration of the time window of a given day during which full backups can take place. 1-23 hours."
       },
       "logBackupFrequency": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Frequency of log backups. 5-60 minutes."
@@ -1504,10 +1130,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/104"
+        "$ref": "#/77"
       },
       {
-        "$ref": "#/105"
+        "$ref": "#/78"
       },
       {
         "$ref": "#/0"
@@ -1526,10 +1152,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/107"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/81"
       },
       {
         "$ref": "#/0"
@@ -1568,25 +1194,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/110"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/111"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/112"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/113"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/114"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/115"
+        "$ref": "#/88"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/89"
       },
       {
         "$ref": "#/0"
@@ -1596,7 +1222,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/117"
+      "$ref": "#/90"
     }
   },
   {
@@ -1605,7 +1231,7 @@
     "properties": {
       "enable": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable key vault credential setting."
@@ -1646,42 +1272,42 @@
     "properties": {
       "sqlConnectivityUpdateSettings": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "SQL connectivity type settings."
       },
       "sqlWorkloadTypeUpdateSettings": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "SQL workload type settings."
       },
       "sqlStorageUpdateSettings": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/104"
         },
         "flags": 0,
         "description": "SQL storage update settings."
       },
       "additionalFeaturesServerConfigurations": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "Additional SQL feature settings."
       },
       "sqlInstanceSettings": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/110"
         },
         "flags": 0,
         "description": "SQL Instance settings."
       },
       "azureAdAuthenticationSettings": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "Azure AD authentication Settings."
@@ -1694,14 +1320,14 @@
     "properties": {
       "connectivityType": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "SQL Server connectivity option."
       },
       "port": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server port."
@@ -1738,13 +1364,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/122"
+        "$ref": "#/95"
       },
       {
-        "$ref": "#/123"
+        "$ref": "#/96"
       },
       {
-        "$ref": "#/124"
+        "$ref": "#/97"
       },
       {
         "$ref": "#/0"
@@ -1757,7 +1383,7 @@
     "properties": {
       "sqlWorkloadType": {
         "type": {
-          "$ref": "#/130"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "SQL Server workload type."
@@ -1780,13 +1406,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/127"
+        "$ref": "#/100"
       },
       {
-        "$ref": "#/128"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/102"
       },
       {
         "$ref": "#/0"
@@ -1799,21 +1425,21 @@
     "properties": {
       "diskCount": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Virtual machine disk count."
       },
       "startingDeviceId": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Device id of the first disk to be updated."
       },
       "diskConfigurationType": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "Disk configuration to apply to SQL Server."
@@ -1836,13 +1462,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/132"
+        "$ref": "#/105"
       },
       {
-        "$ref": "#/133"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/107"
       },
       {
         "$ref": "#/0"
@@ -1855,7 +1481,7 @@
     "properties": {
       "isRServicesEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable R services (SQL 2016 onwards)."
@@ -1875,42 +1501,42 @@
       },
       "maxDop": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server MAXDOP."
       },
       "isOptimizeForAdHocWorkloadsEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "SQL Server Optimize for Adhoc workloads."
       },
       "minServerMemoryMB": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server minimum memory."
       },
       "maxServerMemoryMB": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server maximum memory."
       },
       "isLpimEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "SQL Server LPIM."
       },
       "isIfiEnabled": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "SQL Server IFI."
@@ -1936,49 +1562,49 @@
     "properties": {
       "sqlDataSettings": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/113"
         },
         "flags": 0,
         "description": "SQL Server Data Storage Settings."
       },
       "sqlLogSettings": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/113"
         },
         "flags": 0,
         "description": "SQL Server Log Storage Settings."
       },
       "sqlTempDbSettings": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/115"
         },
         "flags": 0,
         "description": "SQL Server TempDb Storage Settings."
       },
       "sqlSystemDbOnDataDisk": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "SQL Server SystemDb Storage on DataPool if true."
       },
       "diskConfigurationType": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/120"
         },
         "flags": 0,
         "description": "Disk configuration to apply to SQL Server."
       },
       "storageWorkloadType": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "Storage workload type."
       },
       "enableStorageConfigBlade": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 4,
         "description": "Enable SQL IaaS Agent storage configuration blade in Azure Portal."
@@ -1991,7 +1617,7 @@
     "properties": {
       "luns": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/114"
         },
         "flags": 0,
         "description": "Logical Unit Numbers for the disks."
@@ -2005,7 +1631,7 @@
       },
       "useStoragePool": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Use storage pool to build a drive if true or not provided"
@@ -2015,7 +1641,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/7"
+      "$ref": "#/72"
     }
   },
   {
@@ -2024,42 +1650,42 @@
     "properties": {
       "dataFileSize": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server tempdb data file size"
       },
       "dataGrowth": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server tempdb data file autoGrowth size"
       },
       "logFileSize": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server tempdb log file size"
       },
       "logGrowth": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server tempdb log file autoGrowth size"
       },
       "dataFileCount": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "SQL Server tempdb data file count"
       },
       "persistFolder": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "SQL Server tempdb persist folder choice"
@@ -2073,7 +1699,7 @@
       },
       "luns": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "Logical Unit Numbers for the disks."
@@ -2087,7 +1713,7 @@
       },
       "useStoragePool": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Use storage pool to build a drive if true or not provided"
@@ -2097,7 +1723,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/7"
+      "$ref": "#/72"
     }
   },
   {
@@ -2116,13 +1742,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/144"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/145"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/146"
+        "$ref": "#/119"
       },
       {
         "$ref": "#/0"
@@ -2145,13 +1771,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/148"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/149"
+        "$ref": "#/122"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/123"
       },
       {
         "$ref": "#/0"
@@ -2192,14 +1818,14 @@
       },
       "troubleshootingScenario": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/127"
         },
         "flags": 2,
         "description": "SQL VM troubleshooting scenario."
       },
       "properties": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/128"
         },
         "flags": 2,
         "description": "Troubleshooting properties"
@@ -2214,7 +1840,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/153"
+        "$ref": "#/126"
       },
       {
         "$ref": "#/0"
@@ -2227,7 +1853,7 @@
     "properties": {
       "unhealthyReplicaInfo": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/129"
         },
         "flags": 0,
         "description": "The unhealthy replica information"
@@ -2253,21 +1879,21 @@
     "properties": {
       "enable": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable SQL best practices Assessment feature on SQL virtual machine."
       },
       "runImmediately": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Run SQL best practices Assessment immediately on SQL virtual machine."
       },
       "schedule": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/131"
         },
         "flags": 0,
         "description": "Schedule for SQL best practices Assessment."
@@ -2280,28 +1906,28 @@
     "properties": {
       "enable": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Enable or disable assessment schedule on SQL virtual machine."
       },
       "weeklyInterval": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Number of weeks to schedule between 2 assessment runs. Takes value from 1-6"
       },
       "monthlyOccurrence": {
         "type": {
-          "$ref": "#/7"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Occurrence of the DayOfWeek day within a month to schedule assessment. Takes values: 1,2,3,4 and -1. Use -1 for last DayOfWeek day of the month"
       },
       "dayOfWeek": {
         "type": {
-          "$ref": "#/166"
+          "$ref": "#/139"
         },
         "flags": 0,
         "description": "Day of the week to run assessment."
@@ -2347,25 +1973,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/159"
+        "$ref": "#/132"
       },
       {
-        "$ref": "#/160"
+        "$ref": "#/133"
       },
       {
-        "$ref": "#/161"
+        "$ref": "#/134"
       },
       {
-        "$ref": "#/162"
+        "$ref": "#/135"
       },
       {
-        "$ref": "#/163"
+        "$ref": "#/136"
       },
       {
-        "$ref": "#/164"
+        "$ref": "#/137"
       },
       {
-        "$ref": "#/165"
+        "$ref": "#/138"
       }
     ]
   },
@@ -2385,13 +2011,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/167"
+        "$ref": "#/140"
       },
       {
-        "$ref": "#/168"
+        "$ref": "#/141"
       },
       {
-        "$ref": "#/169"
+        "$ref": "#/142"
       },
       {
         "$ref": "#/0"
@@ -2404,7 +2030,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/148"
         },
         "flags": 0,
         "description": "Identity type of the virtual machine. Specify None to opt-out of Managed Identities."
@@ -2434,13 +2060,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/172"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/174"
+        "$ref": "#/147"
       },
       {
         "$ref": "#/0"
@@ -2459,10 +2085,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/176"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/177"
+        "$ref": "#/150"
       }
     ]
   },
@@ -2479,15 +2105,383 @@
     "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachines@2023-10-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/63"
+      "$ref": "#/35"
     },
     "flags": 0
   },
   {
-    "$type": "ResourceFunctionType",
-    "name": "startAssessment",
-    "resourceType": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
-    "apiVersion": "2023-10-01"
+    "$type": "StringLiteralType",
+    "value": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 0,
+        "description": "Resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailabilityGroupListenerProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Provisioning state to track the async operation status."
+      },
+      "availabilityGroupName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Name of the availability group."
+      },
+      "loadBalancerConfigurations": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 0,
+        "description": "List of load balancer configurations for an availability group listener."
+      },
+      "multiSubnetIpConfigurations": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 0,
+        "description": "List of multi subnet IP configurations for an AG listener."
+      },
+      "createDefaultAvailabilityGroupIfNotExist": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Create a default availability group if it does not exist."
+      },
+      "port": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Listener port."
+      },
+      "availabilityGroupConfiguration": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "Availability Group configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancerConfiguration",
+    "properties": {
+      "privateIpAddress": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 0,
+        "description": "Private IP address."
+      },
+      "publicIpAddressResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource id of the public IP."
+      },
+      "loadBalancerResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Resource id of the load balancer."
+      },
+      "probePort": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "Probe port."
+      },
+      "sqlVirtualMachineInstances": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "List of the SQL virtual machine instance resource id's that are enrolled into the availability group listener."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateIPAddress",
+    "properties": {
+      "ipAddress": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Private IP address bound to the availability group listener."
+      },
+      "subnetResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Subnet used to include private IP."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/158"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MultiSubnetIpConfiguration",
+    "properties": {
+      "privateIpAddress": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 1,
+        "description": "Private IP address."
+      },
+      "sqlVirtualMachineInstance": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "SQL virtual machine instance resource id that are enrolled into the availability group listener."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/162"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgConfiguration",
+    "properties": {
+      "replicas": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "Replica configurations."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgReplica",
+    "properties": {
+      "sqlVirtualMachineInstanceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Sql VirtualMachine Instance Id."
+      },
+      "role": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 0,
+        "description": "Replica Role in availability group."
+      },
+      "commit": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "Replica commit mode in availability group."
+      },
+      "failover": {
+        "type": {
+          "$ref": "#/174"
+        },
+        "flags": 0,
+        "description": "Replica failover mode in availability group."
+      },
+      "readableSecondary": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 0,
+        "description": "Replica readable secondary mode in availability group."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Primary"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Secondary"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Synchronous_Commit"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Asynchronous_Commit"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "No"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "All"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Read_Only"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/165"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/availabilityGroupListeners@2023-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/156"
+    },
+    "flags": 0
   },
   {
     "$type": "ObjectType",
@@ -2495,7 +2489,7 @@
     "properties": {
       "runDiskConfigRules": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/15"
         },
         "flags": 0,
         "description": "Boolean to run disk config Assessment. Use false to fetch past Assessment."
@@ -2508,12 +2502,18 @@
     "resourceType": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
     "apiVersion": "2023-10-01",
     "input": {
-      "$ref": "#/182"
+      "$ref": "#/181"
     }
   },
   {
     "$type": "ResourceFunctionType",
     "name": "redeploy",
+    "resourceType": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+    "apiVersion": "2023-10-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startAssessment",
     "resourceType": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
     "apiVersion": "2023-10-01"
   },
@@ -2544,7 +2544,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "Troubleshooting properties"

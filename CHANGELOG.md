@@ -5,6 +5,7 @@ DEPRECATIONS:
 
 ENHANCEMENTS:
 - Use `aztfauth` for the shared authentication logic.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/a3cf29cb316d792abe0a607f97469a577382ee77
 
 BUG FIXES:
 - Fix a bug that invalid resource ID containing `|` character is not detected when validating the configuration.
