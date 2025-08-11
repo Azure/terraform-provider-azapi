@@ -98,7 +98,13 @@ func Validate(ctx context.Context, client *clients.ResourceClient, resourceType 
 		return nil
 	}
 
-	resource["name"] = name
+	// the resource type and name must have same number of segment("/"), for example, if type is "virtualNetworks/subnets", the name field should be "vnetName/subnetName"
+	resourceAndParentName, err := ResourceAndParentName(id.ID(), scopeId)
+	if err != nil {
+		return err
+	}
+	resource["name"] = resourceAndParentName
+
 	resource["apiVersion"] = apiVersion
 
 	payload.Resources = []map[string]interface{}{resource}
@@ -131,6 +137,21 @@ func ScopeID(resourceId string) (string, error) {
 	return scopeId.String(), nil
 }
 
+func ResourceAndParentName(resourceId, scopeId string) (string, error) {
+	armId, err := arm.ParseResourceID(resourceId)
+	if err != nil {
+		return "", err
+	}
+
+	resourceAndParentName := armId.Name
+	for armId.Parent != nil && armId.Parent.String() != scopeId && armId.Parent.Name != "" {
+		resourceAndParentName = fmt.Sprintf("%s/%s", armId.Parent.Name, resourceAndParentName)
+		armId = armId.Parent
+	}
+
+	return resourceAndParentName, nil
+}
+
 func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *map[string]interface{}) error {
 	if input.IsNull() || input.IsUnknown() || input.IsUnderlyingValueUnknown() {
 		return fmt.Errorf("input is null or unknown")
@@ -141,7 +162,6 @@ func unmarshalPreflightBody(input types.Dynamic, identityList types.List, out *m
 	data, err := dynamic.ToJSONWithUnknownValueHandler(input, func(value attr.Value) ([]byte, error) {
 		return json.Marshal(unknownPlaceholder)
 	})
-
 	if err != nil {
 		return fmt.Errorf("marshaling failed: %v", err)
 	}

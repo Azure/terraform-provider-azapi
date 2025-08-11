@@ -180,3 +180,52 @@ func Test_ScopeID(t *testing.T) {
 		}
 	}
 }
+
+func Test_ResourceAndParentName(t *testing.T) {
+	testcases := []struct {
+		ResourceId                    string
+		ScopeId                       string
+		ExpectedResourceAndParentName string
+	}{
+		{
+			ResourceId:                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet",
+			ScopeId:                       "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
+			ExpectedResourceAndParentName: "vnet/mySubnet",
+		},
+		{
+			ResourceId:                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg/providers/Microsoft.Network/virtualNetworks/vnet",
+			ScopeId:                       "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
+			ExpectedResourceAndParentName: "vnet",
+		},
+		{
+			ResourceId:                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azapifakerg",
+			ScopeId:                       "/subscriptions/00000000-0000-0000-0000-000000000000",
+			ExpectedResourceAndParentName: "azapifakerg",
+		},
+		{
+			ResourceId:                    "/subscriptions/00000000-0000-0000-0000-000000000000",
+			ScopeId:                       "/",
+			ExpectedResourceAndParentName: "00000000-0000-0000-0000-000000000000",
+		},
+		{
+			ResourceId:                    "/providers/Microsoft.Management/managementGroups/azapifakemg",
+			ScopeId:                       "/",
+			ExpectedResourceAndParentName: "azapifakemg",
+		},
+		{
+			ResourceId:                    "/providers/Microsoft.Management/managementGroups/azapifakemg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet",
+			ScopeId:                       "/providers/Microsoft.Management/managementGroups/azapifakemg",
+			ExpectedResourceAndParentName: "vnet/mySubnet",
+		},
+	}
+
+	for _, testcase := range testcases {
+		actual, err := ResourceAndParentName(testcase.ResourceId, testcase.ScopeId)
+		if err != nil {
+			t.Errorf("Expected no error, but got %v", err)
+		}
+		if actual != testcase.ExpectedResourceAndParentName {
+			t.Errorf("Expected %s, but got %s", testcase.ExpectedResourceAndParentName, actual)
+		}
+	}
+}
