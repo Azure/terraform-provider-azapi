@@ -602,6 +602,7 @@ func TestAccGenericResource_unknownDiscriminator(t *testing.T) {
 			Config:             r.unknownDiscriminator(data),
 			PlanOnly:           true,
 			ExpectNonEmptyPlan: true,
+			ExternalProviders:  knownExternalProvidersAzurerm(),
 		},
 	})
 }
