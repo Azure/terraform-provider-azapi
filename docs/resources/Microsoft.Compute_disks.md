@@ -77,7 +77,7 @@ resource "azapi_resource" "disk" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Compute/disks@api-version`. The available api-versions for this resource are: [`2016-04-30-preview`, `2017-03-30`, `2018-04-01`, `2018-06-01`, `2018-09-30`, `2019-03-01`, `2019-07-01`, `2019-11-01`, `2020-05-01`, `2020-06-30`, `2020-09-30`, `2020-12-01`, `2021-04-01`, `2021-08-01`, `2021-12-01`, `2022-03-02`, `2022-07-02`, `2023-01-02`, `2023-04-02`, `2023-10-02`, `2024-03-02`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Compute/disks@api-version`. The available api-versions for this resource are: [`2016-04-30-preview`, `2017-03-30`, `2018-04-01`, `2018-06-01`, `2018-09-30`, `2019-03-01`, `2019-07-01`, `2019-11-01`, `2020-05-01`, `2020-06-30`, `2020-09-30`, `2020-12-01`, `2021-04-01`, `2021-08-01`, `2021-12-01`, `2022-03-02`, `2022-07-02`, `2023-01-02`, `2023-04-02`, `2023-10-02`, `2024-03-02`, `2025-01-02`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -95,5 +95,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{resourceName}?api-version=2024-03-02
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{resourceName}?api-version=2025-01-02
  ```

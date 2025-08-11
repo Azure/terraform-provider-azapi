@@ -65,7 +65,7 @@ resource "azapi_resource" "emailService" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Communication/emailServices@api-version`. The available api-versions for this resource are: [`2021-10-01-preview`, `2022-07-01-preview`, `2023-03-01-preview`, `2023-03-31`, `2023-04-01`, `2023-04-01-preview`, `2023-06-01-preview`, `2024-09-01-preview`, `2025-05-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Communication/emailServices@api-version`. The available api-versions for this resource are: [`2021-10-01-preview`, `2022-07-01-preview`, `2023-03-01-preview`, `2023-03-31`, `2023-04-01`, `2023-04-01-preview`, `2023-06-01-preview`, `2024-09-01-preview`, `2025-05-01`, `2025-05-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
