@@ -11,7 +11,7 @@ This article demonstrates how to use `azapi` provider to manage the Microsoft St
 
 ## Example Usage
 
-### basic
+### default
 
 ```hcl
 terraform {
@@ -24,6 +24,10 @@ terraform {
 
 provider "azapi" {
   skip_provider_registration = false
+}
+
+provider "azurerm" {
+  features {}
 }
 
 variable "resource_name" {

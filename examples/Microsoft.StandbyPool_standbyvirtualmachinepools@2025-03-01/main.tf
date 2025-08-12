@@ -10,6 +10,10 @@ provider "azapi" {
   skip_provider_registration = false
 }
 
+provider "azurerm" {
+  features {}
+}
+
 variable "resource_name" {
   type    = string
   default = "acctest0001"
