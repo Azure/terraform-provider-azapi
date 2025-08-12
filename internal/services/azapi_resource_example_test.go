@@ -162,11 +162,15 @@ func LoadTestcase(configPath string) (*ExampleTestcase, error) {
 	externalProviders := make(map[string]resource.ExternalProvider)
 	for _, block := range hclFile.Body().Blocks() {
 		if block.Type() == "variable" && len(block.Labels()) != 0 {
-			if block.Labels()[0] == "resource_name" {
+			switch block.Labels()[0] {
+			case "resource_name":
 				block.Body().SetAttributeValue("default", cty.StringVal(fmt.Sprintf("acctest%s", data.RandomString)))
-			}
-			if block.Labels()[0] == "subscription_id" {
+			case "subscription_id":
 				block.Body().SetAttributeValue("default", cty.StringVal(os.Getenv("ARM_SUBSCRIPTION_ID")))
+			case "admin_username":
+				block.Body().SetAttributeValue("default", cty.StringVal("acctestadminuser"))
+			case "admin_password", "vm_admin_password":
+				block.Body().SetAttributeValue("default", cty.StringVal("P@ssw0rd!1234"))
 			}
 		}
 		if block.Type() == "terraform" {
