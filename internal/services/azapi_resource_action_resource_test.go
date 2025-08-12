@@ -133,6 +133,32 @@ func TestAccActionResource_sensitiveOutput(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_updateApiVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.updateApiVersion(data, "2023-04-01", ``),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+		{
+			Config:             r.updateApiVersion(data, "2024-03-01", ``),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:             r.updateApiVersion(data, "2024-03-01", `"*"`),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+		{
+			Config: r.updateApiVersion(data, "2024-03-01", `"*"`),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -391,4 +417,22 @@ resource "azapi_resource_action" "test" {
   sensitive_response_export_values = ["*"]
 }
 `, data.RandomString)
+}
+
+func (r ActionResource) updateApiVersion(data acceptance.TestData, apiVersion string, responseExportValues string) string {
+	return fmt.Sprintf(`
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@%s"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = {
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  }
+  response_export_values = [%s]
+}
+`, apiVersion, data.RandomString, responseExportValues)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -18,6 +19,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -41,7 +43,7 @@ type ActionResourceModel struct {
 	Method                        types.String     `tfsdk:"method"`
 	Body                          types.Dynamic    `tfsdk:"body"`
 	When                          types.String     `tfsdk:"when"`
-	Locks                         types.List       `tfsdk:"locks"`
+	Locks                         types.List       `tfsdk:"locks" skip_on:"update"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
 	Output                        types.Dynamic    `tfsdk:"output"`
@@ -96,6 +98,18 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myvalidator.StringIsResourceType(),
 				},
 				PlanModifiers: []planmodifier.String{
+					// supress the plan diff when the resource type is the same
+					myplanmodifier.UseStateWhen(func(a, b types.String) bool {
+						aResourceType, _, err := utils.GetAzureResourceTypeApiVersion(a.ValueString())
+						if err != nil {
+							return false
+						}
+						bResourceType, _, err := utils.GetAzureResourceTypeApiVersion(b.ValueString())
+						if err != nil {
+							return false
+						}
+						return strings.EqualFold(aResourceType, bResourceType)
+					}),
 					stringplanmodifier.RequiresReplace(),
 				},
 				MarkdownDescription: docstrings.Type(),
@@ -232,7 +246,7 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		return
 	}
 
-	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) {
+	if state == nil || !dynamic.SemanticallyEqual(config.Body, state.Body) || !config.Headers.Equal(state.Headers) || !config.QueryParameters.Equal(state.QueryParameters) {
 		plan.Output = basetypes.NewDynamicUnknown()
 		plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 	} else {
@@ -244,6 +258,11 @@ func (r *ActionResource) ModifyPlan(ctx context.Context, request resource.Modify
 		if !plan.SensitiveResponseExportValues.Equal(state.SensitiveResponseExportValues) {
 			plan.SensitiveOutput = basetypes.NewDynamicUnknown()
 		}
+	}
+
+	// update the type if there are other changes that require API call
+	if plan.Output.IsUnknown() || plan.SensitiveOutput.IsUnknown() || !r.ProviderData.Features.IgnoreNoOpChanges {
+		plan.Type = config.Type
 	}
 
 	response.Diagnostics.Append(response.Plan.Set(ctx, plan)...)
