@@ -1,4 +1,4 @@
-## v2.6.0 (unreleased)
+## v2.6.0
 
 DEPRECATIONS:
 - `retry` block: The `multiplier` and `randomization_factor` are deprecated and will be removed in the next major release. Please remove them from the `retry` block. The provider will use the default values for these fields.
