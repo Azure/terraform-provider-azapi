@@ -12,7 +12,7 @@ This provider compliments the AzureRM provider by enabling the management of Azu
 
 * [Learn how to use azapi_update_resource](https://docs.microsoft.com/en-us/azure/developer/terraform/get-started-azapi-update-resource)
 
-* [AzApi VSCode Extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi) provides a rich authoring experience to help you use the AzApi provider.
+* VS Code users: install the [Microsoft Terraform extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) for authoring assistance (the former AzAPI VS Code extension has been deprecated and its features were merged here).
 
 Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
 
