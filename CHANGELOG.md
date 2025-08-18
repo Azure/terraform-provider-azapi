@@ -1,3 +1,13 @@
+## v2.7.0 (Unreleased)
+
+ENHANCEMENTS:
+- `azapi_resource` resource: Refactor move-state logic to centrally derive ARM IDs from data-plane IDs for selected azurerm resources.
+
+BUG FIXES:
+- `azapi_resource` resource: Support moving from `azurerm_storage_container` whose `id` is a data-plane URL by leveraging the `resource_manager_id` attribute (GH-955).
+- `azapi_resource` resource: Support moving from `azurerm_key_vault_secret` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute (GH-917).
+- `azapi_resource` resource: Support moving from `azurerm_key_vault_key` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute.
+
 ## v2.6.0
 
 DEPRECATIONS:
