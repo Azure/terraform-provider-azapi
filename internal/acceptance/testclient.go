@@ -33,6 +33,31 @@ func BuildTestClient() (*clients.Client, error) {
 			cloudConfig = cloud.AzureGovernment
 		case "china":
 			cloudConfig = cloud.AzureChina
+		case "custom":
+			{
+				activeDirectoryAuthorityHost := os.Getenv("ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST")
+				if activeDirectoryAuthorityHost == "" {
+					return nil, fmt.Errorf("`ARM_ACTIVE_DIRECTORY_AUTHORITY_HOST` must be set when `environment` is set to `custom`")
+				}
+				resourceManagerEndpoint := os.Getenv("ARM_RESOURCE_MANAGER_ENDPOINT")
+				if resourceManagerEndpoint == "" {
+					return nil, fmt.Errorf("`ARM_RESOURCE_MANAGER_ENDPOINT` must be set when `environment` is set to `custom`")
+				}
+				resourceManagerAudience := os.Getenv("ARM_RESOURCE_MANAGER_AUDIENCE")
+				if resourceManagerAudience == "" {
+					return nil, fmt.Errorf("`ARM_RESOURCE_MANAGER_AUDIENCE` must be set when `environment` is set to `custom`")
+				}
+
+				cloudConfig = cloud.Configuration{
+					ActiveDirectoryAuthorityHost: activeDirectoryAuthorityHost,
+					Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+						cloud.ResourceManager: {
+							Audience: resourceManagerAudience,
+							Endpoint: resourceManagerEndpoint,
+						},
+					},
+				}
+			}
 		default:
 			cloudConfig = cloud.AzurePublic
 		}
@@ -55,6 +80,7 @@ func BuildTestClient() (*clients.Client, error) {
 				ClientOptions: azcore.ClientOptions{
 					Cloud: cloudConfig,
 				},
+				DisableInstanceDiscovery: strings.EqualFold(os.Getenv("ARM_DISABLE_INSTANCE_DISCOVERY"), "true"),
 			})
 		if err != nil {
 			return nil, fmt.Errorf("failed to obtain a credential: %v", err)

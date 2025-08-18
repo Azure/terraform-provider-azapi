@@ -46,6 +46,22 @@ func TestAccGenericResource_basic(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_resourceGroup(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "resourceGroup")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			// Template contains only a Resource Group
+			Config: r.template(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStep(defaultIgnores()...),
+	})
+}
+
 func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1749,7 +1765,7 @@ resource "azapi_resource" "test2" {
 func (GenericResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  type     = "Microsoft.Resources/resourceGroups@2025-04-01"
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
