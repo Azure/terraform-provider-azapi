@@ -1149,6 +1149,10 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 					"id": schema.StringAttribute{
 						Computed: true,
 					},
+					// attempt to read the available attributes from the azurerm resource
+					"resource_manager_id":     schema.StringAttribute{Computed: true},
+					"resource_id":             schema.StringAttribute{Computed: true},
+					"resource_versionless_id": schema.StringAttribute{Computed: true},
 				},
 			},
 			StateMover: func(ctx context.Context, request resource.MoveStateRequest, response *resource.MoveStateResponse) {
@@ -1171,9 +1175,9 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 					return
 				}
 
-				azureId, err := parse.AzurermIdToAzureId(request.SourceTypeName, requestID)
-				if err != nil {
-					response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", requestID, err).Error())
+				azureId, diagErr := deriveAzureArmIdFromAzurermState(ctx, request.SourceTypeName, requestID, request.SourceState)
+				if diagErr != nil {
+					response.Diagnostics.AddError("Invalid Resource ID", fmt.Sprintf("parsing Resource ID %q: %s", requestID, diagErr))
 					return
 				}
 
@@ -1248,6 +1252,54 @@ func (r *AzapiResource) tagsWithDefaultTags(config types.Map, state *AzapiResour
 
 	// 5. return null if all the above cases are null
 	return types.MapNull(types.StringType)
+}
+
+// deriveAzureArmIdFromAzurermState attempts to convert an azurerm resource's primary ID (which may be a data-plane endpoint)
+// into the corresponding ARM ID. Some azurerm resources expose management-plane IDs using alternative attribute names.
+// Supported cases:
+//   - azurerm_storage_container: uses `resource_manager_id`
+//   - azurerm_key_vault_secret: uses `resource_versionless_id`
+//   - azurerm_key_vault_key: uses `resource_versionless_id`
+//
+// For all other resources, fallback to generic AzurermIdToAzureId conversion.
+func deriveAzureArmIdFromAzurermState(ctx context.Context, azurermType, primaryId string, sourceState *tfsdk.State) (string, error) {
+	lowerId := strings.ToLower(primaryId)
+	isHTTPS := strings.HasPrefix(lowerId, "https://")
+
+	switch azurermType {
+	case "azurerm_storage_container":
+		if isHTTPS {
+			if sourceState != nil {
+				var armId string
+				if err := sourceState.GetAttribute(ctx, path.Root("resource_manager_id"), &armId); err == nil && armId != "" {
+					return armId, nil
+				}
+			}
+			return "", fmt.Errorf("unable to derive ARM resource ID for storage container: missing attribute 'resource_manager_id' in source state")
+		}
+	case "azurerm_key_vault_secret":
+		if isHTTPS {
+			if sourceState != nil {
+				var armId string
+				if err := sourceState.GetAttribute(ctx, path.Root("resource_versionless_id"), &armId); err == nil && armId != "" {
+					return armId, nil
+				}
+			}
+			return "", fmt.Errorf("unable to derive ARM resource ID for key vault secret: missing attribute 'resource_versionless_id' in source state")
+		}
+	case "azurerm_key_vault_key":
+		if isHTTPS {
+			if sourceState != nil {
+				var armId string
+				if err := sourceState.GetAttribute(ctx, path.Root("resource_versionless_id"), &armId); err == nil && armId != "" {
+					return armId, nil
+				}
+			}
+			return "", fmt.Errorf("unable to derive ARM resource ID for key vault key: missing attribute 'resource_versionless_id' in source state")
+		}
+	}
+
+	return parse.AzurermIdToAzureId(azurermType, primaryId)
 }
 
 func (r *AzapiResource) locationWithDefaultLocation(configLocation types.String, planLocation types.String, state *AzapiResourceModel, body types.Dynamic, resourceDef *aztypes.ResourceType) types.String {
