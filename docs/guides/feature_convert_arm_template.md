@@ -2,17 +2,17 @@
 layout: "azapi"
 page_title: "Feature: Convert ARM Template/Resource JSON to AzAPI Configuration"
 description: |-
-  This guide will cover how to use AzAPI VSCode extension to convert ARM template/resource JSON to AzAPI configuration.
+  This guide will cover how to use the Microsoft Terraform VS Code extension to convert ARM template/resource JSON to AzAPI configuration.
 
 ---
 
-The AzAPI VSCode extension provides a feature to convert ARM template/resource JSON to AzAPI configuration. This feature is useful when you have an existing ARM template or resource JSON and want to convert it to AzAPI configuration.
+The Microsoft Terraform VS Code extension (which now includes the former AzAPI extension features) provides a capability to convert ARM template/resource JSON to AzAPI configuration. This is useful when you have an existing ARM template or resource JSON and want to convert it to AzAPI configuration.
 
 This article covers how to use the feature to convert ARM template/resource JSON to AzAPI configuration.
 
 ## Prerequisites
 
-- [AzAPI VSCode extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi) version 2.0.1 or later
+- [Microsoft Terraform VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) (includes AzAPI features)
 - [Terraform AzAPI provider](https://registry.terraform.io/providers/azure/azapi) version 2.0.1 or later
 
 ## Convert ARM template to AzAPI configuration
@@ -110,8 +110,8 @@ A step-by-step guide on how to export the ARM template from the Azure portal can
 }
 ```
 
-3. Paste the ARM template JSON in a `*.tf` file in the VSCode editor.  
-The AzAPI VSCode extension will automatically detect the ARM template JSON and convert it to AzAPI configuration.
+3. Paste the ARM template JSON in a `*.tf` file in the VS Code editor.  
+The Microsoft Terraform extension will automatically detect the ARM template JSON and convert it to AzAPI configuration.
 
 ```hcl
 variable "subscriptionId" {
@@ -260,7 +260,7 @@ For example, the following is a resource JSON:
 }
 ```
 
-Copy the resource JSON and paste it in a `*.tf` file in the VSCode editor. The AzAPI VSCode extension will automatically detect the resource JSON and convert it to AzAPI configuration, it will remove the read-only fields and only keep the fields that can be modified.
+Copy the resource JSON and paste it in a `*.tf` file in the VS Code editor. The Microsoft Terraform extension will automatically detect the resource JSON and convert it to AzAPI configuration; it will remove the read-only fields and only keep the fields that can be modified.
 
 Here is the converted AzAPI configuration:
 ```hcl
