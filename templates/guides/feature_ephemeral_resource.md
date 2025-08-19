@@ -36,7 +36,7 @@ ephemeral "azapi_resource_action" "listKeys" {
 
 To use the property `primary_access_key`, you can use the following code:
 
-```hcl
+```
 ephemeral.azapi_resource_action.listKeys.output.primary_access_key
 ```
 

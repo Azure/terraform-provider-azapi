@@ -21,7 +21,7 @@ data "azapi_resource_list" "listVirtualMachinesBySubscription" {
 
 The `output` attribute contains the result of the query, if default output is enabled(default output feature is introduced and by default enabled in version 2.1.0, you can disable it by setting `disable_default_output = true`):
 
-```hcl
+```
 {
   value = [
     {
