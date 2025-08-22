@@ -108,6 +108,16 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 		// Set a very high max retries to make sure context deadline is respected.
 		MaxRetries:  math.MaxInt16,
 		StatusCodes: statusCodes,
+		ShouldRetry: func(resp *http.Response, err error) bool {
+			// We need to test for status codes here too. This covers the case that these options are combined with
+			// retry options from NewRetryOptions, because the ShouldRetry function takes precedence over StatusCodes.
+			for _, code := range statusCodes {
+				if resp.StatusCode == code {
+					return true
+				}
+			}
+			return false
+		},
 	}
 }
 
