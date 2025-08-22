@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -48,7 +49,16 @@ func (client *ResourceClient) CreateOrUpdate(ctx context.Context, resourceID str
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+
+		log.Printf("[DEBUG] Retry configuration is custom: MaxRetries %d, RetryDelay %v, MaxRetryDelay %v, StatusCodes %v, ShouldRetryFunc %t",
+			options.RetryOptions.MaxRetries,
+			options.RetryOptions.RetryDelay,
+			options.RetryOptions.MaxRetryDelay,
+			options.RetryOptions.StatusCodes,
+			options.RetryOptions.ShouldRetry != nil,
+		)
 	}
+
 	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -103,7 +113,15 @@ func (client *ResourceClient) Get(ctx context.Context, resourceID string, apiVer
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+		log.Printf("[DEBUG] Retry configuration is custom: MaxRetries %d, RetryDelay %v, MaxRetryDelay %v, StatusCodes %v, ShouldRetryFunc %t",
+			options.RetryOptions.MaxRetries,
+			options.RetryOptions.RetryDelay,
+			options.RetryOptions.MaxRetryDelay,
+			options.RetryOptions.StatusCodes,
+			options.RetryOptions.ShouldRetry != nil,
+		)
 	}
+
 	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -142,7 +160,15 @@ func (client *ResourceClient) Delete(ctx context.Context, resourceID string, api
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+		log.Printf("[DEBUG] Retry configuration is custom: MaxRetries %d, RetryDelay %v, MaxRetryDelay %v, StatusCodes %v, ShouldRetryFunc %t",
+			options.RetryOptions.MaxRetries,
+			options.RetryOptions.RetryDelay,
+			options.RetryOptions.MaxRetryDelay,
+			options.RetryOptions.StatusCodes,
+			options.RetryOptions.ShouldRetry != nil,
+		)
 	}
+
 	urlPath := resourceID
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -193,6 +219,13 @@ func (client *ResourceClient) Action(ctx context.Context, resourceID string, act
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+		log.Printf("[DEBUG] Retry configuration is custom: MaxRetries %d, RetryDelay %v, MaxRetryDelay %v, StatusCodes %v, ShouldRetryFunc %t",
+			options.RetryOptions.MaxRetries,
+			options.RetryOptions.RetryDelay,
+			options.RetryOptions.MaxRetryDelay,
+			options.RetryOptions.StatusCodes,
+			options.RetryOptions.ShouldRetry != nil,
+		)
 	}
 	urlPath := resourceID
 	if action != "" {
@@ -266,7 +299,15 @@ func (client *ResourceClient) List(ctx context.Context, url string, apiVersion s
 	// override the default retry options with the ones provided in the options
 	if options.RetryOptions != nil {
 		ctx = policy.WithRetryOptions(ctx, *options.RetryOptions)
+		log.Printf("[DEBUG] Retry configuration is custom: MaxRetries %d, RetryDelay %v, MaxRetryDelay %v, StatusCodes %v, ShouldRetryFunc %t",
+			options.RetryOptions.MaxRetries,
+			options.RetryOptions.RetryDelay,
+			options.RetryOptions.MaxRetryDelay,
+			options.RetryOptions.StatusCodes,
+			options.RetryOptions.ShouldRetry != nil,
+		)
 	}
+
 	pager := runtime.NewPager(runtime.PagingHandler[interface{}]{
 		More: func(current interface{}) bool {
 			if current == nil {
