@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"strings"
 
@@ -309,7 +310,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"maximum_busy_retry_attempts": schema.Int32Attribute{
 				Optional:            true,
-				MarkdownDescription: "The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `3`. The resource-specific retry configuration may additionally be used to retry on other errors and conditions.",
+				MarkdownDescription: "DEPRECATED - The maximum number of retries to attempt if the Azure API returns an HTTP 408, 429, 500, 502, 503, or 504 response. The default is `32767`, this allows the provider to rely on the resource timeout values rather than a maximum retry count. The resource-specific retry configuration may additionally be used to retry on other errors and conditions. This property will be removed in a future version.",
 			},
 		},
 	}
@@ -601,7 +602,10 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 		response.Diagnostics.AddError("Failed to obtain a credential.", err.Error())
 		return
 	}
-	maxGoSdkRetryAttempts := int32(3)
+	// Set to high number to rely on the resource timeout value (context deadline).
+	// TODO: Next major version the `MaximumBusyRetryAttempts` property will be removed
+	// and the value should be fixed at math.MaxInt16.
+	maxGoSdkRetryAttempts := int32(math.MaxInt16)
 	if !model.MaximumBusyRetryAttempts.IsNull() {
 		maxGoSdkRetryAttempts = model.MaximumBusyRetryAttempts.ValueInt32()
 	}
