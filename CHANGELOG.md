@@ -1,3 +1,12 @@
+## v2.6.1
+
+DEPRECATIONS:
+- `azapi` provider: The `maximum_busy_retry_attempts` field is deprecated and will be removed in the next major release. Please remove them from the `azapi` provider block. The provider will use the default value for this field.
+
+BUG FIXES:
+- Fix a regression issue when authenticating via Managed Identity (MSI).
+- Fix a regression issue that default retry policy doesn't work.
+
 ## v2.6.0
 
 DEPRECATIONS:
