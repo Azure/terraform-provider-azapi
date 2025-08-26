@@ -1,37 +1,38 @@
 // sync-reference-doc
 //
 // Purpose
-//   Transforms Terraform example folders from an input directory (inDir)
-//   into a docs-friendly output structure (outDir) and generates a remarks.json
-//   index per namespace that lists the sample files.
+//
+//	Transforms Terraform example folders from an input directory (inDir)
+//	into a docs-friendly output structure (outDir) and generates a remarks.json
+//	index per namespace that lists the sample files.
 //
 // Key behaviors
 //   - Input folder layout: examples are grouped by resource-type-and-version folder names
-//       <Namespace>_<type_path_tokens_separated_by_"_">@<apiVersion>/[<scenario>]/main.tf
-//       e.g. Microsoft.AppPlatform_Spring_apps_deployments@2024-01-01/basic/main.tf
+//     <Namespace>_<type_path_tokens_separated_by_"_">@<apiVersion>/[<scenario>]/main.tf
+//     e.g. Microsoft.AppPlatform_Spring_apps_deployments@2024-01-01/basic/main.tf
 //   - Multiple scenarios: each resource folder may contain one or more scenario subfolders;
-//       each scenario folder must contain a main.tf. We also accept main.tf at the resource
-//       folder root when no scenario subfolders exist.
+//     each scenario folder must contain a main.tf. We also accept main.tf at the resource
+//     folder root when no scenario subfolders exist.
 //   - Scenario normalization: scenario names are sanitized by removing underscores and
-//       trimming whitespace; output paths and descriptions use the sanitized name.
+//     trimming whitespace; output paths and descriptions use the sanitized name.
 //   - Output folder layout: per-namespace folder under outDir, with nested sample folders
-//       by all type path tokens (lowercased) and optional scenario folder:
-//         <outDir>/<namespace_lower>/samples/<token1>/<token2>/.../<scenario>/main.tf
-//       e.g. .../microsoft.appplatform/samples/spring/apps/deployments/basic/main.tf
+//     by all type path tokens (lowercased) and optional scenario folder:
+//     <outDir>/<namespace_lower>/samples/<token1>/<token2>/.../<scenario>/main.tf
+//     e.g. .../microsoft.appplatform/samples/spring/apps/deployments/basic/main.tf
 //   - remarks.json location: written at the same level as the namespace's samples folder:
-//         <outDir>/<namespace_lower>/remarks.json
-//       Only the TerraformSamples array is updated; other top-level fields are preserved.
-//       If missing or unparsable, a new file is created with a default $schema value.
+//     <outDir>/<namespace_lower>/remarks.json
+//     Only the TerraformSamples array is updated; other top-level fields are preserved.
+//     If missing or unparsable, a new file is created with a default $schema value.
 //   - Friendly names: if tools/generator-example-doc/resource_types.json is provided (or
-//       -resourceTypes path is specified), descriptions use human-friendly resource names.
-//       The mapping is case-insensitive on the resource type key.
+//     -resourceTypes path is specified), descriptions use human-friendly resource names.
+//     The mapping is case-insensitive on the resource type key.
 //   - Logging: prints progress for discovery, copying, and remarks file generation.
 //
 // CLI
-//   -inDir         Input root directory for examples (default depends on current working dir)
-//   -outDir        Output root directory for docs structure (default depends on current dir)
-//   -resourceTypes Optional path to resource_types.json to enable friendly names
 //
+//	-inDir         Input root directory for examples (default depends on current working dir)
+//	-outDir        Output root directory for docs structure (default depends on current dir)
+//	-resourceTypes Optional path to resource_types.json to enable friendly names
 package main
 
 import (
@@ -196,7 +197,7 @@ func main() {
 		nsLower := strings.ToLower(ns)
 		nsDir := filepath.Join(outDir, nsLower)
 		samplesDir := filepath.Join(nsDir, "samples")
-		if err := os.MkdirAll(samplesDir, 0o755); err != nil {
+		if err := os.MkdirAll(samplesDir, 0o750); err != nil {
 			log.Fatalf("failed to create samples dir %s: %v", samplesDir, err)
 		}
 
@@ -211,7 +212,7 @@ func main() {
 			if s.ScenarioName != "" {
 				destSampleDir = filepath.Join(destSampleDir, strings.ToLower(s.ScenarioName))
 			}
-			if err := os.MkdirAll(destSampleDir, 0o755); err != nil {
+			if err := os.MkdirAll(destSampleDir, 0o750); err != nil {
 				log.Fatalf("failed to create sample dir %s: %v", destSampleDir, err)
 			}
 			// Copy main.tf
@@ -259,7 +260,7 @@ func main() {
 // initFriendlyNames initializes the friendlyNames map by reading the JSON file
 func initFriendlyNames(resourceTypeJsonFile string) error {
 	friendlyNames = make(map[string]string)
-	b, err := os.ReadFile(resourceTypeJsonFile)
+	b, err := os.ReadFile(filepath.Clean(resourceTypeJsonFile))
 	if err != nil {
 		return err
 	}
@@ -308,19 +309,19 @@ func parseSampleDirName(name string) (sampleInfo, error) {
 }
 
 func copyFile(src, dst string) error {
-	in, err := os.Open(src)
+	in, err := os.Open(filepath.Clean(src))
 	if err != nil {
 		return err
 	}
 	defer in.Close()
 
 	// Ensure destination directory exists
-	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(dst), 0o750); err != nil {
 		return err
 	}
 
 	tmp := dst + ".tmp"
-	out, err := os.Create(tmp)
+	out, err := os.OpenFile(filepath.Clean(tmp), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o600)
 	if err != nil {
 		return err
 	}
@@ -334,10 +335,10 @@ func copyFile(src, dst string) error {
 		return err
 	}
 	// Best-effort to copy file mode from src
-	if fi, err := os.Stat(src); err == nil {
-		_ = os.Chmod(tmp, fi.Mode())
+	if fi, err := os.Stat(filepath.Clean(src)); err == nil {
+		_ = os.Chmod(filepath.Clean(tmp), fi.Mode())
 	}
-	return os.Rename(tmp, dst)
+	return os.Rename(filepath.Clean(tmp), filepath.Clean(dst))
 }
 
 func writeJSON(path string, v any) error {
@@ -346,10 +347,10 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	b = append(b, '\n')
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), 0o750); err != nil {
 		return err
 	}
-	return os.WriteFile(path, b, 0o644)
+	return os.WriteFile(filepath.Clean(path), b, 0o600)
 }
 
 // writeOrMergeRemarks writes a remarks.json file at path. If a file already exists,
@@ -358,7 +359,7 @@ func writeJSON(path string, v any) error {
 // default $schema value and the provided samples.
 func writeOrMergeRemarks(path string, samples []terraformSample) error {
 	var existing map[string]any
-	b, err := os.ReadFile(path)
+	b, err := os.ReadFile(filepath.Clean(path))
 	if err == nil {
 		if json.Unmarshal(b, &existing) != nil {
 			existing = nil // treat as not existing / unparsable
