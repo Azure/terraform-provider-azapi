@@ -121,5 +121,17 @@ teamcity-test:
 example-test:
 	TF_ACC=1 ARM_TEST_EXAMPLES=${TARGET} go test -v ./internal/services/... -run TestAccExamples_Selected -timeout $(TESTTIMEOUT) -ldflags="-X=github.com/Azure/terraform-provider-azapi/version.ProviderVersion=acc"
 
+# Run the sync-reference-doc tool to transform examples into the reference docs structure
+# Usage:
+#   make sync-reference-doc
+#   make sync-reference-doc INDIR=examples OUTDIR=../bicep-refdocs-generator/settings/remarks RESOURCETYPES=tools/generator-example-doc/resource_types.json
+INDIR ?= examples
+OUTDIR ?= ../bicep-refdocs-generator/settings/remarks
+RESOURCETYPES ?= tools/generator-example-doc/resource_types.json
 
-.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test example-test
+sync-reference-doc:
+	@echo "==> Running sync-reference-doc"
+	go run ./tools/sync-reference-doc -inDir $(INDIR) -outDir $(OUTDIR) -resourceTypes $(RESOURCETYPES)
+
+
+.PHONY: docs build build-docker test test-docker testacc vet fmt fmtcheck errcheck scaffold-website tools test-compile website website-test example-test sync-reference-doc
