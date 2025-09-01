@@ -1,0 +1,52 @@
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+  skip_provider_registration = false
+}
+
+variable "resource_name" {
+  type    = string
+  default = "acctest0001"
+}
+
+variable "location" {
+  type    = string
+  default = "westus"
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
+}
+
+resource "azapi_resource" "staticSite" {
+  type      = "Microsoft.Web/staticSites@2021-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
+  body = {
+    properties = {}
+    sku = {
+      name = "Free"
+    }
+  }
+}
+
+resource "azapi_resource" "customDomain" {
+  type      = "Microsoft.Web/staticSites/customDomains@2021-02-01"
+  parent_id = azapi_resource.staticSite.id
+  name      = "${var.resource_name}.contoso.com"
+  body = {
+    properties = {
+      validationMethod = "dns-txt-token"
+    }
+  }
+}
+
