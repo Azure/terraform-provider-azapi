@@ -156,7 +156,7 @@ resource "azapi_resource" "lock_this" {
 
 It is also possible to rename the `azapi_resource` label, for example:
 
-```hcl
+```
 
 moved {
   from = azurerm_management_lock.this

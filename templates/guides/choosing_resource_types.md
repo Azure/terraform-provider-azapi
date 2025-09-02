@@ -36,7 +36,7 @@ resource "azapi_resource" "container_registry" {
   name      = "myregistry"
   parent_id = azurerm_resource_group.example.id
   location  = "East US"
-  
+
   body = {
     properties = {
       adminUserEnabled = true
@@ -53,7 +53,7 @@ resource "azapi_resource" "cognitive_service" {
   name      = "mycognitiveservice"
   parent_id = azurerm_resource_group.example.id
   location  = "East US"
-  
+
   body = {
     properties = {
       # Preview feature not yet in AzureRM
@@ -87,7 +87,7 @@ Use `azapi_update_resource` when you need to **modify specific properties** of a
 resource "azapi_update_resource" "add_tags" {
   type        = "Microsoft.Storage/storageAccounts@2023-01-01"
   resource_id = azurerm_storage_account.example.id
-  
+
   body = {
     tags = {
       Environment = "Production"
@@ -101,7 +101,7 @@ resource "azapi_update_resource" "add_tags" {
 resource "azapi_update_resource" "enable_cmk" {
   type        = "Microsoft.ServiceBus/namespaces@2021-11-01"
   resource_id = azurerm_servicebus_namespace.example.id
-  
+
   body = {
     properties = {
       encryption = {
@@ -115,7 +115,7 @@ resource "azapi_update_resource" "enable_cmk" {
       }
     }
   }
-  
+
   depends_on = [
     azurerm_servicebus_namespace.example,
     azurerm_key_vault_key.example
@@ -126,7 +126,7 @@ resource "azapi_update_resource" "enable_cmk" {
 resource "azapi_update_resource" "diagnostic_settings" {
   type        = "Microsoft.Network/networkSecurityGroups@2023-02-01"
   resource_id = azurerm_network_security_group.example.id
-  
+
   body = {
     properties = {
       diagnosticsSettings = {
@@ -171,7 +171,7 @@ resource "azapi_resource_action" "vm_start_stop" {
   resource_id = azurerm_linux_virtual_machine.example.id
   action      = var.vm_should_be_running ? "start" : "deallocate"
   method      = "POST"
-  
+
   depends_on = [azurerm_linux_virtual_machine.example]
 }
 
@@ -181,10 +181,10 @@ resource "azapi_resource_action" "app_service_restart" {
   resource_id = azurerm_linux_web_app.example.id
   action      = "restart"
   method      = "POST"
-  
+
   # Trigger restart when app settings change
   response_export_values = ["*"]
-  
+
   depends_on = [azurerm_linux_web_app.example]
 }
 
@@ -194,7 +194,7 @@ resource "azapi_resource_action" "storage_backup" {
   resource_id = azurerm_storage_account.example.id
   action      = "backup"
   method      = "POST"
-  
+
   body = {
     backupType = "full"
   }
@@ -224,7 +224,7 @@ resource "azapi_resource" "servicebus_namespace" {
   name      = "my-servicebus-namespace"
   parent_id = azurerm_resource_group.example.id
   location  = "East US"
-  
+
   body = {
     sku = {
       name = "Premium"
@@ -244,8 +244,8 @@ resource "azurerm_key_vault" "example" {
   name                = "my-keyvault"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
-  tenant_id          = data.azurerm_client_config.current.tenant_id
-  sku_name           = "premium"
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "premium"
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
@@ -274,7 +274,7 @@ resource "azurerm_key_vault_key" "example" {
 resource "azapi_update_resource" "enable_cmk" {
   type        = "Microsoft.ServiceBus/namespaces@2021-11-01"
   resource_id = azapi_resource.servicebus_namespace.id
-  
+
   body = {
     properties = {
       encryption = {
@@ -289,7 +289,7 @@ resource "azapi_update_resource" "enable_cmk" {
       }
     }
   }
-  
+
   depends_on = [
     azapi_resource.servicebus_namespace,
     azurerm_key_vault_key.example
@@ -303,7 +303,7 @@ Use `azapi_resource_action` for conditional operations:
 ```terraform
 resource "azapi_resource_action" "conditional_restart" {
   count = var.restart_required ? 1 : 0
-  
+
   type        = "Microsoft.Web/sites@2022-03-01"
   resource_id = azurerm_linux_web_app.example.id
   action      = "restart"
@@ -319,8 +319,8 @@ Enhance AzureRM resources with additional capabilities:
 resource "azurerm_storage_account" "example" {
   name                     = "mystorageaccount"
   resource_group_name      = azurerm_resource_group.example.name
-  location                = azurerm_resource_group.example.location
-  account_tier            = "Standard"
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
@@ -328,7 +328,7 @@ resource "azurerm_storage_account" "example" {
 resource "azapi_update_resource" "storage_enhanced" {
   type        = "Microsoft.Storage/storageAccounts@2023-01-01"
   resource_id = azurerm_storage_account.example.id
-  
+
   body = {
     properties = {
       # Preview feature not yet in AzureRM
