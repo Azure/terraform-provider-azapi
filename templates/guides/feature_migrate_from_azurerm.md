@@ -14,7 +14,7 @@ This guide is intended to help you migrate your existing AzureRM resources to Az
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/downloads.html) version 1.8.0 or later
-- [AzAPI VSCode extension](https://marketplace.visualstudio.com/items?itemName=azapi-vscode.azapi) version 2.1.0 or later
+- [Microsoft Terraform VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) (includes AzAPI features)
 - [Terraform AzAPI provider](https://registry.terraform.io/providers/azure/azapi) version 2.1.0 or later
 
 ## Migration Steps
