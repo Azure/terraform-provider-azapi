@@ -1,8 +1,8 @@
 # Terraform Provider for Azure Resource Manager Rest API
 
-The AzAPI provider is a very thin layer on top of the Azure ARM REST APIs. Use this new provider to authenticate to and manage Azure resources and functionality using the Azure Resource Manager APIs directly.
+The AzAPI provider is a very thin layer on top of the [Azure ARM REST APIs](https://learn.microsoft.com/rest/api/azure). Use this new provider to authenticate to and manage Azure resources and functionality using the Azure Resource Manager APIs directly.
 
-This provider compliments the AzureRM provider by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
+This provider complements the AzureRM provider by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
 
 ## Get started with AzApi
 
