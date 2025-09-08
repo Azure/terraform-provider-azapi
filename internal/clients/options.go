@@ -99,6 +99,7 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 
 // NewRetryOptionsForReadAfterCreate creates a RetryOptions for read-after-create operations.
 func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
+	log.Printf("[DEBUG] Using custom retry configuration for read after create")
 	statusCodes := make([]int, 0)
 	statusCodes = append(statusCodes, DefaultRetryableStatusCodes...)
 	// Add default read after create values for the default retry configuration.
@@ -107,6 +108,16 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 		// Set a very high max retries to make sure context deadline is respected.
 		MaxRetries:  math.MaxInt16,
 		StatusCodes: statusCodes,
+		ShouldRetry: func(resp *http.Response, err error) bool {
+			// We need to test for status codes here too. This covers the case that these options are combined with
+			// retry options from NewRetryOptions, because the ShouldRetry function takes precedence over StatusCodes.
+			for _, code := range statusCodes {
+				if resp.StatusCode == code {
+					return true
+				}
+			}
+			return false
+		},
 	}
 }
 
@@ -124,6 +135,13 @@ func NewRetryOptions(rtry retry.RetryValue) *policy.RetryOptions {
 		MaxRetries:  math.MaxInt16,
 		StatusCodes: DefaultRetryableStatusCodes,
 		ShouldRetry: func(resp *http.Response, err error) bool {
+			// We need to test for DefaultRetryableStatusCodes here as using ShouldRetry overrides the use of StatusCodes.
+			for _, code := range DefaultRetryableStatusCodes {
+				if resp.StatusCode == code {
+					return true
+				}
+			}
+
 			// Get the error message to check against regex patterns,
 			// If use the err.Error() string first, else get the response error from the HTTP response.
 			var errorMsg string

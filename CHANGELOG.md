@@ -1,3 +1,24 @@
+## v2.7.0 (Unreleased)
+
+ENHANCEMENTS:
+- `azapi_resource` resource: Refactor move-state logic to centrally derive ARM IDs from data-plane IDs for selected azurerm resources.
+- Add more verified `azapi` examples.
+- Add documentation for choosing the resource type.
+
+BUG FIXES:
+- `azapi_resource` resource: Support moving from `azurerm_storage_container` whose `id` is a data-plane URL by leveraging the `resource_manager_id` attribute (GH-955).
+- `azapi_resource` resource: Support moving from `azurerm_key_vault_secret` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute (GH-917).
+- `azapi_resource` resource: Support moving from `azurerm_key_vault_key` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute.
+
+## v2.6.1
+
+DEPRECATIONS:
+- `azapi` provider: The `maximum_busy_retry_attempts` field is deprecated and will be removed in the next major release. Please remove them from the `azapi` provider block. The provider will use the default value for this field.
+
+BUG FIXES:
+- Fix a regression issue when authenticating via Managed Identity (MSI).
+- Fix a regression issue that default retry policy doesn't work.
+
 ## v2.6.0
 
 DEPRECATIONS:
