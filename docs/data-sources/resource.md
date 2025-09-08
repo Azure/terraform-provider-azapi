@@ -116,8 +116,8 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 ### Read-Only
 
-- `id` (String) The ID of the Azure resource.
 - `exists` (Boolean) Indicates whether the specified Azure resource exists. This will be `false` only when `ignore_not_found` is `true` and the resource isn't found.
+- `id` (String) The ID of the Azure resource.
 - `identity` (Attributes List) (see [below for nested schema](#nestedatt--identity))
 - `location` (String) The location of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.

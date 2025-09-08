@@ -146,7 +146,7 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"ignore_not_found": schema.BoolAttribute{
-				Optional: true,
+				Optional:            true,
 				MarkdownDescription: "If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.",
 			},
 

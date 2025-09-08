@@ -272,11 +272,11 @@ data "azapi_client_config" "this" {}
 
 // intentionally querying a non-existing RG name to trigger 404
 data "azapi_resource" "test" {
-	type             = "Microsoft.Resources/resourceGroups@2024-03-01"
-	name             = "acctestRG-not-exist-%[1]d"
-	parent_id        = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
-	ignore_not_found = true
-	response_export_values = ["*"]
+  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name                   = "acctestRG-not-exist-%[1]d"
+  parent_id              = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+  ignore_not_found       = true
+  response_export_values = ["*"]
 }
 `, data.RandomInteger)
 }
