@@ -2,12 +2,12 @@
 subcategory: "Microsoft.App - Azure Container Apps"
 page_title: "managedEnvironments/privateEndpointConnections"
 description: |-
-  Manages a Container App Environment Private Endpoin.
+  Manages a Container App Environment Private Endpoint Connection.
 ---
 
-# Microsoft.App/managedEnvironments/privateEndpointConnections - Container App Environment Private Endpoin
+# Microsoft.App/managedEnvironments/privateEndpointConnections - Container App Environment Private Endpoint Connection
 
-This article demonstrates how to use `azapi` provider to manage the Container App Environment Private Endpoin resource in Azure.
+This article demonstrates how to use `azapi` provider to manage the Container App Environment Private Endpoint Connection resource in Azure.
 
 ## Example Usage
 
