@@ -4,6 +4,8 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Refactor move-state logic to centrally derive ARM IDs from data-plane IDs for selected azurerm resources.
 - Add more verified `azapi` examples.
 - Add documentation for choosing the resource type.
+- `azapi_resource` data source: Support `ignore_not_found` argument and `exists` computed field to optionally suppress 404 errors and expose resource existence.
+- `azapi_resource` data source: Support `ignore_not_found` argument to optionally suppress 404 errors and return null/empty attributes instead.
 
 BUG FIXES:
 - `azapi_resource` resource: Support moving from `azurerm_storage_container` whose `id` is a data-plane URL by leveraging the `resource_manager_id` attribute (GH-955).
