@@ -164,7 +164,7 @@ moved {
 }
 
 resource "azapi_resource" "cluster_lock" { // previously azapi_resource.lock_this
-  ...
+  # more properties
 }
 ```
 

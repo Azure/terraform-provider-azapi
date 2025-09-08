@@ -69,7 +69,7 @@ data "azapi_resource" "virtualMachine" {
 
 The `output` attribute contains the result of the queries:
 
-```hcl
+```
 {
   admin = "azureuser"
   ssh_key = "ssh-rsa AA***V stramer@contoso"
@@ -160,7 +160,7 @@ data "azapi_resource_list" "listVirtualMachinesBySubscription" {
 
 The `output` attribute contains the result of the query:
 
-```hcl
+```
 {
   query = [
     {
@@ -195,7 +195,7 @@ data "azapi_resource_list" "listLinuxVirtualMachinesBySubscription" {
 
 The `output` attribute contains the result of the query:
 
-```hcl
+```
 {
   query = [
     {
