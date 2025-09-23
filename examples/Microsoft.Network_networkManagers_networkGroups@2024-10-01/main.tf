@@ -44,7 +44,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "networkManager" {
-  type      = "Microsoft.Network/networkManagers@2022-09-01"
+  type      = "Microsoft.Network/networkManagers@2024-10-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -52,7 +52,7 @@ resource "azapi_resource" "networkManager" {
     properties = {
       description = ""
       networkManagerScopeAccesses = [
-        "SecurityAdmin",
+        "Routing",
       ]
       networkManagerScopes = {
         managementGroups = [
@@ -68,14 +68,15 @@ resource "azapi_resource" "networkManager" {
 }
 
 resource "azapi_resource" "networkGroup" {
-  type      = "Microsoft.Network/networkManagers/networkGroups@2022-09-01"
+  type      = "Microsoft.Network/networkManagers/networkGroups@2024-10-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
   body = {
     properties = {
+      description = "example network group"
+      memberType  = "VirtualNetwork"
     }
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
-
