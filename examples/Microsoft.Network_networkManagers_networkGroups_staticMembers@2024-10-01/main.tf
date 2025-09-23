@@ -44,7 +44,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "networkManager" {
-  type      = "Microsoft.Network/networkManagers@2022-09-01"
+  type      = "Microsoft.Network/networkManagers@2024-10-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -52,7 +52,7 @@ resource "azapi_resource" "networkManager" {
     properties = {
       description = ""
       networkManagerScopeAccesses = [
-        "SecurityAdmin",
+        "Routing",
       ]
       networkManagerScopes = {
         managementGroups = [
@@ -68,7 +68,7 @@ resource "azapi_resource" "networkManager" {
 }
 
 resource "azapi_resource" "virtualNetwork" {
-  type      = "Microsoft.Network/virtualNetworks@2022-07-01"
+  type      = "Microsoft.Network/virtualNetworks@2024-10-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -95,7 +95,7 @@ resource "azapi_resource" "virtualNetwork" {
 }
 
 resource "azapi_resource" "networkGroup" {
-  type      = "Microsoft.Network/networkManagers/networkGroups@2022-09-01"
+  type      = "Microsoft.Network/networkManagers/networkGroups@2024-10-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
   body = {
@@ -107,7 +107,7 @@ resource "azapi_resource" "networkGroup" {
 }
 
 resource "azapi_resource" "staticMember" {
-  type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2022-09-01"
+  type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2024-10-01"
   parent_id = azapi_resource.networkGroup.id
   name      = var.resource_name
   body = {
@@ -119,3 +119,44 @@ resource "azapi_resource" "staticMember" {
   response_export_values    = ["*"]
 }
 
+resource "azapi_resource" "subnet" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-10-01"
+  parent_id = azapi_resource.virtualNetwork.id
+  name      = var.resource_name
+  body = {
+    properties = {
+      addressPrefixes = [
+        "10.0.0.0/24"
+      ]
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+
+resource "azapi_resource" "networkGroupForSubnet" {
+  type      = "Microsoft.Network/networkManagers/networkGroups@2024-10-01"
+  parent_id = azapi_resource.networkManager.id
+  name      = "${var.resource_name}-subnet"
+  body = {
+    properties = {
+      description = "example network group"
+      memberType  = "Subnet"
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+
+resource "azapi_resource" "staticMemberForSubnet" {
+  type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2024-10-01"
+  parent_id = azapi_resource.networkGroupForSubnet.id
+  name      = "${var.resource_name}-subnet"
+  body = {
+    properties = {
+      resourceId = azapi_resource.subnet.id
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}

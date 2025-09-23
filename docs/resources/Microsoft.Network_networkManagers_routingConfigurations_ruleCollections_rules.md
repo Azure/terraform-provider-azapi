@@ -51,7 +51,7 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "networkManager" {
-  type      = "Microsoft.Network/networkManagers@2024-05-01"
+  type      = "Microsoft.Network/networkManagers@2024-10-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -75,7 +75,7 @@ resource "azapi_resource" "networkManager" {
 }
 
 resource "azapi_resource" "networkGroup" {
-  type      = "Microsoft.Network/networkManagers/networkGroups@2024-05-01"
+  type      = "Microsoft.Network/networkManagers/networkGroups@2024-10-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
   body = {
@@ -87,7 +87,7 @@ resource "azapi_resource" "networkGroup" {
 }
 
 resource "azapi_resource" "virtualNetwork" {
-  type      = "Microsoft.Network/virtualNetworks@2024-05-01"
+  type      = "Microsoft.Network/virtualNetworks@2024-10-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
@@ -114,7 +114,7 @@ resource "azapi_resource" "virtualNetwork" {
 }
 
 resource "azapi_resource" "staticMember" {
-  type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2024-05-01"
+  type      = "Microsoft.Network/networkManagers/networkGroups/staticMembers@2024-10-01"
   parent_id = azapi_resource.networkGroup.id
   name      = var.resource_name
   body = {
@@ -127,12 +127,13 @@ resource "azapi_resource" "staticMember" {
 }
 
 resource "azapi_resource" "routingConfiguration" {
-  type      = "Microsoft.Network/networkManagers/routingConfigurations@2024-05-01"
+  type      = "Microsoft.Network/networkManagers/routingConfigurations@2024-10-01"
   parent_id = azapi_resource.networkManager.id
   name      = var.resource_name
   body = {
     properties = {
-      description = "example routing configuration"
+      description         = "example routing configuration"
+      routeTableUsageMode = "UseExisting"
     }
   }
   schema_validation_enabled = false
@@ -140,7 +141,7 @@ resource "azapi_resource" "routingConfiguration" {
 }
 
 resource "azapi_resource" "ruleCollection" {
-  type      = "Microsoft.Network/networkManagers/routingConfigurations/ruleCollections@2024-05-01"
+  type      = "Microsoft.Network/networkManagers/routingConfigurations/ruleCollections@2024-10-01"
   parent_id = azapi_resource.routingConfiguration.id
   name      = var.resource_name
   body = {
@@ -158,7 +159,7 @@ resource "azapi_resource" "ruleCollection" {
 }
 
 resource "azapi_resource" "rule" {
-  type      = "Microsoft.Network/networkManagers/routingConfigurations/ruleCollections/rules@2024-05-01"
+  type      = "Microsoft.Network/networkManagers/routingConfigurations/ruleCollections/rules@2024-10-01"
   parent_id = azapi_resource.ruleCollection.id
   name      = var.resource_name
   body = {
@@ -184,7 +185,7 @@ resource "azapi_resource" "rule" {
 }
 
 resource "azapi_resource_action" "deploy" {
-  type        = "Microsoft.Network/networkManagers@2024-05-01"
+  type        = "Microsoft.Network/networkManagers@2024-10-01"
   action      = "commit"
   when        = "apply"
   resource_id = azapi_resource.networkManager.id
@@ -202,7 +203,7 @@ resource "azapi_resource_action" "deploy" {
 
 # this one is to remove the deployment when `terraform destroy` is called
 resource "azapi_resource_action" "undeploy" {
-  type        = "Microsoft.Network/networkManagers@2024-05-01"
+  type        = "Microsoft.Network/networkManagers@2024-10-01"
   action      = "commit"
   when        = "destroy"
   resource_id = azapi_resource.networkManager.id
