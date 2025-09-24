@@ -6,6 +6,7 @@ ENHANCEMENTS:
 - Add documentation for choosing the resource type.
 
 BUG FIXES:
+- `azapi_client_config` data source: Fix a bug that specified subscription ID should not be overridden by Azure CLI default subscription ID.
 - `azapi_resource` resource: Support moving from `azurerm_storage_container` whose `id` is a data-plane URL by leveraging the `resource_manager_id` attribute (GH-955).
 - `azapi_resource` resource: Support moving from `azurerm_key_vault_secret` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute (GH-917).
 - `azapi_resource` resource: Support moving from `azurerm_key_vault_key` whose `id` is a data-plane URL by leveraging the `resource_versionless_id` attribute.
