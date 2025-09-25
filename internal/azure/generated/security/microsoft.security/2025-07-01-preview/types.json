@@ -1,0 +1,451 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "current"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/1"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Security/defenderForStorageSettings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-07-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Security/defenderForStorageSettings",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Defender for Storage resource properties."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DefenderForStorageSettingProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether Defender for Storage is enabled on this storage account."
+      },
+      "malwareScanning": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "Properties of Malware Scanning."
+      },
+      "sensitiveDataDiscovery": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Properties of Sensitive Data Discovery."
+      },
+      "overrideSubscriptionLevelSettings": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether the settings defined for this storage account should override the settings defined for the subscription."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MalwareScanningProperties",
+    "properties": {
+      "onUpload": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "Properties of On Upload malware scanning."
+      },
+      "scanResultsEventGridTopicResourceId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Optional. Resource id of an Event Grid Topic to send scan results to."
+      },
+      "blobScanResultsOptions": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Optional. Write scan result on BlobIndexTags by default."
+      },
+      "automatedResponse": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Optional. Specifies the automated response action to take when malware is detected."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnUploadProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether On Upload malware scanning should be enabled."
+      },
+      "capGBPerMonth": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "Defines the max GB to be scanned per Month. Set to -1 if no capping is needed. If not specified, the default value is -1."
+      },
+      "filters": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "Optional. Determine which blobs get scanned by On Upload malware scanning. An Or operation is performed between each filter type."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OnUploadFilters",
+    "properties": {
+      "excludeBlobsWithPrefix": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Optional. A list of prefixes to exclude from on-upload malware scanning.\nFormat: `container-name/blob-name` (start with the container name; do not include the storage account name).\nExclude entire containers: Use prefix of container names you want to exclude without a trailing `/`.\nExclude a single container: Add a trailing slash `/` after the container name to avoid excluding other containers with similar prefixes."
+      },
+      "excludeBlobsWithSuffix": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "Optional. A list of suffixes to exclude from on-upload malware scanning. Suffixes match only the end of blob names, and should be used for file extensions or blob name endings only."
+      },
+      "excludeBlobsLargerThan": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive integer value. Blobs larger than this value will be excluded from scanning."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BlobIndexTags"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BlobSoftDelete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "OperationStatus",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The operation status code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Additional information regarding the success/failure of the operation."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SensitiveDataDiscoveryProperties",
+    "properties": {
+      "isEnabled": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Indicates whether Sensitive Data Discovery should be enabled."
+      },
+      "operationStatus": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 2,
+        "description": "Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Security/defenderForStorageSettings@2025-07-01-preview",
+    "scopeType": 0,
+    "body": {
+      "$ref": "#/5"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MalwareScan",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MalwareScanProperties",
+    "properties": {
+      "scanId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identifier of the scan."
+      },
+      "scanStatus": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A status code of the scan operation."
+      },
+      "scanStatusMessage": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "A description of the status of the scan."
+      },
+      "scanStartTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time at which the scan had been initiated."
+      },
+      "scanEndTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time at which the scan has ended. Only available for a scan which has terminated."
+      },
+      "scanSummary": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "A summary of the scan results."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScanSummary",
+    "properties": {
+      "blobs": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "A summary of the scan results of the blobs that were scanned."
+      },
+      "estimatedScanCostUSD": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The estimated cost of the scan. Only available for a scan which has terminated."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlobsScanSummary",
+    "properties": {
+      "totalBlobsScanned": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The total number of blobs that were scanned."
+      },
+      "maliciousBlobsCount": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The number of malicious blobs that were detected during the scan."
+      },
+      "skippedBlobsCount": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The number of blobs that were skipped."
+      },
+      "failedBlobsCount": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The number of failed blob scans."
+      },
+      "scannedBlobsInGB": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The number of gigabytes of data that were scanned."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startMalwareScan",
+    "resourceType": "Microsoft.Security/defenderForStorageSettings",
+    "apiVersion": "2025-07-01-preview",
+    "output": {
+      "$ref": "#/24"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancelMalwareScan",
+    "resourceType": "Microsoft.Security/defenderForStorageSettings/malwareScans",
+    "apiVersion": "2025-07-01-preview",
+    "output": {
+      "$ref": "#/24"
+    }
+  }
+]

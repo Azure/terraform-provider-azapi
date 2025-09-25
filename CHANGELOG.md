@@ -5,6 +5,7 @@ ENHANCEMENTS:
 - Add more verified `azapi` examples.
 - Add documentation for choosing the resource type.
 - `azapi_resource` data source: Support `ignore_not_found` argument and `exists` computed field to optionally suppress 404 errors and expose resource existence.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/6b9ca69c973d29e6cf745cb5f25b13ee033de985
 
 BUG FIXES:
 - `azapi_client_config` data source: Fix a bug that specified subscription ID should not be overridden by Azure CLI default subscription ID.

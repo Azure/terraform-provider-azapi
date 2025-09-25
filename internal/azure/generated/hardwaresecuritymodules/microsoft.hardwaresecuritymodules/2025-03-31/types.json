@@ -893,26 +893,26 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "Properties of the dedicated HSM"
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/92"
         },
         "flags": 1,
         "description": "SKU details"
       },
       "zones": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "The availability zones."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/89"
-        },
-        "flags": 1,
-        "description": "Properties of the dedicated HSM"
       },
       "tags": {
         "type": {
@@ -939,94 +939,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Sku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/87"
-        },
-        "flags": 0,
-        "description": "SKU of the dedicated HSM"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SafeNet Luna Network HSM A790"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK1_CPS60"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK1_CPS250"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK1_CPS2500"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK2_CPS60"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK2_CPS250"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "payShield10K_LMK2_CPS2500"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/80"
-      },
-      {
-        "$ref": "#/81"
-      },
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/84"
-      },
-      {
-        "$ref": "#/85"
-      },
-      {
-        "$ref": "#/86"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "DedicatedHsmProperties",
     "properties": {
       "networkProfile": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Specifies the network interfaces of the dedicated hsm."
       },
       "managementNetworkProfile": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Specifies the management network interfaces of the dedicated hsm."
@@ -1047,7 +971,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/91"
         },
         "flags": 2,
         "description": "Provisioning state."
@@ -1060,14 +984,14 @@
     "properties": {
       "subnet": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "Specifies the identifier of the subnet."
       },
       "networkInterfaces": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM."
@@ -1110,7 +1034,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/92"
+      "$ref": "#/82"
     }
   },
   {
@@ -1145,6 +1069,79 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "SKU of the dedicated HSM"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SafeNet Luna Network HSM A790"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK1_CPS60"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK1_CPS250"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK1_CPS2500"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK2_CPS60"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK2_CPS250"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "payShield10K_LMK2_CPS2500"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
         "$ref": "#/94"
       },
       {
@@ -1163,12 +1160,15 @@
         "$ref": "#/99"
       },
       {
-        "$ref": "#/100"
-      },
-      {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
   },
   {
     "$type": "ObjectType",

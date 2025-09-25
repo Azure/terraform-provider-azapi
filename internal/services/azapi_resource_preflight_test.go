@@ -395,12 +395,13 @@ resource "azapi_resource" "virtualNetwork" {
 }
 
 resource "azapi_resource" "subnet" {
-  type      = "Microsoft.Network/virtualNetworks/subnets@2021-02-01"
+  type      = "Microsoft.Network/virtualNetworks/subnets@2024-05-01"
   parent_id = azapi_resource.virtualNetwork.id
   name      = "mySubnet"
   body = {
     properties = {
-      addressPrefix = "10.0.0.0/24"
+      addressPrefix         = "10.0.0.0/24"
+      defaultOutboundAccess = false
     }
   }
 }

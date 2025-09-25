@@ -48,19 +48,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/5"
         },
-        "flags": 1,
-        "description": "The SKU of the auto scale v-core resource."
+        "flags": 0,
+        "description": "Properties of an auto scale v-core resource."
       },
-      "properties": {
+      "sku": {
         "type": {
           "$ref": "#/9"
         },
-        "flags": 0,
-        "description": "Properties of an auto scale v-core resource."
+        "flags": 1,
+        "description": "The SKU of the auto scale v-core resource."
       },
       "tags": {
         "type": {
@@ -87,34 +87,34 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AutoScaleVCoreSku",
+    "name": "AutoScaleVCoreProperties",
     "properties": {
-      "name": {
+      "capacityObjectId": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 1,
-        "description": "Name of the SKU level."
+        "flags": 0,
+        "description": "The object ID of the capacity resource associated with the auto scale v-core resource."
       },
-      "tier": {
+      "provisioningState": {
         "type": {
           "$ref": "#/7"
         },
-        "flags": 0,
-        "description": "The name of the Azure pricing tier to which the SKU applies."
+        "flags": 2,
+        "description": "The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for resource provisioning."
       },
-      "capacity": {
+      "capacityLimit": {
         "type": {
           "$ref": "#/8"
         },
         "flags": 0,
-        "description": "The capacity of an auto scale v-core resource."
+        "description": "The maximum capacity of an auto scale v-core resource."
       }
     }
   },
   {
     "$type": "StringLiteralType",
-    "value": "AutoScale"
+    "value": "Succeeded"
   },
   {
     "$type": "UnionType",
@@ -132,34 +132,34 @@
   },
   {
     "$type": "ObjectType",
-    "name": "AutoScaleVCoreProperties",
+    "name": "AutoScaleVCoreSku",
     "properties": {
-      "capacityObjectId": {
+      "name": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "The object ID of the capacity resource associated with the auto scale v-core resource."
+        "flags": 1,
+        "description": "Name of the SKU level."
       },
-      "provisioningState": {
+      "tier": {
         "type": {
           "$ref": "#/11"
         },
-        "flags": 2,
-        "description": "The current deployment state of an auto scale v-core resource. The provisioningState is to indicate states for resource provisioning."
+        "flags": 0,
+        "description": "The name of the Azure pricing tier to which the SKU applies."
       },
-      "capacityLimit": {
+      "capacity": {
         "type": {
           "$ref": "#/8"
         },
         "flags": 0,
-        "description": "The maximum capacity of an auto scale v-core resource."
+        "description": "The capacity of an auto scale v-core resource."
       }
     }
   },
   {
     "$type": "StringLiteralType",
-    "value": "Succeeded"
+    "value": "AutoScale"
   },
   {
     "$type": "UnionType",
@@ -355,19 +355,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/29"
         },
-        "flags": 1,
-        "description": "The SKU of the PowerBI Dedicated capacity resource."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/34"
-        },
         "flags": 0,
         "description": "Properties of the provision operation request."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 1,
+        "description": "The SKU of the PowerBI Dedicated capacity resource."
       },
       "tags": {
         "type": {
@@ -394,88 +394,32 @@
   },
   {
     "$type": "ObjectType",
-    "name": "CapacitySku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Name of the SKU level."
-      },
-      "tier": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 0,
-        "description": "The name of the Azure pricing tier to which the SKU applies."
-      },
-      "capacity": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The capacity of the SKU."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "PBIE_Azure"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Premium"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AutoPremiumHost"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
     "name": "DedicatedCapacityProperties",
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/42"
         },
         "flags": 2,
         "description": "The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/55"
         },
         "flags": 2,
         "description": "The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning."
       },
       "administration": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "A collection of Dedicated capacity administrators"
       },
       "mode": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/60"
         },
         "flags": 0,
         "description": "Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2)"
@@ -548,6 +492,21 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
         "$ref": "#/35"
       },
       {
@@ -567,21 +526,6 @@
       },
       {
         "$ref": "#/41"
-      },
-      {
-        "$ref": "#/42"
-      },
-      {
-        "$ref": "#/43"
-      },
-      {
-        "$ref": "#/44"
-      },
-      {
-        "$ref": "#/45"
-      },
-      {
-        "$ref": "#/46"
       },
       {
         "$ref": "#/2"
@@ -640,6 +584,21 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
         "$ref": "#/48"
       },
       {
@@ -661,21 +620,6 @@
         "$ref": "#/54"
       },
       {
-        "$ref": "#/55"
-      },
-      {
-        "$ref": "#/56"
-      },
-      {
-        "$ref": "#/57"
-      },
-      {
-        "$ref": "#/58"
-      },
-      {
-        "$ref": "#/59"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -686,7 +630,7 @@
     "properties": {
       "members": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/57"
         },
         "flags": 0,
         "description": "An array of administrator user identities."
@@ -710,6 +654,62 @@
   {
     "$type": "UnionType",
     "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CapacitySku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the SKU level."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The name of the Azure pricing tier to which the SKU applies."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/8"
+        },
+        "flags": 0,
+        "description": "The capacity of the SKU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PBIE_Azure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoPremiumHost"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/62"
+      },
       {
         "$ref": "#/63"
       },

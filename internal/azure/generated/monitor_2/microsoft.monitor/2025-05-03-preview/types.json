@@ -1,0 +1,979 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^(?!-)[a-zA-Z0-9-]+[^-]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Monitor/accounts/issues"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-03-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Monitor/accounts/issues",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IssueProperties",
+    "properties": {
+      "title": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The issue title"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 1,
+        "description": "The issue status"
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The issue severity"
+      },
+      "investigations": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 3,
+        "description": "The list of investigations in the issue"
+      },
+      "impactTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The issue impact time (in UTC)"
+      },
+      "investigationsCount": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 3,
+        "description": "The number of investigations in the issue"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "New"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Mitigated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Closed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InvestigationMetadata",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The unique identifier of the investigation"
+      },
+      "execution": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The execution details of the investigation"
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The creation time of the investigation (in UTC)"
+      },
+      "runParameters": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The parameters that were used to start the investigation"
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InvestigationExecution",
+    "properties": {
+      "runState": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 3,
+        "description": "The state of the investigation execution"
+      },
+      "completedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time at which the investigation execution completed (in UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RunParameters",
+    "properties": {
+      "impactTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The impact time to investigate (in UTC)"
+      },
+      "alerts": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The alerts used to run the investigation"
+      },
+      "resources": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 1,
+        "description": "The resources used to run the investigation"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InvestigationScope",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ID of the scope of the investigation - either an Azure alert ID or an Azure resource ID"
+      },
+      "origin": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The origin of the scope"
+      },
+      "relevance": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 0,
+        "description": "The relevance of the scope"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Origin",
+    "properties": {
+      "addedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ID of the origin - for example, in case of 'Manual', the user ID/app ID, and in case of 'Automatic', the name of the automatic system"
+      },
+      "addedByType": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 1,
+        "description": "The source of the origin - Manual or Automatic"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Manual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automatic"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Relevant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Irrelevant"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/22"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/22"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/12"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Monitor/accounts/issues@2025-05-03-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelatedAlerts",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "A list of related alerts"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelatedAlert",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The alert ID"
+      },
+      "relevance": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "The alerts's relevance status"
+      },
+      "origin": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 3,
+        "description": "The source that related the alert to the issue"
+      },
+      "addedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The time this relation was added to the issue (in UTC)"
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The last update time of this relation (in UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Relevant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Irrelevant"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "addOrUpdateAlerts",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/51"
+    },
+    "input": {
+      "$ref": "#/51"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelatedResources",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "A list of related resources"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RelatedResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID"
+      },
+      "relevance": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 1,
+        "description": "The resource's relevance status"
+      },
+      "origin": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 3,
+        "description": "The source that related the resource to the issue"
+      },
+      "addedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The time this relation was added to the issue (in UTC)"
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The last update time of this relation (in UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Relevant"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Irrelevant"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "addOrUpdateResources",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/59"
+    },
+    "input": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FetchInvestigationResultParameters",
+    "properties": {
+      "investigationId": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The unique identifier of the investigation"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InvestigationResult",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The identifier of the investigation"
+      },
+      "origin": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 1,
+        "description": "The origin of the investigation"
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The creation time of the investigation (in UTC)"
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The last update time of the investigation (in UTC)"
+      },
+      "execution": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The execution details of the investigation"
+      },
+      "runParameters": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 1,
+        "description": "The parameters used to run the investigation"
+      },
+      "result": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The result of this investigation"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "fetchInvestigationResult",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/68"
+    },
+    "input": {
+      "$ref": "#/67"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ListParameter",
+    "properties": {
+      "filter": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The filter to apply on the operation. For example, to filter by relevance, use \"$filter=relevance eq 'Relevant'\". Note: this property is currently a placeholder and is not in use."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PagedRelatedAlert",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 1,
+        "description": "The RelatedAlert items on this page"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The link to the next page of items"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAlerts",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/71"
+    },
+    "input": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PagedRelatedResource",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "The RelatedResource items on this page"
+      },
+      "nextLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The link to the next page of items"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listResources",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/74"
+    },
+    "input": {
+      "$ref": "#/70"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StartInvestigationParameters",
+    "properties": {
+      "impactTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The impact time to use for this investigation - by default, the impact time from the issue is used (in UTC)"
+      },
+      "investigationScopes": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "The scope of the investigation (resources and alerts) - by default, the resources and alerts related to the issue are used. Note: this property is currently a placeholder and is not in use."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/22"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "startInvestigation",
+    "resourceType": "Microsoft.Monitor/accounts/issues",
+    "apiVersion": "2025-05-03-preview",
+    "output": {
+      "$ref": "#/12"
+    },
+    "input": {
+      "$ref": "#/77"
+    }
+  }
+]

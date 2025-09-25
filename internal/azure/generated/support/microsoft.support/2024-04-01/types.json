@@ -48,6 +48,13 @@
         },
         "flags": 1,
         "description": "Properties of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -584,127 +591,83 @@
     }
   },
   {
-    "$type": "ResourceType",
-    "name": "Microsoft.Support/supportTickets@2024-04-01",
-    "scopeType": 5,
-    "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Support/supportTickets/communications"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2024-04-01"
-  },
-  {
     "$type": "ObjectType",
-    "name": "Microsoft.Support/supportTickets/communications",
+    "name": "SystemData",
     "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/35"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/38"
-        },
-        "flags": 1,
-        "description": "Properties of the resource."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CommunicationDetailsProperties",
-    "properties": {
-      "communicationType": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 2,
-        "description": "Communication type."
-      },
-      "communicationDirection": {
-        "type": {
-          "$ref": "#/44"
-        },
-        "flags": 2,
-        "description": "Direction of communication."
-      },
-      "sender": {
+      "createdBy": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Email address of the sender. This property is required if called by a service principal."
+        "description": "The identity that created the resource."
       },
-      "subject": {
+      "createdByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 1,
-        "description": "Subject of the communication."
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
       },
-      "body": {
+      "lastModifiedBy": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 1,
-        "description": "Body of the communication."
+        "flags": 0,
+        "description": "The identity that last modified the resource."
       },
-      "createdDate": {
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 2,
-        "description": "Time in UTC (ISO 8601 format) when the communication was created."
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
       }
     }
   },
   {
     "$type": "StringLiteralType",
-    "value": "web"
+    "value": "User"
   },
   {
     "$type": "StringLiteralType",
-    "value": "phone"
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
   },
   {
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
       },
       {
         "$ref": "#/0"
@@ -713,15 +676,29 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "inbound"
+    "value": "User"
   },
   {
     "$type": "StringLiteralType",
-    "value": "outbound"
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
   },
   {
     "$type": "UnionType",
     "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
       {
         "$ref": "#/42"
       },
@@ -735,10 +712,10 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Support/supportTickets/communications@2024-04-01",
+    "name": "Microsoft.Support/supportTickets@2024-04-01",
     "scopeType": 5,
     "body": {
-      "$ref": "#/37"
+      "$ref": "#/3"
     },
     "flags": 0
   },
@@ -795,7 +772,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/34"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -821,126 +798,6 @@
         "description": "Time in UTC (ISO 8601 format) when file workspace is going to expire."
       }
     }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/56"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/61"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/52"
-      },
-      {
-        "$ref": "#/53"
-      },
-      {
-        "$ref": "#/54"
-      },
-      {
-        "$ref": "#/55"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/57"
-      },
-      {
-        "$ref": "#/58"
-      },
-      {
-        "$ref": "#/59"
-      },
-      {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
   },
   {
     "$type": "ResourceType",
@@ -979,28 +836,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/52"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/53"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/55"
         },
         "flags": 0,
         "description": "Properties of the resource"
       },
       "systemData": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/34"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1046,13 +903,13 @@
     "name": "Microsoft.Support/fileWorkspaces/files@2024-04-01",
     "scopeType": 5,
     "body": {
-      "$ref": "#/65"
+      "$ref": "#/54"
     },
     "flags": 0
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Support/supportTickets/chatTranscripts"
+    "value": "Microsoft.Support/supportTickets/communications"
   },
   {
     "$type": "StringLiteralType",
@@ -1060,7 +917,164 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Support/supportTickets/chatTranscripts",
+    "name": "Microsoft.Support/supportTickets/communications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 1,
+        "description": "Properties of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CommunicationDetailsProperties",
+    "properties": {
+      "communicationType": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "Communication type."
+      },
+      "communicationDirection": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 2,
+        "description": "Direction of communication."
+      },
+      "sender": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Email address of the sender. This property is required if called by a service principal."
+      },
+      "subject": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Subject of the communication."
+      },
+      "body": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Body of the communication."
+      },
+      "createdDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Time in UTC (ISO 8601 format) when the communication was created."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "web"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "phone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inbound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "outbound"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Support/supportTickets/communications@2024-04-01",
+    "scopeType": 5,
+    "body": {
+      "$ref": "#/59"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Support/services"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Support/services",
     "properties": {
       "id": {
         "type": {
@@ -1099,7 +1113,209 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServiceProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Localized name of the Azure service."
+      },
+      "resourceTypes": {
+        "type": {
+          "$ref": "#/72"
+        },
+        "flags": 0,
+        "description": "ARM Resource types."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Support/services@2024-04-01",
+    "scopeType": 1,
+    "body": {
+      "$ref": "#/70"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Support/services/problemClassifications"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Support/services/problemClassifications",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 2,
+        "description": "Properties of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProblemClassificationProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Localized name of problem classification."
+      },
+      "secondaryConsentEnabled": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "This property indicates whether secondary consent is present for problem classification"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecondaryConsentEnabled",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "User consent description."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The Azure service for which secondary consent is needed for case creation."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/78"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Support/services/problemClassifications@2024-04-01",
+    "scopeType": 1,
+    "body": {
+      "$ref": "#/76"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Support/supportTickets/chatTranscripts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-04-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Support/supportTickets/chatTranscripts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 2,
+        "description": "Properties of the resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1112,7 +1328,7 @@
     "properties": {
       "messages": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "List of chat transcript communication resources."
@@ -1139,7 +1355,7 @@
       },
       "communicationDirection": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/88"
         },
         "flags": 2,
         "description": "Direction of communication."
@@ -1179,10 +1395,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/73"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/74"
+        "$ref": "#/87"
       },
       {
         "$ref": "#/0"
@@ -1192,7 +1408,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/72"
+      "$ref": "#/85"
     }
   },
   {
@@ -1200,9 +1416,38 @@
     "name": "Microsoft.Support/supportTickets/chatTranscripts@2024-04-01",
     "scopeType": 5,
     "body": {
-      "$ref": "#/70"
+      "$ref": "#/83"
     },
     "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UploadFile",
+    "properties": {
+      "content": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "File Content in base64 encoded format"
+      },
+      "chunkIndex": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "Index of the uploaded chunk (Index starts at 0)"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "upload",
+    "resourceType": "Microsoft.Support/fileWorkspaces/files",
+    "apiVersion": "2024-04-01",
+    "input": {
+      "$ref": "#/91"
+    }
   },
   {
     "$type": "ObjectType",
@@ -1217,7 +1462,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/96"
         },
         "flags": 1,
         "description": "The type of resource."
@@ -1236,10 +1481,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/94"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/95"
       }
     ]
   },
@@ -1276,39 +1521,10 @@
     "resourceType": "Microsoft.Support/supportTickets",
     "apiVersion": "2024-04-01",
     "output": {
-      "$ref": "#/82"
+      "$ref": "#/97"
     },
     "input": {
-      "$ref": "#/78"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UploadFile",
-    "properties": {
-      "content": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "File Content in base64 encoded format"
-      },
-      "chunkIndex": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "Index of the uploaded chunk (Index starts at 0)"
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "upload",
-    "resourceType": "Microsoft.Support/fileWorkspaces/files",
-    "apiVersion": "2024-04-01",
-    "input": {
-      "$ref": "#/84"
+      "$ref": "#/93"
     }
   }
 ]
