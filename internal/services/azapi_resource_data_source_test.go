@@ -29,6 +29,7 @@ func TestAccGenericDataSource_basic(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
 				check.That(data.ResourceName).Key("output.properties.%").Exists(),
+				check.That(data.ResourceName).Key("exists").HasValue("true"),
 			),
 		},
 	})
@@ -50,6 +51,7 @@ func TestAccGenericDataSource_withResourceId(t *testing.T) {
 				check.That(data.ResourceName).Key("location").HasValue(location.Normalize(data.LocationPrimary)),
 				check.That(data.ResourceName).Key("tags.%").HasValue("1"),
 				check.That(data.ResourceName).Key("output.properties.%").Exists(),
+				check.That(data.ResourceName).Key("exists").HasValue("true"),
 			),
 		},
 	})
@@ -123,6 +125,25 @@ func TestAccGenericDataSource_defaultOutput(t *testing.T) {
 			Config: r.defaultOutput(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).Key("output.properties.automationHybridServiceUrl").Exists(),
+				check.That(data.ResourceName).Key("exists").HasValue("true"),
+			),
+		},
+	})
+}
+
+func TestAccGenericDataSource_ignoreNotFound(t *testing.T) {
+	data := acceptance.BuildTestData(t, "data.azapi_resource", "test")
+	r := GenericDataSource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.ignoreNotFound(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("exists").HasValue("false"),
+				check.That(data.ResourceName).Key("id").Exists(),
+				check.That(data.ResourceName).Key("name").Exists(),
+				check.That(data.ResourceName).Key("resource_id").Exists(),
+				check.That(data.ResourceName).Key("output.%").DoesNotExist(),
 			),
 		},
 	})
@@ -243,4 +264,19 @@ data "azapi_resource" "test" {
   type      = azapi_resource.test.type
 }
 `, GenericResource{}.defaultOutput(data))
+}
+
+func (r GenericDataSource) ignoreNotFound(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "this" {}
+
+// intentionally querying a non-existing RG name to trigger 404
+data "azapi_resource" "test" {
+  type                   = "Microsoft.Resources/resourceGroups@2024-03-01"
+  name                   = "acctestRG-not-exist-%[1]d"
+  parent_id              = "/subscriptions/${data.azapi_client_config.this.subscription_id}"
+  ignore_not_found       = true
+  response_export_values = ["*"]
+}
+`, data.RandomInteger)
 }

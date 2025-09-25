@@ -69,6 +69,7 @@ output "quarantine_policy" {
 ### Optional
 
 - `headers` (Map of String) A map of headers to include in the request
+- `ignore_not_found` (Boolean) If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.
 - `name` (String) Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
@@ -115,6 +116,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 ### Read-Only
 
+- `exists` (Boolean) Indicates whether the specified Azure resource exists. This will be `false` only when `ignore_not_found` is `true` and the resource isn't found.
 - `id` (String) The ID of the Azure resource.
 - `identity` (Attributes List) (see [below for nested schema](#nestedatt--identity))
 - `location` (String) The location of the Azure resource.

@@ -32,6 +32,8 @@ type AzapiResourceDataSourceModel struct {
 	ParentID             types.String     `tfsdk:"parent_id"`
 	ResourceID           types.String     `tfsdk:"resource_id"`
 	Type                 types.String     `tfsdk:"type"`
+	IgnoreNotFound       types.Bool       `tfsdk:"ignore_not_found"`
+	Exists               types.Bool       `tfsdk:"exists"`
 	ResponseExportValues types.Dynamic    `tfsdk:"response_export_values"`
 	Location             types.String     `tfsdk:"location"`
 	Identity             types.List       `tfsdk:"identity"`
@@ -141,6 +143,16 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			"response_export_values": schema.DynamicAttribute{
 				Optional:            true,
 				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+
+			"ignore_not_found": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.",
+			},
+
+			"exists": schema.BoolAttribute{
+				Computed:            true,
+				MarkdownDescription: "Indicates whether the specified Azure resource exists. This will be `false` only when `ignore_not_found` is `true` and the resource isn't found.",
 			},
 
 			"output": schema.DynamicAttribute{
@@ -266,6 +278,21 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
+			// honor ignore_not_found flag
+			if !model.IgnoreNotFound.IsNull() && model.IgnoreNotFound.ValueBool() {
+				// Set identifiers even when not found, others null/empty
+				model.ID = basetypes.NewStringValue(id.ID())
+				model.Name = basetypes.NewStringValue(id.Name)
+				model.ParentID = basetypes.NewStringValue(id.ParentId)
+				model.ResourceID = basetypes.NewStringValue(id.AzureResourceId)
+				model.Location = basetypes.NewStringNull()
+				model.Identity = basetypes.NewListNull(identity.Model{}.ModelType())
+				model.Tags = basetypes.NewMapNull(types.StringType)
+				model.Output = basetypes.NewDynamicNull()
+				model.Exists = basetypes.NewBoolValue(false)
+				response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+				return
+			}
 			response.Diagnostics.AddError("Resource not found", fmt.Errorf("resource %q not found", id).Error())
 			return
 		}
@@ -300,6 +327,7 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 		return
 	}
 	model.Output = output
+	model.Exists = basetypes.NewBoolValue(true)
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
 }

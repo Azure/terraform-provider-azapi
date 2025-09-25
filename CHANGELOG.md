@@ -4,6 +4,7 @@ ENHANCEMENTS:
 - `azapi_resource` resource: Refactor move-state logic to centrally derive ARM IDs from data-plane IDs for selected azurerm resources.
 - Add more verified `azapi` examples.
 - Add documentation for choosing the resource type.
+- `azapi_resource` data source: Support `ignore_not_found` argument and `exists` computed field to optionally suppress 404 errors and expose resource existence.
 
 BUG FIXES:
 - `azapi_client_config` data source: Fix a bug that specified subscription ID should not be overridden by Azure CLI default subscription ID.
