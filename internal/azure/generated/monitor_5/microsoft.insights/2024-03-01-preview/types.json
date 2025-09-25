@@ -1,0 +1,1215 @@
+[
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Insights/metricAlerts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2024-03-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Insights/metricAlerts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/4"
+        },
+        "flags": 1,
+        "description": "The alert rule properties of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Resource location"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "Resource tags"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "The identity of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The description of the metric alert that will be included in the alert email."
+      },
+      "severity": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "Alert severity {0, 1, 2, 3, 4}"
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The flag that indicates whether the metric alert is enabled."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The list of resource id's that this metric alert is scoped to. You cannot change the scope of a metric rule based on logs."
+      },
+      "evaluationFrequency": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "How often the metric alert is evaluated represented in ISO 8601 duration format."
+      },
+      "windowSize": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold."
+      },
+      "targetResourceType": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The resource type of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource."
+      },
+      "targetResourceRegion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The region of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource."
+      },
+      "criteria": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 1,
+        "description": "Defines the specific alert criteria information."
+      },
+      "autoMitigate": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "The flag that indicates whether the alert should be auto resolved or not. The default is true."
+      },
+      "resolveConfiguration": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "The configuration for how the alert is resolved. Applicable for PromQLCriteria."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "The array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved."
+      },
+      "lastUpdatedTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Last time the rule was updated in ISO8601 format."
+      },
+      "isMigrated": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 2,
+        "description": "The value indicating whether this alert rule is migrated."
+      },
+      "customProperties": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "The properties of an alert payload."
+      },
+      "actionProperties": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 0,
+        "description": "The properties of an action properties."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MetricAlertCriteria",
+    "discriminator": "odata.type",
+    "baseProperties": {},
+    "elements": {
+      "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria": {
+        "$ref": "#/10"
+      },
+      "Microsoft.Azure.Monitor.PromQLCriteria": {
+        "$ref": "#/42"
+      },
+      "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria": {
+        "$ref": "#/59"
+      },
+      "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria": {
+        "$ref": "#/79"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertMultipleResourceMultipleMetricCriteria",
+    "properties": {
+      "allOf": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "The list of multiple metric criteria for this 'all of' operation."
+      },
+      "odata.type": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 1,
+        "description": "Specifies the type of the alert criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MultiMetricCriteria",
+    "discriminator": "criterionType",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the criteria."
+      },
+      "metricName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the metric."
+      },
+      "metricNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Namespace of the metric."
+      },
+      "timeAggregation": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 1,
+        "description": "The criteria time aggregation types. Previously undocumented values might be returned"
+      },
+      "dimensions": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "List of dimension conditions."
+      },
+      "skipMetricValidation": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped."
+      }
+    },
+    "elements": {
+      "DynamicThresholdCriterion": {
+        "$ref": "#/21"
+      },
+      "StaticThresholdCriterion": {
+        "$ref": "#/32"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Average"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Count"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Minimum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Maximum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Total"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricDimension",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the dimension."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The dimension operator. Only 'Include' and 'Exclude' are supported"
+      },
+      "values": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 1,
+        "description": "List of dimension values."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/18"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DynamicMetricCriteria",
+    "properties": {
+      "operator": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 1,
+        "description": "The operator used to compare the metric value against the threshold. Previously undocumented values might be returned"
+      },
+      "alertSensitivity": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 1,
+        "description": "The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern. Previously undocumented values might be returned"
+      },
+      "failingPeriods": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "The minimum number of violations required within the selected lookback time window required to raise an alert."
+      },
+      "ignoreDataBefore": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format)"
+      },
+      "criterionType": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "Specifies the type of threshold criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterOrLessThan"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DynamicThresholdFailingPeriods",
+    "properties": {
+      "numberOfEvaluationPeriods": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points."
+      },
+      "minFailingPeriodsToAlert": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DynamicThresholdCriterion"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricCriteria",
+    "properties": {
+      "operator": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 1,
+        "description": "The criteria operator. Previously undocumented values might be returned"
+      },
+      "threshold": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The criteria threshold value that activates the alert."
+      },
+      "criterionType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 1,
+        "description": "Specifies the type of threshold criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThanOrEqual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StaticThresholdCriterion"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/11"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PromQLCriteria",
+    "properties": {
+      "failingPeriods": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Configuration for failing periods in query-based alerts."
+      },
+      "allOf": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The list of promQL criteria. Alert will be raised when all conditions are met."
+      },
+      "odata.type": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 1,
+        "description": "Specifies the type of the alert criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QueryFailingPeriods",
+    "properties": {
+      "for": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The amount of time (in ISO 8601 duration format) alert must be active before firing."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MultiPromQLCriteria",
+    "discriminator": "criterionType",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the criteria."
+      },
+      "query": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The query used to evaluate the alert rule"
+      }
+    },
+    "elements": {
+      "DynamicThresholdCriterion": {
+        "$ref": "#/45"
+      },
+      "StaticThresholdCriterion": {
+        "$ref": "#/55"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DynamicPromQLCriteria",
+    "properties": {
+      "operator": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 1,
+        "description": "The operator used to compare the metric value against the threshold. Previously undocumented values might be returned"
+      },
+      "alertSensitivity": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern. Previously undocumented values might be returned"
+      },
+      "ignoreDataBefore": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format)"
+      },
+      "criterionType": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 1,
+        "description": "Specifies the type of threshold criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterOrLessThan"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DynamicThresholdCriterion"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StaticPromQLCriteria",
+    "properties": {
+      "criterionType": {
+        "type": {
+          "$ref": "#/56"
+        },
+        "flags": 1,
+        "description": "Specifies the type of threshold criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StaticThresholdCriterion"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Azure.Monitor.PromQLCriteria"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertSingleResourceMultipleMetricCriteria",
+    "properties": {
+      "allOf": {
+        "type": {
+          "$ref": "#/77"
+        },
+        "flags": 0,
+        "description": "The list of metric criteria for this 'all of' operation."
+      },
+      "odata.type": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 1,
+        "description": "Specifies the type of the alert criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricCriteria",
+    "properties": {
+      "operator": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "The criteria operator. Previously undocumented values might be returned"
+      },
+      "threshold": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The criteria threshold value that activates the alert."
+      },
+      "criterionType": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 1,
+        "description": "Specifies the type of threshold criteria. Previously undocumented values might be returned"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the criteria."
+      },
+      "metricName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "Name of the metric."
+      },
+      "metricNamespace": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Namespace of the metric."
+      },
+      "timeAggregation": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 1,
+        "description": "The criteria time aggregation types. Previously undocumented values might be returned"
+      },
+      "dimensions": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 0,
+        "description": "List of dimension conditions."
+      },
+      "skipMetricValidation": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped."
+      }
+    },
+    "additionalProperties": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThanOrEqual"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StaticThresholdCriterion"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DynamicThresholdCriterion"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Average"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Count"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Minimum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Maximum"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Total"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/18"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/60"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WebtestLocationAvailabilityCriteria",
+    "properties": {
+      "webTestId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Application Insights web test Id."
+      },
+      "componentId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The Application Insights resource Id."
+      },
+      "failedLocationCount": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 1,
+        "description": "The number of failed locations."
+      },
+      "odata.type": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 1,
+        "description": "Specifies the type of the alert criteria. Previously undocumented values might be returned"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResolveConfiguration",
+    "properties": {
+      "autoResolved": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "Indicates whether the alert should be auto resolved"
+      },
+      "timeToResolve": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The time (in ISO 8601 duration format) after which the alert should be auto resolved"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertAction",
+    "properties": {
+      "actionGroupId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The id of the action group to use."
+      },
+      "webHookProperties": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "This field allows specifying custom properties, which would be appended to the alert payload sent as input to the webhook."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertActionWebHookProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/82"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertPropertiesCustomProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetricAlertPropertiesActionProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity. Previously undocumented values might be returned"
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be Azure resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserIdentityProperties",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The client ID of resource identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Insights/metricAlerts@2024-03-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/3"
+    },
+    "flags": 0
+  }
+]

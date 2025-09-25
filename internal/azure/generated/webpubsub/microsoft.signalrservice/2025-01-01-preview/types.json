@@ -48,19 +48,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "The billing information of the resource."
+        "description": "A class that describes the properties of the resource"
       },
-      "properties": {
+      "sku": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/135"
         },
         "flags": 0,
-        "description": "A class that describes the properties of the resource"
+        "description": "The billing information of the resource."
       },
       "kind": {
         "type": {
@@ -92,7 +92,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -101,91 +101,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceSku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The name of the SKU. Required.\r\n\r\nAllowed values: Standard_S1, Free_F1, Premium_P1, Premium_P2"
-      },
-      "tier": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 0,
-        "description": "Optional tier of this particular SKU. 'Standard' or 'Free'. \r\n\r\n`Basic` is deprecated, use `Standard` instead."
-      },
-      "size": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Not used. Retained for future use."
-      },
-      "family": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Not used. Retained for future use."
-      },
-      "capacity": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 0,
-        "description": "Optional, integer. The unit count of the resource.\r\n1 for Free_F1/Standard_S1/Premium_P1, 100 for Premium_P2 by default.\r\n\r\nIf present, following values are allowed:\r\n    Free_F1: 1;\r\n    Standard_S1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;\r\n    Premium_P1:  1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;\r\n    Premium_P2:  100,200,300,400,500,600,700,800,900,1000;"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Free"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Basic"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Standard"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Premium"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ObjectType",
     "name": "WebPubSubProperties",
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/15"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -206,14 +126,14 @@
       },
       "publicPort": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "The publicly accessible port of the resource which is designed for browser/client side usage."
       },
       "serverPort": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/16"
         },
         "flags": 2,
         "description": "The publicly accessible port of the resource which is designed for customer server side usage."
@@ -227,21 +147,21 @@
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/48"
         },
         "flags": 2,
         "description": "Private endpoint connections to the resource."
       },
       "sharedPrivateLinkResources": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/68"
         },
         "flags": 2,
         "description": "The list of shared private link resources."
       },
       "tls": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/69"
         },
         "flags": 0,
         "description": "TLS settings for the resource"
@@ -255,28 +175,28 @@
       },
       "liveTraceConfiguration": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/71"
         },
         "flags": 0,
         "description": "Live trace configuration of a Microsoft.SignalRService resource."
       },
       "resourceLogConfiguration": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/74"
         },
         "flags": 0,
         "description": "Resource log configuration of a Microsoft.SignalRService resource."
       },
       "networkACLs": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/77"
         },
         "flags": 0,
         "description": "Network ACLs for the resource"
       },
       "applicationFirewall": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/113"
         },
         "flags": 0,
         "description": "Application firewall settings for the resource"
@@ -286,39 +206,39 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Enable or disable public network access. Default to \"Enabled\".\r\nWhen it's Enabled, network ACLs still apply.\r\nWhen it's Disabled, public network access is always disabled no matter what you set in network ACLs."
+        "description": "Enable or disable public network access. Default to \"Enabled\".\nWhen it's Enabled, network ACLs still apply.\nWhen it's Disabled, public network access is always disabled no matter what you set in network ACLs."
       },
       "disableLocalAuth": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/70"
         },
         "flags": 0,
-        "description": "DisableLocalAuth\r\nEnable or disable local auth with AccessKey\r\nWhen set as true, connection with AccessKey=xxx won't work."
+        "description": "DisableLocalAuth\nEnable or disable local auth with AccessKey\nWhen set as true, connection with AccessKey=xxx won't work."
       },
       "disableAadAuth": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/70"
         },
         "flags": 0,
-        "description": "DisableLocalAuth\r\nEnable or disable aad auth\r\nWhen set as true, connection with AuthType=aad won't work."
+        "description": "DisableLocalAuth\nEnable or disable aad auth\nWhen set as true, connection with AuthType=aad won't work."
       },
       "regionEndpointEnabled": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Enable or disable the regional endpoint. Default to \"Enabled\".\r\nWhen it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.\r\nThis property is replica specific. Disable the regional endpoint without replica is not allowed."
+        "description": "Enable or disable the regional endpoint. Default to \"Enabled\".\nWhen it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.\nThis property is replica specific. Disable the regional endpoint without replica is not allowed."
       },
       "resourceStopped": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Stop or start the resource.  Default to \"False\".\r\nWhen it's true, the data plane of the resource is shutdown.\r\nWhen it's false, the data plane of the resource is started."
+        "description": "Stop or start the resource.  Default to \"False\".\nWhen it's true, the data plane of the resource is shutdown.\nWhen it's false, the data plane of the resource is started."
       },
       "socketIO": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/134"
         },
         "flags": 0,
         "description": "SocketIO settings for the resource"
@@ -365,31 +285,31 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
         "$ref": "#/13"
       },
       {
         "$ref": "#/14"
-      },
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/16"
-      },
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/20"
-      },
-      {
-        "$ref": "#/21"
       },
       {
         "$ref": "#/2"
@@ -397,12 +317,15 @@
     ]
   },
   {
+    "$type": "IntegerType"
+  },
+  {
     "$type": "ObjectType",
     "name": "PrivateEndpointConnection",
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Private endpoint connection properties"
@@ -430,7 +353,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -443,28 +366,28 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/28"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "Private endpoint"
       },
       "groupIds": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/30"
         },
         "flags": 2,
         "description": "Group IDs"
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "Connection state of the private endpoint connection"
@@ -511,6 +434,24 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
         "$ref": "#/25"
       },
       {
@@ -518,24 +459,6 @@
       },
       {
         "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/31"
-      },
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
       },
       {
         "$ref": "#/2"
@@ -567,7 +490,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
@@ -608,16 +531,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/38"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/35"
       },
       {
         "$ref": "#/2"
@@ -637,7 +560,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -658,7 +581,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -692,16 +615,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/44"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/41"
       },
       {
         "$ref": "#/2"
@@ -728,16 +651,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/49"
+        "$ref": "#/43"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/46"
       },
       {
         "$ref": "#/2"
@@ -747,7 +670,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/23"
+      "$ref": "#/17"
     }
   },
   {
@@ -756,7 +679,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "Describes the properties of an existing Shared Private Link Resource"
@@ -784,7 +707,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -811,7 +734,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/60"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
@@ -825,14 +748,14 @@
       },
       "fqdns": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "A list of FQDNs for third party private link service"
       },
       "status": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/67"
         },
         "flags": 2,
         "description": "Status of the shared private link resource"
@@ -879,6 +802,24 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
         "$ref": "#/57"
       },
       {
@@ -886,24 +827,6 @@
       },
       {
         "$ref": "#/59"
-      },
-      {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/61"
-      },
-      {
-        "$ref": "#/62"
-      },
-      {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/65"
       },
       {
         "$ref": "#/2"
@@ -940,19 +863,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/68"
+        "$ref": "#/62"
       },
       {
-        "$ref": "#/69"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/70"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/72"
+        "$ref": "#/66"
       },
       {
         "$ref": "#/2"
@@ -962,7 +885,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/55"
+      "$ref": "#/49"
     }
   },
   {
@@ -971,7 +894,7 @@
     "properties": {
       "clientCertEnabled": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be ignored for free tier."
@@ -990,11 +913,11 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Indicates whether or not enable live trace.\r\nWhen it's set to true, live trace client can connect to the service.\r\nOtherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter what you configure in \"categories\".\r\nAvailable values: true, false.\r\nCase insensitive."
+        "description": "Indicates whether or not enable live trace.\nWhen it's set to true, live trace client can connect to the service.\nOtherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter what you configure in \"categories\".\nAvailable values: true, false.\nCase insensitive."
       },
       "categories": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/73"
         },
         "flags": 0,
         "description": "Gets or sets the list of category configurations."
@@ -1010,21 +933,21 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Gets or sets the live trace category's name.\r\nAvailable values: ConnectivityLogs, MessagingLogs.\r\nCase insensitive."
+        "description": "Gets or sets the live trace category's name.\nAvailable values: ConnectivityLogs, MessagingLogs.\nCase insensitive."
       },
       "enabled": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Indicates whether or the live trace category is enabled.\r\nAvailable values: true, false.\r\nCase insensitive."
+        "description": "Indicates whether or the live trace category is enabled.\nAvailable values: true, false.\nCase insensitive."
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/78"
+      "$ref": "#/72"
     }
   },
   {
@@ -1033,7 +956,7 @@
     "properties": {
       "categories": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "Gets or sets the list of category configurations."
@@ -1049,21 +972,21 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Gets or sets the resource log category's name.\r\nAvailable values: ConnectivityLogs, MessagingLogs.\r\nCase insensitive."
+        "description": "Gets or sets the resource log category's name.\nAvailable values: ConnectivityLogs, MessagingLogs.\nCase insensitive."
       },
       "enabled": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Indicates whether or the resource log category is enabled.\r\nAvailable values: true, false.\r\nCase insensitive."
+        "description": "Indicates whether or the resource log category is enabled.\nAvailable values: true, false.\nCase insensitive."
       }
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/81"
+      "$ref": "#/75"
     }
   },
   {
@@ -1072,28 +995,28 @@
     "properties": {
       "defaultAction": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Azure Networking ACL Action."
       },
       "publicNetwork": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "Network ACL"
       },
       "privateEndpoints": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "ACLs for requests from private endpoints"
       },
       "ipRules": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "IP rules for filtering public traffic"
@@ -1112,10 +1035,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/84"
+        "$ref": "#/78"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/79"
       },
       {
         "$ref": "#/2"
@@ -1128,18 +1051,60 @@
     "properties": {
       "allow": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
       },
       "deny": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
       }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ClientConnection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerConnection"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RESTAPI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Trace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/86"
     }
   },
   {
@@ -1185,6 +1150,33 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "PrivateEndpointACL",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the private endpoint connection"
+      },
+      "allow": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
+      },
+      "deny": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
+      }
+    }
+  },
+  {
     "$type": "StringLiteralType",
     "value": "ClientConnection"
   },
@@ -1204,9 +1196,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/94"
-      },
-      {
         "$ref": "#/95"
       },
       {
@@ -1216,6 +1205,9 @@
         "$ref": "#/97"
       },
       {
+        "$ref": "#/98"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1223,34 +1215,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/98"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PrivateEndpointACL",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Name of the private endpoint connection"
-      },
-      "allow": {
-        "type": {
-          "$ref": "#/106"
-        },
-        "flags": 0,
-        "description": "Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
-      },
-      "deny": {
-        "type": {
-          "$ref": "#/112"
-        },
-        "flags": 0,
-        "description": "Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI."
-      }
+      "$ref": "#/99"
     }
   },
   {
@@ -1296,51 +1261,9 @@
     }
   },
   {
-    "$type": "StringLiteralType",
-    "value": "ClientConnection"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ServerConnection"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "RESTAPI"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Trace"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/107"
-      },
-      {
-        "$ref": "#/108"
-      },
-      {
-        "$ref": "#/109"
-      },
-      {
-        "$ref": "#/110"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/111"
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/100"
+      "$ref": "#/94"
     }
   },
   {
@@ -1356,7 +1279,7 @@
       },
       "action": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "Azure Networking ACL Action."
@@ -1375,10 +1298,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/115"
+        "$ref": "#/109"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/110"
       },
       {
         "$ref": "#/2"
@@ -1388,7 +1311,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/114"
+      "$ref": "#/108"
     },
     "maxLength": 30
   },
@@ -1398,21 +1321,21 @@
     "properties": {
       "clientConnectionCountRules": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/122"
         },
         "flags": 0,
         "description": "Rules to control the client connection count"
       },
       "clientTrafficControlRules": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/132"
         },
         "flags": 0,
         "description": "Rules to control the client traffic"
       },
       "maxClientConnectionLifetimeInSeconds": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/133"
         },
         "flags": 0,
         "description": "Config to control the client connection lifetime in seconds, can be set to 0 to disable the config"
@@ -1426,13 +1349,13 @@
     "baseProperties": {},
     "elements": {
       "ThrottleByJwtCustomClaimRule": {
-        "$ref": "#/121"
+        "$ref": "#/115"
       },
       "ThrottleByJwtSignatureRule": {
-        "$ref": "#/124"
+        "$ref": "#/118"
       },
       "ThrottleByUserIdRule": {
-        "$ref": "#/126"
+        "$ref": "#/120"
       }
     }
   },
@@ -1449,14 +1372,14 @@
       },
       "maxCount": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "Maximum connection count allowed for the same Jwt claim value. Clients with the same Jwt claim will get rejected if the connection count exceeds this value. Default value is 20."
       },
       "type": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/117"
         },
         "flags": 1
       }
@@ -1477,14 +1400,14 @@
     "properties": {
       "maxCount": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "Maximum connection count allowed for the same JWT signature. Clients with the same JWT signature will get rejected if the connection count exceeds this value. Default value is 20."
       },
       "type": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/119"
         },
         "flags": 1
       }
@@ -1500,14 +1423,14 @@
     "properties": {
       "maxCount": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "Maximum connection count allowed for the same user ID. Clients with the same user ID will get rejected if the connection count exceeds this value. Default value is 20."
       },
       "type": {
         "type": {
-          "$ref": "#/127"
+          "$ref": "#/121"
         },
         "flags": 1
       }
@@ -1520,7 +1443,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/120"
+      "$ref": "#/114"
     },
     "maxLength": 10
   },
@@ -1531,13 +1454,13 @@
     "baseProperties": {},
     "elements": {
       "TrafficThrottleByJwtCustomClaimRule": {
-        "$ref": "#/130"
+        "$ref": "#/124"
       },
       "TrafficThrottleByJwtSignatureRule": {
-        "$ref": "#/134"
+        "$ref": "#/128"
       },
       "TrafficThrottleByUserIdRule": {
-        "$ref": "#/136"
+        "$ref": "#/130"
       }
     }
   },
@@ -1554,21 +1477,21 @@
       },
       "maxInboundMessageBytes": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/125"
         },
         "flags": 0,
         "description": "Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same JWT claim will get disconnected if the message bytes exceeds this value. Default value is 1GB."
       },
       "aggregationWindowInSeconds": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the window. Default value is 60 seconds."
       },
       "type": {
         "type": {
-          "$ref": "#/133"
+          "$ref": "#/127"
         },
         "flags": 1
       }
@@ -1593,21 +1516,21 @@
     "properties": {
       "maxInboundMessageBytes": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/125"
         },
         "flags": 0,
         "description": "Maximum accumulated inbound message bytes allowed for the same JWT signature within a time window. Clients with the same JWT signature will get disconnected if the message bytes exceeds this value. Default value is 1GB."
       },
       "aggregationWindowInSeconds": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the window. Default value is 60 seconds."
       },
       "type": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/129"
         },
         "flags": 1
       }
@@ -1623,21 +1546,21 @@
     "properties": {
       "maxInboundMessageBytes": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/125"
         },
         "flags": 0,
         "description": "Maximum accumulated inbound message bytes allowed for the same user ID within a time window. Clients with the same user ID will get disconnected if the message bytes exceeds this value. Default value is 1GB."
       },
       "aggregationWindowInSeconds": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "The aggregation window for the message bytes. The message bytes will be aggregated in this window and be reset after the window. Default value is 60 seconds."
       },
       "type": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/131"
         },
         "flags": 1
       }
@@ -1650,7 +1573,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/129"
+      "$ref": "#/123"
     },
     "maxLength": 10
   },
@@ -1668,9 +1591,86 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The service mode of Web PubSub for Socket.IO. Values allowed: \r\n\"Default\": have your own backend Socket.IO server\r\n\"Serverless\": your application doesn't have a backend server"
+        "description": "The service mode of Web PubSub for Socket.IO. Values allowed:\n\"Default\": have your own backend Socket.IO server\n\"Serverless\": your application doesn't have a backend server"
       }
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. Required.\n\nAllowed values: Standard_S1, Free_F1, Premium_P1, Premium_P2"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Optional tier of this particular SKU. 'Standard' or 'Free'.\n\n`Basic` is deprecated, use `Standard` instead."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Not used. Retained for future use."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Not used. Retained for future use."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Optional, integer. The unit count of the resource.\n1 for Free_F1/Standard_S1/Premium_P1, 100 for Premium_P2 by default.\n\nIf present, following values are allowed:\nFree_F1: 1;\nStandard_S1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;\nPremium_P1:  1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;\nPremium_P2:  100,200,300,400,500,600,700,800,900,1000;"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "StringLiteralType",
@@ -1717,14 +1717,14 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "Get the principal id for the system assigned identity.\r\nOnly be used in response."
+        "description": "Get the principal id for the system assigned identity.\nOnly be used in response."
       },
       "tenantId": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "Get the tenant id for the system assigned identity.\r\nOnly be used in response"
+        "description": "Get the tenant id for the system assigned identity.\nOnly be used in response"
       }
     }
   },
@@ -1851,7 +1851,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2021,7 +2021,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2197,7 +2197,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2220,7 +2220,7 @@
           "$ref": "#/204"
         },
         "flags": 0,
-        "description": "Event listener settings for forwarding your client events to listeners.\r\nEvent listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt the lifetime of clients.\r\nOne event can be sent to multiple listeners, as long as it matches the filters in those listeners. The order of the array elements doesn't matter.\r\nMaximum count of event listeners among all hubs is 10."
+        "description": "Event listener settings for forwarding your client events to listeners.\nEvent listener is transparent to Web PubSub clients, and it doesn't return any result to clients nor interrupt the lifetime of clients.\nOne event can be sent to multiple listeners, as long as it matches the filters in those listeners. The order of the array elements doesn't matter.\nMaximum count of event listeners among all hubs is 10."
       },
       "anonymousConnectPolicy": {
         "type": {
@@ -2247,14 +2247,14 @@
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Gets or sets the URL template for the event handler. The actual URL is calculated when the corresponding event is triggered. \r\nThe template supports predefined parameters syntax: `{event}`, `{hub}`, and KeyVault reference syntax `{@Microsoft.KeyVault(SecretUri=_your_secret_identifier_)}` \r\nFor example, if the template is `http://example.com/api/{event}`, when `connect` event is triggered, a POST request will be sent to the URL `http://example.com/chat/api/connect`.\r\nNote: Parameters are not allowed in the hostname of the URL, and curly brackets `{}` are reserved for parameter syntax only. If your URL path contains literal curly brackets, please URL-encode them to ensure proper handling."
+        "description": "Gets or sets the URL template for the event handler. The actual URL is calculated when the corresponding event is triggered. \nThe template supports predefined parameters syntax: `{event}`, `{hub}`, and KeyVault reference syntax `{@Microsoft.KeyVault(SecretUri=_your_secret_identifier_)}` \nFor example, if the template is `http://example.com/api/{event}`, when `connect` event is triggered, a POST request will be sent to the URL `http://example.com/chat/api/connect`.\nNote: Parameters are not allowed in the hostname of the URL, and curly brackets `{}` are reserved for parameter syntax only. If your URL path contains literal curly brackets, please URL-encode them to ensure proper handling."
       },
       "userEventPattern": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Gets or sets the matching pattern for event names.\r\nThere are 3 kinds of patterns supported:\r\n    1. \"*\", it matches any event name\r\n    2. Combine multiple events with \",\", for example \"event1,event2\", it matches event \"event1\" and \"event2\"\r\n    3. A single event name, for example, \"event1\", it matches \"event1\""
+        "description": "Gets or sets the matching pattern for event names.\nThere are 3 kinds of patterns supported:\n1. \"*\", it matches any event name\n2. Combine multiple events with \",\", for example \"event1,event2\", it matches event \"event1\" and \"event2\"\n3. A single event name, for example, \"event1\", it matches \"event1\""
       },
       "systemEvents": {
         "type": {
@@ -2329,7 +2329,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The Resource indicating the App ID URI of the target resource.\r\nIt also appears in the aud (audience) claim of the issued token."
+        "description": "The Resource indicating the App ID URI of the target resource.\nIt also appears in the aud (audience) claim of the issued token."
       }
     }
   },
@@ -2386,7 +2386,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Gets or sets a matching pattern for event names.\r\nThere are 3 kinds of patterns supported:\r\n    1. \"*\", it matches any event name\r\n    2. Combine multiple events with \",\", for example \"event1,event2\", it matches events \"event1\" and \"event2\"\r\n    3. A single event name, for example, \"event1\", it matches \"event1\""
+        "description": "Gets or sets a matching pattern for event names.\nThere are 3 kinds of patterns supported:\n1. \"*\", it matches any event name\n2. Combine multiple events with \",\", for example \"event1,event2\", it matches events \"event1\" and \"event2\"\n3. A single event name, for example, \"event1\", it matches \"event1\""
       },
       "type": {
         "type": {
@@ -2509,14 +2509,14 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "Private endpoint connection properties"
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2572,18 +2572,18 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "The billing information of the resource."
-      },
       "properties": {
         "type": {
           "$ref": "#/214"
         },
         "flags": 0
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "The billing information of the resource."
       },
       "tags": {
         "type": {
@@ -2601,7 +2601,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2624,14 +2624,14 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Enable or disable the regional endpoint. Default to \"Enabled\".\r\nWhen it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected."
+        "description": "Enable or disable the regional endpoint. Default to \"Enabled\".\nWhen it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected."
       },
       "resourceStopped": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Stop or start the resource.  Default to \"false\".\r\nWhen it's true, the data plane of the resource is shutdown.\r\nWhen it's false, the data plane of the resource is started."
+        "description": "Stop or start the resource.  Default to \"false\".\nWhen it's true, the data plane of the resource is shutdown.\nWhen it's false, the data plane of the resource is started."
       }
     }
   },
@@ -2765,14 +2765,14 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "Describes the properties of an existing Shared Private Link Resource"
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2830,14 +2830,14 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "Describes the properties of an existing Shared Private Link Resource"
       },
       "systemData": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2879,7 +2879,7 @@
     "properties": {
       "nameAvailable": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "Indicates whether the name is available or not."

@@ -55,7 +55,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/20"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -69,7 +69,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -92,21 +92,28 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The workspace data plane URI."
+        "description": "The workspace data plane service API URI."
       },
       "regionalAffinity": {
         "type": {
           "$ref": "#/15"
         },
         "flags": 0,
-        "description": "This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the Azure region in which the workspace was initially created."
+        "description": "Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure region where the workspace was created."
       },
       "localAuth": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 0,
-        "description": "When enabled, this feature allows the workspace to use local auth (through service access token) for executing operations."
+        "description": "Enables the workspace to use local authentication through service access tokens for operations."
+      },
+      "workspaceId": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The workspace ID in GUID format."
       }
     }
   },
@@ -205,6 +212,12 @@
     ]
   },
   {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 36,
+    "pattern": "[A-Za-z0-9]+(-[A-Za-z0-9]+)+"
+  },
+  {
     "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
@@ -225,7 +238,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -246,7 +259,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/31"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -280,9 +293,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/21"
-      },
-      {
         "$ref": "#/22"
       },
       {
@@ -290,6 +300,9 @@
       },
       {
         "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
       },
       {
         "$ref": "#/2"
@@ -316,9 +329,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/26"
-      },
-      {
         "$ref": "#/27"
       },
       {
@@ -326,6 +336,9 @@
       },
       {
         "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
       },
       {
         "$ref": "#/2"
@@ -349,7 +362,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/32"
+        "$ref": "#/33"
       },
       {
         "$ref": "#/2"
@@ -377,35 +390,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/34"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/35"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/36"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/38"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -418,14 +431,14 @@
     "properties": {
       "freeTrial": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/39"
         },
         "flags": 2,
-        "description": "The subscription-level location-based Playwright quota resource free-trial properties."
+        "description": "The subscription-level location-based Playwright quota free trial properties."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/50"
         },
         "flags": 2,
         "description": "The status of the last resource operation."
@@ -438,17 +451,17 @@
     "properties": {
       "workspaceId": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/19"
         },
         "flags": 3,
-        "description": "Playwright workspace-id that has free-trial in the subscription."
+        "description": "The workspace ID in GUID format that has free trial enabled in the subscription."
       },
       "state": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/43"
         },
         "flags": 3,
-        "description": "The free-trial state."
+        "description": "The free trial state."
       }
     }
   },
@@ -468,13 +481,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
-      },
-      {
         "$ref": "#/40"
       },
       {
         "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
       },
       {
         "$ref": "#/2"
@@ -509,9 +522,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/43"
-      },
-      {
         "$ref": "#/44"
       },
       {
@@ -527,6 +537,9 @@
         "$ref": "#/48"
       },
       {
+        "$ref": "#/49"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -536,7 +549,7 @@
     "name": "Microsoft.LoadTestService/locations/playwrightQuotas@2025-07-01-preview",
     "scopeType": 4,
     "body": {
-      "$ref": "#/36"
+      "$ref": "#/37"
     },
     "flags": 1
   },
@@ -548,7 +561,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/51"
+        "$ref": "#/52"
       },
       {
         "$ref": "#/2"
@@ -576,35 +589,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/53"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/54"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/55"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/57"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
       },
       "systemData": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/21"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -617,14 +630,14 @@
     "properties": {
       "freeTrial": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/58"
         },
         "flags": 2,
-        "description": "The Playwright workspace quota resource free-trial properties."
+        "description": "The Playwright workspace quota free trial properties."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/67"
         },
         "flags": 2,
         "description": "The status of the last resource operation."
@@ -640,35 +653,35 @@
           "$ref": "#/2"
         },
         "flags": 3,
-        "description": "The free-trial createdAt utcDateTime."
+        "description": "The free trial creation timestamp in UTC."
       },
       "expiryAt": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 3,
-        "description": "The free-trial expiryAt utcDateTime."
+        "description": "The free trial expiration timestamp in UTC."
       },
       "allocatedValue": {
-        "type": {
-          "$ref": "#/58"
-        },
-        "flags": 3,
-        "description": "The free-trial allocated limit value eg. allocated free execution minutes."
-      },
-      "usedValue": {
-        "type": {
-          "$ref": "#/58"
-        },
-        "flags": 3,
-        "description": "The free-trial used value eg. used free execution minutes."
-      },
-      "percentageUsed": {
         "type": {
           "$ref": "#/59"
         },
         "flags": 3,
-        "description": "The free-trial percentage used."
+        "description": "The allocated limit value (e.g., allocated free execution minutes)."
+      },
+      "usedValue": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 3,
+        "description": "The used value (e.g., used free execution minutes)."
+      },
+      "percentageUsed": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 3,
+        "description": "The percentage of the free trial quota used."
       }
     }
   },
@@ -708,9 +721,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/60"
-      },
-      {
         "$ref": "#/61"
       },
       {
@@ -726,6 +736,9 @@
         "$ref": "#/65"
       },
       {
+        "$ref": "#/66"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -735,7 +748,7 @@
     "name": "Microsoft.LoadTestService/playwrightWorkspaces/quotas@2025-07-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/55"
+      "$ref": "#/56"
     },
     "flags": 1
   }

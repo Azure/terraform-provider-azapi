@@ -208,122 +208,143 @@
       },
       "containers": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/59"
         },
         "flags": 1,
         "description": "The containers within the container group."
       },
       "imageRegistryCredentials": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/61"
         },
         "flags": 0,
         "description": "The image registry credentials by which the container group is created from."
       },
       "restartPolicy": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Restart policy for all containers within the container group. \n- `Always` Always restart\n- `OnFailure` Restart on failure\n- `Never` Never restart"
       },
       "ipAddress": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "The IP address type of the container group."
       },
       "osType": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/83"
         },
-        "flags": 1,
+        "flags": 0,
         "description": "The operating system type required by the containers in the container group."
       },
       "volumes": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "The list of volumes that can be mounted by containers in this container group."
       },
       "instanceView": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/91"
         },
         "flags": 2,
         "description": "The instance view of the container group. Only valid in response."
       },
       "diagnostics": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "The diagnostic information for a container group."
       },
       "subnetIds": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/100"
         },
         "flags": 0,
         "description": "The subnet resource IDs for a container group."
       },
       "dnsConfig": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "The DNS config information for a container group."
       },
       "sku": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The SKU for a container group."
       },
       "encryptionProperties": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "The encryption properties for a container group."
       },
       "initContainers": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/116"
         },
         "flags": 0,
         "description": "The init containers for a container group."
       },
       "extensions": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "extensions used by virtual kubelet"
       },
       "confidentialComputeProperties": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/120"
         },
         "flags": 0,
         "description": "The properties for confidential container group"
       },
       "priority": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "The priority of the container group."
       },
       "identityAcls": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "The access control levels of the identities."
+      },
+      "containerGroupProfile": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 0,
+        "description": "The reference container group profile properties."
+      },
+      "standbyPoolProfile": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 0,
+        "description": "The reference standby pool profile properties."
+      },
+      "isCreatedFromStandbyPool": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 2,
+        "description": "The flag to determine whether the container group is created from standby pool."
       }
     }
   },
@@ -388,7 +409,7 @@
         "type": {
           "$ref": "#/0"
         },
-        "flags": 1,
+        "flags": 0,
         "description": "The name of the image used to create the container instance."
       },
       "command": {
@@ -423,7 +444,7 @@
         "type": {
           "$ref": "#/33"
         },
-        "flags": 1,
+        "flags": 0,
         "description": "The resource requirements of the container instance."
       },
       "volumeMounts": {
@@ -453,6 +474,13 @@
         },
         "flags": 0,
         "description": "The container security properties."
+      },
+      "configMap": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The config map."
       }
     }
   },
@@ -1082,6 +1110,27 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "ConfigMap",
+    "properties": {
+      "keyValuePairs": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The key value pairs dictionary in the config map."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConfigMapKeyValuePairs",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
     "$type": "ArrayType",
     "itemType": {
       "$ref": "#/17"
@@ -1138,7 +1187,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/58"
+      "$ref": "#/60"
     }
   },
   {
@@ -1157,13 +1206,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/61"
-      },
-      {
         "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
       },
       {
         "$ref": "#/0"
@@ -1176,14 +1225,14 @@
     "properties": {
       "ports": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/71"
         },
         "flags": 1,
         "description": "The list of ports exposed on the container group."
       },
       "type": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/74"
         },
         "flags": 1,
         "description": "Specifies if the IP is exposed to the public internet or private VNET."
@@ -1204,7 +1253,7 @@
       },
       "autoGeneratedDomainNameLabelScope": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "The value representing the security enum. The 'Unsecure' value is the default value if not selected and means the object's domain name label is not secured against subdomain takeover. The 'TenantReuse' value is the default value if selected and means the object's domain name label can be reused within the same tenant. The 'SubscriptionReuse' value means the object's domain name label can be reused within the same subscription. The 'ResourceGroupReuse' value means the object's domain name label can be reused within the same resource group. The 'NoReuse' value means the object's domain name label cannot be reused within the same resource group, subscription, or tenant."
@@ -1224,7 +1273,7 @@
     "properties": {
       "protocol": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "The protocol associated with the port."
@@ -1250,10 +1299,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/66"
+        "$ref": "#/68"
       },
       {
-        "$ref": "#/67"
+        "$ref": "#/69"
       },
       {
         "$ref": "#/0"
@@ -1263,7 +1312,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/65"
+      "$ref": "#/67"
     }
   },
   {
@@ -1278,10 +1327,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/70"
+        "$ref": "#/72"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/73"
       },
       {
         "$ref": "#/0"
@@ -1312,12 +1361,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/73"
-      },
-      {
-        "$ref": "#/74"
-      },
-      {
         "$ref": "#/75"
       },
       {
@@ -1325,6 +1368,12 @@
       },
       {
         "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
       },
       {
         "$ref": "#/0"
@@ -1343,10 +1392,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/82"
       },
       {
         "$ref": "#/0"
@@ -1366,35 +1415,35 @@
       },
       "azureFile": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "The Azure File volume."
       },
       "emptyDir": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "The empty directory volume."
       },
       "secret": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/87"
         },
         "flags": 0,
         "description": "The secret volume."
       },
       "secretReference": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "The secret reference volume."
       },
       "gitRepo": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "The git repo volume."
@@ -1491,7 +1540,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/82"
+      "$ref": "#/84"
     }
   },
   {
@@ -1500,7 +1549,7 @@
     "properties": {
       "events": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/92"
         },
         "flags": 2,
         "description": "The events of this container group."
@@ -1526,7 +1575,7 @@
     "properties": {
       "logAnalytics": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Container group log analytics information."
@@ -1553,14 +1602,14 @@
       },
       "logType": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/97"
         },
         "flags": 0,
         "description": "The log type to be used."
       },
       "metadata": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "Metadata for log analytics."
@@ -1586,10 +1635,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/93"
+        "$ref": "#/95"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/96"
       },
       {
         "$ref": "#/0"
@@ -1627,7 +1676,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/97"
+      "$ref": "#/99"
     }
   },
   {
@@ -1636,7 +1685,7 @@
     "properties": {
       "nameServers": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/102"
         },
         "flags": 1,
         "description": "The DNS servers for the container group."
@@ -1683,16 +1732,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/101"
-      },
-      {
-        "$ref": "#/102"
-      },
-      {
         "$ref": "#/103"
       },
       {
         "$ref": "#/104"
+      },
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
       },
       {
         "$ref": "#/0"
@@ -1746,7 +1795,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/110"
         },
         "flags": 1,
         "description": "The properties for the init container."
@@ -1766,28 +1815,28 @@
       },
       "command": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/111"
         },
         "flags": 0,
         "description": "The command to execute within the init container in exec form."
       },
       "environmentVariables": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/112"
         },
         "flags": 0,
         "description": "The environment variables to set in the init container."
       },
       "instanceView": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/113"
         },
         "flags": 2,
         "description": "The instance view of the init container. Only valid in response."
       },
       "volumeMounts": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/115"
         },
         "flags": 0,
         "description": "The volume mounts available to the init container."
@@ -1840,7 +1889,7 @@
       },
       "events": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/114"
         },
         "flags": 2,
         "description": "The events of the init container."
@@ -1862,7 +1911,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/107"
+      "$ref": "#/109"
     }
   },
   {
@@ -1878,7 +1927,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/118"
         },
         "flags": 0,
         "description": "Extension specific properties"
@@ -1905,14 +1954,14 @@
       },
       "settings": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "Settings for the extension."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "Protected settings for the extension."
@@ -1922,7 +1971,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/115"
+      "$ref": "#/117"
     }
   },
   {
@@ -1950,10 +1999,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/119"
+        "$ref": "#/121"
       },
       {
-        "$ref": "#/120"
+        "$ref": "#/122"
       },
       {
         "$ref": "#/0"
@@ -1966,14 +2015,14 @@
     "properties": {
       "defaultAccess": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The default access level."
       },
       "acls": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/134"
         },
         "flags": 0,
         "description": "The access control levels for each identity."
@@ -1996,13 +2045,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/123"
-      },
-      {
-        "$ref": "#/124"
-      },
-      {
         "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
       },
       {
         "$ref": "#/0"
@@ -2015,7 +2064,7 @@
     "properties": {
       "access": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/133"
         },
         "flags": 0,
         "description": "The access level of the identity."
@@ -2045,13 +2094,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/128"
-      },
-      {
-        "$ref": "#/129"
-      },
-      {
         "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
       },
       {
         "$ref": "#/0"
@@ -2061,7 +2110,47 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/127"
+      "$ref": "#/129"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContainerGroupProfileReferenceDefinition",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The container group profile reference id.This will be an ARM resource id in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroupProfiles/{containerGroupProfileName}'."
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "The container group profile reference revision."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "StandbyPoolProfileDefinition",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The standby pool profile reference id.This will be an ARM resource id in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyPoolName}'."
+      },
+      "failContainerGroupCreateOnReuseFailure": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "The flag to determine whether ACI should fail the create request if the container group can not be obtained from standby pool."
+      }
     }
   },
   {
@@ -2100,42 +2189,42 @@
       },
       "name": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/138"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/139"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/140"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "systemData": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/142"
         },
         "flags": 2,
         "description": "Metadata pertaining to creation and last modification of the resource."
       },
       "properties": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/153"
         },
         "flags": 0,
         "description": "Describes the properties of the NGroups resource."
       },
       "identity": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/201"
         },
         "flags": 0,
         "description": "The identity of the NGroup, if configured."
@@ -2149,14 +2238,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/204"
+          "$ref": "#/208"
         },
         "flags": 0,
         "description": "The resource tags."
       },
       "zones": {
         "type": {
-          "$ref": "#/205"
+          "$ref": "#/209"
         },
         "flags": 0,
         "description": "The zones for the container group."
@@ -2176,7 +2265,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/143"
+          "$ref": "#/147"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -2197,7 +2286,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/148"
+          "$ref": "#/152"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -2231,16 +2320,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/139"
+        "$ref": "#/143"
       },
       {
-        "$ref": "#/140"
+        "$ref": "#/144"
       },
       {
-        "$ref": "#/141"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/142"
+        "$ref": "#/146"
       },
       {
         "$ref": "#/0"
@@ -2267,16 +2356,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/144"
+        "$ref": "#/148"
       },
       {
-        "$ref": "#/145"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/146"
+        "$ref": "#/150"
       },
       {
-        "$ref": "#/147"
+        "$ref": "#/151"
       },
       {
         "$ref": "#/0"
@@ -2289,35 +2378,35 @@
     "properties": {
       "elasticProfile": {
         "type": {
-          "$ref": "#/150"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "The elastic profile."
       },
       "placementProfile": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/157"
         },
         "flags": 0,
         "description": "Provides options w.r.t allocation and management w.r.t certain placement policies. These utilize capabilities provided by the underlying Azure infrastructure. They are typically used for high availability scenarios. E.g., distributing CGs across fault domains."
       },
       "containerGroupProfiles": {
         "type": {
-          "$ref": "#/183"
+          "$ref": "#/187"
         },
         "flags": 0,
         "description": "The Container Group Profiles that could be used in the NGroups resource."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/195"
         },
         "flags": 2,
         "description": "The provisioning state, which only appears in the response."
       },
       "updateProfile": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/196"
         },
         "flags": 0,
         "description": "Used by the customer to specify the way to update the Container Groups in NGroup."
@@ -2343,7 +2432,7 @@
       },
       "containerGroupNamingPolicy": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/155"
         },
         "flags": 0,
         "description": "Container Groups are named on a generic guid based naming scheme/policy. Customer can modify naming policy to add prefix to CG names during scale out operation."
@@ -2356,7 +2445,7 @@
     "properties": {
       "guidNamingPolicy": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/156"
         },
         "flags": 0
       }
@@ -2394,7 +2483,7 @@
     "properties": {
       "resource": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/159"
         },
         "flags": 0,
         "description": "A reference to the container group profile ARM resource hosted in ACI RP."
@@ -2408,21 +2497,21 @@
       },
       "networkProfile": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/160"
         },
         "flags": 0,
         "description": "A network profile for network settings of a ContainerGroupProfile."
       },
       "storageProfile": {
         "type": {
-          "$ref": "#/163"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "Storage profile for storage related settings of a container group profile."
       },
       "containerGroupProperties": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/179"
         },
         "flags": 0,
         "description": "Container Group properties which can be set while creating or updating the NGroups."
@@ -2448,14 +2537,14 @@
     "properties": {
       "loadBalancer": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/161"
         },
         "flags": 0,
         "description": "LoadBalancer the CG profile will use to interact with CGs in a backend pool"
       },
       "applicationGateway": {
         "type": {
-          "$ref": "#/160"
+          "$ref": "#/164"
         },
         "flags": 0,
         "description": "Application Gateway the CG profile will use to interact with CGs in a backend pool"
@@ -2468,7 +2557,7 @@
     "properties": {
       "backendAddressPools": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/163"
         },
         "flags": 0,
         "description": "List of Load Balancer Backend Address Pools."
@@ -2491,7 +2580,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/158"
+      "$ref": "#/162"
     }
   },
   {
@@ -2507,7 +2596,7 @@
       },
       "backendAddressPools": {
         "type": {
-          "$ref": "#/162"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "List of Application Gateway Backend Address Pools."
@@ -2530,7 +2619,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/161"
+      "$ref": "#/165"
     }
   },
   {
@@ -2539,7 +2628,7 @@
     "properties": {
       "fileShares": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/178"
         },
         "flags": 0
       }
@@ -2569,7 +2658,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/169"
         },
         "flags": 0
       }
@@ -2581,14 +2670,14 @@
     "properties": {
       "shareAccessType": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "Specifies how Container Groups can access the Azure file share i.e. all CG will share same Azure file share or going to have exclusive file share."
       },
       "shareAccessTier": {
         "type": {
-          "$ref": "#/173"
+          "$ref": "#/177"
         },
         "flags": 0,
         "description": "Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium. Learn more at: https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/create?tabs=HTTP#shareaccesstier"
@@ -2607,10 +2696,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/166"
+        "$ref": "#/170"
       },
       {
-        "$ref": "#/167"
+        "$ref": "#/171"
       }
     ]
   },
@@ -2634,23 +2723,23 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/169"
+        "$ref": "#/173"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/174"
       },
       {
-        "$ref": "#/171"
+        "$ref": "#/175"
       },
       {
-        "$ref": "#/172"
+        "$ref": "#/176"
       }
     ]
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/164"
+      "$ref": "#/168"
     }
   },
   {
@@ -2659,21 +2748,21 @@
     "properties": {
       "subnetIds": {
         "type": {
-          "$ref": "#/176"
+          "$ref": "#/180"
         },
         "flags": 0,
         "description": "Contains information about Virtual Network Subnet ARM Resource"
       },
       "volumes": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/182"
         },
         "flags": 0,
         "description": "Contains information about the volumes that can be mounted by Containers in the Container Groups."
       },
       "containers": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/186"
         },
         "flags": 0,
         "description": "Contains information about Container which can be set while creating or updating the NGroups."
@@ -2683,7 +2772,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/97"
+      "$ref": "#/99"
     }
   },
   {
@@ -2699,7 +2788,7 @@
       },
       "azureFile": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/85"
         },
         "flags": 0,
         "description": "The Azure File volume."
@@ -2709,7 +2798,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/177"
+      "$ref": "#/181"
     }
   },
   {
@@ -2725,7 +2814,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/184"
         },
         "flags": 0,
         "description": "container properties"
@@ -2738,7 +2827,7 @@
     "properties": {
       "volumeMounts": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/185"
         },
         "flags": 0
       }
@@ -2753,13 +2842,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/179"
+      "$ref": "#/183"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/154"
+      "$ref": "#/158"
     }
   },
   {
@@ -2794,18 +2883,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/184"
-      },
-      {
-        "$ref": "#/185"
-      },
-      {
-        "$ref": "#/186"
-      },
-      {
-        "$ref": "#/187"
-      },
-      {
         "$ref": "#/188"
       },
       {
@@ -2813,6 +2890,18 @@
       },
       {
         "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
       },
       {
         "$ref": "#/0"
@@ -2825,13 +2914,13 @@
     "properties": {
       "updateMode": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/199"
         },
         "flags": 0
       },
       "rollingUpdateProfile": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/200"
         },
         "flags": 0,
         "description": "This profile allows the customers to customize the rolling update."
@@ -2850,10 +2939,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/193"
+        "$ref": "#/197"
       },
       {
-        "$ref": "#/194"
+        "$ref": "#/198"
       },
       {
         "$ref": "#/0"
@@ -2914,14 +3003,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/206"
         },
         "flags": 0,
         "description": "The type of identity used for the NGroup. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the NGroup."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/203"
+          "$ref": "#/207"
         },
         "flags": 0,
         "description": "The list of user identities associated with the NGroup."
@@ -2948,16 +3037,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/198"
+        "$ref": "#/202"
       },
       {
-        "$ref": "#/199"
+        "$ref": "#/203"
       },
       {
-        "$ref": "#/200"
+        "$ref": "#/204"
       },
       {
-        "$ref": "#/201"
+        "$ref": "#/205"
       }
     ]
   },
@@ -2988,7 +3077,7 @@
     "name": "Microsoft.ContainerInstance/ngroups@2024-11-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/137"
+      "$ref": "#/141"
     },
     "flags": 0
   },
@@ -3013,35 +3102,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/138"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/211"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/212"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "systemData": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/142"
         },
         "flags": 2,
         "description": "Metadata pertaining to creation and last modification of the resource."
       },
       "properties": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/214"
         },
         "flags": 0,
         "description": "The container group profile properties"
@@ -3055,14 +3144,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/232"
+          "$ref": "#/236"
         },
         "flags": 0,
         "description": "The resource tags."
       },
       "zones": {
         "type": {
-          "$ref": "#/233"
+          "$ref": "#/237"
         },
         "flags": 0,
         "description": "The zones for the container group."
@@ -3075,49 +3164,49 @@
     "properties": {
       "sku": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/219"
         },
         "flags": 0,
         "description": "The SKU for a container group."
       },
       "encryptionProperties": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "The encryption properties for a container group."
       },
       "containers": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/220"
         },
-        "flags": 0,
+        "flags": 1,
         "description": "The containers within the container group."
       },
       "initContainers": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/221"
         },
         "flags": 0,
         "description": "The init containers for a container group."
       },
       "extensions": {
         "type": {
-          "$ref": "#/218"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "extensions used by virtual kubelet"
       },
       "imageRegistryCredentials": {
         "type": {
-          "$ref": "#/219"
+          "$ref": "#/223"
         },
         "flags": 0,
         "description": "The image registry credentials by which the container group is created from."
       },
       "restartPolicy": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "Restart policy for all containers within the container group. \n- `Always` Always restart\n- `OnFailure` Restart on failure\n- `Never` Never restart"
@@ -3131,7 +3220,7 @@
       },
       "ipAddress": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/66"
         },
         "flags": 0,
         "description": "The IP address type of the container group."
@@ -3145,35 +3234,35 @@
       },
       "osType": {
         "type": {
-          "$ref": "#/226"
+          "$ref": "#/230"
         },
-        "flags": 0,
+        "flags": 1,
         "description": "The operating system type required by the containers in the container group."
       },
       "volumes": {
         "type": {
-          "$ref": "#/227"
+          "$ref": "#/231"
         },
         "flags": 0,
         "description": "The list of volumes that can be mounted by containers in this container group."
       },
       "diagnostics": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "The diagnostic information for a container group."
       },
       "priority": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/234"
         },
         "flags": 0,
         "description": "The priority of the container group."
       },
       "confidentialComputeProperties": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/120"
         },
         "flags": 0,
         "description": "The properties for confidential container group"
@@ -3189,14 +3278,14 @@
         "type": {
           "$ref": "#/24"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "Container group profile current revision number"
       },
       "registeredRevisions": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/235"
         },
-        "flags": 0,
+        "flags": 2,
         "description": "Registered revisions are calculated at request time based off the records in the table logs."
       },
       "useKrypton": {
@@ -3228,16 +3317,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/211"
+        "$ref": "#/215"
       },
       {
-        "$ref": "#/212"
+        "$ref": "#/216"
       },
       {
-        "$ref": "#/213"
+        "$ref": "#/217"
       },
       {
-        "$ref": "#/214"
+        "$ref": "#/218"
       },
       {
         "$ref": "#/0"
@@ -3253,19 +3342,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/107"
+      "$ref": "#/109"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/115"
+      "$ref": "#/117"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/58"
+      "$ref": "#/60"
     }
   },
   {
@@ -3284,13 +3373,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/220"
+        "$ref": "#/224"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/225"
       },
       {
-        "$ref": "#/222"
+        "$ref": "#/226"
       },
       {
         "$ref": "#/0"
@@ -3309,10 +3398,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/224"
+        "$ref": "#/228"
       },
       {
-        "$ref": "#/225"
+        "$ref": "#/229"
       },
       {
         "$ref": "#/0"
@@ -3322,7 +3411,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/82"
+      "$ref": "#/84"
     }
   },
   {
@@ -3337,10 +3426,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/228"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/233"
       },
       {
         "$ref": "#/0"
@@ -3372,7 +3461,7 @@
     "name": "Microsoft.ContainerInstance/containerGroupProfiles@2024-11-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/209"
+      "$ref": "#/213"
     },
     "flags": 0
   },
@@ -3404,28 +3493,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/235"
+          "$ref": "#/239"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/236"
+          "$ref": "#/240"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "systemData": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/142"
         },
         "flags": 2,
         "description": "Metadata pertaining to creation and last modification of the resource."
       },
       "properties": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/214"
         },
         "flags": 2,
         "description": "The container group profile properties"
@@ -3439,14 +3528,14 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/238"
+          "$ref": "#/242"
         },
         "flags": 2,
         "description": "The resource tags."
       },
       "zones": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/243"
         },
         "flags": 2,
         "description": "The zones for the container group."
@@ -3472,7 +3561,7 @@
     "name": "Microsoft.ContainerInstance/containerGroupProfiles/revisions@2024-11-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/237"
+      "$ref": "#/241"
     },
     "flags": 1
   },
@@ -3507,7 +3596,7 @@
       },
       "terminalSize": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/249"
         },
         "flags": 0,
         "description": "The size of the terminal."
@@ -3560,10 +3649,10 @@
     "resourceType": "Microsoft.ContainerInstance/containerGroups/containers",
     "apiVersion": "2024-11-01-preview",
     "output": {
-      "$ref": "#/246"
+      "$ref": "#/250"
     },
     "input": {
-      "$ref": "#/244"
+      "$ref": "#/248"
     }
   },
   {
@@ -3592,7 +3681,7 @@
     "resourceType": "Microsoft.ContainerInstance/containerGroups/containers",
     "apiVersion": "2024-11-01-preview",
     "output": {
-      "$ref": "#/248"
+      "$ref": "#/252"
     }
   },
   {

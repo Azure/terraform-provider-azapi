@@ -42,9 +42,16 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "tags": {
+      "properties": {
         "type": {
           "$ref": "#/4"
+        },
+        "flags": 0,
+        "description": "Properties of the Private DNS zone."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -63,13 +70,6 @@
         "flags": 0,
         "description": "The ETag of the zone."
       },
-      "properties": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "Properties of the Private DNS zone."
-      },
       "systemData": {
         "type": {
           "$ref": "#/14"
@@ -81,61 +81,53 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PrivateZoneTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "PrivateZoneProperties",
     "properties": {
       "maxNumberOfRecordSets": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored."
       },
       "numberOfRecordSets": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored."
       },
       "maxNumberOfVirtualNetworkLinks": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored."
       },
       "numberOfVirtualNetworkLinks": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored."
       },
       "maxNumberOfVirtualNetworkLinksWithRegistration": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored."
       },
       "numberOfVirtualNetworkLinksWithRegistration": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/12"
         },
         "flags": 2,
         "description": "The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored."
@@ -180,6 +172,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/6"
+      },
+      {
         "$ref": "#/7"
       },
       {
@@ -195,12 +190,17 @@
         "$ref": "#/11"
       },
       {
-        "$ref": "#/12"
-      },
-      {
         "$ref": "#/0"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateZoneTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
   },
   {
     "$type": "ObjectType",
@@ -371,19 +371,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -407,7 +407,7 @@
       },
       "ttl": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The TTL (time-to-live) of the records in the record set."
@@ -552,7 +552,7 @@
     "properties": {
       "preference": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The preference value for this MX record."
@@ -611,35 +611,35 @@
       },
       "serialNumber": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The serial number for this SOA record."
       },
       "refreshTime": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The refresh value for this SOA record."
       },
       "retryTime": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The retry time for this SOA record."
       },
       "expireTime": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The expire time for this SOA record."
       },
       "minimumTtl": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The minimum value for this SOA record. By convention this is used to determine the negative caching duration."
@@ -652,21 +652,21 @@
     "properties": {
       "priority": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The priority value for this SRV record."
       },
       "weight": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The weight value for this SRV record."
       },
       "port": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "The port value for this SRV record."
@@ -760,19 +760,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -832,19 +832,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -904,19 +904,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -976,19 +976,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -1048,19 +1048,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -1120,19 +1120,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -1192,19 +1192,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "etag": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The ETag of the record set."
-      },
       "properties": {
         "type": {
           "$ref": "#/29"
         },
         "flags": 0,
         "description": "The properties of the record set."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The ETag of the record set."
       },
       "systemData": {
         "type": {
@@ -1264,9 +1264,16 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "tags": {
+      "properties": {
         "type": {
           "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "Properties of the virtual network link to the Private DNS zone."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1285,13 +1292,6 @@
         "flags": 0,
         "description": "The ETag of the virtual network link."
       },
-      "properties": {
-        "type": {
-          "$ref": "#/80"
-        },
-        "flags": 0,
-        "description": "Properties of the virtual network link to the Private DNS zone."
-      },
       "systemData": {
         "type": {
           "$ref": "#/14"
@@ -1303,19 +1303,11 @@
   },
   {
     "$type": "ObjectType",
-    "name": "VirtualNetworkLinkTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "VirtualNetworkLinkProperties",
     "properties": {
       "virtualNetwork": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "The reference of the virtual network."
@@ -1329,21 +1321,21 @@
       },
       "resolutionPolicy": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/83"
         },
         "flags": 0,
         "description": "The resolution policy on the virtual network link. Only applicable for virtual network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS resolver falls back to public resolution if private dns query resolution results in non-existent domain response."
       },
       "virtualNetworkLinkState": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/86"
         },
         "flags": 2,
         "description": "The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will be ignored."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/93"
         },
         "flags": 2,
         "description": "The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored."
@@ -1375,10 +1367,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/82"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/83"
+        "$ref": "#/82"
       },
       {
         "$ref": "#/0"
@@ -1397,10 +1389,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/85"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/85"
       },
       {
         "$ref": "#/0"
@@ -1435,6 +1427,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/87"
+      },
+      {
         "$ref": "#/88"
       },
       {
@@ -1450,12 +1445,17 @@
         "$ref": "#/92"
       },
       {
-        "$ref": "#/93"
-      },
-      {
         "$ref": "#/0"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualNetworkLinkTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
   },
   {
     "$type": "ResourceType",

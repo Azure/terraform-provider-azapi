@@ -42,26 +42,26 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/4"
+        },
+        "flags": 1,
+        "description": "Describes the connected cluster resource properties."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/47"
         },
         "flags": 1,
         "description": "The identity of the connected cluster."
       },
       "kind": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "The kind of connected cluster."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 1,
-        "description": "Describes the connected cluster resource properties."
       },
       "tags": {
         "type": {
@@ -88,74 +88,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ConnectedClusterIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The principal id of connected cluster identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The tenant id associated with the connected cluster. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 1,
-        "description": "The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity. The type 'None' means no identity is assigned to the connected cluster."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/5"
-      },
-      {
-        "$ref": "#/6"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ProvisionedCluster"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AWS"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
     "name": "ConnectedClusterProperties",
     "properties": {
       "agentPublicKeyCertificate": {
@@ -174,14 +106,14 @@
       },
       "totalNodeCount": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "Number of nodes present in the connected cluster resource"
       },
       "totalCoreCount": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "Number of CPU cores present in the connected cluster resource"
@@ -195,7 +127,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "Provisioning state of the connected cluster resource."
@@ -244,14 +176,14 @@
       },
       "connectivityStatus": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/19"
         },
         "flags": 2,
         "description": "Represents the connectivity status of the connected cluster."
       },
       "privateLinkState": {
         "type": {
-          "$ref": "#/29"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Property which describes the state of private link on a connected cluster resource."
@@ -265,56 +197,56 @@
       },
       "azureHybridBenefit": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Indicates whether Azure Hybrid Benefit is opted in"
       },
       "aadProfile": {
         "type": {
-          "$ref": "#/34"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "AAD profile for the connected cluster."
       },
       "arcAgentProfile": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "Arc agentry configuration for the provisioned cluster."
       },
       "securityProfile": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Security profile for the connected cluster."
       },
       "oidcIssuerProfile": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "Open ID Connect (OIDC) Issuer Profile for the connected cluster."
       },
       "gateway": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "Details of the gateway used by the Arc router for connectivity."
       },
       "arcAgentryConfigurations": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "Configuration settings for customizing the behavior of the connected cluster."
       },
       "miscellaneousProperties": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/46"
         },
         "flags": 2,
         "description": "More properties related to the Connected Cluster"
@@ -356,25 +288,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/13"
+        "$ref": "#/6"
       },
       {
-        "$ref": "#/14"
+        "$ref": "#/7"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/8"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/12"
       },
       {
         "$ref": "#/0"
@@ -405,19 +337,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/21"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/22"
+        "$ref": "#/15"
       },
       {
-        "$ref": "#/23"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/25"
+        "$ref": "#/18"
       },
       {
         "$ref": "#/0"
@@ -436,10 +368,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/27"
+        "$ref": "#/20"
       },
       {
-        "$ref": "#/28"
+        "$ref": "#/21"
       },
       {
         "$ref": "#/0"
@@ -462,13 +394,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/30"
+        "$ref": "#/23"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/24"
       },
       {
-        "$ref": "#/32"
+        "$ref": "#/25"
       },
       {
         "$ref": "#/0"
@@ -481,14 +413,14 @@
     "properties": {
       "enableAzureRBAC": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Whether to enable Azure RBAC for Kubernetes authorization."
       },
       "adminGroupObjectIDs": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The list of AAD group object IDs that will have admin role of the cluster."
@@ -524,21 +456,21 @@
       },
       "agentAutoUpgrade": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/33"
         },
         "flags": 0,
         "description": "Indicates whether the Arc agents on the be upgraded automatically to the latest version. Defaults to Enabled."
       },
       "systemComponents": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/35"
         },
         "flags": 0,
         "description": "List of system extensions that are installed on the cluster resource."
       },
       "agentErrors": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "List of arc agentry and system components errors on the cluster resource."
@@ -564,10 +496,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/38"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/32"
       },
       {
         "$ref": "#/0"
@@ -594,7 +526,7 @@
       },
       "majorVersion": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Major Version of the system extension that is currently installed on the cluster resource."
@@ -611,7 +543,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/41"
+      "$ref": "#/34"
     }
   },
   {
@@ -651,7 +583,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/43"
+      "$ref": "#/36"
     }
   },
   {
@@ -660,7 +592,7 @@
     "properties": {
       "workloadIdentity": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "The workload identity feature webhook."
@@ -673,7 +605,7 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Whether to enable or disable the workload identity Webhook"
@@ -686,7 +618,7 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Whether to enable oidc issuer for workload identity integration."
@@ -713,7 +645,7 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/28"
         },
         "flags": 0,
         "description": "Indicates whether the gateway for arc router connectivity is enabled."
@@ -740,14 +672,14 @@
       },
       "settings": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The configuration settings for the feature that do not contain any sensitive or secret information."
       },
       "protectedSettings": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/44"
         },
         "flags": 0,
         "description": "The configuration settings for the feature that contain any sensitive or secret information."
@@ -773,7 +705,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/49"
+      "$ref": "#/42"
     }
   },
   {
@@ -783,6 +715,74 @@
     "additionalProperties": {
       "$ref": "#/0"
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ConnectedClusterIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The principal id of connected cluster identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The tenant id associated with the connected cluster. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "The type of identity used for the connected cluster. The type 'SystemAssigned, includes a system created identity. The type 'None' means no identity is assigned to the connected cluster."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ProvisionedCluster"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AWS"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
   },
   {
     "$type": "ObjectType",
@@ -934,7 +934,7 @@
       },
       "clientProxy": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/28"
         },
         "flags": 1,
         "description": "Boolean value to indicate whether the request is for client side proxy or not"
@@ -989,7 +989,7 @@
     "properties": {
       "expirationTime": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "Timestamp when this token will be expired."
