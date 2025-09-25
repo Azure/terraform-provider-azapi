@@ -138,8 +138,13 @@ func (account *ResourceManagerAccount) loadDefaultsFromAzCmd() error {
 		return fmt.Errorf("obtaining defaults from az cmd: %s", err)
 	}
 
-	account.tenantId = &accountModel.TenantId
-	account.subscriptionId = &accountModel.SubscriptionID
+	// Only set values that are currently nil (not already configured)
+	if account.tenantId == nil {
+		account.tenantId = &accountModel.TenantId
+	}
+	if account.subscriptionId == nil {
+		account.subscriptionId = &accountModel.SubscriptionID
+	}
 	return nil
 }
 
