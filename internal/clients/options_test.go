@@ -1,7 +1,9 @@
 package clients_test
 
 import (
+	"errors"
 	"math"
+	"net/http"
 	"testing"
 	"time"
 
@@ -223,6 +225,132 @@ func Test_CombineRetryOptions(t *testing.T) {
 					t.Errorf("expected status code %d at index %d, but it was not found in the expected codes", code, i)
 					continue
 				}
+			}
+		})
+	}
+}
+
+func Test_NewRetryOptions_NilResponseHandling(t *testing.T) {
+	// This test reproduces the panic from issue #985
+	// where resp.StatusCode is accessed when resp is nil
+	retryInput := retry.NewRetryValueMust(
+		map[string]attr.Type{
+			"interval_seconds":     types.Int64Type,
+			"max_interval_seconds": types.Int64Type,
+			"multiplier":           types.Float64Type,
+			"randomization_factor": types.Float64Type,
+			"error_message_regex":  types.ListType{ElemType: types.StringType},
+		},
+		map[string]attr.Value{
+			"interval_seconds":     types.Int64Value(retry.DefaultIntervalSeconds),
+			"max_interval_seconds": types.Int64Value(retry.DefaultMaxIntervalSeconds),
+			"multiplier":           types.Float64Value(retry.DefaultMultiplier),
+			"randomization_factor": types.Float64Value(retry.DefaultRandomizationFactor),
+			"error_message_regex":  types.ListValueMust(types.StringType, []attr.Value{types.StringValue("error")}),
+		},
+	)
+
+	result := clients.NewRetryOptions(retryInput)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	// Test various scenarios
+	testCases := []struct {
+		name        string
+		resp        *http.Response
+		err         error
+		expectRetry bool
+	}{
+		{
+			name:        "nil response with matching error",
+			resp:        nil,
+			err:         errors.New("some network error"),
+			expectRetry: true, // Should retry because error message matches regex
+		},
+		{
+			name:        "nil response with non-matching error",
+			resp:        nil,
+			err:         errors.New("some other issue"),
+			expectRetry: false,
+		},
+		{
+			name:        "retryable status code",
+			resp:        &http.Response{StatusCode: 429}, // Too Many Requests
+			err:         nil,
+			expectRetry: true,
+		},
+		{
+			name:        "non-retryable status code",
+			resp:        &http.Response{StatusCode: 400}, // Bad Request
+			err:         nil,
+			expectRetry: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Test should not panic
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("ShouldRetry panicked: %v", r)
+				}
+			}()
+
+			shouldRetry := result.ShouldRetry(tc.resp, tc.err)
+			if shouldRetry != tc.expectRetry {
+				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
+			}
+		})
+	}
+}
+
+func Test_NewRetryOptionsForReadAfterCreate_NilResponseHandling(t *testing.T) {
+	// This test reproduces the panic from issue #985 for the read-after-create retry options
+	result := clients.NewRetryOptionsForReadAfterCreate()
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	// Test various scenarios
+	testCases := []struct {
+		name        string
+		resp        *http.Response
+		err         error
+		expectRetry bool
+	}{
+		{
+			name:        "nil response with error",
+			resp:        nil,
+			err:         errors.New("some network error"),
+			expectRetry: false, // This function doesn't check error messages, only status codes
+		},
+		{
+			name:        "retryable status code",
+			resp:        &http.Response{StatusCode: 429}, // Too Many Requests
+			err:         nil,
+			expectRetry: true,
+		},
+		{
+			name:        "non-retryable status code",
+			resp:        &http.Response{StatusCode: 400}, // Bad Request
+			err:         nil,
+			expectRetry: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Test should not panic
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("ShouldRetry panicked: %v", r)
+				}
+			}()
+
+			shouldRetry := result.ShouldRetry(tc.resp, tc.err)
+			if shouldRetry != tc.expectRetry {
+				t.Errorf("expected ShouldRetry to return %v, got %v", tc.expectRetry, shouldRetry)
 			}
 		})
 	}
