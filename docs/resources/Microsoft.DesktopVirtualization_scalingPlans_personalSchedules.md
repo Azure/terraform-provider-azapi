@@ -173,7 +173,7 @@ resource "azapi_resource" "personalSchedule" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.DesktopVirtualization/scalingPlans/personalSchedules@api-version`. The available api-versions for this resource are: [`2023-09-05`, `2023-10-04-preview`, `2023-11-01-preview`, `2024-01-16-preview`, `2024-03-06-preview`, `2024-04-03`, `2024-04-08-preview`, `2024-08-08-preview`, `2024-11-01-preview`, `2025-03-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.DesktopVirtualization/scalingPlans/personalSchedules@api-version`. The available api-versions for this resource are: [`2023-09-05`, `2023-10-04-preview`, `2023-11-01-preview`, `2024-01-16-preview`, `2024-03-06-preview`, `2024-04-03`, `2024-04-08-preview`, `2024-08-08-preview`, `2024-11-01-preview`, `2025-03-01-preview`, `2025-04-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{resourceName}`
@@ -191,5 +191,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{resourceName}/personalSchedules/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{resourceName}/personalSchedules/{resourceName}?api-version=2025-03-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{resourceName}/personalSchedules/{resourceName}?api-version=2025-04-01-preview
  ```

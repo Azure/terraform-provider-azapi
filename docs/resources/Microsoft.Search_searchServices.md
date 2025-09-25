@@ -86,7 +86,7 @@ resource "azapi_resource" "searchService" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Search/searchServices@api-version`. The available api-versions for this resource are: [`2015-02-28`, `2015-08-19`, `2019-10-01-preview`, `2020-03-13`, `2020-08-01`, `2020-08-01-preview`, `2021-04-01-preview`, `2022-09-01`, `2023-11-01`, `2024-03-01-preview`, `2024-06-01-preview`, `2025-02-01-preview`, `2025-05-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Search/searchServices@api-version`. The available api-versions for this resource are: [`2015-02-28`, `2015-08-19`, `2019-10-01-preview`, `2020-03-13`, `2020-08-01`, `2020-08-01-preview`, `2021-04-01-preview`, `2022-09-01`, `2023-11-01`, `2024-03-01-preview`, `2024-06-01-preview`, `2025-02-01-preview`, `2025-05-01`, `2025-10-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -104,5 +104,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{resourceName}?api-version=2025-05-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{resourceName}?api-version=2025-10-01-preview
  ```
