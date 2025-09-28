@@ -272,7 +272,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"disable_instance_discovery": schema.BoolAttribute{
 				Optional:            true,
-				MarkdownDescription: "Disables Instance Discovery, which validates that the Authority is valid and known by the Microsoft Entra instance metadata service at https://login.microsoft.com before authenticating. This should only be enabled when the configured authority is known to be valid and trustworthy - such as when running against Azure Stack or when 'environment' is set to 'custom'. This can also be specified via the `ARM_DISABLE_INSTANCE_DISCOVERY` environment variable. Defaults to `false`.",
+				MarkdownDescription: "Disables Instance Discovery, which validates that the Authority is valid and known by the Microsoft Entra instance metadata service at `https://login.microsoft.com` before authenticating. This should only be enabled when the configured authority is known to be valid and trustworthy - such as when running against Azure Stack or when `environment` is set to `custom`. This can also be specified via the `ARM_DISABLE_INSTANCE_DISCOVERY` environment variable. Defaults to `false`.",
 			},
 
 			"disable_terraform_partner_id": schema.BoolAttribute{
