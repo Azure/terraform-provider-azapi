@@ -1852,7 +1852,7 @@ resource "azapi_resource" "test2" {
 func (GenericResource) template(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2024-03-01"
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
   name     = "acctestRG-%[1]d"
   location = "%[2]s"
 }
