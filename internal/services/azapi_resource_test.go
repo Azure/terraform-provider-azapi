@@ -58,7 +58,7 @@ func TestAccGenericResource_resourceGroup(t *testing.T) {
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
 		},
-		data.ImportStep(defaultIgnores()...),
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
 	})
 }
 
