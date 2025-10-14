@@ -149,6 +149,188 @@ func TestAccDataPlaneResource_replaceTriggeredByExternalValues(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_sensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.sensitiveBody(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_sensitiveBodyVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.sensitiveBodyWithVersion(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:            r.sensitiveBodyWithVersionUpdated(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func (r DataPlaneResource) sensitiveBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_app_configuration" "appconf" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "standard"
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "test" {
+  scope                = azurerm_app_configuration.appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+variable "sensitive_value" {
+  type      = string
+  default   = "mysecretvalue"
+  sensitive = true
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+  sensitive_body = {
+    value = var.sensitive_value
+  }
+
+  depends_on = [
+    azurerm_role_assignment.test,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) sensitiveBodyWithVersion(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_app_configuration" "appconf" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "standard"
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "test" {
+  scope                = azurerm_app_configuration.appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+  sensitive_body = {
+    value = "mysecretvalue"
+  }
+  sensitive_body_version = {
+    "value" = "1"
+  }
+
+  depends_on = [
+    azurerm_role_assignment.test,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) sensitiveBodyWithVersionUpdated(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_app_configuration" "appconf" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "standard"
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "test" {
+  scope                = azurerm_app_configuration.appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+  sensitive_body = {
+    value = "myupdatedsecretvalue"
+  }
+  sensitive_body_version = {
+    "value" = "2"
+  }
+
+  depends_on = [
+    azurerm_role_assignment.test,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
 func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.DataPlaneResourceIDWithResourceType(state.ID, resourceType)
