@@ -52,8 +52,8 @@ import (
 // and generates/updates a remarks.json file per namespace next to the samples folder.
 
 // Default CLI values are determined dynamically based on where the tool is executed from.
-// - If run from repo root: inDir = "examples", outDir = "../bicep-refdocs-generator/settings/remarks"
-// - If run from tools/sync-reference-doc: inDir = "../../examples", outDir = "../../../bicep-refdocs-generator/settings/remarks"
+// - If run from repo root: inDir = "examples", outDir = "../template-reference-generator/settings/remarks"
+// - If run from tools/sync-reference-doc: inDir = "../../examples", outDir = "../../../template-reference-generator/settings/remarks"
 
 type sampleInfo struct {
 	Namespace       string   // e.g. Microsoft.AlertsManagement
@@ -89,11 +89,11 @@ func main() {
 	switch filepath.Base(wd) {
 	case "sync-reference-doc":
 		defIn = filepath.Join(wd, "..", "..", "examples")
-		defOut = filepath.Join(wd, "..", "..", "..", "bicep-refdocs-generator", "settings", "remarks")
+		defOut = filepath.Join(wd, "..", "..", "..", "template-reference-generator", "settings", "remarks")
 		resourceTypeJsonFile = filepath.Join(wd, "..", "generator-example-doc", "resource_types.json")
 	case "terraform-provider-azapi":
 		defIn = filepath.Join(wd, "examples")
-		defOut = filepath.Join(wd, "..", "bicep-refdocs-generator", "settings", "remarks")
+		defOut = filepath.Join(wd, "..", "template-reference-generator", "settings", "remarks")
 		resourceTypeJsonFile = filepath.Join(wd, "tools", "generator-example-doc", "resource_types.json")
 	default:
 	}
