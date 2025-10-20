@@ -432,7 +432,7 @@ func Test_MergeObject(t *testing.T) {
 	}{
 		{
 			Name: "Merge simple objects",
-			OldJson: ` 
+			OldJson: `
 {
 	"a":1,
     "b": {
@@ -720,6 +720,20 @@ func Test_ExtractObject(t *testing.T) {
 	if result != nil {
 		resultJson, _ := json.Marshal(result)
 		t.Fatalf("Expected nil but got %s", resultJson)
+	}
+}
+
+func Test_MergeObjectWithNilNewValue(t *testing.T) {
+	var new any // has nil value
+	old := map[string]any{
+		"a": 1,
+		"b": map[string]any{
+			"b1": "b1",
+		},
+	}
+	got := utils.MergeObject(old, new)
+	if !reflect.DeepEqual(old, got) {
+		t.Fatalf("Expected %v but got %v", old, got)
 	}
 }
 

@@ -26,7 +26,7 @@ func NormalizeJson(jsonString interface{}) string {
 // MergeObject is used to merge object old and new, if overlaps, use new value
 func MergeObject(old interface{}, new interface{}) interface{} {
 	if new == nil {
-		return new
+		return old
 	}
 	switch oldValue := old.(type) {
 	case map[string]interface{}:
