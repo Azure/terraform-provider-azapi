@@ -1,11 +1,11 @@
 ---
-subcategory: "microsoft.insights - Azure Monitor"
+subcategory: "Microsoft.Insights - Azure Monitor"
 page_title: "components/analyticsItems"
 description: |-
   Manages a Application Insights Analytics Item component.
 ---
 
-# microsoft.insights/components/analyticsItems - Application Insights Analytics Item component
+# Microsoft.Insights/components/analyticsItems - Application Insights Analytics Item component
 
 This article demonstrates how to use `azapi` provider to manage the Application Insights Analytics Item component resource in Azure.
 
@@ -91,14 +91,14 @@ resource "azapi_resource_action" "analyticsItem" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `microsoft.insights/components/analyticsItems@api-version`. The available api-versions for this resource are: [`2015-05-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Insights/components/analyticsItems@api-version`. The available api-versions for this resource are: [`2015-05-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
-  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}`
+  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}`
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
 
-* `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/components/analyticsItems?pivots=deployment-language-terraform).
+* `body` - (Required) Specifies the configuration of the resource. More information about the arguments in `body` can be found in the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/components/analyticsItems?pivots=deployment-language-terraform).
 
 For other arguments, please refer to the [azapi_resource](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) documentation.
 
@@ -106,8 +106,8 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/analyticsItems/{resourceName}
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/analyticsItems/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/analyticsItems/{resourceName}?api-version=2015-05-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/analyticsItems/{resourceName}?api-version=2015-05-01
  ```

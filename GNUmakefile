@@ -124,9 +124,9 @@ example-test:
 # Run the sync-reference-doc tool to transform examples into the reference docs structure
 # Usage:
 #   make sync-reference-doc
-#   make sync-reference-doc INDIR=examples OUTDIR=../bicep-refdocs-generator/settings/remarks RESOURCETYPES=tools/generator-example-doc/resource_types.json
+#   make sync-reference-doc INDIR=examples OUTDIR=../template-reference-generator/settings/remarks RESOURCETYPES=tools/generator-example-doc/resource_types.json
 INDIR ?= examples
-OUTDIR ?= ../bicep-refdocs-generator/settings/remarks
+OUTDIR ?= ../template-reference-generator/settings/remarks
 RESOURCETYPES ?= tools/generator-example-doc/resource_types.json
 
 sync-reference-doc:
