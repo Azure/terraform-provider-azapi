@@ -3296,10 +3296,10 @@ resource "azapi_resource" "test" {
 func (r GenericResource) sensitiveBodyVersionWithEmptyBody(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 resource "azapi_resource" "resourceGroup" {
-  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name      = "acctestRG-%[1]d"
-  location  = "%[2]s"
-  body      = {}
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+  body     = {}
 }
 
 resource "azapi_resource" "test" {
@@ -3316,7 +3316,7 @@ resource "azapi_resource" "test" {
   }
 
   sensitive_body = {
-    
+
   }
 
   sensitive_body_version = {
