@@ -63,7 +63,10 @@ resource "azapi_resource" "project" {
   }
 
   body = {
-    properties = {}
+    properties = {
+      displayName = "project-${var.resource_name}"
+      description = "test project"
+    }
   }
 
   tags = {
