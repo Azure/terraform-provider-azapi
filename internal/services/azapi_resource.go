@@ -739,7 +739,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		diagnostics.AddError("Invalid sensitive_body", fmt.Sprintf(`The argument "sensitive_body" is invalid: %s`, err.Error()))
 		return
 	}
-	body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
+	if sensitiveBody != nil {
+		body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
+	}
 
 	if !isNewResource {
 		// handle the case that identity block was once set, now it's removed
