@@ -215,6 +215,20 @@ func TestAccGenericUpdateResource_SensitiveBodyVersion(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.sensitiveBodyVersionWithEmptyBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_BadUserAssignedIdentitiesSchema(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -957,6 +971,49 @@ resource "azapi_update_resource" "test" {
       tag2 = "tag2-value3"
       tag3 = "tag3-value"
     }
+  }
+}
+`, r.template(data), data.RandomString)
+}
+
+// sensitiveBodyVersionWithEmptyBody tests issue #999 scenario
+func (r GenericUpdateResource) sensitiveBodyVersionWithEmptyBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "automationAccount" {
+  type      = "Microsoft.Automation/automationAccounts@2024-10-23"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+}
+
+resource "azapi_update_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2024-10-23"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = azapi_resource.automationAccount.name
+
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+
+  sensitive_body = {
+
+  }
+
+  sensitive_body_version = {
+    "properties.publicNetworkAccess" = "1"
   }
 }
 `, r.template(data), data.RandomString)

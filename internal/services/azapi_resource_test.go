@@ -798,6 +798,23 @@ func TestAccGenericResource_SensitiveBodyVersion(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_sensitiveBodyVersionWithEmptyBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	ignores := defaultIgnores()
+	ignores = append(ignores, "sensitive_body_version")
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.sensitiveBodyVersionWithEmptyBody(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, ignores...),
+	})
+}
+
 func TestAccGenericResource_multipleIdentityIds(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -3271,6 +3288,39 @@ resource "azapi_resource" "test" {
     ignore_changes = [
       tags
     ]
+  }
+}
+`, data.RandomInteger, data.LocationPrimary, data.RandomString)
+}
+
+func (r GenericResource) sensitiveBodyVersionWithEmptyBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type      = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name      = "acctestRG-%[1]d"
+  location  = "%[2]s"
+  body      = {}
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Automation/automationAccounts@2024-10-23"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest-%[3]s"
+  location  = "%[2]s"
+  body = {
+    properties = {
+      sku = {
+        name = "Basic"
+      }
+    }
+  }
+
+  sensitive_body = {
+    
+  }
+
+  sensitive_body_version = {
+    "properties.publicNetworkAccess" = "1"
   }
 }
 `, data.RandomInteger, data.LocationPrimary, data.RandomString)
