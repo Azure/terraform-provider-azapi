@@ -12,7 +12,7 @@ import (
 func externalProvidersAzurerm() map[string]resource.ExternalProvider {
 	return map[string]resource.ExternalProvider{
 		"azurerm": {
-			VersionConstraint: "3.106.0",
+			VersionConstraint: "4.48.0",
 			Source:            "hashicorp/azurerm",
 		},
 	}

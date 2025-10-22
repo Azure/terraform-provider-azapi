@@ -74,6 +74,20 @@ func TestAccDataPlaneResource_keyVaultIssuer(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_keyVaultIssuerSensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.keyVaultIssuerSensitiveBody(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
@@ -369,6 +383,85 @@ resource "azapi_data_plane_resource" "test" {
     }
   }
 
+  depends_on = [
+    azapi_resource_action.add_accesspolicy
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultIssuerSensitiveBody(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy       = false
+      purge_soft_deleted_keys_on_destroy = false
+    }
+  }
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_key_vault" "example" {
+  name                        = "acctest%[2]s"
+  location                    = azurerm_resource_group.example.location
+  resource_group_name         = azurerm_resource_group.example.name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+  sku_name = "standard"
+}
+
+resource "azapi_resource_action" "add_accesspolicy" {
+  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
+  resource_id = "${azurerm_key_vault.example.id}/accessPolicies/add"
+  method      = "PUT"
+  body = {
+    properties = {
+      accessPolicies = [{
+        tenantId = data.azurerm_client_config.current.tenant_id
+        objectId = data.azurerm_client_config.current.object_id
+        permissions = {
+          certificates = ["managecontacts", "getissuers", "setissuers", "deleteissuers"]
+        }
+      }]
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/certificates/issuers@7.4"
+  parent_id = replace(azurerm_key_vault.example.vault_uri, "https://", "")
+  name      = "acctest%[2]s"
+  body = {
+    provider = "Test"
+    org_details = {
+      admin_details = [
+        {
+          first_name = "John"
+          last_name  = "Doe"
+          email      = "admin@microsoft.com"
+          phone      = "4255555555"
+        }
+      ]
+    }
+  }
+  sensitive_body = {
+    credentials = {
+      account_id = "keyvaultuser"
+      password = "sensitive-password"
+    }
+  }
+  sensitive_body_version = {
+    "credentials.password" = "1"
+  }
   depends_on = [
     azapi_resource_action.add_accesspolicy
   ]
