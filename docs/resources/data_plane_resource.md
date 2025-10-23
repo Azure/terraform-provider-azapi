@@ -189,11 +189,6 @@ Optional:
 | Resource Type | URL | Parent ID Example                                                                           |
 | --- | --- |---------------------------------------------------------------------------------------------|
 | Microsoft.AppConfiguration/configurationStores/keyValues | /kv/{key} | {storeName}.azconfig.io                                                                     |
-| Microsoft.CognitiveSearch/searchServices/datasources | /datasources('{dataSourceName}') | {searchServiceName}.search.windows.net                                                      |
-| Microsoft.CognitiveSearch/searchServices/indexers | /indexers('{indexerName}') | {searchServiceName}.search.windows.net                                                      |
-| Microsoft.CognitiveSearch/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
-| Microsoft.CognitiveSearch/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
-| Microsoft.CognitiveSearch/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.DeviceUpdate/accounts/groups | /deviceupdate/{instanceId}/management/groups/{groupId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |
 | Microsoft.DeviceUpdate/accounts/groups/deployments | /deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}/management/groups/{groupId} |
 | Microsoft.DeviceUpdate/accounts/v2/deployments | /deviceupdate/{instanceId}/v2/management/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |
@@ -236,6 +231,11 @@ Optional:
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan                                                        |
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints | /managedvirtualnetworks/{managedVirtualNetworkName}/managedprivateendpoints/{managedPrivateEndpointName} | {accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}     |
 | Microsoft.Purview/accounts/Workflow/workflows | /workflows/{workflowId} | {accountName}.purview.azure.com                                                             |
+| Microsoft.Search/searchServices/datasources | /datasources('{dataSourceName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/indexers | /indexers('{indexerName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/datasets | /datasets/{datasetName} | {workspaceName}.dev.azuresynapse.net                                                        |
@@ -251,3 +251,742 @@ Optional:
 | Microsoft.Synapse/workspaces/sparkconfigurations | /sparkconfigurations/{sparkConfigurationName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/sqlScripts | /sqlScripts/{sqlScriptName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/triggers | /triggers/{triggerName} | {workspaceName}.dev.azuresynapse.net                                                        |
+
+## Resource Examples
+
+### Microsoft.AppConfiguration/configurationStores/keyValues
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "exampleappconf"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+    value        = "myvalue"
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+```
+
+### Microsoft.IoTCentral/IoTApps/users
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "iotApp" {
+  type      = "Microsoft.IoTCentral/iotApps@2021-11-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "exampleiotapp"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "ST2"
+    }
+    properties = {
+      displayName = "Example IoT App"
+      subdomain   = "exampleiotapp"
+    }
+  }
+  response_export_values = {
+    subdomain = "properties.subdomain"
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.IoTCentral/IoTApps/users@2022-07-31"
+  parent_id = "${azapi_resource.iotApp.output.subdomain}.azureiotcentral.com"
+  name      = "exampleuser"
+  body = {
+    type = "email"
+    roles = [
+      {
+        role = "ae2c9854-393b-4f97-8c42-479d70ce626e"
+      }
+    ]
+    email = "user@example.com"
+  }
+}
+```
+
+### Microsoft.KeyVault/vaults/certificates/issuers
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplekeyvault"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId                  = data.azapi_client_config.current.tenant_id
+      enabledForDiskEncryption  = true
+      softDeleteRetentionInDays = 7
+      enablePurgeProtection     = false
+      accessPolicies            = []
+    }
+  }
+  schema_validation_enabled = false
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
+  response_export_values = {
+    vaultUri = "properties.vaultUri"
+  }
+}
+
+resource "azapi_resource_action" "add_accesspolicy" {
+  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
+  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
+  method      = "PUT"
+  body = {
+    properties = {
+      accessPolicies = [{
+        tenantId = data.azapi_client_config.current.tenant_id
+        objectId = data.azapi_client_config.current.object_id
+        permissions = {
+          certificates = ["managecontacts", "getissuers", "setissuers", "deleteissuers"]
+        }
+      }]
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.KeyVault/vaults/certificates/issuers@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "exampleissuer"
+  body = {
+    provider = "Test"
+    credentials = {
+      account_id = "keyvaultuser"
+    }
+    org_details = {
+      admin_details = [
+        {
+          first_name = "John"
+          last_name  = "Doe"
+          email      = "admin@microsoft.com"
+          phone      = "4255555555"
+        }
+      ]
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy
+  ]
+}
+```
+
+### Microsoft.KeyVault/vaults/secrets
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+variable "resource_name" {
+  type    = string
+  default = "acctest0001"
+}
+
+variable "location" {
+  type    = string
+  default = "westeurope"
+}
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  name     = var.resource_name
+  location = var.location
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId                  = data.azapi_client_config.current.tenant_id
+      enableSoftDelete          = true
+      softDeleteRetentionInDays = 7
+      enablePurgeProtection     = true
+      accessPolicies            = []
+    }
+  }
+  schema_validation_enabled = false
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
+  response_export_values = {
+    "vaultUri" = "properties.vaultUri"
+  }
+}
+
+resource "azapi_resource_action" "add_accesspolicy_secret" {
+  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
+  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
+  method      = "PUT"
+  body = {
+    properties = {
+      accessPolicies = [{
+        tenantId = data.azapi_client_config.current.tenant_id
+        objectId = data.azapi_client_config.current.object_id
+        permissions = {
+          secrets = [
+            "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"
+          ]
+        }
+      }]
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "secret" {
+  type      = "Microsoft.KeyVault/vaults/secrets@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = var.resource_name
+  body = {
+    value = "my-secret-value"
+    attributes = {
+      enabled = true
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_secret
+  ]
+}
+```
+
+### Microsoft.Purview/accounts/Account/collections
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "account" {
+  type      = "Microsoft.Purview/accounts@2021-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplepurview"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+  body = {
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+  }
+  response_export_values = ["*"]
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"
+  parent_id = "${azapi_resource.account.name}.purview.azure.com"
+  name      = "defaultResourceSetRuleConfig"
+  body = {
+    friendlyName = "Finance"
+  }
+}
+```
+
+### Microsoft.Purview/accounts/Scanning/classificationrules
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "account" {
+  type      = "Microsoft.Purview/accounts@2021-12-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplepurview"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+  body = {
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+  }
+  response_export_values = ["*"]
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Purview/accounts/Scanning/classificationrules@2022-07-01-preview"
+  parent_id = replace(azapi_resource.account.output.properties.endpoints.scan, "https://", "")
+  name      = "exampleclassificationrule"
+  body = {
+    kind = "Custom"
+    properties = {
+      description        = "Custom classification rule for bank account numbers"
+      classificationName = "MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER"
+      columnPatterns = [
+        {
+          pattern = "^data$"
+          kind    = "Regex"
+        }
+      ]
+      dataPatterns = [
+        {
+          pattern = "^[0-9]{2}-[0-9]{4}-[0-9]{6}-[0-9]{3}$"
+          kind    = "Regex"
+        }
+      ]
+      minimumPercentageMatch = 60
+      ruleStatus             = "Enabled"
+    }
+  }
+}
+```
+
+### Microsoft.Search/searchServices/datasources
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplestorage"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+  response_export_values = ["*"]
+}
+
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-01-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "storageContainer" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01"
+  parent_id = "${azapi_resource.storageAccount.id}/blobServices/default"
+  name      = "content"
+  body = {
+    properties = {}
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/datasources@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mydatasource"
+  body = {
+    type = "azureblob"
+    credentials = {
+      connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
+    }
+    container = {
+      name = azapi_resource.storageContainer.name
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+```
+
+### Microsoft.Search/searchServices/indexes
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "hotels-index"
+  body = {
+    fields = [
+      {
+        name       = "hotelId"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "hotelName"
+        type       = "Edm.String"
+        searchable = true
+      },
+      {
+        name       = "description"
+        type       = "Edm.String"
+        searchable = true
+        analyzer   = "en.lucene"
+      },
+      {
+        name       = "category"
+        type       = "Edm.String"
+        searchable = true
+        filterable = true
+      }
+    ]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+```
+
+### Microsoft.Search/searchServices/synonymmaps
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-resources"
+  location = "westeurope"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "examplesearch"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "example" {
+  type      = "Microsoft.Search/searchServices/synonymmaps@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mysynonymmap"
+  body = {
+    format   = "solr"
+    synonyms = "hotel, motel\nairport, aerodrome"
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+```

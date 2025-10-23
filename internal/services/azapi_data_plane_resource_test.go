@@ -22,8 +22,7 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.appConfigKeyValues(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.appConfigKeyValues(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -65,10 +64,29 @@ func TestAccDataPlaneResource_keyVaultIssuer(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.keyVaultIssuer(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.keyVaultIssuer(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_keyVaultSecret(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.keyVaultSecret(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
+			),
+		},
+		{
+			Config: r.keyVaultSecretUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
 		},
 	})
@@ -80,8 +98,7 @@ func TestAccDataPlaneResource_iotAppsUser(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.iotAppsUser(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.iotAppsUser(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -95,8 +112,63 @@ func TestAccDataPlaneResource_timeouts(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.timeouts(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.timeouts(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_searchServiceIndex(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.searchServiceIndex(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_searchServiceDataSource(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.searchServiceDataSource(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_searchServiceIndexer(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.searchServiceIndexer(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_searchServiceSynonymMap(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.searchServiceSynonymMap(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -110,8 +182,7 @@ func TestAccDataPlaneResource_headers(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.headers(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.headers(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -125,8 +196,7 @@ func TestAccDataPlaneResource_queryParameters(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.queryParameters(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.queryParameters(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -140,8 +210,7 @@ func TestAccDataPlaneResource_replaceTriggeredByExternalValues(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config:            r.replaceTriggeredByExternalValues(data),
-			ExternalProviders: externalProvidersAzurerm(),
+			Config: r.replaceTriggeredByExternalValues(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -170,33 +239,55 @@ func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, sta
 
 func (r DataPlaneResource) appConfigKeyValues(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_app_configuration" "appconf" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sku                 = "standard"
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_app_configuration.appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
   name      = "mykey"
   body = {
     content_type = ""
@@ -205,7 +296,7 @@ resource "azapi_data_plane_resource" "test" {
 
 
   depends_on = [
-    azurerm_role_assignment.test,
+    azapi_resource.roleAssignment,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
@@ -303,43 +394,50 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) keyVaultIssuer(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {
-    key_vault {
-      purge_soft_delete_on_destroy       = false
-      purge_soft_deleted_keys_on_destroy = false
-    }
-  }
-}
+data "azapi_client_config" "current" {}
 
-data "azurerm_client_config" "current" {}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_key_vault" "example" {
-  name                        = "acctest%[2]s"
-  location                    = azurerm_resource_group.example.location
-  resource_group_name         = azurerm_resource_group.example.name
-  enabled_for_disk_encryption = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-
-  sku_name = "standard"
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId                  = data.azapi_client_config.current.tenant_id
+      enabledForDiskEncryption  = true
+      softDeleteRetentionInDays = 7
+      enablePurgeProtection     = true
+      accessPolicies            = []
+    }
+  }
+  schema_validation_enabled = false
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
+  response_export_values = {
+    vaultUri = "properties.vaultUri"
+  }
 }
 
 resource "azapi_resource_action" "add_accesspolicy" {
   type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
-  resource_id = "${azurerm_key_vault.example.id}/accessPolicies/add"
+  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
   method      = "PUT"
   body = {
     properties = {
       accessPolicies = [{
-        tenantId = data.azurerm_client_config.current.tenant_id
-        objectId = data.azurerm_client_config.current.object_id
+        tenantId = data.azapi_client_config.current.tenant_id
+        objectId = data.azapi_client_config.current.object_id
         permissions = {
           certificates = ["managecontacts", "getissuers", "setissuers", "deleteissuers"]
         }
@@ -350,7 +448,7 @@ resource "azapi_resource_action" "add_accesspolicy" {
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.KeyVault/vaults/certificates/issuers@7.4"
-  parent_id = replace(azurerm_key_vault.example.vault_uri, "https://", "")
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
   name      = "acctest%[2]s"
   body = {
     provider = "Test"
@@ -376,26 +474,134 @@ resource "azapi_data_plane_resource" "test" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) iotAppsUser(data acceptance.TestData) string {
+func (r DataPlaneResource) keyVaultSecret(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
+%[1]s
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/secrets@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    value = "secret-value"
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_secret
+  ]
+}`, r.keyVaultSecretTemplate(data), data.RandomString)
 }
 
-resource "azurerm_resource_group" "example" {
+func (r DataPlaneResource) keyVaultSecretUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.KeyVault/vaults/secrets@7.4"
+  parent_id = trimsuffix(trimprefix(azapi_resource.vault.output.vaultUri, "https://"), "/")
+  name      = "acctest%[2]s"
+  body = {
+    value = "updated-secret-value"
+    attributes = {
+      enabled = true
+    }
+  }
+
+  depends_on = [
+    azapi_resource_action.add_accesspolicy_secret
+  ]
+}`, r.keyVaultSecretTemplate(data), data.RandomString)
+}
+
+func (r DataPlaneResource) keyVaultSecretTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
-resource "azurerm_iotcentral_application" "example" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sub_domain          = "acctest%[2]s"
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId                  = data.azapi_client_config.current.tenant_id
+      enableSoftDelete          = true
+      softDeleteRetentionInDays = 7
+      enablePurgeProtection     = true
+      accessPolicies            = []
+    }
+  }
+  schema_validation_enabled = false
+  lifecycle {
+    ignore_changes = [body.properties.accessPolicies]
+  }
+  response_export_values = {
+    "vaultUri" = "properties.vaultUri" 
+  }
+}
+
+resource "azapi_resource_action" "add_accesspolicy_secret" {
+  type        = "Microsoft.KeyVault/vaults/accessPolicies@2023-02-01"
+  resource_id = "${azapi_resource.vault.id}/accessPolicies/add"
+  method      = "PUT"
+  body = {
+    properties = {
+      accessPolicies = [{
+        tenantId = data.azapi_client_config.current.tenant_id
+        objectId = data.azapi_client_config.current.object_id
+        permissions = {
+          secrets = [
+            "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"
+          ]
+        }
+      }]
+    }
+  }
+}
+
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) iotAppsUser(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "iotApp" {
+  type      = "Microsoft.IoTCentral/iotApps@2021-11-01-preview"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "ST2"
+    }
+    properties = {
+	  displayName = "acctest%[2]s"
+      subdomain = "acctest%[2]s"
+    }
+  }
+  response_export_values = {
+    subdomain = "properties.subdomain"
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.IoTCentral/IoTApps/users@2022-07-31"
-  parent_id = "${azurerm_iotcentral_application.example.sub_domain}.azureiotcentral.com"
+  parent_id = "${azapi_resource.iotApp.output.subdomain}.azureiotcentral.com"
   name      = "acctest%[2]s"
   body = {
     type = "email"
@@ -413,33 +619,55 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) timeouts(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_app_configuration" "appconf" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sku                 = "standard"
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_app_configuration.appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
   name      = "mykey"
   body = {
     content_type = ""
@@ -447,7 +675,7 @@ resource "azapi_data_plane_resource" "test" {
   }
 
   depends_on = [
-    azurerm_role_assignment.test,
+    azapi_resource.roleAssignment,
   ]
 
   timeouts {
@@ -498,33 +726,55 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) headers(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_app_configuration" "appconf" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sku                 = "standard"
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_app_configuration.appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
   name      = "mykey"
   body = {
     content_type = ""
@@ -545,7 +795,7 @@ resource "azapi_data_plane_resource" "test" {
   }
 
   depends_on = [
-    azurerm_role_assignment.test,
+    azapi_resource.roleAssignment,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
@@ -553,33 +803,55 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) queryParameters(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_app_configuration" "appconf" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sku                 = "standard"
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_app_configuration.appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
   name      = "mykey"
   body = {
     content_type = ""
@@ -600,7 +872,7 @@ resource "azapi_data_plane_resource" "test" {
   }
 
   depends_on = [
-    azurerm_role_assignment.test,
+    azapi_resource.roleAssignment,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
@@ -608,33 +880,55 @@ resource "azapi_data_plane_resource" "test" {
 
 func (r DataPlaneResource) replaceTriggeredByExternalValues(data acceptance.TestData) string {
 	return fmt.Sprintf(`
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "example" {
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
   name     = "acctest%[2]s"
   location = "%[1]s"
 }
 
-resource "azurerm_app_configuration" "appconf" {
-  name                = "acctest%[2]s"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  sku                 = "standard"
+resource "azapi_resource" "appconf" {
+  type      = "Microsoft.AppConfiguration/configurationStores@2023-03-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    sku = {
+      name = "standard"
+    }
+  }
+  response_export_values = {
+    endpoint = "properties.endpoint"
+  }
 }
 
-data "azurerm_client_config" "current" {}
+data "azapi_client_config" "current" {}
 
-resource "azurerm_role_assignment" "test" {
-  scope                = azurerm_app_configuration.appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    appConfigDataOwnerRoleId = "value[?properties.roleName == 'App Configuration Data Owner'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.appconf.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.appConfigDataOwnerRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  parent_id = replace(azapi_resource.appconf.output.endpoint, "https://", "")
   name      = "mykey"
   body = {
     content_type = ""
@@ -646,7 +940,425 @@ resource "azapi_data_plane_resource" "test" {
   ]
 
   depends_on = [
-    azurerm_role_assignment.test,
+    azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) searchServiceIndex(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "hotels-index"
+  body = {
+    fields = [
+      {
+        name       = "hotelId"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "hotelName"
+        type       = "Edm.String"
+        searchable = true
+      },
+      {
+        name       = "description"
+        type       = "Edm.String"
+        searchable = true
+        analyzer   = "en.lucene"
+      },
+      {
+        name       = "category"
+        type       = "Edm.String"
+        searchable = true
+        filterable = true
+      }
+    ]
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) searchServiceDataSource(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+  response_export_values = ["*"]
+}
+
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-01-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "storageContainer" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01"
+  parent_id = "${azapi_resource.storageAccount.id}/blobServices/default"
+  name      = "content"
+  body = {
+    properties = {}
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Search/searchServices/datasources@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mydatasource"
+  body = {
+    type        = "azureblob"
+    credentials = {
+      connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
+    }
+    container = {
+      name = azapi_resource.storageContainer.name
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) searchServiceIndexer(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2023-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    kind = "StorageV2"
+    properties = {
+      accessTier = "Hot"
+    }
+    sku = {
+      name = "Standard_LRS"
+    }
+  }
+  response_export_values = ["*"]
+}
+
+data "azapi_resource_action" "listKeys" {
+  type                   = "Microsoft.Storage/storageAccounts@2023-01-01"
+  resource_id            = azapi_resource.storageAccount.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+
+resource "azapi_resource" "storageContainer" {
+  type      = "Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01"
+  parent_id = "${azapi_resource.storageAccount.id}/blobServices/default"
+  name      = "content"
+  body = {
+    properties = {}
+  }
+}
+
+resource "azapi_data_plane_resource" "index" {
+  type      = "Microsoft.Search/searchServices/indexes@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "hotels-index"
+  body = {
+    fields = [
+      {
+        name       = "hotelId"
+        type       = "Edm.String"
+        key        = true
+        searchable = false
+      },
+      {
+        name       = "hotelName"
+        type       = "Edm.String"
+        searchable = true
+      }
+    ]
+  }
+}
+
+resource "azapi_data_plane_resource" "datasource" {
+  type      = "Microsoft.Search/searchServices/datasources@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mydatasource"
+  body = {
+    type        = "azureblob"
+    credentials = {
+      connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
+    }
+    container = {
+      name = azapi_resource.storageContainer.name
+    }
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Search/searchServices/indexers@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "myindexer"
+  body = {
+    dataSourceName  = azapi_data_plane_resource.datasource.name
+    targetIndexName = azapi_data_plane_resource.index.name
+    schedule = {
+      interval = "PT2H"
+    }
+  }
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_data_plane_resource.datasource,
+    azapi_data_plane_resource.index
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) searchServiceSynonymMap(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "searchService" {
+  type      = "Microsoft.Search/searchServices@2023-11-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      replicaCount   = 1
+      partitionCount = 1
+      hostingMode    = "default"
+      authOptions = {
+        aadOrApiKey = {
+          aadAuthFailureMode = "http401WithBearerChallenge"
+        }
+      }
+    }
+    sku = {
+      name = "basic"
+    }
+  }
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    searchIndexDataContributorRoleId = "value[?properties.roleName == 'Search Index Data Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.searchService.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.searchIndexDataContributorRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.Search/searchServices/synonymmaps@2024-07-01"
+  parent_id = "${azapi_resource.searchService.name}.search.windows.net"
+  name      = "mysynonymmap"
+  body = {
+    format = "solr"
+    synonyms = "hotel, motel\nairport, aerodrome"
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
