@@ -105,7 +105,7 @@ resource "azapi_resource" "vault" {
     ignore_changes = [body.properties.accessPolicies]
   }
   response_export_values = {
-    "vaultUri" = "properties.vaultUri" 
+    "vaultUri" = "properties.vaultUri"
   }
 }
 
@@ -128,6 +128,7 @@ resource "azapi_resource_action" "add_accesspolicy" {
     }
   }
 }
+
 
 `, data.LocationPrimary, data.RandomString)
 }

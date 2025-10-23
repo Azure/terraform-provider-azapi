@@ -546,7 +546,7 @@ resource "azapi_resource" "vault" {
     ignore_changes = [body.properties.accessPolicies]
   }
   response_export_values = {
-    "vaultUri" = "properties.vaultUri" 
+    "vaultUri" = "properties.vaultUri"
   }
 }
 
@@ -569,6 +569,7 @@ resource "azapi_resource_action" "add_accesspolicy_secret" {
   }
 }
 
+
 `, data.LocationPrimary, data.RandomString)
 }
 
@@ -590,8 +591,8 @@ resource "azapi_resource" "iotApp" {
       name = "ST2"
     }
     properties = {
-	  displayName = "acctest%[2]s"
-      subdomain = "acctest%[2]s"
+      displayName = "acctest%[2]s"
+      subdomain   = "acctest%[2]s"
     }
   }
   response_export_values = {
@@ -613,6 +614,7 @@ resource "azapi_data_plane_resource" "test" {
     email = "user5@contoso.com"
   }
 }
+
 
 `, data.LocationPrimary, data.RandomString)
 }
@@ -1133,7 +1135,7 @@ resource "azapi_data_plane_resource" "test" {
   parent_id = "${azapi_resource.searchService.name}.search.windows.net"
   name      = "mydatasource"
   body = {
-    type        = "azureblob"
+    type = "azureblob"
     credentials = {
       connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
     }
@@ -1263,7 +1265,7 @@ resource "azapi_data_plane_resource" "datasource" {
   parent_id = "${azapi_resource.searchService.name}.search.windows.net"
   name      = "mydatasource"
   body = {
-    type        = "azureblob"
+    type = "azureblob"
     credentials = {
       connectionString = "DefaultEndpointsProtocol=https;AccountName=${azapi_resource.storageAccount.name};AccountKey=${data.azapi_resource_action.listKeys.output.keys[0].value};EndpointSuffix=core.windows.net"
     }
@@ -1353,7 +1355,7 @@ resource "azapi_data_plane_resource" "test" {
   parent_id = "${azapi_resource.searchService.name}.search.windows.net"
   name      = "mysynonymmap"
   body = {
-    format = "solr"
+    format   = "solr"
     synonyms = "hotel, motel\nairport, aerodrome"
   }
 
