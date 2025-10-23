@@ -225,7 +225,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	}
 	urlPath := fmt.Sprintf("https://%s", resourceID)
 	if action != "" {
-		urlPath = fmt.Sprintf("%s/%s", resourceID, action)
+		urlPath = fmt.Sprintf("%s/%s", urlPath, action)
 	}
 	req, err := runtime.NewRequest(ctx, method, urlPath)
 	if err != nil {

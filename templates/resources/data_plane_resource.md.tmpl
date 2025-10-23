@@ -46,6 +46,8 @@ description: |-
 | Microsoft.IoTCentral/iotApps/enrollmentGroups/certificates | /enrollmentGroups/{enrollmentGroupId}/certificates/{entry} | {appSubdomain}.azureiotcentral.com/enrollmentGroups/{enrollmentGroupId}                     |
 | Microsoft.KeyVault/vaults/certificates/contacts | /certificates/contacts | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/certificates/issuers | /certificates/issuers/{issuer-name} | {vaultName}.vault.azure.net                                                                 |
+| Microsoft.KeyVault/vaults/keys | /keys/{key-name} | {vaultName}.vault.azure.net                                                                 |
+| Microsoft.KeyVault/vaults/secrets | /secrets/{secret-name} | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/storage | /storage/{storage-account-name} | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/storage/sas | /storage/{storage-account-name}/sas/{sas-definition-name} | {vaultName}.vault.azure.net/storage/{storage-account-name}                                  |
 | Microsoft.Purview/accounts/Account/collections | /collections/{collectionName} | {accountName}.purview.azure.com                                                             |
@@ -57,9 +59,14 @@ description: |-
 | Microsoft.Purview/accounts/Scanning/datasources/scans | /datasources/{dataSourceName}/scans/{scanName} | {accountName}.purview.azure.com/scan/datasources/{dataSourceName}                           |
 | Microsoft.Purview/accounts/Scanning/datasources/scans/triggers | /datasources/{dataSourceName}/scans/{scanName}/triggers/default | {accountName}.purview.azure.com/scan/datasources/{dataSourceName}/scans/{scanName}          |
 | Microsoft.Purview/accounts/Scanning/integrationruntimes | /integrationruntimes/{integrationRuntimeName} | {accountName}.purview.azure.com/scan                                                        |
+| Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan                                                        |
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints | /managedvirtualnetworks/{managedVirtualNetworkName}/managedprivateendpoints/{managedPrivateEndpointName} | {accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}     |
-| Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan     |
 | Microsoft.Purview/accounts/Workflow/workflows | /workflows/{workflowId} | {accountName}.purview.azure.com                                                             |
+| Microsoft.Search/searchServices/datasources | /datasources('{dataSourceName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/indexers | /indexers('{indexerName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.Search/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/datasets | /datasets/{datasetName} | {workspaceName}.dev.azuresynapse.net                                                        |
@@ -75,3 +82,41 @@ description: |-
 | Microsoft.Synapse/workspaces/sparkconfigurations | /sparkconfigurations/{sparkConfigurationName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/sqlScripts | /sqlScripts/{sqlScriptName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/triggers | /triggers/{triggerName} | {workspaceName}.dev.azuresynapse.net                                                        |
+
+## Resource Examples
+
+### Microsoft.AppConfiguration/configurationStores/keyValues
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.AppConfiguration_configurationStores_keyValues/main.tf"}}
+
+### Microsoft.IoTCentral/IoTApps/users
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.IoTCentral_IoTApps_users/main.tf"}}
+
+### Microsoft.KeyVault/vaults/certificates/issuers
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.KeyVault_vaults_certificates_issuers/main.tf"}}
+
+### Microsoft.KeyVault/vaults/secrets
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.KeyVault_vaults_secrets/main.tf"}}
+
+### Microsoft.Purview/accounts/Account/collections
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Purview_accounts_Account_collections/main.tf"}}
+
+### Microsoft.Purview/accounts/Scanning/classificationrules
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Purview_accounts_Scanning_classificationrules/main.tf"}}
+
+### Microsoft.Search/searchServices/datasources
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Search_searchServices_datasources/main.tf"}}
+
+### Microsoft.Search/searchServices/indexes
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Search_searchServices_indexes/main.tf"}}
+
+### Microsoft.Search/searchServices/synonymmaps
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Search_searchServices_synonymmaps/main.tf"}}

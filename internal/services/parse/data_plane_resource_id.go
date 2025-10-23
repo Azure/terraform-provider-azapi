@@ -38,6 +38,9 @@ func NewDataPlaneResourceId(name, parentId, resourceType string) (DataPlaneResou
 					return DataPlaneResourceId{}, fmt.Errorf("name %s is not equal to %s", name, defaultName)
 				}
 				parts[i] = defaultName
+			case strings.Contains(part, "{name}"):
+				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
+				parts[i] = strings.ReplaceAll(part, "{name}", name)
 			}
 		}
 		azureResourceId = strings.Join(parts, "/")
@@ -72,6 +75,23 @@ func DataPlaneResourceIDWithResourceType(azureResourceId, resourceType string) (
 			switch {
 			case strings.HasPrefix(urlFormatParts[i], "{name"):
 				name = azureResourceIdParts[j]
+				j--
+			case strings.Contains(urlFormatParts[i], "{name}"):
+				// Handle embedded {name} placeholder, e.g., "indexes('{name}')"
+				// Extract the actual name from patterns like "indexes('myindex')"
+				template := urlFormatParts[i]
+				actual := azureResourceIdParts[j]
+				// Find the position of {name} in the template
+				nameStart := strings.Index(template, "{name}")
+				if nameStart >= 0 {
+					// Extract prefix and suffix around {name}
+					prefix := template[:nameStart]
+					suffix := template[nameStart+6:] // 6 is len("{name}")
+					// Remove prefix and suffix from actual value to get the name
+					if strings.HasPrefix(actual, prefix) && strings.HasSuffix(actual, suffix) {
+						name = actual[len(prefix) : len(actual)-len(suffix)]
+					}
+				}
 				j--
 			case urlFormatParts[i] == "{parentId}":
 				for j >= 0 {
