@@ -189,6 +189,11 @@ Optional:
 | Resource Type | URL | Parent ID Example                                                                           |
 | --- | --- |---------------------------------------------------------------------------------------------|
 | Microsoft.AppConfiguration/configurationStores/keyValues | /kv/{key} | {storeName}.azconfig.io                                                                     |
+| Microsoft.CognitiveSearch/searchServices/datasources | /datasources('{dataSourceName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.CognitiveSearch/searchServices/indexers | /indexers('{indexerName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.CognitiveSearch/searchServices/indexes | /indexes('{indexName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.CognitiveSearch/searchServices/skillsets | /skillsets('{skillsetName}') | {searchServiceName}.search.windows.net                                                      |
+| Microsoft.CognitiveSearch/searchServices/synonymmaps | /synonymmaps('{synonymMapName}') | {searchServiceName}.search.windows.net                                                      |
 | Microsoft.DeviceUpdate/accounts/groups | /deviceupdate/{instanceId}/management/groups/{groupId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |
 | Microsoft.DeviceUpdate/accounts/groups/deployments | /deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}/management/groups/{groupId} |
 | Microsoft.DeviceUpdate/accounts/v2/deployments | /deviceupdate/{instanceId}/v2/management/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |
@@ -215,6 +220,8 @@ Optional:
 | Microsoft.IoTCentral/iotApps/enrollmentGroups/certificates | /enrollmentGroups/{enrollmentGroupId}/certificates/{entry} | {appSubdomain}.azureiotcentral.com/enrollmentGroups/{enrollmentGroupId}                     |
 | Microsoft.KeyVault/vaults/certificates/contacts | /certificates/contacts | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/certificates/issuers | /certificates/issuers/{issuer-name} | {vaultName}.vault.azure.net                                                                 |
+| Microsoft.KeyVault/vaults/keys | /keys/{key-name} | {vaultName}.vault.azure.net                                                                 |
+| Microsoft.KeyVault/vaults/secrets | /secrets/{secret-name} | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/storage | /storage/{storage-account-name} | {vaultName}.vault.azure.net                                                                 |
 | Microsoft.KeyVault/vaults/storage/sas | /storage/{storage-account-name}/sas/{sas-definition-name} | {vaultName}.vault.azure.net/storage/{storage-account-name}                                  |
 | Microsoft.Purview/accounts/Account/collections | /collections/{collectionName} | {accountName}.purview.azure.com                                                             |
@@ -226,8 +233,8 @@ Optional:
 | Microsoft.Purview/accounts/Scanning/datasources/scans | /datasources/{dataSourceName}/scans/{scanName} | {accountName}.purview.azure.com/scan/datasources/{dataSourceName}                           |
 | Microsoft.Purview/accounts/Scanning/datasources/scans/triggers | /datasources/{dataSourceName}/scans/{scanName}/triggers/default | {accountName}.purview.azure.com/scan/datasources/{dataSourceName}/scans/{scanName}          |
 | Microsoft.Purview/accounts/Scanning/integrationruntimes | /integrationruntimes/{integrationRuntimeName} | {accountName}.purview.azure.com/scan                                                        |
+| Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan                                                        |
 | Microsoft.Purview/accounts/Scanning/managedvirtualnetworks/managedprivateendpoints | /managedvirtualnetworks/{managedVirtualNetworkName}/managedprivateendpoints/{managedPrivateEndpointName} | {accountName}.purview.azure.com/scan/managedvirtualnetworks/{managedVirtualNetworkName}     |
-| Microsoft.Purview/accounts/Scanning/managedvirtualnetworks | /managedvirtualnetworks/{managedVirtualNetworkName} | {accountName}.purview.azure.com/scan     |
 | Microsoft.Purview/accounts/Workflow/workflows | /workflows/{workflowId} | {accountName}.purview.azure.com                                                             |
 | Microsoft.Synapse/workspaces/databases | /databases/{databaseName} | {workspaceName}.dev.azuresynapse.net                                                        |
 | Microsoft.Synapse/workspaces/dataflows | /dataflows/{dataFlowName} | {workspaceName}.dev.azuresynapse.net                                                        |

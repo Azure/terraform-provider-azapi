@@ -58,6 +58,61 @@ func Test_NewDataPlaneResourceId(t *testing.T) {
 				AzureResourceType: "Microsoft.KeyVault/vaults/certificates/contacts",
 			},
 		},
+		{
+			Name:         "myindex",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/indexes@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/indexes('myindex')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/indexes",
+			},
+		},
+		{
+			Name:         "mydatasource",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/datasources@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/datasources('mydatasource')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/datasources",
+			},
+		},
+		{
+			Name:         "myindexer",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/indexers@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/indexers('myindexer')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/indexers",
+			},
+		},
+		{
+			Name:         "myskillset",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/skillsets@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/skillsets('myskillset')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/skillsets",
+			},
+		},
+		{
+			Name:         "mysynonymmap",
+			ParentId:     "mysearchservice.search.windows.net",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/synonymmaps@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/synonymmaps('mysynonymmap')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/synonymmaps",
+			},
+		},
 	}
 
 	for _, v := range testData {
@@ -140,6 +195,66 @@ func Test_DataPlaneResourceIDWithResourceType(t *testing.T) {
 				AzureResourceType: "Microsoft.KeyVault/vaults/certificates/contacts",
 				ParentId:          "foo.keyvault.azure.net",
 				Name:              "",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/indexes('myindex')",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/indexes@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/indexes('myindex')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/indexes",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "myindex",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/datasources('mydatasource')",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/datasources@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/datasources('mydatasource')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/datasources",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "mydatasource",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/indexers('myindexer')",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/indexers@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/indexers('myindexer')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/indexers",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "myindexer",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/skillsets('myskillset')",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/skillsets@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/skillsets('myskillset')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/skillsets",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "myskillset",
+			},
+		},
+		{
+			ResourceId:   "mysearchservice.search.windows.net/synonymmaps('mysynonymmap')",
+			ResourceType: "Microsoft.CognitiveSearch/searchServices/synonymmaps@2024-07-01",
+			Error:        false,
+			Expected: &parse.DataPlaneResourceId{
+				AzureResourceId:   "mysearchservice.search.windows.net/synonymmaps('mysynonymmap')",
+				ApiVersion:        "2024-07-01",
+				AzureResourceType: "Microsoft.CognitiveSearch/searchServices/synonymmaps",
+				ParentId:          "mysearchservice.search.windows.net",
+				Name:              "mysynonymmap",
 			},
 		},
 	}
