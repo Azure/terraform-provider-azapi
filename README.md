@@ -212,7 +212,7 @@ provider_installation {
 
 ## Developer: Using the `skip_on` struct field tag
 
-The `skip_on` struct field tag is used to skip the external API call when only attributes that affect the internal state are modified, e.g. retry configuration. The `skip_on` struct field tag is a comma-separated list of operations that must be met in order to skip the field.
+The `skip_on` struct field tag is used to skip the external API call when only attributes that affect the internal state are modified, e.g. retry configuration. The `skip_on` struct field tag is used to skip the external API call when only attributes that affect the internal state are modified, e.g. retry configuration. The `skip_on` struct field tag is a comma-separated list of operations that must be met in order to skip the field.
 
 The provider will compare the state with the plan, and check for changes. If the only fields to me modified are those with the `skip_on` struct field tag set to the supplied operation, e.g. `update`, the provider will skip the external API call.
 
