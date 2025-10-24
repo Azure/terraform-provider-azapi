@@ -14,7 +14,7 @@ import (
 type Snake2CamelFunction struct{}
 
 func (f *Snake2CamelFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
-	response.Name = "tenant_resource_id"
+	response.Name = "snake2camel"
 }
 
 func (f *Snake2CamelFunction) Definition(ctx context.Context, request function.DefinitionRequest, response *function.DefinitionResponse) {
@@ -23,15 +23,15 @@ func (f *Snake2CamelFunction) Definition(ctx context.Context, request function.D
 			function.DynamicParameter{
 				AllowNullValue:      true,
 				AllowUnknownValues:  true,
-				Name:                "input_object",
+				Name:                "input",
 				Description:         "The input object to convert from snake_case to camelCase.",
 				MarkdownDescription: "The input object to convert from snake_case to camelCase.",
 			},
 		},
 		Return:              function.DynamicReturn{},
 		Summary:             "The camelCase returned object.",
-		Description:         "Converts all keys in the input object from snake_case to camelCase.",
-		MarkdownDescription: "Converts all keys in the input object from snake_case to camelCase.",
+		Description:         "Converts all keys in the input from snake_case to camelCase. Retains the original structure and values.",
+		MarkdownDescription: "Converts all keys in the input from snake_case to camelCase. Retains the original structure and values.",
 	}
 }
 
@@ -64,15 +64,15 @@ func dynamicSnake2Camel(ctx context.Context, input attr.Value) attr.Value {
 		return types.DynamicValue(newVal) // to ensure val is attr.Value
 	case types.Object:
 		newObjectType := convertAttrType(t.Type(ctx)).(types.ObjectType)
-		
+
 		if t.IsUnknown() {
 			return types.ObjectUnknown(newObjectType.AttrTypes)
 		}
-		
+
 		if t.IsNull() {
 			return types.ObjectNull(newObjectType.AttrTypes)
 		}
-		
+
 		newAttrValues := make(map[string]attr.Value)
 		for key, attrValue := range t.Attributes() {
 			newKey := snake2Camel(key)
@@ -81,15 +81,15 @@ func dynamicSnake2Camel(ctx context.Context, input attr.Value) attr.Value {
 		return types.ObjectValueMust(newObjectType.AttrTypes, newAttrValues)
 	case types.Map:
 		newMapType := convertAttrType(t.Type(ctx)).(types.MapType)
-		
+
 		if t.IsUnknown() {
 			return types.MapUnknown(newMapType.ElemType)
 		}
-		
+
 		if t.IsNull() {
 			return types.MapNull(newMapType.ElemType)
 		}
-		
+
 		newAttrValues := make(map[string]attr.Value)
 		for key, attrValue := range t.Elements() {
 			newKey := snake2Camel(key)
