@@ -96,6 +96,52 @@ func dynamicSnake2Camel(ctx context.Context, input attr.Value) attr.Value {
 			newAttrValues[newKey] = dynamicSnake2Camel(ctx, attrValue)
 		}
 		return types.MapValueMust(newMapType.ElemType, newAttrValues)
+	case types.List:
+		newElemType := convertAttrType(t.Type(ctx)).(types.ListType)
+
+		if t.IsUnknown() {
+			return types.ListUnknown(newElemType.ElemType)
+		}
+
+		if t.IsNull() {
+			return types.ListNull(newElemType.ElemType)
+		}
+		newElemValues := make([]attr.Value, len(t.Elements()))
+		for i, elemValue := range t.Elements() {
+			newElemValues[i] = dynamicSnake2Camel(ctx, elemValue)
+		}
+		return types.ListValueMust(newElemType.ElemType, newElemValues)
+	case types.Set:
+		newElemType := convertAttrType(t.Type(ctx)).(types.SetType)
+
+		if t.IsUnknown() {
+			return types.SetUnknown(newElemType.ElemType)
+		}
+
+		if t.IsNull() {
+			return types.SetNull(newElemType.ElemType)
+		}
+		newElemValues := make([]attr.Value, len(t.Elements()))
+		for i, elemValue := range t.Elements() {
+			newElemValues[i] = dynamicSnake2Camel(ctx, elemValue)
+		}
+		return types.SetValueMust(newElemType.ElemType, newElemValues)
+	case types.Tuple:
+		newType := convertAttrType(t.Type(ctx)).(types.TupleType)
+
+		if t.IsUnknown() {
+			return types.TupleUnknown(newType.ElementTypes())
+		}
+
+		if t.IsNull() {
+			return types.TupleNull(newType.ElementTypes())
+		}
+
+		newElemValues := make([]attr.Value, len(t.Elements()))
+		for i, elemValue := range t.Elements() {
+			newElemValues[i] = dynamicSnake2Camel(ctx, elemValue)
+		}
+		return types.TupleValueMust(newType.ElementTypes(), newElemValues)
 	}
 	return input
 }
@@ -112,6 +158,18 @@ func convertAttrType(attrType attr.Type) attr.Type {
 	case types.MapType:
 		newElemType := convertAttrType(t.ElemType)
 		return types.MapType{ElemType: newElemType}
+	case types.ListType:
+		newElemType := convertAttrType(t.ElemType)
+		return types.ListType{ElemType: newElemType}
+	case types.SetType:
+		newElemType := convertAttrType(t.ElemType)
+		return types.SetType{ElemType: newElemType}
+	case types.TupleType:
+		newElemTypes := make([]attr.Type, len(t.ElementTypes()))
+		for i, elemType := range t.ElementTypes() {
+			newElemTypes[i] = convertAttrType(elemType)
+		}
+		return types.TupleType{ElemTypes: newElemTypes}
 	}
 	return attrType
 }

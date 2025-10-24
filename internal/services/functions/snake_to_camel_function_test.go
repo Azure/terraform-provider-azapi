@@ -639,6 +639,870 @@ func Test_Snake2CamelFunction(t *testing.T) {
 				},
 			)),
 		},
+		{
+			name: "list-of-objects",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"user_list": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"first_name": types.StringType,
+										"last_name":  types.StringType,
+									},
+								},
+							},
+						},
+						map[string]attr.Value{
+							"user_list": types.ListValueMust(
+								types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"first_name": types.StringType,
+										"last_name":  types.StringType,
+									},
+								},
+								[]attr.Value{
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"first_name": types.StringType,
+											"last_name":  types.StringType,
+										},
+										map[string]attr.Value{
+											"first_name": types.StringValue("John"),
+											"last_name":  types.StringValue("Doe"),
+										},
+									),
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"first_name": types.StringType,
+											"last_name":  types.StringType,
+										},
+										map[string]attr.Value{
+											"first_name": types.StringValue("Jane"),
+											"last_name":  types.StringValue("Smith"),
+										},
+									),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"userList": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"firstName": types.StringType,
+								"lastName":  types.StringType,
+							},
+						},
+					},
+				},
+				map[string]attr.Value{
+					"userList": types.ListValueMust(
+						types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"firstName": types.StringType,
+								"lastName":  types.StringType,
+							},
+						},
+						[]attr.Value{
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"firstName": types.StringType,
+									"lastName":  types.StringType,
+								},
+								map[string]attr.Value{
+									"firstName": types.StringValue("John"),
+									"lastName":  types.StringValue("Doe"),
+								},
+							),
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"firstName": types.StringType,
+									"lastName":  types.StringType,
+								},
+								map[string]attr.Value{
+									"firstName": types.StringValue("Jane"),
+									"lastName":  types.StringValue("Smith"),
+								},
+							),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "set-of-objects",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"item_set": types.SetType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"item_name":  types.StringType,
+										"item_price": types.NumberType,
+									},
+								},
+							},
+						},
+						map[string]attr.Value{
+							"item_set": types.SetValueMust(
+								types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"item_name":  types.StringType,
+										"item_price": types.NumberType,
+									},
+								},
+								[]attr.Value{
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"item_name":  types.StringType,
+											"item_price": types.NumberType,
+										},
+										map[string]attr.Value{
+											"item_name":  types.StringValue("Widget"),
+											"item_price": types.NumberValue(big.NewFloat(9.99)),
+										},
+									),
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"item_name":  types.StringType,
+											"item_price": types.NumberType,
+										},
+										map[string]attr.Value{
+											"item_name":  types.StringValue("Gadget"),
+											"item_price": types.NumberValue(big.NewFloat(19.99)),
+										},
+									),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"itemSet": types.SetType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"itemName":  types.StringType,
+								"itemPrice": types.NumberType,
+							},
+						},
+					},
+				},
+				map[string]attr.Value{
+					"itemSet": types.SetValueMust(
+						types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"itemName":  types.StringType,
+								"itemPrice": types.NumberType,
+							},
+						},
+						[]attr.Value{
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"itemName":  types.StringType,
+									"itemPrice": types.NumberType,
+								},
+								map[string]attr.Value{
+									"itemName":  types.StringValue("Widget"),
+									"itemPrice": types.NumberValue(big.NewFloat(9.99)),
+								},
+							),
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"itemName":  types.StringType,
+									"itemPrice": types.NumberType,
+								},
+								map[string]attr.Value{
+									"itemName":  types.StringValue("Gadget"),
+									"itemPrice": types.NumberValue(big.NewFloat(19.99)),
+								},
+							),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "nested-list-in-object",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"department_name": types.StringType,
+							"employee_list": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"employee_name": types.StringType,
+										"job_title":     types.StringType,
+									},
+								},
+							},
+						},
+						map[string]attr.Value{
+							"department_name": types.StringValue("Engineering"),
+							"employee_list": types.ListValueMust(
+								types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										"employee_name": types.StringType,
+										"job_title":     types.StringType,
+									},
+								},
+								[]attr.Value{
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"employee_name": types.StringType,
+											"job_title":     types.StringType,
+										},
+										map[string]attr.Value{
+											"employee_name": types.StringValue("Alice"),
+											"job_title":     types.StringValue("Senior Engineer"),
+										},
+									),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"departmentName": types.StringType,
+					"employeeList": types.ListType{
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"employeeName": types.StringType,
+								"jobTitle":     types.StringType,
+							},
+						},
+					},
+				},
+				map[string]attr.Value{
+					"departmentName": types.StringValue("Engineering"),
+					"employeeList": types.ListValueMust(
+						types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"employeeName": types.StringType,
+								"jobTitle":     types.StringType,
+							},
+						},
+						[]attr.Value{
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"employeeName": types.StringType,
+									"jobTitle":     types.StringType,
+								},
+								map[string]attr.Value{
+									"employeeName": types.StringValue("Alice"),
+									"jobTitle":     types.StringValue("Senior Engineer"),
+								},
+							),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "list-of-primitives",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"tag_list": types.ListType{
+								ElemType: types.StringType,
+							},
+						},
+						map[string]attr.Value{
+							"tag_list": types.ListValueMust(
+								types.StringType,
+								[]attr.Value{
+									types.StringValue("tag1"),
+									types.StringValue("tag2"),
+									types.StringValue("tag3"),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"tagList": types.ListType{
+						ElemType: types.StringType,
+					},
+				},
+				map[string]attr.Value{
+					"tagList": types.ListValueMust(
+						types.StringType,
+						[]attr.Value{
+							types.StringValue("tag1"),
+							types.StringValue("tag2"),
+							types.StringValue("tag3"),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "set-of-primitives",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"unique_ids": types.SetType{
+								ElemType: types.StringType,
+							},
+						},
+						map[string]attr.Value{
+							"unique_ids": types.SetValueMust(
+								types.StringType,
+								[]attr.Value{
+									types.StringValue("id1"),
+									types.StringValue("id2"),
+									types.StringValue("id3"),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"uniqueIds": types.SetType{
+						ElemType: types.StringType,
+					},
+				},
+				map[string]attr.Value{
+					"uniqueIds": types.SetValueMust(
+						types.StringType,
+						[]attr.Value{
+							types.StringValue("id1"),
+							types.StringValue("id2"),
+							types.StringValue("id3"),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "tuple-of-mixed-types",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"user_data": types.TupleType{
+								ElemTypes: []attr.Type{
+									types.StringType,
+									types.NumberType,
+									types.BoolType,
+								},
+							},
+						},
+						map[string]attr.Value{
+							"user_data": types.TupleValueMust(
+								[]attr.Type{
+									types.StringType,
+									types.NumberType,
+									types.BoolType,
+								},
+								[]attr.Value{
+									types.StringValue("Alice"),
+									types.NumberValue(big.NewFloat(30)),
+									types.BoolValue(true),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"userData": types.TupleType{
+						ElemTypes: []attr.Type{
+							types.StringType,
+							types.NumberType,
+							types.BoolType,
+						},
+					},
+				},
+				map[string]attr.Value{
+					"userData": types.TupleValueMust(
+						[]attr.Type{
+							types.StringType,
+							types.NumberType,
+							types.BoolType,
+						},
+						[]attr.Value{
+							types.StringValue("Alice"),
+							types.NumberValue(big.NewFloat(30)),
+							types.BoolValue(true),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "tuple-with-objects",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"record_tuple": types.TupleType{
+								ElemTypes: []attr.Type{
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"first_name": types.StringType,
+											"last_name":  types.StringType,
+										},
+									},
+									types.StringType,
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"street_address": types.StringType,
+											"zip_code":       types.StringType,
+										},
+									},
+								},
+							},
+						},
+						map[string]attr.Value{
+							"record_tuple": types.TupleValueMust(
+								[]attr.Type{
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"first_name": types.StringType,
+											"last_name":  types.StringType,
+										},
+									},
+									types.StringType,
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"street_address": types.StringType,
+											"zip_code":       types.StringType,
+										},
+									},
+								},
+								[]attr.Value{
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"first_name": types.StringType,
+											"last_name":  types.StringType,
+										},
+										map[string]attr.Value{
+											"first_name": types.StringValue("John"),
+											"last_name":  types.StringValue("Doe"),
+										},
+									),
+									types.StringValue("john@example.com"),
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"street_address": types.StringType,
+											"zip_code":       types.StringType,
+										},
+										map[string]attr.Value{
+											"street_address": types.StringValue("123 Main St"),
+											"zip_code":       types.StringValue("12345"),
+										},
+									),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"recordTuple": types.TupleType{
+						ElemTypes: []attr.Type{
+							types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"firstName": types.StringType,
+									"lastName":  types.StringType,
+								},
+							},
+							types.StringType,
+							types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"streetAddress": types.StringType,
+									"zipCode":       types.StringType,
+								},
+							},
+						},
+					},
+				},
+				map[string]attr.Value{
+					"recordTuple": types.TupleValueMust(
+						[]attr.Type{
+							types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"firstName": types.StringType,
+									"lastName":  types.StringType,
+								},
+							},
+							types.StringType,
+							types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"streetAddress": types.StringType,
+									"zipCode":       types.StringType,
+								},
+							},
+						},
+						[]attr.Value{
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"firstName": types.StringType,
+									"lastName":  types.StringType,
+								},
+								map[string]attr.Value{
+									"firstName": types.StringValue("John"),
+									"lastName":  types.StringValue("Doe"),
+								},
+							),
+							types.StringValue("john@example.com"),
+							types.ObjectValueMust(
+								map[string]attr.Type{
+									"streetAddress": types.StringType,
+									"zipCode":       types.StringType,
+								},
+								map[string]attr.Value{
+									"streetAddress": types.StringValue("123 Main St"),
+									"zipCode":       types.StringValue("12345"),
+								},
+							),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "nested-tuple-in-tuple",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"complex_tuple": types.TupleType{
+								ElemTypes: []attr.Type{
+									types.StringType,
+									types.TupleType{
+										ElemTypes: []attr.Type{
+											types.NumberType,
+											types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													"inner_field": types.StringType,
+													"inner_count": types.NumberType,
+												},
+											},
+										},
+									},
+									types.BoolType,
+								},
+							},
+						},
+						map[string]attr.Value{
+							"complex_tuple": types.TupleValueMust(
+								[]attr.Type{
+									types.StringType,
+									types.TupleType{
+										ElemTypes: []attr.Type{
+											types.NumberType,
+											types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													"inner_field": types.StringType,
+													"inner_count": types.NumberType,
+												},
+											},
+										},
+									},
+									types.BoolType,
+								},
+								[]attr.Value{
+									types.StringValue("outer"),
+									types.TupleValueMust(
+										[]attr.Type{
+											types.NumberType,
+											types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													"inner_field": types.StringType,
+													"inner_count": types.NumberType,
+												},
+											},
+										},
+										[]attr.Value{
+											types.NumberValue(big.NewFloat(42)),
+											types.ObjectValueMust(
+												map[string]attr.Type{
+													"inner_field": types.StringType,
+													"inner_count": types.NumberType,
+												},
+												map[string]attr.Value{
+													"inner_field": types.StringValue("nested value"),
+													"inner_count": types.NumberValue(big.NewFloat(100)),
+												},
+											),
+										},
+									),
+									types.BoolValue(false),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"complexTuple": types.TupleType{
+						ElemTypes: []attr.Type{
+							types.StringType,
+							types.TupleType{
+								ElemTypes: []attr.Type{
+									types.NumberType,
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"innerField": types.StringType,
+											"innerCount": types.NumberType,
+										},
+									},
+								},
+							},
+							types.BoolType,
+						},
+					},
+				},
+				map[string]attr.Value{
+					"complexTuple": types.TupleValueMust(
+						[]attr.Type{
+							types.StringType,
+							types.TupleType{
+								ElemTypes: []attr.Type{
+									types.NumberType,
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"innerField": types.StringType,
+											"innerCount": types.NumberType,
+										},
+									},
+								},
+							},
+							types.BoolType,
+						},
+						[]attr.Value{
+							types.StringValue("outer"),
+							types.TupleValueMust(
+								[]attr.Type{
+									types.NumberType,
+									types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											"innerField": types.StringType,
+											"innerCount": types.NumberType,
+										},
+									},
+								},
+								[]attr.Value{
+									types.NumberValue(big.NewFloat(42)),
+									types.ObjectValueMust(
+										map[string]attr.Type{
+											"innerField": types.StringType,
+											"innerCount": types.NumberType,
+										},
+										map[string]attr.Value{
+											"innerField": types.StringValue("nested value"),
+											"innerCount": types.NumberValue(big.NewFloat(100)),
+										},
+									),
+								},
+							),
+							types.BoolValue(false),
+						},
+					),
+				},
+			)),
+		},
+		{
+			name: "tuple-in-object-with-list",
+			request: function.RunRequest{
+				Arguments: function.NewArgumentsData([]attr.Value{
+					types.DynamicValue(types.ObjectValueMust(
+						map[string]attr.Type{
+							"data_structure": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"tuple_field": types.TupleType{
+										ElemTypes: []attr.Type{
+											types.StringType,
+											types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														"item_name": types.StringType,
+														"item_id":   types.NumberType,
+													},
+												},
+											},
+										},
+									},
+									"other_field": types.StringType,
+								},
+							},
+						},
+						map[string]attr.Value{
+							"data_structure": types.ObjectValueMust(
+								map[string]attr.Type{
+									"tuple_field": types.TupleType{
+										ElemTypes: []attr.Type{
+											types.StringType,
+											types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														"item_name": types.StringType,
+														"item_id":   types.NumberType,
+													},
+												},
+											},
+										},
+									},
+									"other_field": types.StringType,
+								},
+								map[string]attr.Value{
+									"tuple_field": types.TupleValueMust(
+										[]attr.Type{
+											types.StringType,
+											types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														"item_name": types.StringType,
+														"item_id":   types.NumberType,
+													},
+												},
+											},
+										},
+										[]attr.Value{
+											types.StringValue("header"),
+											types.ListValueMust(
+												types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														"item_name": types.StringType,
+														"item_id":   types.NumberType,
+													},
+												},
+												[]attr.Value{
+													types.ObjectValueMust(
+														map[string]attr.Type{
+															"item_name": types.StringType,
+															"item_id":   types.NumberType,
+														},
+														map[string]attr.Value{
+															"item_name": types.StringValue("Item1"),
+															"item_id":   types.NumberValue(big.NewFloat(1)),
+														},
+													),
+													types.ObjectValueMust(
+														map[string]attr.Type{
+															"item_name": types.StringType,
+															"item_id":   types.NumberType,
+														},
+														map[string]attr.Value{
+															"item_name": types.StringValue("Item2"),
+															"item_id":   types.NumberValue(big.NewFloat(2)),
+														},
+													),
+												},
+											),
+										},
+									),
+									"other_field": types.StringValue("value"),
+								},
+							),
+						},
+					))}),
+			},
+			expected: types.DynamicValue(types.ObjectValueMust(
+				map[string]attr.Type{
+					"dataStructure": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							"tupleField": types.TupleType{
+								ElemTypes: []attr.Type{
+									types.StringType,
+									types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												"itemName": types.StringType,
+												"itemId":   types.NumberType,
+											},
+										},
+									},
+								},
+							},
+							"otherField": types.StringType,
+						},
+					},
+				},
+				map[string]attr.Value{
+					"dataStructure": types.ObjectValueMust(
+						map[string]attr.Type{
+							"tupleField": types.TupleType{
+								ElemTypes: []attr.Type{
+									types.StringType,
+									types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												"itemName": types.StringType,
+												"itemId":   types.NumberType,
+											},
+										},
+									},
+								},
+							},
+							"otherField": types.StringType,
+						},
+						map[string]attr.Value{
+							"tupleField": types.TupleValueMust(
+								[]attr.Type{
+									types.StringType,
+									types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												"itemName": types.StringType,
+												"itemId":   types.NumberType,
+											},
+										},
+									},
+								},
+								[]attr.Value{
+									types.StringValue("header"),
+									types.ListValueMust(
+										types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												"itemName": types.StringType,
+												"itemId":   types.NumberType,
+											},
+										},
+										[]attr.Value{
+											types.ObjectValueMust(
+												map[string]attr.Type{
+													"itemName": types.StringType,
+													"itemId":   types.NumberType,
+												},
+												map[string]attr.Value{
+													"itemName": types.StringValue("Item1"),
+													"itemId":   types.NumberValue(big.NewFloat(1)),
+												},
+											),
+											types.ObjectValueMust(
+												map[string]attr.Type{
+													"itemName": types.StringType,
+													"itemId":   types.NumberType,
+												},
+												map[string]attr.Value{
+													"itemName": types.StringValue("Item2"),
+													"itemId":   types.NumberValue(big.NewFloat(2)),
+												},
+											),
+										},
+									),
+								},
+							),
+							"otherField": types.StringValue("value"),
+						},
+					),
+				},
+			)),
+		},
 	}
 
 	for _, testCase := range testCases {
