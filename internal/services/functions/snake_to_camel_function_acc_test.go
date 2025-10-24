@@ -67,12 +67,12 @@ func TestAccSnake2CamelFunction_fullyUnkown(t *testing.T) {
 func (s Snake2CamelFunction) basic() string {
 	return `
 variable "input" {
-	type = object({
-		first_key = string
-	})
-	default = {
-		first_key = "value1"
-	}
+  type = object({
+    first_key = string
+  })
+  default = {
+    first_key = "value1"
+  }
 }
 
 output "output" {
@@ -84,13 +84,13 @@ output "output" {
 func (s Snake2CamelFunction) partialUnknown() string {
 	return `
 resource "terraform_data" "test" {
-	input = "unknown"
+  input = "unknown"
 }
 
 output "output" {
-  value	 = provider::azapi::snake2camel({
-	  first_key = terraform_data.test.output
-	})
+  value = provider::azapi::snake2camel({
+    first_key = terraform_data.test.output
+  })
 }
 `
 }
@@ -98,13 +98,13 @@ output "output" {
 func (s Snake2CamelFunction) fullyUnknown() string {
 	return `
 resource "terraform_data" "test" {
-	input = {
-		first_key = "unknown"
-	}
+  input = {
+    first_key = "unknown"
+  }
 }
 
 output "output" {
-  value	 = provider::azapi::snake2camel(terraform_data.test.output)
+  value = provider::azapi::snake2camel(terraform_data.test.output)
 }
 `
 }
@@ -227,22 +227,22 @@ func TestAccSnake2CamelFunction_mixedKnownUnknownNested(t *testing.T) {
 func (s Snake2CamelFunction) nestedObjectWithKnownValues() string {
 	return `
 variable "input" {
-	type = object({
-		first_key = string
-		second_key = string
-		nested_object = object({
-			child_key = string
-			another_child = string
-		})
-	})
-	default = {
-		first_key = "value1"
-		second_key = "value2"
-		nested_object = {
-			child_key = "childValue"
-			another_child = "anotherValue"
-		}
-	}
+  type = object({
+    first_key  = string
+    second_key = string
+    nested_object = object({
+      child_key     = string
+      another_child = string
+    })
+  })
+  default = {
+    first_key  = "value1"
+    second_key = "value2"
+    nested_object = {
+      child_key     = "childValue"
+      another_child = "anotherValue"
+    }
+  }
 }
 
 output "output" {
@@ -254,16 +254,16 @@ output "output" {
 func (s Snake2CamelFunction) nestedObjectWithUnknownChild() string {
 	return `
 resource "terraform_data" "test" {
-	input = "unknown"
+  input = "unknown"
 }
 
 output "output" {
   value = provider::azapi::snake2camel({
-	  first_key = "knownValue"
-	  nested_object = {
-		  child_key = terraform_data.test.output
-		  another_child = "knownChild"
-	  }
+    first_key = "knownValue"
+    nested_object = {
+      child_key     = terraform_data.test.output
+      another_child = "knownChild"
+    }
   })
 }
 `
@@ -272,20 +272,20 @@ output "output" {
 func (s Snake2CamelFunction) deeplyNestedObject() string {
 	return `
 variable "input" {
-	type = object({
-		top_level = object({
-			mid_level = object({
-				deep_level = string
-			})
-		})
-	})
-	default = {
-		top_level = {
-			mid_level = {
-				deep_level = "deepValue"
-			}
-		}
-	}
+  type = object({
+    top_level = object({
+      mid_level = object({
+        deep_level = string
+      })
+    })
+  })
+  default = {
+    top_level = {
+      mid_level = {
+        deep_level = "deepValue"
+      }
+    }
+  }
 }
 
 output "output" {
@@ -297,21 +297,21 @@ output "output" {
 func (s Snake2CamelFunction) nestedObjectWithList() string {
 	return `
 variable "input" {
-	type = object({
-		my_list = list(object({
-			item_key = string
-		}))
-	})
-	default = {
-		my_list = [
-			{
-				item_key = "item1"
-			},
-			{
-				item_key = "item2"
-			}
-		]
-	}
+  type = object({
+    my_list = list(object({
+      item_key = string
+    }))
+  })
+  default = {
+    my_list = [
+      {
+        item_key = "item1"
+      },
+      {
+        item_key = "item2"
+      }
+    ]
+  }
 }
 
 output "output" {
@@ -323,21 +323,21 @@ output "output" {
 func (s Snake2CamelFunction) mixedKnownUnknownNested() string {
 	return `
 resource "terraform_data" "test" {
-	input = "unknown"
+  input = "unknown"
 }
 
 resource "terraform_data" "test2" {
-	input = "unknownChild"
+  input = "unknownChild"
 }
 
 output "output" {
   value = provider::azapi::snake2camel({
-	  known_key = "knownValue"
-	  unknown_key = terraform_data.test.output
-	  nested_object = {
-		  known_child = "knownChildValue"
-		  unknown_child = terraform_data.test2.output
-	  }
+    known_key   = "knownValue"
+    unknown_key = terraform_data.test.output
+    nested_object = {
+      known_child   = "knownChildValue"
+      unknown_child = terraform_data.test2.output
+    }
   })
 }
 `
