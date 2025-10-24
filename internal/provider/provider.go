@@ -707,6 +707,7 @@ func (p Provider) Functions(ctx context.Context) []func() function.Function {
 		func() function.Function { return &functions.ManagementGroupResourceIdFunction{} },
 		func() function.Function { return &functions.ExtensionResourceIdFunction{} },
 		func() function.Function { return &functions.UniqueStringFunction{} },
+		func() function.Function { return &functions.Snake2CamelFunction{} },
 	}
 }
 
