@@ -211,7 +211,7 @@ func TestAccSnake2CamelFunction_mixedKnownUnknownNested(t *testing.T) {
 				statecheck.ExpectKnownOutputValue(
 					"output",
 					knownvalue.ObjectExact(map[string]knownvalue.Check{
-						"knownKey": knownvalue.StringExact("knownValue"),
+						"knownKey":   knownvalue.StringExact("knownValue"),
 						"unknownKey": knownvalue.StringExact("unknown"),
 						"nestedObject": knownvalue.ObjectExact(map[string]knownvalue.Check{
 							"knownChild":   knownvalue.StringExact("knownChildValue"),
