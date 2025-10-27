@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Capacity Reservation within a Capacity Reservation Group resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

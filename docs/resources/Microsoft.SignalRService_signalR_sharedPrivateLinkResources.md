@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Shared Private Link Resource for a Signalr service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

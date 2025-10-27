@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the JavaScript UDA Function within a Stream Analytics Streaming Job resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

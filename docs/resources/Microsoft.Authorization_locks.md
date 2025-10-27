@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Management Lock which is scoped to a Subscription, Resource Group or Resource resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

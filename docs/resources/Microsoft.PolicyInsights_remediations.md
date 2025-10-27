@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Policy Remediation resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Active Directory administrator on a MySQL Flexible Server resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

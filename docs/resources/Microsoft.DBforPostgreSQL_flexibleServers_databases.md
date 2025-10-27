@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the PostgreSQL Flexible Server Database resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

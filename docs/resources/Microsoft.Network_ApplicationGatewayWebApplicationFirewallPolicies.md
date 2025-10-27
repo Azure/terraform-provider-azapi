@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Web Application Firewall Policy instance resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

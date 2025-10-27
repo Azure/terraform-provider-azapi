@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Healthcare Med Tech (Internet of Medical Things) Service Fhir Destination resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Managed Private Endpoint for a Kusto Cluster resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

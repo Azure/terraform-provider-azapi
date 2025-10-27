@@ -218,6 +218,14 @@ func generateDocumentation(inputDir string) (string, error) {
 	}
 	out = strings.ReplaceAll(out, "{{.example}}", example)
 
+	// Read remarks.md if it exists (optional file)
+	remarksPath := path.Join(inputDir, "remarks.md")
+	remarks := ""
+	if remarksContent, err := os.ReadFile(remarksPath); err == nil {
+		remarks = strings.TrimSpace(string(remarksContent))
+	}
+	out = strings.ReplaceAll(out, "{{.remarks}}", remarks)
+
 	return out, nil
 }
 

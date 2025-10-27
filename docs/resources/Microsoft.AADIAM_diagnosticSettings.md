@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Active Directory Diagnostic Setting for Azure Monitor resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

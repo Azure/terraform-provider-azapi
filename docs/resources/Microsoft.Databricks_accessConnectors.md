@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Databricks Access Connector resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

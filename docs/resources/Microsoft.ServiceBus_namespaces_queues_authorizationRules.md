@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Authorization Rule for a ServiceBus Queue resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

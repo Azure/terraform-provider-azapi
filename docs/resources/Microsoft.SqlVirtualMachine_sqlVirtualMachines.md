@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Microsoft SQL Virtual Machine resource in Azure.
 
+
+
 ## Example Usage
 
 ### SQL_best_practices_assessment

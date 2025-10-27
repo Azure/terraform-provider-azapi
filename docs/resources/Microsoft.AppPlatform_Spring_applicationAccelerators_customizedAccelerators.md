@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Spring Cloud Customized Accelerator resource in Azure.
 
+!> **Note:** Azure Spring Apps Customized Accelerators (Microsoft.AppPlatform/Spring/applicationAccelerators/customizedAccelerators) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.
+
 ## Example Usage
 
 ### default

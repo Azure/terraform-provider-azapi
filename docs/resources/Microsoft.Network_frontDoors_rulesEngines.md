@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Front Door (classic) Rules Engine configuration and rules resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Applies a Guest Configuration Policy to a Virtual Machine resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

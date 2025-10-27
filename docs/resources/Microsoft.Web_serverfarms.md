@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the App Service: Service Plan resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

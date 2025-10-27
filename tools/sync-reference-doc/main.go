@@ -62,6 +62,7 @@ type sampleInfo struct {
 	InputDir        string   // absolute or relative path to the input sample dir
 	InputMainTfPath string
 	ScenarioName    string // e.g. basic, advanced; derived from subfolder name under the resource folder
+	RemarksContent  string // content from optional remarks.md file in the resource folder
 }
 
 type remarksDoc struct {
@@ -143,6 +144,14 @@ func main() {
 			continue
 		}
 		resDir := filepath.Join(inDir, e.Name())
+
+		// Read optional remarks.md file from the resource folder
+		remarksPath := filepath.Join(resDir, "remarks.md")
+		remarksContent := ""
+		if remarksData, err := os.ReadFile(remarksPath); err == nil {
+			remarksContent = stripMarkdown(strings.TrimSpace(string(remarksData)))
+		}
+
 		scenEntries, err := os.ReadDir(resDir)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "warn: skipping %s: cannot read scenarios: %v\n", e.Name(), err)
@@ -163,6 +172,7 @@ func main() {
 			s.InputDir = filepath.Join(resDir, scenario)
 			s.InputMainTfPath = mainTf
 			s.ScenarioName = sanitizeScenarioName(scenario)
+			s.RemarksContent = remarksContent
 			samples = append(samples, s)
 			log.Printf("  scenario: %s (main.tf)", s.ScenarioName)
 			foundAny = true
@@ -175,6 +185,7 @@ func main() {
 				s.InputDir = resDir
 				s.InputMainTfPath = mainTf
 				s.ScenarioName = ""
+				s.RemarksContent = remarksContent
 				samples = append(samples, s)
 				log.Printf("  scenario: <root> (main.tf)")
 			} else {
@@ -230,7 +241,7 @@ func main() {
 				rel = append(rel, strings.ToLower(s.ScenarioName))
 			}
 			relPath := filepath.ToSlash(filepath.Join(append(rel, "main.tf")...))
-			desc := defaultDescription(resourceType, s.APIVersion, s.ScenarioName)
+			desc := defaultDescription(resourceType, s.APIVersion, s.ScenarioName, s.RemarksContent)
 			remarks = append(remarks, terraformSample{
 				ResourceType: resourceType,
 				Path:         relPath,
@@ -391,7 +402,38 @@ func sanitizeScenarioName(s string) string {
 	return strings.ReplaceAll(s, "_", "")
 }
 
-func defaultDescription(resourceType, apiVersion, scenario string) string {
+// stripMarkdown removes common markdown formatting and keeps plain text.
+// This is a simple implementation that handles the most common markdown elements.
+func stripMarkdown(s string) string {
+	if s == "" {
+		return s
+	}
+
+	// Remove markdown alert syntax like "!> **Note:**"
+	s = strings.ReplaceAll(s, "!>", "")
+
+	// Remove bold markers
+	s = strings.ReplaceAll(s, "**", "")
+
+	// Remove italic markers
+	s = strings.ReplaceAll(s, "*", "")
+	s = strings.ReplaceAll(s, "_", "")
+
+	// Remove headers (## )
+	for strings.Contains(s, "## ") {
+		s = strings.ReplaceAll(s, "## ", "")
+	}
+	for strings.Contains(s, "# ") {
+		s = strings.ReplaceAll(s, "# ", "")
+	}
+
+	// Trim extra whitespace
+	s = strings.TrimSpace(s)
+
+	return s
+}
+
+func defaultDescription(resourceType, apiVersion, scenario, remarksContent string) string {
 	// Normalize a human-friendly scenario label
 	scen := strings.TrimSpace(strings.ToLower(scenario))
 	if strings.Contains(scen, "_") {
@@ -412,10 +454,20 @@ func defaultDescription(resourceType, apiVersion, scenario string) string {
 		scenPrefix = fmt.Sprintf("A %s example of", scen)
 	}
 
+	var desc string
 	if friendlyNames != nil {
 		if fn, ok := friendlyNames[strings.ToLower(resourceType)]; ok && fn != "" {
-			return fmt.Sprintf("%s deploying %s.", scenPrefix, fn)
+			desc = fmt.Sprintf("%s deploying %s.", scenPrefix, fn)
 		}
 	}
-	return fmt.Sprintf("%s deploying %s (%s).", scenPrefix, resourceType, apiVersion)
+	if desc == "" {
+		desc = fmt.Sprintf("%s deploying %s (%s).", scenPrefix, resourceType, apiVersion)
+	}
+
+	// Append remarks content if it exists
+	if remarksContent != "" {
+		desc = desc + "\n\n" + remarksContent
+	}
+
+	return desc
 }

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the API Management Gateway Certificate Authority resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

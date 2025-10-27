@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Healthcare MedTech (Internet of Medical Things) devices Service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

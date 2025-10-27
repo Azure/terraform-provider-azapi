@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Email Communication Service Domain resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

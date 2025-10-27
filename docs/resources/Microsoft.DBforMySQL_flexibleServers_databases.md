@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the MySQL Database within a MySQL Flexible Server resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

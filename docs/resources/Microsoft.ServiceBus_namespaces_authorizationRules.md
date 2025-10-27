@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the ServiceBus Namespace authorization Rule within a ServiceBus resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

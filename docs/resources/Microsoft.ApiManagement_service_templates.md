@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the API Management Service Templates resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Network Manager Management Group Connection resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

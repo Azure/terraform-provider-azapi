@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Desktop Virtualization Scaling Plans Personal Schedules resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

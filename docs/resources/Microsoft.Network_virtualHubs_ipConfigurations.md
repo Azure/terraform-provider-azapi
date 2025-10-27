@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Virtual Hub IP. This resource is also known as a Route Server resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

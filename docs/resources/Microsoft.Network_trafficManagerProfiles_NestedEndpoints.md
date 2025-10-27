@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Nested Endpoint within a Traffic Manager Profile resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

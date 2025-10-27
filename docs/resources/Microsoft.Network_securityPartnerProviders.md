@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Security Partner Provider which could be associated to virtual hub resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

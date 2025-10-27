@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the automated startup and shutdown schedules for Azure Dev Test Lab resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Data Factory (Version 2) resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Associates a Spring Cloud Application with a resource resource in Azure.
 
+!> **Note:** Azure Spring Apps Application Bindings (Microsoft.AppPlatform/Spring/apps/bindings) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.
+
 ## Example Usage
 
 ### default
