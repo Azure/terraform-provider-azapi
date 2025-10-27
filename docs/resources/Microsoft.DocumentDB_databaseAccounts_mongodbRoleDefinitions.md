@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Cosmos DB Mongo Role Definition resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

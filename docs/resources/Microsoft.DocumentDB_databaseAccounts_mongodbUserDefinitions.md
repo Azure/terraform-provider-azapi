@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Cosmos DB Mongo User Definition resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

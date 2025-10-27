@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Microsoft SQL Azure Database Server resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Storage Account Local User resource in Azure.
 
+
+
 ## Example Usage
 
 ### basic

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the SQL Stored Procedure within a Cosmos DB Account SQL Database resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

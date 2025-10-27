@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the {{.resource_type_friendly_name}} resource in Azure.
 
+{{.remarks}}
+
 ## Example Usage
 
 {{.example}}

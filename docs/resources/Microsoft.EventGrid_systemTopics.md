@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Event Grid System Topic resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Healthcare FHIR (Fast Healthcare Interoperability Resources) Service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the certificate in an Azure Batch account resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

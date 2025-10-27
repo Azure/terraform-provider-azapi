@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Pipeline inside a Azure Data Factory resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

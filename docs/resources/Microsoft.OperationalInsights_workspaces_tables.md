@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Operational Insights Workspaces Tables resource in Azure.
 
+
+
 ## Example Usage
 
 ### audit_log

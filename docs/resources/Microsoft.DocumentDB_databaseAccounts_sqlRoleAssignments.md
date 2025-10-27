@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Cosmos DB SQL Role Assignment resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

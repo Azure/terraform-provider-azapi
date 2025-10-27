@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the NGINX Deployment resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

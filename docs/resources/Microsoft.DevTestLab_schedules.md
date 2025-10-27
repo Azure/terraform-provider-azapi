@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the automated shutdown schedules for Azure Resource Manager VMs outside of Dev Test Labs resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

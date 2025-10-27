@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Container Connected Registry resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

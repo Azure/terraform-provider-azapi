@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Spring Cloud Monitoring Settings resource in Azure.
 
+!> **Note:** Azure Spring Apps Monitoring Settings (Microsoft.AppPlatform/Spring/monitoringSettings) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.
+
 ## Example Usage
 
 ### default

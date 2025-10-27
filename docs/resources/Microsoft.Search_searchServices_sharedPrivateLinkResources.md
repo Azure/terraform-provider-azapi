@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Shared Private Link Service for an Azure Search Service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Healthcare DICOM (Digital Imaging and Communications in Medicine) Service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

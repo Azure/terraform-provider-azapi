@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the IP group which contains a list of CIDRs and/or IP addresses resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

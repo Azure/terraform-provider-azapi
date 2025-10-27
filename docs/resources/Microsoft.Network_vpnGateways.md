@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the VPN Gateway within a Virtual Hub resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

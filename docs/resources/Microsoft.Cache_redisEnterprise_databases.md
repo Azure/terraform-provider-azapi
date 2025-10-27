@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Redis Enterprise Database resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

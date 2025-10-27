@@ -1,0 +1,1 @@
+!> **Note:** Azure Spring Apps Buildpack Bindings (Microsoft.AppPlatform/Spring/buildServices/builders/buildpackBindings) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.

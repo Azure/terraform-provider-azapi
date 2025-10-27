@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Elastic SAN (Storage Area Network) resource resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

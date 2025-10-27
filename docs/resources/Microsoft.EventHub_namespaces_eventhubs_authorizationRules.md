@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Event Hubs authorization Rule within an Event Hub resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Gremlin Database within a Cosmos DB Account resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

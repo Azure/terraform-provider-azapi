@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Database for MySQL Servers Firewall Rules resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

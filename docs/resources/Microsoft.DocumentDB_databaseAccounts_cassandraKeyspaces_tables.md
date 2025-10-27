@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Cassandra Table within a Cosmos DB Cassandra Keyspace resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Kubernetes Flux Configuration resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

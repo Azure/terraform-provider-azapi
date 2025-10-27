@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Log Analytics Cluster resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

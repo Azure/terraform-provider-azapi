@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the IoT Hub Device Update Instance resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

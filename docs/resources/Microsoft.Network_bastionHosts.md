@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Bastion Host resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

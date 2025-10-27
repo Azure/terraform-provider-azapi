@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the AutoScale Setting which can be applied to Virtual Machine Scale Sets, App Services and other scalable resources resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

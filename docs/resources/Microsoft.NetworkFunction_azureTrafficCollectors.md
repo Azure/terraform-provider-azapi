@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Network Function Azure Traffic Collector resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

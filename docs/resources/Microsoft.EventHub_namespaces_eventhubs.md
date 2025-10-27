@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Event Hubs as a nested resource within an Event Hubs namespace resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

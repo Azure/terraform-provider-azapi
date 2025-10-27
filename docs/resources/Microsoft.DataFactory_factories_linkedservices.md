@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Linked Service (connection) between a resource and Azure Data Factory resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Shared Private Link Resource for a Web Pubsub service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

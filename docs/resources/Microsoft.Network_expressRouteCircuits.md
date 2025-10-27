@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the ExpressRoute circuit resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

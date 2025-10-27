@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Immutability Policy for a Container within an Azure Storage Account resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

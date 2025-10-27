@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Subscription within a API Management Service resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

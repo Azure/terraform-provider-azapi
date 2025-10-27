@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Security Alert Policy for a Synapse SQL Pool resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

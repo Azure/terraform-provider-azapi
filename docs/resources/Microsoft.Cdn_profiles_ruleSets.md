@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Front Door (standard/premium) Rule Set resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

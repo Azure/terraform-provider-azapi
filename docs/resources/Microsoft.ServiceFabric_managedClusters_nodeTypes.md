@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Service Fabric Managed Clusters Node Types resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

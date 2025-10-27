@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Elastic SAN Volume Group resource resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

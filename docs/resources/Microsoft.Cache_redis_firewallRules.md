@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Firewall Rule associated with a Redis Cache resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

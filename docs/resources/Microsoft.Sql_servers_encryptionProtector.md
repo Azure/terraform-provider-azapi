@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the transparent data encryption configuration for a MSSQL Server resource in Azure.
 
+
+
 ## Example Usage
 
 ### default
