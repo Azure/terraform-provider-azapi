@@ -10,6 +10,7 @@ const (
 	KeyVault         cloud.ServiceName = "KeyVault"
 	Purview          cloud.ServiceName = "Purview"
 	Synapse          cloud.ServiceName = "Synapse"
+	Search           cloud.ServiceName = "Search"
 )
 
 func init() {
@@ -41,4 +42,9 @@ func init() {
 		Audience: "https://dev.azuresynapse.net",
 		Endpoint: "https://dev.azuresynapse.net",
 	}
+	cloud.AzurePublic.Services[Search] = cloud.ServiceConfiguration{
+		Audience: "https://search.azure.com",
+		Endpoint: "https://search.windows.net",
+	}
+
 }
