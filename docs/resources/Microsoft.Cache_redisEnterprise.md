@@ -9,7 +9,7 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Redis Enterprise Cluster resource in Azure.
 
-
+!> **Note:** Redis Enterprise (Microsoft.Cache/redisEnterprise) is also known as Azure Managed Redis. It requires a Microsoft.Cache/redisEnterprise/databases child resource to function properly. See https://learn.microsoft.com/azure/redis/overview for more information.
 
 ## Example Usage
 
@@ -45,19 +45,26 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "redisEnterprise" {
-  type      = "Microsoft.Cache/redisEnterprise@2022-01-01"
+  type      = "Microsoft.Cache/redisEnterprise@2025-04-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
   body = {
     properties = {
       minimumTlsVersion = "1.2"
+      encryption        = {}
+      highAvailability  = "Enabled"
     }
     sku = {
-      capacity = 2
-      name     = "Enterprise_E100"
+      name = "Balanced_B0"
     }
   }
+
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
