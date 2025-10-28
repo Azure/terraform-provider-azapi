@@ -1,0 +1,1 @@
+!> **Note:** Redis Enterprise (Microsoft.Cache/redisEnterprise) is also known as Azure Managed Redis. It requires a Microsoft.Cache/redisEnterprise/databases child resource to function properly. See https://learn.microsoft.com/azure/redis/overview for more information.
