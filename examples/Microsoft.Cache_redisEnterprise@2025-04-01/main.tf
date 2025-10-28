@@ -40,12 +40,13 @@ resource "azapi_resource" "redisEnterprise" {
     sku = {
       name = "Balanced_B0"
     }
-
-    identity = {
-      type                   = "None",
-      userAssignedIdentities = null
-    }
   }
+
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
