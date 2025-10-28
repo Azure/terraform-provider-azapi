@@ -119,6 +119,14 @@ func (td TestData) UpgradeTest(t *testing.T, testResource TestResource, steps []
 	resource.ParallelTest(t, testCase)
 }
 
+func (td TestData) FunctionTest(t *testing.T, steps []resource.TestStep) {
+	testCase := resource.TestCase{
+		PreCheck: func() { PreCheck(t) },
+		Steps:    steps,
+	}
+	td.runAcceptanceTest(t, testCase)
+}
+
 // lintignore:AT001
 func (td TestData) DataSourceTest(t *testing.T, steps []resource.TestStep) {
 	// DataSources don't need a check destroy - however since this is a wrapper function
