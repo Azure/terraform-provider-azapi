@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the MongoDB Cluster using vCore Architecture resource in Azure.
 
+
+
 ## Example Usage
 
 ### default
