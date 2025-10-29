@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Network Managers IPAM Pools Static CIDR resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

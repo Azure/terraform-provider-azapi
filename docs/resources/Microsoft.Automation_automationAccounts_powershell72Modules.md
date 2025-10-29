@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Automation Powershell 7.2 Module resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

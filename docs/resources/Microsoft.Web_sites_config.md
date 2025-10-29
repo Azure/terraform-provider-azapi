@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the App Service Virtual Network Association resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

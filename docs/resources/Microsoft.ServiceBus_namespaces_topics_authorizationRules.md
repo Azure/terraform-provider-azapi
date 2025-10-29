@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the ServiceBus Topic authorization Rule within a ServiceBus Topic resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

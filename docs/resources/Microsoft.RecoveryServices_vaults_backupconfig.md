@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Recovery Services Vaults Backup Config resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

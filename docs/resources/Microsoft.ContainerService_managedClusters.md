@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the managed Kubernetes Cluster (also known as AKS / Azure Kubernetes Service) resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

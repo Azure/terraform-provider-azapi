@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Static Web App Custom Domain resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

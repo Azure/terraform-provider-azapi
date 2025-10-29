@@ -27,23 +27,32 @@ resource "azapi_resource" "resourceGroup" {
 }
 
 resource "azapi_resource" "redisEnterprise" {
-  type      = "Microsoft.Cache/redisEnterprise@2024-10-01"
+  type      = "Microsoft.Cache/redisEnterprise@2025-04-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
   body = {
     properties = {
       minimumTlsVersion = "1.2"
+      encryption        = {}
+      highAvailability  = "Enabled"
     }
     sku = {
-      capacity = 4
-      name     = "Enterprise_E20"
+      name = "Balanced_B0"
     }
   }
+
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
 }
 
-resource "azapi_resource" "databas" {
-  type      = "Microsoft.Cache/redisEnterprise/databases@2024-10-01"
+resource "azapi_resource" "defaultDatabase" {
+  type      = "Microsoft.Cache/redisEnterprise/databases@2025-04-01"
   parent_id = azapi_resource.redisEnterprise.id
   name      = "default"
   body = {

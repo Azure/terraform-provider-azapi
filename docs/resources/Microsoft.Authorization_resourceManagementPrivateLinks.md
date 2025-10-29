@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Resource Management Private Link to restrict access for managing resources in the tenant resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

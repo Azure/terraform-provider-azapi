@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the virtual network including any configured subnets resource in Azure.
 
+
+
 ## Example Usage
 
 ### with_ipam_pool

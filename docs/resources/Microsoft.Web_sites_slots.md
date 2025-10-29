@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the App Service Slot (within an App Service) resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

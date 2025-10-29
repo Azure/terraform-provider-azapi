@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Spring Cloud Dev Tool Portal resource in Azure.
 
+!> **Note:** Azure Spring Apps Dev Tool Portals (Microsoft.AppPlatform/Spring/DevToolPortals) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.
+
 ## Example Usage
 
 ### default

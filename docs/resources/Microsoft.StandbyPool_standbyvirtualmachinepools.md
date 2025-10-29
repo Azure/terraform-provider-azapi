@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Microsoft Standby pools for Virtual Machine Scale Sets resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

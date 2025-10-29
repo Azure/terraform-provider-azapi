@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Media Services Live Events resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

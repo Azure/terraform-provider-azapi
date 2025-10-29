@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the local network gateway connection over which specific connections can be configured resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

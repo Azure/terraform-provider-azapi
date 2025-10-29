@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Schema Group for a EventHub Namespace resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

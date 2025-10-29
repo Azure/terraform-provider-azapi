@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the shared dashboard in the Azure Portal resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

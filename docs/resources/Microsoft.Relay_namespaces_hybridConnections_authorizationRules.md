@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Azure Relay Hybrid Connection Authorization Rule resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

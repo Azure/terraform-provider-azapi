@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Automation Accounts Source Control Sync Jobs resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

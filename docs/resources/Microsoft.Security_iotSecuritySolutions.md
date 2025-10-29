@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the iot security solution resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

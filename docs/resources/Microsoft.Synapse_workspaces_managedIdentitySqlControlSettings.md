@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Synapse Workspaces Managed Identity SQL Control Settings resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

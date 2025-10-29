@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the network security group that contains a list of network security rules. Network security groups enable inbound or outbound traffic to be enabled or denied resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

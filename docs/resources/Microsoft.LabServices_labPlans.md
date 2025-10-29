@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Lab Services Lab Plans resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Configures Packet Capturing against a Virtual Machine using a Network Watcher resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

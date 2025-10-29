@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Assigns a given Principal (User or Group) to a given Role resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

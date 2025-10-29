@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Virtual Machine Restore Point resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

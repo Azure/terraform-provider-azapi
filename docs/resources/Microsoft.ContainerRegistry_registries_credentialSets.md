@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Container Registry Credential Set resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

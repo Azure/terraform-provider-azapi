@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Function App, Web App, or Logic App resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

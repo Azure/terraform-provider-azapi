@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Kusto (also known as Azure Data Explorer) Cluster resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

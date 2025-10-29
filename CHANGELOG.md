@@ -1,4 +1,16 @@
-## v2.7.0 (Unreleased)
+## v2.8.0 (Unreleased)
+
+ENHANCEMENTS:
+- `azapi_data_plane_resource` resource: Adds a customization layer which allows custom CRUD operations for resources that don't follow standard patterns. 
+- `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/keys` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/secrets` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/datasources` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/indexers` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/indexes` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/skillsets` type.
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/synonymmaps` type. 
+
+## v2.7.0
 
 ENHANCEMENTS:
 - `azapi_resource` resource: Refactor move-state logic to centrally derive ARM IDs from data-plane IDs for selected azurerm resources.

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the site recovery network mapping on Azure resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

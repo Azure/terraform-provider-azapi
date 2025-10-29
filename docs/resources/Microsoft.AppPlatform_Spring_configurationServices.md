@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Spring Cloud Configuration Service resource in Azure.
 
+!> **Note:** Azure Spring Apps Configuration Services (Microsoft.AppPlatform/Spring/configurationServices) is now deprecated and will be retired on 2028-05-31. See https://aka.ms/asaretirement for more information.
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Event Hubs Consumer Group as a nested resource within an Event Hub resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the API Management Service API Diagnostics Logs resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

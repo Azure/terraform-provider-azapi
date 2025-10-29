@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Dapr Component for a Container App Environment resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

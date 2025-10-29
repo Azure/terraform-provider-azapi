@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the Sentinel Metadata resource in Azure.
 
+
+
 ## Example Usage
 
 ### default

@@ -9,6 +9,8 @@ description: |-
 
 This article demonstrates how to use `azapi` provider to manage the virtual network gateway to establish secure, cross-premises connectivity resource in Azure.
 
+
+
 ## Example Usage
 
 ### default
