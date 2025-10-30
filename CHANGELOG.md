@@ -1,5 +1,8 @@
 ## v2.8.0 (Unreleased)
 
+FEATURES:
+- **New Provider Function**: snake2camel
+
 ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Adds a customization layer which allows custom CRUD operations for resources that don't follow standard patterns. 
 - `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/keys` type.
@@ -8,7 +11,12 @@ ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/indexers` type.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/indexes` type.
 - `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/skillsets` type.
-- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/synonymmaps` type. 
+- `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/synonymmaps` type.
+- Bump Go version to 1.24.6 to address CVEs (GH-992).
+- Add more verified `azapi` examples.
+
+BUG FIXES:
+- Fix panic when using `sensitive_body_version` with empty `sensitive_body` (GH-999). 
 
 ## v2.7.0
 

@@ -148,6 +148,7 @@ func main() {
 		// Read optional remarks.md file from the resource folder
 		remarksPath := filepath.Join(resDir, "remarks.md")
 		remarksContent := ""
+		// #nosec G304 - remarksPath is constructed from controlled directory path
 		if remarksData, err := os.ReadFile(remarksPath); err == nil {
 			remarksContent = stripMarkdown(strings.TrimSpace(string(remarksData)))
 		}

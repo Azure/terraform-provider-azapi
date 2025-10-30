@@ -221,6 +221,7 @@ func generateDocumentation(inputDir string) (string, error) {
 	// Read remarks.md if it exists (optional file)
 	remarksPath := path.Join(inputDir, "remarks.md")
 	remarks := ""
+	// #nosec G304 - remarksPath is constructed from controlled directory path
 	if remarksContent, err := os.ReadFile(remarksPath); err == nil {
 		remarks = strings.TrimSpace(string(remarksContent))
 	}
