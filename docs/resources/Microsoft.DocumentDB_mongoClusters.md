@@ -2,12 +2,12 @@
 subcategory: "Microsoft.DocumentDB - Azure Cosmos DB"
 page_title: "mongoClusters"
 description: |-
-  Manages a MongoDB Cluster using vCore Architecture.
+  Manages a Azure Cosmos DB for MongoDB (vCore).
 ---
 
-# Microsoft.DocumentDB/mongoClusters - MongoDB Cluster using vCore Architecture
+# Microsoft.DocumentDB/mongoClusters - Azure Cosmos DB for MongoDB (vCore)
 
-This article demonstrates how to use `azapi` provider to manage the MongoDB Cluster using vCore Architecture resource in Azure.
+This article demonstrates how to use `azapi` provider to manage the Azure Cosmos DB for MongoDB (vCore) resource in Azure.
 
 
 
@@ -285,13 +285,12 @@ resource "azapi_resource" "mongoCluster" {
     properties = {
       administrator = {
         userName = var.admin_username
-        password = var.admin_password
       }
       authConfig = {
         allowedModes = ["MicrosoftEntraID", "NativeAuth"]
       }
       compute = {
-        tier = "M40"
+        tier = "M30"
       }
       encryption = {
         customerManagedKeyEncryption = {
@@ -315,6 +314,13 @@ resource "azapi_resource" "mongoCluster" {
       }
       storage = {
         sizeGb = 32
+      }
+    }
+  }
+  sensitive_body = {
+    properties = {
+      administrator = {
+        password = var.admin_password
       }
     }
   }
@@ -355,7 +361,6 @@ resource "azapi_resource" "mongoCluster_PointInTimeRestore" {
     properties = {
       createMode = "PointInTimeRestore"
       administrator = {
-        password = var.restore_admin_password
         userName = var.admin_username
       }
       encryption = {
@@ -370,6 +375,13 @@ resource "azapi_resource" "mongoCluster_PointInTimeRestore" {
       restoreParameters = {
         pointInTimeUTC   = data.azapi_resource.mongoCluster_backup_check.output.properties.backup.earliestRestoreTime
         sourceResourceId = azapi_resource.mongoCluster.id
+      }
+    }
+  }
+  sensitive_body = {
+    properties = {
+      administrator = {
+        password = var.restore_admin_password
       }
     }
   }
@@ -412,6 +424,7 @@ resource "azapi_resource" "mongoCluster_GeoReplica" {
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
+
 ```
 
 
