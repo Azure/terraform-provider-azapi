@@ -22,7 +22,8 @@ func TestAccDataPlaneResource_appConfigKeyValues(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.appConfigKeyValues(data),
+			Config:            r.appConfigKeyValues(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -64,7 +65,8 @@ func TestAccDataPlaneResource_keyVaultIssuer(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.keyVaultIssuer(data),
+			Config:            r.keyVaultIssuer(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
@@ -112,7 +114,8 @@ func TestAccDataPlaneResource_timeouts(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.timeouts(data),
+			Config:            r.timeouts(data),
+			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
