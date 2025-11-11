@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/bmatcuk/doublestar/v4"
 	"github.com/hashicorp/cli"
@@ -25,8 +26,8 @@ const (
 	FileExtensionMarkdown     = `.markdown`
 	FileExtensionMd           = `.md`
 
-	DocumentationGlobPattern    = `{docs/index.*,docs/{,cdktf/}{data-sources,ephemeral-resources,guides,resources,functions}/**/*,website/docs/**/*}`
-	DocumentationDirGlobPattern = `{docs/{,cdktf/}{data-sources,ephemeral-resources,guides,resources,functions}{,/*},website/docs/**/*}`
+	DocumentationGlobPattern    = `{docs/index.*,docs/{,cdktf/}{actions,data-sources,ephemeral-resources,guides,list-resources,resources,functions}/**/*,website/docs/**/*}`
+	DocumentationDirGlobPattern = `{docs/{,cdktf/}{actions,data-sources,ephemeral-resources,guides,list-resources,resources,functions}{,/*},website/docs/**/*}`
 )
 
 var ValidLegacyFileExtensions = []string{
@@ -72,6 +73,13 @@ var RegistryGuideFrontMatterOptions = &check.FrontMatterOptions{
 	RequirePageTitle: true,
 }
 
+type ValidatorOptions struct {
+	AllowedGuideSubcategories        string
+	AllowedGuideSubcategoriesFile    string
+	AllowedResourceSubcategories     string
+	AllowedResourceSubcategoriesFile string
+}
+
 type validator struct {
 	providerName        string
 	providerDir         string
@@ -81,10 +89,13 @@ type validator struct {
 	tfVersion      string
 	providerSchema *tfjson.ProviderSchema
 
+	allowedGuideSubcategories    []string
+	allowedResourceSubcategories []string
+
 	logger *Logger
 }
 
-func Validate(ui cli.Ui, providerDir, providerName, providersSchemaPath, tfversion string) error {
+func Validate(ui cli.Ui, providerDir, providerName, providersSchemaPath, tfversion string, opts ValidatorOptions) error {
 	// Ensure provider directory is resolved absolute path
 	if providerDir == "" {
 		wd, err := os.Getwd()
@@ -127,9 +138,42 @@ func Validate(ui cli.Ui, providerDir, providerName, providersSchemaPath, tfversi
 		logger: NewLogger(ui),
 	}
 
+	if err := v.loadAllowedSubcategories(opts); err != nil {
+		return fmt.Errorf("error loading allowed subcategories: %w", err)
+	}
+
 	ctx := context.Background()
 
 	return v.validate(ctx)
+}
+
+func (v *validator) loadAllowedSubcategories(opts ValidatorOptions) error {
+
+	if o := opts.AllowedGuideSubcategories; o != "" {
+		v.allowedGuideSubcategories = strings.Split(o, ",")
+	}
+
+	if o := opts.AllowedGuideSubcategoriesFile; o != "" {
+		allowedGuideSubcategories, err := allowedSubcategoriesFile(o)
+		if err != nil {
+			return fmt.Errorf("error getting allowed guide subcategories: %w", err)
+		}
+		v.allowedGuideSubcategories = allowedGuideSubcategories
+	}
+
+	if o := opts.AllowedResourceSubcategories; o != "" {
+		v.allowedResourceSubcategories = strings.Split(o, ",")
+	}
+
+	if o := opts.AllowedResourceSubcategoriesFile; o != "" {
+		allowedResourceSubcategories, err := allowedSubcategoriesFile(o)
+		if err != nil {
+			return fmt.Errorf("error getting allowed resource subcategories: %w", err)
+		}
+		v.allowedResourceSubcategories = allowedResourceSubcategories
+	}
+
+	return nil
 }
 
 func (v *validator) validate(ctx context.Context) error {
@@ -219,12 +263,25 @@ func (v *validator) validateStaticDocs() error {
 		}
 
 		// Configure FrontMatterOptions based on file type
+		relativeToGuides, err := filepath.Rel(dir+"/guides", path)
+		if err != nil {
+			return fmt.Errorf("error determining relative path (%s): %w", path, err)
+		}
+
 		if removeAllExt(d.Name()) == "index" {
 			options.FrontMatter = RegistryIndexFrontMatterOptions
-		} else if _, relErr := filepath.Rel(dir+"/guides", path); relErr == nil {
+		} else if filepath.IsLocal(relativeToGuides) {
 			options.FrontMatter = RegistryGuideFrontMatterOptions
+
+			if len(v.allowedGuideSubcategories) != 0 {
+				options.FrontMatter.AllowedSubcategories = v.allowedGuideSubcategories
+			}
 		} else {
 			options.FrontMatter = RegistryFrontMatterOptions
+
+			if len(v.allowedResourceSubcategories) != 0 {
+				options.FrontMatter.AllowedSubcategories = v.allowedResourceSubcategories
+			}
 		}
 		v.logger.infof("running file checks on %s", path)
 		result = errors.Join(result, check.NewProviderFileCheck(v.providerFS, options).Run(path))
@@ -256,6 +313,14 @@ func (v *validator) validateStaticDocs() error {
 	if dirExists(v.providerFS, dir+"/ephemeral-resources") {
 		ephemeralResourceFiles, _ := fs.ReadDir(v.providerFS, dir+"/ephemeral-resources")
 		mismatchOpt.EphemeralResourceEntries = ephemeralResourceFiles
+	}
+	if dirExists(v.providerFS, dir+"/actions") {
+		actionFiles, _ := fs.ReadDir(v.providerFS, dir+"/actions")
+		mismatchOpt.ActionEntries = actionFiles
+	}
+	if dirExists(v.providerFS, dir+"/list-resources") {
+		listResourceFiles, _ := fs.ReadDir(v.providerFS, dir+"/list-resources")
+		mismatchOpt.ListResourceEntries = listResourceFiles
 	}
 
 	v.logger.infof("running file mismatch check")
@@ -308,6 +373,10 @@ func (v *validator) validateLegacyWebsite() error {
 			options.FrontMatter = LegacyIndexFrontMatterOptions
 		} else {
 			options.FrontMatter = LegacyFrontMatterOptions
+
+			if len(v.allowedResourceSubcategories) != 0 {
+				options.FrontMatter.AllowedSubcategories = v.allowedResourceSubcategories
+			}
 		}
 		v.logger.infof("running file checks on %s", path)
 		result = errors.Join(result, check.NewProviderFileCheck(v.providerFS, options).Run(path))
@@ -339,6 +408,14 @@ func (v *validator) validateLegacyWebsite() error {
 	if dirExists(v.providerFS, dir+"/ephemeral-resources") {
 		ephemeralResourceFiles, _ := fs.ReadDir(v.providerFS, dir+"/ephemeral-resources")
 		mismatchOpt.EphemeralResourceEntries = ephemeralResourceFiles
+	}
+	if dirExists(v.providerFS, dir+"/actions") {
+		actionFiles, _ := fs.ReadDir(v.providerFS, dir+"/actions")
+		mismatchOpt.ActionEntries = actionFiles
+	}
+	if dirExists(v.providerFS, dir+"/list-resources") {
+		listResourceFiles, _ := fs.ReadDir(v.providerFS, dir+"/list-resources")
+		mismatchOpt.ListResourceEntries = listResourceFiles
 	}
 
 	v.logger.infof("running file mismatch check")

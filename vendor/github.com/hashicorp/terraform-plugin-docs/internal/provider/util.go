@@ -4,6 +4,7 @@
 package provider
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
@@ -86,6 +87,32 @@ func resourceSchema(schemas map[string]*tfjson.Schema, providerShortName, templa
 	}
 
 	return nil, resName
+}
+
+func actionSchema(schemas map[string]*tfjson.ActionSchema, providerShortName, templateFileName string) (*tfjson.ActionSchema, string) {
+	resName := providerShortName + "_" + removeAllExt(templateFileName)
+	if schema, ok := schemas[resName]; ok {
+		return schema, resName
+	}
+
+	if schema, ok := schemas[providerShortName]; ok {
+		return schema, providerShortName
+	}
+
+	return nil, resName
+}
+
+func resourceIdentitySchema(schemas map[string]*tfjson.IdentitySchema, providerShortName, templateFileName string) *tfjson.IdentitySchema {
+	resName := providerShortName + "_" + removeAllExt(templateFileName)
+	if schema, ok := schemas[resName]; ok {
+		return schema
+	}
+
+	if schema, ok := schemas[providerShortName]; ok {
+		return schema
+	}
+
+	return nil
 }
 
 func writeFile(path string, data string) error {
@@ -191,4 +218,28 @@ func newMarkdownRenderer() goldmark.Markdown {
 		goldmark.WithRenderer(mr),
 	)
 	return gm
+}
+
+func allowedSubcategoriesFile(path string) ([]string, error) {
+	log.Printf("[DEBUG] Reading Subcategories File %s", path)
+
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("error opening allowed subcategories file (%s): %w", path, err)
+	}
+
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	var allowedSubcategories []string
+	for scanner.Scan() {
+		allowedSubcategories = append(allowedSubcategories, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading allowed subcategories file (%s): %w", path, err)
+	}
+
+	return allowedSubcategories, nil
 }
