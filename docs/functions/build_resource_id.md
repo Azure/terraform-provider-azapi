@@ -38,4 +38,3 @@ build_resource_id(parent_id string, resource_type string, name string) string
 1. `parent_id` (String) The parent ID of the Azure resource.
 1. `resource_type` (String) The resource type of the Azure resource.
 1. `name` (String) The name of the Azure resource.
-

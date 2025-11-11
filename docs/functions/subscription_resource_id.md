@@ -38,4 +38,3 @@ subscription_resource_id(subscription_id string, resource_type string, resource_
 1. `subscription_id` (String) The subscription ID of the Azure resource.
 1. `resource_type` (String) The resource type of the Azure resource.
 1. `resource_names` (List of String) The list of resource names to construct the resource ID.
-

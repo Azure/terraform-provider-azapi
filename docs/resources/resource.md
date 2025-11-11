@@ -86,6 +86,8 @@ This resource can manage any Azure Resource Manager resource.
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 - `create_headers` (Map of String) A mapping of headers to be sent with the create request.
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
@@ -166,7 +168,7 @@ resource "azapi_resource" "example" {
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
-- `sensitive_body` (Dynamic) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+- `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 - `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
@@ -240,4 +242,56 @@ Optional:
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
  terraform import azapi_resource.example /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.MachineLearningServices/workspaces/workspace1/computes/cluster1?api-version=2021-07-01
+ ```
+### Import using resource ID:
+
+ ```terraform
+ import {
+   to = azapi_resource.example
+   id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01"
+ }
+ 
+ resource "azapi_resource" "example" {
+   type      = "Microsoft.Network/virtualNetworks@2023-11-01"
+   name      = "example-vnet"
+   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg"
+   location  = "westus"
+   body = {
+     properties = {
+       addressSpace = {
+         addressPrefixes = [
+           "10.0.0.0/16"
+         ]
+       }
+     }
+   }
+ }
+ ```
+
+### Import using identity:
+
+ ```terraform
+ import {
+   to = azapi_resource.example
+   identity = {
+     id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet"
+     type = "Microsoft.Network/virtualNetworks@2023-11-01"
+   }
+ }
+ 
+ resource "azapi_resource" "example" {
+   type      = "Microsoft.Network/virtualNetworks@2023-11-01"
+   name      = "example-vnet"
+   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg"
+   location  = "westus"
+   body = {
+     properties = {
+       addressSpace = {
+         addressPrefixes = [
+           "10.0.0.0/16"
+         ]
+       }
+     }
+   }
+ }
  ```
