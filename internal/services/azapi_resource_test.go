@@ -1160,37 +1160,13 @@ resource "azapi_resource" "test" {
 `, r.template(data), data.RandomString, testCertBase64)
 }
 
-func (r GenericResource) importWithIdentityBlock(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-import {
-  to = azapi_resource.import
-  identity = {
-    id = azapi_resource.test.id
-  }
-}
-
-resource "azapi_resource" "import" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body = {
-    properties = {
-      base64Value = "%s"
-    }
-  }
-}
-`, r.basic(data), testCertBase64)
-}
-
 func (r GenericResource) importWithIdentityAllCases(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
 
 locals {
   # Create ID with API version as query parameter for Case 1a
-  test_id_with_api_version = format("%%s?api-version=%%s", 
+  test_id_with_api_version = format("%%s?api-version=%%s",
     azapi_resource.test.id,
     split("@", azapi_resource.test.type)[1]
   )
@@ -1209,7 +1185,7 @@ resource "azapi_resource" "import_id_with_api_version" {
   type      = azapi_resource.test.type
   name      = azapi_resource.test.name
   parent_id = azapi_resource.test.parent_id
-  body = azapi_resource.test.body
+  body      = azapi_resource.test.body
 }
 
 # Case 1b: Identity-based import with only ID (ID does NOT contain API version)
@@ -1225,7 +1201,7 @@ resource "azapi_resource" "import_id_without_api_version" {
   type      = azapi_resource.test.type
   name      = azapi_resource.test.name
   parent_id = azapi_resource.test.parent_id
-  body = azapi_resource.test.body
+  body      = azapi_resource.test.body
 }
 
 # Case 2: Identity-based import with both ID and Type
@@ -1242,91 +1218,9 @@ resource "azapi_resource" "import_id_and_type" {
   type      = azapi_resource.test.type
   name      = azapi_resource.test.name
   parent_id = azapi_resource.test.parent_id
-  body = azapi_resource.test.body
+  body      = azapi_resource.test.body
 }
 `, r.basic(data))
-}
-
-func (r GenericResource) importWithIdentityBlockIdOnlyWithApiVersion(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-locals {
-  # Create ID with API version as query parameter
-  test_id_with_api_version = format("%%s?api-version=%%s", 
-    azapi_resource.test.id,
-    split("@", azapi_resource.test.type)[1]
-  )
-}
-
-import {
-  to = azapi_resource.import1a
-  identity = {
-    id = local.test_id_with_api_version
-  }
-}
-
-resource "azapi_resource" "import1a" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body = {
-    properties = {
-      base64Value = "%s"
-    }
-  }
-}
-`, r.basic(data), testCertBase64)
-}
-
-func (r GenericResource) importWithIdentityBlockIdOnlyWithoutApiVersion(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-import {
-  to = azapi_resource.import1b
-  identity = {
-    # ID without API version - will be parsed from the resource ID path structure
-    id = azapi_resource.test.id
-  }
-}
-
-resource "azapi_resource" "import1b" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body = {
-    properties = {
-      base64Value = "%s"
-    }
-  }
-}
-`, r.basic(data), testCertBase64)
-}
-
-func (r GenericResource) importWithIdentityBlockIdAndType(data acceptance.TestData) string {
-	return fmt.Sprintf(`
-%s
-
-import {
-  to = azapi_resource.import2
-  identity = {
-    id   = azapi_resource.test.id
-    type = azapi_resource.test.type
-  }
-}
-
-resource "azapi_resource" "import2" {
-  type      = azapi_resource.test.type
-  name      = azapi_resource.test.name
-  parent_id = azapi_resource.test.parent_id
-  body = {
-    properties = {
-      base64Value = "%s"
-    }
-  }
-}
-`, r.basic(data), testCertBase64)
 }
 
 func (r GenericResource) complete(data acceptance.TestData) string {
