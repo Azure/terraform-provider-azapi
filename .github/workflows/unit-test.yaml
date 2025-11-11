@@ -22,11 +22,10 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: latest
-          terraform_wrapper: false
+      - name: Install Terraform dev version
+        run: |
+          go install github.com/hashicorp/terraform@v1.14.0-rc1
+          terraform version
       - run: go generate ./...
       - name: git diff
         run: |
