@@ -4,6 +4,9 @@ FEATURES:
 - **New Provider Function**: snake2camel
 
 ENHANCEMENTS:
+- `azapi_resource` resource: Add support for identity-based import, enabling import via resource ID and type from list resource protocol.
+- `azapi_resource` resource: Support listing resources via new ListResource protocol.
+- `azapi_resource` resource: Refactor import logic to support identity block and multiple import scenarios (ID only, ID with API version, ID and type).
 - `azapi_data_plane_resource` resource: Adds a customization layer which allows custom CRUD operations for resources that don't follow standard patterns. 
 - `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/keys` type.
 - `azapi_data_plane_resource` resource: Support `Microsoft.KeyVault/vaults/secrets` type.

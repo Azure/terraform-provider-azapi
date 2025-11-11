@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/list"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -37,6 +38,7 @@ import (
 var _ provider.Provider = &Provider{}
 var _ provider.ProviderWithFunctions = &Provider{}
 var _ provider.ProviderWithEphemeralResources = &Provider{}
+var _ provider.ProviderWithListResources = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -689,6 +691,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	response.ResourceData = client
 	response.DataSourceData = client
 	response.EphemeralResourceData = client
+	response.ListResourceData = client
 }
 
 func (p Provider) Functions(ctx context.Context) []func() function.Function {
@@ -753,6 +756,14 @@ func (p Provider) EphemeralResources(ctx context.Context) []func() ephemeral.Eph
 	return []func() ephemeral.EphemeralResource{
 		func() ephemeral.EphemeralResource {
 			return &services.ActionEphemeral{}
+		},
+	}
+}
+
+func (p Provider) ListResources(ctx context.Context) []func() list.ListResource {
+	return []func() list.ListResource{
+		func() list.ListResource {
+			return &services.AzapiResourceList{}
 		},
 	}
 }
