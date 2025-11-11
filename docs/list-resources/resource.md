@@ -9,6 +9,8 @@ description: |-
 
 This list resource allows you to list Azure Resource Manager resources of a specific type under a given scope.
 
+~> **Note:** The `azapi_resource` List Resource is in beta. Its interface and behaviour may change as the feature evolves, and breaking changes are possible. It is offered as a technical preview without compatibility guarantees until Terraform 1.14 is generally available.
+
 ## Example Usage
 
  ```terraform
