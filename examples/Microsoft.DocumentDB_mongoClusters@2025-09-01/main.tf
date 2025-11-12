@@ -20,6 +20,12 @@ variable "location" {
   default = "westus3"
 }
 
+variable "mongo_admin_password" {
+  type        = string
+  description = "The administrator password for the MongoDB cluster"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -145,7 +151,7 @@ resource "azapi_resource" "mongoCluster" {
     properties = {
       administrator = {
         userName = "mongoAdmin"
-        password = "passworD!@#!$*"
+        password = var.mongo_admin_password
       }
       storage = {
         sizeGb = 32

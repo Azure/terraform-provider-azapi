@@ -22,6 +22,18 @@ variable "location" {
   default = "centralus"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator login password for the SQL server"
+}
+
+variable "job_credential_password" {
+  type        = string
+  sensitive   = true
+  description = "The password for the SQL job credential"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -36,7 +48,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "4dm1n157r470r"
-      administratorLoginPassword    = "4-v3ry-53cr37-p455w0rd"
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"
@@ -95,7 +107,7 @@ resource "azapi_resource" "credential" {
   name      = "${var.resource_name}-job-credential"
   body = {
     properties = {
-      password = "testpassword"
+      password = var.job_credential_password
       username = "testusername"
     }
   }

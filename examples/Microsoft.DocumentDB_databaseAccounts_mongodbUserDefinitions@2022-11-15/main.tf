@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "mongodb_user_password" {
+  type        = string
+  description = "The password for the MongoDB user"
+  sensitive   = true
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -92,7 +98,7 @@ resource "azapi_resource" "mongodbUserDefinition" {
     properties = {
       databaseName = azapi_resource.mongodbDatabas.name
       mechanisms   = "SCRAM-SHA-256"
-      password     = "${var.resource_name}-pwd"
+      password     = var.mongodb_user_password
       userName     = "myUserName"
     }
   }

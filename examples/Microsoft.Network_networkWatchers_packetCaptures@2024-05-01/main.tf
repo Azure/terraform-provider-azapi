@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator password for the virtual machine"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -111,7 +117,7 @@ resource "azapi_resource" "virtualMachine" {
         }]
       }
       osProfile = {
-        adminPassword = "Password1234!"
+        adminPassword = var.admin_password
         adminUsername = "testadmin"
         computerName  = "${var.resource_name}-vm"
         linuxConfiguration = {

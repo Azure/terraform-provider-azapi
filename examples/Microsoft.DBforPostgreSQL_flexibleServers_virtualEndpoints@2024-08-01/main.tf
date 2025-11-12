@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator login password for the PostgreSQL flexible server"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "flexibleServer" {
   body = {
     properties = {
       administratorLogin         = "psqladmin"
-      administratorLoginPassword = "H@Sh1CoR3!"
+      administratorLoginPassword = var.administrator_login_password
       availabilityZone           = "1"
       backup = {
         geoRedundantBackup = "Disabled"
