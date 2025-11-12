@@ -21,9 +21,6 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
-    time = {
-      source = "hashicorp/time"
-    }
   }
 }
 

@@ -46,21 +46,21 @@ variable "replica_location" {
   default = "centralus"
 }
 
-variable "admin_username" {
+variable "mongo_admin_username" {
   type    = string
   default = "mongoAdmin"
 }
 
-variable "admin_password" {
-  type      = string
-  default   = "terraformTest@2025!"
-  sensitive = true
+variable "mongo_admin_password" {
+  type        = string
+  description = "The administrator password for the MongoDB cluster"
+  sensitive   = true
 }
 
-variable "restore_admin_password" {
-  type      = string
-  default   = "restoreTest@2025!"
-  sensitive = true
+variable "mongo_restore_admin_password" {
+  type        = string
+  description = "The administrator password for the restored MongoDB cluster"
+  sensitive   = true
 }
 
 resource "azapi_resource" "resourceGroup" {
@@ -284,7 +284,7 @@ resource "azapi_resource" "mongoCluster" {
   body = {
     properties = {
       administrator = {
-        userName = var.admin_username
+        userName = var.mongo_admin_username
       }
       authConfig = {
         allowedModes = ["MicrosoftEntraID", "NativeAuth"]
@@ -320,7 +320,7 @@ resource "azapi_resource" "mongoCluster" {
   sensitive_body = {
     properties = {
       administrator = {
-        password = var.admin_password
+        password = var.mongo_admin_password
       }
     }
   }
@@ -361,7 +361,7 @@ resource "azapi_resource" "mongoCluster_PointInTimeRestore" {
     properties = {
       createMode = "PointInTimeRestore"
       administrator = {
-        userName = var.admin_username
+        userName = var.mongo_admin_username
       }
       encryption = {
         customerManagedKeyEncryption = {
@@ -381,7 +381,7 @@ resource "azapi_resource" "mongoCluster_PointInTimeRestore" {
   sensitive_body = {
     properties = {
       administrator = {
-        password = var.restore_admin_password
+        password = var.mongo_restore_admin_password
       }
     }
   }
