@@ -24,7 +24,11 @@ jobs:
           cache: true
       - name: Install Terraform dev version
         run: |
-          go install github.com/hashicorp/terraform@v1.14.0-rc1
+          git clone https://github.com/hashicorp/terraform.git
+          cd terraform
+          git checkout v1.14.0-rc1
+          go install
+          cd ..
           terraform version
       - run: go generate ./...
       - name: git diff
