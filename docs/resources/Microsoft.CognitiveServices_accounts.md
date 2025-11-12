@@ -2,12 +2,12 @@
 subcategory: "Microsoft.CognitiveServices - Cognitive Services"
 page_title: "accounts"
 description: |-
-  Manages a AI Services Account.
+  Manages a Cognitive Services Account.
 ---
 
-# Microsoft.CognitiveServices/accounts - AI Services Account
+# Microsoft.CognitiveServices/accounts - Cognitive Services Account
 
-This article demonstrates how to use `azapi` provider to manage the AI Services Account resource in Azure.
+This article demonstrates how to use `azapi` provider to manage the Cognitive Services Account resource in Azure.
 
 
 
