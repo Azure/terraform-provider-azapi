@@ -38,6 +38,48 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "oauth2_client_id" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Client ID for the connection."
+}
+
+variable "oauth2_client_secret" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Client Secret for the connection."
+}
+
+variable "oauth2_tenant_id" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Tenant ID for the connection."
+}
+
+variable "oauth2_developer_token" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Developer Token for the connection."
+}
+
+variable "oauth2_refresh_token" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Refresh Token for the connection."
+}
+
+variable "oauth2_username" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Username for the connection."
+}
+
+variable "oauth2_password" {
+  type        = string
+  sensitive   = true
+  description = "OAuth2 Password for the connection."
+}
+
 data "azapi_client_config" "current" {}
 
 resource "azapi_resource" "resourceGroup" {
@@ -59,15 +101,11 @@ resource "azapi_resource" "account" {
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
-
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azapi_resource.userAssignedIdentity.id]
+  }
   body = {
-    identity = {
-      type = "SystemAssigned, UserAssigned"
-      userAssignedIdentities = {
-        "${azapi_resource.userAssignedIdentity.id}" = {}
-      }
-    }
-
     kind = "AIServices"
     properties = {
       allowProjectManagement = true
@@ -180,7 +218,6 @@ resource "azapi_resource" "container" {
 
   schema_validation_enabled = false
   response_export_values    = ["*"]
-  depends_on                = [azapi_resource.storageAccount]
 }
 
 # Retrieving keys
@@ -252,7 +289,6 @@ resource "azapi_resource" "connection_apikey" {
   schema_validation_enabled = false
   ignore_casing             = false
   ignore_missing_property   = false
-  depends_on                = [azapi_resource.connection_aad]
 }
 
 resource "azapi_resource" "connection_customkeys" {
@@ -284,7 +320,6 @@ resource "azapi_resource" "connection_customkeys" {
   schema_validation_enabled = false
   ignore_casing             = false
   ignore_missing_property   = false
-  depends_on                = [azapi_resource.connection_apikey]
 }
 
 # This is example is based on having an external resource that uses OAuth2. 
@@ -308,14 +343,14 @@ resource "azapi_resource" "connection_oauth" {
       credentials = {
         # Not all fields are required.
         # Use the fields that are necessary in an actual use of the credentials, you don't need to use all of them, they are just placeholders for validation in this connection.
-        authUrl        = "https://login.microsoftonline.com/tenantplaceholder/oauth2/v2.0/token"
-        clientId       = "placeholderClientId"
-        clientSecret   = "placeHolderClientSecret"
-        tenantId       = "tenantId"
-        developerToken = "placeHolderDevToken"
-        refreshToken   = "placeRefreshToken"
-        username       = "placeHolderUsername"
-        password       = "placeHolderPassword"
+        authUrl        = "https://login.microsoftonline.com/${var.oauth2_tenant_id}/oauth2/v2.0/token"
+        clientId       = var.oauth2_client_id
+        clientSecret   = var.oauth2_client_secret
+        tenantId       = var.oauth2_tenant_id
+        developerToken = var.oauth2_developer_token
+        refreshToken   = var.oauth2_refresh_token
+        username       = var.oauth2_username
+        password       = var.oauth2_password
       }
     }
   }
