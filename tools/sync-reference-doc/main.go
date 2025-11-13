@@ -21,8 +21,12 @@
 //     e.g. .../microsoft.appplatform/samples/spring/apps/deployments/basic/main.tf
 //   - remarks.json location: written at the same level as the namespace's samples folder:
 //     <outDir>/<namespace_lower>/remarks.json
-//     Only the TerraformSamples array is updated; other top-level fields are preserved.
-//     If missing or unparsable, a new file is created with a default $schema value.
+//     Both TerraformSamples and ResourceRemarks arrays are updated; other top-level
+//     fields are preserved. If missing or unparsable, a new file is created with a
+//     default $schema value.
+//   - remarks.md handling: if a remarks.md file exists in a resource folder, its content
+//     is read and added to the ResourceRemarks array in remarks.json. This content appears
+//     as custom remarks in the documentation for that resource type.
 //   - Friendly names: if tools/generator-example-doc/resource_types.json is provided (or
 //     -resourceTypes path is specified), descriptions use human-friendly resource names.
 //     The mapping is case-insensitive on the resource type key.
@@ -67,7 +71,13 @@ type sampleInfo struct {
 
 type remarksDoc struct {
 	Schema           string            `json:"$schema"`
+	ResourceRemarks  []resourceRemark  `json:"ResourceRemarks,omitempty"`
 	TerraformSamples []terraformSample `json:"TerraformSamples"`
+}
+
+type resourceRemark struct {
+	Description   string   `json:"Description"`
+	ResourceTypes []string `json:"ResourceTypes"`
 }
 
 type terraformSample struct {
@@ -214,6 +224,9 @@ func main() {
 		}
 
 		var remarks []terraformSample
+		// Track remarks content by resource type to build ResourceRemarks
+		remarksContentByType := make(map[string]string)
+
 		for _, s := range list {
 			// Sample directory path is all type tokens nested, lower-cased
 			lowerTokens := make([]string, len(s.TypePathTokens))
@@ -242,12 +255,17 @@ func main() {
 				rel = append(rel, strings.ToLower(s.ScenarioName))
 			}
 			relPath := filepath.ToSlash(filepath.Join(append(rel, "main.tf")...))
-			desc := defaultDescription(resourceType, s.APIVersion, s.ScenarioName, s.RemarksContent)
+			desc := defaultDescription(resourceType, s.APIVersion, s.ScenarioName)
 			remarks = append(remarks, terraformSample{
 				ResourceType: resourceType,
 				Path:         relPath,
 				Description:  desc,
 			})
+
+			// Track remarks content for this resource type
+			if s.RemarksContent != "" {
+				remarksContentByType[strings.ToLower(resourceType)] = s.RemarksContent
+			}
 		}
 
 		// Sort remarks entries for stable output
@@ -258,10 +276,23 @@ func main() {
 			return remarks[i].ResourceType < remarks[j].ResourceType
 		})
 
+		// Build ResourceRemarks entries from remarks.md content
+		var resourceRemarks []resourceRemark
+		for resourceType, content := range remarksContentByType {
+			resourceRemarks = append(resourceRemarks, resourceRemark{
+				Description:   content,
+				ResourceTypes: []string{resourceType},
+			})
+		}
+		// Sort resource remarks for stable output
+		sort.Slice(resourceRemarks, func(i, j int) bool {
+			return resourceRemarks[i].ResourceTypes[0] < resourceRemarks[j].ResourceTypes[0]
+		})
+
 		// Write or merge remarks.json at the same level as the samples folder
 		remarksPath := filepath.Join(nsDir, "remarks.json")
-		log.Printf("write remarks: %s (entries=%d)", remarksPath, len(remarks))
-		if err := writeOrMergeRemarks(remarksPath, remarks); err != nil {
+		log.Printf("write remarks: %s (terraform_samples=%d resource_remarks=%d)", remarksPath, len(remarks), len(resourceRemarks))
+		if err := writeOrMergeRemarks(remarksPath, resourceRemarks, remarks); err != nil {
 			log.Fatalf("failed to write remarks.json for %s: %v", ns, err)
 		}
 	}
@@ -366,10 +397,10 @@ func writeJSON(path string, v any) error {
 }
 
 // writeOrMergeRemarks writes a remarks.json file at path. If a file already exists,
-// it preserves existing top-level fields and only updates the TerraformSamples array.
-// If the file doesn't exist or cannot be parsed, it creates a new document with the
-// default $schema value and the provided samples.
-func writeOrMergeRemarks(path string, samples []terraformSample) error {
+// it preserves existing top-level fields and only updates the ResourceRemarks and
+// TerraformSamples arrays. If the file doesn't exist or cannot be parsed, it creates
+// a new document with the default $schema value and the provided data.
+func writeOrMergeRemarks(path string, resourceRemarks []resourceRemark, samples []terraformSample) error {
 	var existing map[string]any
 	b, err := os.ReadFile(filepath.Clean(path))
 	if err == nil {
@@ -381,11 +412,15 @@ func writeOrMergeRemarks(path string, samples []terraformSample) error {
 		// Create a new document
 		doc := remarksDoc{
 			Schema:           "../../schemas/remarks.schema.json",
+			ResourceRemarks:  resourceRemarks,
 			TerraformSamples: samples,
 		}
 		return writeJSON(path, doc)
 	}
-	// Merge: set TerraformSamples, keep others as-is
+	// Merge: set ResourceRemarks and TerraformSamples, keep others as-is
+	if len(resourceRemarks) > 0 {
+		existing["ResourceRemarks"] = resourceRemarks
+	}
 	existing["TerraformSamples"] = samples
 	// Ensure $schema exists; if not, add default
 	if _, ok := existing["$schema"]; !ok {
@@ -434,7 +469,7 @@ func stripMarkdown(s string) string {
 	return s
 }
 
-func defaultDescription(resourceType, apiVersion, scenario, remarksContent string) string {
+func defaultDescription(resourceType, apiVersion, scenario string) string {
 	// Normalize a human-friendly scenario label
 	scen := strings.TrimSpace(strings.ToLower(scenario))
 	if strings.Contains(scen, "_") {
@@ -463,11 +498,6 @@ func defaultDescription(resourceType, apiVersion, scenario, remarksContent strin
 	}
 	if desc == "" {
 		desc = fmt.Sprintf("%s deploying %s (%s).", scenPrefix, resourceType, apiVersion)
-	}
-
-	// Append remarks content if it exists
-	if remarksContent != "" {
-		desc = desc + "\n\n" + remarksContent
 	}
 
 	return desc
