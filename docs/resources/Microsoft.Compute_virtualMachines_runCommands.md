@@ -38,6 +38,12 @@ variable "location" {
   default = "eastus"
 }
 
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator password for the virtual machine"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -145,7 +151,7 @@ resource "azapi_resource" "virtualMachine" {
         }]
       }
       osProfile = {
-        adminPassword            = "Pa-tn93e"
+        adminPassword            = var.admin_password
         adminUsername            = "adminuser"
         allowExtensionOperations = true
         computerName             = "${var.resource_name}-vm"

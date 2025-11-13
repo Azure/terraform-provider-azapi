@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator password for the virtual machine"
+}
+
 locals {
   sa_base   = substr(lower(join("", split("-", var.resource_name))), 0, 24)
   sa_name   = local.sa_base
@@ -271,7 +277,7 @@ resource "azapi_resource" "virtualMachine" {
         }]
       }
       osProfile = {
-        adminPassword = "Password123!@#"
+        adminPassword = var.admin_password
         adminUsername = "vmadmin"
         computerName  = local.comp_name
         linuxConfiguration = {

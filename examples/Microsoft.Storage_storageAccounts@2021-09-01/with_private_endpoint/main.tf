@@ -45,9 +45,9 @@ variable "vm_admin_username" {
 }
 
 variable "vm_admin_password" {
-  type      = string
-  default   = "P@$$w0rd1234!"
-  sensitive = true
+  type        = string
+  description = "The administrator password for the virtual machine"
+  sensitive   = true
 }
 
 resource "azurerm_resource_group" "example" {

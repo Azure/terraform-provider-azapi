@@ -21,9 +21,9 @@ variable "location" {
 }
 
 variable "qumulo_password" {
-  type      = string
-  default   = ")^X#ZX#JRyIY}t9"
-  sensitive = true
+  type        = string
+  description = "The administrative password for the Qumulo file system"
+  sensitive   = true
 }
 
 resource "azapi_resource" "resourceGroup" {

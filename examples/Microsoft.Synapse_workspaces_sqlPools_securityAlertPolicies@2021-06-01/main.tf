@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "sql_administrator_login_password" {
+  type        = string
+  sensitive   = true
+  description = "The SQL administrator login password for the Synapse workspace"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -103,7 +109,7 @@ resource "azapi_resource" "workspace" {
       managedVirtualNetwork            = ""
       publicNetworkAccess              = "Enabled"
       sqlAdministratorLogin            = "sqladminuser"
-      sqlAdministratorLoginPassword    = "H@Sh1CoR3!"
+      sqlAdministratorLoginPassword    = var.sql_administrator_login_password
       workspaceRepositoryConfiguration = {}
     }
   }

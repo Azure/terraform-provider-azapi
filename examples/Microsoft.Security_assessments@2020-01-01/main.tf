@@ -22,6 +22,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator password for the virtual machine scale set"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -143,7 +149,7 @@ resource "azapi_resource" "virtualMachineScaleSet" {
           }]
         }
         osProfile = {
-          adminPassword            = "P@ssword1234!"
+          adminPassword            = var.admin_password
           adminUsername            = "adminuser"
           allowExtensionOperations = true
           computerNamePrefix       = "${var.resource_name}-vmss"

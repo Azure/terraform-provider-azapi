@@ -27,6 +27,12 @@ variable "secondary_location" {
   default = "eastus"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator login password for the SQL server"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -41,7 +47,7 @@ resource "azapi_resource" "server" {
   body = {
     properties = {
       administratorLogin            = "mradministrator"
-      administratorLoginPassword    = "thisIsDog11"
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"
@@ -58,7 +64,7 @@ resource "azapi_resource" "server_1" {
   body = {
     properties = {
       administratorLogin            = "mradministrator"
-      administratorLoginPassword    = "thisIsDog11"
+      administratorLoginPassword    = var.administrator_login_password
       minimalTlsVersion             = "1.2"
       publicNetworkAccess           = "Enabled"
       restrictOutboundNetworkAccess = "Disabled"

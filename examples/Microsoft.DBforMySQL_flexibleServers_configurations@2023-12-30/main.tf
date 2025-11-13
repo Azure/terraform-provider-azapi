@@ -20,6 +20,12 @@ variable "location" {
   default = "westus"
 }
 
+variable "administrator_login_password" {
+  type        = string
+  sensitive   = true
+  description = "The administrator login password for the MySQL flexible server"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -34,7 +40,7 @@ resource "azapi_resource" "flexibleServer" {
   body = {
     properties = {
       administratorLogin         = "tfadmin"
-      administratorLoginPassword = "QAZwsx123!@#"
+      administratorLoginPassword = var.administrator_login_password
       backup = {
         backupRetentionDays = 7
         geoRedundantBackup  = "Disabled"

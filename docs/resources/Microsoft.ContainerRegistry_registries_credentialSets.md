@@ -40,6 +40,19 @@ variable "location" {
   default = "eastus"
 }
 
+variable "credential_username" {
+  type        = string
+  sensitive   = true
+  description = "The username for the container registry credential"
+  default     = "testuser"
+}
+
+variable "credential_password" {
+  type        = string
+  sensitive   = true
+  description = "The password for the container registry credential"
+}
+
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2020-06-01"
   name     = var.resource_name
@@ -116,7 +129,7 @@ resource "azapi_resource" "usernameSecret" {
   name      = "username"
   body = {
     properties = {
-      value = "testuser"
+      value = var.credential_username
     }
   }
 }
@@ -127,7 +140,7 @@ resource "azapi_resource" "passwordSecret" {
   name      = "password"
   body = {
     properties = {
-      value = "testpassword"
+      value = var.credential_password
     }
   }
 }
