@@ -38,4 +38,3 @@ management_group_resource_id(management_group_name string, resource_type string,
 1. `management_group_name` (String) The name of the management group.
 1. `resource_type` (String) The resource type of the Azure resource.
 1. `resource_names` (List of String) The list of resource names to construct the resource ID.
-

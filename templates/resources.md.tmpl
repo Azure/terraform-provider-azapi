@@ -18,3 +18,14 @@ description: |-
 {{ if .HasImport -}}## Import
 
 {{ codefile "shell" (printf .ImportFile) | trimspace | prefixlines " " }}{{ end }}
+{{ if .HasImportIDConfig -}}
+
+### Import using resource ID:
+
+{{ tffile (printf .ImportIDConfigFile) | trimspace | prefixlines " " }}{{ end }}
+
+{{ if .HasImportIdentityConfig -}}
+
+### Import using identity:
+
+{{ tffile (printf .ImportIdentityConfigFile) | trimspace | prefixlines " " }}{{ end }}

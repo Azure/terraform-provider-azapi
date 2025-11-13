@@ -121,6 +121,33 @@ func TestAccGenericResource_importWithApiVersion(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_importWithIdentity(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.basic(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		// All import cases in one step: tests all three scenarios
+		// 1a: ID with API version as query parameter
+		// 1b: ID without API version (parsed from resource path)
+		// 2: ID and Type both provided
+		{
+			Config: r.importWithIdentityAllCases(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				check.That("azapi_resource.import_id_with_api_version").ExistsInAzure(r),
+				check.That("azapi_resource.import_id_without_api_version").ExistsInAzure(r),
+				check.That("azapi_resource.import_id_and_type").ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_complete(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -1131,6 +1158,69 @@ resource "azapi_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString, testCertBase64)
+}
+
+func (r GenericResource) importWithIdentityAllCases(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+locals {
+  # Create ID with API version as query parameter for Case 1a
+  test_id_with_api_version = format("%%s?api-version=%%s",
+    azapi_resource.test.id,
+    split("@", azapi_resource.test.type)[1]
+  )
+}
+
+# Case 1a: Identity-based import with only ID (ID contains API version as query parameter)
+# This imports the existing test resource using ID with API version in query parameter
+import {
+  to = azapi_resource.import_id_with_api_version
+  identity = {
+    id = local.test_id_with_api_version
+  }
+}
+
+resource "azapi_resource" "import_id_with_api_version" {
+  type      = azapi_resource.test.type
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  body      = azapi_resource.test.body
+}
+
+# Case 1b: Identity-based import with only ID (ID does NOT contain API version)
+# This imports the existing test resource using plain ID
+import {
+  to = azapi_resource.import_id_without_api_version
+  identity = {
+    id = azapi_resource.test.id
+  }
+}
+
+resource "azapi_resource" "import_id_without_api_version" {
+  type      = azapi_resource.test.type
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  body      = azapi_resource.test.body
+}
+
+# Case 2: Identity-based import with both ID and Type
+# This imports the existing test resource using both ID and Type
+import {
+  to = azapi_resource.import_id_and_type
+  identity = {
+    id   = azapi_resource.test.id
+    type = azapi_resource.test.type
+  }
+}
+
+resource "azapi_resource" "import_id_and_type" {
+  type      = azapi_resource.test.type
+  name      = azapi_resource.test.name
+  parent_id = azapi_resource.test.parent_id
+  body      = azapi_resource.test.body
+}
+`, r.basic(data))
 }
 
 func (r GenericResource) complete(data acceptance.TestData) string {

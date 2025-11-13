@@ -38,4 +38,3 @@ extension_resource_id(base_resource_id string, resource_type string, resource_na
 1. `base_resource_id` (String) The base resource ID of the Azure resource.
 1. `resource_type` (String) The resource type of the Azure resource.
 1. `resource_names` (List of String) The list of resource names to construct the extension resource ID.
-

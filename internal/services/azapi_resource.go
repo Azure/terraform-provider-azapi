@@ -38,6 +38,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/identityschema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -82,6 +83,52 @@ type AzapiResourceModel struct {
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
+// AzapiResourceIdentityModel represents the identity data for importing a resource
+type AzapiResourceIdentityModel struct {
+	ID   types.String `tfsdk:"id"`
+	Type types.String `tfsdk:"type"`
+}
+
+func NewDefaultAzapiResourceModel() AzapiResourceModel {
+	return AzapiResourceModel{
+		ID:                            types.StringNull(),
+		Name:                          types.StringNull(),
+		ParentID:                      types.StringNull(),
+		Type:                          types.StringNull(),
+		Location:                      types.StringNull(),
+		Body:                          types.Dynamic{},
+		SensitiveBodyVersion:          types.MapNull(types.StringType),
+		Identity:                      types.ListNull(identity.Model{}.ModelType()),
+		IgnoreCasing:                  types.BoolValue(false),
+		IgnoreMissingProperty:         types.BoolValue(true),
+		IgnoreNullProperty:            types.BoolValue(false),
+		Locks:                         types.ListNull(types.StringType),
+		Output:                        types.DynamicNull(),
+		ReplaceTriggersExternalValues: types.DynamicNull(),
+		ReplaceTriggersRefs:           types.ListNull(types.StringType),
+		ResponseExportValues:          types.DynamicNull(),
+		Retry:                         retry.RetryValue{},
+		SchemaValidationEnabled:       types.BoolValue(true),
+		Tags:                          types.MapNull(types.StringType),
+		Timeouts: timeouts.Value{
+			Object: types.ObjectNull(map[string]attr.Type{
+				"create": types.StringType,
+				"update": types.StringType,
+				"read":   types.StringType,
+				"delete": types.StringType,
+			}),
+		},
+		CreateHeaders:         types.MapNull(types.StringType),
+		CreateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		UpdateHeaders:         types.MapNull(types.StringType),
+		UpdateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		DeleteHeaders:         types.MapNull(types.StringType),
+		DeleteQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		ReadHeaders:           types.MapNull(types.StringType),
+		ReadQueryParameters:   types.MapNull(types.ListType{ElemType: types.StringType}),
+	}
+}
+
 var _ resource.Resource = &AzapiResource{}
 var _ resource.ResourceWithConfigure = &AzapiResource{}
 var _ resource.ResourceWithModifyPlan = &AzapiResource{}
@@ -89,6 +136,7 @@ var _ resource.ResourceWithValidateConfig = &AzapiResource{}
 var _ resource.ResourceWithImportState = &AzapiResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiResource{}
 var _ resource.ResourceWithMoveState = &AzapiResource{}
+var _ resource.ResourceWithIdentity = &AzapiResource{}
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -398,6 +446,22 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 	}
 }
 
+func (r *AzapiResource) IdentitySchema(ctx context.Context, request resource.IdentitySchemaRequest, response *resource.IdentitySchemaResponse) {
+	response.IdentitySchema = identityschema.Schema{
+		Attributes: map[string]identityschema.Attribute{
+			"id": identityschema.StringAttribute{
+				RequiredForImport: true,
+				Description:       "The Azure resource ID",
+			},
+			"type": identityschema.StringAttribute{
+				OptionalForImport: true,
+				Description:       "The Azure resource type",
+			},
+		},
+		Version: 0,
+	}
+}
+
 func (r *AzapiResource) ValidateConfig(ctx context.Context, request resource.ValidateConfigRequest, response *resource.ValidateConfigResponse) {
 	var config *AzapiResourceModel
 	if response.Diagnostics.Append(request.Config.Get(ctx, &config)...); response.Diagnostics.HasError() {
@@ -643,6 +707,11 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 
 func (r *AzapiResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
 	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
+
+	var model *AzapiResourceModel
+	if response.Diagnostics.Append(response.State.Get(ctx, &model)...); !response.Diagnostics.HasError() && model != nil && !model.ID.IsNull() {
+		response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), model.ID)...)
+	}
 }
 
 func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
@@ -1034,6 +1103,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	}
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
+	response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), state.ID)...)
 }
 
 func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
@@ -1081,17 +1151,51 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 }
 
 func (r *AzapiResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
-	tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
+	var id parse.ResourceId
+	var err error
 
-	id, err := parse.ResourceID(request.ID)
-	if err != nil {
-		response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())
-		return
+	// Case 1: Traditional ID-based import using request.ID
+	if request.Identity == nil {
+		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
+		id, err = parse.ResourceID(request.ID)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", request.ID, err).Error())
+			return
+		}
+	} else {
+		// Identity-based import (from list resource protocol)
+		// Extract identity data using the model
+		var identityData AzapiResourceIdentityModel
+		diags := request.Identity.Get(ctx, &identityData)
+		response.Diagnostics.Append(diags...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+
+		resourceID := identityData.ID.ValueString()
+
+		// Case 2: Both id and type are set - extract API version from type
+		if identityData.Type.ValueString() != "" {
+			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity with type - parsing %q with type %q", resourceID, identityData.Type.ValueString()))
+			id, err = parse.ResourceIDWithResourceType(resourceID, identityData.Type.ValueString())
+			if err != nil {
+				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q with type %q: %+v", resourceID, identityData.Type.ValueString(), err).Error())
+				return
+			}
+		} else {
+			// Case 3: Only id is set - parse it to extract API version
+			tflog.Debug(ctx, fmt.Sprintf("Importing Resource from identity - parsing %q", resourceID))
+			id, err = parse.ResourceID(resourceID)
+			if err != nil {
+				response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q: %+v", resourceID, err).Error())
+				return
+			}
+		}
 	}
 
 	client := r.ProviderData.ResourceClient
 
-	state := r.defaultAzapiResourceModel()
+	state := NewDefaultAzapiResourceModel()
 	state.ID = types.StringValue(id.ID())
 	state.Name = types.StringValue(id.Name)
 	state.ParentID = types.StringValue(id.ParentId)
@@ -1141,6 +1245,12 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	state.Output = output
 
 	response.Diagnostics.Append(response.State.Set(ctx, state)...)
+
+	resourceIdentity := AzapiResourceIdentityModel{
+		ID:   types.StringValue(id.ID()),
+		Type: state.Type,
+	}
+	response.Diagnostics.Append(response.Identity.Set(ctx, resourceIdentity)...)
 }
 
 func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
@@ -1189,7 +1299,7 @@ func (r *AzapiResource) MoveState(ctx context.Context) []resource.StateMover {
 					return
 				}
 
-				state := r.defaultAzapiResourceModel()
+				state := NewDefaultAzapiResourceModel()
 				state.ID = types.StringValue(id.ID())
 				state.Name = types.StringValue(id.Name)
 				state.ParentID = types.StringValue(id.ParentId)
@@ -1360,46 +1470,6 @@ func (r *AzapiResource) locationWithDefaultLocation(configLocation types.String,
 
 	// 6. return null if all the above cases are null
 	return types.StringNull()
-}
-
-func (r *AzapiResource) defaultAzapiResourceModel() AzapiResourceModel {
-	return AzapiResourceModel{
-		ID:                            types.StringNull(),
-		Name:                          types.StringNull(),
-		ParentID:                      types.StringNull(),
-		Type:                          types.StringNull(),
-		Location:                      types.StringNull(),
-		Body:                          types.Dynamic{},
-		SensitiveBodyVersion:          types.MapNull(types.StringType),
-		Identity:                      types.ListNull(identity.Model{}.ModelType()),
-		IgnoreCasing:                  types.BoolValue(false),
-		IgnoreMissingProperty:         types.BoolValue(true),
-		IgnoreNullProperty:            types.BoolValue(false),
-		Locks:                         types.ListNull(types.StringType),
-		Output:                        types.DynamicNull(),
-		ReplaceTriggersExternalValues: types.DynamicNull(),
-		ReplaceTriggersRefs:           types.ListNull(types.StringType),
-		ResponseExportValues:          types.DynamicNull(),
-		Retry:                         retry.RetryValue{},
-		SchemaValidationEnabled:       types.BoolValue(true),
-		Tags:                          types.MapNull(types.StringType),
-		Timeouts: timeouts.Value{
-			Object: types.ObjectNull(map[string]attr.Type{
-				"create": types.StringType,
-				"update": types.StringType,
-				"read":   types.StringType,
-				"delete": types.StringType,
-			}),
-		},
-		CreateHeaders:         types.MapNull(types.StringType),
-		CreateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
-		UpdateHeaders:         types.MapNull(types.StringType),
-		UpdateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
-		DeleteHeaders:         types.MapNull(types.StringType),
-		DeleteQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
-		ReadHeaders:           types.MapNull(types.StringType),
-		ReadQueryParameters:   types.MapNull(types.ListType{ElemType: types.StringType}),
-	}
 }
 
 func expandBody(body map[string]interface{}, model AzapiResourceModel) diag.Diagnostics {
