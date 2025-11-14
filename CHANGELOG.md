@@ -2,6 +2,7 @@
 
 FEATURES:
 - **New Provider Function**: snake2camel
+- **New Action**: `azapi_resource_action` - Perform stateless actions on Azure resources that can be invoked via Terraform action triggers
 
 ENHANCEMENTS:
 - `azapi_resource` resource: Add support for identity-based import, enabling import via resource ID and type from list resource protocol.
