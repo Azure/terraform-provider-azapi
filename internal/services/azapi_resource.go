@@ -1155,7 +1155,7 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 	var err error
 
 	// Case 1: Traditional ID-based import using request.ID
-	if request.Identity == nil {
+	if request.Identity == nil || request.Identity.Raw.IsNull() {
 		tflog.Debug(ctx, fmt.Sprintf("Importing Resource - parsing %q", request.ID))
 		id, err = parse.ResourceID(request.ID)
 		if err != nil {
