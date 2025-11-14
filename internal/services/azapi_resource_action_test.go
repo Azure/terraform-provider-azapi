@@ -49,7 +49,7 @@ func TestAccAzapiResourceActionAction_withQueryParameters(t *testing.T) {
 
 	data.DataSourceTest(t, []resource.TestStep{
 		{
-			Config: r.withQueryParameters(data),
+			Config: r.withQueryParameters(),
 			ConfigStateChecks: []statecheck.StateCheck{
 				statecheck.ExpectKnownValue(
 					"terraform_data.trigger",
@@ -184,8 +184,8 @@ resource "terraform_data" "trigger" {
 `, data.RandomString)
 }
 
-func (r AzapiResourceActionActionTest) withQueryParameters(data acceptance.TestData) string {
-	return fmt.Sprintf(`
+func (r AzapiResourceActionActionTest) withQueryParameters() string {
+	return `
 data "azapi_client_config" "current" {}
 
 action "azapi_resource_action" "test" {
@@ -209,7 +209,7 @@ resource "terraform_data" "trigger" {
     }
   }
 }
-`)
+`
 }
 
 func (r AzapiResourceActionActionTest) registerResourceProvider() string {
