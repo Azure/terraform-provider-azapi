@@ -1,0 +1,4847 @@
+[
+  {
+    "$type": "StringType",
+    "maxLength": 128
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "Properties of the web application firewall policy."
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets a unique read-only string that changes whenever the resource is updated."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/155"
+        },
+        "flags": 0,
+        "description": "The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/160"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WebApplicationFirewallPolicyProperties",
+    "properties": {
+      "policySettings": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "Describes settings for the policy."
+      },
+      "customRules": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "Describes custom rules inside the policy."
+      },
+      "managedRules": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 0,
+        "description": "Describes managed rules inside the policy."
+      },
+      "frontendEndpointLinks": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 2,
+        "description": "Describes Frontend Endpoints associated with this Web Application Firewall policy."
+      },
+      "routingRuleLinks": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 2,
+        "description": "Describes Routing Rules associated with this Web Application Firewall policy."
+      },
+      "securityPolicyLinks": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 2,
+        "description": "Describes Security Policy associated with this Web Application Firewall policy."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the policy."
+      },
+      "resourceState": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 2,
+        "description": "Resource status of the policy."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PolicySettings",
+    "properties": {
+      "enabledState": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified."
+      },
+      "mode": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "Describes if it is in detection mode or prevention mode at policy level."
+      },
+      "redirectUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If action type is redirect, this field represents redirect URL for the client."
+      },
+      "customBlockResponseStatusCode": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "If the action type is block, customer can override the response status code."
+      },
+      "customBlockResponseBody": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "If the action type is block, customer can override the response body. The body must be specified in base64 encoding."
+      },
+      "requestBodyCheck": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Describes if policy managed rules will inspect the request body content."
+      },
+      "javascriptChallengeExpirationInMinutes": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between 5 and 1440 with the default value being 30."
+      },
+      "captchaExpirationInMinutes": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Defines the Captcha cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between 5 and 1440 with the default value being 30."
+      },
+      "logScrubbing": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Defines rules that scrub sensitive fields in the Web Application Firewall logs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Prevention"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detection"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 5,
+    "maxValue": 1440
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PolicySettingsLogScrubbing",
+    "properties": {
+      "state": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "State of the log scrubbing config. Default value is Enabled."
+      },
+      "scrubbingRules": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "List of log scrubbing rules applied to the Web Application Firewall logs."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WebApplicationFirewallScrubbingRules",
+    "properties": {
+      "matchVariable": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 1,
+        "description": "The variable to be scrubbed from the logs."
+      },
+      "selectorMatchOperator": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 1,
+        "description": "When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to."
+      },
+      "selector": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/37"
+        },
+        "flags": 0,
+        "description": "Defines the state of a log scrubbing rule. Default value is enabled."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestIPAddress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestUri"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QueryStringArgNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestHeaderNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestCookieNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBodyPostArgNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBodyJsonArgNames"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EqualsAny"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/23"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomRuleList",
+    "properties": {
+      "rules": {
+        "type": {
+          "$ref": "#/99"
+        },
+        "flags": 0,
+        "description": "List of rules"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomRule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Describes the name of the rule."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified."
+      },
+      "ruleType": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Describes type of rule."
+      },
+      "rateLimitDurationInMinutes": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "Time window for resetting the rate limit count. Default is 1 minute."
+      },
+      "rateLimitThreshold": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0,
+        "description": "Number of allowed requests per client within the time window."
+      },
+      "groupBy": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 0,
+        "description": "Describes the list of variables to group the rate limit requests"
+      },
+      "matchConditions": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "List of match conditions."
+      },
+      "action": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "Describes what action to be applied when rule matches."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MatchRule"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RateLimitRule"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 5
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GroupByVariable",
+    "properties": {
+      "variableName": {
+        "type": {
+          "$ref": "#/53"
+        },
+        "flags": 1,
+        "description": "Describes the supported variable for group by"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SocketAddr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoLocation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/49"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MatchCondition",
+    "properties": {
+      "matchVariable": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Request variable to compare with."
+      },
+      "selector": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Match against a specific key from the QueryString, PostArgs, RequestHeader or Cookies variables. Default is null."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "Comparison type to use for matching with the variable value."
+      },
+      "negateCondition": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Describes if the result of this condition should be negated."
+      },
+      "matchValue": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 1,
+        "description": "List of possible match values."
+      },
+      "transforms": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "List of transforms."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoteAddr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestMethod"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QueryString"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PostArgs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestUri"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestHeader"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBody"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cookies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SocketAddr"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Any"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BeginsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EndsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RegEx"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServiceTagMatch"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Lowercase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uppercase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Trim"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UrlDecode"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UrlEncode"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoveNulls"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/88"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/55"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Block"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Redirect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AnomalyScoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JSChallenge"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CAPTCHA"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/40"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuleSetList",
+    "properties": {
+      "managedRuleSets": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 0,
+        "description": "List of rule sets."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuleSet",
+    "properties": {
+      "ruleSetType": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Defines the rule set type to use."
+      },
+      "ruleSetVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Defines the version of the rule set to use."
+      },
+      "ruleSetAction": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "Defines the rule set action."
+      },
+      "exclusions": {
+        "type": {
+          "$ref": "#/119"
+        },
+        "flags": 0,
+        "description": "Describes the exclusions that are applied to all rules in the set."
+      },
+      "ruleGroupOverrides": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Defines the rule group overrides to apply to the rule set."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Block"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Redirect"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuleExclusion",
+    "properties": {
+      "matchVariable": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 1,
+        "description": "The variable type to be excluded."
+      },
+      "selectorMatchOperator": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 1,
+        "description": "Comparison operator to apply to the selector when specifying which elements in the collection this exclusion applies to."
+      },
+      "selector": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Selector value for which elements in the collection this exclusion applies to."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestHeaderNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestCookieNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QueryStringArgNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBodyPostArgNames"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBodyJsonArgNames"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/110"
+      },
+      {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equals"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StartsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EndsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EqualsAny"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuleGroupOverride",
+    "properties": {
+      "ruleGroupName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Describes the managed rule group to override."
+      },
+      "exclusions": {
+        "type": {
+          "$ref": "#/121"
+        },
+        "flags": 0,
+        "description": "Describes the exclusions that are applied to all rules in the group."
+      },
+      "rules": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "List of rules that will be disabled. If none specified, all rules in the group will be disabled."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedRuleOverride",
+    "properties": {
+      "ruleId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Identifier for the managed rule."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified."
+      },
+      "action": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 0,
+        "description": "Describes the override action to be applied when rule matches."
+      },
+      "sensitivity": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 0,
+        "description": "Describes the override sensitivity to be applied when rule matches."
+      },
+      "exclusions": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 0,
+        "description": "Describes the exclusions that are applied to this specific rule."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/123"
+      },
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Allow"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Block"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Log"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Redirect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AnomalyScoring"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "JSChallenge"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CAPTCHA"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Low"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Medium"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "High"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/106"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/122"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/120"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/101"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontendEndpointLink",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/142"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoutingRuleLink",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/144"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SecurityPolicyLink",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/146"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/150"
+      },
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 0,
+        "description": "Name of the pricing tier."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Classic_AzureFrontDoor"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard_AzureFrontDoor"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium_AzureFrontDoor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 5,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/frontDoors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/frontDoors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/163"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "Properties of the Front Door Load Balancer"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/402"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontDoorProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 2,
+        "description": "Resource status of the Front Door."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Provisioning state of the Front Door."
+      },
+      "cname": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The host that each frontendEndpoint must CNAME to."
+      },
+      "frontdoorId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Id of the frontdoor."
+      },
+      "rulesEngines": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 2,
+        "description": "Rules Engine Configurations available to routing rules."
+      },
+      "extendedProperties": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 2,
+        "description": "Key-Value pair representing additional properties for frontdoor."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A friendly name for the frontDoor"
+      },
+      "routingRules": {
+        "type": {
+          "$ref": "#/287"
+        },
+        "flags": 0,
+        "description": "Routing rules associated with this Front Door."
+      },
+      "loadBalancingSettings": {
+        "type": {
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Load balancing settings associated with this Front Door instance."
+      },
+      "healthProbeSettings": {
+        "type": {
+          "$ref": "#/320"
+        },
+        "flags": 0,
+        "description": "Health probe settings associated with this Front Door instance."
+      },
+      "backendPools": {
+        "type": {
+          "$ref": "#/346"
+        },
+        "flags": 0,
+        "description": "Backend pools available to routing rules."
+      },
+      "frontendEndpoints": {
+        "type": {
+          "$ref": "#/393"
+        },
+        "flags": 0,
+        "description": "Frontend endpoints available to routing rules."
+      },
+      "backendPoolsSettings": {
+        "type": {
+          "$ref": "#/394"
+        },
+        "flags": 0,
+        "description": "Settings for all backendPools"
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/401"
+        },
+        "flags": 0,
+        "description": "Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RulesEngine",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Properties of the Rules Engine Configuration."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RulesEngineProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/186"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "rules": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "A list of rules that define a particular Rules Engine Configuration."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/180"
+      },
+      {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RulesEngineRule",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "A name to refer to this specific rule."
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "A priority assigned to this rule."
+      },
+      "action": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 1,
+        "description": "Actions to perform on the request and response if all of the match conditions are met."
+      },
+      "matchConditions": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 0,
+        "description": "A list of match conditions that must meet in order for the actions of this rule to run. Having no match conditions means the actions will always run."
+      },
+      "matchProcessingBehavior": {
+        "type": {
+          "$ref": "#/262"
+        },
+        "flags": 0,
+        "description": "If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RulesEngineAction",
+    "properties": {
+      "requestHeaderActions": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "A list of header actions to apply from the request from AFD to the origin."
+      },
+      "responseHeaderActions": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "A list of header actions to apply from the response from AFD to the client."
+      },
+      "routeConfigurationOverride": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "Override the route configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HeaderAction",
+    "properties": {
+      "headerActionType": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 1,
+        "description": "Which type of manipulation to apply to the header."
+      },
+      "headerName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the header this action will apply to."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value to update the given header name with. This value is not used if the actionType is Delete."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Append"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Overwrite"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/189"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/189"
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RouteConfiguration",
+    "discriminator": "@odata.type",
+    "baseProperties": {},
+    "elements": {
+      "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration": {
+        "$ref": "#/197"
+      },
+      "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration": {
+        "$ref": "#/213"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ForwardingConfiguration",
+    "properties": {
+      "customForwardingPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path."
+      },
+      "forwardingProtocol": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 0,
+        "description": "Protocol this rule will use when forwarding traffic to backends."
+      },
+      "cacheConfiguration": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 0,
+        "description": "The caching configuration associated with this rule."
+      },
+      "backendPool": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "A reference to the BackendPool which this rule routes to."
+      },
+      "@odata.type": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HttpOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HttpsOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MatchRequest"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CacheConfiguration",
+    "properties": {
+      "queryParameterStripDirective": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "Treatment of URL query terms when forming the cache key."
+      },
+      "queryParameters": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "query parameters to include or exclude (comma separated)."
+      },
+      "dynamicCompression": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 0,
+        "description": "Whether to use dynamic compression for cached content"
+      },
+      "cacheDuration": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The duration for which the content needs to be cached. Allowed format is in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations). HTTP requires the value to be no more than a year"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StripNone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StripAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StripOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "StripAllExcept"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RedirectConfiguration",
+    "properties": {
+      "redirectType": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 0,
+        "description": "The redirect type the rule will use when redirecting traffic."
+      },
+      "redirectProtocol": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 0,
+        "description": "The protocol of the destination to where the traffic is redirected"
+      },
+      "customHost": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Host to redirect. Leave empty to use the incoming host as the destination host."
+      },
+      "customPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path."
+      },
+      "customFragment": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #."
+      },
+      "customQueryString": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The first ? and & will be added automatically so do not include them in the front, but do separate multiple query strings with &."
+      },
+      "@odata.type": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 1
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Moved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Found"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TemporaryRedirect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PermanentRedirect"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/216"
+      },
+      {
+        "$ref": "#/217"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HttpOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HttpsOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MatchRequest"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/219"
+      },
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RulesEngineMatchCondition",
+    "properties": {
+      "rulesEngineMatchVariable": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 1,
+        "description": "Match Variable"
+      },
+      "selector": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of selector in RequestHeader or RequestBody to be matched"
+      },
+      "rulesEngineOperator": {
+        "type": {
+          "$ref": "#/249"
+        },
+        "flags": 1,
+        "description": "Describes operator to apply to the match condition."
+      },
+      "negateCondition": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "Describes if this is negate condition or not"
+      },
+      "rulesEngineMatchValue": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 1,
+        "description": "Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match."
+      },
+      "transforms": {
+        "type": {
+          "$ref": "#/258"
+        },
+        "flags": 0,
+        "description": "List of transforms"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IsMobile"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoteAddr"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestMethod"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QueryString"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PostArgs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestUri"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestPath"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestFilename"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestFilenameExtension"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestHeader"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestBody"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RequestScheme"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/229"
+      },
+      {
+        "$ref": "#/230"
+      },
+      {
+        "$ref": "#/231"
+      },
+      {
+        "$ref": "#/232"
+      },
+      {
+        "$ref": "#/233"
+      },
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Any"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IPMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoMatch"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equal"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Contains"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThan"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LessThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GreaterThanOrEqual"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BeginsWith"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EndsWith"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/242"
+      },
+      {
+        "$ref": "#/243"
+      },
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Lowercase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Uppercase"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Trim"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UrlDecode"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UrlEncode"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RemoveNulls"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/256"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/257"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/224"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Continue"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stop"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/187"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/176"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontDoorPropertiesExtendedProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoutingRule",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 0,
+        "description": "Properties of the Front Door Routing Rule"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoutingRuleProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/276"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "frontendEndpoints": {
+        "type": {
+          "$ref": "#/277"
+        },
+        "flags": 0,
+        "description": "Frontend endpoints associated with this rule"
+      },
+      "acceptedProtocols": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 0,
+        "description": "Protocol schemes to match for this rule"
+      },
+      "patternsToMatch": {
+        "type": {
+          "$ref": "#/282"
+        },
+        "flags": 0,
+        "description": "The route patterns of the rule."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/285"
+        },
+        "flags": 0,
+        "description": "Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'"
+      },
+      "routeConfiguration": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 0,
+        "description": "A reference to the routing configuration."
+      },
+      "rulesEngine": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "A reference to a specific Rules Engine Configuration to apply to this route."
+      },
+      "webApplicationFirewallPolicyLink": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "Defines the Web Application Firewall policy for each routing rule (if applicable)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/268"
+      },
+      {
+        "$ref": "#/269"
+      },
+      {
+        "$ref": "#/270"
+      },
+      {
+        "$ref": "#/271"
+      },
+      {
+        "$ref": "#/272"
+      },
+      {
+        "$ref": "#/273"
+      },
+      {
+        "$ref": "#/274"
+      },
+      {
+        "$ref": "#/275"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Https"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/280"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/283"
+      },
+      {
+        "$ref": "#/284"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/266"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancingSettingsModel",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 0,
+        "description": "Properties of the load balancing settings"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LoadBalancingSettingsProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "sampleSize": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The number of samples to consider for load balancing decisions"
+      },
+      "successfulSamplesRequired": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The number of samples within the sample period that must succeed"
+      },
+      "additionalLatencyMilliseconds": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The additional latency in milliseconds for probes to fall into the lowest latency bucket"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/290"
+      },
+      {
+        "$ref": "#/291"
+      },
+      {
+        "$ref": "#/292"
+      },
+      {
+        "$ref": "#/293"
+      },
+      {
+        "$ref": "#/294"
+      },
+      {
+        "$ref": "#/295"
+      },
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/288"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HealthProbeSettingsModel",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/301"
+        },
+        "flags": 0,
+        "description": "Properties of the health probe settings"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HealthProbeSettingsProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The path to use for the health probe. Default is /"
+      },
+      "protocol": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 0,
+        "description": "Protocol scheme to use for this probe"
+      },
+      "intervalInSeconds": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The number of seconds between health probes."
+      },
+      "healthProbeMethod": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 0,
+        "description": "Configures which HTTP method to use to probe the backends defined under backendPools."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/319"
+        },
+        "flags": 0,
+        "description": "Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend pool."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/304"
+      },
+      {
+        "$ref": "#/305"
+      },
+      {
+        "$ref": "#/306"
+      },
+      {
+        "$ref": "#/307"
+      },
+      {
+        "$ref": "#/308"
+      },
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Http"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Https"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/312"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GET"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HEAD"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/314"
+      },
+      {
+        "$ref": "#/315"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/300"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackendPool",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/322"
+        },
+        "flags": 0,
+        "description": "Properties of the Front Door Backend Pool"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackendPoolProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "backends": {
+        "type": {
+          "$ref": "#/345"
+        },
+        "flags": 0,
+        "description": "The set of backends for this pool"
+      },
+      "loadBalancingSettings": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "Load balancing settings for a backend pool"
+      },
+      "healthProbeSettings": {
+        "type": {
+          "$ref": "#/211"
+        },
+        "flags": 0,
+        "description": "L7 health probe settings for a backend pool"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/323"
+      },
+      {
+        "$ref": "#/324"
+      },
+      {
+        "$ref": "#/325"
+      },
+      {
+        "$ref": "#/326"
+      },
+      {
+        "$ref": "#/327"
+      },
+      {
+        "$ref": "#/328"
+      },
+      {
+        "$ref": "#/329"
+      },
+      {
+        "$ref": "#/330"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Backend",
+    "properties": {
+      "address": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Location of the backend (IP address or FQDN)"
+      },
+      "privateLinkAlias": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Alias of the Private Link resource. Populating this optional field indicates that this backend is 'Private'"
+      },
+      "privateLinkResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'"
+      },
+      "privateLinkLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated"
+      },
+      "privateEndpointStatus": {
+        "type": {
+          "$ref": "#/338"
+        },
+        "flags": 2,
+        "description": "The Approval status for the connection to the Private Link"
+      },
+      "privateLinkApprovalMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A custom message to be included in the approval request to connect to the Private Link"
+      },
+      "httpPort": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 0,
+        "description": "The HTTP TCP port number. Must be between 1 and 65535."
+      },
+      "httpsPort": {
+        "type": {
+          "$ref": "#/339"
+        },
+        "flags": 0,
+        "description": "The HTTPS TCP port number. Must be between 1 and 65535."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/342"
+        },
+        "flags": 0,
+        "description": "Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'"
+      },
+      "priority": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 0,
+        "description": "Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend is healthy."
+      },
+      "weight": {
+        "type": {
+          "$ref": "#/344"
+        },
+        "flags": 0,
+        "description": "Weight of this endpoint for load balancing purposes."
+      },
+      "backendHostHeader": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming host."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Timeout"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/333"
+      },
+      {
+        "$ref": "#/334"
+      },
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 65535
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/340"
+      },
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 5
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 1,
+    "maxValue": 1000
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/332"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/321"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontendEndpoint",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 0,
+        "description": "Properties of the Frontend endpoint"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource name."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource type."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontendEndpointProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/357"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "customHttpsProvisioningState": {
+        "type": {
+          "$ref": "#/363"
+        },
+        "flags": 2,
+        "description": "Provisioning status of Custom Https of the frontendEndpoint."
+      },
+      "customHttpsProvisioningSubstate": {
+        "type": {
+          "$ref": "#/374"
+        },
+        "flags": 2,
+        "description": "Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step."
+      },
+      "customHttpsConfiguration": {
+        "type": {
+          "$ref": "#/375"
+        },
+        "flags": 2,
+        "description": "The configuration specifying how to enable HTTPS"
+      },
+      "hostName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The host name of the frontendEndpoint. Must be a domain name."
+      },
+      "sessionAffinityEnabledState": {
+        "type": {
+          "$ref": "#/391"
+        },
+        "flags": 0,
+        "description": "Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'"
+      },
+      "sessionAffinityTtlSeconds": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "UNUSED. This field will be ignored. The TTL to use in seconds for session affinity, if applicable."
+      },
+      "webApplicationFirewallPolicyLink": {
+        "type": {
+          "$ref": "#/392"
+        },
+        "flags": 0,
+        "description": "Defines the Web Application Firewall policy for each host (if applicable)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Migrated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/350"
+      },
+      {
+        "$ref": "#/351"
+      },
+      {
+        "$ref": "#/352"
+      },
+      {
+        "$ref": "#/353"
+      },
+      {
+        "$ref": "#/354"
+      },
+      {
+        "$ref": "#/355"
+      },
+      {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SubmittingDomainControlValidationRequest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PendingDomainControlValidationREquestApproval"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainControlValidationRequestApproved"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainControlValidationRequestRejected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DomainControlValidationRequestTimedOut"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IssuingCertificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeployingCertificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CertificateDeployed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeletingCertificate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CertificateDeleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/364"
+      },
+      {
+        "$ref": "#/365"
+      },
+      {
+        "$ref": "#/366"
+      },
+      {
+        "$ref": "#/367"
+      },
+      {
+        "$ref": "#/368"
+      },
+      {
+        "$ref": "#/369"
+      },
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CustomHttpsConfiguration",
+    "properties": {
+      "certificateSource": {
+        "type": {
+          "$ref": "#/378"
+        },
+        "flags": 1,
+        "description": "Defines the source of the SSL certificate"
+      },
+      "protocolType": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 1,
+        "description": "Defines the TLS extension protocol that is used for secure delivery"
+      },
+      "minimumTlsVersion": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 1,
+        "description": "The minimum TLS version required from the clients to establish an SSL handshake with Front Door."
+      },
+      "keyVaultCertificateSourceParameters": {
+        "type": {
+          "$ref": "#/384"
+        },
+        "flags": 0,
+        "description": "KeyVault certificate source parameters (if certificateSource=AzureKeyVault)"
+      },
+      "frontDoorCertificateSourceParameters": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 0,
+        "description": "Parameters required for enabling SSL with Front Door-managed certificates (if certificateSource=FrontDoor)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AzureKeyVault"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FrontDoor"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/376"
+      },
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerNameIndication"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/379"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "1.0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "1.2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultCertificateSourceParameters",
+    "properties": {
+      "vault": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 0,
+        "description": "The Key Vault containing the SSL certificate"
+      },
+      "secretName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the Key Vault secret representing the full certificate PFX"
+      },
+      "secretVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the Key Vault secret representing the full certificate PFX"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "KeyVaultCertificateSourceParametersVault",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontDoorCertificateSourceParameters",
+    "properties": {
+      "certificateType": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 0,
+        "description": "Defines the type of the certificate used for secure connections to a frontendEndpoint"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dedicated"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/387"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/389"
+      },
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/347"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BackendPoolsSettings",
+    "properties": {
+      "enforceCertificateNameCheck": {
+        "type": {
+          "$ref": "#/397"
+        },
+        "flags": 0,
+        "description": "Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests."
+      },
+      "sendRecvTimeoutSeconds": {
+        "type": {
+          "$ref": "#/398"
+        },
+        "flags": 0,
+        "description": "Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and returns."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/395"
+      },
+      {
+        "$ref": "#/396"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 16
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/399"
+      },
+      {
+        "$ref": "#/400"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/frontDoors@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/165"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90,
+    "pattern": "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/frontDoors/rulesEngines"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/frontDoors/rulesEngines",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/405"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/406"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Properties of the Rules Engine Configuration."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/frontDoors/rulesEngines@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/407"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9_\\-\\(\\)\\.]*[^\\.]$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/NetworkExperimentProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/NetworkExperimentProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/410"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/411"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/413"
+        },
+        "flags": 0,
+        "description": "The properties of a Profile"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets a unique read-only string that changes whenever the resource is updated."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/424"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProfileProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/420"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/423"
+        },
+        "flags": 0,
+        "description": "The state of the Experiment"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/414"
+      },
+      {
+        "$ref": "#/415"
+      },
+      {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
+        "$ref": "#/418"
+      },
+      {
+        "$ref": "#/419"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/421"
+      },
+      {
+        "$ref": "#/422"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/NetworkExperimentProfiles@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/412"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/NetworkExperimentProfiles/Experiments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/NetworkExperimentProfiles/Experiments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/409"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/426"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/427"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/429"
+        },
+        "flags": 0,
+        "description": "The properties of an Experiment"
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/441"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExperimentProperties",
+    "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The description of the details or intents of the Experiment"
+      },
+      "endpointA": {
+        "type": {
+          "$ref": "#/430"
+        },
+        "flags": 0,
+        "description": "The endpoint A of an experiment"
+      },
+      "endpointB": {
+        "type": {
+          "$ref": "#/430"
+        },
+        "flags": 0,
+        "description": "The endpoint B of an experiment"
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/433"
+        },
+        "flags": 0,
+        "description": "The state of the Experiment"
+      },
+      "resourceState": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The description of Experiment status from the server side"
+      },
+      "scriptFileUri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The uri to the Script used in the Experiment"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Endpoint",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the endpoint"
+      },
+      "endpoint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The endpoint URL"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/434"
+      },
+      {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/436"
+      },
+      {
+        "$ref": "#/437"
+      },
+      {
+        "$ref": "#/438"
+      },
+      {
+        "$ref": "#/439"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/NetworkExperimentProfiles/Experiments@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/428"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255,
+    "pattern": "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/frontDoors/frontendEndpoints"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/frontDoors/frontendEndpoints",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/443"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/444"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/445"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/348"
+        },
+        "flags": 2,
+        "description": "Properties of the Frontend endpoint"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/frontDoors/frontendEndpoints@2025-10-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/446"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValidateCustomDomainInput",
+    "properties": {
+      "hostName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The host name of the custom domain. Must be a domain name."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ValidateCustomDomainOutput",
+    "properties": {
+      "customDomainValidated": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 2,
+        "description": "Indicates whether the custom domain is valid or not."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The reason why the custom domain is not valid."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Error message describing why the custom domain is not valid."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "validateCustomDomain",
+    "resourceType": "Microsoft.Network/frontDoors",
+    "apiVersion": "2025-10-01",
+    "output": {
+      "$ref": "#/449"
+    },
+    "input": {
+      "$ref": "#/448"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PurgeParameters",
+    "properties": {
+      "contentPaths": {
+        "type": {
+          "$ref": "#/452"
+        },
+        "flags": 1,
+        "description": "The path to the content to be purged. Can describe a file path or a wild card directory."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "purge",
+    "resourceType": "Microsoft.Network/frontDoors",
+    "apiVersion": "2025-10-01",
+    "input": {
+      "$ref": "#/451"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "enableHttps",
+    "resourceType": "Microsoft.Network/frontDoors/frontendEndpoints",
+    "apiVersion": "2025-10-01",
+    "input": {
+      "$ref": "#/375"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "disableHttps",
+    "resourceType": "Microsoft.Network/frontDoors/frontendEndpoints",
+    "apiVersion": "2025-10-01"
+  }
+]

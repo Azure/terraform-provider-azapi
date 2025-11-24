@@ -55,6 +55,13 @@
         },
         "flags": 0,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -649,6 +656,126 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
+      },
+      {
+        "$ref": "#/69"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Consumption/budgets@2024-08-01",
     "scopeType": 0,
@@ -682,28 +809,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/72"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/73"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/74"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/76"
         },
         "flags": 2,
         "description": "price sheet result. It contains the pricesheet associated with billing period"
@@ -713,14 +840,21 @@
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "The etag for the resource."
+        "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
       },
       "tags": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/82"
         },
         "flags": 2,
         "description": "Resource tags."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -730,7 +864,7 @@
     "properties": {
       "pricesheets": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/81"
         },
         "flags": 2,
         "description": "Price sheet"
@@ -744,7 +878,7 @@
       },
       "download": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/79"
         },
         "flags": 2,
         "description": "Pricesheet download details."
@@ -764,14 +898,14 @@
       },
       "meterId": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/78"
         },
         "flags": 2,
         "description": "The meter id (GUID)"
       },
       "meterDetails": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/79"
         },
         "flags": 2,
         "description": "The details about the meter. By default this is not populated, unless it's specified in $expand."
@@ -820,7 +954,7 @@
       },
       "savingsPlan": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/80"
         },
         "flags": 2,
         "description": "SavingsPlan Details"
@@ -932,12 +1066,12 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/66"
+      "$ref": "#/77"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "PriceSheetResultTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -948,7 +1082,7 @@
     "name": "Microsoft.Consumption/pricesheets@2024-08-01",
     "scopeType": 20,
     "body": {
-      "$ref": "#/64"
+      "$ref": "#/75"
     },
     "flags": 1
   },
@@ -977,28 +1111,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/84"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/85"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/86"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/88"
         },
         "flags": 2,
         "description": "The properties of the credit summary."
@@ -1009,6 +1143,20 @@
         },
         "flags": 2,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 2,
+        "description": "A list of Tag."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1018,28 +1166,28 @@
     "properties": {
       "balanceSummary": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/89"
         },
         "flags": 2,
         "description": "Summary of balances associated with this credit summary."
       },
       "pendingCreditAdjustments": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Pending credit adjustments."
       },
       "expiredCredit": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Expired credit."
       },
       "pendingEligibleCharges": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Pending eligible charges."
@@ -1060,7 +1208,7 @@
       },
       "reseller": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/92"
         },
         "flags": 2,
         "description": "Credit's reseller."
@@ -1087,21 +1235,21 @@
     "properties": {
       "estimatedBalance": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Estimated balance."
       },
       "currentBalance": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/90"
         },
         "flags": 2,
         "description": "Current balance."
       },
       "estimatedBalanceInBillingCurrency": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/91"
         },
         "flags": 2,
         "description": "Estimated balance in billing currency."
@@ -1183,11 +1331,19 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "CreditSummaryTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Consumption/credits@2024-08-01",
     "scopeType": 16,
     "body": {
-      "$ref": "#/76"
+      "$ref": "#/87"
     },
     "flags": 1
   }

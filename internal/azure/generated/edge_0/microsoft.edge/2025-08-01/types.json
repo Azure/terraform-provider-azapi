@@ -1,11 +1,11 @@
 [
   {
     "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9-]{3,24}$"
+    "pattern": "^default$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/configTemplates"
+    "value": "Microsoft.Edge/schemaReferences"
   },
   {
     "$type": "StringType"
@@ -16,7 +16,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Edge/configTemplates",
+    "name": "Microsoft.Edge/schemaReferences",
     "properties": {
       "id": {
         "type": {
@@ -60,23 +60,9 @@
         "flags": 2,
         "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
       },
-      "tags": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The geo-location where the resource lives"
-      },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -85,21 +71,14 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ConfigTemplateProperties",
+    "name": "SchemaReferenceProperties",
     "properties": {
-      "description": {
+      "schemaId": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "Description of config template"
-      },
-      "latestVersion": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Latest config template version"
+        "description": "Schema Id of schema reference"
       },
       "provisioningState": {
         "type": {
@@ -162,14 +141,6 @@
   },
   {
     "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
       "createdBy": {
@@ -181,7 +152,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/19"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -202,7 +173,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -236,6 +207,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/14"
+      },
+      {
         "$ref": "#/15"
       },
       {
@@ -243,9 +217,6 @@
       },
       {
         "$ref": "#/17"
-      },
-      {
-        "$ref": "#/18"
       },
       {
         "$ref": "#/2"
@@ -272,6 +243,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/19"
+      },
+      {
         "$ref": "#/20"
       },
       {
@@ -281,17 +255,14 @@
         "$ref": "#/22"
       },
       {
-        "$ref": "#/23"
-      },
-      {
         "$ref": "#/2"
       }
     ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Edge/configTemplates@2025-08-01",
-    "scopeType": 8,
+    "name": "Microsoft.Edge/schemaReferences@2025-08-01",
+    "scopeType": 0,
     "body": {
       "$ref": "#/4"
     },
@@ -299,13 +270,11 @@
   },
   {
     "$type": "StringType",
-    "minLength": 3,
-    "maxLength": 61,
-    "pattern": "^[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?)*$"
+    "pattern": "^[a-zA-Z0-9-]{3,24}$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/contexts"
+    "value": "Microsoft.Edge/configTemplates"
   },
   {
     "$type": "StringLiteralType",
@@ -313,7 +282,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Edge/contexts",
+    "name": "Microsoft.Edge/configTemplates",
     "properties": {
       "id": {
         "type": {
@@ -324,35 +293,42 @@
       },
       "name": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/25"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/26"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/27"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
       "tags": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -366,7 +342,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -375,110 +351,36 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ContextProperties",
+    "name": "ConfigTemplateProperties",
     "properties": {
-      "capabilities": {
+      "uniqueIdentifier": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/2"
         },
-        "flags": 1,
-        "description": "List of Capabilities"
+        "flags": 2,
+        "description": "A unique identifier for the config template, generated by the system"
       },
-      "hierarchies": {
+      "description": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/2"
         },
         "flags": 1,
-        "description": "List of Hierarchies"
+        "description": "Description of config template"
+      },
+      "latestVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Latest config template version"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/36"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Capability",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Name of Capability"
-      },
-      "description": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Description of Capability"
-      },
-      "state": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 0,
-        "description": "State of resource"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "active"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "inactive"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/32"
-      },
-      {
-        "$ref": "#/33"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/31"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Hierarchy",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Name of Hierarchy"
-      },
-      "description": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Description of Hierarchy"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/36"
     }
   },
   {
@@ -509,22 +411,273 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/38"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/33"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Edge/configTemplates@2025-08-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/28"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 3,
+    "maxLength": 61,
+    "pattern": "^[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?)*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Edge/contexts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Edge/contexts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ContextProperties",
+    "properties": {
+      "capabilities": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 1,
+        "description": "List of Capabilities"
+      },
+      "hierarchies": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 1,
+        "description": "List of Hierarchies"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 2,
+        "description": "Provisioning state of resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Capability",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of Capability"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Description of Capability"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 0,
+        "description": "State of resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "inactive"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/44"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Hierarchy",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of Hierarchy"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Description of Hierarchy"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/49"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initialized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
       },
       {
         "$ref": "#/2"
@@ -544,7 +697,7 @@
     "name": "Microsoft.Edge/contexts@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/29"
+      "$ref": "#/42"
     },
     "flags": 0
   },
@@ -575,35 +728,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/60"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/61"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/62"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -617,7 +770,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -631,7 +784,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -644,7 +797,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/71"
         },
         "flags": 2,
         "description": "The status of the last operation."
@@ -679,22 +832,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/52"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/54"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/55"
+        "$ref": "#/68"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/69"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/70"
       },
       {
         "$ref": "#/2"
@@ -714,7 +867,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "The type of the extended location."
@@ -733,10 +886,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/60"
+        "$ref": "#/73"
       },
       {
-        "$ref": "#/61"
+        "$ref": "#/74"
       },
       {
         "$ref": "#/2"
@@ -756,7 +909,7 @@
     "name": "Microsoft.Edge/diagnostics@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/50"
+      "$ref": "#/63"
     },
     "flags": 0
   },
@@ -785,28 +938,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/78"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/79"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/80"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/82"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -820,7 +973,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/90"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -834,7 +987,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -854,7 +1007,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/89"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -889,22 +1042,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/70"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/71"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/72"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/73"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/74"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/75"
+        "$ref": "#/88"
       },
       {
         "$ref": "#/2"
@@ -924,7 +1077,7 @@
     "name": "Microsoft.Edge/schemas@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/68"
+      "$ref": "#/81"
     },
     "flags": 0
   },
@@ -955,28 +1108,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/93"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/94"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -990,7 +1143,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1004,7 +1157,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1031,7 +1184,7 @@
       },
       "capabilities": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/97"
         },
         "flags": 1,
         "description": "List of capabilities"
@@ -1045,21 +1198,21 @@
       },
       "state": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/100"
         },
         "flags": 0,
         "description": "State of resource"
       },
       "enableExternalValidation": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "Flag to enable external validation"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/108"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -1084,10 +1237,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/85"
+        "$ref": "#/98"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/99"
       },
       {
         "$ref": "#/2"
@@ -1125,22 +1278,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/89"
+        "$ref": "#/102"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/103"
       },
       {
-        "$ref": "#/91"
+        "$ref": "#/104"
       },
       {
-        "$ref": "#/92"
+        "$ref": "#/105"
       },
       {
-        "$ref": "#/93"
+        "$ref": "#/106"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/107"
       },
       {
         "$ref": "#/2"
@@ -1160,7 +1313,7 @@
     "name": "Microsoft.Edge/solutionTemplates@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/82"
+      "$ref": "#/95"
     },
     "flags": 0
   },
@@ -1185,28 +1338,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/39"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/111"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/112"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/114"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -1220,14 +1373,14 @@
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
       },
       "tags": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/135"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1241,7 +1394,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1275,14 +1428,14 @@
       },
       "targetSpecification": {
         "type": {
-          "$ref": "#/103"
+          "$ref": "#/116"
         },
         "flags": 1,
         "description": "target spec"
       },
       "capabilities": {
         "type": {
-          "$ref": "#/104"
+          "$ref": "#/117"
         },
         "flags": 1,
         "description": "List of capabilities"
@@ -1296,28 +1449,28 @@
       },
       "status": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/118"
         },
         "flags": 2,
         "description": "Status of target"
       },
       "solutionScope": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "Scope of the target resource"
       },
       "state": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/127"
         },
         "flags": 0,
         "description": "State of resource"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/134"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -1332,7 +1485,7 @@
     "name": "TargetPropertiesTargetSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -1354,21 +1507,21 @@
       },
       "deployed": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Indicates if Instance is deployed"
       },
       "expectedRunningJobId": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "The expected running job id"
       },
       "runningJobId": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "The running job id"
@@ -1389,14 +1542,14 @@
       },
       "generation": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Deployment Generation"
       },
       "targetStatuses": {
         "type": {
-          "$ref": "#/110"
+          "$ref": "#/123"
         },
         "flags": 0,
         "description": "Target resource statuses"
@@ -1426,7 +1579,7 @@
       },
       "componentStatuses": {
         "type": {
-          "$ref": "#/109"
+          "$ref": "#/122"
         },
         "flags": 0,
         "description": "Component statuses"
@@ -1456,13 +1609,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/108"
+      "$ref": "#/121"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/107"
+      "$ref": "#/120"
     }
   },
   {
@@ -1481,158 +1634,15 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/112"
+        "$ref": "#/125"
       },
       {
-        "$ref": "#/113"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Initialized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/115"
-      },
-      {
-        "$ref": "#/116"
-      },
-      {
-        "$ref": "#/117"
-      },
-      {
-        "$ref": "#/118"
-      },
-      {
-        "$ref": "#/119"
-      },
-      {
-        "$ref": "#/120"
+        "$ref": "#/126"
       },
       {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Edge/targets@2025-08-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/100"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/contexts/siteReferences"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-08-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Edge/contexts/siteReferences",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/124"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/125"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/127"
-        },
-        "flags": 0,
-        "description": "The resource-specific properties for this resource."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SiteReferenceProperties",
-    "properties": {
-      "siteId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Azure Resource ID for Site"
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/134"
-        },
-        "flags": 2,
-        "description": "Provisioning State"
-      }
-    }
   },
   {
     "$type": "StringLiteralType",
@@ -1685,11 +1695,154 @@
     ]
   },
   {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Edge/targets@2025-08-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/113"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Edge/contexts/siteReferences"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Edge/contexts/siteReferences",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/137"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SiteReferenceProperties",
+    "properties": {
+      "siteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure Resource ID for Site"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 2,
+        "description": "Provisioning State"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initialized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.Edge/contexts/siteReferences@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/126"
+      "$ref": "#/139"
     },
     "flags": 0
   },
@@ -1714,35 +1867,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/136"
+          "$ref": "#/149"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/137"
+          "$ref": "#/150"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/152"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -1756,7 +1909,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1776,7 +1929,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/159"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -1811,22 +1964,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/140"
+        "$ref": "#/153"
       },
       {
-        "$ref": "#/141"
+        "$ref": "#/154"
       },
       {
-        "$ref": "#/142"
+        "$ref": "#/155"
       },
       {
-        "$ref": "#/143"
+        "$ref": "#/156"
       },
       {
-        "$ref": "#/144"
+        "$ref": "#/157"
       },
       {
-        "$ref": "#/145"
+        "$ref": "#/158"
       },
       {
         "$ref": "#/2"
@@ -1838,7 +1991,7 @@
     "name": "Microsoft.Edge/contexts/workflows@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/138"
+      "$ref": "#/151"
     },
     "flags": 0
   },
@@ -1863,35 +2016,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/148"
+          "$ref": "#/161"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/162"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/164"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -1905,7 +2058,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1918,7 +2071,7 @@
     "properties": {
       "revision": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 2,
         "description": "Revision number of resolved config for this workflow version"
@@ -1932,7 +2085,7 @@
       },
       "stageSpec": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/178"
         },
         "flags": 1,
         "description": "A list of stage specs"
@@ -1946,21 +2099,21 @@
       },
       "state": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/191"
         },
         "flags": 2,
         "description": "State of workflow version"
       },
       "specification": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/192"
         },
         "flags": 0,
         "description": "Execution specification"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/186"
+          "$ref": "#/199"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -1980,21 +2133,21 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "Stage specification"
       },
       "tasks": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/169"
         },
         "flags": 0,
         "description": "List of tasks in the stage"
       },
       "taskOption": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/170"
         },
         "flags": 0,
         "description": "Task option for the stage"
@@ -2006,7 +2159,7 @@
     "name": "StageSpecSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -2029,7 +2182,7 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/168"
         },
         "flags": 1,
         "description": "Task specification"
@@ -2041,13 +2194,13 @@
     "name": "TaskSpecSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/154"
+      "$ref": "#/167"
     }
   },
   {
@@ -2056,14 +2209,14 @@
     "properties": {
       "concurrency": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/171"
         },
         "flags": 0,
         "description": "Parallel worker numbers of the tasks"
       },
       "errorAction": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "Error action for the tasks"
@@ -2081,14 +2234,14 @@
     "properties": {
       "mode": {
         "type": {
-          "$ref": "#/163"
+          "$ref": "#/176"
         },
         "flags": 0,
         "description": "Error action mode"
       },
       "maxToleratedFailures": {
         "type": {
-          "$ref": "#/164"
+          "$ref": "#/177"
         },
         "flags": 0,
         "description": "Max tolerated failures"
@@ -2111,13 +2264,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/160"
+        "$ref": "#/173"
       },
       {
-        "$ref": "#/161"
+        "$ref": "#/174"
       },
       {
-        "$ref": "#/162"
+        "$ref": "#/175"
       },
       {
         "$ref": "#/2"
@@ -2131,7 +2284,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/152"
+      "$ref": "#/165"
     }
   },
   {
@@ -2186,40 +2339,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/166"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/167"
+        "$ref": "#/180"
       },
       {
-        "$ref": "#/168"
+        "$ref": "#/181"
       },
       {
-        "$ref": "#/169"
+        "$ref": "#/182"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/183"
       },
       {
-        "$ref": "#/171"
+        "$ref": "#/184"
       },
       {
-        "$ref": "#/172"
+        "$ref": "#/185"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/186"
       },
       {
-        "$ref": "#/174"
+        "$ref": "#/187"
       },
       {
-        "$ref": "#/175"
+        "$ref": "#/188"
       },
       {
-        "$ref": "#/176"
+        "$ref": "#/189"
       },
       {
-        "$ref": "#/177"
+        "$ref": "#/190"
       },
       {
         "$ref": "#/2"
@@ -2231,7 +2384,7 @@
     "name": "WorkflowVersionPropertiesSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -2262,22 +2415,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/180"
+        "$ref": "#/193"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/194"
       },
       {
-        "$ref": "#/182"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/183"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/184"
+        "$ref": "#/197"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/198"
       },
       {
         "$ref": "#/2"
@@ -2289,7 +2442,7 @@
     "name": "Microsoft.Edge/contexts/workflows/versions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/150"
+      "$ref": "#/163"
     },
     "flags": 0
   },
@@ -2314,35 +2467,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/201"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/189"
+          "$ref": "#/202"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/204"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -2356,7 +2509,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2376,21 +2529,21 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/205"
         },
         "flags": 0,
         "description": "Execution specification"
       },
       "status": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/206"
         },
         "flags": 2,
         "description": "Status of Execution"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/220"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -2402,7 +2555,7 @@
     "name": "ExecutionPropertiesSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -2418,7 +2571,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Deployment status"
@@ -2432,7 +2585,7 @@
       },
       "stageHistory": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/213"
         },
         "flags": 0,
         "description": "target resource statuses"
@@ -2445,7 +2598,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Deployment status"
@@ -2480,21 +2633,21 @@
       },
       "isActive": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/210"
         },
         "flags": 0,
         "description": "whether this stage is active or inactive"
       },
       "inputs": {
         "type": {
-          "$ref": "#/198"
+          "$ref": "#/211"
         },
         "flags": 0,
         "description": "The inputs of the StageHistory, Inputs holds a key-value map of user-defined parameters for the initial stage"
       },
       "outputs": {
         "type": {
-          "$ref": "#/199"
+          "$ref": "#/212"
         },
         "flags": 0,
         "description": "The outputs of the StageHistory, it is different as the different input stages."
@@ -2513,10 +2666,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/195"
+        "$ref": "#/208"
       },
       {
-        "$ref": "#/196"
+        "$ref": "#/209"
       },
       {
         "$ref": "#/2"
@@ -2528,7 +2681,7 @@
     "name": "StageStatusInputs",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -2536,13 +2689,13 @@
     "name": "StageStatusOutputs",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/194"
+      "$ref": "#/207"
     }
   },
   {
@@ -2573,22 +2726,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/201"
+        "$ref": "#/214"
       },
       {
-        "$ref": "#/202"
+        "$ref": "#/215"
       },
       {
-        "$ref": "#/203"
+        "$ref": "#/216"
       },
       {
-        "$ref": "#/204"
+        "$ref": "#/217"
       },
       {
-        "$ref": "#/205"
+        "$ref": "#/218"
       },
       {
-        "$ref": "#/206"
+        "$ref": "#/219"
       },
       {
         "$ref": "#/2"
@@ -2600,7 +2753,7 @@
     "name": "Microsoft.Edge/contexts/workflows/versions/executions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/190"
+      "$ref": "#/203"
     },
     "flags": 0
   },
@@ -2625,28 +2778,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/78"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/209"
+          "$ref": "#/222"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/223"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/212"
+          "$ref": "#/225"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -2660,7 +2813,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -2680,21 +2833,21 @@
       },
       "configurationType": {
         "type": {
-          "$ref": "#/215"
+          "$ref": "#/228"
         },
         "flags": 2,
         "description": "Type of configuration"
       },
       "configurationModel": {
         "type": {
-          "$ref": "#/218"
+          "$ref": "#/231"
         },
         "flags": 2,
         "description": "Type of configuration model"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/238"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -2713,10 +2866,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/213"
+        "$ref": "#/226"
       },
       {
-        "$ref": "#/214"
+        "$ref": "#/227"
       },
       {
         "$ref": "#/2"
@@ -2735,161 +2888,15 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/216"
+        "$ref": "#/229"
       },
       {
-        "$ref": "#/217"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Initialized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/219"
-      },
-      {
-        "$ref": "#/220"
-      },
-      {
-        "$ref": "#/221"
-      },
-      {
-        "$ref": "#/222"
-      },
-      {
-        "$ref": "#/223"
-      },
-      {
-        "$ref": "#/224"
+        "$ref": "#/230"
       },
       {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Edge/schemas/dynamicSchemas@2025-08-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/211"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^(v2-)?[0-9]+\\.[0-9]+\\.[0-9]+$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/schemas/dynamicSchemas/versions"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-08-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Edge/schemas/dynamicSchemas/versions",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/227"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/228"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/229"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/231"
-        },
-        "flags": 0,
-        "description": "The resource-specific properties for this resource."
-      },
-      "eTag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SchemaVersionProperties",
-    "properties": {
-      "value": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Value of schema version"
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/238"
-        },
-        "flags": 2,
-        "description": "Provisioning state of resource"
-      }
-    }
   },
   {
     "$type": "StringLiteralType",
@@ -2943,20 +2950,20 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Edge/schemas/dynamicSchemas/versions@2025-08-01",
+    "name": "Microsoft.Edge/schemas/dynamicSchemas@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/230"
+      "$ref": "#/224"
     },
     "flags": 0
   },
   {
     "$type": "StringType",
-    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    "pattern": "^(v2-)?[0-9]+\\.[0-9]+\\.[0-9]+$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/schemas/versions"
+    "value": "Microsoft.Edge/schemas/dynamicSchemas/versions"
   },
   {
     "$type": "StringLiteralType",
@@ -2964,7 +2971,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Edge/schemas/versions",
+    "name": "Microsoft.Edge/schemas/dynamicSchemas/versions",
     "properties": {
       "id": {
         "type": {
@@ -2996,7 +3003,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -3010,7 +3017,153 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchemaVersionProperties",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Value of schema version"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/251"
+        },
+        "flags": 2,
+        "description": "Provisioning state of resource"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initialized"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/246"
+      },
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Edge/schemas/dynamicSchemas/versions@2025-08-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/243"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Edge/schemas/versions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Edge/schemas/versions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/253"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/255"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -3022,7 +3175,7 @@
     "name": "Microsoft.Edge/schemas/versions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/243"
+      "$ref": "#/256"
     },
     "flags": 0
   },
@@ -3047,35 +3200,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/245"
+          "$ref": "#/258"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/246"
+          "$ref": "#/259"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/248"
+          "$ref": "#/261"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -3089,7 +3242,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -3116,14 +3269,14 @@
       },
       "availableSolutionTemplateVersions": {
         "type": {
-          "$ref": "#/250"
+          "$ref": "#/263"
         },
         "flags": 2,
         "description": "List of latest revisions for available solution template versions"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/257"
+          "$ref": "#/270"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -3150,7 +3303,7 @@
       },
       "isConfigured": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/101"
         },
         "flags": 1,
         "description": "Has this solution template version been configured"
@@ -3160,7 +3313,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/249"
+      "$ref": "#/262"
     }
   },
   {
@@ -3191,22 +3344,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/251"
+        "$ref": "#/264"
       },
       {
-        "$ref": "#/252"
+        "$ref": "#/265"
       },
       {
-        "$ref": "#/253"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/254"
+        "$ref": "#/267"
       },
       {
-        "$ref": "#/255"
+        "$ref": "#/268"
       },
       {
-        "$ref": "#/256"
+        "$ref": "#/269"
       },
       {
         "$ref": "#/2"
@@ -3218,7 +3371,7 @@
     "name": "Microsoft.Edge/targets/solutions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/247"
+      "$ref": "#/260"
     },
     "flags": 0
   },
@@ -3243,35 +3396,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/259"
+          "$ref": "#/272"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/260"
+          "$ref": "#/273"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/262"
+          "$ref": "#/275"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -3285,7 +3438,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -3312,42 +3465,42 @@
       },
       "activeState": {
         "type": {
-          "$ref": "#/265"
+          "$ref": "#/278"
         },
         "flags": 0,
         "description": "State of instance"
       },
       "reconciliationPolicy": {
         "type": {
-          "$ref": "#/266"
+          "$ref": "#/279"
         },
         "flags": 0,
         "description": "Reconciliation policy of instance"
       },
       "solutionScope": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "Scope of instance"
       },
       "status": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/118"
         },
         "flags": 2,
         "description": "Status of instance"
       },
       "deploymentTimestampEpoch": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 2,
         "description": "Deployment timestamp of instance"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/276"
+          "$ref": "#/289"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -3366,10 +3519,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/263"
+        "$ref": "#/276"
       },
       {
-        "$ref": "#/264"
+        "$ref": "#/277"
       },
       {
         "$ref": "#/2"
@@ -3382,7 +3535,7 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/269"
+          "$ref": "#/282"
         },
         "flags": 1,
         "description": "The state of the ReconciliationPolicy"
@@ -3408,10 +3561,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/267"
+        "$ref": "#/280"
       },
       {
-        "$ref": "#/268"
+        "$ref": "#/281"
       },
       {
         "$ref": "#/2"
@@ -3446,22 +3599,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/270"
+        "$ref": "#/283"
       },
       {
-        "$ref": "#/271"
+        "$ref": "#/284"
       },
       {
-        "$ref": "#/272"
+        "$ref": "#/285"
       },
       {
-        "$ref": "#/273"
+        "$ref": "#/286"
       },
       {
-        "$ref": "#/274"
+        "$ref": "#/287"
       },
       {
-        "$ref": "#/275"
+        "$ref": "#/288"
       },
       {
         "$ref": "#/2"
@@ -3473,7 +3626,7 @@
     "name": "Microsoft.Edge/targets/solutions/instances@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/261"
+      "$ref": "#/274"
     },
     "flags": 0
   },
@@ -3504,35 +3657,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/278"
+          "$ref": "#/291"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/279"
+          "$ref": "#/292"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/280"
+          "$ref": "#/293"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/282"
+          "$ref": "#/295"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -3546,7 +3699,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -3566,7 +3719,7 @@
       },
       "revision": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 2,
         "description": "Revision number of resolved config for this solution version"
@@ -3594,7 +3747,7 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/283"
+          "$ref": "#/296"
         },
         "flags": 1,
         "description": "App components spec"
@@ -3615,42 +3768,42 @@
       },
       "state": {
         "type": {
-          "$ref": "#/296"
+          "$ref": "#/309"
         },
         "flags": 2,
         "description": "State of solution instance"
       },
       "currentStage": {
         "type": {
-          "$ref": "#/297"
+          "$ref": "#/310"
         },
         "flags": 2,
         "description": "Current Stage of revision"
       },
       "stages": {
         "type": {
-          "$ref": "#/313"
+          "$ref": "#/326"
         },
         "flags": 2,
         "description": "Stages of revision"
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 2,
         "description": "Solution instance name"
       },
       "solutionDependencies": {
         "type": {
-          "$ref": "#/318"
+          "$ref": "#/331"
         },
         "flags": 2,
         "description": "Solution Dependency Context"
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/332"
         },
         "flags": 2,
         "description": "Error Details if any failure is there"
@@ -3662,7 +3815,7 @@
         "flags": 2,
         "description": "The URI for tracking the latest action performed on this solution version."
       },
-      "lastestActionTriggeredBy": {
+      "latestActionTriggeredBy": {
         "type": {
           "$ref": "#/2"
         },
@@ -3671,14 +3824,14 @@
       },
       "actionType": {
         "type": {
-          "$ref": "#/327"
+          "$ref": "#/340"
         },
         "flags": 2,
         "description": "The type of the latest action performed on this solution version."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/334"
+          "$ref": "#/347"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -3690,7 +3843,7 @@
     "name": "SolutionVersionPropertiesSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -3745,40 +3898,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/284"
+        "$ref": "#/297"
       },
       {
-        "$ref": "#/285"
+        "$ref": "#/298"
       },
       {
-        "$ref": "#/286"
+        "$ref": "#/299"
       },
       {
-        "$ref": "#/287"
+        "$ref": "#/300"
       },
       {
-        "$ref": "#/288"
+        "$ref": "#/301"
       },
       {
-        "$ref": "#/289"
+        "$ref": "#/302"
       },
       {
-        "$ref": "#/290"
+        "$ref": "#/303"
       },
       {
-        "$ref": "#/291"
+        "$ref": "#/304"
       },
       {
-        "$ref": "#/292"
+        "$ref": "#/305"
       },
       {
-        "$ref": "#/293"
+        "$ref": "#/306"
       },
       {
-        "$ref": "#/294"
+        "$ref": "#/307"
       },
       {
-        "$ref": "#/295"
+        "$ref": "#/308"
       },
       {
         "$ref": "#/2"
@@ -3798,14 +3951,14 @@
       },
       "stage": {
         "type": {
-          "$ref": "#/305"
+          "$ref": "#/318"
         },
         "flags": 3,
         "description": "Stage name"
       },
       "status": {
         "type": {
-          "$ref": "#/311"
+          "$ref": "#/324"
         },
         "flags": 3,
         "description": "Stage status"
@@ -3826,7 +3979,7 @@
       },
       "childStages": {
         "type": {
-          "$ref": "#/312"
+          "$ref": "#/325"
         },
         "flags": 2,
         "description": "Child stages which represents more granular level stage status if any"
@@ -3865,25 +4018,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/298"
+        "$ref": "#/311"
       },
       {
-        "$ref": "#/299"
+        "$ref": "#/312"
       },
       {
-        "$ref": "#/300"
+        "$ref": "#/313"
       },
       {
-        "$ref": "#/301"
+        "$ref": "#/314"
       },
       {
-        "$ref": "#/302"
+        "$ref": "#/315"
       },
       {
-        "$ref": "#/303"
+        "$ref": "#/316"
       },
       {
-        "$ref": "#/304"
+        "$ref": "#/317"
       },
       {
         "$ref": "#/2"
@@ -3914,19 +4067,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/306"
+        "$ref": "#/319"
       },
       {
-        "$ref": "#/307"
+        "$ref": "#/320"
       },
       {
-        "$ref": "#/308"
+        "$ref": "#/321"
       },
       {
-        "$ref": "#/309"
+        "$ref": "#/322"
       },
       {
-        "$ref": "#/310"
+        "$ref": "#/323"
       },
       {
         "$ref": "#/2"
@@ -3936,13 +4089,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/297"
+      "$ref": "#/310"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/297"
+      "$ref": "#/310"
     }
   },
   {
@@ -3962,7 +4115,7 @@
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/316"
+          "$ref": "#/329"
         },
         "flags": 0,
         "description": "Solution Instance Name"
@@ -3983,7 +4136,7 @@
       },
       "dependencies": {
         "type": {
-          "$ref": "#/317"
+          "$ref": "#/330"
         },
         "flags": 0,
         "description": "Solution dependencies"
@@ -3998,13 +4151,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/315"
+      "$ref": "#/328"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/315"
+      "$ref": "#/328"
     }
   },
   {
@@ -4034,14 +4187,14 @@
       },
       "details": {
         "type": {
-          "$ref": "#/320"
+          "$ref": "#/333"
         },
         "flags": 2,
         "description": "The error details."
       },
       "additionalInfo": {
         "type": {
-          "$ref": "#/322"
+          "$ref": "#/335"
         },
         "flags": 2,
         "description": "The error additional info."
@@ -4051,7 +4204,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/319"
+      "$ref": "#/332"
     }
   },
   {
@@ -4067,7 +4220,7 @@
       },
       "info": {
         "type": {
-          "$ref": "#/102"
+          "$ref": "#/115"
         },
         "flags": 2,
         "description": "The additional info."
@@ -4077,7 +4230,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/321"
+      "$ref": "#/334"
     }
   },
   {
@@ -4100,16 +4253,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/323"
+        "$ref": "#/336"
       },
       {
-        "$ref": "#/324"
+        "$ref": "#/337"
       },
       {
-        "$ref": "#/325"
+        "$ref": "#/338"
       },
       {
-        "$ref": "#/326"
+        "$ref": "#/339"
       },
       {
         "$ref": "#/2"
@@ -4144,22 +4297,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/328"
+        "$ref": "#/341"
       },
       {
-        "$ref": "#/329"
+        "$ref": "#/342"
       },
       {
-        "$ref": "#/330"
+        "$ref": "#/343"
       },
       {
-        "$ref": "#/331"
+        "$ref": "#/344"
       },
       {
-        "$ref": "#/332"
+        "$ref": "#/345"
       },
       {
-        "$ref": "#/333"
+        "$ref": "#/346"
       },
       {
         "$ref": "#/2"
@@ -4171,7 +4324,7 @@
     "name": "Microsoft.Edge/targets/solutions/versions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/281"
+      "$ref": "#/294"
     },
     "flags": 0
   },
@@ -4200,28 +4353,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/336"
+          "$ref": "#/349"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/337"
+          "$ref": "#/350"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/338"
+          "$ref": "#/351"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/340"
+          "$ref": "#/353"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -4235,7 +4388,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -4248,7 +4401,7 @@
     "properties": {
       "jobType": {
         "type": {
-          "$ref": "#/345"
+          "$ref": "#/358"
         },
         "flags": 1,
         "description": "The type of job."
@@ -4269,14 +4422,14 @@
       },
       "status": {
         "type": {
-          "$ref": "#/350"
+          "$ref": "#/363"
         },
         "flags": 3,
         "description": "Status of the job."
       },
       "jobParameter": {
         "type": {
-          "$ref": "#/351"
+          "$ref": "#/364"
         },
         "flags": 0,
         "description": "Parameters for the job."
@@ -4290,7 +4443,7 @@
       },
       "steps": {
         "type": {
-          "$ref": "#/370"
+          "$ref": "#/383"
         },
         "flags": 0,
         "description": "Steps and substatuses for the job."
@@ -4304,17 +4457,24 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/377"
+          "$ref": "#/390"
         },
         "flags": 2,
         "description": "Provisioning state of the resource."
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/332"
         },
         "flags": 2,
         "description": "Error Details if any failure is there"
+      },
+      "additionalData": {
+        "type": {
+          "$ref": "#/391"
+        },
+        "flags": 0,
+        "description": "Additional metadata or properties."
       }
     }
   },
@@ -4338,207 +4498,21 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/341"
+        "$ref": "#/354"
       },
       {
-        "$ref": "#/342"
-      },
-      {
-        "$ref": "#/343"
-      },
-      {
-        "$ref": "#/344"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotStarted"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/346"
-      },
-      {
-        "$ref": "#/347"
-      },
-      {
-        "$ref": "#/348"
-      },
-      {
-        "$ref": "#/349"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "JobParameterBase",
-    "discriminator": "jobType",
-    "baseProperties": {},
-    "elements": {
-      "deploy": {
-        "$ref": "#/352"
-      },
-      "publish": {
         "$ref": "#/355"
+      },
+      {
+        "$ref": "#/356"
+      },
+      {
+        "$ref": "#/357"
+      },
+      {
+        "$ref": "#/2"
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DeployJobParameter",
-    "properties": {
-      "parameter": {
-        "type": {
-          "$ref": "#/353"
-        },
-        "flags": 0,
-        "description": "Install Solution Parameter"
-      },
-      "jobType": {
-        "type": {
-          "$ref": "#/354"
-        },
-        "flags": 1,
-        "description": "Job type discriminator value"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "InstallSolutionParameter",
-    "properties": {
-      "solutionVersionId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Solution Version ARM Id"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "deploy"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PublishJobParameter",
-    "properties": {
-      "parameter": {
-        "type": {
-          "$ref": "#/356"
-        },
-        "flags": 0,
-        "description": "Solution Version Parameter"
-      },
-      "jobType": {
-        "type": {
-          "$ref": "#/357"
-        },
-        "flags": 1,
-        "description": "Job type discriminator value"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SolutionVersionParameter",
-    "properties": {
-      "solutionVersionId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Solution Version ARM Id"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "publish"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "JobStep",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Name of the step"
-      },
-      "status": {
-        "type": {
-          "$ref": "#/363"
-        },
-        "flags": 3,
-        "description": "Status of the step"
-      },
-      "startTime": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Start time of the step (ISO8601)"
-      },
-      "endTime": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "End time of the step (ISO8601)"
-      },
-      "message": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Message for the step"
-      },
-      "statistics": {
-        "type": {
-          "$ref": "#/364"
-        },
-        "flags": 0,
-        "description": "Statistics for the step"
-      },
-      "steps": {
-        "type": {
-          "$ref": "#/369"
-        },
-        "flags": 0,
-        "description": "Nested substeps for this step"
-      },
-      "errorDetails": {
-        "type": {
-          "$ref": "#/319"
-        },
-        "flags": 2,
-        "description": "Error Details if any failure is there"
-      }
-    }
+    ]
   },
   {
     "$type": "StringLiteralType",
@@ -4578,15 +4552,201 @@
   },
   {
     "$type": "DiscriminatedObjectType",
-    "name": "JobStepStatisticsBase",
-    "discriminator": "statisticsType",
+    "name": "JobParameterBase",
+    "discriminator": "jobType",
     "baseProperties": {},
     "elements": {
       "deploy": {
         "$ref": "#/365"
       },
       "publish": {
-        "$ref": "#/367"
+        "$ref": "#/368"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeployJobParameter",
+    "properties": {
+      "parameter": {
+        "type": {
+          "$ref": "#/366"
+        },
+        "flags": 0,
+        "description": "Install Solution Parameter"
+      },
+      "jobType": {
+        "type": {
+          "$ref": "#/367"
+        },
+        "flags": 1,
+        "description": "Job type discriminator value"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "InstallSolutionParameter",
+    "properties": {
+      "solutionVersionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Solution Version ARM Id"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "deploy"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PublishJobParameter",
+    "properties": {
+      "parameter": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 0,
+        "description": "Solution Version Parameter"
+      },
+      "jobType": {
+        "type": {
+          "$ref": "#/370"
+        },
+        "flags": 1,
+        "description": "Job type discriminator value"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SolutionVersionParameter",
+    "properties": {
+      "solutionVersionId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Solution Version ARM Id"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "publish"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobStep",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the step"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 3,
+        "description": "Status of the step"
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Start time of the step (ISO8601)"
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "End time of the step (ISO8601)"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Message for the step"
+      },
+      "statistics": {
+        "type": {
+          "$ref": "#/377"
+        },
+        "flags": 0,
+        "description": "Statistics for the step"
+      },
+      "steps": {
+        "type": {
+          "$ref": "#/382"
+        },
+        "flags": 0,
+        "description": "Nested substeps for this step"
+      },
+      "errorDetails": {
+        "type": {
+          "$ref": "#/332"
+        },
+        "flags": 2,
+        "description": "Error Details if any failure is there"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/373"
+      },
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "JobStepStatisticsBase",
+    "discriminator": "statisticsType",
+    "baseProperties": {},
+    "elements": {
+      "deploy": {
+        "$ref": "#/378"
+      },
+      "publish": {
+        "$ref": "#/380"
       }
     }
   },
@@ -4596,28 +4756,28 @@
     "properties": {
       "totalCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Total count of items processed in this step"
       },
       "successCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Count of successful items in this step"
       },
       "failedCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Count of failed items in this step"
       },
       "statisticsType": {
         "type": {
-          "$ref": "#/366"
+          "$ref": "#/379"
         },
         "flags": 1,
         "description": "Statistics type discriminator value"
@@ -4634,28 +4794,28 @@
     "properties": {
       "totalCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Total count of items processed in this step"
       },
       "successCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Count of successful items in this step"
       },
       "failedCount": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "Count of failed items in this step"
       },
       "statisticsType": {
         "type": {
-          "$ref": "#/368"
+          "$ref": "#/381"
         },
         "flags": 1,
         "description": "Statistics type discriminator value"
@@ -4669,13 +4829,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/358"
+      "$ref": "#/371"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/358"
+      "$ref": "#/371"
     }
   },
   {
@@ -4705,151 +4865,6 @@
   {
     "$type": "UnionType",
     "elements": [
-      {
-        "$ref": "#/371"
-      },
-      {
-        "$ref": "#/372"
-      },
-      {
-        "$ref": "#/373"
-      },
-      {
-        "$ref": "#/374"
-      },
-      {
-        "$ref": "#/375"
-      },
-      {
-        "$ref": "#/376"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Edge/jobs@2025-08-01",
-    "scopeType": 0,
-    "body": {
-      "$ref": "#/339"
-    },
-    "flags": 1
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Edge/schemaReferences"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-08-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Edge/schemaReferences",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/379"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/380"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/382"
-        },
-        "flags": 2,
-        "description": "The resource-specific properties for this resource."
-      },
-      "eTag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 2,
-        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SchemaReferenceProperties",
-    "properties": {
-      "schemaId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Schema Id of schema reference"
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/389"
-        },
-        "flags": 2,
-        "description": "Provisioning state of resource"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Initialized"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/383"
-      },
       {
         "$ref": "#/384"
       },
@@ -4866,16 +4881,32 @@
         "$ref": "#/388"
       },
       {
+        "$ref": "#/389"
+      },
+      {
         "$ref": "#/2"
       }
     ]
   },
   {
+    "$type": "ObjectType",
+    "name": "AdditionalData",
+    "properties": {
+      "workflowId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Id of the workflow."
+      }
+    }
+  },
+  {
     "$type": "ResourceType",
-    "name": "Microsoft.Edge/schemaReferences@2025-08-01",
+    "name": "Microsoft.Edge/jobs@2025-08-01",
     "scopeType": 0,
     "body": {
-      "$ref": "#/381"
+      "$ref": "#/352"
     },
     "flags": 1
   },
@@ -4900,28 +4931,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/253"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/391"
+          "$ref": "#/393"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/392"
+          "$ref": "#/394"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/396"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -4935,7 +4966,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -4955,7 +4986,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/401"
+          "$ref": "#/403"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -4990,12 +5021,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/395"
-      },
-      {
-        "$ref": "#/396"
-      },
-      {
         "$ref": "#/397"
       },
       {
@@ -5008,6 +5033,12 @@
         "$ref": "#/400"
       },
       {
+        "$ref": "#/401"
+      },
+      {
+        "$ref": "#/402"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -5017,7 +5048,7 @@
     "name": "Microsoft.Edge/configTemplates/versions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/393"
+      "$ref": "#/395"
     },
     "flags": 1
   },
@@ -5042,28 +5073,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/240"
+          "$ref": "#/253"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/403"
+          "$ref": "#/405"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/404"
+          "$ref": "#/406"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/406"
+          "$ref": "#/408"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
@@ -5077,7 +5108,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5097,21 +5128,21 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/407"
+          "$ref": "#/409"
         },
         "flags": 1,
         "description": "App components spec"
       },
       "orchestratorType": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/411"
         },
         "flags": 0,
         "description": "Orchestrator type"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/416"
+          "$ref": "#/418"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -5123,7 +5154,7 @@
     "name": "SolutionTemplateVersionPropertiesSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -5134,7 +5165,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/408"
+        "$ref": "#/410"
       },
       {
         "$ref": "#/2"
@@ -5169,12 +5200,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/410"
-      },
-      {
-        "$ref": "#/411"
-      },
-      {
         "$ref": "#/412"
       },
       {
@@ -5187,6 +5212,12 @@
         "$ref": "#/415"
       },
       {
+        "$ref": "#/416"
+      },
+      {
+        "$ref": "#/417"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -5196,7 +5227,7 @@
     "name": "Microsoft.Edge/solutionTemplates/versions@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/405"
+      "$ref": "#/407"
     },
     "flags": 1
   },
@@ -5221,35 +5252,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/92"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/418"
+          "$ref": "#/420"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/419"
+          "$ref": "#/421"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/421"
+          "$ref": "#/423"
         },
         "flags": 2,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 2,
         "description": "The complex type of the extended location."
@@ -5263,7 +5294,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5276,14 +5307,14 @@
     "properties": {
       "solutionVersion": {
         "type": {
-          "$ref": "#/422"
+          "$ref": "#/424"
         },
         "flags": 3,
         "description": "Solution version of instance"
       },
       "target": {
         "type": {
-          "$ref": "#/424"
+          "$ref": "#/426"
         },
         "flags": 3,
         "description": "Target of instance"
@@ -5297,28 +5328,28 @@
       },
       "activeState": {
         "type": {
-          "$ref": "#/428"
+          "$ref": "#/430"
         },
         "flags": 0,
         "description": "State of instance"
       },
       "reconciliationPolicy": {
         "type": {
-          "$ref": "#/266"
+          "$ref": "#/279"
         },
         "flags": 2,
         "description": "Reconciliation policy of instance"
       },
       "status": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/118"
         },
         "flags": 2,
         "description": "Deployment Status of instance"
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/435"
+          "$ref": "#/437"
         },
         "flags": 2,
         "description": "Provisioning state of resource"
@@ -5338,7 +5369,7 @@
       },
       "specification": {
         "type": {
-          "$ref": "#/423"
+          "$ref": "#/425"
         },
         "flags": 0,
         "description": "App components spec"
@@ -5350,7 +5381,7 @@
     "name": "SolutionVersionSnapshotSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -5366,7 +5397,7 @@
       },
       "targetSpecification": {
         "type": {
-          "$ref": "#/425"
+          "$ref": "#/427"
         },
         "flags": 0,
         "description": "target spec"
@@ -5385,7 +5416,7 @@
     "name": "TargetSnapshotTargetSpecification",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/102"
+      "$ref": "#/115"
     }
   },
   {
@@ -5400,10 +5431,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/426"
+        "$ref": "#/428"
       },
       {
-        "$ref": "#/427"
+        "$ref": "#/429"
       },
       {
         "$ref": "#/2"
@@ -5438,12 +5469,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/429"
-      },
-      {
-        "$ref": "#/430"
-      },
-      {
         "$ref": "#/431"
       },
       {
@@ -5456,6 +5481,12 @@
         "$ref": "#/434"
       },
       {
+        "$ref": "#/435"
+      },
+      {
+        "$ref": "#/436"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -5465,7 +5496,7 @@
     "name": "Microsoft.Edge/targets/solutions/instances/histories@2025-08-01",
     "scopeType": 8,
     "body": {
-      "$ref": "#/420"
+      "$ref": "#/422"
     },
     "flags": 1
   },
@@ -5475,21 +5506,21 @@
     "properties": {
       "updateType": {
         "type": {
-          "$ref": "#/441"
+          "$ref": "#/443"
         },
         "flags": 0,
         "description": "Update type"
       },
       "version": {
         "type": {
-          "$ref": "#/442"
+          "$ref": "#/444"
         },
         "flags": 0,
         "description": "Version to create"
       },
       "configTemplateVersion": {
         "type": {
-          "$ref": "#/443"
+          "$ref": "#/445"
         },
         "flags": 1,
         "description": "Config Template Version"
@@ -5512,13 +5543,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/438"
-      },
-      {
-        "$ref": "#/439"
-      },
-      {
         "$ref": "#/440"
+      },
+      {
+        "$ref": "#/441"
+      },
+      {
+        "$ref": "#/442"
       },
       {
         "$ref": "#/2"
@@ -5535,7 +5566,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/396"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -5570,7 +5601,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5583,10 +5614,10 @@
     "resourceType": "Microsoft.Edge/configTemplates",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/443"
+      "$ref": "#/445"
     },
     "input": {
-      "$ref": "#/437"
+      "$ref": "#/439"
     }
   },
   {
@@ -5621,10 +5652,10 @@
     "resourceType": "Microsoft.Edge/configTemplates",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/446"
+      "$ref": "#/448"
     },
     "input": {
-      "$ref": "#/445"
+      "$ref": "#/447"
     }
   },
   {
@@ -5633,21 +5664,21 @@
     "properties": {
       "updateType": {
         "type": {
-          "$ref": "#/452"
+          "$ref": "#/454"
         },
         "flags": 0,
         "description": "Update type"
       },
       "version": {
         "type": {
-          "$ref": "#/442"
+          "$ref": "#/444"
         },
         "flags": 0,
         "description": "Version to create"
       },
       "schemaVersion": {
         "type": {
-          "$ref": "#/453"
+          "$ref": "#/455"
         },
         "flags": 1,
         "description": "Schema Version"
@@ -5670,13 +5701,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/449"
-      },
-      {
-        "$ref": "#/450"
-      },
-      {
         "$ref": "#/451"
+      },
+      {
+        "$ref": "#/452"
+      },
+      {
+        "$ref": "#/453"
       },
       {
         "$ref": "#/2"
@@ -5689,7 +5720,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/231"
+          "$ref": "#/244"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -5724,7 +5755,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5737,10 +5768,10 @@
     "resourceType": "Microsoft.Edge/schemas",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/453"
+      "$ref": "#/455"
     },
     "input": {
-      "$ref": "#/448"
+      "$ref": "#/450"
     }
   },
   {
@@ -5749,10 +5780,10 @@
     "resourceType": "Microsoft.Edge/schemas",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/446"
+      "$ref": "#/448"
     },
     "input": {
-      "$ref": "#/445"
+      "$ref": "#/447"
     }
   },
   {
@@ -5761,21 +5792,21 @@
     "properties": {
       "updateType": {
         "type": {
-          "$ref": "#/460"
+          "$ref": "#/462"
         },
         "flags": 0,
         "description": "Update type"
       },
       "version": {
         "type": {
-          "$ref": "#/442"
+          "$ref": "#/444"
         },
         "flags": 0,
         "description": "Version to create"
       },
       "solutionTemplateVersion": {
         "type": {
-          "$ref": "#/461"
+          "$ref": "#/463"
         },
         "flags": 1,
         "description": "Solution Template Version"
@@ -5798,13 +5829,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/457"
-      },
-      {
-        "$ref": "#/458"
-      },
-      {
         "$ref": "#/459"
+      },
+      {
+        "$ref": "#/460"
+      },
+      {
+        "$ref": "#/461"
       },
       {
         "$ref": "#/2"
@@ -5817,7 +5848,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/406"
+          "$ref": "#/408"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
@@ -5852,7 +5883,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5865,10 +5896,10 @@
     "resourceType": "Microsoft.Edge/solutionTemplates",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/461"
+      "$ref": "#/463"
     },
     "input": {
-      "$ref": "#/456"
+      "$ref": "#/458"
     }
   },
   {
@@ -5877,7 +5908,7 @@
     "resourceType": "Microsoft.Edge/solutionTemplates",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/445"
+      "$ref": "#/447"
     }
   },
   {
@@ -5886,7 +5917,7 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/353"
+      "$ref": "#/366"
     }
   },
   {
@@ -5895,14 +5926,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/282"
+          "$ref": "#/295"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
       "extendedLocation": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "The complex type of the extended location."
@@ -5937,7 +5968,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/13"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -5950,10 +5981,10 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/465"
+      "$ref": "#/467"
     },
     "input": {
-      "$ref": "#/356"
+      "$ref": "#/369"
     }
   },
   {
@@ -5982,7 +6013,7 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/467"
+      "$ref": "#/469"
     }
   },
   {
@@ -5998,14 +6029,14 @@
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 0,
         "description": "Solution Instance Name"
       },
       "solutionDependencies": {
         "type": {
-          "$ref": "#/472"
+          "$ref": "#/474"
         },
         "flags": 0,
         "description": "Solution Dependencies"
@@ -6039,7 +6070,7 @@
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/316"
+          "$ref": "#/329"
         },
         "flags": 0,
         "description": "Solution Instance Name"
@@ -6053,7 +6084,7 @@
       },
       "dependencies": {
         "type": {
-          "$ref": "#/471"
+          "$ref": "#/473"
         },
         "flags": 0,
         "description": "Solution dependencies"
@@ -6063,13 +6094,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/470"
+      "$ref": "#/472"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/470"
+      "$ref": "#/472"
     }
   },
   {
@@ -6091,10 +6122,10 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/473"
+      "$ref": "#/475"
     },
     "input": {
-      "$ref": "#/469"
+      "$ref": "#/471"
     }
   },
   {
@@ -6103,10 +6134,10 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/465"
+      "$ref": "#/467"
     },
     "input": {
-      "$ref": "#/469"
+      "$ref": "#/471"
     }
   },
   {
@@ -6135,7 +6166,7 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/476"
+      "$ref": "#/478"
     }
   },
   {
@@ -6144,10 +6175,10 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/465"
+      "$ref": "#/467"
     },
     "input": {
-      "$ref": "#/356"
+      "$ref": "#/369"
     }
   },
   {
@@ -6163,7 +6194,7 @@
       },
       "errorDetails": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/332"
         },
         "flags": 0,
         "description": "Error Details if any failure is there"
@@ -6177,7 +6208,7 @@
       },
       "validationStatus": {
         "type": {
-          "$ref": "#/482"
+          "$ref": "#/484"
         },
         "flags": 1,
         "description": "Validation Status of external validation"
@@ -6196,10 +6227,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/480"
+        "$ref": "#/482"
       },
       {
-        "$ref": "#/481"
+        "$ref": "#/483"
       },
       {
         "$ref": "#/2"
@@ -6212,10 +6243,10 @@
     "resourceType": "Microsoft.Edge/targets",
     "apiVersion": "2025-08-01",
     "output": {
-      "$ref": "#/465"
+      "$ref": "#/467"
     },
     "input": {
-      "$ref": "#/479"
+      "$ref": "#/481"
     }
   },
   {
@@ -6224,7 +6255,7 @@
     "properties": {
       "targets": {
         "type": {
-          "$ref": "#/486"
+          "$ref": "#/488"
         },
         "flags": 1,
         "description": "Targets to which solution needs to be deployed"
@@ -6247,7 +6278,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/485"
+      "$ref": "#/487"
     }
   },
   {
@@ -6256,7 +6287,7 @@
     "resourceType": "Microsoft.Edge/solutionTemplates/versions",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/484"
+      "$ref": "#/486"
     }
   },
   {
@@ -6265,21 +6296,21 @@
     "properties": {
       "targets": {
         "type": {
-          "$ref": "#/490"
+          "$ref": "#/492"
         },
         "flags": 1,
         "description": "Targets to which solution needs to be published"
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 0,
         "description": "Name of the solution instance"
       },
       "solutionDependencies": {
         "type": {
-          "$ref": "#/491"
+          "$ref": "#/493"
         },
         "flags": 0,
         "description": "Solution dependencies"
@@ -6306,7 +6337,7 @@
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 0,
         "description": "Name of the solution instance"
@@ -6330,13 +6361,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/489"
+      "$ref": "#/491"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/470"
+      "$ref": "#/472"
     }
   },
   {
@@ -6345,7 +6376,7 @@
     "resourceType": "Microsoft.Edge/solutionTemplates/versions",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/488"
+      "$ref": "#/490"
     }
   },
   {
@@ -6354,21 +6385,21 @@
     "properties": {
       "targets": {
         "type": {
-          "$ref": "#/495"
+          "$ref": "#/497"
         },
         "flags": 1,
         "description": "Targets to which solution needs to be published"
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 0,
         "description": "Name of the solution instance"
       },
       "solutionDependencies": {
         "type": {
-          "$ref": "#/496"
+          "$ref": "#/498"
         },
         "flags": 0,
         "description": "Solution dependencies"
@@ -6395,7 +6426,7 @@
       },
       "solutionInstanceName": {
         "type": {
-          "$ref": "#/314"
+          "$ref": "#/327"
         },
         "flags": 0,
         "description": "Name of the solution instance"
@@ -6412,13 +6443,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/494"
+      "$ref": "#/496"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/470"
+      "$ref": "#/472"
     }
   },
   {
@@ -6427,7 +6458,7 @@
     "resourceType": "Microsoft.Edge/solutionTemplates/versions",
     "apiVersion": "2025-08-01",
     "input": {
-      "$ref": "#/493"
+      "$ref": "#/495"
     }
   }
 ]

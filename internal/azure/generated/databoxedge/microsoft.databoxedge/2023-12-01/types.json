@@ -42,23 +42,16 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an identical geographical region is specified on update, the request will succeed."
-      },
-      "tags": {
+      "properties": {
         "type": {
           "$ref": "#/4"
         },
         "flags": 0,
-        "description": "The list of tags that describe the device. These tags can be used to view and group this device (across resource groups)."
+        "description": "The properties of the Data Box Edge/Gateway device."
       },
       "sku": {
         "type": {
-          "$ref": "#/5"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "The SKU type."
@@ -72,41 +65,681 @@
       },
       "identity": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "Msi identity of the resource"
       },
       "kind": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/98"
         },
         "flags": 2,
         "description": "The kind of the device."
       },
-      "systemData": {
+      "tags": {
         "type": {
-          "$ref": "#/48"
-        },
-        "flags": 2,
-        "description": "DataBoxEdge Resource"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/59"
+          "$ref": "#/99"
         },
         "flags": 0,
-        "description": "The properties of the Data Box Edge/Gateway device."
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "DataBoxEdgeDeviceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
+    "name": "DataBoxEdgeDeviceProperties",
+    "properties": {
+      "systemData": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "DataBoxEdge Device Properties"
+      },
+      "dataBoxEdgeDeviceStatus": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The status of the Data Box Edge/Gateway device."
+      },
+      "serialNumber": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Serial Number of Data Box Edge/Gateway device."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Description of the Data Box Edge/Gateway device."
+      },
+      "modelDescription": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The description of the Data Box Edge/Gateway device model."
+      },
+      "deviceType": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "The type of the Data Box Edge/Gateway device."
+      },
+      "friendlyName": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device name."
+      },
+      "culture": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device culture."
+      },
+      "deviceModel": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device model."
+      },
+      "deviceSoftwareVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device software version."
+      },
+      "deviceLocalCapacity": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device local capacity in MB."
+      },
+      "timeZone": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The Data Box Edge/Gateway device timezone."
+      },
+      "deviceHcsVersion": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The device software version number of the device (eg: 1.2.18105.6)."
+      },
+      "configuredRoleTypes": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 2,
+        "description": "Type of compute roles configured."
+      },
+      "nodeCount": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The number of nodes in the cluster."
+      },
+      "resourceMoveDetails": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The details of the move operation on this resource."
+      },
+      "edgeProfile": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 2,
+        "description": "The details of Edge Profile for this resource"
+      },
+      "dataResidency": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "The details of data-residency related properties for this resource"
+      },
+      "kubernetesWorkloadProfile": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Kubernetes Workload Profile"
+      }
     }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyToSetup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Online"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Offline"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NeedsAttention"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PartiallyDisconnected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Maintenance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataBoxEdgeDevice"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IOT"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ASA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Functions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cognitive"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MEC"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "CloudEdgeManagement"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kubernetes"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/33"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/34"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceMoveDetails",
+    "properties": {
+      "operationInProgress": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Denotes whether move operation is in progress"
+      },
+      "operationInProgressLockTimeoutInUTC": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Denotes the timeout of the operation to finish"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceMoveInProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ResourceMoveFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/39"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeProfile",
+    "properties": {
+      "subscription": {
+        "type": {
+          "$ref": "#/42"
+        },
+        "flags": 0,
+        "description": "Edge Profile Subscription"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EdgeProfileSubscription",
+    "properties": {
+      "registrationId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "Edge Subscription Registration ID"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "ARM ID of the subscription"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 0
+      },
+      "registrationDate": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "subscriptionId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Registered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Suspended"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unregistered"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubscriptionProperties",
+    "properties": {
+      "tenantId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "locationPlacementId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "quotaId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "serializedDetails": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "registeredFeatures": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SubscriptionRegisteredFeatures",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      },
+      "state": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/50"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DataResidency",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 0,
+        "description": "DataResidencyType enum"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "GeoZoneReplication"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ZoneReplication"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
   },
   {
     "$type": "ObjectType",
@@ -114,14 +747,14 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "SKU name."
       },
       "tier": {
         "type": {
-          "$ref": "#/37"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "The SKU tier. This is based on the SKU name."
@@ -248,91 +881,91 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/6"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/7"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/8"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/9"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/10"
+        "$ref": "#/61"
       },
       {
-        "$ref": "#/11"
+        "$ref": "#/62"
       },
       {
-        "$ref": "#/12"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/13"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/14"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/68"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/69"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/70"
       },
       {
-        "$ref": "#/20"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/21"
+        "$ref": "#/72"
       },
       {
-        "$ref": "#/22"
+        "$ref": "#/73"
       },
       {
-        "$ref": "#/23"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/24"
+        "$ref": "#/75"
       },
       {
-        "$ref": "#/25"
+        "$ref": "#/76"
       },
       {
-        "$ref": "#/26"
+        "$ref": "#/77"
       },
       {
-        "$ref": "#/27"
+        "$ref": "#/78"
       },
       {
-        "$ref": "#/28"
+        "$ref": "#/79"
       },
       {
-        "$ref": "#/29"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/30"
+        "$ref": "#/81"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/82"
       },
       {
-        "$ref": "#/32"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/33"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/34"
+        "$ref": "#/85"
       },
       {
         "$ref": "#/0"
@@ -347,7 +980,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/36"
+        "$ref": "#/87"
       },
       {
         "$ref": "#/0"
@@ -360,7 +993,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/93"
         },
         "flags": 0,
         "description": "Identity type"
@@ -397,13 +1030,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
+        "$ref": "#/90"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/91"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/92"
       },
       {
         "$ref": "#/0"
@@ -430,662 +1063,29 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/43"
+        "$ref": "#/94"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/95"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/96"
       },
-      {
-        "$ref": "#/46"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/53"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/58"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/49"
-      },
-      {
-        "$ref": "#/50"
-      },
-      {
-        "$ref": "#/51"
-      },
-      {
-        "$ref": "#/52"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/54"
-      },
-      {
-        "$ref": "#/55"
-      },
-      {
-        "$ref": "#/56"
-      },
-      {
-        "$ref": "#/57"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DataBoxEdgeDeviceProperties",
-    "properties": {
-      "systemData": {
-        "type": {
-          "$ref": "#/48"
-        },
-        "flags": 2,
-        "description": "DataBoxEdge Device Properties"
-      },
-      "dataBoxEdgeDeviceStatus": {
-        "type": {
-          "$ref": "#/67"
-        },
-        "flags": 2,
-        "description": "The status of the Data Box Edge/Gateway device."
-      },
-      "serialNumber": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Serial Number of Data Box Edge/Gateway device."
-      },
-      "description": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Description of the Data Box Edge/Gateway device."
-      },
-      "modelDescription": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The description of the Data Box Edge/Gateway device model."
-      },
-      "deviceType": {
-        "type": {
-          "$ref": "#/69"
-        },
-        "flags": 2,
-        "description": "The type of the Data Box Edge/Gateway device."
-      },
-      "friendlyName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device name."
-      },
-      "culture": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device culture."
-      },
-      "deviceModel": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device model."
-      },
-      "deviceSoftwareVersion": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device software version."
-      },
-      "deviceLocalCapacity": {
-        "type": {
-          "$ref": "#/70"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device local capacity in MB."
-      },
-      "timeZone": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The Data Box Edge/Gateway device timezone."
-      },
-      "deviceHcsVersion": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The device software version number of the device (eg: 1.2.18105.6)."
-      },
-      "configuredRoleTypes": {
-        "type": {
-          "$ref": "#/79"
-        },
-        "flags": 2,
-        "description": "Type of compute roles configured."
-      },
-      "nodeCount": {
-        "type": {
-          "$ref": "#/70"
-        },
-        "flags": 2,
-        "description": "The number of nodes in the cluster."
-      },
-      "resourceMoveDetails": {
-        "type": {
-          "$ref": "#/80"
-        },
-        "flags": 2,
-        "description": "The details of the move operation on this resource."
-      },
-      "edgeProfile": {
-        "type": {
-          "$ref": "#/85"
-        },
-        "flags": 2,
-        "description": "The details of Edge Profile for this resource"
-      },
-      "dataResidency": {
-        "type": {
-          "$ref": "#/96"
-        },
-        "flags": 0,
-        "description": "The details of data-residency related properties for this resource"
-      },
-      "kubernetesWorkloadProfile": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "Kubernetes Workload Profile"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ReadyToSetup"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Online"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Offline"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NeedsAttention"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disconnected"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "PartiallyDisconnected"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Maintenance"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/61"
-      },
-      {
-        "$ref": "#/62"
-      },
-      {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/65"
-      },
-      {
-        "$ref": "#/66"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "DataBoxEdgeDevice"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/68"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "IOT"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ASA"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Functions"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Cognitive"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "MEC"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "CloudEdgeManagement"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Kubernetes"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/71"
-      },
-      {
-        "$ref": "#/72"
-      },
-      {
-        "$ref": "#/73"
-      },
-      {
-        "$ref": "#/74"
-      },
-      {
-        "$ref": "#/75"
-      },
-      {
-        "$ref": "#/76"
-      },
-      {
-        "$ref": "#/77"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/78"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceMoveDetails",
-    "properties": {
-      "operationInProgress": {
-        "type": {
-          "$ref": "#/84"
-        },
-        "flags": 0,
-        "description": "Denotes whether move operation is in progress"
-      },
-      "operationInProgressLockTimeoutInUTC": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Denotes the timeout of the operation to finish"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ResourceMoveInProgress"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ResourceMoveFailed"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/81"
-      },
-      {
-        "$ref": "#/82"
-      },
-      {
-        "$ref": "#/83"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EdgeProfile",
-    "properties": {
-      "subscription": {
-        "type": {
-          "$ref": "#/86"
-        },
-        "flags": 0,
-        "description": "Edge Profile Subscription"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "EdgeProfileSubscription",
-    "properties": {
-      "registrationId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Edge Subscription Registration ID"
-      },
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "ARM ID of the subscription"
-      },
-      "state": {
-        "type": {
-          "$ref": "#/92"
-        },
-        "flags": 0
-      },
-      "registrationDate": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "subscriptionId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/93"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Registered"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Warned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Suspended"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleted"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unregistered"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/87"
-      },
-      {
-        "$ref": "#/88"
-      },
-      {
-        "$ref": "#/89"
-      },
-      {
-        "$ref": "#/90"
-      },
-      {
-        "$ref": "#/91"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SubscriptionProperties",
-    "properties": {
-      "tenantId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "locationPlacementId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "quotaId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "serializedDetails": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "registeredFeatures": {
-        "type": {
-          "$ref": "#/95"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SubscriptionRegisteredFeatures",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      },
-      "state": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/94"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "DataResidency",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/99"
-        },
-        "flags": 0,
-        "description": "DataResidencyType enum"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GeoZoneReplication"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ZoneReplication"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
       {
         "$ref": "#/97"
       },
       {
-        "$ref": "#/98"
-      },
-      {
         "$ref": "#/0"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
+    }
   },
   {
     "$type": "ResourceType",
@@ -1145,10 +1145,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of BandwidthSchedule"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1172,7 +1172,7 @@
       },
       "rateInMbps": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 1,
         "description": "The bandwidth rate in Mbps."
@@ -1311,10 +1311,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of DiagnosticProactiveLogCollectionSettings"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1415,10 +1415,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Represents resource creation and updation time"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1593,6 +1593,13 @@
         "flags": 10,
         "description": "The resource api version"
       },
+      "properties": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "The order properties."
+      },
       "kind": {
         "type": {
           "$ref": "#/0"
@@ -1602,17 +1609,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Order"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/146"
-        },
-        "flags": 0,
-        "description": "The order properties."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1817,7 +1817,7 @@
           "$ref": "#/170"
         },
         "flags": 2,
-        "description": "Dictionary to hold generic information which is not stored\r\nby the already existing properties"
+        "description": "Dictionary to hold generic information which is not stored\nby the already existing properties"
       }
     }
   },
@@ -2089,10 +2089,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Role"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     },
     "elements": {
@@ -2143,7 +2143,7 @@
       },
       "edgeProfile": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/41"
         },
         "flags": 2,
         "description": "Edge Profile of the resource"
@@ -2637,14 +2637,14 @@
     "properties": {
       "processorCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 1,
         "description": "Processor count"
       },
       "memoryInGB": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 1,
         "description": "Memory in GB"
@@ -3109,14 +3109,14 @@
       },
       "memoryInBytes": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "Memory in bytes"
       },
       "processorCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "Processor count"
@@ -3368,10 +3368,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Addon"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     },
     "elements": {
@@ -3805,10 +3805,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of MonitoringConfiguration"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4014,10 +4014,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Share"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4470,10 +4470,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of StorageAccountCredential"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4641,10 +4641,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of StorageAccount"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4689,7 +4689,7 @@
       },
       "containerCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The Container Count. Present only for Storage Accounts with DataPolicy set to Cloud."
@@ -4819,10 +4819,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Container"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -4984,10 +4984,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Trigger"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     },
     "elements": {
@@ -5216,10 +5216,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of User"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -5396,10 +5396,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of NetworkSettings"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -5436,7 +5436,7 @@
       },
       "index": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "Logical index of the adapter."
@@ -5471,7 +5471,7 @@
       },
       "linkSpeed": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "Link speed."
@@ -5540,7 +5540,7 @@
       },
       "port": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The port."
@@ -5682,7 +5682,7 @@
       },
       "prefixLength": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The IPv6 prefix of the network adapter."
@@ -5770,10 +5770,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of UpdateSummary"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -5867,21 +5867,21 @@
       },
       "totalNumberOfUpdatesAvailable": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The number of updates available for the current device version as per the last device scan."
       },
       "totalNumberOfUpdatesPendingDownload": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The total number of items pending download."
       },
       "totalNumberOfUpdatesPendingInstall": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The total number of items pending install."
@@ -5944,14 +5944,14 @@
       },
       "totalUpdateSizeInBytes": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The total size of updates available for download in bytes."
       },
       "totalTimeInMinutes": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "The total time in Minutes"
@@ -6156,7 +6156,7 @@
       },
       "updateSize": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Size of the update(In Bytes)"
@@ -6184,7 +6184,7 @@
       },
       "estimatedInstallTimeInMins": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Estimated Install Time for the update"
@@ -6406,10 +6406,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of Alert"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -6517,7 +6517,7 @@
       },
       "occurrences": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 2,
         "description": "Number of occurrences."
@@ -6594,10 +6594,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
-        "description": "Metadata pertaining to device capacity info."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -6641,14 +6641,14 @@
     "properties": {
       "clusterTotalStorageMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "Total storage on the cluster in MB."
       },
       "clusterFreeStorageMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The available or free storage on the cluster in MB."
@@ -6689,7 +6689,7 @@
       },
       "totalProvisionedNonHpnCores": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The total # of vCPUs provisioned by non-HPN VM per appliance."
@@ -6709,28 +6709,28 @@
       },
       "gpuUsedUnitsCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The used GPU units count in the cluster."
       },
       "gpuFreeUnitsCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The free GPU units count in the cluster."
       },
       "gpuReservedForFailoverUnitsCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The GPU units count reserved for failover in the cluster."
       },
       "gpuTotalUnitsCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The total GPU units count in the cluster."
@@ -6743,63 +6743,63 @@
     "properties": {
       "clusterFreeMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The free memory in the cluster in MB."
       },
       "clusterUsedMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The used memory in the cluster in MB."
       },
       "clusterFailoverMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The failover memory in the cluster in MB."
       },
       "clusterFragmentationMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The fragmentation memory in the cluster in MB."
       },
       "clusterHypervReserveMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The memory reserved for Hyper-V in the cluster in MB."
       },
       "clusterInfraVmMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The memory of the Infra VM in the cluster in MB."
       },
       "clusterTotalMemoryMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The total memory in the cluster in MB."
       },
       "clusterNonFailoverVmMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The non-failover memory in the cluster in MB."
       },
       "clusterMemoryUsedByVmsMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The memory used by VMs in the cluster in MB."
@@ -6819,14 +6819,14 @@
       },
       "effectiveAvailableMemoryMbOnHost": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The available memory on the host accounting for VM placement size and any host VM reservations."
       },
       "availableGpuCount": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The available amount of GPUs on the host to use after accounting for GPUS used by reservations on the host."
@@ -6860,14 +6860,14 @@
     "properties": {
       "startupMemoryMB": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The total amount of RAM in the virtual machine, as seen by the guest  operating system. For a virtual machine with dynamic memory enabled, this represents the initial memory available at startup."
       },
       "currentMemoryUsageMB": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The current memory used by the virtual machine."
@@ -6888,28 +6888,28 @@
     "properties": {
       "numaNodeIndex": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The NUMA node index."
       },
       "totalMemoryInMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The total memory on the NUMA node."
       },
       "logicalCoreCountPerCore": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The logical cores per core count."
       },
       "effectiveAvailableMemoryInMb": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/26"
         },
         "flags": 0,
         "description": "The effective available memory on the NUMA node in MB."
@@ -6940,19 +6940,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/70"
+      "$ref": "#/26"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/70"
+      "$ref": "#/26"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/70"
+      "$ref": "#/26"
     }
   },
   {
@@ -6979,6 +6979,757 @@
     "flags": 1
   },
   {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/jobs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/jobs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/547"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/548"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/550"
+        },
+        "flags": 2,
+        "description": "The properties of the job."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/593"
+        },
+        "flags": 2,
+        "description": "The current status of the job."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The UTC date and time at which the job started."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The UTC date and time at which the job completed."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The percentage of the job that is complete."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/594"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobProperties",
+    "properties": {
+      "jobType": {
+        "type": {
+          "$ref": "#/560"
+        },
+        "flags": 2,
+        "description": "The type of the job."
+      },
+      "currentStage": {
+        "type": {
+          "$ref": "#/578"
+        },
+        "flags": 2,
+        "description": "Current stage of the update operation."
+      },
+      "downloadProgress": {
+        "type": {
+          "$ref": "#/579"
+        },
+        "flags": 2,
+        "description": "The download progress."
+      },
+      "installProgress": {
+        "type": {
+          "$ref": "#/585"
+        },
+        "flags": 2,
+        "description": "The install progress."
+      },
+      "totalRefreshErrors": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Total number of errors encountered during the refresh process."
+      },
+      "errorManifestFile": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "Local share/remote container relative path to the error manifest file of the refresh."
+      },
+      "refreshedEntityId": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "ARM ID of the entity that was refreshed."
+      },
+      "folder": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "If only subfolders need to be refreshed, then the subfolder path inside the share or container. (The path is empty if there are no subfolders.)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScanForUpdates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DownloadUpdates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstallUpdates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RefreshShare"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RefreshContainer"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Backup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Restore"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TriggerSupportPackage"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/551"
+      },
+      {
+        "$ref": "#/552"
+      },
+      {
+        "$ref": "#/553"
+      },
+      {
+        "$ref": "#/554"
+      },
+      {
+        "$ref": "#/555"
+      },
+      {
+        "$ref": "#/556"
+      },
+      {
+        "$ref": "#/557"
+      },
+      {
+        "$ref": "#/558"
+      },
+      {
+        "$ref": "#/559"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initial"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScanStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScanComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ScanFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DownloadStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DownloadComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DownloadFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstallStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstallComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstallFailed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RebootInitiated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Success"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failure"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RescanStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RescanComplete"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RescanFailed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/561"
+      },
+      {
+        "$ref": "#/562"
+      },
+      {
+        "$ref": "#/563"
+      },
+      {
+        "$ref": "#/564"
+      },
+      {
+        "$ref": "#/565"
+      },
+      {
+        "$ref": "#/566"
+      },
+      {
+        "$ref": "#/567"
+      },
+      {
+        "$ref": "#/568"
+      },
+      {
+        "$ref": "#/569"
+      },
+      {
+        "$ref": "#/570"
+      },
+      {
+        "$ref": "#/571"
+      },
+      {
+        "$ref": "#/572"
+      },
+      {
+        "$ref": "#/573"
+      },
+      {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
+        "$ref": "#/576"
+      },
+      {
+        "$ref": "#/577"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateDownloadProgress",
+    "properties": {
+      "downloadPhase": {
+        "type": {
+          "$ref": "#/584"
+        },
+        "flags": 2,
+        "description": "The download phase."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Percentage of completion."
+      },
+      "totalBytesToDownload": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Total bytes to download."
+      },
+      "totalBytesDownloaded": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Total bytes downloaded."
+      },
+      "numberOfUpdatesToDownload": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Number of updates to download."
+      },
+      "numberOfUpdatesDownloaded": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Number of updates downloaded."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Initializing"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Downloading"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Verifying"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/580"
+      },
+      {
+        "$ref": "#/581"
+      },
+      {
+        "$ref": "#/582"
+      },
+      {
+        "$ref": "#/583"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateInstallProgress",
+    "properties": {
+      "percentComplete": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Percentage completed."
+      },
+      "numberOfUpdatesToInstall": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Number of updates to install."
+      },
+      "numberOfUpdatesInstalled": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "Number of updates installed."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/586"
+      },
+      {
+        "$ref": "#/587"
+      },
+      {
+        "$ref": "#/588"
+      },
+      {
+        "$ref": "#/589"
+      },
+      {
+        "$ref": "#/590"
+      },
+      {
+        "$ref": "#/591"
+      },
+      {
+        "$ref": "#/592"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobErrorDetails",
+    "properties": {
+      "errorDetails": {
+        "type": {
+          "$ref": "#/597"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The code intended for programmatic access."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The message that describes the error in detail."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "JobErrorItem",
+    "properties": {
+      "recommendations": {
+        "type": {
+          "$ref": "#/596"
+        },
+        "flags": 2,
+        "description": "The recommended actions."
+      },
+      "code": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The code intended for programmatic access."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The message that describes the error in detail."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/0"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/595"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/jobs@2023-12-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/549"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/operationsStatus"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-12-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/operationsStatus",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/599"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/600"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/550"
+        },
+        "flags": 2,
+        "description": "The properties of the job."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/609"
+        },
+        "flags": 2,
+        "description": "The current status of the job."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The UTC date and time at which the job started."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "The UTC date and time at which the job completed."
+      },
+      "percentComplete": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 2,
+        "description": "The percentage of the job that is complete."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/594"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Paused"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/602"
+      },
+      {
+        "$ref": "#/603"
+      },
+      {
+        "$ref": "#/604"
+      },
+      {
+        "$ref": "#/605"
+      },
+      {
+        "$ref": "#/606"
+      },
+      {
+        "$ref": "#/607"
+      },
+      {
+        "$ref": "#/608"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/operationsStatus@2023-12-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/601"
+    },
+    "flags": 1
+  },
+  {
     "$type": "ResourceFunctionType",
     "name": "downloadUpdates",
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
@@ -6993,14 +7744,14 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Gets or sets base64 encoded certificate raw data,\r\nthis is the public part needed to be uploaded to cert vault"
+        "description": "Gets or sets base64 encoded certificate raw data,\nthis is the public part needed to be uploaded to cert vault"
       },
       "privateKey": {
         "type": {
           "$ref": "#/200"
         },
         "flags": 0,
-        "description": "Gets or sets base64 encoded private part of the certificate,\r\nneeded to form the activation key"
+        "description": "Gets or sets base64 encoded private part of the certificate,\nneeded to form the activation key"
       },
       "expiryTimeInUTC": {
         "type": {
@@ -7017,7 +7768,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "output": {
-      "$ref": "#/548"
+      "$ref": "#/612"
     }
   },
   {
@@ -7026,14 +7777,14 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/551"
+          "$ref": "#/615"
         },
         "flags": 0,
         "description": "The extended info properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/5"
         },
         "flags": 2,
         "description": "Metadata pertaining to creation and last modification of DataBoxEdgeDevice"
@@ -7116,21 +7867,21 @@
       },
       "keyVaultSyncStatus": {
         "type": {
-          "$ref": "#/558"
+          "$ref": "#/622"
         },
         "flags": 0,
         "description": "Key vault sync status"
       },
       "deviceSecrets": {
         "type": {
-          "$ref": "#/560"
+          "$ref": "#/624"
         },
         "flags": 2,
         "description": "Device secrets, will be returned only with ODataFilter $expand=deviceSecrets"
       },
       "clusterWitnessType": {
         "type": {
-          "$ref": "#/564"
+          "$ref": "#/628"
         },
         "flags": 2,
         "description": "Cluster Witness Type"
@@ -7200,22 +7951,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/552"
+        "$ref": "#/616"
       },
       {
-        "$ref": "#/553"
+        "$ref": "#/617"
       },
       {
-        "$ref": "#/554"
+        "$ref": "#/618"
       },
       {
-        "$ref": "#/555"
+        "$ref": "#/619"
       },
       {
-        "$ref": "#/556"
+        "$ref": "#/620"
       },
       {
-        "$ref": "#/557"
+        "$ref": "#/621"
       },
       {
         "$ref": "#/0"
@@ -7247,7 +7998,7 @@
     "name": "DataBoxEdgeDeviceExtendedInfoPropertiesDeviceSecrets",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/559"
+      "$ref": "#/623"
     }
   },
   {
@@ -7266,13 +8017,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/561"
+        "$ref": "#/625"
       },
       {
-        "$ref": "#/562"
+        "$ref": "#/626"
       },
       {
-        "$ref": "#/563"
+        "$ref": "#/627"
       },
       {
         "$ref": "#/0"
@@ -7285,7 +8036,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "output": {
-      "$ref": "#/550"
+      "$ref": "#/614"
     }
   },
   {
@@ -7334,7 +8085,7 @@
       },
       "syncStatus": {
         "type": {
-          "$ref": "#/575"
+          "$ref": "#/639"
         },
         "flags": 0,
         "description": "For changing or to initiate the resync to key-vault set the status to KeyVaultSyncPending, rest of the status will not be applicable."
@@ -7369,22 +8120,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/569"
+        "$ref": "#/633"
       },
       {
-        "$ref": "#/570"
+        "$ref": "#/634"
       },
       {
-        "$ref": "#/571"
+        "$ref": "#/635"
       },
       {
-        "$ref": "#/572"
+        "$ref": "#/636"
       },
       {
-        "$ref": "#/573"
+        "$ref": "#/637"
       },
       {
-        "$ref": "#/574"
+        "$ref": "#/638"
       },
       {
         "$ref": "#/0"
@@ -7397,10 +8148,10 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "output": {
-      "$ref": "#/550"
+      "$ref": "#/614"
     },
     "input": {
-      "$ref": "#/568"
+      "$ref": "#/632"
     }
   },
   {
@@ -7409,7 +8160,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/578"
+          "$ref": "#/642"
         },
         "flags": 1,
         "description": "The Base 64 encoded certificate raw data."
@@ -7422,7 +8173,7 @@
     "properties": {
       "authenticationType": {
         "type": {
-          "$ref": "#/581"
+          "$ref": "#/645"
         },
         "flags": 0,
         "description": "The authentication type."
@@ -7448,10 +8199,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/579"
+        "$ref": "#/643"
       },
       {
-        "$ref": "#/580"
+        "$ref": "#/644"
       },
       {
         "$ref": "#/0"
@@ -7464,7 +8215,7 @@
     "properties": {
       "authType": {
         "type": {
-          "$ref": "#/585"
+          "$ref": "#/649"
         },
         "flags": 0,
         "description": "Specifies authentication type."
@@ -7532,10 +8283,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/583"
+        "$ref": "#/647"
       },
       {
-        "$ref": "#/584"
+        "$ref": "#/648"
       },
       {
         "$ref": "#/0"
@@ -7548,10 +8299,10 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "output": {
-      "$ref": "#/582"
+      "$ref": "#/646"
     },
     "input": {
-      "$ref": "#/577"
+      "$ref": "#/641"
     }
   },
   {
@@ -7560,7 +8311,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/588"
+          "$ref": "#/652"
         },
         "flags": 1,
         "description": "The properties of the Device Capacity Request."
@@ -7573,14 +8324,14 @@
     "properties": {
       "vmPlacementQuery": {
         "type": {
-          "$ref": "#/590"
+          "$ref": "#/654"
         },
         "flags": 1,
         "description": "Array containing the sizes of the VMs for checking if its feasible to create them on the appliance."
       },
       "vmPlacementResults": {
         "type": {
-          "$ref": "#/594"
+          "$ref": "#/658"
         },
         "flags": 0,
         "description": "Array of the VMs of the sizes in VmSizes can be provisioned on the appliance."
@@ -7596,7 +8347,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/589"
+      "$ref": "#/653"
     }
   },
   {
@@ -7605,14 +8356,14 @@
     "properties": {
       "vmSize": {
         "type": {
-          "$ref": "#/592"
+          "$ref": "#/656"
         },
         "flags": 0,
         "description": "List of VM sizes being checked."
       },
       "isFeasible": {
         "type": {
-          "$ref": "#/593"
+          "$ref": "#/657"
         },
         "flags": 0,
         "description": "Boolean value indicating if the VM(s) in VmSize can be created."
@@ -7645,7 +8396,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/591"
+      "$ref": "#/655"
     }
   },
   {
@@ -7654,7 +8405,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "input": {
-      "$ref": "#/587"
+      "$ref": "#/651"
     }
   },
   {
@@ -7663,7 +8414,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/597"
+          "$ref": "#/661"
         },
         "flags": 1,
         "description": "The TriggerSupportPackageRequest properties."
@@ -7714,7 +8465,7 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "Type of files, which need to be included in the logs\r\nThis will contain the type of logs (Default/DefaultWithDumps/None/All/DefaultWithArchived)\r\nor a comma separated list of log types that are required"
+        "description": "Type of files, which need to be included in the logs\nThis will contain the type of logs (Default/DefaultWithDumps/None/All/DefaultWithArchived)\nor a comma separated list of log types that are required"
       }
     }
   },
@@ -7724,7 +8475,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
     "apiVersion": "2023-12-01",
     "input": {
-      "$ref": "#/596"
+      "$ref": "#/660"
     }
   },
   {
@@ -7733,7 +8484,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/600"
+          "$ref": "#/664"
         },
         "flags": 1,
         "description": "Properties of the security settings."
@@ -7780,7 +8531,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/securitySettings",
     "apiVersion": "2023-12-01",
     "input": {
-      "$ref": "#/599"
+      "$ref": "#/663"
     }
   },
   {
@@ -7789,7 +8540,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/603"
+          "$ref": "#/667"
         },
         "flags": 0,
         "description": "DCAccessCode properties."
@@ -7815,7 +8566,7 @@
     "resourceType": "Microsoft.DataBoxEdge/dataBoxEdgeDevices/orders",
     "apiVersion": "2023-12-01",
     "output": {
-      "$ref": "#/602"
+      "$ref": "#/666"
     }
   },
   {

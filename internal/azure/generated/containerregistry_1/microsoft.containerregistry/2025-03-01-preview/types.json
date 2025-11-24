@@ -55,26 +55,26 @@
         "flags": 0,
         "description": "The properties associated with the agent pool"
       },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The location of the resource. This cannot be changed after the resource is created."
-      },
       "tags": {
         "type": {
           "$ref": "#/17"
         },
         "flags": 0,
-        "description": "The tags of the resource."
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
       },
       "systemData": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -196,7 +196,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -246,7 +246,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The timestamp of resource modification (UTC)."
+        "description": "The timestamp of resource last modification (UTC)"
       }
     }
   },
@@ -377,19 +377,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/34"
         },
         "flags": 0,
-        "description": "Identity for the resource."
+        "description": "The properties associated with the task run, i.e., request and result of the run"
       },
-      "properties": {
+      "identity": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/118"
         },
         "flags": 0,
-        "description": "The properties associated with the task run, i.e., request and result of the run"
+        "description": "Identity for the resource."
       },
       "location": {
         "type": {
@@ -403,103 +403,8 @@
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "IdentityProperties",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal ID of resource identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant ID of resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/39"
-        },
-        "flags": 0,
-        "description": "The identity type."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/41"
-        },
-        "flags": 0,
-        "description": "The list of user identities associated with the resource. The user identity \r\ndictionary key references will be ARM resource ids in the form: \r\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\r\n    providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/35"
-      },
-      {
-        "$ref": "#/36"
-      },
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserIdentityProperties",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal id of user assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The client id of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "IdentityPropertiesUserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/40"
     }
   },
   {
@@ -508,21 +413,21 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/41"
         },
         "flags": 2,
         "description": "The provisioning state of this task run"
       },
       "runRequest": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The request (parameters) for the run"
       },
       "runResult": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/88"
         },
         "flags": 2,
         "description": "The result of this task run"
@@ -564,22 +469,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/43"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/40"
       },
       {
         "$ref": "#/2"
@@ -593,7 +498,7 @@
     "baseProperties": {
       "isArchiveEnabled": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value that indicates whether archiving is enabled for the run or not."
@@ -615,16 +520,16 @@
     },
     "elements": {
       "DockerBuildRequest": {
-        "$ref": "#/52"
+        "$ref": "#/44"
       },
       "EncodedTaskRunRequest": {
-        "$ref": "#/84"
+        "$ref": "#/76"
       },
       "FileTaskRunRequest": {
-        "$ref": "#/88"
+        "$ref": "#/80"
       },
       "TaskRunRequest": {
-        "$ref": "#/91"
+        "$ref": "#/83"
       }
     }
   },
@@ -637,21 +542,21 @@
     "properties": {
       "imageNames": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "The fully qualified image names including the repository and tag."
       },
       "isPushEnabled": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value of this property indicates whether the image built should be pushed to the registry or not."
       },
       "noCache": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value of this property indicates whether the image cache is enabled or not."
@@ -672,28 +577,28 @@
       },
       "arguments": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "The collection of override arguments to be used when executing the run."
       },
       "timeout": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "Run timeout in seconds."
       },
       "platform": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 1,
         "description": "The platform properties against which the run has to happen."
       },
       "agentConfiguration": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The machine configuration of the run agent."
@@ -703,18 +608,18 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
       },
       "credentials": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties that describes a set of credentials that will be used when this run is invoked."
       },
       "type": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "The type of the run request."
@@ -747,7 +652,7 @@
       },
       "isSecret": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "Flag to indicate whether the argument represents a secret and want to be removed from build logs."
@@ -757,7 +662,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/54"
+      "$ref": "#/46"
     }
   },
   {
@@ -771,21 +676,21 @@
     "properties": {
       "os": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/52"
         },
         "flags": 1,
         "description": "The operating system type required for the run."
       },
       "architecture": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/58"
         },
         "flags": 0,
         "description": "The OS architecture."
       },
       "variant": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/62"
         },
         "flags": 0,
         "description": "Variant of the CPU."
@@ -804,10 +709,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/58"
+        "$ref": "#/50"
       },
       {
-        "$ref": "#/59"
+        "$ref": "#/51"
       },
       {
         "$ref": "#/2"
@@ -838,19 +743,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/61"
+        "$ref": "#/53"
       },
       {
-        "$ref": "#/62"
+        "$ref": "#/54"
       },
       {
-        "$ref": "#/63"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/64"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/65"
+        "$ref": "#/57"
       },
       {
         "$ref": "#/2"
@@ -873,13 +778,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/67"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/68"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/69"
+        "$ref": "#/61"
       },
       {
         "$ref": "#/2"
@@ -905,17 +810,17 @@
     "properties": {
       "sourceRegistry": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/65"
         },
         "flags": 0,
         "description": "Describes the credential parameters for accessing the source registry."
       },
       "customRegistries": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/74"
         },
         "flags": 0,
-        "description": "Describes the credential parameters for accessing other custom registries. The key\r\nfor the dictionary item will be the registry login server (myregistry.azurecr.io) and\r\nthe value of the item will be the registry credentials for accessing the registry."
+        "description": "Describes the credential parameters for accessing other custom registries. The key\nfor the dictionary item will be the registry login server (myregistry.azurecr.io) and\nthe value of the item will be the registry credentials for accessing the registry."
       }
     }
   },
@@ -928,14 +833,14 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The Entra identity used for source registry login.\r\nThe value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,\r\nand client ID for user-assigned managed identity."
+        "description": "The Entra identity used for source registry login.\nThe value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,\nand client ID for user-assigned managed identity."
       },
       "loginMode": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/68"
         },
         "flags": 0,
-        "description": "The authentication mode which determines the source registry login scope. The credentials for the source registry\r\nwill be generated using the given scope. These credentials will be used to login to\r\nthe source registry during the run."
+        "description": "The authentication mode which determines the source registry login scope. The credentials for the source registry\nwill be generated using the given scope. These credentials will be used to login to\nthe source registry during the run."
       }
     }
   },
@@ -951,10 +856,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/74"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/75"
+        "$ref": "#/67"
       },
       {
         "$ref": "#/2"
@@ -967,24 +872,24 @@
     "properties": {
       "userName": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "The username for logging into the custom registry."
       },
       "password": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/70"
         },
         "flags": 0,
-        "description": "The password for logging into the custom registry. The password is a secret \r\nobject that allows multiple ways of providing the value for it."
+        "description": "The password for logging into the custom registry. The password is a secret\nobject that allows multiple ways of providing the value for it."
       },
       "identity": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "Indicates the managed identity assigned to the custom credential. If a user-assigned identity\r\nthis value is the Client ID. If a system-assigned identity, the value will be `system`. In\r\nthe case of a system-assigned identity, the Client ID will be determined by the runner. This\r\nidentity may be used to authenticate to key vault to retrieve credentials or it may be the only \r\nsource of authentication used for accessing the registry."
+        "description": "Indicates the managed identity assigned to the custom credential. If a user-assigned identity\nthis value is the Client ID. If a system-assigned identity, the value will be `system`. In\nthe case of a system-assigned identity, the Client ID will be determined by the runner. This\nidentity may be used to authenticate to key vault to retrieve credentials or it may be the only\nsource of authentication used for accessing the registry."
       }
     }
   },
@@ -997,14 +902,14 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The value of the secret. The format of this value will be determined\r\nbased on the type of the secret object. If the type is Opaque, the value will be\r\nused as is without any modification."
+        "description": "The value of the secret. The format of this value will be determined\nbased on the type of the secret object. If the type is Opaque, the value will be\nused as is without any modification."
       },
       "type": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/73"
         },
         "flags": 0,
-        "description": "The type of the secret object which determines how the value of the secret object has to be\r\ninterpreted."
+        "description": "The type of the secret object which determines how the value of the secret object has to be\ninterpreted."
       }
     }
   },
@@ -1020,10 +925,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/79"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/72"
       },
       {
         "$ref": "#/2"
@@ -1035,7 +940,7 @@
     "name": "CredentialsCustomRegistries",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/77"
+      "$ref": "#/69"
     }
   },
   {
@@ -1062,28 +967,28 @@
       },
       "values": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/78"
         },
         "flags": 0,
         "description": "The collection of overridable values that can be passed when running a task."
       },
       "timeout": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "Run timeout in seconds."
       },
       "platform": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 1,
         "description": "The platform properties against which the run has to happen."
       },
       "agentConfiguration": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The machine configuration of the run agent."
@@ -1093,18 +998,18 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
       },
       "credentials": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties that describes a set of credentials that will be used when this run is invoked."
       },
       "type": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/79"
         },
         "flags": 1,
         "description": "The type of the run request."
@@ -1131,7 +1036,7 @@
       },
       "isSecret": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "Flag to indicate whether the value represents a secret or not."
@@ -1141,7 +1046,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/85"
+      "$ref": "#/77"
     }
   },
   {
@@ -1168,28 +1073,28 @@
       },
       "values": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "The collection of overridable values that can be passed when running a task."
       },
       "timeout": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "Run timeout in seconds."
       },
       "platform": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 1,
         "description": "The platform properties against which the run has to happen."
       },
       "agentConfiguration": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The machine configuration of the run agent."
@@ -1199,18 +1104,18 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\r\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
+        "description": "The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.\nIf it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API."
       },
       "credentials": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties that describes a set of credentials that will be used when this run is invoked."
       },
       "type": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/82"
         },
         "flags": 1,
         "description": "The type of the run request."
@@ -1220,7 +1125,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/85"
+      "$ref": "#/77"
     }
   },
   {
@@ -1240,14 +1145,14 @@
       },
       "overrideTaskStepProperties": {
         "type": {
-          "$ref": "#/92"
+          "$ref": "#/84"
         },
         "flags": 0,
         "description": "Set of overridable parameters that can be passed when running a Task."
       },
       "type": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/87"
         },
         "flags": 1,
         "description": "The type of the run request."
@@ -1274,10 +1179,10 @@
       },
       "arguments": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/85"
         },
         "flags": 0,
-        "description": "Gets or sets the collection of override arguments to be used when\r\nexecuting a build step."
+        "description": "Gets or sets the collection of override arguments to be used when\nexecuting a build step."
       },
       "target": {
         "type": {
@@ -1288,7 +1193,7 @@
       },
       "values": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/86"
         },
         "flags": 0,
         "description": "The collection of overridable values that can be passed when running a Task."
@@ -1305,13 +1210,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/54"
+      "$ref": "#/46"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/85"
+      "$ref": "#/77"
     }
   },
   {
@@ -1324,7 +1229,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/89"
         },
         "flags": 0,
         "description": "The properties of a run."
@@ -1334,28 +1239,28 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The resource ID."
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The name of the resource."
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The type of the resource."
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1372,7 +1277,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/106"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "The current status of the run."
@@ -1386,7 +1291,7 @@
       },
       "runType": {
         "type": {
-          "$ref": "#/111"
+          "$ref": "#/103"
         },
         "flags": 0,
         "description": "The type of run."
@@ -1421,7 +1326,7 @@
       },
       "outputImages": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/105"
         },
         "flags": 0,
         "description": "The list of all images that were generated from the run. This is applicable if the run generates base image dependencies."
@@ -1435,35 +1340,35 @@
       },
       "imageUpdateTrigger": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/106"
         },
         "flags": 0,
         "description": "The image update trigger that caused the run. This is applicable if the task has base image trigger configured."
       },
       "sourceTrigger": {
         "type": {
-          "$ref": "#/116"
+          "$ref": "#/108"
         },
         "flags": 0,
         "description": "The source trigger that caused the run."
       },
       "timerTrigger": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/109"
         },
         "flags": 0,
         "description": "The timer trigger that caused the run."
       },
       "platform": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The platform properties against which the run will happen."
       },
       "agentConfiguration": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The machine configuration of the run agent."
@@ -1477,7 +1382,7 @@
       },
       "customRegistries": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/110"
         },
         "flags": 0,
         "description": "The list of custom registries that were logged in during this run."
@@ -1498,21 +1403,21 @@
       },
       "logArtifact": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/104"
         },
         "flags": 2,
         "description": "The image description for the log artifact."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/117"
         },
         "flags": 0,
         "description": "The provisioning state of a run."
       },
       "isArchiveEnabled": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value that indicates whether archiving is enabled or not."
@@ -1555,28 +1460,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/98"
+        "$ref": "#/90"
       },
       {
-        "$ref": "#/99"
+        "$ref": "#/91"
       },
       {
-        "$ref": "#/100"
+        "$ref": "#/92"
       },
       {
-        "$ref": "#/101"
+        "$ref": "#/93"
       },
       {
-        "$ref": "#/102"
+        "$ref": "#/94"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/95"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/96"
       },
       {
-        "$ref": "#/105"
+        "$ref": "#/97"
       },
       {
         "$ref": "#/2"
@@ -1603,16 +1508,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/107"
+        "$ref": "#/99"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/100"
       },
       {
-        "$ref": "#/109"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/110"
+        "$ref": "#/102"
       },
       {
         "$ref": "#/2"
@@ -1656,7 +1561,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/112"
+      "$ref": "#/104"
     }
   },
   {
@@ -1679,7 +1584,7 @@
       },
       "images": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The list of image updates that caused the build."
@@ -1689,7 +1594,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/112"
+      "$ref": "#/104"
     }
   },
   {
@@ -1801,6 +1706,82 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/111"
+      },
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/115"
+      },
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityProperties",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity\ndictionary key references will be ARM resource ids in the form:\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\nproviders/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
         "$ref": "#/119"
       },
       {
@@ -1811,17 +1792,36 @@
       },
       {
         "$ref": "#/122"
-      },
-      {
-        "$ref": "#/123"
-      },
-      {
-        "$ref": "#/124"
-      },
-      {
-        "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserIdentityProperties",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client id of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityPropertiesUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/124"
+    }
   },
   {
     "$type": "ResourceType",
@@ -1878,13 +1878,6 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 0,
-        "description": "Identity for the resource."
-      },
       "properties": {
         "type": {
           "$ref": "#/131"
@@ -1892,26 +1885,33 @@
         "flags": 0,
         "description": "The properties of a task."
       },
-      "location": {
+      "identity": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/118"
         },
-        "flags": 1,
-        "description": "The location of the resource. This cannot be changed after the resource is created."
+        "flags": 0,
+        "description": "Identity for the resource."
       },
       "tags": {
         "type": {
           "$ref": "#/191"
         },
         "flags": 0,
-        "description": "The tags of the resource."
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
       },
       "systemData": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1942,14 +1942,14 @@
       },
       "platform": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 0,
         "description": "The platform properties against which the run has to happen."
       },
       "agentConfiguration": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "The machine configuration of the run agent."
@@ -1963,7 +1963,7 @@
       },
       "timeout": {
         "type": {
-          "$ref": "#/56"
+          "$ref": "#/48"
         },
         "flags": 0,
         "description": "Run timeout in seconds."
@@ -1984,7 +1984,7 @@
       },
       "credentials": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "The properties that describes a set of credentials that will be used when this run is invoked."
@@ -1998,7 +1998,7 @@
       },
       "isSystemTask": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value of this property indicates whether the task resource is system task or not."
@@ -2198,14 +2198,14 @@
       },
       "isPushEnabled": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value of this property indicates whether the image built should be pushed to the registry or not."
       },
       "noCache": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The value of this property indicates whether the image cache is enabled or not."
@@ -2249,7 +2249,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/54"
+      "$ref": "#/46"
     }
   },
   {
@@ -2293,7 +2293,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/85"
+      "$ref": "#/77"
     }
   },
   {
@@ -2337,7 +2337,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/85"
+      "$ref": "#/77"
     }
   },
   {
@@ -2490,7 +2490,7 @@
           "$ref": "#/169"
         },
         "flags": 0,
-        "description": "The authorization properties for accessing the source code repository and to set up\r\nwebhooks for notifications."
+        "description": "The authorization properties for accessing the source code repository and to set up\nwebhooks for notifications."
       }
     }
   },
@@ -2744,7 +2744,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -2801,7 +2801,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/89"
         },
         "flags": 2,
         "description": "The properties of a run."
@@ -2811,7 +2811,7 @@
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2847,18 +2847,6 @@
     }
   },
   {
-    "$type": "ResourceFunctionType",
-    "name": "scheduleRun",
-    "resourceType": "Microsoft.ContainerRegistry/registries",
-    "apiVersion": "2025-03-01-preview",
-    "output": {
-      "$ref": "#/96"
-    },
-    "input": {
-      "$ref": "#/50"
-    }
-  },
-  {
     "$type": "ObjectType",
     "name": "SourceUploadDefinition",
     "properties": {
@@ -2884,8 +2872,26 @@
     "resourceType": "Microsoft.ContainerRegistry/registries",
     "apiVersion": "2025-03-01-preview",
     "output": {
-      "$ref": "#/200"
+      "$ref": "#/199"
     }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "scheduleRun",
+    "resourceType": "Microsoft.ContainerRegistry/registries",
+    "apiVersion": "2025-03-01-preview",
+    "output": {
+      "$ref": "#/88"
+    },
+    "input": {
+      "$ref": "#/42"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "cancel",
+    "resourceType": "Microsoft.ContainerRegistry/registries/runs",
+    "apiVersion": "2025-03-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -2913,32 +2919,26 @@
     "resourceType": "Microsoft.ContainerRegistry/registries/runs",
     "apiVersion": "2025-03-01-preview",
     "output": {
-      "$ref": "#/202"
+      "$ref": "#/203"
     }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "cancel",
-    "resourceType": "Microsoft.ContainerRegistry/registries/runs",
-    "apiVersion": "2025-03-01-preview"
   },
   {
     "$type": "ObjectType",
     "name": "TaskRun",
     "properties": {
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/34"
         },
         "flags": 0,
-        "description": "Identity for the resource."
+        "description": "The properties associated with the task run, i.e., request and result of the run"
       },
-      "properties": {
+      "identity": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/118"
         },
         "flags": 0,
-        "description": "The properties associated with the task run, i.e., request and result of the run"
+        "description": "Identity for the resource."
       },
       "location": {
         "type": {
@@ -2952,28 +2952,28 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The resource ID."
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The name of the resource."
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The type of the resource."
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2990,13 +2990,6 @@
     "$type": "ObjectType",
     "name": "Task",
     "properties": {
-      "identity": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 0,
-        "description": "Identity for the resource."
-      },
       "properties": {
         "type": {
           "$ref": "#/131"
@@ -3004,53 +2997,60 @@
         "flags": 0,
         "description": "The properties of a task."
       },
-      "id": {
+      "identity": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/118"
         },
-        "flags": 2,
-        "description": "The resource ID."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The type of the resource."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The location of the resource. This cannot be changed after the resource is created."
+        "flags": 0,
+        "description": "Identity for the resource."
       },
       "tags": {
         "type": {
           "$ref": "#/208"
         },
         "flags": 0,
-        "description": "The tags of the resource."
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
       },
       "systemData": {
         "type": {
           "$ref": "#/18"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"

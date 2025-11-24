@@ -1,0 +1,3429 @@
+[
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "Managed identity."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "hubProfile": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 0,
+        "description": "The FleetHubProfile configures the Fleet's hub."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 2,
+        "description": "Status information for the fleet."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetHubProfile",
+    "properties": {
+      "dnsPrefix": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "DNS prefix used to create the FQDN for the Fleet hub."
+      },
+      "apiServerAccessProfile": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The access profile for the Fleet hub API server."
+      },
+      "agentProfile": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "The agent profile for the Fleet hub."
+      },
+      "fqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The FQDN of the Fleet hub."
+      },
+      "kubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Kubernetes version of the Fleet hub."
+      },
+      "portalFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Azure Portal FQDN of the Fleet hub."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 54,
+    "pattern": "^[a-zA-Z0-9]$|^[a-zA-Z0-9][a-zA-Z0-9-]{0,52}[a-zA-Z0-9]$"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "APIServerAccessProfile",
+    "properties": {
+      "enablePrivateCluster": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Whether to create the Fleet hub as a private cluster or not."
+      },
+      "enableVnetIntegration": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "Whether to enable apiserver vnet integration for the Fleet hub or not."
+      },
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new Fleet with BYO vnet."
+      }
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AgentProfile",
+    "properties": {
+      "subnetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet will be generated and used."
+      },
+      "vmSize": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The virtual machine size of the Fleet hub."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetStatus",
+    "properties": {
+      "lastOperationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The last operation ID for the fleet."
+      },
+      "lastOperationError": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The last operation error for the fleet."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorDetail",
+    "properties": {
+      "code": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error target."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 2,
+        "description": "The error details."
+      },
+      "additionalInfo": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The error additional info."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ErrorAdditionalInfo",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The additional info type."
+      },
+      "info": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "The additional info."
+      }
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/21"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/30"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/28"
+      },
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/31"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/40"
+      },
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 50,
+    "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/autoUpgradeProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/autoUpgradeProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/47"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/48"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoUpgradeProfileProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the AutoUpgradeProfile resource."
+      },
+      "updateStrategyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource id of the UpdateStrategy resource to reference. If not specified, the auto upgrade will run on all clusters which are members of the fleet."
+      },
+      "channel": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 1,
+        "description": "Configures how auto-upgrade will be run."
+      },
+      "nodeImageSelection": {
+        "type": {
+          "$ref": "#/60"
+        },
+        "flags": 0,
+        "description": "The node image upgrade to be applied to the target clusters in auto upgrade."
+      },
+      "disabled": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "If set to False: the auto upgrade has effect - target managed clusters will be upgraded on schedule.\nIf set to True: the auto upgrade has no effect - no upgrade will be run on the target managed clusters.\nThis is a boolean and not an enum because enabled/disabled are all available states of the auto upgrade profile.\nBy default, this is set to False."
+      },
+      "autoUpgradeProfileStatus": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 0,
+        "description": "The status of the auto upgrade profile."
+      },
+      "targetKubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "This is the target Kubernetes version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, \"1.30\".\n  By default, this is empty.\n  If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.\n  If upgrade channel is Rapid, Stable or NodeImage, this field must be empty."
+      },
+      "longTermSupport": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "If upgrade channel is not TargetKubernetesVersion, this field must be False.\n  If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than N-2 \n  (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).\n  By default, this is set to False.\n  For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/51"
+      },
+      {
+        "$ref": "#/52"
+      },
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rapid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeImage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TargetKubernetesVersion"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoUpgradeNodeImageSelection",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 1,
+        "description": "The node image upgrade type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Latest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Consistent"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AutoUpgradeProfileStatus",
+    "properties": {
+      "lastTriggeredAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The UTC time of the last attempt to automatically create and start an UpdateRun as triggered by the release of new versions."
+      },
+      "lastTriggerStatus": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 2,
+        "description": "The status of the last AutoUpgrade trigger."
+      },
+      "lastTriggerError": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The error details of the last trigger."
+      },
+      "lastTriggerUpgradeVersions": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 2,
+        "description": "The target Kubernetes version or node image versions of the last trigger."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/65"
+      },
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/autoUpgradeProfiles@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/49"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/managedNamespaces"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/managedNamespaces",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/70"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/71"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetManagedNamespaceProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "managedNamespaceProperties": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "The namespace properties for the fleet managed namespace."
+      },
+      "adoptionPolicy": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "Action if the managed namespace with the same name already exists. Default is Never."
+      },
+      "deletePolicy": {
+        "type": {
+          "$ref": "#/100"
+        },
+        "flags": 1,
+        "description": "Delete options of a fleet managed namespace. Default is Keep."
+      },
+      "propagationPolicy": {
+        "type": {
+          "$ref": "#/101"
+        },
+        "flags": 0,
+        "description": "The profile of the propagation to create the namespace."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/144"
+        },
+        "flags": 2,
+        "description": "Status information of the last operation for fleet managed namespace."
+      },
+      "portalFqdn": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Azure Portal FQDN of the Fleet hub."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/74"
+      },
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedNamespaceProperties",
+    "properties": {
+      "labels": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 0,
+        "description": "The labels for the fleet managed namespace."
+      },
+      "annotations": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 0,
+        "description": "The annotations for the fleet managed namespace."
+      },
+      "defaultResourceQuota": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "The default resource quota for the fleet managed namespace."
+      },
+      "defaultNetworkPolicy": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "The default network policy for the fleet managed namespace."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedNamespacePropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedNamespacePropertiesAnnotations",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceQuota",
+    "properties": {
+      "cpuRequest": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The CPU request for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu"
+      },
+      "cpuLimit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The CPU limit for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu"
+      },
+      "memoryRequest": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The memory request for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory"
+      },
+      "memoryLimit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The memory limit for the managed namespace. See more at https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetworkPolicy",
+    "properties": {
+      "ingress": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 0,
+        "description": "The ingress policy for the managed namespace."
+      },
+      "egress": {
+        "type": {
+          "$ref": "#/93"
+        },
+        "flags": 0,
+        "description": "The egress policy for the managed namespace."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AllowAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DenyAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AllowSameNamespace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/87"
+      },
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AllowAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DenyAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AllowSameNamespace"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Never"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "IfIdentical"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Always"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Keep"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Delete"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PropagationPolicy",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/103"
+        },
+        "flags": 1,
+        "description": "The type of the policy to be used. Default is Placement."
+      },
+      "placementProfile": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "The profile to be used for propagation via placement."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Placement"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementProfile",
+    "properties": {
+      "defaultClusterResourcePlacement": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 0,
+        "description": "The default ClusterResourcePlacement policy configuration."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1ClusterResourcePlacementSpec",
+    "properties": {
+      "policy": {
+        "type": {
+          "$ref": "#/106"
+        },
+        "flags": 0,
+        "description": "Policy defines how to select member clusters to place the selected resources. If unspecified, all the joined member clusters are selected."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1PlacementPolicy",
+    "properties": {
+      "placementType": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 0,
+        "description": "Type of placement. Can be \"PickAll\", \"PickN\" or \"PickFixed\". Default is PickAll."
+      },
+      "clusterNames": {
+        "type": {
+          "$ref": "#/110"
+        },
+        "flags": 0,
+        "description": "ClusterNames contains a list of names of MemberCluster to place the selected resources. Only valid if the placement type is \"PickFixed\""
+      },
+      "affinity": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Affinity contains cluster affinity scheduling rules. Defines which member clusters to place the selected resources. Only valid if the placement type is \"PickAll\" or \"PickN\"."
+      },
+      "tolerations": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "If specified, the ClusterResourcePlacement's Tolerations. Tolerations cannot be updated or deleted. This field is beta-level and is for the taints and tolerations feature."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PickAll"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PickFixed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1Affinity",
+    "properties": {
+      "clusterAffinity": {
+        "type": {
+          "$ref": "#/112"
+        },
+        "flags": 0,
+        "description": "ClusterAffinity contains cluster affinity scheduling rules for the selected resources."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1ClusterAffinity",
+    "properties": {
+      "requiredDuringSchedulingIgnoredDuringExecution": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 0,
+        "description": "If the affinity requirements specified by this field are not met at scheduling time, the resource will not be scheduled onto the cluster. If the affinity requirements specified by this field cease to be met at some point after the placement (e.g. due to an update), the system may or may not try to eventually remove the resource from the cluster."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1ClusterSelector",
+    "properties": {
+      "clusterSelectorTerms": {
+        "type": {
+          "$ref": "#/136"
+        },
+        "flags": 1,
+        "description": "ClusterSelectorTerms is a list of cluster selector terms. The terms are `ORed`."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1ClusterSelectorTerm",
+    "properties": {
+      "labelSelector": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 0,
+        "description": "LabelSelector is a label query over all the joined member clusters. Clusters matching the query are selected. If you specify both label and property selectors in the same term, the results are AND'd."
+      },
+      "propertySelector": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 0,
+        "description": "PropertySelector is a property query over all joined member clusters. Clusters matching the query are selected. If you specify both label and property selectors in the same term, the results are AND'd. At this moment, PropertySelector can only be used with `RequiredDuringSchedulingIgnoredDuringExecution` affinity terms. This field is beta-level; it is for the property-based scheduling feature and is only functional when a property provider is enabled in the deployment."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetaV1LabelSelector",
+    "properties": {
+      "matchLabels": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 0,
+        "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+      },
+      "matchExpressions": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 0,
+        "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetaV1LabelSelectorMatchLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MetaV1LabelSelectorRequirement",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "key is the label key that the selector applies to."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/122"
+        },
+        "flags": 1,
+        "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "In"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotIn"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DoesNotExist"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/118"
+      },
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/117"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1PropertySelector",
+    "properties": {
+      "matchExpressions": {
+        "type": {
+          "$ref": "#/135"
+        },
+        "flags": 1,
+        "description": "MatchExpressions is an array of PropertySelectorRequirements. The requirements are AND'd."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1PropertySelectorRequirement",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name is the name of the property; it should be a Kubernetes label name."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 1,
+        "description": "Operator specifies the relationship between a cluster's observed value of the specified property and the values given in the requirement."
+      },
+      "values": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 1,
+        "description": "Values are a list of values of the specified property which Fleet will compare against the observed values of individual member clusters in accordance with the given operator. At this moment, each value should be a Kubernetes quantity. For more information, see https://pkg.go.dev/k8s.io/apimachinery/pkg/api/resource#Quantity. If the operator is Gt (greater than), Ge (greater than or equal to), Lt (less than), or `Le` (less than or equal to), Eq (equal to), or Ne (ne), exactly one value must be specified in the list."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ge"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Eq"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ne"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Lt"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Le"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/128"
+      },
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/126"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/114"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PlacementV1Toleration",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys."
+      },
+      "operator": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 0,
+        "description": "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a ClusterResourcePlacement can tolerate all taints of a particular category."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string."
+      },
+      "effect": {
+        "type": {
+          "$ref": "#/142"
+        },
+        "flags": 0,
+        "description": "Effect indicates the taint effect to match. Empty means match all taint effects. When specified, only allowed value is NoSchedule."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exists"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Equal"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/138"
+      },
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoSchedule"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/141"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/137"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetManagedNamespaceStatus",
+    "properties": {
+      "lastOperationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The last operation ID for the fleet managed namespace"
+      },
+      "lastOperationError": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The last operation error of the fleet managed namespace"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/managedNamespaces@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/72"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/members"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/members",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/147"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/148"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetMemberProperties",
+    "properties": {
+      "clusterResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure resource id. e.g.: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'."
+      },
+      "group": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 0,
+        "description": "The group this member belongs to for multi-cluster update management."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/157"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/158"
+        },
+        "flags": 0,
+        "description": "The labels for the fleet member."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/159"
+        },
+        "flags": 2,
+        "description": "Status information of the last operation for fleet member."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Joining"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Leaving"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/151"
+      },
+      {
+        "$ref": "#/152"
+      },
+      {
+        "$ref": "#/153"
+      },
+      {
+        "$ref": "#/154"
+      },
+      {
+        "$ref": "#/155"
+      },
+      {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetMemberPropertiesLabels",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetMemberStatus",
+    "properties": {
+      "lastOperationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The last operation ID for the fleet member"
+      },
+      "lastOperationError": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The last operation error of the fleet member"
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/members@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/149"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/updateRuns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/updateRuns",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/161"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/162"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRunProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/168"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the UpdateRun resource."
+      },
+      "updateStrategyId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The resource id of the FleetUpdateStrategy resource to reference.\n\nWhen creating a new run, there are three ways to define a strategy for the run:\n1. Define a new strategy in place: Set the \"strategy\" field.\n2. Use an existing strategy: Set the \"updateStrategyId\" field. (since 2023-08-15-preview)\n3. Use the default strategy to update all the members one by one: Leave both \"updateStrategyId\" and \"strategy\" unset. (since 2023-08-15-preview)\n\nSetting both \"updateStrategyId\" and \"strategy\" is invalid.\n\nUpdateRuns created by \"updateStrategyId\" snapshot the referenced UpdateStrategy at the time of creation and store it in the \"strategy\" field. \nSubsequent changes to the referenced FleetUpdateStrategy resource do not propagate.\nUpdateRunStrategy changes can be made directly on the \"strategy\" field before launching the UpdateRun."
+      },
+      "strategy": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 0,
+        "description": "The strategy defines the order in which the clusters will be updated.\nIf not set, all members will be updated sequentially. The UpdateRun status will show a single UpdateStage and a single UpdateGroup targeting all members.\nThe strategy of the UpdateRun can be modified until the run is started."
+      },
+      "managedClusterUpdate": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 1,
+        "description": "The update to be applied to all clusters in the UpdateRun. The managedClusterUpdate can be modified until the run is started."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/196"
+        },
+        "flags": 2,
+        "description": "The status of the UpdateRun."
+      },
+      "autoUpgradeProfileId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "AutoUpgradeProfileId is the id of an auto upgrade profile resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/165"
+      },
+      {
+        "$ref": "#/166"
+      },
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRunStrategy",
+    "properties": {
+      "stages": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 1,
+        "description": "The list of stages that compose this update run. Min size: 1."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateStage",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "The name of the stage. Must be unique within the UpdateRun."
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/178"
+        },
+        "flags": 0,
+        "description": "Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1."
+      },
+      "afterStageWaitInSeconds": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if unspecified."
+      },
+      "beforeGates": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 0,
+        "description": "A list of Gates that will be created before this Stage is executed."
+      },
+      "afterGates": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 0,
+        "description": "A list of Gates that will be created after this Stage is executed."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateGroup",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 1,
+        "description": "Name of the group.\nIt must match a group name of an existing fleet member."
+      },
+      "beforeGates": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "A list of Gates that will be created before this Group is executed."
+      },
+      "afterGates": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "A list of Gates that will be created after this Group is executed."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GateConfiguration",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "The human-readable display name of the Gate."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/175"
+        },
+        "flags": 1,
+        "description": "The type of the Gate determines how it is completed."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 100
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approval"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/171"
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/172"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/170"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterUpdate",
+    "properties": {
+      "upgrade": {
+        "type": {
+          "$ref": "#/184"
+        },
+        "flags": 1,
+        "description": "The upgrade to apply to the ManagedClusters."
+      },
+      "nodeImageSelection": {
+        "type": {
+          "$ref": "#/189"
+        },
+        "flags": 0,
+        "description": "The node image upgrade to be applied to the target nodes in update run."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedClusterUpgradeSpec",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 1,
+        "description": "ManagedClusterUpgradeType is the type of upgrade to be applied."
+      },
+      "kubernetesVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Kubernetes version to upgrade the member clusters to."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Full"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NodeImageOnly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ControlPlaneOnly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/185"
+      },
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeImageSelection",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/193"
+        },
+        "flags": 1,
+        "description": "The node image upgrade type."
+      },
+      "customNodeImageVersions": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 0,
+        "description": "Custom node image versions to upgrade the nodes to. This field is required if node image selection type is Custom. Otherwise, it must be empty. For each node image family (e.g., 'AKSUbuntu-1804gen2containerd'), this field can contain at most one version (e.g., only one of 'AKSUbuntu-1804gen2containerd-2023.01.12' or 'AKSUbuntu-1804gen2containerd-2023.02.12', not both). If the nodes belong to a family without a matching image version in this field, they are not upgraded."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Latest"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Consistent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Custom"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeImageVersion",
+    "properties": {
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The image version to upgrade the nodes to (e.g., 'AKSUbuntu-1804gen2containerd-2022.12.13')."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/194"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRunStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the UpdateRun."
+      },
+      "stages": {
+        "type": {
+          "$ref": "#/218"
+        },
+        "flags": 2,
+        "description": "The stages composing an update run. Stages are run sequentially withing an UpdateRun."
+      },
+      "nodeImageSelection": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 2,
+        "description": "The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is `Consistent`."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateStatus",
+    "properties": {
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the operation or group was started."
+      },
+      "completedTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time the operation or group was completed."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/206"
+        },
+        "flags": 2,
+        "description": "The State of the operation or group."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 2,
+        "description": "The error details when a failure is encountered."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopping"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stopped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/198"
+      },
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/201"
+      },
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateStageStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the UpdateStage."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the UpdateStage."
+      },
+      "groups": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 2,
+        "description": "The list of groups to be updated as part of this UpdateStage."
+      },
+      "beforeGates": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 2,
+        "description": "The list of Gates that will run before this UpdateStage."
+      },
+      "afterGates": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 2,
+        "description": "The list of Gates that will run after this UpdateStage."
+      },
+      "afterStageWaitStatus": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 2,
+        "description": "The status of the wait period configured on the UpdateStage."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateGroupStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the UpdateGroup."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the UpdateGroup."
+      },
+      "members": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 2,
+        "description": "The list of member this UpdateGroup updates."
+      },
+      "beforeGates": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 2,
+        "description": "The list of Gates that will run before this UpdateGroup."
+      },
+      "afterGates": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 2,
+        "description": "The list of Gates that will run after this UpdateGroup."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MemberUpdateStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the MemberUpdate operation."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the FleetMember."
+      },
+      "clusterResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Azure resource id of the target Kubernetes cluster."
+      },
+      "operationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The operation resource id of the latest attempt to perform the operation."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status message after processing the member update operation."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/209"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRunGateStatus",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "The human-readable display name of the Gate."
+      },
+      "gateId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource id of the Gate."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the Gate."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/208"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/211"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WaitStatus",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 2,
+        "description": "The status of the wait duration."
+      },
+      "waitDurationInSeconds": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 2,
+        "description": "The wait duration configured in seconds."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/207"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NodeImageSelectionStatus",
+    "properties": {
+      "selectedNodeImageVersions": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 2,
+        "description": "The image versions to upgrade the nodes to."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/194"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/updateRuns@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/163"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/updateStrategies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/updateStrategies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/222"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/223"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/225"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetUpdateStrategyProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the UpdateStrategy resource."
+      },
+      "strategy": {
+        "type": {
+          "$ref": "#/169"
+        },
+        "flags": 1,
+        "description": "Defines the update sequence of the clusters."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/228"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/updateStrategies@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/224"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-f]{8}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ContainerService/fleets/gates"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-08-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ContainerService/fleets/gates",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/232"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/235"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GateProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/239"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the Gate resource."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 0,
+        "description": "The human-readable display name of the Gate."
+      },
+      "gateType": {
+        "type": {
+          "$ref": "#/241"
+        },
+        "flags": 1,
+        "description": "The type of the Gate determines how it is completed."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 1,
+        "description": "The target that the Gate is controlling, e.g. an Update Run."
+      },
+      "state": {
+        "type": {
+          "$ref": "#/250"
+        },
+        "flags": 1,
+        "description": "The state of the Gate."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/237"
+      },
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Approval"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GateTarget",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource id that the Gate is controlling the rollout of."
+      },
+      "updateRunProperties": {
+        "type": {
+          "$ref": "#/243"
+        },
+        "flags": 0,
+        "description": "The properties of the Update Run that the Gate is targeting."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRunGateTargetProperties",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 3,
+        "description": "The name of the Update Run."
+      },
+      "stage": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The Update Stage of the Update Run."
+      },
+      "group": {
+        "type": {
+          "$ref": "#/46"
+        },
+        "flags": 2,
+        "description": "The Update Group of the Update Run."
+      },
+      "timing": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 1,
+        "description": "Whether the Gate is placed before or after the update itself."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Before"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "After"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/244"
+      },
+      {
+        "$ref": "#/245"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Skipped"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/247"
+      },
+      {
+        "$ref": "#/248"
+      },
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ContainerService/fleets/gates@2025-08-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/234"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetCredentialResults",
+    "properties": {
+      "kubeconfigs": {
+        "type": {
+          "$ref": "#/254"
+        },
+        "flags": 2,
+        "description": "Array of base64-encoded Kubernetes configuration files."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FleetCredentialResult",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the credential."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 2,
+        "description": "Base64-encoded Kubernetes configuration file."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/253"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listCredentials",
+    "resourceType": "Microsoft.ContainerService/fleets",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/252"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GenerateResponse",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "The ARM resource id of the generated UpdateRun. e.g.: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}'."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "generateUpdateRun",
+    "resourceType": "Microsoft.ContainerService/fleets/autoUpgradeProfiles",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/256"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SkipProperties",
+    "properties": {
+      "targets": {
+        "type": {
+          "$ref": "#/265"
+        },
+        "flags": 1,
+        "description": "The targets to skip."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SkipTarget",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/264"
+        },
+        "flags": 1,
+        "description": "The skip target type."
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The skip target's name. \nTo skip a member/group/stage, use the member/group/stage's name;\nTp skip an after stage wait, use the parent stage's name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Member"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Group"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Stage"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AfterStageWait"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/260"
+      },
+      {
+        "$ref": "#/261"
+      },
+      {
+        "$ref": "#/262"
+      },
+      {
+        "$ref": "#/263"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/259"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UpdateRun",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/164"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/34"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "skip",
+    "resourceType": "Microsoft.ContainerService/fleets/updateRuns",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/266"
+    },
+    "input": {
+      "$ref": "#/258"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "start",
+    "resourceType": "Microsoft.ContainerService/fleets/updateRuns",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/266"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "stop",
+    "resourceType": "Microsoft.ContainerService/fleets/updateRuns",
+    "apiVersion": "2025-08-01-preview",
+    "output": {
+      "$ref": "#/266"
+    }
+  }
+]

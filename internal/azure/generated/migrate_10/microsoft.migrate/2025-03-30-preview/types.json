@@ -1,0 +1,1359 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[^<>&:\\?/#]{1,260}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Migrate/migrateProjects/migrationEntities"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Migrate/migrateProjects/migrationEntities",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationEntityProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "partnerResourceArmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "ARM Resource Identifier for the partner resource."
+      },
+      "targetAzureResourceArmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "target Azure Resource ARM Id."
+      },
+      "associatedInventoryResourceId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "inventory resource id"
+      },
+      "inventoryDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display Name of the Workload."
+      },
+      "associatedAssessmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Associated Assessment Id"
+      },
+      "associatedWaveId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "associated Wave Id"
+      },
+      "associatedMigrationEntityGroupIds": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "associated Migration Entity Group Id"
+      },
+      "executionStartDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Execution start date for Migration Entity."
+      },
+      "target": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Target of the Migration Entity."
+      },
+      "migrationStrategy": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 2,
+        "description": "Strategy of Migration Entity."
+      },
+      "executionStage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Execution Stage of Migration Entity."
+      },
+      "executionStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Execution Status of Migration Entity."
+      },
+      "executionReadiness": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Execution Readiness of Migration Entity."
+      },
+      "migrationSpecificProperties": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Migration specific properties for the entity."
+      },
+      "migrationTool": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Migration Tool of the Migration Entity."
+      },
+      "migrationPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Migration path"
+      },
+      "assessedEntityArmId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Assessed Entity ARM Id"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rehost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Refactor"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rearchitect"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Rebuild"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replace"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Retire"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Retain"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replatform"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MigrationSpecificPropertiesBase",
+    "discriminator": "instanceType",
+    "baseProperties": {},
+    "elements": {
+      "ServerMigration": {
+        "$ref": "#/26"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ServerMigrationSpecificProperties",
+    "properties": {
+      "drApplianceInventoryId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A type definition that refers the id to an Azure Resource Manager resource."
+      },
+      "currentJobId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A type definition that refers the id to an Azure Resource Manager resource."
+      },
+      "instanceType": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 1,
+        "description": "Discriminator for migration specific properties."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ServerMigration"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/36"
+      },
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Migrate/migrateProjects/migrationEntities@2025-03-30-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Migrate/migrateProjects/migrationEntityGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Migrate/migrateProjects/migrationEntityGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/43"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MigrationEntityGroupProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "applicationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Application id"
+      },
+      "applicationDisplayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display Name of the Workload."
+      },
+      "associatedAssessmentId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Associated Assessment Id"
+      },
+      "associatedWaveIds": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 0,
+        "description": "associated Wave Id"
+      },
+      "executionStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Migration Entity Group Status"
+      },
+      "executionStartDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Execution Start Date"
+      },
+      "migrationPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Migration path"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/49"
+      },
+      {
+        "$ref": "#/50"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Migrate/migrateProjects/migrationEntityGroups@2025-03-30-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/42"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Migrate/migrateProjects/tasks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Migrate/migrateProjects/tasks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/54"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "scopeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "associated Wave Id"
+      },
+      "stage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Task Stage"
+      },
+      "taskType": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 3,
+        "description": "Task Type"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Task Dislay Name"
+      },
+      "isEditable": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 3,
+        "description": "Indicates whether the task is editable."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Task Status"
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/73"
+        },
+        "flags": 1,
+        "description": "Task Scope"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Task Description"
+      },
+      "completionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Task completion Date"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/59"
+      },
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserDefined"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemDefined"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/66"
+      },
+      {
+        "$ref": "#/67"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wave"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MigrationEntity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MigrationEntityGroup"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Migrate/migrateProjects/tasks@2025-03-30-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/56"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Migrate/migrateProjects/waves"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-30-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Migrate/migrateProjects/waves",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/78"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WaveProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/86"
+        },
+        "flags": 2,
+        "description": "The status of the last operation."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of the wave."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Display Name of the wave."
+      },
+      "arg": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 1,
+        "description": "ARG query and other details to create workloads within a wave"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The status of the wave."
+      },
+      "plannedStartDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Planned start date of the wave."
+      },
+      "plannedCompletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Planned completion date of the wave."
+      },
+      "actualStartDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Actual start date of the wave."
+      },
+      "stage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The current stage of the wave."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Provisioning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accepted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/79"
+      },
+      {
+        "$ref": "#/80"
+      },
+      {
+        "$ref": "#/81"
+      },
+      {
+        "$ref": "#/82"
+      },
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Arg",
+    "properties": {
+      "query": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The query to create workloads within the wave."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Migrate/migrateProjects/waves@2025-03-30-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/77"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskSummaryRequest",
+    "properties": {
+      "scopeId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Task Scope ARM Id"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskSummaryResponse",
+    "properties": {
+      "items": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "List of Task Summary Items"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskSummaryItem",
+    "properties": {
+      "stage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Task Stage"
+      },
+      "aggregatedStatus": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Aggregated status of tasks in this stage."
+      },
+      "statusCounts": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 1,
+        "description": "Counts of tasks in this stage by status."
+      },
+      "tasks": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 1,
+        "description": "List of tasks in this stage."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskStatusCounts",
+    "properties": {
+      "statusCounts": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 1,
+        "description": "Status counts dictionary mapping TaskStatus to the count of tasks with that status."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TaskStatusCountMap",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The task status."
+      },
+      "count": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 1,
+        "description": "The count of tasks with this status."
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/93"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Task",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/96"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/91"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "taskSummary",
+    "resourceType": "Microsoft.Migrate/migrateProjects",
+    "apiVersion": "2025-03-30-preview",
+    "output": {
+      "$ref": "#/90"
+    },
+    "input": {
+      "$ref": "#/89"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "refresh",
+    "resourceType": "Microsoft.Migrate/migrateProjects/waves",
+    "apiVersion": "2025-03-30-preview",
+    "output": {
+      "$ref": "#/78"
+    }
+  }
+]

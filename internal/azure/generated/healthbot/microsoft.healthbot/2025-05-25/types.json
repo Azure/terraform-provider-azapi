@@ -48,26 +48,26 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The set of properties specific to Azure Health Bot resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/7"
         },
         "flags": 1,
         "description": "SKU of the Azure Health Bot."
       },
       "identity": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "The identity of the Azure Health Bot."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 0,
-        "description": "The set of properties specific to Azure Health Bot resource."
       },
       "tags": {
         "type": {
@@ -88,156 +88,8 @@
           "$ref": "#/23"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource"
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Sku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 1,
-        "description": "The name of the Azure Health Bot SKU"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "F0"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "S1"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "C0"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "PES"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "C1"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/10"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Identity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal ID of resource identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant ID of resource. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/17"
-        },
-        "flags": 0,
-        "description": "The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the Azure Health Bot"
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/19"
-        },
-        "flags": 0,
-        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/13"
-      },
-      {
-        "$ref": "#/14"
-      },
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/16"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal ID of user assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The client ID of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentityMap",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/18"
     }
   },
   {
@@ -260,7 +112,7 @@
       },
       "keyVaultProperties": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "KeyVault properties for the resource encryption."
@@ -310,6 +162,154 @@
   },
   {
     "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The name of the Azure Health Bot SKU"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "F0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "S1"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "C0"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "PES"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "C1"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the Azure Health Bot"
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of user assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client ID of user assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/20"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
@@ -332,14 +332,14 @@
           "$ref": "#/28"
         },
         "flags": 0,
-        "description": "The type of identity that created the resource"
+        "description": "The type of identity that created the resource."
       },
       "createdAt": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The timestamp of resource creation (UTC)"
+        "description": "The timestamp of resource creation (UTC)."
       },
       "lastModifiedBy": {
         "type": {
@@ -353,7 +353,7 @@
           "$ref": "#/33"
         },
         "flags": 0,
-        "description": "The type of identity that last modified the resource"
+        "description": "The type of identity that last modified the resource."
       },
       "lastModifiedAt": {
         "type": {
