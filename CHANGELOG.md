@@ -19,6 +19,7 @@ ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `Microsoft.Search/searchServices/synonymmaps` type.
 - Bump Go version to 1.24.6 to address CVEs (GH-992).
 - Add more verified `azapi` examples.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/c41a40c0d2f9fa78b7ea0901b6634a13dc8e8b33
 
 BUG FIXES:
 - Fix validation logic for properties that are both `ReadOnly` and `Required`.
