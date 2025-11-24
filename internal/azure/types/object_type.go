@@ -123,7 +123,9 @@ func (t *ObjectType) Validate(body attr.Value, path string) []error {
 	for key, value := range bodyMap {
 		if def, ok := t.Properties[key]; ok {
 			if def.IsReadOnly() {
-				errors = append(errors, utils.ErrorShouldNotDefineReadOnly(path+"."+key))
+				if !def.IsRequired() {
+					errors = append(errors, utils.ErrorShouldNotDefineReadOnly(path+"."+key))
+				}
 				continue
 			}
 			var valueDefType *TypeBase
@@ -146,7 +148,7 @@ func (t *ObjectType) Validate(body attr.Value, path string) []error {
 
 	// check properties required in schema, but not in body
 	for key, value := range t.Properties {
-		if !value.IsRequired() {
+		if !value.IsRequired() || value.IsReadOnly() {
 			continue
 		}
 		if _, ok := bodyMap[key]; !ok {
