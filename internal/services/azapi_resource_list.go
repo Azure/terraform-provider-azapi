@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/identity"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/location"
 	"github.com/Azure/terraform-provider-azapi/internal/azure/tags"
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/list"
 	"github.com/hashicorp/terraform-plugin-framework/list/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -28,12 +30,45 @@ type AzapiResourceListModel struct {
 	QueryParameters types.Map    `tfsdk:"query_parameters"`
 }
 
+// resourceListConfigValidator validates the configuration for azapi_resource_list
+type resourceListConfigValidator struct{}
+
+func (v resourceListConfigValidator) Description(_ context.Context) string {
+	return "Validates that when 'type' is omitted, 'parent_id' must be a resource group ID"
+}
+
+func (v resourceListConfigValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
+}
+
+func (v resourceListConfigValidator) ValidateListResourceConfig(ctx context.Context, req list.ValidateConfigRequest, resp *list.ValidateConfigResponse) {
+	var config AzapiResourceListModel
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// If type is null or empty, validate that parent_id is a resource group
+	if config.Type.ValueString() == "" {
+		parentIdResourceType := utils.GetResourceType(config.ParentID.ValueString())
+		if !strings.EqualFold(parentIdResourceType, arm.ResourceGroupResourceType.String()) {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				fmt.Sprintf("When 'type' is omitted, 'parent_id' must be a resource group ID. Got resource type: %s (expected: %s)",
+					parentIdResourceType, arm.ResourceGroupResourceType.String()),
+			)
+		}
+	}
+}
+
 type AzapiResourceList struct {
 	ProviderData *clients.Client
 }
 
 var _ list.ListResource = &AzapiResourceList{}
 var _ list.ListResourceWithConfigure = &AzapiResourceList{}
+var _ list.ListResourceWithConfigValidators = &AzapiResourceList{}
 
 func (r *AzapiResourceList) Metadata(_ context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_resource"
@@ -54,17 +89,23 @@ func (r *AzapiResourceList) Configure(_ context.Context, request resource.Config
 	}
 }
 
+func (r *AzapiResourceList) ListResourceConfigValidators(_ context.Context) []list.ConfigValidator {
+	return []list.ConfigValidator{
+		&resourceListConfigValidator{},
+	}
+}
+
 func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.ListResourceSchemaRequest, response *list.ListResourceSchemaResponse) {
 	response.Schema = schema.Schema{
 		Description:         "Configuration for listing Azure Resource Manager resources",
 		MarkdownDescription: "This list resource allows you to list Azure Resource Manager resources of a specific type under a given scope.",
 		Attributes: map[string]schema.Attribute{
 			"type": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				Validators: []validator.String{
 					myvalidator.StringIsResourceType(),
 				},
-				MarkdownDescription: docstrings.Type(),
+				MarkdownDescription: docstrings.Type() + " When omitted, `parent_id` must be a resource group ID and all resources in the resource group will be listed.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -101,18 +142,33 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 		return
 	}
 
-	// Parse the resource ID
-	id, err := parse.NewResourceIDSkipScopeValidation("", model.ParentID.ValueString(), model.Type.ValueString())
-	if err != nil {
-		diags.AddError("Invalid configuration", err.Error())
-		stream.Results = list.ListResultsStreamDiagnostics(diags)
-		return
+	var listUrl string
+	var apiVersion string
+
+	// Check if type is provided
+	if model.Type.IsNull() || model.Type.ValueString() == "" {
+		// Type is omitted - list all resources in the resource group
+		// Note: Validation that parent_id is a resource group is handled by the config validator
+		listUrl = fmt.Sprintf("%s/resources", strings.TrimSuffix(model.ParentID.ValueString(), "/"))
+		apiVersion = "2025-04-01"
+
+		ctx = tflog.SetField(ctx, "parent_id", model.ParentID.ValueString())
+		ctx = tflog.SetField(ctx, "list_all_resources", true)
+	} else {
+		// Type is provided - use existing logic
+		id, err := parse.NewResourceIDSkipScopeValidation("", model.ParentID.ValueString(), model.Type.ValueString())
+		if err != nil {
+			diags.AddError("Invalid configuration", err.Error())
+			stream.Results = list.ListResultsStreamDiagnostics(diags)
+			return
+		}
+
+		listUrl = strings.TrimSuffix(id.AzureResourceId, "/")
+		apiVersion = id.ApiVersion
+
+		ctx = tflog.SetField(ctx, "resource_type", model.Type.ValueString())
+		ctx = tflog.SetField(ctx, "parent_id", model.ParentID.ValueString())
 	}
-
-	ctx = tflog.SetField(ctx, "resource_type", model.Type.ValueString())
-	ctx = tflog.SetField(ctx, "parent_id", model.ParentID.ValueString())
-
-	listUrl := strings.TrimSuffix(id.AzureResourceId, "/")
 
 	// Prepare request options
 	client := r.ProviderData.ResourceClient
@@ -122,7 +178,7 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 	}
 
 	// Make the list request
-	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, requestOptions)
+	responseBody, err := client.List(ctx, listUrl, apiVersion, requestOptions)
 	if err != nil {
 		diags.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))
 		stream.Results = list.ListResultsStreamDiagnostics(diags)
@@ -166,23 +222,27 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 			// Extract resource ID for identity
 			resourceID, ok := itemMap["id"].(string)
 			if !ok || resourceID == "" {
-				result.Diagnostics.AddWarning("Missing resource ID", "Resource item does not contain a valid 'id' field")
-				resourceID = ""
+				result.Diagnostics.AddError("Missing resource ID", "Resource item does not contain a valid 'id' field")
+				continue
 			}
 
-			id, err := parse.ResourceIDWithResourceType(resourceID, model.Type.ValueString())
+			id, err := parse.ResourceID(resourceID)
 			if err != nil {
-				result.Diagnostics.AddWarning("Invalid resource ID", fmt.Sprintf("Resource ID %q is invalid: %s", resourceID, err.Error()))
-				// Set a generic display name if parsing fails
-				result.DisplayName = resourceID
-			} else {
-				result.DisplayName = fmt.Sprintf("%s - %s", model.Type.ValueString(), id.Name)
+				result.Diagnostics.AddError("Invalid resource ID", fmt.Sprintf("Resource ID %q is invalid: %v", resourceID, err))
+				continue
 			}
+
+			itemType := model.Type.ValueString()
+			if itemType == "" {
+				itemType = fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion)
+			}
+
+			result.DisplayName = fmt.Sprintf("%s - %s", itemType, id.Name)
 
 			// Set the identity using the model
 			identityData := AzapiResourceIdentityModel{
 				ID:   types.StringValue(resourceID),
-				Type: model.Type,
+				Type: types.StringValue(itemType),
 			}
 			result.Diagnostics.Append(result.Identity.Set(ctx, identityData)...)
 
@@ -195,22 +255,58 @@ func (r *AzapiResourceList) List(ctx context.Context, request list.ListRequest, 
 				state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 				// Use the itemMap from the list response directly instead of making another GET call
-				responseBody := itemMap
-				tflog.Info(ctx, fmt.Sprintf("resource %q is populated from list response", id.ID()))
-				payload, err := flattenBody(responseBody, id.ResourceDef)
-				if err != nil {
-					result.Diagnostics.AddError("Invalid body", err.Error())
-				} else {
-					state.Body = payload
+				if model.Type.ValueString() != "" {
+					responseBody := itemMap
+					tflog.Info(ctx, fmt.Sprintf("resource %q is populated from list response", id.ID()))
+					payload, err := flattenBody(responseBody, id.ResourceDef)
+					if err != nil {
+						result.Diagnostics.AddError("Invalid body", err.Error())
+					} else {
+						state.Body = payload
 
-					if v, ok := responseBody["location"]; ok && v != nil {
-						state.Location = types.StringValue(location.Normalize(v.(string)))
+						if v, ok := responseBody["location"]; ok && v != nil {
+							state.Location = types.StringValue(location.Normalize(v.(string)))
+						}
+						if output := tags.FlattenTags(responseBody["tags"]); len(output.Elements()) != 0 {
+							state.Tags = output
+						}
+						if v := identity.FlattenIdentity(responseBody["identity"]); v != nil {
+							state.Identity = identity.ToList(*v)
+						}
 					}
-					if output := tags.FlattenTags(responseBody["tags"]); len(output.Elements()) != 0 {
-						state.Tags = output
-					}
-					if v := identity.FlattenIdentity(responseBody["identity"]); v != nil {
-						state.Identity = identity.ToList(*v)
+				} else {
+					// When listing all resources in a resource group, the list API doesn't return full details
+					// Make a GET request to fetch the complete resource data
+					tflog.Debug(ctx, fmt.Sprintf("Fetching full details for resource %q via GET request", id.ID()))
+
+					responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.DefaultRequestOptions())
+					if err != nil {
+						tflog.Warn(ctx, fmt.Sprintf("Failed to fetch full details for resource %q: %v", id.ID(), err))
+						result.Diagnostics.AddWarning(
+							"Failed to fetch resource details",
+							fmt.Sprintf("Could not retrieve full details for resource %q: %v", id.ID(), err),
+						)
+					} else {
+						if responseMap, ok := responseBody.(map[string]interface{}); ok {
+							payload, err := flattenBody(responseMap, id.ResourceDef)
+							if err != nil {
+								result.Diagnostics.AddError("Invalid body", err.Error())
+							} else {
+								state.Body = payload
+
+								if v, ok := responseMap["location"]; ok && v != nil {
+									state.Location = types.StringValue(location.Normalize(v.(string)))
+								}
+								if output := tags.FlattenTags(responseMap["tags"]); len(output.Elements()) != 0 {
+									state.Tags = output
+								}
+								if v := identity.FlattenIdentity(responseMap["identity"]); v != nil {
+									state.Identity = identity.ToList(*v)
+								}
+							}
+						} else {
+							result.Diagnostics.AddWarning("Invalid response format", "GET response is not a valid JSON object")
+						}
 					}
 				}
 

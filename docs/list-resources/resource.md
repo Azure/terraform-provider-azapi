@@ -39,10 +39,10 @@ This list resource allows you to list Azure Resource Manager resources of a spec
   For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
-- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 
 ### Optional
 
 - `headers` (Map of String) A map of headers to include in the request
 - `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. When omitted, `parent_id` must be a resource group ID and all resources in the resource group will be listed.
 

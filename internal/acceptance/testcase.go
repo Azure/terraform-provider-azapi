@@ -90,7 +90,7 @@ func (td TestData) UpgradeTestApplyStep(applyStep resource.TestStep) resource.Te
 	if applyStep.ExternalProviders == nil {
 		applyStep.ExternalProviders = td.externalProviders()
 	}
-	applyStep.ProtoV6ProviderFactories = td.providers()
+	applyStep.ProtoV6ProviderFactories = td.Providers()
 	return applyStep
 }
 
@@ -100,7 +100,7 @@ func (td TestData) UpgradeTestPlanStep(planStep resource.TestStep) resource.Test
 	if planStep.ExternalProviders == nil {
 		planStep.ExternalProviders = td.externalProviders()
 	}
-	planStep.ProtoV6ProviderFactories = td.providers()
+	planStep.ProtoV6ProviderFactories = td.Providers()
 	return planStep
 }
 
@@ -160,19 +160,19 @@ func (td TestData) runAcceptanceTest(t *testing.T, testCase resource.TestCase) {
 	for i, step := range testCase.Steps {
 		if step.ExternalProviders != nil {
 			testCase.ExternalProviders = nil
-			step.ProtoV6ProviderFactories = td.providers()
+			step.ProtoV6ProviderFactories = td.Providers()
 			testCase.Steps[i] = step
 			providersInTestStep = true
 		}
 	}
 	if !providersInTestStep {
-		testCase.ProtoV6ProviderFactories = td.providers()
+		testCase.ProtoV6ProviderFactories = td.Providers()
 	}
 
 	resource.ParallelTest(t, testCase)
 }
 
-func (td TestData) providers() map[string]func() (tfprotov6.ProviderServer, error) {
+func (td TestData) Providers() map[string]func() (tfprotov6.ProviderServer, error) {
 	return map[string]func() (tfprotov6.ProviderServer, error){
 		"azapi": providerserver.NewProtocol6WithError(provider.AzureProvider()),
 	}
