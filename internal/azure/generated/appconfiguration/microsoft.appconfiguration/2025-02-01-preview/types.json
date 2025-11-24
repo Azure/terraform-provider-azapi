@@ -48,19 +48,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "The managed identity information, if configured."
+        "description": "The properties of a configuration store."
       },
-      "properties": {
+      "identity": {
         "type": {
-          "$ref": "#/13"
+          "$ref": "#/54"
         },
         "flags": 0,
-        "description": "The properties of a configuration store."
+        "description": "The managed identity information, if configured."
       },
       "sku": {
         "type": {
@@ -69,16 +69,9 @@
         "flags": 1,
         "description": "The sku of the configuration store."
       },
-      "systemData": {
-        "type": {
-          "$ref": "#/63"
-        },
-        "flags": 2,
-        "description": "Resource system metadata."
-      },
       "tags": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/63"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -89,105 +82,14 @@
         },
         "flags": 1,
         "description": "The geo-location where the resource lives"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceIdentity",
-    "properties": {
-      "type": {
-        "type": {
-          "$ref": "#/10"
-        },
-        "flags": 0,
-        "description": "The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identities."
       },
-      "userAssignedIdentities": {
+      "systemData": {
         "type": {
-          "$ref": "#/12"
-        },
-        "flags": 0,
-        "description": "The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      },
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
+          "$ref": "#/64"
         },
         "flags": 2,
-        "description": "The principal id of the identity. This property will only be provided for a system-assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant id associated with the resource's identity. This property will only be provided for a system-assigned identity."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal ID of the user-assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The client ID of the user-assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceIdentityUserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/11"
     }
   },
   {
@@ -196,7 +98,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/12"
         },
         "flags": 2,
         "description": "The provisioning state of the configuration store."
@@ -217,77 +119,77 @@
       },
       "encryption": {
         "type": {
-          "$ref": "#/21"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "The encryption settings of the configuration store."
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/34"
         },
         "flags": 2,
         "description": "The list of private endpoint connections that are set up for this resource."
       },
       "publicNetworkAccess": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/37"
         },
         "flags": 0,
         "description": "Control permission for data plane traffic coming from public networks while private endpoint is enabled."
       },
       "disableLocalAuth": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Disables all authentication methods other than AAD authentication."
       },
       "softDeleteRetentionInDays": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "The amount of time in days that the configuration store will be retained when it is soft deleted."
       },
       "defaultKeyValueRevisionRetentionPeriodInSeconds": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/39"
         },
         "flags": 0,
         "description": "The duration in seconds to retain new key value revisions. Defaults to 604800 (7 days) for Free SKU stores and 2592000 (30 days) for Standard SKU stores and Premium SKU stores."
       },
       "enablePurgeProtection": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/38"
         },
         "flags": 0,
         "description": "Property specifying whether protection against purge is enabled for this configuration store."
       },
       "dataPlaneProxy": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "Property specifying the configuration of data plane proxy for Azure Resource Manager (ARM)."
       },
       "createMode": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/49"
         },
         "flags": 4,
         "description": "Indicates whether the configuration store need to be recovered."
       },
       "telemetry": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "Property specifying the configuration of telemetry for this configuration store"
       },
       "managedOnBehalfOfConfiguration": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/51"
         },
         "flags": 2,
         "description": "Managed On Behalf Of Configuration."
@@ -322,22 +224,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/14"
+        "$ref": "#/6"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/7"
       },
       {
-        "$ref": "#/16"
+        "$ref": "#/8"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/11"
       },
       {
         "$ref": "#/2"
@@ -350,7 +252,7 @@
     "properties": {
       "keyVaultProperties": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/14"
         },
         "flags": 0,
         "description": "Key vault properties."
@@ -404,7 +306,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/24"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "The properties of a private endpoint connection."
@@ -417,21 +319,21 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/23"
         },
         "flags": 2,
         "description": "The provisioning status of the private endpoint connection."
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/24"
         },
         "flags": 0,
         "description": "The resource of private endpoint."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/25"
         },
         "flags": 1,
         "description": "A collection of information about the state of the connection between service consumer and provider."
@@ -466,22 +368,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/25"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/26"
+        "$ref": "#/18"
       },
       {
-        "$ref": "#/27"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/28"
+        "$ref": "#/20"
       },
       {
-        "$ref": "#/29"
+        "$ref": "#/21"
       },
       {
-        "$ref": "#/30"
+        "$ref": "#/22"
       },
       {
         "$ref": "#/2"
@@ -507,7 +409,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/30"
         },
         "flags": 0,
         "description": "The private link service connection status."
@@ -521,7 +423,7 @@
       },
       "actionsRequired": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/33"
         },
         "flags": 2,
         "description": "Any action that is required beyond basic workflow (approve/ reject/ disconnect)"
@@ -548,16 +450,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/34"
+        "$ref": "#/26"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/27"
       },
       {
-        "$ref": "#/36"
+        "$ref": "#/28"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/29"
       },
       {
         "$ref": "#/2"
@@ -576,10 +478,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/32"
       },
       {
         "$ref": "#/2"
@@ -589,7 +491,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/23"
+      "$ref": "#/15"
     }
   },
   {
@@ -604,10 +506,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/43"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/36"
       },
       {
         "$ref": "#/2"
@@ -626,14 +528,14 @@
     "properties": {
       "authenticationMode": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/43"
         },
         "flags": 0,
         "description": "The data plane proxy authentication mode. This property manages the authentication mode of request to the data plane resources."
       },
       "privateLinkDelegation": {
         "type": {
-          "$ref": "#/54"
+          "$ref": "#/46"
         },
         "flags": 0,
         "description": "The data plane proxy private link delegation. This property manages if a request from delegated ARM private link is allowed when the data plane resource requires private link."
@@ -652,10 +554,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/49"
+        "$ref": "#/41"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/42"
       },
       {
         "$ref": "#/2"
@@ -674,10 +576,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/52"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/45"
       },
       {
         "$ref": "#/2"
@@ -696,10 +598,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/55"
+        "$ref": "#/47"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/48"
       }
     ]
   },
@@ -722,7 +624,7 @@
     "properties": {
       "moboBrokerResources": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/53"
         },
         "flags": 0,
         "description": "Managed-On-Behalf-Of broker resources"
@@ -745,6 +647,104 @@
   {
     "$type": "ArrayType",
     "itemType": {
+      "$ref": "#/52"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceIdentity",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identities."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/61"
+        },
+        "flags": 0,
+        "description": "The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal id of the identity. This property will only be provided for a system-assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant id associated with the resource's identity. This property will only be provided for a system-assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned, UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/55"
+      },
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of the user-assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The client ID of the user-assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
       "$ref": "#/60"
     }
   },
@@ -763,6 +763,14 @@
   },
   {
     "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "SystemData",
     "properties": {
       "createdBy": {
@@ -774,7 +782,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/69"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -795,7 +803,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/73"
+          "$ref": "#/74"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -829,9 +837,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/64"
-      },
-      {
         "$ref": "#/65"
       },
       {
@@ -839,6 +844,9 @@
       },
       {
         "$ref": "#/67"
+      },
+      {
+        "$ref": "#/68"
       },
       {
         "$ref": "#/2"
@@ -865,9 +873,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/69"
-      },
-      {
         "$ref": "#/70"
       },
       {
@@ -877,17 +882,12 @@
         "$ref": "#/72"
       },
       {
+        "$ref": "#/73"
+      },
+      {
         "$ref": "#/2"
       }
     ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TrackedResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
   },
   {
     "$type": "ResourceType",
@@ -895,64 +895,6 @@
     "scopeType": 8,
     "body": {
       "$ref": "#/4"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-02-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/76"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/77"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/24"
-        },
-        "flags": 0,
-        "description": "The properties of a private endpoint."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections@2025-02-01-preview",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/78"
     },
     "flags": 0
   },
@@ -984,24 +926,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/76"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/77"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "All key-value properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1014,14 +963,14 @@
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The primary identifier of a key-value.\r\nThe key is used in unison with the label to uniquely identify a key-value."
+        "description": "The primary identifier of a key-value.\nThe key is used in unison with the label to uniquely identify a key-value."
       },
       "label": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "A value used to group key-values.\r\nThe label is used in unison with the key to uniquely identify a key-value."
+        "description": "A value used to group key-values.\nThe label is used in unison with the key to uniquely identify a key-value."
       },
       "value": {
         "type": {
@@ -1035,7 +984,7 @@
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The content type of the key-value's value.\r\nProviding a proper content-type can enable transformations of values when they are retrieved by applications."
+        "description": "The content type of the key-value's value.\nProviding a proper content-type can enable transformations of values when they are retrieved by applications."
       },
       "eTag": {
         "type": {
@@ -1053,14 +1002,14 @@
       },
       "locked": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/38"
         },
         "flags": 2,
-        "description": "A value indicating whether the key-value is locked.\r\nA locked key-value may not be modified until it is unlocked."
+        "description": "A value indicating whether the key-value is locked.\nA locked key-value may not be modified until it is unlocked."
       },
       "tags": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "A dictionary of tags that can help identify what a key-value may be applicable for."
@@ -1080,9 +1029,78 @@
     "name": "Microsoft.AppConfiguration/configurationStores/keyValues@2025-02-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/82"
+      "$ref": "#/78"
     },
     "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/83"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "The properties of a private endpoint."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AppConfiguration/configurationStores/privateEndpointConnections@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/84"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[a-zA-Z0-9]*$"
   },
   {
     "$type": "StringLiteralType",
@@ -1105,24 +1123,31 @@
       },
       "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/86"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/87"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/88"
         },
         "flags": 10,
         "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 0,
+        "description": "All replica properties."
       },
       "location": {
         "type": {
@@ -1133,17 +1158,10 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/64"
         },
         "flags": 2,
-        "description": "Resource system metadata."
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/89"
-        },
-        "flags": 2,
-        "description": "All replica properties."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1160,7 +1178,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/95"
+          "$ref": "#/96"
         },
         "flags": 2,
         "description": "The provisioning state of the replica."
@@ -1191,9 +1209,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/90"
-      },
-      {
         "$ref": "#/91"
       },
       {
@@ -1206,6 +1221,9 @@
         "$ref": "#/94"
       },
       {
+        "$ref": "#/95"
+      },
+      {
         "$ref": "#/2"
       }
     ]
@@ -1215,7 +1233,7 @@
     "name": "Microsoft.AppConfiguration/configurationStores/replicas@2025-02-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/88"
+      "$ref": "#/89"
     },
     "flags": 0
   },
@@ -1244,31 +1262,38 @@
       },
       "name": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/98"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/98"
+          "$ref": "#/99"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/100"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/101"
+          "$ref": "#/102"
         },
         "flags": 0,
         "description": "All snapshot properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1278,28 +1303,28 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/109"
         },
         "flags": 2,
         "description": "The provisioning state of the snapshot."
       },
       "status": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/114"
         },
         "flags": 2,
         "description": "The current status of the snapshot."
       },
       "filters": {
         "type": {
-          "$ref": "#/115"
+          "$ref": "#/116"
         },
         "flags": 1,
         "description": "A list of filters used to filter the key-values included in the snapshot."
       },
       "compositionType": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/119"
         },
         "flags": 0,
         "description": "The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are no two key-values containing the same key and label."
@@ -1320,28 +1345,28 @@
       },
       "retentionPeriod": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/120"
         },
         "flags": 0,
         "description": "The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value revisions will be used."
       },
       "size": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/39"
         },
         "flags": 2,
         "description": "The size in bytes of the snapshot."
       },
       "itemsCount": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/39"
         },
         "flags": 2,
         "description": "The amount of key-values in the snapshot."
       },
       "tags": {
         "type": {
-          "$ref": "#/120"
+          "$ref": "#/121"
         },
         "flags": 0,
         "description": "The tags of the snapshot. NOTE: These are data plane tags, not ARM tags."
@@ -1383,9 +1408,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/102"
-      },
-      {
         "$ref": "#/103"
       },
       {
@@ -1399,6 +1421,9 @@
       },
       {
         "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
       },
       {
         "$ref": "#/2"
@@ -1425,9 +1450,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/109"
-      },
-      {
         "$ref": "#/110"
       },
       {
@@ -1435,6 +1457,9 @@
       },
       {
         "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
       },
       {
         "$ref": "#/2"
@@ -1464,7 +1489,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/114"
+      "$ref": "#/115"
     },
     "minLength": 1,
     "maxLength": 3
@@ -1481,10 +1506,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/116"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/117"
+        "$ref": "#/118"
       },
       {
         "$ref": "#/2"
@@ -1509,9 +1534,314 @@
     "name": "Microsoft.AppConfiguration/configurationStores/snapshots@2025-02-01-preview",
     "scopeType": 8,
     "body": {
-      "$ref": "#/100"
+      "$ref": "#/101"
     },
     "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AppConfiguration/locations/deletedConfigurationStores"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AppConfiguration/locations/deletedConfigurationStores",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/124"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 2,
+        "description": "Properties of the deleted configuration store"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedConfigurationStoreProperties",
+    "properties": {
+      "configurationStoreId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The resource id of the original configuration store."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The location of the original configuration store."
+      },
+      "deletionDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The deleted date."
+      },
+      "scheduledPurgeDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The scheduled purged date."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/127"
+        },
+        "flags": 2,
+        "description": "Tags of the original configuration store."
+      },
+      "purgeProtectionEnabled": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "Purge protection status of the original configuration store."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DeletedConfigurationStorePropertiesTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AppConfiguration/locations/deletedConfigurationStores@2025-02-01-preview",
+    "scopeType": 4,
+    "body": {
+      "$ref": "#/125"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AppConfiguration/configurationStores/privateLinkResources"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-02-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AppConfiguration/configurationStores/privateLinkResources",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/129"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/130"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 2,
+        "description": "Private link resource properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/64"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateLinkResourceProperties",
+    "properties": {
+      "groupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The private link resource group id."
+      },
+      "requiredMembers": {
+        "type": {
+          "$ref": "#/133"
+        },
+        "flags": 2,
+        "description": "The private link resource required member names."
+      },
+      "requiredZoneNames": {
+        "type": {
+          "$ref": "#/134"
+        },
+        "flags": 2,
+        "description": "The list of required DNS zone names of the private link resource."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AppConfiguration/configurationStores/privateLinkResources@2025-02-01-preview",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/131"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CheckNameAvailabilityParameters",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name to check for availability."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 1,
+        "description": "The resource type to check for name availability."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AppConfiguration/configurationStores"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NameAvailabilityStatus",
+    "properties": {
+      "nameAvailable": {
+        "type": {
+          "$ref": "#/38"
+        },
+        "flags": 2,
+        "description": "The value indicating whether the resource name is available."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If any, the error message that provides more detail for the reason that the name is not available."
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "If any, the reason that the name is not available."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkNameAvailability",
+    "resourceType": "Microsoft.AppConfiguration/locations",
+    "apiVersion": "2025-02-01-preview",
+    "output": {
+      "$ref": "#/139"
+    },
+    "input": {
+      "$ref": "#/136"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "purge",
+    "resourceType": "Microsoft.AppConfiguration/locations/deletedConfigurationStores",
+    "apiVersion": "2025-02-01-preview"
   },
   {
     "$type": "ObjectType",
@@ -1519,17 +1849,17 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/144"
         },
-        "flags": 0,
-        "description": "The collection value."
+        "flags": 1,
+        "description": "The ApiKey items on this page"
       },
       "nextLink": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
-        "description": "The URI that can be used to request the next set of paged results."
+        "description": "The link to the next page of items"
       }
     }
   },
@@ -1574,7 +1904,7 @@
       },
       "readOnly": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/38"
         },
         "flags": 2,
         "description": "Whether this key can only be used for read operations."
@@ -1584,7 +1914,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/123"
+      "$ref": "#/143"
     }
   },
   {
@@ -1593,7 +1923,7 @@
     "resourceType": "Microsoft.AppConfiguration/configurationStores",
     "apiVersion": "2025-02-01-preview",
     "output": {
-      "$ref": "#/122"
+      "$ref": "#/142"
     }
   },
   {
@@ -1615,90 +1945,10 @@
     "resourceType": "Microsoft.AppConfiguration/configurationStores",
     "apiVersion": "2025-02-01-preview",
     "output": {
-      "$ref": "#/123"
+      "$ref": "#/143"
     },
     "input": {
-      "$ref": "#/126"
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "purge",
-    "resourceType": "Microsoft.AppConfiguration/locations/deletedConfigurationStores",
-    "apiVersion": "2025-02-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CheckNameAvailabilityParameters",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The name to check for availability."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/131"
-        },
-        "flags": 1,
-        "description": "The resource type to check for name availability."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.AppConfiguration/configurationStores"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/130"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NameAvailabilityStatus",
-    "properties": {
-      "nameAvailable": {
-        "type": {
-          "$ref": "#/46"
-        },
-        "flags": 2,
-        "description": "The value indicating whether the resource name is available."
-      },
-      "message": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "If any, the error message that provides more detail for the reason that the name is not available."
-      },
-      "reason": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "If any, the reason that the name is not available."
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "checkNameAvailability",
-    "resourceType": "Microsoft.AppConfiguration/locations",
-    "apiVersion": "2025-02-01-preview",
-    "output": {
-      "$ref": "#/132"
-    },
-    "input": {
-      "$ref": "#/129"
+      "$ref": "#/146"
     }
   }
 ]

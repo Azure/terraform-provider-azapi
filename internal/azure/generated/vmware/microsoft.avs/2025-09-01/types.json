@@ -1,0 +1,8312 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[-\\w\\._]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 1,
+        "description": "The SKU (Stock Keeping Unit) assigned to this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/75"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/80"
+        },
+        "flags": 0,
+        "description": "The availability zones."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PrivateCloudProperties",
+    "properties": {
+      "managementCluster": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 1,
+        "description": "The default cluster used for management"
+      },
+      "internet": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "Connectivity to internet is enabled or disabled"
+      },
+      "identitySources": {
+        "type": {
+          "$ref": "#/24"
+        },
+        "flags": 0,
+        "description": "vCenter Single Sign On Identity Sources"
+      },
+      "availability": {
+        "type": {
+          "$ref": "#/25"
+        },
+        "flags": 0,
+        "description": "Properties describing how the cloud is distributed across availability zones"
+      },
+      "encryption": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 0,
+        "description": "Customer managed key encryption, can be enabled or disabled"
+      },
+      "extendedNetworkBlocks": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Array of additional networks noncontiguous with networkBlock. Networks must be\nunique and non-overlapping across VNet in your subscription, on-premise, and\nthis privateCloud networkBlock attribute. Make sure the CIDR format conforms to\n(A.B.C.D/X)."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "circuit": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "An ExpressRoute Circuit"
+      },
+      "endpoints": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 2,
+        "description": "The endpoints"
+      },
+      "networkBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The block of addresses should be unique across VNet in your subscription as\nwell as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where\nA,B,C,D are between 0 and 255, and X is between 0 and 22"
+      },
+      "managementNetwork": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Network used to access vCenter Server and NSX-T Manager"
+      },
+      "provisioningNetwork": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Used for virtual machine cold migration, cloning, and snapshot migration"
+      },
+      "vmotionNetwork": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Used for live migration of virtual machines"
+      },
+      "vcenterPassword": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Optionally, set the vCenter admin password when the private cloud is created"
+      },
+      "nsxtPassword": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "Optionally, set the NSX-T Manager password when the private cloud is created"
+      },
+      "vcenterCertificateThumbprint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Thumbprint of the vCenter Server SSL certificate"
+      },
+      "nsxtCertificateThumbprint": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Thumbprint of the NSX-T Manager SSL certificate"
+      },
+      "externalCloudLinks": {
+        "type": {
+          "$ref": "#/52"
+        },
+        "flags": 2,
+        "description": "Array of cloud link IDs from other clouds that connect to this one"
+      },
+      "secondaryCircuit": {
+        "type": {
+          "$ref": "#/50"
+        },
+        "flags": 0,
+        "description": "A secondary expressRoute circuit from a separate AZ. Only present in a\nstretched private cloud"
+      },
+      "nsxPublicIpQuotaRaised": {
+        "type": {
+          "$ref": "#/55"
+        },
+        "flags": 2,
+        "description": "Flag to indicate whether the private cloud has the quota for provisioned NSX\nPublic IP count raised from 64 to 1024"
+      },
+      "virtualNetworkId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Azure resource ID of the virtual network"
+      },
+      "dnsZoneType": {
+        "type": {
+          "$ref": "#/58"
+        },
+        "flags": 0,
+        "description": "The type of DNS zone to use."
+      },
+      "vcfLicense": {
+        "type": {
+          "$ref": "#/59"
+        },
+        "flags": 0,
+        "description": "The private cloud license"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagementCluster",
+    "properties": {
+      "clusterSize": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The cluster size"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 2,
+        "description": "The state of the cluster provisioning"
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The identity"
+      },
+      "hosts": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "The hosts"
+      },
+      "vsanDatastoreName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the vsan datastore associated with the cluster"
+      }
+    }
+  },
+  {
+    "$type": "IntegerType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/11"
+      },
+      {
+        "$ref": "#/12"
+      },
+      {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/16"
+      },
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IdentitySource",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the identity source"
+      },
+      "alias": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The domain's NetBIOS name"
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The domain's DNS name"
+      },
+      "baseUserDN": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The base distinguished name for users"
+      },
+      "baseGroupDN": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The base distinguished name for groups"
+      },
+      "primaryServer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Primary server URL"
+      },
+      "secondaryServer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Secondary server URL"
+      },
+      "ssl": {
+        "type": {
+          "$ref": "#/22"
+        },
+        "flags": 0,
+        "description": "Protect LDAP communication using SSL certificate (LDAPS)"
+      },
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of an Active Directory user with a minimum of read-only access to Base\nDN for users and group"
+      },
+      "password": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "The password of the Active Directory user with a minimum of read-only access to\nBase DN for users and groups."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/21"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "sensitive": true
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/19"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailabilityProperties",
+    "properties": {
+      "strategy": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 0,
+        "description": "The availability strategy for the private cloud"
+      },
+      "zone": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The primary availability zone for the private cloud"
+      },
+      "secondaryZone": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The secondary availability zone for the private cloud"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SingleZone"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DualZone"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/26"
+      },
+      {
+        "$ref": "#/27"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Encryption",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/32"
+        },
+        "flags": 0,
+        "description": "Status of customer managed encryption key"
+      },
+      "keyVaultProperties": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 0,
+        "description": "The key vault where the encryption key is stored"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "EncryptionKeyVaultProperties",
+    "properties": {
+      "keyName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the key."
+      },
+      "keyVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The version of the key."
+      },
+      "autoDetectedKeyVersion": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The auto-detected version of the key if versionType is auto-detected."
+      },
+      "keyVaultUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL of the vault."
+      },
+      "keyState": {
+        "type": {
+          "$ref": "#/36"
+        },
+        "flags": 2,
+        "description": "The state of key provided"
+      },
+      "versionType": {
+        "type": {
+          "$ref": "#/39"
+        },
+        "flags": 2,
+        "description": "Property of the key if user provided or auto detected"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AccessDenied"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/34"
+      },
+      {
+        "$ref": "#/35"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fixed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AutoDetected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/37"
+      },
+      {
+        "$ref": "#/38"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/41"
+      },
+      {
+        "$ref": "#/42"
+      },
+      {
+        "$ref": "#/43"
+      },
+      {
+        "$ref": "#/44"
+      },
+      {
+        "$ref": "#/45"
+      },
+      {
+        "$ref": "#/46"
+      },
+      {
+        "$ref": "#/47"
+      },
+      {
+        "$ref": "#/48"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Circuit",
+    "properties": {
+      "primarySubnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "CIDR of primary subnet"
+      },
+      "secondarySubnet": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "CIDR of secondary subnet"
+      },
+      "expressRouteID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Identifier of the ExpressRoute Circuit (Microsoft Colo only)"
+      },
+      "expressRoutePrivatePeeringID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "ExpressRoute Circuit private peering identifier"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Endpoints",
+    "properties": {
+      "nsxtManager": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint FQDN for the NSX-T Data Center manager"
+      },
+      "vcsa": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint FQDN for Virtual Center Server Appliance"
+      },
+      "hcxCloudManager": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint FQDN for the HCX Cloud Manager"
+      },
+      "nsxtManagerIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint IP for the NSX-T Data Center manager"
+      },
+      "vcenterIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint IP for Virtual Center Server Appliance"
+      },
+      "hcxCloudManagerIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Endpoint IP for the HCX Cloud Manager"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/53"
+      },
+      {
+        "$ref": "#/54"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Public"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Private"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/57"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "VcfLicense",
+    "discriminator": "kind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/63"
+        },
+        "flags": 2,
+        "description": "The state of the license provisioning"
+      }
+    },
+    "elements": {
+      "vcf5": {
+        "$ref": "#/64"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/60"
+      },
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Vcf5License",
+    "properties": {
+      "licenseKey": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "License key"
+      },
+      "cores": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Number of cores included in the license"
+      },
+      "endDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "UTC datetime when the license expires"
+      },
+      "broadcomSiteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Broadcom site ID associated with the license."
+      },
+      "broadcomContractNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Broadcom contract number associated with the license."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "Additional labels passed through for license reporting."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/68"
+        },
+        "flags": 1,
+        "description": "License kind"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Label",
+    "properties": {
+      "key": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "The key of the label."
+      },
+      "value": {
+        "type": {
+          "$ref": "#/66"
+        },
+        "flags": 1,
+        "description": "The value of the label."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "vcf5"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The name of the SKU. E.g. P3. It is typically a letter+number code"
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "If the service has different generations of hardware, for the same SKU, then that can be captured here."
+      },
+      "capacity": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Standard"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/76"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (either system assigned, or none)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/87"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/92"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/83"
+      },
+      {
+        "$ref": "#/84"
+      },
+      {
+        "$ref": "#/85"
+      },
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/88"
+      },
+      {
+        "$ref": "#/89"
+      },
+      {
+        "$ref": "#/90"
+      },
+      {
+        "$ref": "#/91"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/4"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/addons"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/addons",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/94"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "AddonProperties",
+    "discriminator": "addonType",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/105"
+        },
+        "flags": 2,
+        "description": "The state of the addon provisioning"
+      }
+    },
+    "elements": {
+      "Arc": {
+        "$ref": "#/106"
+      },
+      "HCX": {
+        "$ref": "#/108"
+      },
+      "SRM": {
+        "$ref": "#/110"
+      },
+      "VR": {
+        "$ref": "#/112"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/103"
+      },
+      {
+        "$ref": "#/104"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddonArcProperties",
+    "properties": {
+      "vCenter": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The VMware vCenter resource ID"
+      },
+      "addonType": {
+        "type": {
+          "$ref": "#/107"
+        },
+        "flags": 1,
+        "description": "Addon type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Arc"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddonHcxProperties",
+    "properties": {
+      "offer": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The HCX offer, example VMware MaaS Cloud Provider (Enterprise)"
+      },
+      "managementNetwork": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "HCX management network."
+      },
+      "uplinkNetwork": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "HCX uplink network"
+      },
+      "addonType": {
+        "type": {
+          "$ref": "#/109"
+        },
+        "flags": 1,
+        "description": "Addon type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HCX"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddonSrmProperties",
+    "properties": {
+      "licenseKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Site Recovery Manager (SRM) license"
+      },
+      "addonType": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 1,
+        "description": "Addon type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SRM"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AddonVrProperties",
+    "properties": {
+      "vrsCount": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The vSphere Replication Server (VRS) count"
+      },
+      "addonType": {
+        "type": {
+          "$ref": "#/113"
+        },
+        "flags": 1,
+        "description": "Addon type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VR"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/addons@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/96"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/authorizations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/authorizations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/116"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ExpressRouteAuthorizationProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 2,
+        "description": "The state of the ExpressRoute Circuit Authorization provisioning"
+      },
+      "expressRouteAuthorizationId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ID of the ExpressRoute Circuit Authorization"
+      },
+      "expressRouteAuthorizationKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The key of the ExpressRoute Circuit Authorization"
+      },
+      "expressRouteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the ExpressRoute Circuit"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/119"
+      },
+      {
+        "$ref": "#/120"
+      },
+      {
+        "$ref": "#/121"
+      },
+      {
+        "$ref": "#/122"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/authorizations@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/117"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/cloudLinks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/cloudLinks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/125"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/126"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/128"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CloudLinkProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/132"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 2,
+        "description": "The state of the cloud link."
+      },
+      "linkedCloud": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifier of the other private cloud participating in the link."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/133"
+      },
+      {
+        "$ref": "#/134"
+      },
+      {
+        "$ref": "#/135"
+      },
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/cloudLinks@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/127"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/clusters"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/clusters",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/140"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/143"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 1,
+        "description": "The SKU (Stock Keeping Unit) assigned to this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterProperties",
+    "properties": {
+      "clusterSize": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "The cluster size"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/150"
+        },
+        "flags": 2,
+        "description": "The state of the cluster provisioning"
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "The identity"
+      },
+      "hosts": {
+        "type": {
+          "$ref": "#/151"
+        },
+        "flags": 0,
+        "description": "The hosts"
+      },
+      "vsanDatastoreName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of the vsan datastore associated with the cluster"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/145"
+      },
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/148"
+      },
+      {
+        "$ref": "#/149"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/clusters@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/142"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/clusters/datastores"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/clusters/datastores",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/153"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/154"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/156"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DatastoreProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/165"
+        },
+        "flags": 2,
+        "description": "The state of the datastore provisioning"
+      },
+      "netAppVolume": {
+        "type": {
+          "$ref": "#/166"
+        },
+        "flags": 0,
+        "description": "An Azure NetApp Files volume"
+      },
+      "diskPoolVolume": {
+        "type": {
+          "$ref": "#/167"
+        },
+        "flags": 0,
+        "description": "An iSCSI volume"
+      },
+      "elasticSanVolume": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "An Elastic SAN volume"
+      },
+      "pureStorageVolume": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 0,
+        "description": "A Pure Storage volume"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 2,
+        "description": "The operational status of the datastore"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
+        "$ref": "#/160"
+      },
+      {
+        "$ref": "#/161"
+      },
+      {
+        "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NetAppVolume",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the NetApp volume"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DiskPoolVolume",
+    "properties": {
+      "targetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the iSCSI target"
+      },
+      "lunName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Name of the LUN to be used for datastore"
+      },
+      "mountOption": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Mode that describes whether the LUN has to be mounted as a datastore or\nattached as a LUN"
+      },
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Device path"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MOUNT"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ATTACH"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ElasticSanVolume",
+    "properties": {
+      "targetId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Elastic SAN Volume"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStorageVolume",
+    "properties": {
+      "storagePoolId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Pure Storage Pool"
+      },
+      "sizeGb": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Volume size to be used to create a Virtual Volumes (vVols) datastore"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Accessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Inaccessible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Attached"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Detached"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "LostCommunication"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DeadOrError"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/177"
+      },
+      {
+        "$ref": "#/178"
+      },
+      {
+        "$ref": "#/179"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/clusters/datastores@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/155"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/clusters/placementPolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/clusters/placementPolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/182"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/185"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "PlacementPolicyProperties",
+    "discriminator": "type",
+    "baseProperties": {
+      "state": {
+        "type": {
+          "$ref": "#/188"
+        },
+        "flags": 0,
+        "description": "Whether the placement policy is enabled or disabled"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the placement policy"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/195"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      }
+    },
+    "elements": {
+      "VmHost": {
+        "$ref": "#/196"
+      },
+      "VmVm": {
+        "$ref": "#/209"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/186"
+      },
+      {
+        "$ref": "#/187"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/189"
+      },
+      {
+        "$ref": "#/190"
+      },
+      {
+        "$ref": "#/191"
+      },
+      {
+        "$ref": "#/192"
+      },
+      {
+        "$ref": "#/193"
+      },
+      {
+        "$ref": "#/194"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmHostPlacementPolicyProperties",
+    "properties": {
+      "vmMembers": {
+        "type": {
+          "$ref": "#/197"
+        },
+        "flags": 1,
+        "description": "Virtual machine members list"
+      },
+      "hostMembers": {
+        "type": {
+          "$ref": "#/198"
+        },
+        "flags": 1,
+        "description": "Host members list"
+      },
+      "affinityType": {
+        "type": {
+          "$ref": "#/201"
+        },
+        "flags": 1,
+        "description": "placement policy affinity type"
+      },
+      "affinityStrength": {
+        "type": {
+          "$ref": "#/204"
+        },
+        "flags": 0,
+        "description": "vm-host placement policy affinity strength (should/must)"
+      },
+      "azureHybridBenefitType": {
+        "type": {
+          "$ref": "#/207"
+        },
+        "flags": 0,
+        "description": "placement policy azure hybrid benefit opt-in type"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/208"
+        },
+        "flags": 1,
+        "description": "Placement Policy type"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Affinity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AntiAffinity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/199"
+      },
+      {
+        "$ref": "#/200"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Should"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Must"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/202"
+      },
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SqlHost"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmHost"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmPlacementPolicyProperties",
+    "properties": {
+      "vmMembers": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 1,
+        "description": "Virtual machine members list"
+      },
+      "affinityType": {
+        "type": {
+          "$ref": "#/213"
+        },
+        "flags": 1,
+        "description": "placement policy affinity type"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/214"
+        },
+        "flags": 1,
+        "description": "Placement Policy type"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Affinity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AntiAffinity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmVm"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/clusters/placementPolicies@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/184"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/globalReachConnections"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/globalReachConnections",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/219"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GlobalReachConnectionProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 2,
+        "description": "The state of the  ExpressRoute Circuit Authorization provisioning"
+      },
+      "addressPrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The network used for global reach carved out from the original network block\nprovided for the private cloud"
+      },
+      "authorizationKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Authorization key from the peer express route used for the global reach\nconnection"
+      },
+      "circuitConnectionStatus": {
+        "type": {
+          "$ref": "#/228"
+        },
+        "flags": 2,
+        "description": "The connection status of the global reach connection"
+      },
+      "peerExpressRouteCircuit": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Identifier of the ExpressRoute Circuit to peer with in the global reach\nconnection"
+      },
+      "expressRouteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The ID of the Private Cloud's ExpressRoute Circuit that is participating in the\nglobal reach connection"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/220"
+      },
+      {
+        "$ref": "#/221"
+      },
+      {
+        "$ref": "#/222"
+      },
+      {
+        "$ref": "#/223"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connected"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Connecting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disconnected"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/225"
+      },
+      {
+        "$ref": "#/226"
+      },
+      {
+        "$ref": "#/227"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/globalReachConnections@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/218"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/hcxEnterpriseSites"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/hcxEnterpriseSites",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/230"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/231"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/233"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "HcxEnterpriseSiteProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/237"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "activationKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The activation key"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/242"
+        },
+        "flags": 2,
+        "description": "The status of the HCX Enterprise Site"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/234"
+      },
+      {
+        "$ref": "#/235"
+      },
+      {
+        "$ref": "#/236"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Available"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Consumed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deactivated"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleted"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/238"
+      },
+      {
+        "$ref": "#/239"
+      },
+      {
+        "$ref": "#/240"
+      },
+      {
+        "$ref": "#/241"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/hcxEnterpriseSites@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/232"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/iscsiPaths"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/iscsiPaths",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/244"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/245"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/246"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/248"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "IscsiPathProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/256"
+        },
+        "flags": 2,
+        "description": "The state of the iSCSI path provisioning"
+      },
+      "networkBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "CIDR Block for iSCSI path."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/249"
+      },
+      {
+        "$ref": "#/250"
+      },
+      {
+        "$ref": "#/251"
+      },
+      {
+        "$ref": "#/252"
+      },
+      {
+        "$ref": "#/253"
+      },
+      {
+        "$ref": "#/254"
+      },
+      {
+        "$ref": "#/255"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/iscsiPaths@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/247"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmwareFirewall"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/258"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/licenses"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/licenses",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/259"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/260"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/261"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/263"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "LicenseProperties",
+    "discriminator": "kind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/267"
+        },
+        "flags": 2,
+        "description": "The state of the license provisioning"
+      }
+    },
+    "elements": {
+      "VmwareFirewall": {
+        "$ref": "#/268"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/264"
+      },
+      {
+        "$ref": "#/265"
+      },
+      {
+        "$ref": "#/266"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VmwareFirewallLicenseProperties",
+    "properties": {
+      "licenseKey": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "License key"
+      },
+      "cores": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "Number of cores included in the license, measured per hour"
+      },
+      "endDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "UTC datetime when the license expires"
+      },
+      "broadcomSiteId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Broadcom site ID associated with the license."
+      },
+      "broadcomContractNumber": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The Broadcom contract number associated with the license."
+      },
+      "labels": {
+        "type": {
+          "$ref": "#/269"
+        },
+        "flags": 0,
+        "description": "Additional labels passed through for license reporting."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/270"
+        },
+        "flags": 1,
+        "description": "License kind"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/65"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VmwareFirewall"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/licenses@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/262"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/pureStoragePolicies"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/pureStoragePolicies",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/272"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/273"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/275"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PureStoragePolicyProperties",
+    "properties": {
+      "storagePolicyDefinition": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Definition of a Pure Storage Policy Based Management policy"
+      },
+      "storagePoolId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Azure resource ID of the Pure Storage Pool associated with the storage policy"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/281"
+        },
+        "flags": 2,
+        "description": "The state of the Pure Storage Policy Based Management policy provisioning"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/276"
+      },
+      {
+        "$ref": "#/277"
+      },
+      {
+        "$ref": "#/278"
+      },
+      {
+        "$ref": "#/279"
+      },
+      {
+        "$ref": "#/280"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/pureStoragePolicies@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/274"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/scriptExecutions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/scriptExecutions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/283"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/284"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptExecutionProperties",
+    "properties": {
+      "scriptCmdletId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A reference to the script cmdlet resource if user is running a AVS script"
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/294"
+        },
+        "flags": 0,
+        "description": "Parameters the script will accept"
+      },
+      "hiddenParameters": {
+        "type": {
+          "$ref": "#/295"
+        },
+        "flags": 0,
+        "description": "Parameters that will be hidden/not visible to ARM, such as passwords and\ncredentials"
+      },
+      "failureReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Error message if the script was able to run, but if the script itself had\nerrors or powershell threw an exception"
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Time limit for execution"
+      },
+      "retention": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time to live for the resource. If not provided, will be available for 60 days"
+      },
+      "submittedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time the script execution was submitted"
+      },
+      "startedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time the script execution was started"
+      },
+      "finishedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time the script execution was finished"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 2,
+        "description": "The state of the script execution resource"
+      },
+      "output": {
+        "type": {
+          "$ref": "#/305"
+        },
+        "flags": 0,
+        "description": "Standard output stream from the powershell execution"
+      },
+      "namedOutputs": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 0,
+        "description": "User-defined dictionary."
+      },
+      "information": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 2,
+        "description": "Standard information out stream from the powershell execution"
+      },
+      "warnings": {
+        "type": {
+          "$ref": "#/309"
+        },
+        "flags": 2,
+        "description": "Standard warning out stream from the powershell execution"
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/310"
+        },
+        "flags": 2,
+        "description": "Standard error output stream from the powershell execution"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ScriptExecutionParameter",
+    "discriminator": "type",
+    "baseProperties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The parameter name"
+      }
+    },
+    "elements": {
+      "Credential": {
+        "$ref": "#/288"
+      },
+      "SecureValue": {
+        "$ref": "#/290"
+      },
+      "Value": {
+        "$ref": "#/292"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PSCredentialExecutionParameter",
+    "properties": {
+      "username": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "username for login"
+      },
+      "password": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "password for login"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/289"
+        },
+        "flags": 1,
+        "description": "script execution parameter type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Credential"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptSecureStringExecutionParameter",
+    "properties": {
+      "secureValue": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 0,
+        "description": "A secure value for the passed parameter, not to be stored in logs"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/291"
+        },
+        "flags": 1,
+        "description": "script execution parameter type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureValue"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptStringExecutionParameter",
+    "properties": {
+      "value": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value for the passed parameter"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/293"
+        },
+        "flags": 1,
+        "description": "script execution parameter type"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Value"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/287"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/287"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Cancelled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/298"
+      },
+      {
+        "$ref": "#/299"
+      },
+      {
+        "$ref": "#/300"
+      },
+      {
+        "$ref": "#/301"
+      },
+      {
+        "$ref": "#/302"
+      },
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "AnyType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptExecutionPropertiesNamedOutputs",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/306"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/scriptExecutions@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/285"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/312"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/313"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/315"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "WorkloadNetworkDhcpEntity",
+    "discriminator": "dhcpType",
+    "baseProperties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the DHCP entity."
+      },
+      "segments": {
+        "type": {
+          "$ref": "#/316"
+        },
+        "flags": 2,
+        "description": "NSX Segments consuming DHCP."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/323"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    },
+    "elements": {
+      "RELAY": {
+        "$ref": "#/324"
+      },
+      "SERVER": {
+        "$ref": "#/327"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/317"
+      },
+      {
+        "$ref": "#/318"
+      },
+      {
+        "$ref": "#/319"
+      },
+      {
+        "$ref": "#/320"
+      },
+      {
+        "$ref": "#/321"
+      },
+      {
+        "$ref": "#/322"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkDhcpRelay",
+    "properties": {
+      "serverAddresses": {
+        "type": {
+          "$ref": "#/325"
+        },
+        "flags": 0,
+        "description": "DHCP Relay Addresses. Max 3."
+      },
+      "dhcpType": {
+        "type": {
+          "$ref": "#/326"
+        },
+        "flags": 1,
+        "description": "Type of DHCP: SERVER or RELAY."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1,
+    "maxLength": 3
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "RELAY"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkDhcpServer",
+    "properties": {
+      "serverAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "DHCP Server Address."
+      },
+      "leaseTime": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "DHCP Server Lease Time."
+      },
+      "dhcpType": {
+        "type": {
+          "$ref": "#/328"
+        },
+        "flags": 1,
+        "description": "Type of DHCP: SERVER or RELAY."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SERVER"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dhcpConfigurations@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/314"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/dnsServices"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dnsServices",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/330"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/331"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/333"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkDnsServiceProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the DNS Service."
+      },
+      "dnsServiceIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "DNS service IP of the DNS Service."
+      },
+      "defaultDnsZone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Default DNS zone of the DNS Service."
+      },
+      "fqdnZones": {
+        "type": {
+          "$ref": "#/334"
+        },
+        "flags": 0,
+        "description": "FQDN zones of the DNS Service."
+      },
+      "logLevel": {
+        "type": {
+          "$ref": "#/340"
+        },
+        "flags": 0,
+        "description": "DNS Service log level."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/343"
+        },
+        "flags": 2,
+        "description": "DNS Service status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/350"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DEBUG"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INFO"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "WARNING"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ERROR"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FATAL"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/335"
+      },
+      {
+        "$ref": "#/336"
+      },
+      {
+        "$ref": "#/337"
+      },
+      {
+        "$ref": "#/338"
+      },
+      {
+        "$ref": "#/339"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUCCESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FAILURE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/341"
+      },
+      {
+        "$ref": "#/342"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/344"
+      },
+      {
+        "$ref": "#/345"
+      },
+      {
+        "$ref": "#/346"
+      },
+      {
+        "$ref": "#/347"
+      },
+      {
+        "$ref": "#/348"
+      },
+      {
+        "$ref": "#/349"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dnsServices@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/332"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/dnsZones"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dnsZones",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/352"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/353"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/355"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkDnsZoneProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the DNS Zone."
+      },
+      "domain": {
+        "type": {
+          "$ref": "#/356"
+        },
+        "flags": 0,
+        "description": "Domain names of the DNS Zone."
+      },
+      "dnsServerIps": {
+        "type": {
+          "$ref": "#/357"
+        },
+        "flags": 0,
+        "description": "DNS Server IP array of the DNS Zone."
+      },
+      "sourceIp": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Source IP of the DNS Zone."
+      },
+      "dnsServices": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Number of DNS Services using the DNS zone."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/364"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/358"
+      },
+      {
+        "$ref": "#/359"
+      },
+      {
+        "$ref": "#/360"
+      },
+      {
+        "$ref": "#/361"
+      },
+      {
+        "$ref": "#/362"
+      },
+      {
+        "$ref": "#/363"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/dnsZones@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/354"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/366"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/367"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/369"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkPortMirroringProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the port mirroring profile."
+      },
+      "direction": {
+        "type": {
+          "$ref": "#/373"
+        },
+        "flags": 0,
+        "description": "Direction of port mirroring profile."
+      },
+      "source": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Source VM Group."
+      },
+      "destination": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Destination VM Group."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/376"
+        },
+        "flags": 2,
+        "description": "Port Mirroring Status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "INGRESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EGRESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "BIDIRECTIONAL"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/370"
+      },
+      {
+        "$ref": "#/371"
+      },
+      {
+        "$ref": "#/372"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUCCESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FAILURE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/374"
+      },
+      {
+        "$ref": "#/375"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/377"
+      },
+      {
+        "$ref": "#/378"
+      },
+      {
+        "$ref": "#/379"
+      },
+      {
+        "$ref": "#/380"
+      },
+      {
+        "$ref": "#/381"
+      },
+      {
+        "$ref": "#/382"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/portMirroringProfiles@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/368"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/publicIPs"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/publicIPs",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkPublicIPProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the Public IP Block."
+      },
+      "numberOfPublicIPs": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "Number of Public IPs requested."
+      },
+      "publicIPBlock": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "CIDR Block of the Public IP Block."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/395"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/389"
+      },
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/391"
+      },
+      {
+        "$ref": "#/392"
+      },
+      {
+        "$ref": "#/393"
+      },
+      {
+        "$ref": "#/394"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/publicIPs@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/387"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/segments"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/segments",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/397"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/398"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/400"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkSegmentProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the segment."
+      },
+      "connectedGateway": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gateway which to connect segment to."
+      },
+      "subnet": {
+        "type": {
+          "$ref": "#/401"
+        },
+        "flags": 0,
+        "description": "Subnet which to connect segment to."
+      },
+      "portVif": {
+        "type": {
+          "$ref": "#/404"
+        },
+        "flags": 2,
+        "description": "Port Vif which segment is associated with."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/407"
+        },
+        "flags": 2,
+        "description": "Segment status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/414"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkSegmentSubnet",
+    "properties": {
+      "dhcpRanges": {
+        "type": {
+          "$ref": "#/402"
+        },
+        "flags": 0,
+        "description": "DHCP Range assigned for subnet."
+      },
+      "gatewayAddress": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gateway address."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkSegmentPortVif",
+    "properties": {
+      "portName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Name of port or VIF attached to segment."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/403"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUCCESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FAILURE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/405"
+      },
+      {
+        "$ref": "#/406"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/408"
+      },
+      {
+        "$ref": "#/409"
+      },
+      {
+        "$ref": "#/410"
+      },
+      {
+        "$ref": "#/411"
+      },
+      {
+        "$ref": "#/412"
+      },
+      {
+        "$ref": "#/413"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/segments@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/399"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/vmGroups"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/vmGroups",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/416"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/417"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/419"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkVMGroupProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the VM group."
+      },
+      "members": {
+        "type": {
+          "$ref": "#/420"
+        },
+        "flags": 0,
+        "description": "Virtual machine members of this group."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/423"
+        },
+        "flags": 2,
+        "description": "VM Group status."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/430"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "revision": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 0,
+        "description": "NSX revision number."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SUCCESS"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FAILURE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/421"
+      },
+      {
+        "$ref": "#/422"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/424"
+      },
+      {
+        "$ref": "#/425"
+      },
+      {
+        "$ref": "#/426"
+      },
+      {
+        "$ref": "#/427"
+      },
+      {
+        "$ref": "#/428"
+      },
+      {
+        "$ref": "#/429"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/vmGroups@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/418"
+    },
+    "flags": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/clusters/hosts"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/clusters/hosts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/432"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/433"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/435"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "zones": {
+        "type": {
+          "$ref": "#/448"
+        },
+        "flags": 2,
+        "description": "The availability zones."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "The SKU (Stock Keeping Unit) assigned to this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "HostProperties",
+    "discriminator": "kind",
+    "baseProperties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/439"
+        },
+        "flags": 2,
+        "description": "The state of the host provisioning."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the host in VMware vCenter."
+      },
+      "moRefId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "vCenter managed object reference ID of the host."
+      },
+      "fqdn": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 2,
+        "description": "Fully qualified domain name of the host."
+      },
+      "maintenance": {
+        "type": {
+          "$ref": "#/443"
+        },
+        "flags": 0,
+        "description": "If provided, the host is in maintenance. The value is the reason for maintenance."
+      },
+      "faultDomain": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2
+      }
+    },
+    "elements": {
+      "General": {
+        "$ref": "#/444"
+      },
+      "Specialized": {
+        "$ref": "#/446"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/436"
+      },
+      {
+        "$ref": "#/437"
+      },
+      {
+        "$ref": "#/438"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 255
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Replacement"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Upgrade"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/441"
+      },
+      {
+        "$ref": "#/442"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "GeneralHostProperties",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/445"
+        },
+        "flags": 1,
+        "description": "The kind of host"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "General"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SpecializedHostProperties",
+    "properties": {
+      "kind": {
+        "type": {
+          "$ref": "#/447"
+        },
+        "flags": 1,
+        "description": "The kind of host"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Specialized"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/clusters/hosts@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/434"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/clusters/virtualMachines"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/clusters/virtualMachines",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/450"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/451"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/453"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/457"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Display name of the VM."
+      },
+      "moRefId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "vCenter managed object reference ID of the virtual machine"
+      },
+      "folderPath": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Path to virtual machine's folder starting from datacenter virtual machine folder"
+      },
+      "restrictMovement": {
+        "type": {
+          "$ref": "#/460"
+        },
+        "flags": 2,
+        "description": "Whether VM DRS-driven movement is restricted (enabled) or not (disabled)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/454"
+      },
+      {
+        "$ref": "#/455"
+      },
+      {
+        "$ref": "#/456"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/458"
+      },
+      {
+        "$ref": "#/459"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/clusters/virtualMachines@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/452"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/maintenances"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/maintenances",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/462"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/463"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/465"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceProperties",
+    "properties": {
+      "component": {
+        "type": {
+          "$ref": "#/469"
+        },
+        "flags": 2,
+        "description": "type of maintenance"
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Display name for maintenance"
+      },
+      "clusterId": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Cluster ID for on which maintenance will be applied. Empty if maintenance is at private cloud level"
+      },
+      "infoLink": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to maintenance info"
+      },
+      "impact": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Impact on the resource during maintenance period"
+      },
+      "scheduledByMicrosoft": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "If maintenance is scheduled by Microsoft"
+      },
+      "state": {
+        "type": {
+          "$ref": "#/471"
+        },
+        "flags": 2,
+        "description": "The state of the maintenance"
+      },
+      "scheduledStartTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Scheduled maintenance start time"
+      },
+      "estimatedDurationInMinutes": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Estimated time maintenance will take in minutes"
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/483"
+        },
+        "flags": 2,
+        "description": "The provisioning state"
+      },
+      "operations": {
+        "type": {
+          "$ref": "#/521"
+        },
+        "flags": 2,
+        "description": "Operations on  maintenance"
+      },
+      "maintenanceReadiness": {
+        "type": {
+          "$ref": "#/522"
+        },
+        "flags": 2,
+        "description": "Indicates whether the maintenance is ready to proceed"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "VCSA"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ESXI"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NSXT"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/466"
+      },
+      {
+        "$ref": "#/467"
+      },
+      {
+        "$ref": "#/468"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceState",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/478"
+        },
+        "flags": 0,
+        "description": "Customer presentable maintenance state"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Failure/Success info"
+      },
+      "startedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time when current state started"
+      },
+      "endedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Time when current state ended"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotScheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Scheduled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Success"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/472"
+      },
+      {
+        "$ref": "#/473"
+      },
+      {
+        "$ref": "#/474"
+      },
+      {
+        "$ref": "#/475"
+      },
+      {
+        "$ref": "#/476"
+      },
+      {
+        "$ref": "#/477"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/479"
+      },
+      {
+        "$ref": "#/480"
+      },
+      {
+        "$ref": "#/481"
+      },
+      {
+        "$ref": "#/482"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "MaintenanceManagementOperation",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "MaintenanceReadinessRefresh": {
+        "$ref": "#/485"
+      },
+      "Reschedule": {
+        "$ref": "#/492"
+      },
+      "Schedule": {
+        "$ref": "#/506"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceReadinessRefreshOperation",
+    "properties": {
+      "isDisabled": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "If maintenanceReadiness refresh is disabled"
+      },
+      "disabledReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Reason disabling refresh for maintenanceReadiness"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/490"
+        },
+        "flags": 2,
+        "description": "Status of the operation"
+      },
+      "refreshedByMicrosoft": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "Indicates if the operation was refreshed by Microsoft"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional message about the operation"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/491"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotStarted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/486"
+      },
+      {
+        "$ref": "#/487"
+      },
+      {
+        "$ref": "#/488"
+      },
+      {
+        "$ref": "#/489"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "MaintenanceReadinessRefresh"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "RescheduleOperation",
+    "properties": {
+      "isDisabled": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "If rescheduling is disabled"
+      },
+      "disabledReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Reason for reschedule disabled"
+      },
+      "constraints": {
+        "type": {
+          "$ref": "#/504"
+        },
+        "flags": 2,
+        "description": "Constraints for rescheduling maintenance"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/505"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "RescheduleOperationConstraint",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "AvailableWindowForMaintenance": {
+        "$ref": "#/494"
+      },
+      "Blocked": {
+        "$ref": "#/496"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableWindowForMaintenanceWhileRescheduleOperation",
+    "properties": {
+      "startsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Start date time"
+      },
+      "endsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "End date Time"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/495"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailableWindowForMaintenance"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlockedWhileRescheduleOperation",
+    "properties": {
+      "category": {
+        "type": {
+          "$ref": "#/500"
+        },
+        "flags": 3,
+        "description": "Category of blocked date"
+      },
+      "timeRanges": {
+        "type": {
+          "$ref": "#/502"
+        },
+        "flags": 2,
+        "description": "Date ranges blocked for schedule"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/503"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HiPriorityEvent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QuotaExhausted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Holiday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/497"
+      },
+      {
+        "$ref": "#/498"
+      },
+      {
+        "$ref": "#/499"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlockedDatesConstraintTimeRange",
+    "properties": {
+      "startsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Start date time"
+      },
+      "endsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "End date Time"
+      },
+      "reason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Reason category for blocking maintenance reschedule"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/501"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/493"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Reschedule"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduleOperation",
+    "properties": {
+      "isDisabled": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "If scheduling is disabled"
+      },
+      "disabledReason": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Reason for schedule disabled"
+      },
+      "constraints": {
+        "type": {
+          "$ref": "#/519"
+        },
+        "flags": 2,
+        "description": "Constraints for scheduling maintenance"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/520"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "ScheduleOperationConstraint",
+    "discriminator": "kind",
+    "baseProperties": {},
+    "elements": {
+      "AvailableWindowForMaintenance": {
+        "$ref": "#/508"
+      },
+      "Blocked": {
+        "$ref": "#/510"
+      },
+      "SchedulingWindow": {
+        "$ref": "#/517"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AvailableWindowForMaintenanceWhileScheduleOperation",
+    "properties": {
+      "startsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Start date time"
+      },
+      "endsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "End date Time"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/509"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "AvailableWindowForMaintenance"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "BlockedWhileScheduleOperation",
+    "properties": {
+      "category": {
+        "type": {
+          "$ref": "#/514"
+        },
+        "flags": 3,
+        "description": "Category of blocked date"
+      },
+      "timeRanges": {
+        "type": {
+          "$ref": "#/515"
+        },
+        "flags": 2,
+        "description": "Date ranges blocked for schedule"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/516"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "HiPriorityEvent"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "QuotaExhausted"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Holiday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/511"
+      },
+      {
+        "$ref": "#/512"
+      },
+      {
+        "$ref": "#/513"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/501"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Blocked"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SchedulingWindow",
+    "properties": {
+      "startsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "Start date time"
+      },
+      "endsAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 3,
+        "description": "End date Time"
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/518"
+        },
+        "flags": 1,
+        "description": "The kind of operation"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SchedulingWindow"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/507"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Schedule"
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/484"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceReadiness",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/525"
+        },
+        "flags": 3,
+        "description": "The type of maintenance readiness check"
+      },
+      "status": {
+        "type": {
+          "$ref": "#/530"
+        },
+        "flags": 3,
+        "description": "The current readiness status of maintenance"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "A summary message of the readiness check result"
+      },
+      "failedChecks": {
+        "type": {
+          "$ref": "#/537"
+        },
+        "flags": 2,
+        "description": "A list of failed checks, if any"
+      },
+      "lastUpdated": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The timestamp of the last readiness update"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Precheck"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Preflight"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/523"
+      },
+      {
+        "$ref": "#/524"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Ready"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotReady"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "DataNotAvailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotApplicable"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/526"
+      },
+      {
+        "$ref": "#/527"
+      },
+      {
+        "$ref": "#/528"
+      },
+      {
+        "$ref": "#/529"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceFailedCheck",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the failed check"
+      },
+      "impactedResources": {
+        "type": {
+          "$ref": "#/536"
+        },
+        "flags": 2,
+        "description": "A list of resources impacted by the failed check"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImpactedMaintenanceResource",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The ID of the impacted resource"
+      },
+      "errors": {
+        "type": {
+          "$ref": "#/535"
+        },
+        "flags": 2,
+        "description": "A list of errors associated with the impacted resource"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ImpactedMaintenanceResourceError",
+    "properties": {
+      "errorCode": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error code"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the error"
+      },
+      "details": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Additional details about the error"
+      },
+      "resolutionSteps": {
+        "type": {
+          "$ref": "#/534"
+        },
+        "flags": 2,
+        "description": "Steps to resolve the error"
+      },
+      "actionRequired": {
+        "type": {
+          "$ref": "#/470"
+        },
+        "flags": 2,
+        "description": "Indicates whether action is required by the customer"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/533"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/532"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/531"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/maintenances@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/464"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/provisionedNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/provisionedNetworks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/539"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/540"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/542"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProvisionedNetworkProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/546"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "addressPrefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The address prefixes of the provisioned network in CIDR notation."
+      },
+      "networkType": {
+        "type": {
+          "$ref": "#/554"
+        },
+        "flags": 2,
+        "description": "The type of network provisioned."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/543"
+      },
+      {
+        "$ref": "#/544"
+      },
+      {
+        "$ref": "#/545"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "esxManagement"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "esxReplication"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hcxManagement"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "hcxUplink"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "vcenterManagement"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "vmotion"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "vsan"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/547"
+      },
+      {
+        "$ref": "#/548"
+      },
+      {
+        "$ref": "#/549"
+      },
+      {
+        "$ref": "#/550"
+      },
+      {
+        "$ref": "#/551"
+      },
+      {
+        "$ref": "#/552"
+      },
+      {
+        "$ref": "#/553"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/provisionedNetworks@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/541"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringType",
+    "pattern": "^[-\\w\\._@]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/scriptPackages"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/scriptPackages",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/556"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/557"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/558"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/560"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptPackageProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/564"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "User friendly description of the package"
+      },
+      "version": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Module version"
+      },
+      "company": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Company that created and supports the package"
+      },
+      "uri": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Link to support by the package vendor"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/561"
+      },
+      {
+        "$ref": "#/562"
+      },
+      {
+        "$ref": "#/563"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/scriptPackages@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/559"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/566"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/567"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/569"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptCmdletProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/573"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Description of the scripts functionality"
+      },
+      "timeout": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Recommended time limit for execution"
+      },
+      "audience": {
+        "type": {
+          "$ref": "#/576"
+        },
+        "flags": 2,
+        "description": "Specifies whether a script cmdlet is intended to be invoked only through automation or visible to customers"
+      },
+      "parameters": {
+        "type": {
+          "$ref": "#/591"
+        },
+        "flags": 2,
+        "description": "Parameters the script will accept"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/570"
+      },
+      {
+        "$ref": "#/571"
+      },
+      {
+        "$ref": "#/572"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Automation"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Any"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/574"
+      },
+      {
+        "$ref": "#/575"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptParameter",
+    "properties": {
+      "type": {
+        "type": {
+          "$ref": "#/584"
+        },
+        "flags": 2,
+        "description": "The type of parameter the script is expecting. psCredential is a\nPSCredentialObject"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The parameter name that the script will expect a parameter value for"
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "User friendly description of the parameter"
+      },
+      "visibility": {
+        "type": {
+          "$ref": "#/587"
+        },
+        "flags": 2,
+        "description": "Should this parameter be visible to arm and passed in the parameters argument\nwhen executing"
+      },
+      "optional": {
+        "type": {
+          "$ref": "#/590"
+        },
+        "flags": 2,
+        "description": "Is this parameter required or optional"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "String"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SecureString"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Credential"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Int"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Bool"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Float"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/578"
+      },
+      {
+        "$ref": "#/579"
+      },
+      {
+        "$ref": "#/580"
+      },
+      {
+        "$ref": "#/581"
+      },
+      {
+        "$ref": "#/582"
+      },
+      {
+        "$ref": "#/583"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Visible"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Hidden"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/585"
+      },
+      {
+        "$ref": "#/586"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Optional"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Required"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/588"
+      },
+      {
+        "$ref": "#/589"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/577"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/scriptPackages/scriptCmdlets@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/568"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "default"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/593"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/594"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/595"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/597"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/604"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/598"
+      },
+      {
+        "$ref": "#/599"
+      },
+      {
+        "$ref": "#/600"
+      },
+      {
+        "$ref": "#/601"
+      },
+      {
+        "$ref": "#/602"
+      },
+      {
+        "$ref": "#/603"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/596"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/gateways"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/gateways",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/606"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/607"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/609"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkGatewayProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/616"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the DHCP entity."
+      },
+      "path": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "NSX Gateway Path."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/610"
+      },
+      {
+        "$ref": "#/611"
+      },
+      {
+        "$ref": "#/612"
+      },
+      {
+        "$ref": "#/613"
+      },
+      {
+        "$ref": "#/614"
+      },
+      {
+        "$ref": "#/615"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/gateways@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/608"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/618"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/619"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/621"
+        },
+        "flags": 2,
+        "description": "The resource-specific properties for this resource."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "WorkloadNetworkVirtualMachineProperties",
+    "properties": {
+      "provisioningState": {
+        "type": {
+          "$ref": "#/628"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Display name of the VM."
+      },
+      "vmType": {
+        "type": {
+          "$ref": "#/632"
+        },
+        "flags": 2,
+        "description": "Virtual machine type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Building"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/622"
+      },
+      {
+        "$ref": "#/623"
+      },
+      {
+        "$ref": "#/624"
+      },
+      {
+        "$ref": "#/625"
+      },
+      {
+        "$ref": "#/626"
+      },
+      {
+        "$ref": "#/627"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "REGULAR"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "EDGE"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SERVICE"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/629"
+      },
+      {
+        "$ref": "#/630"
+      },
+      {
+        "$ref": "#/631"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.AVS/privateClouds/workloadNetworks/virtualMachines@2025-09-01",
+    "scopeType": 8,
+    "body": {
+      "$ref": "#/620"
+    },
+    "flags": 1
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Quota",
+    "properties": {
+      "hostsRemaining": {
+        "type": {
+          "$ref": "#/635"
+        },
+        "flags": 2,
+        "description": "Remaining hosts quota by sku type"
+      },
+      "quotaEnabled": {
+        "type": {
+          "$ref": "#/638"
+        },
+        "flags": 2,
+        "description": "Host quota is active for current subscription"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "QuotaHostsRemaining",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/7"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/636"
+      },
+      {
+        "$ref": "#/637"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkQuotaAvailability",
+    "resourceType": "Microsoft.AVS/locations",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/634"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Trial",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/644"
+        },
+        "flags": 2,
+        "description": "Trial status"
+      },
+      "availableHosts": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 2,
+        "description": "Number of trial hosts available"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrialAvailable"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrialUsed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TrialDisabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/641"
+      },
+      {
+        "$ref": "#/642"
+      },
+      {
+        "$ref": "#/643"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkTrialAvailability",
+    "resourceType": "Microsoft.AVS/locations",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/640"
+    },
+    "input": {
+      "$ref": "#/69"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "checkAvailability",
+    "resourceType": "Microsoft.AVS/locations/serviceComponents",
+    "apiVersion": "2025-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getVcfLicense",
+    "resourceType": "Microsoft.AVS/privateClouds",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/59"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AdminCredentials",
+    "properties": {
+      "nsxtUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "NSX-T Manager username"
+      },
+      "nsxtPassword": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "NSX-T Manager password"
+      },
+      "vcenterUsername": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "vCenter admin username"
+      },
+      "vcenterPassword": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "vCenter admin password"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listAdminCredentials",
+    "resourceType": "Microsoft.AVS/privateClouds",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/648"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rotateNsxtPassword",
+    "resourceType": "Microsoft.AVS/privateClouds",
+    "apiVersion": "2025-09-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "rotateVcenterPassword",
+    "resourceType": "Microsoft.AVS/privateClouds",
+    "apiVersion": "2025-09-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterZoneList",
+    "properties": {
+      "zones": {
+        "type": {
+          "$ref": "#/655"
+        },
+        "flags": 0,
+        "description": "Zone and associated hosts info"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ClusterZone",
+    "properties": {
+      "hosts": {
+        "type": {
+          "$ref": "#/654"
+        },
+        "flags": 2,
+        "description": "List of hosts belonging to the availability zone in a cluster"
+      },
+      "zone": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Availability zone identifier"
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/653"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listZones",
+    "resourceType": "Microsoft.AVS/privateClouds/clusters",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/652"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VirtualMachineRestrictMovement",
+    "properties": {
+      "restrictMovement": {
+        "type": {
+          "$ref": "#/660"
+        },
+        "flags": 0,
+        "description": "Whether VM DRS-driven movement is restricted (enabled) or not (disabled)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/658"
+      },
+      {
+        "$ref": "#/659"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "restrictMovement",
+    "resourceType": "Microsoft.AVS/privateClouds/clusters/virtualMachines",
+    "apiVersion": "2025-09-01",
+    "input": {
+      "$ref": "#/657"
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getProperties",
+    "resourceType": "Microsoft.AVS/privateClouds/licenses",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/263"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Maintenance",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/465"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "initiateChecks",
+    "resourceType": "Microsoft.AVS/privateClouds/maintenances",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/663"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceReschedule",
+    "properties": {
+      "rescheduleTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "reschedule time"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "rescheduling reason"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "reschedule",
+    "resourceType": "Microsoft.AVS/privateClouds/maintenances",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/663"
+    },
+    "input": {
+      "$ref": "#/665"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MaintenanceSchedule",
+    "properties": {
+      "scheduleTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "schedule time"
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "scheduling message"
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "schedule",
+    "resourceType": "Microsoft.AVS/privateClouds/maintenances",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/663"
+    },
+    "input": {
+      "$ref": "#/667"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Information"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Output"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Error"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/669"
+      },
+      {
+        "$ref": "#/670"
+      },
+      {
+        "$ref": "#/671"
+      },
+      {
+        "$ref": "#/672"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/673"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScriptExecution",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/286"
+        },
+        "flags": 0,
+        "description": "The resource-specific properties for this resource."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "getExecutionLogs",
+    "resourceType": "Microsoft.AVS/privateClouds/scriptExecutions",
+    "apiVersion": "2025-09-01",
+    "output": {
+      "$ref": "#/675"
+    },
+    "input": {
+      "$ref": "#/674"
+    }
+  }
+]

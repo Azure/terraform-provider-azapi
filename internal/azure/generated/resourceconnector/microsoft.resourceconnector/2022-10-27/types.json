@@ -48,19 +48,19 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
+      "properties": {
         "type": {
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "Identity for the resource."
+        "description": "The set of properties specific to an Appliance"
       },
-      "properties": {
+      "identity": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/46"
         },
         "flags": 0,
-        "description": "The set of properties specific to an Appliance"
+        "description": "Identity for the resource."
       },
       "tags": {
         "type": {
@@ -87,67 +87,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Identity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The principal ID of resource identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The tenant ID of resource."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 0,
-        "description": "The identity type."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
     "name": "ApplianceProperties",
     "properties": {
       "distro": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/7"
         },
         "flags": 0,
         "description": "Represents a supported Fabric/Infra. (AKSEdge etc...)."
       },
       "infrastructureConfig": {
         "type": {
-          "$ref": "#/12"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Contains infrastructure information about the Appliance"
@@ -168,10 +119,10 @@
       },
       "status": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/45"
         },
         "flags": 2,
-        "description": "Appliance’s health and state of connection to on-prem"
+        "description": "Appliance’s health and state of connection to on-prem. This list of values is not exhaustive."
       },
       "version": {
         "type": {
@@ -190,7 +141,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/10"
+        "$ref": "#/6"
       },
       {
         "$ref": "#/2"
@@ -203,7 +154,7 @@
     "properties": {
       "provider": {
         "type": {
-          "$ref": "#/16"
+          "$ref": "#/12"
         },
         "flags": 0,
         "description": "Information about the connected appliance."
@@ -226,13 +177,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/13"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/14"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/15"
+        "$ref": "#/11"
       },
       {
         "$ref": "#/2"
@@ -371,6 +322,18 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/13"
+      },
+      {
+        "$ref": "#/14"
+      },
+      {
+        "$ref": "#/15"
+      },
+      {
+        "$ref": "#/16"
+      },
+      {
         "$ref": "#/17"
       },
       {
@@ -455,11 +418,48 @@
         "$ref": "#/44"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Identity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The principal ID of resource identity."
       },
-      {
-        "$ref": "#/46"
+      "tenantId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The tenant ID of resource."
       },
+      "type": {
+        "type": {
+          "$ref": "#/49"
+        },
+        "flags": 0,
+        "description": "The identity type."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
       {
         "$ref": "#/47"
       },
