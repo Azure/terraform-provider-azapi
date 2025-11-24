@@ -122,7 +122,7 @@ func (t *ObjectType) Validate(body attr.Value, path string) []error {
 	// check properties defined in body, but not in schema
 	for key, value := range bodyMap {
 		if def, ok := t.Properties[key]; ok {
-			if def.IsReadOnly() {
+			if def.IsReadOnly() && !def.IsRequired() {
 				errors = append(errors, utils.ErrorShouldNotDefineReadOnly(path+"."+key))
 				continue
 			}
@@ -146,7 +146,7 @@ func (t *ObjectType) Validate(body attr.Value, path string) []error {
 
 	// check properties required in schema, but not in body
 	for key, value := range t.Properties {
-		if !value.IsRequired() {
+		if !value.IsRequired() || value.IsReadOnly() {
 			continue
 		}
 		if _, ok := bodyMap[key]; !ok {

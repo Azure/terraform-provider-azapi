@@ -21,6 +21,7 @@ ENHANCEMENTS:
 - Add more verified `azapi` examples.
 
 BUG FIXES:
+- Fix validation logic for properties that are both `ReadOnly` and `Required`.
 - Fix panic when using `sensitive_body_version` with empty `sensitive_body` (GH-999). 
 
 ## v2.7.0

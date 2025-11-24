@@ -301,6 +301,38 @@ func Test_BodyValidation(t *testing.T) {
 }`,
 			Error: false,
 		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.Relationships/serviceGroupMember/rel1",
+			ApiVersion: "2023-09-01-preview",
+			Body: `
+{
+    "properties": {
+      "targetId": "some-id",
+      "metadata": {
+        "sourceType": "",
+        "targetType": ""
+      },
+      "originInformation": {
+        "relationshipOriginType": ""
+      },
+      "sourceId": "some-id"
+    }
+}
+`,
+			Error: false,
+		},
+		{
+			Id:         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resGroup1/providers/Microsoft.Relationships/serviceGroupMember/rel1",
+			ApiVersion: "2023-09-01-preview",
+			Body: `
+{
+    "properties": {
+      "targetId": "some-id"
+    }
+}
+`,
+			Error: false,
+		},
 	}
 
 	for index, data := range testData {
