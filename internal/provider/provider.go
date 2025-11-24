@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/version"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -39,6 +40,7 @@ var _ provider.Provider = &Provider{}
 var _ provider.ProviderWithFunctions = &Provider{}
 var _ provider.ProviderWithEphemeralResources = &Provider{}
 var _ provider.ProviderWithListResources = &Provider{}
+var _ provider.ProviderWithActions = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -692,6 +694,7 @@ func (p Provider) Configure(ctx context.Context, request provider.ConfigureReque
 	response.DataSourceData = client
 	response.EphemeralResourceData = client
 	response.ListResourceData = client
+	response.ActionData = client
 }
 
 func (p Provider) Functions(ctx context.Context) []func() function.Function {
@@ -765,6 +768,12 @@ func (p Provider) ListResources(ctx context.Context) []func() list.ListResource 
 		func() list.ListResource {
 			return &services.AzapiResourceList{}
 		},
+	}
+}
+
+func (p Provider) Actions(ctx context.Context) []func() action.Action {
+	return []func() action.Action{
+		func() action.Action { return &services.AzapiResourceAction{} },
 	}
 }
 
