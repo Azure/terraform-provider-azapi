@@ -752,6 +752,9 @@ func (p Provider) Resources(ctx context.Context) []func() resource.Resource {
 		func() resource.Resource {
 			return &services.DataPlaneResource{}
 		},
+		func() resource.Resource {
+			return &services.GeneralResource{}
+		},
 	}
 }
 
