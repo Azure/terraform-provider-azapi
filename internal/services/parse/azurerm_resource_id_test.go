@@ -35,6 +35,13 @@ func Test_AzurermIdToAzureId(t *testing.T) {
 			expectedAzureId:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Authorization/roleDefinitions/roleDefinitionId",
 			expectError:         false,
 		},
+		{
+			name:                "azurerm_storage_share",
+			azurermResourceType: "azurerm_storage_share",
+			azurermId:           "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/sa/fileServices/default/fileshares/share",
+			expectedAzureId:     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/sa/fileServices/default/shares/share",
+			expectError:         false,
+		},
 	}
 
 	for _, tc := range testcases {

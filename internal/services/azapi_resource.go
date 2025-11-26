@@ -1370,6 +1370,7 @@ func (r *AzapiResource) tagsWithDefaultTags(config types.Map, state *AzapiResour
 // into the corresponding ARM ID. Some azurerm resources expose management-plane IDs using alternative attribute names.
 // Supported cases:
 //   - azurerm_storage_container: uses `resource_manager_id`
+//   - azurerm_storage_share: uses `resource_manager_id`
 //   - azurerm_key_vault_secret: uses `resource_versionless_id`
 //   - azurerm_key_vault_key: uses `resource_versionless_id`
 //
@@ -1388,6 +1389,17 @@ func deriveAzureArmIdFromAzurermState(ctx context.Context, azurermType, primaryI
 				}
 			}
 			return "", fmt.Errorf("unable to derive ARM resource ID for storage container: missing attribute 'resource_manager_id' in source state")
+		}
+	case "azurerm_storage_share":
+		if isHTTPS {
+			if sourceState != nil {
+				var armId string
+				if err := sourceState.GetAttribute(ctx, path.Root("resource_manager_id"), &armId); err == nil && armId != "" {
+					// Convert /fileshares/ to /shares/ in the resource ID
+					return parse.AzurermIdToAzureId(azurermType, armId)
+				}
+			}
+			return "", fmt.Errorf("unable to derive ARM resource ID for storage share: missing attribute 'resource_manager_id' in source state")
 		}
 	case "azurerm_key_vault_secret":
 		if isHTTPS {

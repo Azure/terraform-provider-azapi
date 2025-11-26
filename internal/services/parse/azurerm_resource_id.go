@@ -24,6 +24,8 @@ func AzurermIdToAzureId(azurermResourceType string, azurermId string) (string, e
 			return "", fmt.Errorf("invalid id: %s, expected format: <role definition id>|<scope>", azurermId)
 		}
 		return azurermIdSplit[0], nil
+	case "azurerm_storage_share":
+		return strings.Replace(azurermId, "/fileshares/", "/shares/", 1), nil
 
 		// add more cases here as needed
 	}

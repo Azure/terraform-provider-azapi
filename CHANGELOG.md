@@ -24,6 +24,7 @@ ENHANCEMENTS:
 BUG FIXES:
 - Fix validation logic for properties that are both `ReadOnly` and `Required`.
 - Fix panic when using `sensitive_body_version` with empty `sensitive_body` (GH-999). 
+- Fix `azapi_resource` resource move from `azurerm_storage_share` by converting `/fileshares/` to `/shares/` in resource ID.
 
 ## v2.7.0
 

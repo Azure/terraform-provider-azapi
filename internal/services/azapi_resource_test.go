@@ -700,6 +700,31 @@ func TestAccGenericResource_moveStorageContainer(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_moveStorageShare(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.moveStorageShareSetup(data),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveStorageShareStartMoving(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+		{
+			Config: r.moveStorageShareUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ExternalProviders: externalProvidersAzurerm(),
+		},
+	})
+}
+
 func TestAccGenericResource_moveKeyVaultSecret(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -2740,6 +2765,128 @@ resource "azapi_resource" "test" {
   body = {
     properties = {
       publicAccess = "Blob"
+    }
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveStorageShareSetup(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_storage_account" "sa" {
+  name                     = "acctestsa%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_share" "share" {
+  name                 = "acctestshare%[2]s"
+  storage_account_name = azurerm_storage_account.sa.name
+  quota                = 50
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveStorageShareStartMoving(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {}
+}
+
+moved {
+  from = azurerm_storage_share.share
+  to   = azapi_resource.test
+}
+
+resource "azurerm_storage_account" "sa" {
+  name                     = "acctestsa%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+//resource "azurerm_storage_share" "share" {
+//  name                 = "acctestshare%[2]s"
+//  storage_account_name = azurerm_storage_account.sa.name
+//  quota                = 50
+//}
+
+data "azapi_resource_id" "fileService" {
+  type      = "Microsoft.Storage/storageAccounts/fileServices@2023-05-01"
+  parent_id = azurerm_storage_account.sa.id
+  name      = "default"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts/fileServices/shares@2023-05-01"
+  parent_id = data.azapi_resource_id.fileService.id
+  name      = "acctestshare%[2]s"
+  body = {
+    properties = {
+      shareQuota = 50
+    }
+  }
+  ignore_casing             = false
+  schema_validation_enabled = true
+  ignore_missing_property   = true
+}
+`, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) moveStorageShareUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%s
+
+provider "azurerm" {
+  features {}
+}
+
+moved {
+  from = azurerm_storage_share.share
+  to   = azapi_resource.test
+}
+
+resource "azurerm_storage_account" "sa" {
+  name                     = "acctestsa%[2]s"
+  location                 = azapi_resource.resourceGroup.location
+  resource_group_name      = azapi_resource.resourceGroup.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+//resource "azurerm_storage_share" "share" {
+//  name                 = "acctestshare%[2]s"
+//  storage_account_name = azurerm_storage_account.sa.name
+//  quota                = 50
+//}
+
+data "azapi_resource_id" "fileService" {
+  type      = "Microsoft.Storage/storageAccounts/fileServices@2023-05-01"
+  parent_id = azurerm_storage_account.sa.id
+  name      = "default"
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Storage/storageAccounts/fileServices/shares@2023-05-01"
+  parent_id = data.azapi_resource_id.fileService.id
+  name      = "acctestshare%[2]s"
+  body = {
+    properties = {
+      shareQuota = 100
     }
   }
   ignore_casing             = false
