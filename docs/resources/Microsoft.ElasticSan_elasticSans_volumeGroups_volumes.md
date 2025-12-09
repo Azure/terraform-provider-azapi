@@ -95,7 +95,7 @@ resource "azapi_resource" "volume" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ElasticSan/elasticSans/volumeGroups/volumes@api-version`. The available api-versions for this resource are: [`2021-11-20-preview`, `2022-12-01-preview`, `2023-01-01`, `2024-05-01`, `2024-06-01-preview`, `2024-07-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ElasticSan/elasticSans/volumeGroups/volumes@api-version`. The available api-versions for this resource are: [`2021-11-20-preview`, `2022-12-01-preview`, `2023-01-01`, `2024-05-01`, `2024-06-01-preview`, `2024-07-01-preview`, `2025-09-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{resourceName}/volumeGroups/{resourceName}`
@@ -113,5 +113,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{resourceName}/volumeGroups/{resourceName}/volumes/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{resourceName}/volumeGroups/{resourceName}/volumes/{resourceName}?api-version=2024-07-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{resourceName}/volumeGroups/{resourceName}/volumes/{resourceName}?api-version=2025-09-01
  ```
