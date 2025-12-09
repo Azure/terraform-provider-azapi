@@ -723,6 +723,12 @@ func (r *AzapiResource) Update(ctx context.Context, request resource.UpdateReque
 	if response.Diagnostics.Append(request.State.Get(ctx, &state)...); response.Diagnostics.HasError() {
 		return
 	}
+	// This is a workaround for the issue: https://github.com/Azure/terraform-provider-azapi/issues/1023
+	// The issue is that the identity is not set in the response when the resource is updated.
+	// This issue only happens when the terraform version is below 1.12.
+	if !state.ID.IsNull() {
+		response.Diagnostics.Append(response.Identity.SetAttribute(ctx, path.Root("id"), state.ID)...)
+	}
 	if skip.CanSkipExternalRequest(plan, state, "update") {
 		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
 		tflog.Debug(ctx, "azapi_resource.CreateUpdate skipping external request as no unskippable changes were detected")
