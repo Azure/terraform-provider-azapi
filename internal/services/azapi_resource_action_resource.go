@@ -44,6 +44,7 @@ type ActionResourceModel struct {
 	Body                          types.Dynamic    `tfsdk:"body"`
 	When                          types.String     `tfsdk:"when"`
 	Locks                         types.List       `tfsdk:"locks"`
+	IgnoreNotFound                types.Bool       `tfsdk:"ignore_not_found"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
 	Output                        types.Dynamic    `tfsdk:"output"`
@@ -183,6 +184,11 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
 				},
 				MarkdownDescription: docstrings.Locks(),
+			},
+
+			"ignore_not_found": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.",
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -398,8 +404,12 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	client := r.ProviderData.ResourceClient
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, requestOptions)
 	if err != nil {
-		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
-		return
+		if utils.ResponseErrorWasNotFound(err) && model.IgnoreNotFound.ValueBool() {
+			tflog.Info(ctx, fmt.Sprintf("The resource %q was not found, but the ignore_not_found option is set to true so the error is being ignored.", id.ID()))
+		} else {
+			diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
+			return
+		}
 	}
 
 	resourceId := id.ID()

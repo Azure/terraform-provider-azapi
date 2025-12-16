@@ -122,6 +122,18 @@ func TestAccActionResource_queryParameters(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_ignoreNotFound(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.ignoreNotFound(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func TestAccActionResource_sensitiveOutput(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
@@ -429,4 +441,17 @@ resource "azapi_resource_action" "test" {
   }
 }
 `, apiVersion, data.RandomString)
+}
+func (r ActionResource) ignoreNotFound() string {
+	return `
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Authorization@2021-06-01"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization"
+  action      = "policyDefinitions"
+  method      = "GET"
+	ignoreNotFound  = true
+  response_export_values = ["*"]
+}`
 }

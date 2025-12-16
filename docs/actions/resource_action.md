@@ -140,3 +140,4 @@ action "azapi_resource_action" "power_on" {
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `method` (String) HTTP method for the action. Defaults to POST.
 - `query_parameters` (Map of List of String) Query parameters to include in the request.
+- `ignore_not_found` (Boolean) If set to `true`, the action will not fail when the specified resource is not found (HTTP 404). Defaults to `false`.
