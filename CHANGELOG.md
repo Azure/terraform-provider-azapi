@@ -1,4 +1,9 @@
-## v2.8.0 (Unreleased)
+## v2.9.0 (Unreleased)
+
+BUG FIXES:
+- Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
+
+## v2.8.0
 
 FEATURES:
 - **New Provider Function**: snake2camel
