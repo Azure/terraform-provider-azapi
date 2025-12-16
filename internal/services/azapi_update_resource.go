@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/dynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/migration"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier"
+	"github.com/Azure/terraform-provider-azapi/internal/services/myplanmodifier/planmodifierdynamic"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
@@ -36,25 +37,26 @@ import (
 )
 
 type AzapiUpdateResourceModel struct {
-	ID                    types.String     `tfsdk:"id"`
-	Name                  types.String     `tfsdk:"name"`
-	ParentID              types.String     `tfsdk:"parent_id"`
-	ResourceID            types.String     `tfsdk:"resource_id"`
-	Type                  types.String     `tfsdk:"type"`
-	Body                  types.Dynamic    `tfsdk:"body"`
-	SensitiveBody         types.Dynamic    `tfsdk:"sensitive_body"`
-	SensitiveBodyVersion  types.Map        `tfsdk:"sensitive_body_version"`
-	IgnoreCasing          types.Bool       `tfsdk:"ignore_casing"`
-	IgnoreMissingProperty types.Bool       `tfsdk:"ignore_missing_property"`
-	ResponseExportValues  types.Dynamic    `tfsdk:"response_export_values"`
-	Locks                 types.List       `tfsdk:"locks"`
-	Output                types.Dynamic    `tfsdk:"output"`
-	Timeouts              timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
-	Retry                 retry.RetryValue `tfsdk:"retry" skip_on:"update"`
-	UpdateHeaders         types.Map        `tfsdk:"update_headers"`
-	UpdateQueryParameters types.Map        `tfsdk:"update_query_parameters"`
-	ReadHeaders           types.Map        `tfsdk:"read_headers" skip_on:"update"`
-	ReadQueryParameters   types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
+	ID                            types.String     `tfsdk:"id"`
+	Name                          types.String     `tfsdk:"name"`
+	ParentID                      types.String     `tfsdk:"parent_id"`
+	ResourceID                    types.String     `tfsdk:"resource_id"`
+	Type                          types.String     `tfsdk:"type"`
+	Body                          types.Dynamic    `tfsdk:"body"`
+	SensitiveBody                 types.Dynamic    `tfsdk:"sensitive_body"`
+	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
+	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
+	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
+	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
+	Locks                         types.List       `tfsdk:"locks"`
+	Output                        types.Dynamic    `tfsdk:"output"`
+	Timeouts                      timeouts.Value   `tfsdk:"timeouts" skip_on:"update"`
+	Retry                         retry.RetryValue `tfsdk:"retry" skip_on:"update"`
+	UpdateHeaders                 types.Map        `tfsdk:"update_headers"`
+	UpdateQueryParameters         types.Map        `tfsdk:"update_query_parameters"`
+	ReadHeaders                   types.Map        `tfsdk:"read_headers" skip_on:"update"`
+	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
 type AzapiUpdateResource struct {
@@ -167,6 +169,36 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				ElementType:         types.StringType,
 				Optional:            true,
 				MarkdownDescription: docstrings.SensitiveBodyVersion(),
+			},
+
+			"replace_triggers_external_values": schema.DynamicAttribute{
+				Optional: true,
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
+					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
+					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
+					"\n" +
+					"```hcl\n" +
+					"resource \"azapi_update_resource\" \"example\" {\n" +
+					"  resource_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example/providers/Microsoft.Network/publicIPAddresses/example\"\n" +
+					"  type        = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
+					"  body = {\n" +
+					"    properties = {\n" +
+					"      sku   = var.sku\n" +
+					"      zones = var.zones\n" +
+					"    }\n" +
+					"  }\n" +
+					"\n" +
+					"  replace_triggers_external_values = [\n" +
+					"    var.sku,\n" +
+					"    var.zones,\n" +
+					"  ]\n" +
+					"}\n" +
+					"```\n",
+				PlanModifiers: []planmodifier.Dynamic{
+					planmodifierdynamic.RequiresReplaceIfNotNull(),
+				},
 			},
 
 			"ignore_casing": schema.BoolAttribute{

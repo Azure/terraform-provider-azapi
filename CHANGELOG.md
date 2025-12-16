@@ -1,5 +1,8 @@
 ## v2.9.0 (Unreleased)
 
+ENHANCEMENTS:
+- `azapi_update_resource` resource: Support `replace_triggers_external_values` argument to trigger resource replacement based on external values.
+
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
 
