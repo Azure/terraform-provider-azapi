@@ -70,7 +70,7 @@ resource "azapi_resource" "vault" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.RecoveryServices/vaults@api-version`. The available api-versions for this resource are: [`2016-06-01`, `2020-02-02`, `2020-10-01`, `2021-01-01`, `2021-02-10`, `2021-03-01`, `2021-04-01`, `2021-06-01`, `2021-07-01`, `2021-08-01`, `2021-11-01-preview`, `2021-12-01`, `2022-01-01`, `2022-01-31-preview`, `2022-02-01`, `2022-03-01`, `2022-04-01`, `2022-05-01`, `2022-08-01`, `2022-09-10`, `2022-09-30-preview`, `2022-10-01`, `2023-01-01`, `2023-02-01`, `2023-04-01`, `2023-06-01`, `2023-08-01`, `2024-01-01`, `2024-02-01`, `2024-04-01`, `2024-04-30-preview`, `2024-09-30-preview`, `2024-10-01`, `2025-01-01`, `2025-02-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.RecoveryServices/vaults@api-version`. The available api-versions for this resource are: [`2016-06-01`, `2020-02-02`, `2020-10-01`, `2021-01-01`, `2021-02-10`, `2021-03-01`, `2021-04-01`, `2021-06-01`, `2021-07-01`, `2021-08-01`, `2021-11-01-preview`, `2021-12-01`, `2022-01-01`, `2022-01-31-preview`, `2022-02-01`, `2022-03-01`, `2022-04-01`, `2022-05-01`, `2022-08-01`, `2022-09-10`, `2022-09-30-preview`, `2022-10-01`, `2023-01-01`, `2023-02-01`, `2023-04-01`, `2023-06-01`, `2023-08-01`, `2024-01-01`, `2024-02-01`, `2024-04-01`, `2024-04-30-preview`, `2024-09-30-preview`, `2024-10-01`, `2025-01-01`, `2025-02-01`, `2025-08-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -88,5 +88,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}?api-version=2025-02-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}?api-version=2025-08-01
  ```

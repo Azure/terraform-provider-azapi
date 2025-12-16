@@ -69,7 +69,7 @@ resource "azapi_resource" "fluidRelayServer" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.FluidRelay/fluidRelayServers@api-version`. The available api-versions for this resource are: [`2021-03-12-preview`, `2021-06-15-preview`, `2021-08-30-preview`, `2021-09-10-preview`, `2022-02-15`, `2022-04-21`, `2022-05-11`, `2022-05-26`, `2022-06-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.FluidRelay/fluidRelayServers@api-version`. The available api-versions for this resource are: [`2021-03-12-preview`, `2021-06-15-preview`, `2021-08-30-preview`, `2021-09-10-preview`, `2022-02-15`, `2022-04-21`, `2022-05-11`, `2022-05-26`, `2022-06-01`, `2025-06-20-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -87,5 +87,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{resourceName}?api-version=2022-06-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{resourceName}?api-version=2025-06-20-preview
  ```

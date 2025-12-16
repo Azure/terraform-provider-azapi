@@ -113,7 +113,7 @@ resource "azapi_resource" "token" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ContainerRegistry/registries/tokens@api-version`. The available api-versions for this resource are: [`2019-05-01-preview`, `2020-11-01-preview`, `2021-06-01-preview`, `2021-08-01-preview`, `2021-12-01-preview`, `2022-02-01-preview`, `2022-12-01`, `2023-01-01-preview`, `2023-06-01-preview`, `2023-07-01`, `2023-08-01-preview`, `2023-11-01-preview`, `2024-11-01-preview`, `2025-03-01-preview`, `2025-04-01`, `2025-05-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ContainerRegistry/registries/tokens@api-version`. The available api-versions for this resource are: [`2019-05-01-preview`, `2020-11-01-preview`, `2021-06-01-preview`, `2021-08-01-preview`, `2021-12-01-preview`, `2022-02-01-preview`, `2022-12-01`, `2023-01-01-preview`, `2023-06-01-preview`, `2023-07-01`, `2023-08-01-preview`, `2023-11-01-preview`, `2024-11-01-preview`, `2025-03-01-preview`, `2025-04-01`, `2025-05-01-preview`, `2025-06-01-preview`, `2025-11-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}`
@@ -131,5 +131,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/tokens/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/tokens/{resourceName}?api-version=2025-05-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{resourceName}/tokens/{resourceName}?api-version=2025-11-01
  ```
