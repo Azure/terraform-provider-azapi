@@ -87,7 +87,7 @@ resource "azapi_resource" "IotHub" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Devices/IotHubs@api-version`. The available api-versions for this resource are: [`2016-02-03`, `2017-01-19`, `2017-07-01`, `2018-01-22`, `2018-04-01`, `2018-12-01-preview`, `2019-03-22`, `2019-03-22-preview`, `2019-07-01-preview`, `2019-11-04`, `2020-03-01`, `2020-04-01`, `2020-06-15`, `2020-07-10-preview`, `2020-08-01`, `2020-08-31`, `2020-08-31-preview`, `2021-02-01-preview`, `2021-03-03-preview`, `2021-03-31`, `2021-07-01`, `2021-07-01-preview`, `2021-07-02`, `2021-07-02-preview`, `2022-04-30-preview`, `2022-11-15-preview`, `2023-06-30`, `2023-06-30-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Devices/IotHubs@api-version`. The available api-versions for this resource are: [`2016-02-03`, `2017-01-19`, `2017-07-01`, `2018-01-22`, `2018-04-01`, `2018-12-01-preview`, `2019-03-22`, `2019-03-22-preview`, `2019-07-01-preview`, `2019-11-04`, `2020-03-01`, `2020-04-01`, `2020-06-15`, `2020-07-10-preview`, `2020-08-01`, `2020-08-31`, `2020-08-31-preview`, `2021-02-01-preview`, `2021-03-03-preview`, `2021-03-31`, `2021-07-01`, `2021-07-01-preview`, `2021-07-02`, `2021-07-02-preview`, `2022-04-30-preview`, `2022-11-15-preview`, `2023-06-30`, `2023-06-30-preview`, `2025-08-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -105,5 +105,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}?api-version=2023-06-30-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}?api-version=2025-08-01-preview
  ```
