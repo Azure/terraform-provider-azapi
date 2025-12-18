@@ -45,6 +45,7 @@ type ActionResourceModel struct {
 	When                          types.String     `tfsdk:"when"`
 	Locks                         types.List       `tfsdk:"locks"`
 	IgnoreNotFound                types.Bool       `tfsdk:"ignore_not_found"`
+	Exist                         types.Bool       `tfsdk:"exist"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
 	Output                        types.Dynamic    `tfsdk:"output"`
@@ -205,6 +206,10 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+			"exist": schema.BoolAttribute{
+				Computed:            true,
+				MarkdownDescription: "Indicates whether the resource action was successfully performed.",
 			},
 
 			"output": schema.DynamicAttribute{
@@ -403,8 +408,10 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 
 	client := r.ProviderData.ResourceClient
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, requestOptions)
+	model.Exist = basetypes.NewBoolValue(true)
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) && model.IgnoreNotFound.ValueBool() {
+			model.Exist = basetypes.NewBoolValue(false)
 			tflog.Info(ctx, fmt.Sprintf("The resource %q was not found, but the ignore_not_found option is set to true so the error is being ignored.", id.ID()))
 		} else {
 			diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
