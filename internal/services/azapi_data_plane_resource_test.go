@@ -283,6 +283,20 @@ func TestAccDataPlaneResource_sensitiveBody(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_contentUnderstandingAnalyzer(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.contentUnderstandingAnalyzer(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.DataPlaneResourceIDWithResourceType(state.ID, resourceType)
@@ -1316,6 +1330,47 @@ resource "azapi_data_plane_resource" "test" {
   depends_on = [
     azapi_resource.roleAssignment,
   ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) contentUnderstandingAnalyzer(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "cognitiveAccount" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+  body = {
+    kind = "AIServices"
+    properties = {
+      publicNetworkAccess = "Enabled"
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  response_export_values = ["properties.endpoint"]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
+  parent_id = replace(azapi_resource.cognitiveAccount.output.properties.endpoint, "https://", "")
+  name      = "acctest%[2]s"
+  body = {
+    description    = "Test analyzer for acceptance test"
+    baseAnalyzerId = "prebuilt-document"
+  }
 }
 `, data.LocationPrimary, data.RandomString)
 }
