@@ -60,6 +60,8 @@ type AzapiResourceModel struct {
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
 	IgnoreNullProperty            types.Bool       `tfsdk:"ignore_null_property"`
+	ListUniqueIdProperty          types.Map        `tfsdk:"list_unique_id_property"`
+	IgnoreOtherItemsInList        types.List       `tfsdk:"ignore_other_items_in_list"`
 	Location                      types.String     `tfsdk:"location"`
 	Locks                         types.List       `tfsdk:"locks"`
 	Name                          types.String     `tfsdk:"name"`
@@ -102,6 +104,8 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 		IgnoreCasing:                  types.BoolValue(false),
 		IgnoreMissingProperty:         types.BoolValue(true),
 		IgnoreNullProperty:            types.BoolValue(false),
+		ListUniqueIdProperty:          types.MapNull(types.StringType),
+		IgnoreOtherItemsInList:        types.ListNull(types.StringType),
 		Locks:                         types.ListNull(types.StringType),
 		Output:                        types.DynamicNull(),
 		ReplaceTriggersExternalValues: types.DynamicNull(),
@@ -294,6 +298,21 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
 				MarkdownDescription: docstrings.IgnoreNullProperty(),
+			},
+
+			"list_unique_id_property": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.ListUniqueIdProperty(),
+			},
+
+			"ignore_other_items_in_list": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: docstrings.IgnoreOtherItemsInList(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -592,6 +611,16 @@ func (r *AzapiResource) ModifyPlan(ctx context.Context, request resource.ModifyP
 			IgnoreMissingProperty: false,
 			IgnoreNullProperty:    plan.IgnoreNullProperty.ValueBool(),
 		}
+		if v := common.AsMapOfString(plan.ListUniqueIdProperty); len(v) != 0 {
+			option.ListUniqueIdProperty = v
+		}
+		if paths := common.AsStringList(plan.IgnoreOtherItemsInList); len(paths) != 0 {
+			m := make(map[string]bool)
+			for _, p := range paths {
+				m[p] = true
+			}
+			option.IgnoreOtherItemsInList = m
+		}
 		remoteBody := utils.UpdateObject(configBody, responseBody, option)
 		// suppress the change if the remote body is equal to the config body
 		if reflect.DeepEqual(remoteBody, configBody) {
@@ -815,7 +844,11 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		return
 	}
 	if sensitiveBody != nil {
-		body = utils.MergeObject(body, sensitiveBody).(map[string]interface{})
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(plan.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		body = utils.MergeObjectWithOption(body, sensitiveBody, mergeOption).(map[string]interface{})
 	}
 
 	if !isNewResource {
@@ -1065,6 +1098,16 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
 		IgnoreNullProperty:    model.IgnoreNullProperty.ValueBool(),
+	}
+	if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+		option.ListUniqueIdProperty = v
+	}
+	if paths := common.AsStringList(model.IgnoreOtherItemsInList); len(paths) != 0 {
+		m := make(map[string]bool)
+		for _, p := range paths {
+			m[p] = true
+		}
+		option.IgnoreOtherItemsInList = m
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 
