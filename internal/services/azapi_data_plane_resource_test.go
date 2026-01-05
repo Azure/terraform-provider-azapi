@@ -1391,12 +1391,10 @@ resource "azapi_resource" "roleAssignment" {
 
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
-  parent_id = replace(azapi_resource.cognitiveAccount.output.properties.endpoint, "https://", "")
   parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
   name      = "acctest%[2]s"
   body = {
     description    = "Test analyzer for acceptance test"
-    baseAnalyzerId = "prebuilt-document"
     baseAnalyzerId = "prebuilt-documentAnalyzer"
   }
 
