@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -18,6 +19,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -35,7 +37,7 @@ import (
 
 type ActionResourceModel struct {
 	ID                            types.String     `tfsdk:"id"`
-	Type                          types.String     `tfsdk:"type"`
+	Type                          types.String     `tfsdk:"type" skip_on:"update"`
 	ResourceId                    types.String     `tfsdk:"resource_id"`
 	Action                        types.String     `tfsdk:"action"`
 	Method                        types.String     `tfsdk:"method"`
@@ -96,7 +98,29 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myvalidator.StringIsResourceType(),
 				},
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIf(func(ctx context.Context, request planmodifier.StringRequest, response *stringplanmodifier.RequiresReplaceIfFuncResponse) {
+						if request.PlanValue.IsUnknown() {
+							response.RequiresReplace = true
+							return
+						}
+
+						aResourceType, _, err := utils.GetAzureResourceTypeApiVersion(request.PlanValue.ValueString())
+						if err != nil {
+							tflog.Warn(ctx, "unable to parse resource type for RequiresReplaceIf check", map[string]interface{}{
+								"resource_type": request.PlanValue.ValueString(),
+							})
+							return
+						}
+						bResourceType, _, err := utils.GetAzureResourceTypeApiVersion(request.StateValue.ValueString())
+						if err != nil {
+							tflog.Warn(ctx, "unable to parse resource type for RequiresReplaceIf check", map[string]interface{}{
+								"resource_type": request.StateValue.ValueString(),
+							})
+							return
+						}
+
+						response.RequiresReplace = !strings.EqualFold(aResourceType, bResourceType)
+					}, "resource type changed", "resource type changed"),
 				},
 				MarkdownDescription: docstrings.Type(),
 			},
