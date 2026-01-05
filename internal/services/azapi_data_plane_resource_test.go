@@ -1355,6 +1355,7 @@ resource "azapi_resource" "cognitiveAccount" {
     kind = "AIServices"
     properties = {
       publicNetworkAccess = "Enabled"
+      customSubDomainName = "acctest%[2]s"
     }
     sku = {
       name = "S0"
@@ -1363,14 +1364,45 @@ resource "azapi_resource" "cognitiveAccount" {
   response_export_values = ["properties.endpoint"]
 }
 
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    cognitiveServicesUserRoleId = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.cognitiveServicesUserRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
   parent_id = replace(azapi_resource.cognitiveAccount.output.properties.endpoint, "https://", "")
+  parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
   name      = "acctest%[2]s"
   body = {
     description    = "Test analyzer for acceptance test"
     baseAnalyzerId = "prebuilt-document"
+    baseAnalyzerId = "prebuilt-documentAnalyzer"
   }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+  ]
 }
 `, data.LocationPrimary, data.RandomString)
 }
