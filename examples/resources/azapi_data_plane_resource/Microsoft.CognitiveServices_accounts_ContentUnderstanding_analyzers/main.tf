@@ -20,16 +20,16 @@ provider "azurerm" {
 
 resource "azapi_resource" "resourceGroup" {
   type     = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name     = "example-content-rg"
+  name     = "example-contentunderstanding-rg"
   location = "WestUS3"
 }
 
 resource "azurerm_ai_services" "cognitiveAccount" {
-  name                  = "examplefoundry"
+  name                  = "examplefoundryproj"
   resource_group_name   = azapi_resource.resourceGroup.name
   location              = azapi_resource.resourceGroup.location
   sku_name              = "S0"
-  custom_subdomain_name = "examplefoundry"
+  custom_subdomain_name = "examplefoundryproj"
 
   network_acls {
     default_action = "Allow"
@@ -160,7 +160,11 @@ resource "azapi_data_plane_resource" "example" {
   name      = "exampleanalyzer"
   body = {
     description    = "My test analyzer"
-    baseAnalyzerId = "prebuilt-document"
+    baseAnalyzerId = "prebuilt-document",
+    models : {
+      completion : "gpt-4.1",
+      embedding : "text-embedding-3-large"
+    },
   }
   depends_on = [
     terraform_data.contentUnderstandingDefaults,
