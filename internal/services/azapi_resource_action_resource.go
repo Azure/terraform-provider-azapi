@@ -37,7 +37,7 @@ import (
 
 type ActionResourceModel struct {
 	ID                            types.String     `tfsdk:"id"`
-	Type                          types.String     `tfsdk:"type" skip_on:"update"`
+	Type                          types.String     `tfsdk:"type"`
 	ResourceId                    types.String     `tfsdk:"resource_id"`
 	Action                        types.String     `tfsdk:"action"`
 	Method                        types.String     `tfsdk:"method"`

@@ -3,13 +3,13 @@ package services_test
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
