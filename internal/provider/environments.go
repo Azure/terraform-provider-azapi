@@ -34,6 +34,10 @@ func init() {
 		Audience: "https://vault.azure.net",
 		Endpoint: "https://vault.azure.net",
 	}
+	cloud.AzureGovernment.Services[KeyVault] = cloud.ServiceConfiguration{
+		Audience: "https://vault.usgovcloudapi.net",
+		Endpoint: "https://vault.usgovcloudapi.net",
+	}
 	cloud.AzurePublic.Services[Purview] = cloud.ServiceConfiguration{
 		Audience: "https://purview.azure.net",
 		Endpoint: "https://purview.azure.com",
