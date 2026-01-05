@@ -1,5 +1,8 @@
 ## v2.9.0 (Unreleased)
 
+ENHANCEMENTS:
+- `azapi_data_plane_resource` resource: Support `sensitive_body` and `sensitive_body_version` fields, which are used to specify the write-only properties in the request body.
+
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
 

@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
@@ -220,6 +221,64 @@ func TestAccDataPlaneResource_replaceTriggeredByExternalValues(t *testing.T) {
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
 			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_sensitiveBody(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.appConfigKeyValuesSensitiveBody(data, "value1"),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:            r.appConfigKeyValuesSensitiveBody(data, "value2"),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+		{
+			Config:            r.appConfigKeyValuesSensitiveBodyVersion(data, "value2", "v1"),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+		{
+			// No changes expected as body version matches
+			Config:             r.appConfigKeyValuesSensitiveBodyVersion(data, "value3", "v1"),
+			ExternalProviders:  externalProvidersAzurerm(),
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: false,
+		},
+		{
+			Config:            r.appConfigKeyValuesSensitiveBodyVersion(data, "value3", "v2"),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction(data.ResourceName, plancheck.ResourceActionUpdate),
+				},
+			},
 		},
 	})
 }
@@ -1259,4 +1318,98 @@ resource "azapi_data_plane_resource" "test" {
   ]
 }
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) appConfigKeyValuesSensitiveBody(data acceptance.TestData, value string) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_app_configuration" "appconf" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "standard"
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "appconf" {
+  scope                = azurerm_app_configuration.appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+  }
+
+  sensitive_body = {
+    value = "%[3]s"
+  }
+
+  depends_on = [
+    azurerm_role_assignment.appconf,
+  ]
+}
+`, data.LocationPrimary, data.RandomString, value)
+}
+
+func (r DataPlaneResource) appConfigKeyValuesSensitiveBodyVersion(data acceptance.TestData, value string, version string) string {
+	return fmt.Sprintf(`
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azurerm_app_configuration" "appconf" {
+  name                = "acctest%[2]s"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "standard"
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "appconf" {
+  scope                = azurerm_app_configuration.appconf.id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
+  parent_id = replace(azurerm_app_configuration.appconf.endpoint, "https://", "")
+  name      = "mykey"
+  body = {
+    content_type = ""
+  }
+
+  sensitive_body = {
+    value = "%[3]s"
+  }
+
+  sensitive_body_version = {
+	version = "%[4]s"
+  }
+
+  depends_on = [
+    azurerm_role_assignment.appconf,
+  ]
+}
+`, data.LocationPrimary, data.RandomString, value, version)
 }
