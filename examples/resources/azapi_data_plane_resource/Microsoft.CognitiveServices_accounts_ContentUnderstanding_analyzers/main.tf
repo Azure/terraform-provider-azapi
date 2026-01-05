@@ -3,38 +3,42 @@ terraform {
     azapi = {
       source = "Azure/azapi"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 4.0"
+    }
   }
 }
 
 provider "azapi" {
 }
 
-resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
-  name     = "example-resources"
-  location = "eastus2"
+provider "azurerm" {
+  features {}
+  subscription_id = data.azapi_client_config.current.subscription_id
 }
 
-resource "azapi_resource" "cognitiveAccount" {
-  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
-  name      = "exampleai"
-  parent_id = azapi_resource.resourceGroup.id
-  location  = azapi_resource.resourceGroup.location
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-content-rg"
+  location = "WestUS3"
+}
+
+resource "azurerm_ai_services" "cognitiveAccount" {
+  name                  = "examplefoundry"
+  resource_group_name   = azapi_resource.resourceGroup.name
+  location              = azapi_resource.resourceGroup.location
+  sku_name              = "S0"
+  custom_subdomain_name = "examplefoundry"
+
+  network_acls {
+    default_action = "Allow"
+    ip_rules       = []
+  }
+
   identity {
-    type         = "SystemAssigned"
-    identity_ids = []
+    type = "SystemAssigned"
   }
-  body = {
-    kind = "AIServices"
-    properties = {
-      publicNetworkAccess = "Enabled"
-      customSubDomainName = "exampleai"
-    }
-    sku = {
-      name = "S0"
-    }
-  }
-  response_export_values = ["properties.endpoint"]
 }
 
 data "azapi_client_config" "current" {}
@@ -49,7 +53,7 @@ data "azapi_resource_list" "roleDefinitions" {
 
 resource "azapi_resource" "roleAssignment" {
   type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
-  parent_id = azapi_resource.cognitiveAccount.id
+  parent_id = azurerm_ai_services.cognitiveAccount.id
   name      = uuid()
   body = {
     properties = {
@@ -62,52 +66,64 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
-# Deploy GPT-4.1 model (required for Content Understanding)
-resource "azapi_resource" "gptDeployment" {
-  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
-  name      = "gpt-4.1"
-  parent_id = azapi_resource.cognitiveAccount.id
-  body = {
-    properties = {
-      model = {
-        format  = "OpenAI"
-        name    = "gpt-4.1"
-        version = "2025-04-14"
-      }
-    }
-    sku = {
-      name     = "GlobalStandard"
-      capacity = 25
-    }
+resource "azurerm_cognitive_deployment" "gpt_41_mini" {
+  name                   = "gpt-4.1-mini"
+  cognitive_account_id   = azurerm_ai_services.cognitiveAccount.id
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
+
+  model {
+    format  = "OpenAI"
+    name    = "gpt-4.1-mini"
+    version = "2025-04-14"
+  }
+
+  sku {
+    name     = "GlobalStandard"
+    capacity = 1
   }
 }
 
-# Deploy text-embedding-3-large model (required for Content Understanding)
-resource "azapi_resource" "embeddingDeployment" {
-  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
-  name      = "text-embedding-3-large"
-  parent_id = azapi_resource.cognitiveAccount.id
-  body = {
-    properties = {
-      model = {
-        format  = "OpenAI"
-        name    = "text-embedding-3-large"
-        version = "1"
-      }
-    }
-    sku = {
-      name     = "Standard"
-      capacity = 120
-    }
+resource "azurerm_cognitive_deployment" "gpt_41" {
+  name                   = "gpt-4.1"
+  cognitive_account_id   = azurerm_ai_services.cognitiveAccount.id
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
+
+  model {
+    format  = "OpenAI"
+    name    = "gpt-4.1"
+    version = "2025-04-14"
+  }
+
+  sku {
+    name     = "Standard"
+    capacity = 1
+  }
+}
+
+resource "azurerm_cognitive_deployment" "text_embedding_3_large" {
+  name                   = "text-embedding-3-large"
+  cognitive_account_id   = azurerm_ai_services.cognitiveAccount.id
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
+
+  model {
+    format  = "OpenAI"
+    name    = "text-embedding-3-large"
+    version = "1"
+  }
+
+  sku {
+    name     = "Standard"
+    capacity = 1
   }
 }
 
 # Set Content Understanding defaults via data plane PATCH API
 resource "terraform_data" "contentUnderstandingDefaults" {
   triggers_replace = [
-    azapi_resource.cognitiveAccount.id,
-    azapi_resource.gptDeployment.id,
-    azapi_resource.embeddingDeployment.id
+    azurerm_ai_services.cognitiveAccount.id,
+    azurerm_cognitive_deployment.gpt_41.id,
+    azurerm_cognitive_deployment.gpt_41_mini.id,
+    azurerm_cognitive_deployment.text_embedding_3_large.id
   ]
 
   provisioner "local-exec" {
@@ -124,22 +140,23 @@ resource "terraform_data" "contentUnderstandingDefaults" {
           "text-embedding-3-large" = "text-embedding-3-large"
         }
       } | ConvertTo-Json
-      
-      $endpoint = "${azapi_resource.cognitiveAccount.output.properties.endpoint}contentunderstanding/defaults?api-version=2025-05-01-preview"
+
+      $endpoint = "${azurerm_ai_services.cognitiveAccount.endpoint}contentunderstanding/defaults?api-version=2025-11-01"
       Invoke-RestMethod -Uri $endpoint -Method Patch -Headers $headers -Body $body
     EOT
   }
 
   depends_on = [
     azapi_resource.roleAssignment,
-    azapi_resource.gptDeployment,
-    azapi_resource.embeddingDeployment
+    azurerm_cognitive_deployment.gpt_41,
+    azurerm_cognitive_deployment.gpt_41_mini,
+    azurerm_cognitive_deployment.text_embedding_3_large
   ]
 }
 
 resource "azapi_data_plane_resource" "example" {
-  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
-  parent_id = trimprefix(azapi_resource.cognitiveAccount.output.properties.endpoint, "https://")
+  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-11-01"
+  parent_id = trimprefix(azurerm_ai_services.cognitiveAccount.endpoint, "https://")
   name      = "exampleanalyzer"
   body = {
     description    = "My test analyzer"
