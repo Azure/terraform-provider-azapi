@@ -447,11 +447,10 @@ func (r ActionResource) ignoreNotFound() string {
 data "azapi_client_config" "current" {}
 
 resource "azapi_resource_action" "test" {
-  type                   = "Microsoft.Authorization@2021-06-01"
-  resource_id            = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization"
-  action                 = "policyDefinitions"
-  method                 = "GET"
-  ignoreNotFound         = true
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+	resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/notexist/providers/Microsoft.Automation/automationAccounts/notexit"
+  action                 = "listKeys"
+  ignore_not_found         = true
   response_export_values = ["*"]
 }`
 }
