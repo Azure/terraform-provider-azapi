@@ -1,5 +1,8 @@
 ## v2.9.0 (Unreleased)
 
+ENHANCEMENTS:
+- `azapi_resource_action` resource: Support updating api-version without recreating the resource.
+
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
 

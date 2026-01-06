@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
@@ -129,6 +130,26 @@ func TestAccActionResource_sensitiveOutput(t *testing.T) {
 		{
 			Config: r.sensitiveOutput(data),
 			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_updateApiVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.updateApiVersion(data, "2023-04-01"),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+		{
+			Config: r.updateApiVersion(data, "2024-03-01"),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction("azapi_resource_action.test", plancheck.ResourceActionUpdate),
+				},
+			},
 		},
 	})
 }
@@ -391,4 +412,21 @@ resource "azapi_resource_action" "test" {
   sensitive_response_export_values = ["*"]
 }
 `, data.RandomString)
+}
+
+func (r ActionResource) updateApiVersion(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@%s"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = {
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  }
+}
+`, apiVersion, data.RandomString)
 }
