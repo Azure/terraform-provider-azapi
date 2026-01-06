@@ -1404,7 +1404,7 @@ resource "azapi_data_plane_resource" "test" {
   }
 
   sensitive_body_version = {
-	version = "%[4]s"
+    version = "%[4]s"
   }
 
   depends_on = [
