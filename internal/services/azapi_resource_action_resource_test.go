@@ -468,3 +468,4 @@ resource "azapi_resource_action" "test" {
   response_export_values = ["*"]
 }
 `, GenericResource{}.identityNone(data), queryParams)
+}
