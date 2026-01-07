@@ -1371,6 +1371,7 @@ data "azapi_resource_list" "roleDefinitions" {
   parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
   response_export_values = {
     cognitiveServicesUserRoleId = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
+    azureAIUserRoleId           = "value[?properties.roleName == 'Azure AI User'].id | [0]"
   }
 }
 
@@ -1389,6 +1390,21 @@ resource "azapi_resource" "roleAssignment" {
   }
 }
 
+resource "azapi_resource" "aiUserRoleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.azureAIUserRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
   parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
@@ -1400,6 +1416,7 @@ resource "azapi_data_plane_resource" "test" {
 
   depends_on = [
     azapi_resource.roleAssignment,
+    azapi_resource.aiUserRoleAssignment,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
