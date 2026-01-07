@@ -307,6 +307,8 @@ func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequ
 
 	if plan.When.ValueString() == "apply" {
 		r.Action(ctx, plan, &response.State, &response.Diagnostics)
+	} else {
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
 	}
 }
 

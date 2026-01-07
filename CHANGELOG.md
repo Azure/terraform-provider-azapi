@@ -2,6 +2,7 @@
 
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
+- `azapi_resource_action`: Fix inconsistent result error when updating `query_parameters` with `when = "destroy"` (GH-1028).
 
 ## v2.8.0
 
