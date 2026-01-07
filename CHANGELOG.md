@@ -2,6 +2,7 @@
 
 ENHANCEMENTS:
 - `azapi_resource_action` resource: Support updating api-version without recreating the resource.
+- `azapi_resource_action`  Support `ignore_not_found` argument to optionally suppress 404 errors and expose resource existence.
 
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
