@@ -11,6 +11,7 @@ const (
 	Purview          cloud.ServiceName = "Purview"
 	Synapse          cloud.ServiceName = "Synapse"
 	Search           cloud.ServiceName = "Search"
+	Cognitive        cloud.ServiceName = "Cognitive"
 )
 
 func init() {
@@ -50,5 +51,8 @@ func init() {
 		Audience: "https://search.azure.com",
 		Endpoint: "https://search.windows.net",
 	}
-
+	cloud.AzurePublic.Services[Cognitive] = cloud.ServiceConfiguration{
+		Audience: "https://cognitiveservices.azure.com",
+		Endpoint: "https://cognitiveservices.azure.com",
+	}
 }
