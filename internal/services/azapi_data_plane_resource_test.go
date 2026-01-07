@@ -1405,18 +1405,101 @@ resource "azapi_resource" "aiUserRoleAssignment" {
   }
 }
 
-resource "azapi_data_plane_resource" "test" {
-  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-05-01-preview"
-  parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
-  name      = "acctest%[2]s"
+resource "azapi_resource" "gpt41Deployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = "gpt-4.1"
   body = {
-    description    = "Test analyzer for acceptance test"
-    baseAnalyzerId = "prebuilt-documentAnalyzer"
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "gpt-4.1"
+        version = "2025-04-14"
+      }
+      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
+    }
+    sku = {
+      name     = "Standard"
+      capacity = 1
+    }
+  }
+}
+
+resource "azapi_resource" "textEmbedding3LargeDeployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = "text-embedding-3-large"
+  body = {
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "text-embedding-3-large"
+        version = "1"
+      }
+      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
+    }
+    sku = {
+      name     = "Standard"
+      capacity = 1
+    }
+  }
+  depends_on = [azapi_resource.gpt41Deployment]
+}
+
+# Set Content Understanding defaults via data plane PATCH API
+resource "terraform_data" "contentUnderstandingDefaults" {
+  triggers_replace = [
+    azapi_resource.cognitiveAccount.id,
+    azapi_resource.aiUserRoleAssignment,
+    azapi_resource.gpt41Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+
+  provisioner "local-exec" {
+    interpreter = ["pwsh", "-Command"]
+    command     = <<-EOT
+      $token = (az account get-access-token --resource https://cognitiveservices.azure.com --query accessToken -o tsv)
+      $headers = @{
+        "Authorization" = "Bearer $token"
+        "Content-Type"  = "application/merge-patch+json"
+      }
+      $body = @{
+        modelDeployments = @{
+          "gpt-4.1"                = "gpt-4.1"
+          "text-embedding-3-large" = "text-embedding-3-large"
+        }
+      } | ConvertTo-Json
+
+      $endpoint = "${azapi_resource.cognitiveAccount.output.properties.endpoint}contentunderstanding/defaults?api-version=2025-11-01"
+      Invoke-RestMethod -Uri $endpoint -Method Patch -Headers $headers -Body $body
+    EOT
   }
 
   depends_on = [
     azapi_resource.roleAssignment,
     azapi_resource.aiUserRoleAssignment,
+    azapi_resource.gpt41Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-11-01"
+  parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
+  name      = "acctest%[2]s"
+  body = {
+    description    = "My test analyzer"
+    baseAnalyzerId = "prebuilt-document",
+    models : {
+      completion : "gpt-4.1",
+      embedding : "text-embedding-3-large"
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_resource.aiUserRoleAssignment,
+    terraform_data.contentUnderstandingDefaults,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
