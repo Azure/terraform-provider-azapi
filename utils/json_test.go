@@ -1035,9 +1035,10 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 			"enabled": true,
 			"source": "Completion"
 		}
-  ]
+	]
 }
 `
+
 	NewJson := `
 {
 	"contentFilters": [
@@ -1047,15 +1048,15 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 			"blocking": true,
 			"enabled": true,
 			"source": "Completion"
-			},
-			{
-				"name": "Hate",
-				"allowedContentLevel": "Medium",
-				"blocking": true,
-				"enabled": true,
-				"source": "Prompt"
-			}
-  ]
+		},
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Prompt"
+		}
+	]
 }
 `
 	var old, new, expected any
@@ -1071,6 +1072,123 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
 		gotJson, _ := json.MarshalIndent(got, "", "  ")
 		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
+
+func Test_UpdateObject_ListUniqueIdProperty_IgnoreOtherItemsInList(t *testing.T) {
+	oldJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.Web"
+      }
+    ]
+  }
+}
+`
+	newJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.KeyVault",
+        "locations": ["westus"]
+      },
+      {
+        "service": "Microsoft.Web",
+        "locations": ["westus2"]
+      }
+    ]
+  }
+}
+`
+
+	var oldObj interface{}
+	var newObj interface{}
+	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
+		t.Fatalf("failed to unmarshal oldJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(newJson), &newObj); err != nil {
+		t.Fatalf("failed to unmarshal newJson: %v", err)
+	}
+
+	got := utils.UpdateObject(oldObj, newObj, utils.UpdateJsonOption{
+		ListUniqueIdProperty: map[string]string{
+			"properties.serviceEndpoints": "service",
+		},
+		IgnoreOtherItemsInList: map[string]bool{
+			"properties.serviceEndpoints": true,
+		},
+	})
+
+	if !reflect.DeepEqual(got, oldObj) {
+		gotBytes, _ := json.MarshalIndent(got, "", "  ")
+		expBytes, _ := json.MarshalIndent(oldObj, "", "  ")
+		t.Fatalf("unexpected result:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
+	}
+}
+
+func Test_MergeObjectWithOption_ListUniqueIdProperty_AppendsNewItems(t *testing.T) {
+	oldJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.KeyVault",
+        "x": 1
+      }
+    ]
+  }
+}
+`
+	newJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.Web"
+      },
+      {
+        "service": "Microsoft.KeyVault",
+        "x": 2
+      }
+    ]
+  }
+}
+`
+
+	var oldObj interface{}
+	var newObj interface{}
+	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
+		t.Fatalf("failed to unmarshal oldJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(newJson), &newObj); err != nil {
+		t.Fatalf("failed to unmarshal newJson: %v", err)
+	}
+
+	got := utils.MergeObjectWithOption(oldObj, newObj, utils.UpdateJsonOption{
+		ListUniqueIdProperty: map[string]string{
+			"properties.serviceEndpoints": "service",
+		},
+	})
+
+	gotMap := got.(map[string]interface{})
+	props := gotMap["properties"].(map[string]interface{})
+	endpoints := props["serviceEndpoints"].([]interface{})
+	if len(endpoints) != 2 {
+		t.Fatalf("expected 2 endpoints, got %d", len(endpoints))
+	}
+	first := endpoints[0].(map[string]interface{})
+	second := endpoints[1].(map[string]interface{})
+	if first["service"] != "Microsoft.KeyVault" {
+		t.Fatalf("expected first endpoint to be Microsoft.KeyVault, got %v", first["service"])
+	}
+	if first["x"] != float64(2) {
+		t.Fatalf("expected KeyVault.x to be overwritten to 2, got %v", first["x"])
+	}
+	if second["service"] != "Microsoft.Web" {
+		t.Fatalf("expected second endpoint to be Microsoft.Web, got %v", second["service"])
 	}
 }
 

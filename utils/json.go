@@ -25,6 +25,19 @@ func NormalizeJson(jsonString interface{}) string {
 
 // MergeObject is used to merge object old and new, if overlaps, use new value
 func MergeObject(old interface{}, new interface{}) interface{} {
+	return MergeObjectWithOption(old, new, UpdateJsonOption{})
+}
+
+// MergeObjectWithOption is used to merge object old and new, if overlaps, use new value.
+// It supports per-path list item identity via UpdateJsonOption.ListUniqueIdProperty.
+func MergeObjectWithOption(old interface{}, new interface{}, option UpdateJsonOption) interface{} {
+	if new == nil {
+		return new
+	}
+	return mergeObjectAtPath(old, new, option, "")
+}
+
+func mergeObjectAtPath(old interface{}, new interface{}, option UpdateJsonOption, path string) interface{} {
 	if new == nil {
 		return new
 	}
@@ -33,8 +46,9 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, value := range oldValue {
+				nestedPath := strings.TrimPrefix(path+"."+key, ".")
 				if _, ok := newMap[key]; ok {
-					res[key] = MergeObject(value, newMap[key])
+					res[key] = mergeObjectAtPath(value, newMap[key], option, nestedPath)
 				} else {
 					res[key] = value
 				}
@@ -52,14 +66,15 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 				return newArr
 			}
 
-			hasIdentifier := identifierOfArrayItem(oldValue[0]) != "" && identifierOfArrayItem(newArr[0]) != ""
+			identifierKey := listIdentifierKeyForPath(path, option)
+			hasIdentifier := identifierOfArrayItemByKey(oldValue[0], identifierKey) != "" && identifierOfArrayItemByKey(newArr[0], identifierKey) != ""
 			if !hasIdentifier {
 				if len(oldValue) != len(newArr) {
 					return newArr
 				}
 				res := make([]interface{}, 0)
 				for index := range oldValue {
-					res = append(res, MergeObject(oldValue[index], newArr[index]))
+					res = append(res, mergeObjectAtPath(oldValue[index], newArr[index], option, path))
 				}
 				return res
 			}
@@ -70,8 +85,8 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 			for _, oldItem := range oldValue {
 				found := false
 				for index, newItem := range newArr {
-					if areSameArrayItems(oldItem, newItem) && !used[index] {
-						res = append(res, MergeObject(oldItem, newItem))
+					if areSameArrayItemsByKey(oldItem, newItem, identifierKey) && !used[index] {
+						res = append(res, mergeObjectAtPath(oldItem, newItem, option, path))
 						used[index] = true
 						found = true
 						break
@@ -81,6 +96,12 @@ func MergeObject(old interface{}, new interface{}) interface{} {
 					continue
 				}
 				res = append(res, oldItem)
+			}
+
+			for index, newItem := range newArr {
+				if !used[index] {
+					res = append(res, newItem)
+				}
 			}
 			return res
 		}
@@ -92,10 +113,22 @@ type UpdateJsonOption struct {
 	IgnoreCasing          bool
 	IgnoreMissingProperty bool
 	IgnoreNullProperty    bool
+
+	// ListUniqueIdProperty defines per-list paths to a unique ID field name for list item matching.
+	// The path format uses dot-separated object keys, e.g. "properties.serviceEndpoints".
+	ListUniqueIdProperty map[string]string
+
+	// IgnoreOtherItemsInList defines list paths where items that exist only in the new/remote value
+	// should be ignored (not appended) when shaping the result.
+	IgnoreOtherItemsInList map[string]bool
 }
 
 // UpdateObject is used to get an updated object which has same schema as old, but with new value
 func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) interface{} {
+	return updateObjectAtPath(old, new, option, "")
+}
+
+func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOption, path string) interface{} {
 	if reflect.DeepEqual(old, new) {
 		return old
 	}
@@ -104,11 +137,12 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 		if newMap, ok := new.(map[string]interface{}); ok {
 			res := make(map[string]interface{})
 			for key, value := range oldValue {
+				nestedPath := strings.TrimPrefix(path+"."+key, ".")
 				switch {
 				case value == nil && option.IgnoreNullProperty:
 					res[key] = nil
 				case newMap[key] != nil:
-					res[key] = UpdateObject(value, newMap[key], option)
+					res[key] = updateObjectAtPath(value, newMap[key], option, nestedPath)
 				case option.IgnoreMissingProperty || isZeroValue(value):
 					res[key] = value
 				}
@@ -121,14 +155,15 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 				return new
 			}
 
-			hasIdentifier := identifierOfArrayItem(oldValue[0]) != ""
+			identifierKey := listIdentifierKeyForPath(path, option)
+			hasIdentifier := identifierOfArrayItemByKey(oldValue[0], identifierKey) != "" && identifierOfArrayItemByKey(newArr[0], identifierKey) != ""
 			if !hasIdentifier {
 				if len(oldValue) != len(newArr) {
 					return newArr
 				}
 				res := make([]interface{}, 0)
 				for index := range oldValue {
-					res = append(res, UpdateObject(oldValue[index], newArr[index], option))
+					res = append(res, updateObjectAtPath(oldValue[index], newArr[index], option, path))
 				}
 				return res
 			}
@@ -140,7 +175,7 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 				found := false
 				for index, newItem := range newArr {
 					if reflect.DeepEqual(oldItem, newItem) && !used[index] {
-						res = append(res, UpdateObject(oldItem, newItem, option))
+						res = append(res, updateObjectAtPath(oldItem, newItem, option, path))
 						used[index] = true
 						found = true
 						break
@@ -150,17 +185,20 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 					continue
 				}
 				for index, newItem := range newArr {
-					if areSameArrayItems(oldItem, newItem) && !used[index] {
-						res = append(res, UpdateObject(oldItem, newItem, option))
+					if areSameArrayItemsByKey(oldItem, newItem, identifierKey) && !used[index] {
+						res = append(res, updateObjectAtPath(oldItem, newItem, option, path))
 						used[index] = true
 						break
 					}
 				}
 			}
 
-			for index, newItem := range newArr {
-				if !used[index] {
-					res = append(res, newItem)
+			ignoreOthers := option.IgnoreOtherItemsInList != nil && option.IgnoreOtherItemsInList[path]
+			if !ignoreOthers {
+				for index, newItem := range newArr {
+					if !used[index] {
+						res = append(res, newItem)
+					}
 				}
 			}
 			return res
@@ -178,29 +216,43 @@ func UpdateObject(old interface{}, new interface{}, option UpdateJsonOption) int
 	return new
 }
 
-func areSameArrayItems(a, b interface{}) bool {
-	aId := identifierOfArrayItem(a)
-	bId := identifierOfArrayItem(b)
+func areSameArrayItemsByKey(a, b interface{}, key string) bool {
+	aId := identifierOfArrayItemByKey(a, key)
+	bId := identifierOfArrayItemByKey(b, key)
 	if aId == "" || bId == "" {
 		return false
 	}
 	return aId == bId
 }
 
-func identifierOfArrayItem(input interface{}) string {
+func identifierOfArrayItemByKey(input interface{}, key string) string {
 	inputMap, ok := input.(map[string]interface{})
 	if !ok {
 		return ""
 	}
-	name := inputMap["name"]
-	if name == nil {
+	if key == "" {
 		return ""
 	}
-	nameValue, ok := name.(string)
+	value := inputMap[key]
+	if value == nil {
+		return ""
+	}
+	strValue, ok := value.(string)
 	if !ok {
 		return ""
 	}
-	return nameValue
+	return strValue
+}
+
+func listIdentifierKeyForPath(path string, option UpdateJsonOption) string {
+	if option.ListUniqueIdProperty != nil {
+		if v, ok := option.ListUniqueIdProperty[path]; ok {
+			if strings.TrimSpace(v) != "" {
+				return v
+			}
+		}
+	}
+	return "name"
 }
 
 // ExtractObject is used to extract object from old for a json path
