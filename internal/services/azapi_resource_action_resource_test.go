@@ -166,6 +166,22 @@ func TestAccActionResource_updateApiVersion(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.updateQueryParametersWhenDestroy(data, true),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+		{
+			Config: r.updateQueryParametersWhenDestroy(data, false),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func (r ActionResource) basic(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %[1]s
@@ -442,6 +458,30 @@ resource "azapi_resource_action" "test" {
 }
 `, apiVersion, data.RandomString)
 }
+
+func (r ActionResource) updateQueryParametersWhenDestroy(data acceptance.TestData, includeQueryParam bool) string {
+	queryParams := ""
+	if includeQueryParam {
+		queryParams = `
+    query_parameters = {
+      "foo" = ["bar"]
+    }
+`
+	}
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  action      = "listKeys"
+  when        = "destroy"
+  %[2]s
+  response_export_values = ["*"]
+}
+`, GenericResource{}.identityNone(data), queryParams)
+}
+
 func (r ActionResource) ignoreNotFound() string {
 	return `
 data "azapi_client_config" "current" {}
