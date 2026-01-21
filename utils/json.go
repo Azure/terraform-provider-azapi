@@ -225,23 +225,46 @@ func areSameArrayItemsByKey(a, b interface{}, key string) bool {
 	return aId == bId
 }
 
-// identifierOfArrayItemByKey extracts an identifier from an array item.
-// The key parameter can be either:
-//   - A simple property name: "category"
-//   - A JMESPath expression for complex cases: "category || categoryGroup"
+// identifierOfArrayItemByKey extracts an identifier from an array item using key (e.g. "name").
+// Supports composite keys via comma separation (e.g. "category, categoryGroup"), joined with underscore.
 func identifierOfArrayItemByKey(input interface{}, key string) string {
 	if key == "" {
 		return ""
 	}
-	result, err := jmes.Search(key, input)
-	if err != nil || result == nil {
-		return ""
-	}
-	strValue, ok := result.(string)
+
+	inputMap, ok := input.(map[string]interface{})
 	if !ok {
 		return ""
 	}
-	return strValue
+
+	keys := strings.Split(key, ",")
+	values := make([]string, 0, len(keys))
+	hasNonEmpty := false
+
+	for _, k := range keys {
+		k = strings.TrimSpace(k)
+		if k == "" {
+			continue
+		}
+
+		value := ""
+		if v, exists := inputMap[k]; exists && v != nil {
+			if strVal, ok := v.(string); ok {
+				value = strVal
+			}
+		}
+
+		if value != "" {
+			hasNonEmpty = true
+		}
+		values = append(values, value)
+	}
+
+	if !hasNonEmpty {
+		return ""
+	}
+
+	return strings.Join(values, "_")
 }
 
 func listIdentifierKeyForPath(path string, option UpdateJsonOption) string {

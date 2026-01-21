@@ -1336,28 +1336,19 @@ func Test_FilterFields(t *testing.T) {
 	}
 }
 
-// Test_UpdateObject_JMESPathIdentifier tests that JMESPath expressions can be used
-// for list_unique_id_property to handle cases like diagnostic settings where
-// the identifier is coalesce(category, categoryGroup).
-func Test_UpdateObject_JMESPathIdentifier(t *testing.T) {
-	// Simulates diagnostic settings logs where items can be identified by
+// Test_UpdateObject_CompositeKeyIdentifier tests composite keys for list item matching.
+func Test_UpdateObject_CompositeKeyIdentifier(t *testing.T) {
+	// Simulates diagnostic settings logs where items are identified by
 	// either 'category' OR 'categoryGroup' (mutually exclusive).
-	// oldJson is the user's config, newJson is the server response.
-	// With ignore_other_items_in_list, items in newJson not matching oldJson are dropped.
-	oldJson := `
-{
+	oldJson := `{
   "properties": {
     "logs": [
       { "category": "AuditEvent", "enabled": true },
       { "categoryGroup": "allLogs", "enabled": true }
     ]
   }
-}
-`
-	// Server response has additional items (Alert) that should be ignored,
-	// and matching items with potentially different values
-	newJson := `
-{
+}`
+	newJson := `{
   "properties": {
     "logs": [
       { "category": "Alert", "enabled": false },
@@ -1365,20 +1356,15 @@ func Test_UpdateObject_JMESPathIdentifier(t *testing.T) {
       { "category": "AuditEvent", "enabled": true }
     ]
   }
-}
-`
-	// Expected: only items from oldJson, matched using JMESPath "category || categoryGroup"
-	// Alert is dropped because it's not in old, AuditEvent and allLogs are kept
-	expectedJson := `
-{
+}`
+	expectedJson := `{
   "properties": {
     "logs": [
       { "category": "AuditEvent", "enabled": true },
       { "categoryGroup": "allLogs", "enabled": true }
     ]
   }
-}
-`
+}`
 
 	var oldObj, newObj, expected interface{}
 	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
@@ -1391,10 +1377,10 @@ func Test_UpdateObject_JMESPathIdentifier(t *testing.T) {
 		t.Fatalf("failed to unmarshal expectedJson: %v", err)
 	}
 
-	// Use JMESPath "||" (or) operator to match on either category or categoryGroup
+	// Use composite key "category, categoryGroup" to match on either field
 	got := utils.UpdateObject(oldObj, newObj, utils.UpdateJsonOption{
 		ListUniqueIdProperty: map[string]string{
-			"properties.logs": "category || categoryGroup",
+			"properties.logs": "category, categoryGroup",
 		},
 		IgnoreOtherItemsInList: map[string]bool{
 			"properties.logs": true,
@@ -1404,6 +1390,6 @@ func Test_UpdateObject_JMESPathIdentifier(t *testing.T) {
 	if !reflect.DeepEqual(got, expected) {
 		gotBytes, _ := json.MarshalIndent(got, "", "  ")
 		expBytes, _ := json.MarshalIndent(expected, "", "  ")
-		t.Fatalf("JMESPath identifier failed:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
+		t.Fatalf("composite key identifier failed:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
 	}
 }
