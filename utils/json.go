@@ -225,19 +225,19 @@ func areSameArrayItemsByKey(a, b interface{}, key string) bool {
 	return aId == bId
 }
 
+// identifierOfArrayItemByKey extracts an identifier from an array item.
+// The key parameter can be either:
+//   - A simple property name: "category"
+//   - A JMESPath expression for complex cases: "category || categoryGroup"
 func identifierOfArrayItemByKey(input interface{}, key string) string {
-	inputMap, ok := input.(map[string]interface{})
-	if !ok {
-		return ""
-	}
 	if key == "" {
 		return ""
 	}
-	value := inputMap[key]
-	if value == nil {
+	result, err := jmes.Search(key, input)
+	if err != nil || result == nil {
 		return ""
 	}
-	strValue, ok := value.(string)
+	strValue, ok := result.(string)
 	if !ok {
 		return ""
 	}
