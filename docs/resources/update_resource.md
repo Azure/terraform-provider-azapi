@@ -99,16 +99,8 @@ This resource can manage a subset of any existing Azure resource manager resourc
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
-- `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored.
-
-This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
-- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items.
-
-When not set, list items are matched by a `name` property (if present) or by list ordering.
-
-Example:
-
-`list_unique_id_property = { "properties.serviceEndpoints" = "service" }`
+- `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `name` (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:

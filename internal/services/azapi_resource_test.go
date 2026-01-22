@@ -400,6 +400,28 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_listUniqueIdProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.listUniqueIdProperty(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+		{
+			Config:            r.listUniqueIdPropertyUpdate(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -4312,4 +4334,116 @@ variable "connections" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestvault%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      tenantId                 = data.azurerm_client_config.current.tenant_id
+      sku                      = { family = "A", name = "standard" }
+      enableRbacAuthorization  = true
+      enableSoftDelete         = true
+      softDeleteRetentionInDays = 7
+      publicNetworkAccess      = "Enabled"
+    }
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestlaw%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku                        = { name = "PerGB2018" }
+      retentionInDays            = 30
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
+}
+`, r.template(data), data.RandomInteger, data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  # This handles cases where Azure uses either field to identify a log setting
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
+}
+
+func (r GenericResource) listUniqueIdPropertyUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        },
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }

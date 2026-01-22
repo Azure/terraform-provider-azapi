@@ -98,6 +98,21 @@ func TestAccGenericUpdateResource_ignoreOrderInArray(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_listUniqueIdProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.listUniqueIdProperty(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -1076,4 +1091,101 @@ resource "azapi_update_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azurerm_client_config" "current" {
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestvault%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      tenantId                 = data.azurerm_client_config.current.tenant_id
+      sku                      = { family = "A", name = "standard" }
+      enableRbacAuthorization  = true
+      enableSoftDelete         = true
+      softDeleteRetentionInDays = 7
+      publicNetworkAccess      = "Enabled"
+    }
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestlaw%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku                        = { name = "PerGB2018" }
+      retentionInDays            = 30
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
+}
+
+# Create the diagnostic setting with basic config first
+resource "azapi_resource" "diagnosticSetting" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        },
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = false
+        }
+      ]
+    }
+  }
+
+  ignore_missing_property = true
+}
+`, r.template(data), data.RandomInteger, data.RandomString)
+}
+
+func (r GenericUpdateResource) listUniqueIdProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+# Use azapi_update_resource to update specific log categories
+# without affecting others that Azure may have added
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  resource_id = azapi_resource.diagnosticSetting.id
+  body = {
+    properties = {
+      logs = [
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  # This handles cases where Azure uses either field to identify a log setting
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only update the logs we specify, ignore any others
+  ignore_other_items_in_list = ["properties.logs"]
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }
