@@ -1098,7 +1098,7 @@ func (r GenericUpdateResource) listUniqueIdPropertyTemplate(data acceptance.Test
 	return fmt.Sprintf(`
 %[1]s
 
-data "azurerm_client_config" "current" {
+data "azapi_client_config" "current" {
 }
 
 resource "azapi_resource" "vault" {
@@ -1158,6 +1158,11 @@ resource "azapi_resource" "diagnosticSetting" {
   }
 
   ignore_missing_property = true
+
+  # Ignore changes to logs since azapi_update_resource will manage them
+  lifecycle {
+    ignore_changes = [body.properties.logs]
+  }
 }
 `, r.template(data), data.RandomInteger, data.RandomString)
 }

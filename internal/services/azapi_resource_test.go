@@ -4343,7 +4343,7 @@ func (r GenericResource) listUniqueIdPropertyTemplate(data acceptance.TestData) 
 	return fmt.Sprintf(`
 %[1]s
 
-data "azurerm_client_config" "current" {
+data "azapi_client_config" "current" {
 }
 
 resource "azapi_resource" "vault" {
