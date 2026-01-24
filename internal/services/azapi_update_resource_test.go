@@ -108,6 +108,7 @@ func TestAccGenericUpdateResource_listUniqueIdProperty(t *testing.T) {
 			ExternalProviders: externalProvidersAzurerm(),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("azure_policy_evaluation_details_enabled", "true"),
 			),
 		},
 	})
@@ -1101,24 +1102,27 @@ data "azurerm_client_config" "current" {
 }
 
 resource "azapi_resource" "vault" {
-  type      = "Microsoft.KeyVault/vaults@2023-07-01"
+  type      = "Microsoft.KeyVault/vaults@2025-05-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctestvault%[3]s"
   location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
-      tenantId                 = data.azurerm_client_config.current.tenant_id
-      sku                      = { family = "A", name = "standard" }
-      enableRbacAuthorization  = true
-      enableSoftDelete         = true
+      enableRbacAuthorization   = true
+      enableSoftDelete          = true
+      publicNetworkAccess       = "Enabled"
       softDeleteRetentionInDays = 7
-      publicNetworkAccess      = "Enabled"
+      sku = {
+        family = "A"
+        name   = "standard"
+      }      
+      tenantId = data.azapi_client_config.current.tenant_id
     }
   }
 }
 
 resource "azapi_resource" "workspace" {
-  type      = "Microsoft.OperationalInsights/workspaces@2022-10-01"
+  type      = "Microsoft.OperationalInsights/workspaces@2025-07-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = "acctestlaw%[3]s"
   location  = azapi_resource.resourceGroup.location
@@ -1186,6 +1190,17 @@ resource "azapi_update_resource" "test" {
 
   # Only update the logs we specify, ignore any others
   ignore_other_items_in_list = ["properties.logs"]
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs = azapi_update_resource.test.output.properties.logs
+  azure_policy_evaluation_details_enabled = try([for l in local.logs : l.enabled if l.category == "AzurePolicyEvaluationDetails"][0], null)
+}
+
+output "azure_policy_evaluation_details_enabled" {
+  value = tostring(local.azure_policy_evaluation_details_enabled)
 }
 `, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }
