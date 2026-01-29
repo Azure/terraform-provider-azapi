@@ -98,6 +98,8 @@ This resource can manage any Azure Resource Manager resource.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 - `ignore_null_property` (Boolean) When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
 These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
+- `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
 - `location` (String) The location of the Azure resource.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `name` (String) Specifies the name of the azure resource. Changing this forces a new resource to be created.

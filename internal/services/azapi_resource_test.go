@@ -400,6 +400,31 @@ func TestAccGenericResource_ignoreCasing(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_listUniqueIdProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.listUniqueIdProperty(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("audit_event_enabled", "true"),
+			),
+		},
+		{
+			Config:            r.listUniqueIdPropertyUpdate(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("audit_event_enabled", "true"),
+				resource.TestCheckOutput("azure_policy_evaluation_details_enabled", "true"),
+			),
+		},
+	})
+}
+
 func TestAccGenericResource_deleteLROEndsWithNotFoundError(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
@@ -4312,4 +4337,146 @@ variable "connections" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_client_config" "current" {
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2025-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestvault%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      enableRbacAuthorization   = true
+      enableSoftDelete          = true
+      publicNetworkAccess       = "Enabled"
+      softDeleteRetentionInDays = 7
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId = data.azapi_client_config.current.tenant_id
+    }
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2025-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestlaw%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku                             = { name = "PerGB2018" }
+      retentionInDays                 = 30
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
+}
+`, r.template(data), data.RandomInteger, data.RandomString)
+}
+
+func (r GenericResource) listUniqueIdProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  # This handles cases where Azure uses either field to identify a log setting
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs                = azapi_resource.test.output.properties.logs
+  audit_event_enabled = try([for l in local.logs : l.enabled if l.category == "AuditEvent"][0], null)
+}
+
+output "audit_event_enabled" {
+  value = tostring(local.audit_event_enabled)
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
+}
+
+func (r GenericResource) listUniqueIdPropertyUpdate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        },
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only manage the logs we specify, ignore any others Azure may add
+  ignore_other_items_in_list = ["properties.logs"]
+
+  ignore_missing_property = true
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs                                    = azapi_resource.test.output.properties.logs
+  audit_event_enabled                     = try([for l in local.logs : l.enabled if l.category == "AuditEvent"][0], null)
+  azure_policy_evaluation_details_enabled = try([for l in local.logs : l.enabled if l.category == "AzurePolicyEvaluationDetails"][0], null)
+}
+
+output "audit_event_enabled" {
+  value = tostring(local.audit_event_enabled)
+}
+
+output "azure_policy_evaluation_details_enabled" {
+  value = tostring(local.azure_policy_evaluation_details_enabled)
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }

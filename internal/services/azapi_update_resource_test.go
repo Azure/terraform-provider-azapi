@@ -98,6 +98,22 @@ func TestAccGenericUpdateResource_ignoreOrderInArray(t *testing.T) {
 	})
 }
 
+func TestAccGenericUpdateResource_listUniqueIdProperty(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
+	r := GenericUpdateResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:            r.listUniqueIdProperty(data),
+			ExternalProviders: externalProvidersAzurerm(),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+				resource.TestCheckOutput("azure_policy_evaluation_details_enabled", "true"),
+			),
+		},
+	})
+}
+
 func TestAccGenericUpdateResource_timeouts(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_update_resource", "test")
 	r := GenericUpdateResource{}
@@ -1076,4 +1092,120 @@ resource "azapi_update_resource" "test" {
   }
 }
 `, r.template(data), data.RandomString)
+}
+
+func (r GenericUpdateResource) listUniqueIdPropertyTemplate(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+data "azapi_client_config" "current" {
+}
+
+resource "azapi_resource" "vault" {
+  type      = "Microsoft.KeyVault/vaults@2025-05-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestvault%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      enableRbacAuthorization   = true
+      enableSoftDelete          = true
+      publicNetworkAccess       = "Enabled"
+      softDeleteRetentionInDays = 7
+      sku = {
+        family = "A"
+        name   = "standard"
+      }
+      tenantId = data.azapi_client_config.current.tenant_id
+    }
+  }
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.OperationalInsights/workspaces@2025-07-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctestlaw%[3]s"
+  location  = azapi_resource.resourceGroup.location
+  body = {
+    properties = {
+      sku                             = { name = "PerGB2018" }
+      retentionInDays                 = 30
+      publicNetworkAccessForIngestion = "Enabled"
+      publicNetworkAccessForQuery     = "Enabled"
+    }
+  }
+}
+
+# Create the diagnostic setting with basic config first
+resource "azapi_resource" "diagnosticSetting" {
+  type      = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  parent_id = azapi_resource.vault.id
+  name      = "acctest%[2]d"
+  body = {
+    properties = {
+      workspaceId = azapi_resource.workspace.id
+      logs = [
+        {
+          category = "AuditEvent"
+          enabled  = true
+        },
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = false
+        }
+      ]
+    }
+  }
+
+  ignore_missing_property = true
+
+  # Ignore changes to logs since azapi_update_resource will manage them
+  lifecycle {
+    ignore_changes = [body.properties.logs]
+  }
+}
+`, r.template(data), data.RandomInteger, data.RandomString)
+}
+
+func (r GenericUpdateResource) listUniqueIdProperty(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+%[1]s
+
+# Use azapi_update_resource to update specific log categories
+# without affecting others that Azure may have added
+resource "azapi_update_resource" "test" {
+  type        = "Microsoft.Insights/diagnosticSettings@2021-05-01-preview"
+  resource_id = azapi_resource.diagnosticSetting.id
+  body = {
+    properties = {
+      logs = [
+        {
+          category = "AzurePolicyEvaluationDetails"
+          enabled  = true
+        }
+      ]
+    }
+  }
+
+  # Use composite key to match log entries by both category and categoryGroup
+  # This handles cases where Azure uses either field to identify a log setting
+  list_unique_id_property = {
+    "properties.logs" = "category, categoryGroup"
+  }
+
+  # Only update the logs we specify, ignore any others
+  ignore_other_items_in_list = ["properties.logs"]
+
+  response_export_values = ["properties.logs"]
+}
+
+locals {
+  logs                                    = azapi_update_resource.test.output.properties.logs
+  azure_policy_evaluation_details_enabled = try([for l in local.logs : l.enabled if l.category == "AzurePolicyEvaluationDetails"][0], null)
+}
+
+output "azure_policy_evaluation_details_enabled" {
+  value = tostring(local.azure_policy_evaluation_details_enabled)
+}
+`, r.listUniqueIdPropertyTemplate(data), data.RandomInteger)
 }
