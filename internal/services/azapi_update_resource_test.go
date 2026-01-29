@@ -1115,7 +1115,7 @@ resource "azapi_resource" "vault" {
       sku = {
         family = "A"
         name   = "standard"
-      }      
+      }
       tenantId = data.azapi_client_config.current.tenant_id
     }
   }
@@ -1128,8 +1128,8 @@ resource "azapi_resource" "workspace" {
   location  = azapi_resource.resourceGroup.location
   body = {
     properties = {
-      sku                        = { name = "PerGB2018" }
-      retentionInDays            = 30
+      sku                             = { name = "PerGB2018" }
+      retentionInDays                 = 30
       publicNetworkAccessForIngestion = "Enabled"
       publicNetworkAccessForQuery     = "Enabled"
     }
@@ -1200,7 +1200,7 @@ resource "azapi_update_resource" "test" {
 }
 
 locals {
-  logs = azapi_update_resource.test.output.properties.logs
+  logs                                    = azapi_update_resource.test.output.properties.logs
   azure_policy_evaluation_details_enabled = try([for l in local.logs : l.enabled if l.category == "AzurePolicyEvaluationDetails"][0], null)
 }
 
