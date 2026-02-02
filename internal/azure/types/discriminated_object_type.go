@@ -171,6 +171,9 @@ func (t *DiscriminatedObjectType) Validate(body attr.Value, path string) []error
 
 	switch discriminatorV := otherProperties[t.Discriminator].(type) {
 	case types.String:
+		if discriminatorV.IsUnknown() {
+			return errors
+		}
 		discriminator := discriminatorV.ValueString()
 		switch {
 		case t.Elements[discriminator] == nil:

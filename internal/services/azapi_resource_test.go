@@ -85,6 +85,42 @@ func TestAccGenericResource_invalidVersionUpdate(t *testing.T) {
 	})
 }
 
+func TestAccGenericResource_unknownDiscriminatorValidation(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	// We use a fake parent ID, but valid structure.
+	fakeParentID := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/ws"
+
+	config := fmt.Sprintf(`
+variable "datastore_type" {
+  description = "Datastore backend type."
+  type        = string
+}
+
+resource "azapi_resource" "test" {
+  type      = "Microsoft.MachineLearningServices/workspaces/datastores@2025-10-01-preview"
+  name      = "test-datastore"
+  parent_id = "%s"
+  body = {
+    properties = {
+      datastoreType = var.datastore_type
+    }
+  }
+
+  schema_validation_enabled = true
+}
+`, fakeParentID)
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config:             config,
+			PlanOnly:           true,
+			ExpectNonEmptyPlan: true,
+		},
+	})
+}
+
 func TestAccGenericResource_requiresImport(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource", "test")
 	r := GenericResource{}
