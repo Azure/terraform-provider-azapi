@@ -99,27 +99,27 @@ func AzapiUpdateResourceMigrationV0ToV2(ctx context.Context) resource.StateUpgra
 				Timeouts              timeouts.Value `tfsdk:"timeouts"`
 			}
 			type newModel struct {
-				ID                    types.String        `tfsdk:"id"`
-				Name                  types.String        `tfsdk:"name"`
-				ParentID              types.String        `tfsdk:"parent_id"`
-				ResourceID            types.String        `tfsdk:"resource_id"`
-				Type                  types.String        `tfsdk:"type"`
-				Body                  types.Dynamic       `tfsdk:"body"`
-				SensitiveBody         types.Dynamic       `tfsdk:"sensitive_body"`
-				SensitiveBodyVersion  types.Map           `tfsdk:"sensitive_body_version"`
-				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
-				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
-				ListUniqueIdProperty  types.Map           `tfsdk:"list_unique_id_property"`
-				IgnoreOtherItemsInList types.List         `tfsdk:"ignore_other_items_in_list"`
-				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
-				Locks                 types.List          `tfsdk:"locks"`
-				Output                types.Dynamic       `tfsdk:"output"`
-				Timeouts              timeouts.Value      `tfsdk:"timeouts"`
-				Retry                 retry.RetryValue    `tfsdk:"retry"`
-				UpdateHeaders         map[string]string   `tfsdk:"update_headers"`
-				UpdateQueryParameters map[string][]string `tfsdk:"update_query_parameters"`
-				ReadHeaders           map[string]string   `tfsdk:"read_headers"`
-				ReadQueryParameters   map[string][]string `tfsdk:"read_query_parameters"`
+				ID                     types.String        `tfsdk:"id"`
+				Name                   types.String        `tfsdk:"name"`
+				ParentID               types.String        `tfsdk:"parent_id"`
+				ResourceID             types.String        `tfsdk:"resource_id"`
+				Type                   types.String        `tfsdk:"type"`
+				Body                   types.Dynamic       `tfsdk:"body"`
+				SensitiveBody          types.Dynamic       `tfsdk:"sensitive_body"`
+				SensitiveBodyVersion   types.Map           `tfsdk:"sensitive_body_version"`
+				IgnoreCasing           types.Bool          `tfsdk:"ignore_casing"`
+				IgnoreMissingProperty  types.Bool          `tfsdk:"ignore_missing_property"`
+				ListUniqueIdProperty   types.Map           `tfsdk:"list_unique_id_property"`
+				IgnoreOtherItemsInList types.List          `tfsdk:"ignore_other_items_in_list"`
+				ResponseExportValues   types.Dynamic       `tfsdk:"response_export_values"`
+				Locks                  types.List          `tfsdk:"locks"`
+				Output                 types.Dynamic       `tfsdk:"output"`
+				Timeouts               timeouts.Value      `tfsdk:"timeouts"`
+				Retry                  retry.RetryValue    `tfsdk:"retry"`
+				UpdateHeaders          map[string]string   `tfsdk:"update_headers"`
+				UpdateQueryParameters  map[string][]string `tfsdk:"update_query_parameters"`
+				ReadHeaders            map[string]string   `tfsdk:"read_headers"`
+				ReadQueryParameters    map[string][]string `tfsdk:"read_query_parameters"`
 			}
 
 			var oldState OldModel
