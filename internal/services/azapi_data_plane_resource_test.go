@@ -927,7 +927,7 @@ resource "azapi_resource" "searchService" {
       }
     }
     sku = {
-      name = "basic"
+      name = "standard"
     }
   }
 }
@@ -1021,7 +1021,7 @@ resource "azapi_resource" "searchService" {
       }
     }
     sku = {
-      name = "basic"
+      name = "standard"
     }
   }
 }
@@ -1130,7 +1130,7 @@ resource "azapi_resource" "searchService" {
       }
     }
     sku = {
-      name = "basic"
+      name = "standard"
     }
   }
 }
@@ -1274,7 +1274,7 @@ resource "azapi_resource" "searchService" {
       }
     }
     sku = {
-      name = "basic"
+      name = "standard"
     }
   }
 }

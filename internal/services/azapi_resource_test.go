@@ -106,6 +106,9 @@ resource "azapi_resource" "test" {
   body = {
     properties = {
       datastoreType = var.datastore_type
+      credentials = {
+        credentialsType = "None"
+      }
     }
   }
 
