@@ -109,6 +109,8 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				SensitiveBodyVersion  types.Map           `tfsdk:"sensitive_body_version"`
 				IgnoreCasing          types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty types.Bool          `tfsdk:"ignore_missing_property"`
+				ListUniqueIdProperty  types.Map           `tfsdk:"list_unique_id_property"`
+				IgnoreOtherItemsInList types.List         `tfsdk:"ignore_other_items_in_list"`
 				ResponseExportValues  types.Dynamic       `tfsdk:"response_export_values"`
 				Locks                 types.List          `tfsdk:"locks"`
 				Output                types.Dynamic       `tfsdk:"output"`
@@ -152,6 +154,8 @@ func AzapiUpdateResourceMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Locks:                 oldState.Locks,
 				IgnoreCasing:          oldState.IgnoreCasing,
 				IgnoreMissingProperty: oldState.IgnoreMissingProperty,
+				ListUniqueIdProperty:  types.MapNull(types.StringType),
+				IgnoreOtherItemsInList: types.ListNull(types.StringType),
 				ResponseExportValues:  responseExportValues,
 				Output:                outputVal,
 				Timeouts:              oldState.Timeouts,

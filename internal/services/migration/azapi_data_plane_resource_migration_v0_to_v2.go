@@ -90,6 +90,8 @@ func AzapiDataPlaneResourceMigrationV0ToV2(ctx context.Context) resource.StateUp
 				ParentID                      types.String        `tfsdk:"parent_id"`
 				Type                          types.String        `tfsdk:"type"`
 				Body                          types.Dynamic       `tfsdk:"body"`
+				SensitiveBody                 types.Dynamic       `tfsdk:"sensitive_body"`
+				SensitiveBodyVersion          types.Map           `tfsdk:"sensitive_body_version"`
 				IgnoreCasing                  types.Bool          `tfsdk:"ignore_casing"`
 				IgnoreMissingProperty         types.Bool          `tfsdk:"ignore_missing_property"`
 				ReplaceTriggersExternalValues types.Dynamic       `tfsdk:"replace_triggers_external_values"`
@@ -139,6 +141,7 @@ func AzapiDataPlaneResourceMigrationV0ToV2(ctx context.Context) resource.StateUp
 				ParentID:                      oldState.ParentID,
 				Type:                          oldState.Type,
 				Body:                          bodyVal,
+				SensitiveBodyVersion:          types.MapNull(types.StringType),
 				Locks:                         oldState.Locks,
 				IgnoreCasing:                  oldState.IgnoreCasing,
 				IgnoreMissingProperty:         oldState.IgnoreMissingProperty,
