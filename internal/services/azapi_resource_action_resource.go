@@ -312,6 +312,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		model.ID = basetypes.NewStringValue(resourceId)
 		model.Output = basetypes.NewDynamicNull()
 		model.SensitiveOutput = basetypes.NewDynamicNull()
+		model.Exist = basetypes.NewBoolNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
