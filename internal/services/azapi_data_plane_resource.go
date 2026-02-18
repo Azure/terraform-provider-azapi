@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strings"
 	"slices"
 	"time"
 
@@ -107,11 +108,13 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 			},
 
 			"name": schema.StringAttribute{
-				Required: true,
+				Optional: true,
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the Azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created. For resources that generate their identifier on create (for example, AI Foundry assistants), this value will be set automatically after creation.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -410,15 +413,42 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
-	id, err := parse.NewDataPlaneResourceId(plan.Name.ValueString(), plan.ParentID.ValueString(), plan.Type.ValueString())
+	isNewResource := responseState == nil || responseState.Raw.IsNull()
+
+	customizedResource := customization.GetCustomization(plan.Type.ValueString())
+	createResultResource, hasCreateResult := func() (customization.DataPlaneResourceWithCreateResult, bool) {
+		if customizedResource == nil {
+			return nil, false
+		}
+		v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResult)
+		if !ok {
+			return nil, false
+		}
+		if v.CreateResultFunc() == nil {
+			return nil, false
+		}
+		return v, true
+	}()
+
+	resourceName := strings.TrimSpace(plan.Name.ValueString())
+	if resourceName == "" {
+		if isNewResource && hasCreateResult {
+			// The service will generate the final resource name/ID (e.g. AI Foundry assistants).
+			// Use a placeholder to build an initial DataPlaneResourceId for the create call.
+			resourceName = "__generated__"
+		} else {
+			diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
+			return
+		}
+	}
+
+	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
 
 	ctx = tflog.SetField(ctx, "resource_id", id.ID())
-
-	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
 	var timeout time.Duration
 	var diags diag.Diagnostics
@@ -438,9 +468,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	defer cancel()
 
 	client := r.ProviderData.DataPlaneClient
-	customizedResource := customization.GetCustomization(plan.Type.ValueString())
 
-	if isNewResource {
+	if isNewResource && !hasCreateResult {
 		// check if the resource already exists using the non-retry client to avoid issue where user specifies
 		// a FooResourceNotFound error as a retryable error
 
@@ -501,6 +530,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	switch {
+	case isNewResource && hasCreateResult:
+		var createdId parse.DataPlaneResourceId
+		createdId, _, err = createResultResource.CreateResultFunc()(ctx, *r.ProviderData, id, body, requestOptions)
+		if err == nil {
+			id = createdId
+			ctx = tflog.SetField(ctx, "resource_id", id.ID())
+		}
 	case isNewResource && customizedResource != nil && (*customizedResource).CreateFunc() != nil:
 		err = (*customizedResource).CreateFunc()(ctx, *r.ProviderData, id, body, requestOptions)
 	case !isNewResource && customizedResource != nil && (*customizedResource).UpdateFunc() != nil:
@@ -541,6 +577,9 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}
 
 	plan.ID = basetypes.NewStringValue(id.ID())
+	plan.Name = basetypes.NewStringValue(id.Name)
+	plan.ParentID = basetypes.NewStringValue(id.ParentId)
+	plan.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	output, err := buildOutputFromBody(responseBody, plan.ResponseExportValues, nil)
 	if err != nil {

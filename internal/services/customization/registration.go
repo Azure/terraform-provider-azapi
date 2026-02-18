@@ -7,6 +7,9 @@ var customizations = make(map[string]DataPlaneResource)
 func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
+
+	var aiFoundryAssistantCustomization DataPlaneResource = AIFoundryAssistantCustomization{}
+	customizations[strings.ToLower(aiFoundryAssistantCustomization.GetResourceType())] = aiFoundryAssistantCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {
