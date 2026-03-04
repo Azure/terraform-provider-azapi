@@ -562,3 +562,23 @@ func Test_NewRetryOptionsForWaitForDesiredState_BodyPreserved(t *testing.T) {
 		t.Errorf("expected body %q, got %q", bodyContent, string(bodyBytes))
 	}
 }
+
+func Test_NewRetryOptionsForWaitForDesiredState_NonBooleanResult(t *testing.T) {
+	// Use an expression that returns a string, not a boolean
+	expressions := []string{"properties.status"}
+	result := clients.NewRetryOptionsForWaitForDesiredState(expressions)
+	if result == nil {
+		t.Fatal("expected non-nil retry options")
+	}
+
+	resp := &http.Response{
+		StatusCode: 200,
+		Body:       io.NopCloser(bytes.NewReader([]byte(`{"properties":{"status":"Running"}}`))),
+	}
+
+	// ShouldRetry should return true because the expression returns a string, not a boolean
+	shouldRetry := result.ShouldRetry(resp, nil)
+	if !shouldRetry {
+		t.Fatal("expected ShouldRetry to return true for non-boolean result")
+	}
+}

@@ -170,8 +170,8 @@ func NewRetryOptionsForWaitForDesiredState(expressions []string) *policy.RetryOp
 			for _, expr := range expressions {
 				result, searchErr := jmes.Search(expr, body)
 				if searchErr != nil {
-					log.Printf("[DEBUG] Failed to evaluate JMESPath expression %q: %s", expr, searchErr.Error())
-					return true
+					log.Printf("[WARN] Failed to evaluate JMESPath expression %q for desired state check: %s", expr, searchErr.Error())
+					return false
 				}
 
 				boolResult, ok := result.(bool)
