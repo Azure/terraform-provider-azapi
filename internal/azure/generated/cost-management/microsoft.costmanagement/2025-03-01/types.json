@@ -1,11 +1,13 @@
 [
   {
     "$type": "StringType",
-    "pattern": "[A-Za-z0-9\\-_]+"
+    "minLength": 1,
+    "maxLength": 63,
+    "pattern": "^[a-zA-Z0-9_-]+$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.CostManagement/costAllocationRules"
+    "value": "Microsoft.CostManagement/budgets"
   },
   {
     "$type": "StringType"
@@ -16,7 +18,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.CostManagement/costAllocationRules",
+    "name": "Microsoft.CostManagement/budgets",
     "properties": {
       "id": {
         "type": {
@@ -51,327 +53,6 @@
           "$ref": "#/5"
         },
         "flags": 0,
-        "description": "Cost allocation rule properties"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CostAllocationRuleProperties",
-    "properties": {
-      "description": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Description of a cost allocation rule."
-      },
-      "details": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 1,
-        "description": "Resource information for the cost allocation rule"
-      },
-      "status": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 1,
-        "description": "Status of the rule"
-      },
-      "createdDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Time at which the rule was created. Rules that change cost for the same resource are applied in order of creation."
-      },
-      "updatedDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Time at which the rule was last updated."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CostAllocationRuleDetails",
-    "properties": {
-      "sourceResources": {
-        "type": {
-          "$ref": "#/12"
-        },
-        "flags": 0,
-        "description": "Source resources for cost allocation. At this time, this list can contain no more than one element."
-      },
-      "targetResources": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 0,
-        "description": "Target resources for cost allocation. At this time, this list can contain no more than one element."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SourceCostAllocationResource",
-    "properties": {
-      "values": {
-        "type": {
-          "$ref": "#/8"
-        },
-        "flags": 1,
-        "description": "Source Resources for cost allocation. This list cannot contain more than 25 values."
-      },
-      "resourceType": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 1,
-        "description": "Type of resources contained in this cost allocation rule"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag, this must be a valid Azure tag"
-      }
-    }
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Dimension"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Tag"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/9"
-      },
-      {
-        "$ref": "#/10"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/7"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "TargetCostAllocationResource",
-    "properties": {
-      "values": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 1,
-        "description": "Target resources for cost allocation. This list cannot contain more than 25 values."
-      },
-      "policyType": {
-        "type": {
-          "$ref": "#/18"
-        },
-        "flags": 1,
-        "description": "Method of cost allocation for the rule"
-      },
-      "resourceType": {
-        "type": {
-          "$ref": "#/21"
-        },
-        "flags": 1,
-        "description": "Type of resources contained in this cost allocation rule"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag, this must be a valid Azure tag"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "CostAllocationProportion",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Target resource for cost allocation"
-      },
-      "percentage": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 1,
-        "description": "Percentage of source cost to allocate to this resource. This value can be specified to two decimal places and the total percentage of all resources in this rule must sum to 100.00."
-      }
-    }
-  },
-  {
-    "$type": "IntegerType"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/14"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "FixedProportion"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Dimension"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Tag"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/20"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/13"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "NotActive"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Active"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Processing"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/23"
-      },
-      {
-        "$ref": "#/24"
-      },
-      {
-        "$ref": "#/25"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.CostManagement/costAllocationRules@2025-03-01",
-    "scopeType": 16,
-    "body": {
-      "$ref": "#/4"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "minLength": 1,
-    "maxLength": 63,
-    "pattern": "^[a-zA-Z0-9_-]+$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.CostManagement/budgets"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-03-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.CostManagement/budgets",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/29"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/32"
-        },
-        "flags": 0,
         "description": "The properties of the budget."
       },
       "eTag": {
@@ -380,6 +61,13 @@
         },
         "flags": 0,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -389,59 +77,59 @@
     "properties": {
       "category": {
         "type": {
-          "$ref": "#/35"
+          "$ref": "#/8"
         },
         "flags": 1,
         "description": "The category of the budget.\n- 'Cost' defines a Budget.\n- 'ReservationUtilization' defines a Reservation Utilization Alert Rule."
       },
       "amount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
-        "description": "The total amount of cost to track with the budget.\n\n Supported for CategoryType(s): Cost.\n\n Required for CategoryType(s): Cost."
+        "description": "The total amount of cost to track with the budget.\n\nSupported for CategoryType(s): Cost.\n\nRequired for CategoryType(s): Cost."
       },
       "timeGrain": {
         "type": {
-          "$ref": "#/44"
+          "$ref": "#/18"
         },
         "flags": 1,
-        "description": "The time covered by a budget. Tracking of the amount will be reset based on the time grain.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\n Supported timeGrainTypes for **CategoryType: Cost**\n\n- Monthly\n- Quarterly\n- Annually\n- BillingMonth*\n- BillingQuarter*\n- BillingAnnual*\n\n  *only supported for Web Direct customers.\n\n Supported timeGrainTypes for **CategoryType: ReservationUtilization**\n- Last7Days\n- Last30Days\n\n Required for CategoryType(s): Cost, ReservationUtilization."
+        "description": "The time covered by a budget. Tracking of the amount will be reset based on the time grain.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported timeGrainTypes for **CategoryType: Cost**\n\n- Monthly\n- Quarterly\n- Annually\n- BillingMonth*\n- BillingQuarter*\n- BillingAnnual*\n\n*only supported for Web Direct customers.\n\nSupported timeGrainTypes for **CategoryType: ReservationUtilization**\n- Last7Days\n- Last30Days\n\nRequired for CategoryType(s): Cost, ReservationUtilization."
       },
       "timePeriod": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/19"
         },
         "flags": 1,
-        "description": "The time period that defines the active period of the budget. The budget will evaluate data on or after the startDate and will expire on the endDate.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\n Required for CategoryType(s): Cost, ReservationUtilization."
+        "description": "The time period that defines the active period of the budget. The budget will evaluate data on or after the startDate and will expire on the endDate.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\nRequired for CategoryType(s): Cost, ReservationUtilization."
       },
       "filter": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/20"
         },
         "flags": 0,
-        "description": "May be used to filter budgets by user-specified dimensions and/or tags.\n\n Supported for CategoryType(s): Cost, ReservationUtilization."
+        "description": "May be used to filter budgets by user-specified dimensions and/or tags.\n\nSupported for CategoryType(s): Cost, ReservationUtilization."
       },
       "currentSpend": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/27"
         },
         "flags": 2,
-        "description": "The current amount of cost which is being tracked for a budget.\n\n Supported for CategoryType(s): Cost."
+        "description": "The current amount of cost which is being tracked for a budget.\n\nSupported for CategoryType(s): Cost."
       },
       "notifications": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/67"
         },
         "flags": 0,
-        "description": "Dictionary of notifications associated with the budget.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\n- Constraints for **CategoryType: Cost** - Budget can have up to 5 notifications with thresholdType: Actual and 5 notifications with thresholdType: Forecasted.\n- Constraints for **CategoryType: ReservationUtilization** - Only one notification allowed. thresholdType is not applicable."
+        "description": "Dictionary of notifications associated with the budget.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\n- Constraints for **CategoryType: Cost** - Budget can have up to 5 notifications with thresholdType: Actual and 5 notifications with thresholdType: Forecasted.\n- Constraints for **CategoryType: ReservationUtilization** - Only one notification allowed. thresholdType is not applicable."
       },
       "forecastSpend": {
         "type": {
-          "$ref": "#/94"
+          "$ref": "#/68"
         },
         "flags": 2,
-        "description": "The forecasted cost which is being tracked for a budget.\n\n Supported for CategoryType(s): Cost."
+        "description": "The forecasted cost which is being tracked for a budget.\n\nSupported for CategoryType(s): Cost."
       }
     }
   },
@@ -457,15 +145,18 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/33"
+        "$ref": "#/6"
       },
       {
-        "$ref": "#/34"
+        "$ref": "#/7"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "IntegerType"
   },
   {
     "$type": "StringLiteralType",
@@ -503,28 +194,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/36"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/11"
       },
       {
-        "$ref": "#/38"
+        "$ref": "#/12"
       },
       {
-        "$ref": "#/39"
+        "$ref": "#/13"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/41"
+        "$ref": "#/15"
       },
       {
-        "$ref": "#/42"
+        "$ref": "#/16"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/17"
       },
       {
         "$ref": "#/2"
@@ -557,24 +248,24 @@
     "properties": {
       "and": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/26"
         },
         "flags": 0,
-        "description": "The logical \"AND\" expression. Must have at least 2 items.\n\n Supported for CategoryType(s): Cost."
+        "description": "The logical \"AND\" expression. Must have at least 2 items.\n\nSupported for CategoryType(s): Cost."
       },
       "dimensions": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/22"
         },
         "flags": 0,
-        "description": "Has comparison expression for a dimension.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported dimension names for **CategoryType: ReservationUtilization** \n- ReservationId\n- ReservedResourceType"
+        "description": "Has comparison expression for a dimension.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported dimension names for **CategoryType: ReservationUtilization**\n- ReservationId\n- ReservedResourceType"
       },
       "tags": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/22"
         },
         "flags": 0,
-        "description": "Has comparison expression for a tag.\n\n Supported for CategoryType(s): Cost."
+        "description": "Has comparison expression for a tag.\n\nSupported for CategoryType(s): Cost."
       }
     }
   },
@@ -584,17 +275,17 @@
     "properties": {
       "dimensions": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/22"
         },
         "flags": 0,
-        "description": "Has comparison expression for a dimension.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported dimension names for **CategoryType: ReservationUtilization** \n- ReservationId\n- ReservedResourceType"
+        "description": "Has comparison expression for a dimension.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported dimension names for **CategoryType: ReservationUtilization**\n- ReservationId\n- ReservedResourceType"
       },
       "tags": {
         "type": {
-          "$ref": "#/48"
+          "$ref": "#/22"
         },
         "flags": 0,
-        "description": "Has comparison expression for a tag.\n\n Supported for CategoryType(s): Cost."
+        "description": "Has comparison expression for a tag.\n\nSupported for CategoryType(s): Cost."
       }
     }
   },
@@ -611,14 +302,14 @@
       },
       "operator": {
         "type": {
-          "$ref": "#/50"
+          "$ref": "#/24"
         },
         "flags": 1,
         "description": "The operator to use for comparison."
       },
       "values": {
         "type": {
-          "$ref": "#/51"
+          "$ref": "#/25"
         },
         "flags": 1,
         "description": "Array of values to use for comparison"
@@ -633,7 +324,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/49"
+        "$ref": "#/23"
       },
       {
         "$ref": "#/2"
@@ -649,7 +340,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/47"
+      "$ref": "#/21"
     }
   },
   {
@@ -658,7 +349,7 @@
     "properties": {
       "amount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 2,
         "description": "The total amount of cost which is being tracked by the budget."
@@ -678,66 +369,66 @@
     "properties": {
       "enabled": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 1,
-        "description": "The notification is enabled or not.\n\n Supported for CategoryType(s): Cost, ReservationUtilization."
+        "description": "The notification is enabled or not.\n\nSupported for CategoryType(s): Cost, ReservationUtilization."
       },
       "operator": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/34"
         },
         "flags": 1,
-        "description": "The comparison operator.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\n Supported operators for **CategoryType: Cost**\n- GreaterThan\n- GreaterThanOrEqualTo\n\n Supported operators for **CategoryType: ReservationUtilization**\n- LessThan"
+        "description": "The comparison operator.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\nSupported operators for **CategoryType: Cost**\n- GreaterThan\n- GreaterThanOrEqualTo\n\nSupported operators for **CategoryType: ReservationUtilization**\n- LessThan"
       },
       "threshold": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 1,
-        "description": "Threshold value associated with a notification. It is always percent with a maximum of 2 decimal places.\n\n Supported for CategoryType(s): Cost, ReservationUtilization.\n\n **CategoryType: Cost** - Must be between 0 and 1000. Notification is sent when the cost exceeded the threshold.\n\n **CategoryType: ReservationUtilization** - Must be between 0 and 100. Notification is sent when a reservation has a utilization percentage below the threshold."
+        "description": "Threshold value associated with a notification. It is always percent with a maximum of 2 decimal places.\n\nSupported for CategoryType(s): Cost, ReservationUtilization.\n\n**CategoryType: Cost** - Must be between 0 and 1000. Notification is sent when the cost exceeded the threshold.\n\n**CategoryType: ReservationUtilization** - Must be between 0 and 100. Notification is sent when a reservation has a utilization percentage below the threshold."
       },
       "frequency": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/38"
         },
         "flags": 0,
-        "description": "Frequency of a notification. Represents how long the notification will be silent after triggering an alert for a threshold breach. If not specified, the frequency will be set by default based on the timeGrain (Weekly when timeGrain: Last7Days, Monthly when timeGrain: Last30Days).\n\n Supported for CategoryType(s): ReservationUtilization."
+        "description": "Frequency of a notification. Represents how long the notification will be silent after triggering an alert for a threshold breach. If not specified, the frequency will be set by default based on the timeGrain (Weekly when timeGrain: Last7Days, Monthly when timeGrain: Last30Days).\n\nSupported for CategoryType(s): ReservationUtilization."
       },
       "contactEmails": {
         "type": {
-          "$ref": "#/65"
+          "$ref": "#/39"
         },
         "flags": 1,
-        "description": "Email addresses to send the notification to when the threshold is breached. Must have at least one contact email or contact group specified at the Subscription or Resource Group scopes. All other scopes must have at least one contact email specified.\n\n Supported for CategoryType(s): Cost, ReservationUtilization."
+        "description": "Email addresses to send the notification to when the threshold is breached. Must have at least one contact email or contact group specified at the Subscription or Resource Group scopes. All other scopes must have at least one contact email specified.\n\nSupported for CategoryType(s): Cost, ReservationUtilization."
       },
       "contactRoles": {
+        "type": {
+          "$ref": "#/40"
+        },
+        "flags": 0,
+        "description": "Subscription or Resource Group scopes only. Contact roles to send the notification to when the threshold is breached.\n\nSupported for CategoryType(s): Cost."
+      },
+      "contactGroups": {
+        "type": {
+          "$ref": "#/41"
+        },
+        "flags": 0,
+        "description": "Subscription or Resource Group scopes only. Action groups to send the notification to when the threshold is exceeded. Must be provided as a fully qualified Azure resource id.\n\nSupported for CategoryType(s): Cost."
+      },
+      "thresholdType": {
+        "type": {
+          "$ref": "#/44"
+        },
+        "flags": 0,
+        "description": "The type of threshold.\n\nSupported for CategoryType(s): Cost."
+      },
+      "locale": {
         "type": {
           "$ref": "#/66"
         },
         "flags": 0,
-        "description": "Subscription or Resource Group scopes only. Contact roles to send the notification to when the threshold is breached.\n\n Supported for CategoryType(s): Cost."
-      },
-      "contactGroups": {
-        "type": {
-          "$ref": "#/67"
-        },
-        "flags": 0,
-        "description": "Subscription or Resource Group scopes only. Action groups to send the notification to when the threshold is exceeded. Must be provided as a fully qualified Azure resource id.\n\n Supported for CategoryType(s): Cost."
-      },
-      "thresholdType": {
-        "type": {
-          "$ref": "#/70"
-        },
-        "flags": 0,
-        "description": "The type of threshold.\n\n Supported for CategoryType(s): Cost."
-      },
-      "locale": {
-        "type": {
-          "$ref": "#/92"
-        },
-        "flags": 0,
-        "description": "Language in which the recipient will receive the notification, \n\n Supported for CategoryType(s): Cost, ReservationUtilization."
+        "description": "Language in which the recipient will receive the notification,\n\nSupported for CategoryType(s): Cost, ReservationUtilization."
       }
     }
   },
@@ -764,16 +455,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/56"
+        "$ref": "#/30"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/58"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/59"
+        "$ref": "#/33"
       },
       {
         "$ref": "#/2"
@@ -796,13 +487,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/61"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/62"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/63"
+        "$ref": "#/37"
       },
       {
         "$ref": "#/2"
@@ -841,10 +532,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/68"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/69"
+        "$ref": "#/43"
       },
       {
         "$ref": "#/2"
@@ -939,67 +630,67 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/71"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/72"
+        "$ref": "#/46"
       },
       {
-        "$ref": "#/73"
+        "$ref": "#/47"
       },
       {
-        "$ref": "#/74"
+        "$ref": "#/48"
       },
       {
-        "$ref": "#/75"
+        "$ref": "#/49"
       },
       {
-        "$ref": "#/76"
+        "$ref": "#/50"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/51"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/79"
+        "$ref": "#/53"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/54"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/82"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/83"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/84"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/87"
+        "$ref": "#/61"
       },
       {
-        "$ref": "#/88"
+        "$ref": "#/62"
       },
       {
-        "$ref": "#/89"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/91"
+        "$ref": "#/65"
       },
       {
         "$ref": "#/2"
@@ -1011,7 +702,7 @@
     "name": "BudgetPropertiesNotifications",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/54"
+      "$ref": "#/28"
     }
   },
   {
@@ -1020,7 +711,7 @@
     "properties": {
       "amount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 2,
         "description": "The forecasted cost for the total time period which is being tracked by the budget. This value is only provided if the budget contains a forecast alert type."
@@ -1035,13 +726,604 @@
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/74"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/79"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/70"
+      },
+      {
+        "$ref": "#/71"
+      },
+      {
+        "$ref": "#/72"
+      },
+      {
+        "$ref": "#/73"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/75"
+      },
+      {
+        "$ref": "#/76"
+      },
+      {
+        "$ref": "#/77"
+      },
+      {
+        "$ref": "#/78"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.CostManagement/budgets@2025-03-01",
-    "scopeType": 0,
     "body": {
-      "$ref": "#/31"
+      "$ref": "#/4"
     },
-    "flags": 0
+    "readableScopes": 31,
+    "writableScopes": 31
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/scheduledActions"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/scheduledActions",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/82"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/84"
+        },
+        "flags": 0,
+        "description": "The properties of the scheduled action."
+      },
+      "eTag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not required."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/118"
+        },
+        "flags": 0,
+        "description": "Kind of the scheduled action."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduledActionProperties",
+    "properties": {
+      "displayName": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Scheduled action name."
+      },
+      "fileDestination": {
+        "type": {
+          "$ref": "#/85"
+        },
+        "flags": 0,
+        "description": "Destination format of the view data. This is optional."
+      },
+      "notification": {
+        "type": {
+          "$ref": "#/89"
+        },
+        "flags": 1,
+        "description": "Notification properties based on scheduled action kind."
+      },
+      "notificationEmail": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Email address of the point of contact that should get the unsubscribe requests and notification emails."
+      },
+      "schedule": {
+        "type": {
+          "$ref": "#/91"
+        },
+        "flags": 1,
+        "description": "Schedule of the scheduled action."
+      },
+      "scope": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "For private scheduled action(Create or Update), scope will be empty.<br /> For shared scheduled action(Create or Update By Scope), Cost Management scope can be 'subscriptions/{subscriptionId}' for subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for InvoiceSection scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for ExternalBillingAccount scope, and '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/115"
+        },
+        "flags": 1,
+        "description": "Status of the scheduled action."
+      },
+      "viewId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Cost analysis viewId used for scheduled action. For example, '/providers/Microsoft.CostManagement/views/swaggerExample'"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "FileDestination",
+    "properties": {
+      "fileFormats": {
+        "type": {
+          "$ref": "#/88"
+        },
+        "flags": 0,
+        "description": "Destination of the view data. Currently only CSV format is supported."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Csv"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/86"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/87"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "NotificationProperties",
+    "properties": {
+      "to": {
+        "type": {
+          "$ref": "#/90"
+        },
+        "flags": 1,
+        "description": "Array of email addresses."
+      },
+      "language": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Locale of the email."
+      },
+      "message": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Optional message to be added in the email. Length is limited to 250 characters."
+      },
+      "regionalFormat": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Regional format used for formatting date/time and currency values in the email."
+      },
+      "subject": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Subject of the email. Length is limited to 70 characters."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    },
+    "minLength": 1,
+    "maxLength": 20
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ScheduleProperties",
+    "properties": {
+      "frequency": {
+        "type": {
+          "$ref": "#/95"
+        },
+        "flags": 1,
+        "description": "Frequency of the schedule."
+      },
+      "hourOfDay": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "UTC time at which cost analysis data will be emailed."
+      },
+      "daysOfWeek": {
+        "type": {
+          "$ref": "#/104"
+        },
+        "flags": 0,
+        "description": "Day names in english on which cost analysis data will be emailed. This property is applicable when frequency is Weekly or Monthly."
+      },
+      "weeksOfMonth": {
+        "type": {
+          "$ref": "#/111"
+        },
+        "flags": 0,
+        "description": "Weeks in which cost analysis data will be emailed. This property is applicable when frequency is Monthly and used in combination with daysOfWeek."
+      },
+      "dayOfMonth": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 0,
+        "description": "UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This property is applicable when frequency is Monthly and overrides weeksOfMonth or daysOfWeek."
+      },
+      "startDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The start date and time of the scheduled action (UTC)."
+      },
+      "endDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The end date and time of the scheduled action (UTC)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Daily"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Weekly"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monthly"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/92"
+      },
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Monday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tuesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Wednesday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Thursday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Friday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Saturday"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Sunday"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/96"
+      },
+      {
+        "$ref": "#/97"
+      },
+      {
+        "$ref": "#/98"
+      },
+      {
+        "$ref": "#/99"
+      },
+      {
+        "$ref": "#/100"
+      },
+      {
+        "$ref": "#/101"
+      },
+      {
+        "$ref": "#/102"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/103"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "First"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Second"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Third"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Fourth"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Last"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/105"
+      },
+      {
+        "$ref": "#/106"
+      },
+      {
+        "$ref": "#/107"
+      },
+      {
+        "$ref": "#/108"
+      },
+      {
+        "$ref": "#/109"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/110"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Expired"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/112"
+      },
+      {
+        "$ref": "#/113"
+      },
+      {
+        "$ref": "#/114"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Email"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InsightAlert"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/116"
+      },
+      {
+        "$ref": "#/117"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/scheduledActions@2025-03-01",
+    "body": {
+      "$ref": "#/83"
+    },
+    "readableScopes": 31,
+    "writableScopes": 31
   },
   {
     "$type": "StringLiteralType",
@@ -1071,21 +1353,28 @@
       },
       "type": {
         "type": {
-          "$ref": "#/96"
+          "$ref": "#/120"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/121"
         },
         "flags": 10,
         "description": "The resource api version"
       },
+      "properties": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 0,
+        "description": "The properties of the export."
+      },
       "identity": {
         "type": {
-          "$ref": "#/99"
+          "$ref": "#/208"
         },
         "flags": 0,
         "description": "The managed identity associated with Export"
@@ -1097,76 +1386,21 @@
         "flags": 0,
         "description": "The location of the Export's managed identity. Only required when utilizing managed identity."
       },
-      "properties": {
-        "type": {
-          "$ref": "#/104"
-        },
-        "flags": 0,
-        "description": "The properties of the export."
-      },
       "eTag": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 0,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemAssignedServiceIdentity",
-    "properties": {
-      "principalId": {
+      },
+      "systemData": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/69"
         },
         "flags": 2,
-        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/100"
-        },
-        "flags": 2,
-        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/103"
-        },
-        "flags": 1,
-        "description": "Type of managed service identity (either system assigned, or none)."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
-  },
-  {
-    "$type": "StringType",
-    "minLength": 36,
-    "maxLength": 36,
-    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/101"
-      },
-      {
-        "$ref": "#/102"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -1174,56 +1408,56 @@
     "properties": {
       "schedule": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/124"
         },
         "flags": 0,
         "description": "Has schedule information for the export."
       },
       "format": {
         "type": {
-          "$ref": "#/117"
+          "$ref": "#/136"
         },
         "flags": 0,
         "description": "The format of the export being delivered."
       },
       "deliveryInfo": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/137"
         },
         "flags": 1,
         "description": "Has delivery information for the export."
       },
       "definition": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/142"
         },
         "flags": 1,
         "description": "Has the definition for the export."
       },
       "runHistory": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/173"
         },
         "flags": 0,
         "description": "If requested, has the most recent run history for the export."
       },
       "partitionData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file."
       },
       "dataOverwriteBehavior": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/203"
         },
         "flags": 0,
         "description": "Allow customers to select overwrite data(OverwritePreviousReport) for exports. This setting will enable overwrite data for the same month in customer storage account. By default set to CreateNewReport."
       },
       "compressionMode": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/207"
         },
         "flags": 0,
         "description": "Allow customers to select compress data for exports. This setting will enable destination file compression scheme at runtime. By default set to None. Gzip is for csv and snappy for parquet."
@@ -1244,7 +1478,7 @@
       },
       "systemSuspensionContext": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/198"
         },
         "flags": 2,
         "description": "The export suspension reason if export is in SystemSuspended state. This is not populated currently."
@@ -1257,21 +1491,21 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/108"
+          "$ref": "#/127"
         },
         "flags": 0,
         "description": "The status of the export's schedule. If 'Inactive', the export's schedule is paused. To enable export set the status to be Active and then make a PUT request."
       },
       "recurrence": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/132"
         },
         "flags": 0,
         "description": "The schedule recurrence."
       },
       "recurrencePeriod": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/133"
         },
         "flags": 0,
         "description": "Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date."
@@ -1290,10 +1524,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/106"
+        "$ref": "#/125"
       },
       {
-        "$ref": "#/107"
+        "$ref": "#/126"
       },
       {
         "$ref": "#/2"
@@ -1320,16 +1554,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/109"
+        "$ref": "#/128"
       },
       {
-        "$ref": "#/110"
+        "$ref": "#/129"
       },
       {
-        "$ref": "#/111"
+        "$ref": "#/130"
       },
       {
-        "$ref": "#/112"
+        "$ref": "#/131"
       },
       {
         "$ref": "#/2"
@@ -1368,10 +1602,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/115"
+        "$ref": "#/134"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/135"
       },
       {
         "$ref": "#/2"
@@ -1384,7 +1618,7 @@
     "properties": {
       "destination": {
         "type": {
-          "$ref": "#/119"
+          "$ref": "#/138"
         },
         "flags": 1,
         "description": "Has destination for the export being delivered."
@@ -1397,7 +1631,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/121"
+          "$ref": "#/140"
         },
         "flags": 0,
         "description": "The export delivery destination type. Currently only 'AzureBlob' is supported."
@@ -1425,7 +1659,7 @@
       },
       "sasToken": {
         "type": {
-          "$ref": "#/122"
+          "$ref": "#/141"
         },
         "flags": 0,
         "description": "A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount can be specified instead of resourceId. Note: the value returned by the API for this property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being updated. To update this value a new SAS token must be specified."
@@ -1447,7 +1681,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/120"
+        "$ref": "#/139"
       },
       {
         "$ref": "#/2"
@@ -1464,28 +1698,28 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/151"
         },
         "flags": 1,
         "description": "The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do not yet provide data for charges or amortization for service reservations."
       },
       "timeframe": {
         "type": {
-          "$ref": "#/140"
+          "$ref": "#/159"
         },
         "flags": 1,
         "description": "The time frame for pulling data for the export. If custom, then a specific time period must be provided."
       },
       "timePeriod": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/160"
         },
         "flags": 0,
         "description": "Has time period for pulling data for the export."
       },
       "dataSet": {
         "type": {
-          "$ref": "#/142"
+          "$ref": "#/161"
         },
         "flags": 0,
         "description": "The definition for data in the export."
@@ -1528,28 +1762,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/124"
+        "$ref": "#/143"
       },
       {
-        "$ref": "#/125"
+        "$ref": "#/144"
       },
       {
-        "$ref": "#/126"
+        "$ref": "#/145"
       },
       {
-        "$ref": "#/127"
+        "$ref": "#/146"
       },
       {
-        "$ref": "#/128"
+        "$ref": "#/147"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/148"
       },
       {
-        "$ref": "#/130"
+        "$ref": "#/149"
       },
       {
-        "$ref": "#/131"
+        "$ref": "#/150"
       },
       {
         "$ref": "#/2"
@@ -1588,25 +1822,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/133"
+        "$ref": "#/152"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/153"
       },
       {
-        "$ref": "#/135"
+        "$ref": "#/154"
       },
       {
-        "$ref": "#/136"
+        "$ref": "#/155"
       },
       {
-        "$ref": "#/137"
+        "$ref": "#/156"
       },
       {
-        "$ref": "#/138"
+        "$ref": "#/157"
       },
       {
-        "$ref": "#/139"
+        "$ref": "#/158"
       },
       {
         "$ref": "#/2"
@@ -1639,14 +1873,14 @@
     "properties": {
       "granularity": {
         "type": {
-          "$ref": "#/145"
+          "$ref": "#/164"
         },
         "flags": 0,
         "description": "The granularity of rows in the export. Currently 'Daily' is supported for most cases."
       },
       "configuration": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The export dataset configuration."
@@ -1665,10 +1899,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/143"
+        "$ref": "#/162"
       },
       {
-        "$ref": "#/144"
+        "$ref": "#/163"
       },
       {
         "$ref": "#/2"
@@ -1681,7 +1915,7 @@
     "properties": {
       "columns": {
         "type": {
-          "$ref": "#/147"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "Array of column names to be included in the export. If not provided then the export will include all available columns. The available columns can vary by customer channel (see examples)."
@@ -1695,7 +1929,7 @@
       },
       "filters": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/172"
         },
         "flags": 0,
         "description": "Filters associated with the data sets."
@@ -1714,7 +1948,7 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/171"
         },
         "flags": 0,
         "description": "The name of the filter. This is currently only supported for Export Definition type of ReservationRecommendations. Supported names are ['ReservationScope', 'LookBackPeriod', 'ResourceType']"
@@ -1744,13 +1978,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/149"
+        "$ref": "#/168"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/169"
       },
       {
-        "$ref": "#/151"
+        "$ref": "#/170"
       },
       {
         "$ref": "#/2"
@@ -1760,7 +1994,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/148"
+      "$ref": "#/167"
     }
   },
   {
@@ -1769,7 +2003,7 @@
     "properties": {
       "value": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/200"
         },
         "flags": 2,
         "description": "A list of export runs."
@@ -1782,7 +2016,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/175"
         },
         "flags": 0,
         "description": "The properties of the export run."
@@ -1823,14 +2057,14 @@
     "properties": {
       "executionType": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/178"
         },
         "flags": 0,
         "description": "The type of the export run."
       },
       "status": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/186"
         },
         "flags": 0,
         "description": "The last known status of the export run."
@@ -1893,14 +2127,14 @@
       },
       "runSettings": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/187"
         },
         "flags": 0,
         "description": "The export settings that were in effect for this run."
       },
       "error": {
         "type": {
-          "$ref": "#/180"
+          "$ref": "#/199"
         },
         "flags": 0,
         "description": "The details of any error."
@@ -1919,10 +2153,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/157"
+        "$ref": "#/176"
       },
       {
-        "$ref": "#/158"
+        "$ref": "#/177"
       },
       {
         "$ref": "#/2"
@@ -1961,25 +2195,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/160"
+        "$ref": "#/179"
       },
       {
-        "$ref": "#/161"
+        "$ref": "#/180"
       },
       {
-        "$ref": "#/162"
+        "$ref": "#/181"
       },
       {
-        "$ref": "#/163"
+        "$ref": "#/182"
       },
       {
-        "$ref": "#/164"
+        "$ref": "#/183"
       },
       {
-        "$ref": "#/165"
+        "$ref": "#/184"
       },
       {
-        "$ref": "#/166"
+        "$ref": "#/185"
       },
       {
         "$ref": "#/2"
@@ -1992,49 +2226,49 @@
     "properties": {
       "format": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/190"
         },
         "flags": 0,
         "description": "The format of the export being delivered."
       },
       "deliveryInfo": {
         "type": {
-          "$ref": "#/118"
+          "$ref": "#/137"
         },
         "flags": 1,
         "description": "Has delivery information for the export."
       },
       "definition": {
         "type": {
-          "$ref": "#/123"
+          "$ref": "#/142"
         },
         "flags": 1,
         "description": "Has the definition for the export."
       },
       "runHistory": {
         "type": {
-          "$ref": "#/154"
+          "$ref": "#/173"
         },
         "flags": 0,
         "description": "If requested, has the most recent run history for the export."
       },
       "partitionData": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file."
       },
       "dataOverwriteBehavior": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/193"
         },
         "flags": 0,
         "description": "Allow customers to select overwrite data(OverwritePreviousReport) for exports. This setting will enable overwrite data for the same month in customer storage account. By default set to CreateNewReport."
       },
       "compressionMode": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/197"
         },
         "flags": 0,
         "description": "Allow customers to select compress data for exports. This setting will enable destination file compression scheme at runtime. By default set to None. Gzip is for csv and snappy for parquet."
@@ -2055,7 +2289,7 @@
       },
       "systemSuspensionContext": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/198"
         },
         "flags": 2,
         "description": "The export suspension reason if export is in SystemSuspended state. This is not populated currently."
@@ -2074,10 +2308,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/169"
+        "$ref": "#/188"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/189"
       },
       {
         "$ref": "#/2"
@@ -2096,10 +2330,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/172"
+        "$ref": "#/191"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/192"
       },
       {
         "$ref": "#/2"
@@ -2122,13 +2356,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/175"
+        "$ref": "#/194"
       },
       {
-        "$ref": "#/176"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/177"
+        "$ref": "#/196"
       },
       {
         "$ref": "#/2"
@@ -2185,7 +2419,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/155"
+      "$ref": "#/174"
     }
   },
   {
@@ -2200,10 +2434,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/182"
+        "$ref": "#/201"
       },
       {
-        "$ref": "#/183"
+        "$ref": "#/202"
       },
       {
         "$ref": "#/2"
@@ -2226,13 +2460,68 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/185"
+        "$ref": "#/204"
       },
       {
-        "$ref": "#/186"
+        "$ref": "#/205"
       },
       {
-        "$ref": "#/187"
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemAssignedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/209"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/212"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (either system assigned, or none)."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/210"
+      },
+      {
+        "$ref": "#/211"
       },
       {
         "$ref": "#/2"
@@ -2242,11 +2531,127 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.CostManagement/exports@2025-03-01",
-    "scopeType": 0,
     "body": {
-      "$ref": "#/98"
+      "$ref": "#/122"
     },
-    "flags": 0
+    "readableScopes": 31,
+    "writableScopes": 31
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "taginheritance"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/settings"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-01"
+  },
+  {
+    "$type": "DiscriminatedObjectType",
+    "name": "Microsoft.CostManagement/settings",
+    "discriminator": "kind",
+    "baseProperties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/215"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/217"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    },
+    "elements": {
+      "taginheritance": {
+        "$ref": "#/219"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TagInheritanceSetting",
+    "properties": {
+      "properties": {
+        "type": {
+          "$ref": "#/220"
+        },
+        "flags": 0,
+        "description": "The properties of the tag inheritance setting."
+      },
+      "kind": {
+        "type": {
+          "$ref": "#/221"
+        },
+        "flags": 1,
+        "description": "Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TagInheritanceProperties",
+    "properties": {
+      "preferContainerTags": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 1,
+        "description": "This property defines the behavior when an inherited tag being applied matches a lower scope tag (Eg. Subscription tag matches the resource tag). If set to true - when tags match, the highest scope tags will be applied. Billing profile is the highest scope,  followed by invoice sections, subscriptions and resource groups (allows overriding of lower scope tag values). If set to false - when tags match, the lowest scope tags will be applied. So, if a resource has the same tag as a subscription tag, the resource tag will be applied (does not allow overriding of lower scope tag values)."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "taginheritance"
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/settings@2025-03-01",
+    "body": {
+      "$ref": "#/218"
+    },
+    "readableScopes": 31,
+    "writableScopes": 31
   },
   {
     "$type": "StringLiteralType",
@@ -2276,21 +2681,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/223"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/224"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/226"
         },
         "flags": 0,
         "description": "The properties of the view."
@@ -2301,6 +2706,13 @@
         },
         "flags": 0,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2352,42 +2764,42 @@
       },
       "query": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "Query body configuration. Required."
       },
       "chart": {
         "type": {
-          "$ref": "#/236"
+          "$ref": "#/269"
         },
         "flags": 0,
         "description": "Chart type of the main view in Cost Analysis. Required."
       },
       "accumulated": {
         "type": {
-          "$ref": "#/239"
+          "$ref": "#/272"
         },
         "flags": 0,
         "description": "Show costs accumulated over time."
       },
       "metric": {
         "type": {
-          "$ref": "#/243"
+          "$ref": "#/276"
         },
         "flags": 0,
         "description": "Metric to use when displaying costs."
       },
       "kpis": {
         "type": {
-          "$ref": "#/248"
+          "$ref": "#/281"
         },
         "flags": 0,
         "description": "List of KPIs to show in Cost Analysis UI."
       },
       "pivots": {
         "type": {
-          "$ref": "#/253"
+          "$ref": "#/286"
         },
         "flags": 0,
         "description": "Configuration of 3 sub-views in the Cost Analysis UI."
@@ -2400,35 +2812,35 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/229"
         },
         "flags": 1,
         "description": "The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast represents both usage and forecasted data. Actual usage and forecasted data can be differentiated based on dates."
       },
       "timeframe": {
         "type": {
-          "$ref": "#/201"
+          "$ref": "#/234"
         },
         "flags": 1,
         "description": "The time frame for pulling data for the report. If custom, then a specific time period must be provided."
       },
       "timePeriod": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/235"
         },
         "flags": 0,
         "description": "Has time period for pulling data for the report."
       },
       "dataSet": {
         "type": {
-          "$ref": "#/203"
+          "$ref": "#/236"
         },
         "flags": 0,
         "description": "Has definition for data in this report config."
       },
       "includeMonetaryCommitment": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "If true, report includes monetary commitment."
@@ -2443,7 +2855,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/195"
+        "$ref": "#/228"
       },
       {
         "$ref": "#/2"
@@ -2470,16 +2882,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/197"
+        "$ref": "#/230"
       },
       {
-        "$ref": "#/198"
+        "$ref": "#/231"
       },
       {
-        "$ref": "#/199"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/200"
+        "$ref": "#/233"
       },
       {
         "$ref": "#/2"
@@ -2512,42 +2924,42 @@
     "properties": {
       "granularity": {
         "type": {
-          "$ref": "#/206"
+          "$ref": "#/239"
         },
         "flags": 0,
         "description": "The granularity of rows in the report."
       },
       "configuration": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/240"
         },
         "flags": 0,
         "description": "Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided."
       },
       "aggregation": {
         "type": {
-          "$ref": "#/212"
+          "$ref": "#/245"
         },
         "flags": 0,
         "description": "Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have up to 2 aggregation clauses."
       },
       "grouping": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/250"
         },
         "flags": 0,
         "description": "Array of group by expression to use in the report. Report can have up to 2 group by clauses."
       },
       "sorting": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/255"
         },
         "flags": 0,
         "description": "Array of order by expression to use in the report."
       },
       "filter": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/256"
         },
         "flags": 0,
         "description": "Has filter expression to use in the report."
@@ -2566,10 +2978,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/204"
+        "$ref": "#/237"
       },
       {
-        "$ref": "#/205"
+        "$ref": "#/238"
       },
       {
         "$ref": "#/2"
@@ -2582,7 +2994,7 @@
     "properties": {
       "columns": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/241"
         },
         "flags": 0,
         "description": "Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report includes all columns."
@@ -2608,7 +3020,7 @@
       },
       "function": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/244"
         },
         "flags": 1,
         "description": "The name of the aggregation function to use."
@@ -2623,7 +3035,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/210"
+        "$ref": "#/243"
       },
       {
         "$ref": "#/2"
@@ -2635,7 +3047,7 @@
     "name": "ReportConfigDatasetAggregation",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/209"
+      "$ref": "#/242"
     }
   },
   {
@@ -2644,7 +3056,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/216"
+          "$ref": "#/249"
         },
         "flags": 1,
         "description": "Has type of the column to group."
@@ -2670,10 +3082,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/214"
+        "$ref": "#/247"
       },
       {
-        "$ref": "#/215"
+        "$ref": "#/248"
       },
       {
         "$ref": "#/2"
@@ -2683,7 +3095,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/213"
+      "$ref": "#/246"
     },
     "maxLength": 2
   },
@@ -2693,7 +3105,7 @@
     "properties": {
       "direction": {
         "type": {
-          "$ref": "#/221"
+          "$ref": "#/254"
         },
         "flags": 0,
         "description": "Direction of sort."
@@ -2719,10 +3131,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/219"
+        "$ref": "#/252"
       },
       {
-        "$ref": "#/220"
+        "$ref": "#/253"
       },
       {
         "$ref": "#/2"
@@ -2732,7 +3144,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/218"
+      "$ref": "#/251"
     }
   },
   {
@@ -2741,28 +3153,28 @@
     "properties": {
       "and": {
         "type": {
-          "$ref": "#/224"
+          "$ref": "#/257"
         },
         "flags": 0,
         "description": "The logical \"AND\" expression. Must have at least 2 items."
       },
       "or": {
         "type": {
-          "$ref": "#/225"
+          "$ref": "#/258"
         },
         "flags": 0,
         "description": "The logical \"OR\" expression. Must have at least 2 items."
       },
       "dimensions": {
         "type": {
-          "$ref": "#/226"
+          "$ref": "#/259"
         },
         "flags": 0,
         "description": "Has comparison expression for a dimension"
       },
       "tags": {
         "type": {
-          "$ref": "#/226"
+          "$ref": "#/259"
         },
         "flags": 0,
         "description": "Has comparison expression for a tag"
@@ -2772,14 +3184,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/223"
+      "$ref": "#/256"
     },
     "minLength": 2
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/223"
+      "$ref": "#/256"
     },
     "minLength": 2
   },
@@ -2796,14 +3208,14 @@
       },
       "operator": {
         "type": {
-          "$ref": "#/229"
+          "$ref": "#/262"
         },
         "flags": 1,
         "description": "The operator to use for comparison."
       },
       "values": {
         "type": {
-          "$ref": "#/230"
+          "$ref": "#/263"
         },
         "flags": 1,
         "description": "Array of values to use for comparison"
@@ -2822,10 +3234,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/227"
+        "$ref": "#/260"
       },
       {
-        "$ref": "#/228"
+        "$ref": "#/261"
       },
       {
         "$ref": "#/2"
@@ -2863,19 +3275,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/231"
+        "$ref": "#/264"
       },
       {
-        "$ref": "#/232"
+        "$ref": "#/265"
       },
       {
-        "$ref": "#/233"
+        "$ref": "#/266"
       },
       {
-        "$ref": "#/234"
+        "$ref": "#/267"
       },
       {
-        "$ref": "#/235"
+        "$ref": "#/268"
       },
       {
         "$ref": "#/2"
@@ -2894,10 +3306,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/237"
+        "$ref": "#/270"
       },
       {
-        "$ref": "#/238"
+        "$ref": "#/271"
       },
       {
         "$ref": "#/2"
@@ -2920,13 +3332,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/240"
+        "$ref": "#/273"
       },
       {
-        "$ref": "#/241"
+        "$ref": "#/274"
       },
       {
-        "$ref": "#/242"
+        "$ref": "#/275"
       },
       {
         "$ref": "#/2"
@@ -2939,7 +3351,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/247"
+          "$ref": "#/280"
         },
         "flags": 0,
         "description": "KPI type (Forecast, Budget)."
@@ -2953,7 +3365,7 @@
       },
       "enabled": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "show the KPI in the UI?"
@@ -2972,10 +3384,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/245"
+        "$ref": "#/278"
       },
       {
-        "$ref": "#/246"
+        "$ref": "#/279"
       },
       {
         "$ref": "#/2"
@@ -2985,7 +3397,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/244"
+      "$ref": "#/277"
     }
   },
   {
@@ -2994,7 +3406,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/252"
+          "$ref": "#/285"
         },
         "flags": 0,
         "description": "Data type to show in view."
@@ -3020,430 +3432,6 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/250"
-      },
-      {
-        "$ref": "#/251"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/249"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.CostManagement/views@2025-03-01",
-    "scopeType": 0,
-    "body": {
-      "$ref": "#/192"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.CostManagement/scheduledActions"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-03-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.CostManagement/scheduledActions",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/255"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/256"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/258"
-        },
-        "flags": 0,
-        "description": "The properties of the scheduled action."
-      },
-      "eTag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not required."
-      },
-      "kind": {
-        "type": {
-          "$ref": "#/293"
-        },
-        "flags": 0,
-        "description": "Kind of the scheduled action."
-      },
-      "systemData": {
-        "type": {
-          "$ref": "#/294"
-        },
-        "flags": 2,
-        "description": "Kind of the scheduled action."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ScheduledActionProperties",
-    "properties": {
-      "displayName": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Scheduled action name."
-      },
-      "fileDestination": {
-        "type": {
-          "$ref": "#/259"
-        },
-        "flags": 0,
-        "description": "Destination format of the view data. This is optional."
-      },
-      "notification": {
-        "type": {
-          "$ref": "#/263"
-        },
-        "flags": 1,
-        "description": "Notification properties based on scheduled action kind."
-      },
-      "notificationEmail": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Email address of the point of contact that should get the unsubscribe requests and notification emails."
-      },
-      "schedule": {
-        "type": {
-          "$ref": "#/266"
-        },
-        "flags": 1,
-        "description": "Schedule of the scheduled action."
-      },
-      "scope": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "For private scheduled action(Create or Update), scope will be empty.<br /> For shared scheduled action(Create or Update By Scope), Cost Management scope can be 'subscriptions/{subscriptionId}' for subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for InvoiceSection scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for ExternalBillingAccount scope, and '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope."
-      },
-      "status": {
-        "type": {
-          "$ref": "#/290"
-        },
-        "flags": 1,
-        "description": "Status of the scheduled action."
-      },
-      "viewId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Cost analysis viewId used for scheduled action. For example, '/providers/Microsoft.CostManagement/views/swaggerExample'"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "FileDestination",
-    "properties": {
-      "fileFormats": {
-        "type": {
-          "$ref": "#/262"
-        },
-        "flags": 0,
-        "description": "Destination of the view data. Currently only CSV format is supported."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Csv"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/260"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/261"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "NotificationProperties",
-    "properties": {
-      "to": {
-        "type": {
-          "$ref": "#/265"
-        },
-        "flags": 1,
-        "description": "Array of email addresses."
-      },
-      "language": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Locale of the email."
-      },
-      "message": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Optional message to be added in the email. Length is limited to 250 characters."
-      },
-      "regionalFormat": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Regional format used for formatting date/time and currency values in the email."
-      },
-      "subject": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "Subject of the email. Length is limited to 70 characters."
-      }
-    }
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$"
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/264"
-    },
-    "minLength": 1,
-    "maxLength": 20
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ScheduleProperties",
-    "properties": {
-      "frequency": {
-        "type": {
-          "$ref": "#/270"
-        },
-        "flags": 1,
-        "description": "Frequency of the schedule."
-      },
-      "hourOfDay": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 0,
-        "description": "UTC time at which cost analysis data will be emailed."
-      },
-      "daysOfWeek": {
-        "type": {
-          "$ref": "#/279"
-        },
-        "flags": 0,
-        "description": "Day names in english on which cost analysis data will be emailed. This property is applicable when frequency is Weekly or Monthly."
-      },
-      "weeksOfMonth": {
-        "type": {
-          "$ref": "#/286"
-        },
-        "flags": 0,
-        "description": "Weeks in which cost analysis data will be emailed. This property is applicable when frequency is Monthly and used in combination with daysOfWeek."
-      },
-      "dayOfMonth": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 0,
-        "description": "UTC day on which cost analysis data will be emailed. Must be between 1 and 31. This property is applicable when frequency is Monthly and overrides weeksOfMonth or daysOfWeek."
-      },
-      "startDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The start date and time of the scheduled action (UTC)."
-      },
-      "endDate": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The end date and time of the scheduled action (UTC)."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Daily"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Weekly"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Monthly"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/267"
-      },
-      {
-        "$ref": "#/268"
-      },
-      {
-        "$ref": "#/269"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Monday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Tuesday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Wednesday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Thursday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Friday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Saturday"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Sunday"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/271"
-      },
-      {
-        "$ref": "#/272"
-      },
-      {
-        "$ref": "#/273"
-      },
-      {
-        "$ref": "#/274"
-      },
-      {
-        "$ref": "#/275"
-      },
-      {
-        "$ref": "#/276"
-      },
-      {
-        "$ref": "#/277"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/278"
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "First"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Second"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Third"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Fourth"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Last"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/280"
-      },
-      {
-        "$ref": "#/281"
-      },
-      {
-        "$ref": "#/282"
-      },
-      {
         "$ref": "#/283"
       },
       {
@@ -3457,217 +3445,34 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/285"
+      "$ref": "#/282"
     }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Expired"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/287"
-      },
-      {
-        "$ref": "#/288"
-      },
-      {
-        "$ref": "#/289"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Email"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "InsightAlert"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/291"
-      },
-      {
-        "$ref": "#/292"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "SystemData",
-    "properties": {
-      "createdBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that created the resource."
-      },
-      "createdByType": {
-        "type": {
-          "$ref": "#/299"
-        },
-        "flags": 0,
-        "description": "The type of identity that created the resource."
-      },
-      "createdAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource creation (UTC)."
-      },
-      "lastModifiedBy": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The identity that last modified the resource."
-      },
-      "lastModifiedByType": {
-        "type": {
-          "$ref": "#/304"
-        },
-        "flags": 0,
-        "description": "The type of identity that last modified the resource."
-      },
-      "lastModifiedAt": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/295"
-      },
-      {
-        "$ref": "#/296"
-      },
-      {
-        "$ref": "#/297"
-      },
-      {
-        "$ref": "#/298"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "User"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Application"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "ManagedIdentity"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Key"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/300"
-      },
-      {
-        "$ref": "#/301"
-      },
-      {
-        "$ref": "#/302"
-      },
-      {
-        "$ref": "#/303"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.CostManagement/scheduledActions@2025-03-01",
-    "scopeType": 0,
+    "name": "Microsoft.CostManagement/views@2025-03-01",
     "body": {
-      "$ref": "#/257"
+      "$ref": "#/225"
     },
-    "flags": 0
+    "readableScopes": 31,
+    "writableScopes": 31
+  },
+  {
+    "$type": "StringType",
+    "pattern": "[A-Za-z0-9\\-_]+"
   },
   {
     "$type": "StringLiteralType",
-    "value": "taginheritance"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/306"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.CostManagement/settings"
+    "value": "Microsoft.CostManagement/costAllocationRules"
   },
   {
     "$type": "StringLiteralType",
     "value": "2025-03-01"
   },
   {
-    "$type": "DiscriminatedObjectType",
-    "name": "Microsoft.CostManagement/settings",
-    "discriminator": "kind",
-    "baseProperties": {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/costAllocationRules",
+    "properties": {
       "id": {
         "type": {
           "$ref": "#/2"
@@ -3677,77 +3482,303 @@
       },
       "name": {
         "type": {
-          "$ref": "#/307"
+          "$ref": "#/288"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/308"
+          "$ref": "#/289"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/309"
+          "$ref": "#/290"
         },
         "flags": 10,
         "description": "The resource api version"
-      }
-    },
-    "elements": {
-      "taginheritance": {
-        "$ref": "#/311"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/292"
+        },
+        "flags": 0,
+        "description": "Cost allocation rule properties"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "TagInheritanceSetting",
+    "name": "CostAllocationRuleProperties",
     "properties": {
-      "properties": {
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Description of a cost allocation rule."
+      },
+      "details": {
+        "type": {
+          "$ref": "#/293"
+        },
+        "flags": 1,
+        "description": "Resource information for the cost allocation rule"
+      },
+      "status": {
         "type": {
           "$ref": "#/312"
         },
-        "flags": 0,
-        "description": "The properties of the tag inheritance setting."
-      },
-      "kind": {
-        "type": {
-          "$ref": "#/313"
-        },
         "flags": 1,
-        "description": "Specifies the kind of settings."
+        "description": "Status of the rule"
+      },
+      "createdDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time at which the rule was created. Rules that change cost for the same resource are applied in order of creation."
+      },
+      "updatedDate": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Time at which the rule was last updated."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "TagInheritanceProperties",
+    "name": "CostAllocationRuleDetails",
     "properties": {
-      "preferContainerTags": {
+      "sourceResources": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/299"
+        },
+        "flags": 0,
+        "description": "Source resources for cost allocation. At this time, this list can contain no more than one element."
+      },
+      "targetResources": {
+        "type": {
+          "$ref": "#/308"
+        },
+        "flags": 0,
+        "description": "Target resources for cost allocation. At this time, this list can contain no more than one element."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SourceCostAllocationResource",
+    "properties": {
+      "values": {
+        "type": {
+          "$ref": "#/295"
         },
         "flags": 1,
-        "description": "This property defines the behavior when an inherited tag being applied matches a lower scope tag (Eg. Subscription tag matches the resource tag). If set to true - when tags match, the highest scope tags will be applied. Billing profile is the highest scope,  followed by invoice sections, subscriptions and resource groups (allows overriding of lower scope tag values). If set to false - when tags match, the lowest scope tags will be applied. So, if a resource has the same tag as a subscription tag, the resource tag will be applied (does not allow overriding of lower scope tag values)."
+        "description": "Source Resources for cost allocation. This list cannot contain more than 25 values."
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/298"
+        },
+        "flags": 1,
+        "description": "Type of resources contained in this cost allocation rule"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag, this must be a valid Azure tag"
       }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
     }
   },
   {
     "$type": "StringLiteralType",
-    "value": "taginheritance"
+    "value": "Dimension"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tag"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/296"
+      },
+      {
+        "$ref": "#/297"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/294"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TargetCostAllocationResource",
+    "properties": {
+      "values": {
+        "type": {
+          "$ref": "#/302"
+        },
+        "flags": 1,
+        "description": "Target resources for cost allocation. This list cannot contain more than 25 values."
+      },
+      "policyType": {
+        "type": {
+          "$ref": "#/304"
+        },
+        "flags": 1,
+        "description": "Method of cost allocation for the rule"
+      },
+      "resourceType": {
+        "type": {
+          "$ref": "#/307"
+        },
+        "flags": 1,
+        "description": "Type of resources contained in this cost allocation rule"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "If resource type is dimension, this must be either ResourceGroupName or SubscriptionId. If resource type is tag, this must be a valid Azure tag"
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "CostAllocationProportion",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "Target resource for cost allocation"
+      },
+      "percentage": {
+        "type": {
+          "$ref": "#/9"
+        },
+        "flags": 1,
+        "description": "Percentage of source cost to allocate to this resource. This value can be specified to two decimal places and the total percentage of all resources in this rule must sum to 100.00."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/301"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "FixedProportion"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/303"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Dimension"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Tag"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/305"
+      },
+      {
+        "$ref": "#/306"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/300"
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NotActive"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Active"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Processing"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/309"
+      },
+      {
+        "$ref": "#/310"
+      },
+      {
+        "$ref": "#/311"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.CostManagement/settings@2025-03-01",
-    "scopeType": 0,
+    "name": "Microsoft.CostManagement/costAllocationRules@2025-03-01",
     "body": {
-      "$ref": "#/310"
+      "$ref": "#/291"
     },
-    "flags": 0
+    "readableScopes": 16,
+    "writableScopes": 16
   },
   {
     "$type": "StringLiteralType",
@@ -3777,21 +3808,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/315"
+          "$ref": "#/314"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/316"
+          "$ref": "#/315"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/318"
+          "$ref": "#/317"
         },
         "flags": 2,
         "description": "Alert properties."
@@ -3802,6 +3833,13 @@
         },
         "flags": 2,
         "description": "eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -3811,7 +3849,7 @@
     "properties": {
       "definition": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/318"
         },
         "flags": 0,
         "description": "defines the type of alert"
@@ -3825,14 +3863,14 @@
       },
       "source": {
         "type": {
-          "$ref": "#/350"
+          "$ref": "#/349"
         },
         "flags": 0,
         "description": "Source of alert"
       },
       "details": {
         "type": {
-          "$ref": "#/351"
+          "$ref": "#/350"
         },
         "flags": 0,
         "description": "Alert details"
@@ -3846,7 +3884,7 @@
       },
       "status": {
         "type": {
-          "$ref": "#/379"
+          "$ref": "#/378"
         },
         "flags": 0,
         "description": "alert status"
@@ -3894,21 +3932,21 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/327"
+          "$ref": "#/326"
         },
         "flags": 0,
         "description": "type of alert"
       },
       "category": {
         "type": {
-          "$ref": "#/332"
+          "$ref": "#/331"
         },
         "flags": 0,
         "description": "Alert category"
       },
       "criteria": {
         "type": {
-          "$ref": "#/347"
+          "$ref": "#/346"
         },
         "flags": 0,
         "description": "Criteria that triggered alert"
@@ -3947,6 +3985,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/319"
+      },
+      {
         "$ref": "#/320"
       },
       {
@@ -3963,9 +4004,6 @@
       },
       {
         "$ref": "#/325"
-      },
-      {
-        "$ref": "#/326"
       },
       {
         "$ref": "#/2"
@@ -3992,6 +4030,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/327"
+      },
+      {
         "$ref": "#/328"
       },
       {
@@ -3999,9 +4040,6 @@
       },
       {
         "$ref": "#/330"
-      },
-      {
-        "$ref": "#/331"
       },
       {
         "$ref": "#/2"
@@ -4068,6 +4106,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/332"
+      },
+      {
         "$ref": "#/333"
       },
       {
@@ -4107,9 +4148,6 @@
         "$ref": "#/345"
       },
       {
-        "$ref": "#/346"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -4126,10 +4164,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/348"
+        "$ref": "#/347"
       },
       {
-        "$ref": "#/349"
+        "$ref": "#/348"
       },
       {
         "$ref": "#/2"
@@ -4142,7 +4180,7 @@
     "properties": {
       "timeGrainType": {
         "type": {
-          "$ref": "#/359"
+          "$ref": "#/358"
         },
         "flags": 0,
         "description": "Type of timegrain cadence"
@@ -4163,49 +4201,49 @@
       },
       "resourceGroupFilter": {
         "type": {
-          "$ref": "#/361"
+          "$ref": "#/360"
         },
         "flags": 0,
         "description": "array of resourceGroups to filter by"
       },
       "resourceFilter": {
         "type": {
-          "$ref": "#/362"
+          "$ref": "#/361"
         },
         "flags": 0,
         "description": "array of resources to filter by"
       },
       "meterFilter": {
         "type": {
-          "$ref": "#/363"
+          "$ref": "#/362"
         },
         "flags": 0,
         "description": "array of meters to filter by"
       },
       "tagFilter": {
         "type": {
-          "$ref": "#/360"
+          "$ref": "#/359"
         },
         "flags": 0,
         "description": "tags to filter by"
       },
       "threshold": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "notification threshold percentage as a decimal which activated this alert"
       },
       "operator": {
         "type": {
-          "$ref": "#/370"
+          "$ref": "#/369"
         },
         "flags": 0,
         "description": "operator used to compare currentSpend with amount"
       },
       "amount": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "budget threshold amount"
@@ -4219,28 +4257,28 @@
       },
       "currentSpend": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "current spend"
       },
       "contactEmails": {
         "type": {
-          "$ref": "#/371"
+          "$ref": "#/370"
         },
         "flags": 0,
         "description": "list of emails to contact"
       },
       "contactGroups": {
         "type": {
-          "$ref": "#/372"
+          "$ref": "#/371"
         },
         "flags": 0,
         "description": "list of action groups to broadcast to"
       },
       "contactRoles": {
         "type": {
-          "$ref": "#/373"
+          "$ref": "#/372"
         },
         "flags": 0,
         "description": "list of contact roles"
@@ -4289,7 +4327,7 @@
       },
       "invoicingThreshold": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "invoicing threshold"
@@ -4328,6 +4366,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/351"
+      },
+      {
         "$ref": "#/352"
       },
       {
@@ -4346,9 +4387,6 @@
         "$ref": "#/357"
       },
       {
-        "$ref": "#/358"
-      },
-      {
         "$ref": "#/2"
       }
     ]
@@ -4359,19 +4397,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/360"
+      "$ref": "#/359"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/360"
+      "$ref": "#/359"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/360"
+      "$ref": "#/359"
     }
   },
   {
@@ -4402,6 +4440,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/363"
+      },
+      {
         "$ref": "#/364"
       },
       {
@@ -4415,9 +4456,6 @@
       },
       {
         "$ref": "#/368"
-      },
-      {
-        "$ref": "#/369"
       },
       {
         "$ref": "#/2"
@@ -4466,6 +4504,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/373"
+      },
+      {
         "$ref": "#/374"
       },
       {
@@ -4478,7 +4519,259 @@
         "$ref": "#/377"
       },
       {
-        "$ref": "#/378"
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/alerts@2025-03-01",
+    "body": {
+      "$ref": "#/316"
+    },
+    "readableScopes": 31,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/operationResults"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/operationResults",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/380"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/381"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 2,
+        "description": "The properties of the resource generated."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "DownloadURL",
+    "properties": {
+      "expiryTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z."
+      },
+      "validTill": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z."
+      },
+      "downloadUrl": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The URL to download the generated report."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.CostManagement/operationResults@2025-03-01",
+    "body": {
+      "$ref": "#/382"
+    },
+    "readableScopes": 31,
+    "writableScopes": 0
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.CostManagement/operationStatus"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-03-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.CostManagement/operationStatus",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/385"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/386"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/383"
+        },
+        "flags": 2,
+        "description": "The properties of the usage file generated."
+      },
+      "status": {
+        "type": {
+          "$ref": "#/388"
+        },
+        "flags": 2,
+        "description": "The status of the long running operation."
+      },
+      "startTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The startTime of the operation."
+      },
+      "endTime": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The endTime of the operation."
+      },
+      "error": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 2,
+        "description": "The details of the error."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/69"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Status",
+    "properties": {
+      "status": {
+        "type": {
+          "$ref": "#/396"
+        },
+        "flags": 0,
+        "description": "The status of the long running operation."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InProgress"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Queued"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "NoDataFound"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReadyToDownload"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TimedOut"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/389"
+      },
+      {
+        "$ref": "#/390"
+      },
+      {
+        "$ref": "#/391"
+      },
+      {
+        "$ref": "#/392"
+      },
+      {
+        "$ref": "#/393"
+      },
+      {
+        "$ref": "#/394"
+      },
+      {
+        "$ref": "#/395"
       },
       {
         "$ref": "#/2"
@@ -4487,12 +4780,18 @@
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.CostManagement/alerts@2025-03-01",
-    "scopeType": 0,
+    "name": "Microsoft.CostManagement/operationStatus@2025-03-01",
     "body": {
-      "$ref": "#/317"
+      "$ref": "#/387"
     },
-    "flags": 1
+    "readableScopes": 31,
+    "writableScopes": 0
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "execute",
+    "resourceType": "Microsoft.CostManagement/scheduledActions",
+    "apiVersion": "2025-03-01"
   },
   {
     "$type": "ObjectType",
@@ -4500,7 +4799,7 @@
     "properties": {
       "timePeriod": {
         "type": {
-          "$ref": "#/141"
+          "$ref": "#/160"
         },
         "flags": 0,
         "description": "Has time period for pulling data for the export."
@@ -4513,7 +4812,7 @@
     "resourceType": "Microsoft.CostManagement/exports",
     "apiVersion": "2025-03-01",
     "input": {
-      "$ref": "#/381"
+      "$ref": "#/399"
     }
   },
   {
@@ -4522,42 +4821,42 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/387"
+          "$ref": "#/405"
         },
         "flags": 1,
         "description": "The type of the forecast."
       },
       "timeframe": {
         "type": {
-          "$ref": "#/389"
+          "$ref": "#/407"
         },
         "flags": 1,
         "description": "The time frame for pulling data for the forecast. If custom, then a specific time period must be provided."
       },
       "timePeriod": {
         "type": {
-          "$ref": "#/390"
+          "$ref": "#/408"
         },
         "flags": 0,
         "description": "Has time period for pulling data for the forecast."
       },
       "dataset": {
         "type": {
-          "$ref": "#/391"
+          "$ref": "#/409"
         },
         "flags": 1,
         "description": "Has definition for data in this forecast."
       },
       "includeActualCost": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "A boolean determining if actualCost will be included."
       },
       "includeFreshPartialCost": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "A boolean determining if FreshPartialCost will be included."
@@ -4580,13 +4879,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/384"
+        "$ref": "#/402"
       },
       {
-        "$ref": "#/385"
+        "$ref": "#/403"
       },
       {
-        "$ref": "#/386"
+        "$ref": "#/404"
       },
       {
         "$ref": "#/2"
@@ -4601,7 +4900,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/388"
+        "$ref": "#/406"
       },
       {
         "$ref": "#/2"
@@ -4634,28 +4933,28 @@
     "properties": {
       "granularity": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/412"
         },
         "flags": 0,
         "description": "The granularity of rows in the forecast."
       },
       "configuration": {
         "type": {
-          "$ref": "#/395"
+          "$ref": "#/413"
         },
         "flags": 0,
         "description": "Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided."
       },
       "aggregation": {
         "type": {
-          "$ref": "#/405"
+          "$ref": "#/423"
         },
         "flags": 1,
         "description": "Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias for the aggregated column. forecast can have up to 2 aggregation clauses."
       },
       "filter": {
         "type": {
-          "$ref": "#/406"
+          "$ref": "#/424"
         },
         "flags": 0,
         "description": "Has filter expression to use in the forecast."
@@ -4674,10 +4973,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/392"
+        "$ref": "#/410"
       },
       {
-        "$ref": "#/393"
+        "$ref": "#/411"
       },
       {
         "$ref": "#/2"
@@ -4690,7 +4989,7 @@
     "properties": {
       "columns": {
         "type": {
-          "$ref": "#/396"
+          "$ref": "#/414"
         },
         "flags": 0,
         "description": "Array of column names to be included in the forecast. Any valid forecast column name is allowed. If not provided, then forecast includes all columns."
@@ -4709,14 +5008,14 @@
     "properties": {
       "name": {
         "type": {
-          "$ref": "#/402"
+          "$ref": "#/420"
         },
         "flags": 1,
         "description": "The name of the column to aggregate."
       },
       "function": {
         "type": {
-          "$ref": "#/404"
+          "$ref": "#/422"
         },
         "flags": 1,
         "description": "The name of the aggregation function to use."
@@ -4743,16 +5042,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/398"
+        "$ref": "#/416"
       },
       {
-        "$ref": "#/399"
+        "$ref": "#/417"
       },
       {
-        "$ref": "#/400"
+        "$ref": "#/418"
       },
       {
-        "$ref": "#/401"
+        "$ref": "#/419"
       },
       {
         "$ref": "#/2"
@@ -4767,7 +5066,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/403"
+        "$ref": "#/421"
       },
       {
         "$ref": "#/2"
@@ -4779,7 +5078,7 @@
     "name": "ForecastDatasetAggregation",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/397"
+      "$ref": "#/415"
     }
   },
   {
@@ -4788,28 +5087,28 @@
     "properties": {
       "and": {
         "type": {
-          "$ref": "#/407"
+          "$ref": "#/425"
         },
         "flags": 0,
         "description": "The logical \"AND\" expression. Must have at least 2 items."
       },
       "or": {
         "type": {
-          "$ref": "#/408"
+          "$ref": "#/426"
         },
         "flags": 0,
         "description": "The logical \"OR\" expression. Must have at least 2 items."
       },
       "dimensions": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/427"
         },
         "flags": 0,
         "description": "Has comparison expression for a dimension"
       },
       "tags": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/427"
         },
         "flags": 0,
         "description": "Has comparison expression for a tag"
@@ -4819,14 +5118,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/406"
+      "$ref": "#/424"
     },
     "minLength": 2
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/406"
+      "$ref": "#/424"
     },
     "minLength": 2
   },
@@ -4843,14 +5142,14 @@
       },
       "operator": {
         "type": {
-          "$ref": "#/411"
+          "$ref": "#/429"
         },
         "flags": 1,
         "description": "The operator to use for comparison."
       },
       "values": {
         "type": {
-          "$ref": "#/412"
+          "$ref": "#/430"
         },
         "flags": 1,
         "description": "Array of values to use for comparison"
@@ -4865,7 +5164,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/410"
+        "$ref": "#/428"
       },
       {
         "$ref": "#/2"
@@ -4885,7 +5184,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/414"
+          "$ref": "#/432"
         },
         "flags": 0,
         "description": "Forecast properties"
@@ -4934,7 +5233,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/419"
+          "$ref": "#/437"
         },
         "flags": 2,
         "description": "Resource tags."
@@ -4954,14 +5253,14 @@
       },
       "columns": {
         "type": {
-          "$ref": "#/416"
+          "$ref": "#/434"
         },
         "flags": 0,
         "description": "Array of columns"
       },
       "rows": {
         "type": {
-          "$ref": "#/418"
+          "$ref": "#/436"
         },
         "flags": 0,
         "description": "Array of rows"
@@ -4991,19 +5290,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/415"
+      "$ref": "#/433"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/360"
+      "$ref": "#/359"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/417"
+      "$ref": "#/435"
     }
   },
   {
@@ -5020,10 +5319,10 @@
     "resourceType": "Microsoft.CostManagement/externalSubscriptions",
     "apiVersion": "2025-03-01",
     "output": {
-      "$ref": "#/413"
+      "$ref": "#/431"
     },
     "input": {
-      "$ref": "#/383"
+      "$ref": "#/401"
     }
   },
   {
@@ -5032,28 +5331,28 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/430"
+          "$ref": "#/448"
         },
         "flags": 1,
         "description": "The type of the query."
       },
       "timeframe": {
         "type": {
-          "$ref": "#/438"
+          "$ref": "#/456"
         },
         "flags": 1,
         "description": "The time frame for pulling data for the query. If custom, then a specific time period must be provided."
       },
       "timePeriod": {
         "type": {
-          "$ref": "#/439"
+          "$ref": "#/457"
         },
         "flags": 0,
         "description": "Has time period for pulling data for the query."
       },
       "dataset": {
         "type": {
-          "$ref": "#/440"
+          "$ref": "#/458"
         },
         "flags": 1,
         "description": "Has definition for data in this query."
@@ -5096,28 +5395,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/422"
+        "$ref": "#/440"
       },
       {
-        "$ref": "#/423"
+        "$ref": "#/441"
       },
       {
-        "$ref": "#/424"
+        "$ref": "#/442"
       },
       {
-        "$ref": "#/425"
+        "$ref": "#/443"
       },
       {
-        "$ref": "#/426"
+        "$ref": "#/444"
       },
       {
-        "$ref": "#/427"
+        "$ref": "#/445"
       },
       {
-        "$ref": "#/428"
+        "$ref": "#/446"
       },
       {
-        "$ref": "#/429"
+        "$ref": "#/447"
       },
       {
         "$ref": "#/2"
@@ -5156,25 +5455,25 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/431"
+        "$ref": "#/449"
       },
       {
-        "$ref": "#/432"
+        "$ref": "#/450"
       },
       {
-        "$ref": "#/433"
+        "$ref": "#/451"
       },
       {
-        "$ref": "#/434"
+        "$ref": "#/452"
       },
       {
-        "$ref": "#/435"
+        "$ref": "#/453"
       },
       {
-        "$ref": "#/436"
+        "$ref": "#/454"
       },
       {
-        "$ref": "#/437"
+        "$ref": "#/455"
       },
       {
         "$ref": "#/2"
@@ -5207,35 +5506,35 @@
     "properties": {
       "granularity": {
         "type": {
-          "$ref": "#/443"
+          "$ref": "#/461"
         },
         "flags": 0,
         "description": "The granularity of rows in the query."
       },
       "configuration": {
         "type": {
-          "$ref": "#/444"
+          "$ref": "#/462"
         },
         "flags": 0,
         "description": "Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping are provided."
       },
       "aggregation": {
         "type": {
-          "$ref": "#/449"
+          "$ref": "#/467"
         },
         "flags": 0,
         "description": "Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses."
       },
       "grouping": {
         "type": {
-          "$ref": "#/454"
+          "$ref": "#/472"
         },
         "flags": 0,
         "description": "Array of group by expression to use in the query. Query can have up to 2 group by clauses."
       },
       "filter": {
         "type": {
-          "$ref": "#/455"
+          "$ref": "#/473"
         },
         "flags": 0,
         "description": "The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format the filter."
@@ -5254,10 +5553,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/441"
+        "$ref": "#/459"
       },
       {
-        "$ref": "#/442"
+        "$ref": "#/460"
       },
       {
         "$ref": "#/2"
@@ -5270,7 +5569,7 @@
     "properties": {
       "columns": {
         "type": {
-          "$ref": "#/445"
+          "$ref": "#/463"
         },
         "flags": 0,
         "description": "Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query includes all columns."
@@ -5296,7 +5595,7 @@
       },
       "function": {
         "type": {
-          "$ref": "#/448"
+          "$ref": "#/466"
         },
         "flags": 1,
         "description": "The name of the aggregation function to use."
@@ -5311,7 +5610,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/447"
+        "$ref": "#/465"
       },
       {
         "$ref": "#/2"
@@ -5323,7 +5622,7 @@
     "name": "QueryDatasetAggregation",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/446"
+      "$ref": "#/464"
     }
   },
   {
@@ -5332,7 +5631,7 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/453"
+          "$ref": "#/471"
         },
         "flags": 1,
         "description": "Has type of the column to group."
@@ -5358,10 +5657,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/451"
+        "$ref": "#/469"
       },
       {
-        "$ref": "#/452"
+        "$ref": "#/470"
       },
       {
         "$ref": "#/2"
@@ -5371,7 +5670,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/450"
+      "$ref": "#/468"
     },
     "maxLength": 2
   },
@@ -5381,28 +5680,28 @@
     "properties": {
       "and": {
         "type": {
-          "$ref": "#/456"
+          "$ref": "#/474"
         },
         "flags": 0,
         "description": "The logical \"AND\" expression. Must have at least 2 items."
       },
       "or": {
         "type": {
-          "$ref": "#/457"
+          "$ref": "#/475"
         },
         "flags": 0,
         "description": "The logical \"OR\" expression. Must have at least 2 items."
       },
       "dimensions": {
         "type": {
-          "$ref": "#/458"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "Has comparison expression for a dimension"
       },
       "tags": {
         "type": {
-          "$ref": "#/458"
+          "$ref": "#/476"
         },
         "flags": 0,
         "description": "Has comparison expression for a tag"
@@ -5412,14 +5711,14 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/455"
+      "$ref": "#/473"
     },
     "minLength": 2
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/455"
+      "$ref": "#/473"
     },
     "minLength": 2
   },
@@ -5436,14 +5735,14 @@
       },
       "operator": {
         "type": {
-          "$ref": "#/460"
+          "$ref": "#/478"
         },
         "flags": 1,
         "description": "The operator to use for comparison."
       },
       "values": {
         "type": {
-          "$ref": "#/461"
+          "$ref": "#/479"
         },
         "flags": 1,
         "description": "Array of values to use for comparison"
@@ -5458,7 +5757,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/459"
+        "$ref": "#/477"
       },
       {
         "$ref": "#/2"
@@ -5478,7 +5777,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/463"
+          "$ref": "#/481"
         },
         "flags": 0,
         "description": "Query properties"
@@ -5527,7 +5826,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/468"
+          "$ref": "#/486"
         },
         "flags": 2,
         "description": "Resource tags."
@@ -5547,14 +5846,14 @@
       },
       "columns": {
         "type": {
-          "$ref": "#/465"
+          "$ref": "#/483"
         },
         "flags": 0,
         "description": "Array of columns"
       },
       "rows": {
         "type": {
-          "$ref": "#/467"
+          "$ref": "#/485"
         },
         "flags": 0,
         "description": "Array of rows"
@@ -5584,19 +5883,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/464"
+      "$ref": "#/482"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/360"
+      "$ref": "#/359"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/466"
+      "$ref": "#/484"
     }
   },
   {
@@ -5613,10 +5912,10 @@
     "resourceType": "Microsoft.CostManagement/externalSubscriptions",
     "apiVersion": "2025-03-01",
     "output": {
-      "$ref": "#/462"
+      "$ref": "#/480"
     },
     "input": {
-      "$ref": "#/421"
+      "$ref": "#/439"
     }
   },
   {
@@ -5625,10 +5924,10 @@
     "resourceType": "Microsoft.CostManagement/externalBillingAccounts",
     "apiVersion": "2025-03-01",
     "output": {
-      "$ref": "#/413"
+      "$ref": "#/431"
     },
     "input": {
-      "$ref": "#/383"
+      "$ref": "#/401"
     }
   },
   {
@@ -5637,38 +5936,165 @@
     "resourceType": "Microsoft.CostManagement/externalBillingAccounts",
     "apiVersion": "2025-03-01",
     "output": {
-      "$ref": "#/462"
+      "$ref": "#/480"
     },
     "input": {
-      "$ref": "#/421"
+      "$ref": "#/439"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "DownloadURL",
+    "name": "OperationStatus",
     "properties": {
-      "expiryTime": {
+      "status": {
         "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z."
-      },
-      "validTill": {
-        "type": {
-          "$ref": "#/2"
+          "$ref": "#/494"
         },
         "flags": 0,
-        "description": "The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z."
+        "description": "The status of the long running operation."
       },
-      "downloadUrl": {
+      "properties": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/495"
         },
         "flags": 0,
-        "description": "The URL to download the generated report."
+        "description": "The properties of the resource generated."
       }
     }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Running"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Completed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/491"
+      },
+      {
+        "$ref": "#/492"
+      },
+      {
+        "$ref": "#/493"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ReportURL",
+    "properties": {
+      "reportUrl": {
+        "type": {
+          "$ref": "#/507"
+        },
+        "flags": 0,
+        "description": "The CSV file from the reportUrl blob link consists of reservation usage data with the following schema at daily granularity"
+      },
+      "validUntil": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The time at which report URL becomes invalid."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstanceFlexibilityGroup"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstanceFlexibilityRatio"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "InstanceId"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Kind"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReservationId"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReservationOrderId"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ReservedHours"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SkuName"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "TotalReservedQuantity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsageDate"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UsedHours"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/496"
+      },
+      {
+        "$ref": "#/497"
+      },
+      {
+        "$ref": "#/498"
+      },
+      {
+        "$ref": "#/499"
+      },
+      {
+        "$ref": "#/500"
+      },
+      {
+        "$ref": "#/501"
+      },
+      {
+        "$ref": "#/502"
+      },
+      {
+        "$ref": "#/503"
+      },
+      {
+        "$ref": "#/504"
+      },
+      {
+        "$ref": "#/505"
+      },
+      {
+        "$ref": "#/506"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceFunctionType",
@@ -5676,13 +6102,7 @@
     "resourceType": "Microsoft.CostManagement/pricesheets",
     "apiVersion": "2025-03-01",
     "output": {
-      "$ref": "#/472"
+      "$ref": "#/490"
     }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "execute",
-    "resourceType": "Microsoft.CostManagement/scheduledActions",
-    "apiVersion": "2025-03-01"
   }
 ]

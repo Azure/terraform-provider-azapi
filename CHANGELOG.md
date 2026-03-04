@@ -4,6 +4,7 @@ ENHANCEMENTS:
 - `azapi_data_plane_resource` resource: Support `sensitive_body` and `sensitive_body_version` fields, which are used to specify the write-only properties in the request body.
 - `azapi_resource_action` resource: Support updating api-version without recreating the resource.
 - `azapi_resource_action`  Support `ignore_not_found` argument to optionally suppress 404 errors and expose resource existence.
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/5c7a4c209d18ad4dec38724717449e07f616bec6
 
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
