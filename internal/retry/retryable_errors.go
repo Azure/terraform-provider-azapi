@@ -431,13 +431,13 @@ func (t RetryType) ValueType(ctx context.Context) attr.Value {
 var _ basetypes.ObjectValuable = RetryValue{}
 
 type RetryValue struct {
-	ErrorMessageRegex    basetypes.ListValue    `tfsdk:"error_message_regex"`
-	IntervalSeconds      basetypes.Int64Value   `tfsdk:"interval_seconds"`
-	MaxIntervalSeconds   basetypes.Int64Value   `tfsdk:"max_interval_seconds"`
-	Multiplier           basetypes.Float64Value `tfsdk:"multiplier"`
-	RandomizationFactor  basetypes.Float64Value `tfsdk:"randomization_factor"`
-	WaitForDesiredState  basetypes.ListValue    `tfsdk:"wait_for_desired_state"`
-	state                attr.ValueState
+	ErrorMessageRegex   basetypes.ListValue    `tfsdk:"error_message_regex"`
+	IntervalSeconds     basetypes.Int64Value   `tfsdk:"interval_seconds"`
+	MaxIntervalSeconds  basetypes.Int64Value   `tfsdk:"max_interval_seconds"`
+	Multiplier          basetypes.Float64Value `tfsdk:"multiplier"`
+	RandomizationFactor basetypes.Float64Value `tfsdk:"randomization_factor"`
+	WaitForDesiredState basetypes.ListValue    `tfsdk:"wait_for_desired_state"`
+	state               attr.ValueState
 }
 
 func (v RetryValue) ToTerraformValue(ctx context.Context) (tftypes.Value, error) {

@@ -181,6 +181,7 @@ Optional:
 - `max_interval_seconds` (Number) The maximum number of seconds to wait between retries. Default is `180`.
 - `multiplier` (Number, Deprecated) The multiplier to apply to the interval between retries. Default is `1.5`.
 - `randomization_factor` (Number, Deprecated) The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+- `wait_for_desired_state` (List of String) A list of [JMESPath](https://jmespath.org/) expressions to evaluate against the resource body after a create or update operation. All expressions must evaluate to `true` for the operation to be considered successful. If any expression evaluates to `false`, the read-after-write will be retried until all expressions evaluate to `true` or the operation times out.
 
 
 <a id="nestedblock--timeouts"></a>
