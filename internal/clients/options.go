@@ -1,6 +1,9 @@
 package clients
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"log"
 	"math"
 	"net/http"
@@ -10,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/terraform-provider-azapi/internal/retry"
+	jmes "github.com/jmespath/go-jmespath"
 )
 
 var DefaultRetryableStatusCodes = []int{
@@ -118,6 +122,66 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 					}
 				}
 			}
+			return false
+		},
+	}
+}
+
+// NewRetryOptionsForWaitForDesiredState creates a RetryOptions that evaluates JMESPath expressions
+// against the response body after a successful GET request. If any expression does not evaluate to true,
+// the request will be retried.
+func NewRetryOptionsForWaitForDesiredState(expressions []string) *policy.RetryOptions {
+	if len(expressions) == 0 {
+		return nil
+	}
+
+	log.Printf("[DEBUG] Using custom retry configuration for wait for desired state with %d expression(s)", len(expressions))
+	return &policy.RetryOptions{
+		// Set a very high max retries to make sure context deadline is respected.
+		MaxRetries:  math.MaxInt16,
+		StatusCodes: DefaultRetryableStatusCodes,
+		ShouldRetry: func(resp *http.Response, err error) bool {
+			if resp == nil || resp.Body == nil {
+				return false
+			}
+
+			// Only evaluate JMESPath expressions for successful responses
+			if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+				return false
+			}
+
+			bodyBytes, readErr := io.ReadAll(resp.Body)
+			if readErr != nil {
+				log.Printf("[DEBUG] Failed to read response body for desired state check: %s", readErr.Error())
+				// Replace the body so it can be read by the caller
+				resp.Body = io.NopCloser(bytes.NewReader(nil))
+				return false
+			}
+
+			// Always replace the body so it can be read by the caller
+			resp.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+
+			var body interface{}
+			if jsonErr := json.Unmarshal(bodyBytes, &body); jsonErr != nil {
+				log.Printf("[DEBUG] Failed to parse response body as JSON for desired state check: %s", jsonErr.Error())
+				return false
+			}
+
+			for _, expr := range expressions {
+				result, searchErr := jmes.Search(expr, body)
+				if searchErr != nil {
+					log.Printf("[DEBUG] Failed to evaluate JMESPath expression %q: %s", expr, searchErr.Error())
+					return true
+				}
+
+				boolResult, ok := result.(bool)
+				if !ok || !boolResult {
+					log.Printf("[DEBUG] Retrying: JMESPath expression %q did not evaluate to true (got: %v)", expr, result)
+					return true
+				}
+			}
+
+			log.Printf("[DEBUG] All JMESPath expressions evaluated to true, desired state reached")
 			return false
 		},
 	}

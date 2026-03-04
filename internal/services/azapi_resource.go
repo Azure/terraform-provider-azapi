@@ -939,6 +939,7 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		RetryOptions: clients.CombineRetryOptions(
 			clients.NewRetryOptionsForReadAfterCreate(),
 			clients.NewRetryOptions(plan.Retry),
+			clients.NewRetryOptionsForWaitForDesiredState(plan.Retry.GetWaitForDesiredState()),
 		),
 	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
