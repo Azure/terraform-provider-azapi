@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
-	"strings"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -321,6 +321,11 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 		return
 	}
 
+	if err := validateDataPlaneResourceName(config); err != nil {
+		response.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
 	if state == nil || !plan.ResponseExportValues.Equal(state.ResponseExportValues) || !dynamic.SemanticallyEqual(plan.Body, state.Body) {
 		plan.Output = basetypes.NewDynamicUnknown()
 	} else {
@@ -413,6 +418,11 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
+	if err := validateDataPlaneResourceName(config); err != nil {
+		diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+
 	isNewResource := responseState == nil || responseState.Raw.IsNull()
 
 	customizedResource := customization.GetCustomization(plan.Type.ValueString())
@@ -431,17 +441,13 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	}()
 
 	resourceName := strings.TrimSpace(plan.Name.ValueString())
-	if resourceName == "" {
-		if isNewResource && hasCreateResult {
-			// The service will generate the final resource name/ID (e.g. AI Foundry assistants).
-			// Use a placeholder to build an initial DataPlaneResourceId for the create call.
-			resourceName = "__generated__"
-		} else {
-			diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
-			return
-		}
+	if isNewResource && hasCreateResult {
+		resourceName = "__generated__"
 	}
-
+	if resourceName == "" {
+		diagnostics.AddError("Invalid configuration", `The argument "name" must be set for this resource type.`)
+		return
+	}
 	id, err := parse.NewDataPlaneResourceId(resourceName, plan.ParentID.ValueString(), plan.Type.ValueString())
 	if err != nil {
 		diagnostics.AddError("Invalid configuration", err.Error())
@@ -600,6 +606,35 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	} else {
 		diagnostics.Append(ephemeralBodyPrivateMgr.Set(ctx, privateData, nil)...)
 	}
+}
+
+func validateDataPlaneResourceName(config *DataPlaneResourceModel) error {
+	if config == nil || config.Type.IsNull() || config.Type.IsUnknown() {
+		return nil
+	}
+
+	customizedResource := customization.GetCustomization(config.Type.ValueString())
+	hasCreateResult := false
+	if customizedResource != nil {
+		if v, ok := (*customizedResource).(customization.DataPlaneResourceWithCreateResult); ok && v.CreateResultFunc() != nil {
+			hasCreateResult = true
+		}
+	}
+
+	if hasCreateResult {
+		if !config.Name.IsNull() && !config.Name.IsUnknown() && strings.TrimSpace(config.Name.ValueString()) != "" {
+			return fmt.Errorf(`the argument "name" should not be set for resource type %q because the service generates the identifier`, strings.Split(config.Type.ValueString(), "@")[0])
+		}
+		return nil
+	}
+
+	if config.Name.IsUnknown() {
+		return nil
+	}
+	if config.Name.IsNull() || strings.TrimSpace(config.Name.ValueString()) == "" {
+		return fmt.Errorf(`the argument "name" must be set for resource type %q`, strings.Split(config.Type.ValueString(), "@")[0])
+	}
+	return nil
 }
 
 func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
