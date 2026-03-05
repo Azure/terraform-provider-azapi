@@ -240,7 +240,7 @@ func (id ResourceId) ID() string {
 func validateParentIdScope(resourceDef *types.ResourceType, parentId string) error {
 	if resourceDef != nil {
 		scopeTypes := make([]types.ScopeType, 0)
-		for _, scope := range resourceDef.ScopeTypes {
+		for _, scope := range resourceDef.ReadableScopes {
 			if scope != types.Unknown {
 				scopeTypes = append(scopeTypes, scope)
 			}
