@@ -30,12 +30,12 @@ type RequestBodyModel struct {
 // ParentIdPlaceholder generates a placeholder for the parentID based on the resource definition and subscription ID
 func ParentIdPlaceholder(resourceDef *aztypes.ResourceType, subscriptionId string) (string, error) {
 	// since the parentID is faked, there should exist only one scope type
-	if resourceDef == nil || len(resourceDef.ScopeTypes) != 1 {
+	if resourceDef == nil || len(resourceDef.ReadableScopes) != 1 {
 		return "", fmt.Errorf("failed to generate parentID placeholder because the resource definition is invalid")
 	}
 
 	scopeId := ""
-	switch resourceDef.ScopeTypes[0] {
+	switch resourceDef.ReadableScopes[0] {
 	case aztypes.Tenant:
 		scopeId = "/"
 	case aztypes.ManagementGroup:

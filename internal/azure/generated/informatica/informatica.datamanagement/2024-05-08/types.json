@@ -53,9 +53,16 @@
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
-      "tags": {
+      "identity": {
         "type": {
           "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/36"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -69,7 +76,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -420,6 +427,110 @@
   },
   {
     "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/33"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/35"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/29"
+      },
+      {
+        "$ref": "#/30"
+      },
+      {
+        "$ref": "#/31"
+      },
+      {
+        "$ref": "#/32"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/34"
+    }
+  },
+  {
+    "$type": "ObjectType",
     "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
@@ -439,7 +550,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/33"
+          "$ref": "#/42"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -460,7 +571,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/47"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -494,16 +605,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/29"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/30"
+        "$ref": "#/39"
       },
       {
-        "$ref": "#/31"
+        "$ref": "#/40"
       },
       {
-        "$ref": "#/32"
+        "$ref": "#/41"
       },
       {
         "$ref": "#/2"
@@ -530,16 +641,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/34"
+        "$ref": "#/43"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/36"
+        "$ref": "#/45"
       },
       {
-        "$ref": "#/37"
+        "$ref": "#/46"
       },
       {
         "$ref": "#/2"
@@ -549,11 +660,11 @@
   {
     "$type": "ResourceType",
     "name": "Informatica.DataManagement/organizations@2024-05-08",
-    "scopeType": 8,
     "body": {
       "$ref": "#/4"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -583,28 +694,35 @@
       },
       "type": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/49"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/50"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
       },
+      "identity": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
+      },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -617,7 +735,7 @@
     "properties": {
       "provisioningState": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/62"
         },
         "flags": 2,
         "description": "Provisioning State of the resource."
@@ -631,14 +749,14 @@
       },
       "platform": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/64"
         },
         "flags": 0,
         "description": "Platform type of the Serverless Runtime."
       },
       "applicationType": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/67"
         },
         "flags": 0,
         "description": "Application type of the Serverless Runtime environment."
@@ -666,14 +784,14 @@
       },
       "serverlessRuntimeNetworkProfile": {
         "type": {
-          "$ref": "#/59"
+          "$ref": "#/68"
         },
         "flags": 0,
         "description": "Informatica Serverless Network profile properties."
       },
       "advancedCustomProperties": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/71"
         },
         "flags": 0,
         "description": "String KV pairs indicating Advanced custom properties."
@@ -687,21 +805,21 @@
       },
       "serverlessRuntimeConfig": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "Serverless config properties"
       },
       "serverlessRuntimeTags": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/79"
         },
         "flags": 0,
         "description": "Serverless Runtime Tags"
       },
       "serverlessRuntimeUserContextProperties": {
         "type": {
-          "$ref": "#/71"
+          "$ref": "#/80"
         },
         "flags": 0,
         "description": "Serverless runtime user context properties"
@@ -748,31 +866,31 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/44"
+        "$ref": "#/53"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/54"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/55"
       },
       {
-        "$ref": "#/47"
+        "$ref": "#/56"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/57"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/61"
       },
       {
         "$ref": "#/2"
@@ -787,7 +905,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/54"
+        "$ref": "#/63"
       },
       {
         "$ref": "#/2"
@@ -806,10 +924,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/56"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/66"
       },
       {
         "$ref": "#/2"
@@ -822,7 +940,7 @@
     "properties": {
       "networkInterfaceConfiguration": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/69"
         },
         "flags": 1,
         "description": "Network Interface Configuration Profile"
@@ -879,7 +997,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/61"
+      "$ref": "#/70"
     }
   },
   {
@@ -888,14 +1006,14 @@
     "properties": {
       "cdiConfigProps": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/76"
         },
         "flags": 0,
         "description": "The List of Informatica Serverless Runtime CDI Config Properties."
       },
       "cdieConfigProps": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/77"
         },
         "flags": 0,
         "description": "The List of Informatica Serverless Runtime CDIE Config Properties."
@@ -922,7 +1040,7 @@
       },
       "applicationConfigs": {
         "type": {
-          "$ref": "#/66"
+          "$ref": "#/75"
         },
         "flags": 1,
         "description": "ApplicationConfigs of the CDI or CDIE."
@@ -980,19 +1098,19 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/65"
+      "$ref": "#/74"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/64"
+      "$ref": "#/73"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/64"
+      "$ref": "#/73"
     }
   },
   {
@@ -1018,7 +1136,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/69"
+      "$ref": "#/78"
     }
   },
   {
@@ -1037,11 +1155,11 @@
   {
     "$type": "ResourceType",
     "name": "Informatica.DataManagement/organizations/serverlessRuntimes@2024-05-08",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/42"
+      "$ref": "#/51"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "ObjectType",
@@ -1049,7 +1167,7 @@
     "properties": {
       "informaticaRuntimeResources": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/87"
         },
         "flags": 1,
         "description": "List of runtime resources for the fetch all API"
@@ -1104,7 +1222,7 @@
       },
       "type": {
         "type": {
-          "$ref": "#/76"
+          "$ref": "#/85"
         },
         "flags": 1,
         "description": "Environment Type"
@@ -1132,7 +1250,7 @@
       },
       "serverlessConfigProperties": {
         "type": {
-          "$ref": "#/77"
+          "$ref": "#/86"
         },
         "flags": 1,
         "description": "Serverless Config Properties"
@@ -1154,7 +1272,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/75"
+        "$ref": "#/84"
       },
       {
         "$ref": "#/2"
@@ -1237,7 +1355,7 @@
       },
       "tenantId": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/2"
         },
         "flags": 0,
         "description": "Tenant ID"
@@ -1266,15 +1384,9 @@
     }
   },
   {
-    "$type": "StringType",
-    "minLength": 36,
-    "maxLength": 36,
-    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
-  },
-  {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/74"
+      "$ref": "#/83"
     }
   },
   {
@@ -1283,7 +1395,7 @@
     "resourceType": "Informatica.DataManagement/organizations",
     "apiVersion": "2024-05-08",
     "output": {
-      "$ref": "#/73"
+      "$ref": "#/82"
     }
   },
   {
@@ -1292,21 +1404,21 @@
     "properties": {
       "type": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/91"
         },
         "flags": 0,
         "description": "type of the runtime environment."
       },
       "serverlessConfigProperties": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/92"
         },
         "flags": 0,
         "description": "serverless config properties"
       },
       "serverlessRuntimeConfigProperties": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/72"
         },
         "flags": 0,
         "description": "serverless runtime config properties"
@@ -1321,7 +1433,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/82"
+        "$ref": "#/90"
       },
       {
         "$ref": "#/2"
@@ -1334,21 +1446,21 @@
     "properties": {
       "platform": {
         "type": {
-          "$ref": "#/86"
+          "$ref": "#/94"
         },
         "flags": 0,
         "description": "Platform types"
       },
       "applicationTypes": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "List of application types supported by informatica"
       },
       "computeUnits": {
         "type": {
-          "$ref": "#/91"
+          "$ref": "#/99"
         },
         "flags": 0,
         "description": "The list of compute units with possible array of values"
@@ -1362,7 +1474,7 @@
       },
       "regions": {
         "type": {
-          "$ref": "#/93"
+          "$ref": "#/101"
         },
         "flags": 0,
         "description": "List of supported serverless informatica regions"
@@ -1377,7 +1489,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/85"
+        "$ref": "#/93"
       },
       {
         "$ref": "#/2"
@@ -1407,7 +1519,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/87"
+      "$ref": "#/95"
     }
   },
   {
@@ -1423,7 +1535,7 @@
       },
       "value": {
         "type": {
-          "$ref": "#/90"
+          "$ref": "#/98"
         },
         "flags": 0,
         "description": "ComputeUnit value"
@@ -1439,7 +1551,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/89"
+      "$ref": "#/97"
     }
   },
   {
@@ -1465,7 +1577,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/92"
+      "$ref": "#/100"
     }
   },
   {
@@ -1474,7 +1586,7 @@
     "resourceType": "Informatica.DataManagement/organizations",
     "apiVersion": "2024-05-08",
     "output": {
-      "$ref": "#/81"
+      "$ref": "#/89"
     }
   },
   {
@@ -1497,7 +1609,7 @@
       },
       "references": {
         "type": {
-          "$ref": "#/97"
+          "$ref": "#/105"
         },
         "flags": 1,
         "description": "List of dependencies"
@@ -1555,7 +1667,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/96"
+      "$ref": "#/104"
     }
   },
   {
@@ -1564,7 +1676,7 @@
     "resourceType": "Informatica.DataManagement/organizations/serverlessRuntimes",
     "apiVersion": "2024-05-08",
     "output": {
-      "$ref": "#/95"
+      "$ref": "#/103"
     }
   },
   {
@@ -1573,17 +1685,24 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "The resource-specific properties for this resource."
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/27"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
       },
       "id": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+        "description": "Fully qualified resource ID for the resource. E.g. \"/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}\""
       },
       "name": {
         "type": {
@@ -1601,7 +1720,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/28"
+          "$ref": "#/37"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1614,7 +1733,7 @@
     "resourceType": "Informatica.DataManagement/organizations/serverlessRuntimes",
     "apiVersion": "2024-05-08",
     "output": {
-      "$ref": "#/99"
+      "$ref": "#/107"
     }
   },
   {

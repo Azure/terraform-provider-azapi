@@ -1578,21 +1578,19 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Network/FrontDoorWebApplicationFirewallPolicies@2025-10-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/4"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
-    "minLength": 5,
-    "maxLength": 64,
-    "pattern": "^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$"
+    "pattern": "^[a-zA-Z0-9_\\-\\(\\)\\.]*[^\\.]$"
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Network/frontDoors"
+    "value": "Microsoft.Network/NetworkExperimentProfiles"
   },
   {
     "$type": "StringLiteralType",
@@ -1600,7 +1598,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Network/frontDoors",
+    "name": "Microsoft.Network/NetworkExperimentProfiles",
     "properties": {
       "id": {
         "type": {
@@ -1635,6 +1633,191 @@
           "$ref": "#/166"
         },
         "flags": 0,
+        "description": "The properties of a Profile"
+      },
+      "etag": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Gets a unique read-only string that changes whenever the resource is updated."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource location."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ProfileProperties",
+    "properties": {
+      "resourceState": {
+        "type": {
+          "$ref": "#/173"
+        },
+        "flags": 2,
+        "description": "Resource status."
+      },
+      "enabledState": {
+        "type": {
+          "$ref": "#/176"
+        },
+        "flags": 0,
+        "description": "The state of the Experiment"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Creating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabling"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
+        "$ref": "#/171"
+      },
+      {
+        "$ref": "#/172"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Enabled"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Disabled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ResourcewithSettableNameTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/NetworkExperimentProfiles@2025-10-01",
+    "body": {
+      "$ref": "#/165"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 5,
+    "maxLength": 64,
+    "pattern": "^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/frontDoors"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/frontDoors",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/180"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/181"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/183"
+        },
+        "flags": 0,
         "description": "Properties of the Front Door Load Balancer"
       },
       "location": {
@@ -1646,7 +1829,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/402"
+          "$ref": "#/419"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -1659,7 +1842,7 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/175"
+          "$ref": "#/192"
         },
         "flags": 2,
         "description": "Resource status of the Front Door."
@@ -1687,14 +1870,14 @@
       },
       "rulesEngines": {
         "type": {
-          "$ref": "#/264"
+          "$ref": "#/281"
         },
         "flags": 2,
         "description": "Rules Engine Configurations available to routing rules."
       },
       "extendedProperties": {
         "type": {
-          "$ref": "#/265"
+          "$ref": "#/282"
         },
         "flags": 2,
         "description": "Key-Value pair representing additional properties for frontdoor."
@@ -1708,49 +1891,49 @@
       },
       "routingRules": {
         "type": {
-          "$ref": "#/287"
+          "$ref": "#/304"
         },
         "flags": 0,
         "description": "Routing rules associated with this Front Door."
       },
       "loadBalancingSettings": {
         "type": {
-          "$ref": "#/299"
+          "$ref": "#/316"
         },
         "flags": 0,
         "description": "Load balancing settings associated with this Front Door instance."
       },
       "healthProbeSettings": {
         "type": {
-          "$ref": "#/320"
+          "$ref": "#/337"
         },
         "flags": 0,
         "description": "Health probe settings associated with this Front Door instance."
       },
       "backendPools": {
         "type": {
-          "$ref": "#/346"
+          "$ref": "#/363"
         },
         "flags": 0,
         "description": "Backend pools available to routing rules."
       },
       "frontendEndpoints": {
         "type": {
-          "$ref": "#/393"
+          "$ref": "#/410"
         },
         "flags": 0,
         "description": "Frontend endpoints available to routing rules."
       },
       "backendPoolsSettings": {
         "type": {
-          "$ref": "#/394"
+          "$ref": "#/411"
         },
         "flags": 0,
         "description": "Settings for all backendPools"
       },
       "enabledState": {
         "type": {
-          "$ref": "#/401"
+          "$ref": "#/418"
         },
         "flags": 0,
         "description": "Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'"
@@ -1793,28 +1976,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/167"
+        "$ref": "#/184"
       },
       {
-        "$ref": "#/168"
+        "$ref": "#/185"
       },
       {
-        "$ref": "#/169"
+        "$ref": "#/186"
       },
       {
-        "$ref": "#/170"
+        "$ref": "#/187"
       },
       {
-        "$ref": "#/171"
+        "$ref": "#/188"
       },
       {
-        "$ref": "#/172"
+        "$ref": "#/189"
       },
       {
-        "$ref": "#/173"
+        "$ref": "#/190"
       },
       {
-        "$ref": "#/174"
+        "$ref": "#/191"
       },
       {
         "$ref": "#/2"
@@ -1827,10 +2010,17 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/194"
         },
         "flags": 0,
         "description": "Properties of the Rules Engine Configuration."
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Resource ID."
       },
       "name": {
         "type": {
@@ -1845,13 +2035,6 @@
         },
         "flags": 2,
         "description": "Resource type."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Resource ID."
       }
     }
   },
@@ -1861,14 +2044,14 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/186"
+          "$ref": "#/203"
         },
         "flags": 2,
         "description": "Resource status."
       },
       "rules": {
         "type": {
-          "$ref": "#/263"
+          "$ref": "#/280"
         },
         "flags": 0,
         "description": "A list of rules that define a particular Rules Engine Configuration."
@@ -1911,28 +2094,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/178"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/179"
+        "$ref": "#/196"
       },
       {
-        "$ref": "#/180"
+        "$ref": "#/197"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/198"
       },
       {
-        "$ref": "#/182"
+        "$ref": "#/199"
       },
       {
-        "$ref": "#/183"
+        "$ref": "#/200"
       },
       {
-        "$ref": "#/184"
+        "$ref": "#/201"
       },
       {
-        "$ref": "#/185"
+        "$ref": "#/202"
       },
       {
         "$ref": "#/2"
@@ -1959,21 +2142,21 @@
       },
       "action": {
         "type": {
-          "$ref": "#/188"
+          "$ref": "#/205"
         },
         "flags": 1,
         "description": "Actions to perform on the request and response if all of the match conditions are met."
       },
       "matchConditions": {
         "type": {
-          "$ref": "#/259"
+          "$ref": "#/276"
         },
         "flags": 0,
         "description": "A list of match conditions that must meet in order for the actions of this rule to run. Having no match conditions means the actions will always run."
       },
       "matchProcessingBehavior": {
         "type": {
-          "$ref": "#/262"
+          "$ref": "#/279"
         },
         "flags": 0,
         "description": "If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults to Continue."
@@ -1986,21 +2169,21 @@
     "properties": {
       "requestHeaderActions": {
         "type": {
-          "$ref": "#/194"
+          "$ref": "#/211"
         },
         "flags": 0,
         "description": "A list of header actions to apply from the request from AFD to the origin."
       },
       "responseHeaderActions": {
         "type": {
-          "$ref": "#/195"
+          "$ref": "#/212"
         },
         "flags": 0,
         "description": "A list of header actions to apply from the response from AFD to the client."
       },
       "routeConfigurationOverride": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/213"
         },
         "flags": 0,
         "description": "Override the route configuration."
@@ -2013,7 +2196,7 @@
     "properties": {
       "headerActionType": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/210"
         },
         "flags": 1,
         "description": "Which type of manipulation to apply to the header."
@@ -2050,13 +2233,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/190"
+        "$ref": "#/207"
       },
       {
-        "$ref": "#/191"
+        "$ref": "#/208"
       },
       {
-        "$ref": "#/192"
+        "$ref": "#/209"
       },
       {
         "$ref": "#/2"
@@ -2066,13 +2249,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/189"
+      "$ref": "#/206"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/189"
+      "$ref": "#/206"
     }
   },
   {
@@ -2082,10 +2265,10 @@
     "baseProperties": {},
     "elements": {
       "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration": {
-        "$ref": "#/197"
+        "$ref": "#/214"
       },
       "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration": {
-        "$ref": "#/213"
+        "$ref": "#/230"
       }
     }
   },
@@ -2102,28 +2285,28 @@
       },
       "forwardingProtocol": {
         "type": {
-          "$ref": "#/201"
+          "$ref": "#/218"
         },
         "flags": 0,
         "description": "Protocol this rule will use when forwarding traffic to backends."
       },
       "cacheConfiguration": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/219"
         },
         "flags": 0,
         "description": "The caching configuration associated with this rule."
       },
       "backendPool": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "A reference to the BackendPool which this rule routes to."
       },
       "@odata.type": {
         "type": {
-          "$ref": "#/212"
+          "$ref": "#/229"
         },
         "flags": 1
       }
@@ -2145,13 +2328,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/198"
+        "$ref": "#/215"
       },
       {
-        "$ref": "#/199"
+        "$ref": "#/216"
       },
       {
-        "$ref": "#/200"
+        "$ref": "#/217"
       },
       {
         "$ref": "#/2"
@@ -2164,7 +2347,7 @@
     "properties": {
       "queryParameterStripDirective": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/224"
         },
         "flags": 0,
         "description": "Treatment of URL query terms when forming the cache key."
@@ -2178,7 +2361,7 @@
       },
       "dynamicCompression": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/227"
         },
         "flags": 0,
         "description": "Whether to use dynamic compression for cached content"
@@ -2212,16 +2395,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/203"
+        "$ref": "#/220"
       },
       {
-        "$ref": "#/204"
+        "$ref": "#/221"
       },
       {
-        "$ref": "#/205"
+        "$ref": "#/222"
       },
       {
-        "$ref": "#/206"
+        "$ref": "#/223"
       },
       {
         "$ref": "#/2"
@@ -2240,10 +2423,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/208"
+        "$ref": "#/225"
       },
       {
-        "$ref": "#/209"
+        "$ref": "#/226"
       },
       {
         "$ref": "#/2"
@@ -2273,14 +2456,14 @@
     "properties": {
       "redirectType": {
         "type": {
-          "$ref": "#/218"
+          "$ref": "#/235"
         },
         "flags": 0,
         "description": "The redirect type the rule will use when redirecting traffic."
       },
       "redirectProtocol": {
         "type": {
-          "$ref": "#/222"
+          "$ref": "#/239"
         },
         "flags": 0,
         "description": "The protocol of the destination to where the traffic is redirected"
@@ -2315,7 +2498,7 @@
       },
       "@odata.type": {
         "type": {
-          "$ref": "#/223"
+          "$ref": "#/240"
         },
         "flags": 1
       }
@@ -2341,16 +2524,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/214"
+        "$ref": "#/231"
       },
       {
-        "$ref": "#/215"
+        "$ref": "#/232"
       },
       {
-        "$ref": "#/216"
+        "$ref": "#/233"
       },
       {
-        "$ref": "#/217"
+        "$ref": "#/234"
       },
       {
         "$ref": "#/2"
@@ -2373,13 +2556,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/219"
+        "$ref": "#/236"
       },
       {
-        "$ref": "#/220"
+        "$ref": "#/237"
       },
       {
-        "$ref": "#/221"
+        "$ref": "#/238"
       },
       {
         "$ref": "#/2"
@@ -2396,7 +2579,7 @@
     "properties": {
       "rulesEngineMatchVariable": {
         "type": {
-          "$ref": "#/237"
+          "$ref": "#/254"
         },
         "flags": 1,
         "description": "Match Variable"
@@ -2410,7 +2593,7 @@
       },
       "rulesEngineOperator": {
         "type": {
-          "$ref": "#/249"
+          "$ref": "#/266"
         },
         "flags": 1,
         "description": "Describes operator to apply to the match condition."
@@ -2424,14 +2607,14 @@
       },
       "rulesEngineMatchValue": {
         "type": {
-          "$ref": "#/250"
+          "$ref": "#/267"
         },
         "flags": 1,
         "description": "Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match."
       },
       "transforms": {
         "type": {
-          "$ref": "#/258"
+          "$ref": "#/275"
         },
         "flags": 0,
         "description": "List of transforms"
@@ -2490,40 +2673,40 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/225"
+        "$ref": "#/242"
       },
       {
-        "$ref": "#/226"
+        "$ref": "#/243"
       },
       {
-        "$ref": "#/227"
+        "$ref": "#/244"
       },
       {
-        "$ref": "#/228"
+        "$ref": "#/245"
       },
       {
-        "$ref": "#/229"
+        "$ref": "#/246"
       },
       {
-        "$ref": "#/230"
+        "$ref": "#/247"
       },
       {
-        "$ref": "#/231"
+        "$ref": "#/248"
       },
       {
-        "$ref": "#/232"
+        "$ref": "#/249"
       },
       {
-        "$ref": "#/233"
+        "$ref": "#/250"
       },
       {
-        "$ref": "#/234"
+        "$ref": "#/251"
       },
       {
-        "$ref": "#/235"
+        "$ref": "#/252"
       },
       {
-        "$ref": "#/236"
+        "$ref": "#/253"
       },
       {
         "$ref": "#/2"
@@ -2578,37 +2761,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/238"
+        "$ref": "#/255"
       },
       {
-        "$ref": "#/239"
+        "$ref": "#/256"
       },
       {
-        "$ref": "#/240"
+        "$ref": "#/257"
       },
       {
-        "$ref": "#/241"
+        "$ref": "#/258"
       },
       {
-        "$ref": "#/242"
+        "$ref": "#/259"
       },
       {
-        "$ref": "#/243"
+        "$ref": "#/260"
       },
       {
-        "$ref": "#/244"
+        "$ref": "#/261"
       },
       {
-        "$ref": "#/245"
+        "$ref": "#/262"
       },
       {
-        "$ref": "#/246"
+        "$ref": "#/263"
       },
       {
-        "$ref": "#/247"
+        "$ref": "#/264"
       },
       {
-        "$ref": "#/248"
+        "$ref": "#/265"
       },
       {
         "$ref": "#/2"
@@ -2649,22 +2832,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/251"
+        "$ref": "#/268"
       },
       {
-        "$ref": "#/252"
+        "$ref": "#/269"
       },
       {
-        "$ref": "#/253"
+        "$ref": "#/270"
       },
       {
-        "$ref": "#/254"
+        "$ref": "#/271"
       },
       {
-        "$ref": "#/255"
+        "$ref": "#/272"
       },
       {
-        "$ref": "#/256"
+        "$ref": "#/273"
       },
       {
         "$ref": "#/2"
@@ -2674,13 +2857,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/257"
+      "$ref": "#/274"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/224"
+      "$ref": "#/241"
     }
   },
   {
@@ -2695,10 +2878,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/260"
+        "$ref": "#/277"
       },
       {
-        "$ref": "#/261"
+        "$ref": "#/278"
       },
       {
         "$ref": "#/2"
@@ -2708,13 +2891,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/187"
+      "$ref": "#/204"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/176"
+      "$ref": "#/193"
     }
   },
   {
@@ -2731,7 +2914,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/267"
+          "$ref": "#/284"
         },
         "flags": 0,
         "description": "Properties of the Front Door Routing Rule"
@@ -2765,56 +2948,56 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/276"
+          "$ref": "#/293"
         },
         "flags": 2,
         "description": "Resource status."
       },
       "frontendEndpoints": {
         "type": {
-          "$ref": "#/277"
+          "$ref": "#/294"
         },
         "flags": 0,
         "description": "Frontend endpoints associated with this rule"
       },
       "acceptedProtocols": {
         "type": {
-          "$ref": "#/281"
+          "$ref": "#/298"
         },
         "flags": 0,
         "description": "Protocol schemes to match for this rule"
       },
       "patternsToMatch": {
         "type": {
-          "$ref": "#/282"
+          "$ref": "#/299"
         },
         "flags": 0,
         "description": "The route patterns of the rule."
       },
       "enabledState": {
         "type": {
-          "$ref": "#/285"
+          "$ref": "#/302"
         },
         "flags": 0,
         "description": "Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'"
       },
       "routeConfiguration": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/213"
         },
         "flags": 0,
         "description": "A reference to the routing configuration."
       },
       "rulesEngine": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "A reference to a specific Rules Engine Configuration to apply to this route."
       },
       "webApplicationFirewallPolicyLink": {
         "type": {
-          "$ref": "#/286"
+          "$ref": "#/303"
         },
         "flags": 0,
         "description": "Defines the Web Application Firewall policy for each routing rule (if applicable)"
@@ -2857,28 +3040,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/268"
+        "$ref": "#/285"
       },
       {
-        "$ref": "#/269"
+        "$ref": "#/286"
       },
       {
-        "$ref": "#/270"
+        "$ref": "#/287"
       },
       {
-        "$ref": "#/271"
+        "$ref": "#/288"
       },
       {
-        "$ref": "#/272"
+        "$ref": "#/289"
       },
       {
-        "$ref": "#/273"
+        "$ref": "#/290"
       },
       {
-        "$ref": "#/274"
+        "$ref": "#/291"
       },
       {
-        "$ref": "#/275"
+        "$ref": "#/292"
       },
       {
         "$ref": "#/2"
@@ -2888,7 +3071,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/211"
+      "$ref": "#/228"
     }
   },
   {
@@ -2903,10 +3086,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/278"
+        "$ref": "#/295"
       },
       {
-        "$ref": "#/279"
+        "$ref": "#/296"
       },
       {
         "$ref": "#/2"
@@ -2916,7 +3099,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/280"
+      "$ref": "#/297"
     }
   },
   {
@@ -2937,10 +3120,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/283"
+        "$ref": "#/300"
       },
       {
-        "$ref": "#/284"
+        "$ref": "#/301"
       },
       {
         "$ref": "#/2"
@@ -2963,7 +3146,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/266"
+      "$ref": "#/283"
     }
   },
   {
@@ -2972,7 +3155,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/289"
+          "$ref": "#/306"
         },
         "flags": 0,
         "description": "Properties of the load balancing settings"
@@ -3006,7 +3189,7 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/298"
+          "$ref": "#/315"
         },
         "flags": 2,
         "description": "Resource status."
@@ -3070,28 +3253,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/290"
+        "$ref": "#/307"
       },
       {
-        "$ref": "#/291"
+        "$ref": "#/308"
       },
       {
-        "$ref": "#/292"
+        "$ref": "#/309"
       },
       {
-        "$ref": "#/293"
+        "$ref": "#/310"
       },
       {
-        "$ref": "#/294"
+        "$ref": "#/311"
       },
       {
-        "$ref": "#/295"
+        "$ref": "#/312"
       },
       {
-        "$ref": "#/296"
+        "$ref": "#/313"
       },
       {
-        "$ref": "#/297"
+        "$ref": "#/314"
       },
       {
         "$ref": "#/2"
@@ -3101,7 +3284,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/288"
+      "$ref": "#/305"
     }
   },
   {
@@ -3110,7 +3293,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/301"
+          "$ref": "#/318"
         },
         "flags": 0,
         "description": "Properties of the health probe settings"
@@ -3144,7 +3327,7 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/310"
+          "$ref": "#/327"
         },
         "flags": 2,
         "description": "Resource status."
@@ -3158,7 +3341,7 @@
       },
       "protocol": {
         "type": {
-          "$ref": "#/313"
+          "$ref": "#/330"
         },
         "flags": 0,
         "description": "Protocol scheme to use for this probe"
@@ -3172,14 +3355,14 @@
       },
       "healthProbeMethod": {
         "type": {
-          "$ref": "#/316"
+          "$ref": "#/333"
         },
         "flags": 0,
         "description": "Configures which HTTP method to use to probe the backends defined under backendPools."
       },
       "enabledState": {
         "type": {
-          "$ref": "#/319"
+          "$ref": "#/336"
         },
         "flags": 0,
         "description": "Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend pool."
@@ -3222,28 +3405,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/302"
+        "$ref": "#/319"
       },
       {
-        "$ref": "#/303"
+        "$ref": "#/320"
       },
       {
-        "$ref": "#/304"
+        "$ref": "#/321"
       },
       {
-        "$ref": "#/305"
+        "$ref": "#/322"
       },
       {
-        "$ref": "#/306"
+        "$ref": "#/323"
       },
       {
-        "$ref": "#/307"
+        "$ref": "#/324"
       },
       {
-        "$ref": "#/308"
+        "$ref": "#/325"
       },
       {
-        "$ref": "#/309"
+        "$ref": "#/326"
       },
       {
         "$ref": "#/2"
@@ -3262,10 +3445,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/311"
+        "$ref": "#/328"
       },
       {
-        "$ref": "#/312"
+        "$ref": "#/329"
       },
       {
         "$ref": "#/2"
@@ -3284,10 +3467,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/314"
+        "$ref": "#/331"
       },
       {
-        "$ref": "#/315"
+        "$ref": "#/332"
       },
       {
         "$ref": "#/2"
@@ -3306,10 +3489,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/317"
+        "$ref": "#/334"
       },
       {
-        "$ref": "#/318"
+        "$ref": "#/335"
       },
       {
         "$ref": "#/2"
@@ -3319,7 +3502,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/300"
+      "$ref": "#/317"
     }
   },
   {
@@ -3328,7 +3511,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/322"
+          "$ref": "#/339"
         },
         "flags": 0,
         "description": "Properties of the Front Door Backend Pool"
@@ -3362,28 +3545,28 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/331"
+          "$ref": "#/348"
         },
         "flags": 2,
         "description": "Resource status."
       },
       "backends": {
         "type": {
-          "$ref": "#/345"
+          "$ref": "#/362"
         },
         "flags": 0,
         "description": "The set of backends for this pool"
       },
       "loadBalancingSettings": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "Load balancing settings for a backend pool"
       },
       "healthProbeSettings": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/228"
         },
         "flags": 0,
         "description": "L7 health probe settings for a backend pool"
@@ -3426,28 +3609,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/323"
+        "$ref": "#/340"
       },
       {
-        "$ref": "#/324"
+        "$ref": "#/341"
       },
       {
-        "$ref": "#/325"
+        "$ref": "#/342"
       },
       {
-        "$ref": "#/326"
+        "$ref": "#/343"
       },
       {
-        "$ref": "#/327"
+        "$ref": "#/344"
       },
       {
-        "$ref": "#/328"
+        "$ref": "#/345"
       },
       {
-        "$ref": "#/329"
+        "$ref": "#/346"
       },
       {
-        "$ref": "#/330"
+        "$ref": "#/347"
       },
       {
         "$ref": "#/2"
@@ -3488,7 +3671,7 @@
       },
       "privateEndpointStatus": {
         "type": {
-          "$ref": "#/338"
+          "$ref": "#/355"
         },
         "flags": 2,
         "description": "The Approval status for the connection to the Private Link"
@@ -3502,35 +3685,35 @@
       },
       "httpPort": {
         "type": {
-          "$ref": "#/339"
+          "$ref": "#/356"
         },
         "flags": 0,
         "description": "The HTTP TCP port number. Must be between 1 and 65535."
       },
       "httpsPort": {
         "type": {
-          "$ref": "#/339"
+          "$ref": "#/356"
         },
         "flags": 0,
         "description": "The HTTPS TCP port number. Must be between 1 and 65535."
       },
       "enabledState": {
         "type": {
-          "$ref": "#/342"
+          "$ref": "#/359"
         },
         "flags": 0,
         "description": "Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'"
       },
       "priority": {
         "type": {
-          "$ref": "#/343"
+          "$ref": "#/360"
         },
         "flags": 0,
         "description": "Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend is healthy."
       },
       "weight": {
         "type": {
-          "$ref": "#/344"
+          "$ref": "#/361"
         },
         "flags": 0,
         "description": "Weight of this endpoint for load balancing purposes."
@@ -3568,19 +3751,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/333"
+        "$ref": "#/350"
       },
       {
-        "$ref": "#/334"
+        "$ref": "#/351"
       },
       {
-        "$ref": "#/335"
+        "$ref": "#/352"
       },
       {
-        "$ref": "#/336"
+        "$ref": "#/353"
       },
       {
-        "$ref": "#/337"
+        "$ref": "#/354"
       },
       {
         "$ref": "#/2"
@@ -3604,10 +3787,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/340"
+        "$ref": "#/357"
       },
       {
-        "$ref": "#/341"
+        "$ref": "#/358"
       },
       {
         "$ref": "#/2"
@@ -3627,13 +3810,13 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/332"
+      "$ref": "#/349"
     }
   },
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/321"
+      "$ref": "#/338"
     }
   },
   {
@@ -3642,10 +3825,17 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/348"
+          "$ref": "#/365"
         },
         "flags": 0,
         "description": "Properties of the Frontend endpoint"
+      },
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "Resource ID."
       },
       "name": {
         "type": {
@@ -3660,13 +3850,6 @@
         },
         "flags": 2,
         "description": "Resource type."
-      },
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Resource ID."
       }
     }
   },
@@ -3676,28 +3859,28 @@
     "properties": {
       "resourceState": {
         "type": {
-          "$ref": "#/357"
+          "$ref": "#/374"
         },
         "flags": 2,
         "description": "Resource status."
       },
       "customHttpsProvisioningState": {
         "type": {
-          "$ref": "#/363"
+          "$ref": "#/380"
         },
         "flags": 2,
         "description": "Provisioning status of Custom Https of the frontendEndpoint."
       },
       "customHttpsProvisioningSubstate": {
         "type": {
-          "$ref": "#/374"
+          "$ref": "#/391"
         },
         "flags": 2,
         "description": "Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step."
       },
       "customHttpsConfiguration": {
         "type": {
-          "$ref": "#/375"
+          "$ref": "#/392"
         },
         "flags": 2,
         "description": "The configuration specifying how to enable HTTPS"
@@ -3711,7 +3894,7 @@
       },
       "sessionAffinityEnabledState": {
         "type": {
-          "$ref": "#/391"
+          "$ref": "#/408"
         },
         "flags": 0,
         "description": "Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'"
@@ -3725,7 +3908,7 @@
       },
       "webApplicationFirewallPolicyLink": {
         "type": {
-          "$ref": "#/392"
+          "$ref": "#/409"
         },
         "flags": 0,
         "description": "Defines the Web Application Firewall policy for each host (if applicable)"
@@ -3768,28 +3951,28 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/349"
+        "$ref": "#/366"
       },
       {
-        "$ref": "#/350"
+        "$ref": "#/367"
       },
       {
-        "$ref": "#/351"
+        "$ref": "#/368"
       },
       {
-        "$ref": "#/352"
+        "$ref": "#/369"
       },
       {
-        "$ref": "#/353"
+        "$ref": "#/370"
       },
       {
-        "$ref": "#/354"
+        "$ref": "#/371"
       },
       {
-        "$ref": "#/355"
+        "$ref": "#/372"
       },
       {
-        "$ref": "#/356"
+        "$ref": "#/373"
       },
       {
         "$ref": "#/2"
@@ -3820,19 +4003,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/358"
+        "$ref": "#/375"
       },
       {
-        "$ref": "#/359"
+        "$ref": "#/376"
       },
       {
-        "$ref": "#/360"
+        "$ref": "#/377"
       },
       {
-        "$ref": "#/361"
+        "$ref": "#/378"
       },
       {
-        "$ref": "#/362"
+        "$ref": "#/379"
       },
       {
         "$ref": "#/2"
@@ -3883,34 +4066,34 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/364"
+        "$ref": "#/381"
       },
       {
-        "$ref": "#/365"
+        "$ref": "#/382"
       },
       {
-        "$ref": "#/366"
+        "$ref": "#/383"
       },
       {
-        "$ref": "#/367"
+        "$ref": "#/384"
       },
       {
-        "$ref": "#/368"
+        "$ref": "#/385"
       },
       {
-        "$ref": "#/369"
+        "$ref": "#/386"
       },
       {
-        "$ref": "#/370"
+        "$ref": "#/387"
       },
       {
-        "$ref": "#/371"
+        "$ref": "#/388"
       },
       {
-        "$ref": "#/372"
+        "$ref": "#/389"
       },
       {
-        "$ref": "#/373"
+        "$ref": "#/390"
       },
       {
         "$ref": "#/2"
@@ -3923,35 +4106,35 @@
     "properties": {
       "certificateSource": {
         "type": {
-          "$ref": "#/378"
+          "$ref": "#/395"
         },
         "flags": 1,
         "description": "Defines the source of the SSL certificate"
       },
       "protocolType": {
         "type": {
-          "$ref": "#/380"
+          "$ref": "#/397"
         },
         "flags": 1,
         "description": "Defines the TLS extension protocol that is used for secure delivery"
       },
       "minimumTlsVersion": {
         "type": {
-          "$ref": "#/383"
+          "$ref": "#/400"
         },
         "flags": 1,
         "description": "The minimum TLS version required from the clients to establish an SSL handshake with Front Door."
       },
       "keyVaultCertificateSourceParameters": {
         "type": {
-          "$ref": "#/384"
+          "$ref": "#/401"
         },
         "flags": 0,
         "description": "KeyVault certificate source parameters (if certificateSource=AzureKeyVault)"
       },
       "frontDoorCertificateSourceParameters": {
         "type": {
-          "$ref": "#/386"
+          "$ref": "#/403"
         },
         "flags": 0,
         "description": "Parameters required for enabling SSL with Front Door-managed certificates (if certificateSource=FrontDoor)"
@@ -3970,10 +4153,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/376"
+        "$ref": "#/393"
       },
       {
-        "$ref": "#/377"
+        "$ref": "#/394"
       },
       {
         "$ref": "#/2"
@@ -3988,7 +4171,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/379"
+        "$ref": "#/396"
       },
       {
         "$ref": "#/2"
@@ -4007,10 +4190,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/381"
+        "$ref": "#/398"
       },
       {
-        "$ref": "#/382"
+        "$ref": "#/399"
       },
       {
         "$ref": "#/2"
@@ -4023,7 +4206,7 @@
     "properties": {
       "vault": {
         "type": {
-          "$ref": "#/385"
+          "$ref": "#/402"
         },
         "flags": 0,
         "description": "The Key Vault containing the SSL certificate"
@@ -4063,7 +4246,7 @@
     "properties": {
       "certificateType": {
         "type": {
-          "$ref": "#/388"
+          "$ref": "#/405"
         },
         "flags": 0,
         "description": "Defines the type of the certificate used for secure connections to a frontendEndpoint"
@@ -4078,7 +4261,7 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/387"
+        "$ref": "#/404"
       },
       {
         "$ref": "#/2"
@@ -4097,10 +4280,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/389"
+        "$ref": "#/406"
       },
       {
-        "$ref": "#/390"
+        "$ref": "#/407"
       },
       {
         "$ref": "#/2"
@@ -4123,7 +4306,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/347"
+      "$ref": "#/364"
     }
   },
   {
@@ -4132,14 +4315,14 @@
     "properties": {
       "enforceCertificateNameCheck": {
         "type": {
-          "$ref": "#/397"
+          "$ref": "#/414"
         },
         "flags": 0,
         "description": "Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests."
       },
       "sendRecvTimeoutSeconds": {
         "type": {
-          "$ref": "#/398"
+          "$ref": "#/415"
         },
         "flags": 0,
         "description": "Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and returns."
@@ -4158,10 +4341,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/395"
+        "$ref": "#/412"
       },
       {
-        "$ref": "#/396"
+        "$ref": "#/413"
       },
       {
         "$ref": "#/2"
@@ -4184,10 +4367,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/399"
+        "$ref": "#/416"
       },
       {
-        "$ref": "#/400"
+        "$ref": "#/417"
       },
       {
         "$ref": "#/2"
@@ -4205,258 +4388,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Network/frontDoors@2025-10-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/165"
+      "$ref": "#/182"
     },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "minLength": 1,
-    "maxLength": 90,
-    "pattern": "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Network/frontDoors/rulesEngines"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-10-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Network/frontDoors/rulesEngines",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/404"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/405"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/406"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/177"
-        },
-        "flags": 0,
-        "description": "Properties of the Rules Engine Configuration."
-      }
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Network/frontDoors/rulesEngines@2025-10-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/407"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "pattern": "^[a-zA-Z0-9_\\-\\(\\)\\.]*[^\\.]$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Network/NetworkExperimentProfiles"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-10-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Network/NetworkExperimentProfiles",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/409"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/410"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/411"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/413"
-        },
-        "flags": 0,
-        "description": "The properties of a Profile"
-      },
-      "etag": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Gets a unique read-only string that changes whenever the resource is updated."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "Resource location."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/424"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ProfileProperties",
-    "properties": {
-      "resourceState": {
-        "type": {
-          "$ref": "#/420"
-        },
-        "flags": 2,
-        "description": "Resource status."
-      },
-      "enabledState": {
-        "type": {
-          "$ref": "#/423"
-        },
-        "flags": 0,
-        "description": "The state of the Experiment"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Creating"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabling"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabling"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/414"
-      },
-      {
-        "$ref": "#/415"
-      },
-      {
-        "$ref": "#/416"
-      },
-      {
-        "$ref": "#/417"
-      },
-      {
-        "$ref": "#/418"
-      },
-      {
-        "$ref": "#/419"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Enabled"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Disabled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/421"
-      },
-      {
-        "$ref": "#/422"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ResourceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Network/NetworkExperimentProfiles@2025-10-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/412"
-    },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -4479,28 +4415,28 @@
       },
       "name": {
         "type": {
-          "$ref": "#/409"
+          "$ref": "#/162"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/426"
+          "$ref": "#/421"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/427"
+          "$ref": "#/422"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/429"
+          "$ref": "#/424"
         },
         "flags": 0,
         "description": "The properties of an Experiment"
@@ -4514,7 +4450,7 @@
       },
       "tags": {
         "type": {
-          "$ref": "#/441"
+          "$ref": "#/436"
         },
         "flags": 0,
         "description": "Resource tags."
@@ -4534,28 +4470,28 @@
       },
       "endpointA": {
         "type": {
-          "$ref": "#/430"
+          "$ref": "#/425"
         },
         "flags": 0,
         "description": "The endpoint A of an experiment"
       },
       "endpointB": {
         "type": {
-          "$ref": "#/430"
+          "$ref": "#/425"
         },
         "flags": 0,
         "description": "The endpoint B of an experiment"
       },
       "enabledState": {
         "type": {
-          "$ref": "#/433"
+          "$ref": "#/428"
         },
         "flags": 0,
         "description": "The state of the Experiment"
       },
       "resourceState": {
         "type": {
-          "$ref": "#/440"
+          "$ref": "#/435"
         },
         "flags": 2,
         "description": "Resource status."
@@ -4608,10 +4544,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/431"
+        "$ref": "#/426"
       },
       {
-        "$ref": "#/432"
+        "$ref": "#/427"
       },
       {
         "$ref": "#/2"
@@ -4646,22 +4582,22 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/429"
+      },
+      {
+        "$ref": "#/430"
+      },
+      {
+        "$ref": "#/431"
+      },
+      {
+        "$ref": "#/432"
+      },
+      {
+        "$ref": "#/433"
+      },
+      {
         "$ref": "#/434"
-      },
-      {
-        "$ref": "#/435"
-      },
-      {
-        "$ref": "#/436"
-      },
-      {
-        "$ref": "#/437"
-      },
-      {
-        "$ref": "#/438"
-      },
-      {
-        "$ref": "#/439"
       },
       {
         "$ref": "#/2"
@@ -4679,11 +4615,75 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Network/NetworkExperimentProfiles/Experiments@2025-10-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/428"
+      "$ref": "#/423"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringType",
+    "minLength": 1,
+    "maxLength": 90,
+    "pattern": "^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Network/frontDoors/rulesEngines"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-10-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Network/frontDoors/rulesEngines",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/438"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/439"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/440"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/194"
+        },
+        "flags": 0,
+        "description": "Properties of the Rules Engine Configuration."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Network/frontDoors/rulesEngines@2025-10-01",
+    "body": {
+      "$ref": "#/441"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
@@ -4733,7 +4733,7 @@
       },
       "properties": {
         "type": {
-          "$ref": "#/348"
+          "$ref": "#/365"
         },
         "flags": 2,
         "description": "Properties of the Frontend endpoint"
@@ -4743,11 +4743,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Network/frontDoors/frontendEndpoints@2025-10-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/446"
     },
-    "flags": 1
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -4831,17 +4831,17 @@
   },
   {
     "$type": "ResourceFunctionType",
+    "name": "disableHttps",
+    "resourceType": "Microsoft.Network/frontDoors/frontendEndpoints",
+    "apiVersion": "2025-10-01"
+  },
+  {
+    "$type": "ResourceFunctionType",
     "name": "enableHttps",
     "resourceType": "Microsoft.Network/frontDoors/frontendEndpoints",
     "apiVersion": "2025-10-01",
     "input": {
-      "$ref": "#/375"
+      "$ref": "#/392"
     }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "disableHttps",
-    "resourceType": "Microsoft.Network/frontDoors/frontendEndpoints",
-    "apiVersion": "2025-10-01"
   }
 ]
