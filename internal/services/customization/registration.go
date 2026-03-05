@@ -8,8 +8,8 @@ func init() {
 	var keyVaultKeyCustomization DataPlaneResource = KeyVaultKeyCustomization{}
 	customizations[strings.ToLower(keyVaultKeyCustomization.GetResourceType())] = keyVaultKeyCustomization
 
-	var aiFoundryAssistantCustomization DataPlaneResource = AIFoundryAssistantCustomization{}
-	customizations[strings.ToLower(aiFoundryAssistantCustomization.GetResourceType())] = aiFoundryAssistantCustomization
+	var foundryAgentCustomization DataPlaneResource = FoundryAgentCustomization{}
+	customizations[strings.ToLower(foundryAgentCustomization.GetResourceType())] = foundryAgentCustomization
 }
 
 func GetCustomization(resourceType string) *DataPlaneResource {

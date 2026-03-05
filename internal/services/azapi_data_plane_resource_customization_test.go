@@ -30,12 +30,12 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 	})
 }
 
-func TestAccDataPlaneResource_aiFoundryAssistant(t *testing.T) {
-	host := os.Getenv("ARM_TEST_AIFOUNDRY_HOST")
-	projectName := os.Getenv("ARM_TEST_AIFOUNDRY_PROJECT_NAME")
-	modelName := os.Getenv("ARM_TEST_AIFOUNDRY_MODEL")
+func TestAccDataPlaneResource_foundryAgent(t *testing.T) {
+	host := os.Getenv("ARM_TEST_FOUNDRY_HOST")
+	projectName := os.Getenv("ARM_TEST_FOUNDRY_PROJECT_NAME")
+	modelName := os.Getenv("ARM_TEST_FOUNDRY_MODEL")
 	if host == "" || projectName == "" || modelName == "" {
-		t.Skip("Skipping as ARM_TEST_AIFOUNDRY_HOST, ARM_TEST_AIFOUNDRY_PROJECT_NAME and ARM_TEST_AIFOUNDRY_MODEL must be specified")
+		t.Skip("Skipping as Foundry env vars ARM_TEST_FOUNDRY_HOST, ARM_TEST_FOUNDRY_PROJECT_NAME and ARM_TEST_FOUNDRY_MODEL must be specified")
 	}
 
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
@@ -43,13 +43,13 @@ func TestAccDataPlaneResource_aiFoundryAssistant(t *testing.T) {
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.aiFoundryAssistant(data, host, projectName, modelName),
+			Config: r.foundryAgent(data, host, projectName, modelName),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
 		},
 		{
-			Config: r.aiFoundryAssistantUpdate(data, host, projectName, modelName),
+			Config: r.foundryAgentUpdate(data, host, projectName, modelName),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
@@ -161,32 +161,39 @@ resource "azapi_resource_action" "add_accesspolicy" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) aiFoundryAssistant(data acceptance.TestData, host, projectName, modelName string) string {
+func (r DataPlaneResource) foundryAgent(data acceptance.TestData, host, projectName, modelName string) string {
 	return fmt.Sprintf(`
 resource "azapi_data_plane_resource" "test" {
-  type      = "Microsoft.AIFoundry/agents/assistants@v1"
+  type      = "Microsoft.Foundry/agents@v1"
   parent_id = "%s/api/projects/%s"
+  name      = "acctest-%s"
 
   body = {
-    model        = "%s"
     name         = "acctest-%s"
-    instructions = "You are an acceptance test assistant"
+    definition = {
+      kind         = "prompt"
+      model        = "%s"
+      instructions = "You are an acceptance test agent"
+    }
   }
 }
-`, host, projectName, modelName, data.RandomString)
+`, host, projectName, data.RandomString, data.RandomString, modelName)
 }
 
-func (r DataPlaneResource) aiFoundryAssistantUpdate(data acceptance.TestData, host, projectName, modelName string) string {
+func (r DataPlaneResource) foundryAgentUpdate(data acceptance.TestData, host, projectName, modelName string) string {
 	return fmt.Sprintf(`
 resource "azapi_data_plane_resource" "test" {
-  type      = "Microsoft.AIFoundry/agents/assistants@v1"
+  type      = "Microsoft.Foundry/agents@v1"
   parent_id = "%s/api/projects/%s"
+  name      = "acctest-%s"
 
   body = {
-    model        = "%s"
-    name         = "acctest-%s"
-    instructions = "You are an updated acceptance test assistant"
+    definition = {
+      kind         = "prompt"
+      model        = "%s"
+      instructions = "You are an updated acceptance test agent"
+    }
   }
 }
-`, host, projectName, modelName, data.RandomString)
+`, host, projectName, data.RandomString, modelName)
 }

@@ -114,7 +114,7 @@ func (r *DataPlaneResource) Schema(ctx context.Context, request resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created. For resources that generate their identifier on create (for example, AI Foundry assistants), this value will be set automatically after creation.",
+				MarkdownDescription: "Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.",
 			},
 
 			"parent_id": schema.StringAttribute{

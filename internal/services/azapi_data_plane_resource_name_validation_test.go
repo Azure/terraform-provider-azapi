@@ -8,25 +8,25 @@ import (
 )
 
 func TestValidateDataPlaneResourceName(t *testing.T) {
-	t.Run("assistant disallows name", func(t *testing.T) {
+	t.Run("agent requires name", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
-			Type: types.StringValue("Microsoft.AIFoundry/agents/assistants@v1"),
-			Name: types.StringValue("custom-id"),
+			Type: types.StringValue("Microsoft.Foundry/agents@v1"),
+			Name: types.StringNull(),
 		}
 
 		err := validateDataPlaneResourceName(config)
 		if err == nil {
 			t.Fatalf("expected validation error")
 		}
-		if !strings.Contains(err.Error(), "should not be set") {
-			t.Fatalf("expected should-not-be-set error, got: %v", err)
+		if !strings.Contains(err.Error(), "must be set") {
+			t.Fatalf("expected must-be-set error, got: %v", err)
 		}
 	})
 
-	t.Run("assistant allows omitted name", func(t *testing.T) {
+	t.Run("agent accepts explicit name", func(t *testing.T) {
 		config := &DataPlaneResourceModel{
-			Type: types.StringValue("Microsoft.AIFoundry/agents/assistants@v1"),
-			Name: types.StringNull(),
+			Type: types.StringValue("Microsoft.Foundry/agents@v1"),
+			Name: types.StringValue("terraform-agent"),
 		}
 
 		if err := validateDataPlaneResourceName(config); err != nil {
