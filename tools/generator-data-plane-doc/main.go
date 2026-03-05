@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -70,8 +71,8 @@ func main() {
 	newContent := replaceAvailableResourcesSection(string(templateContent), table, examples)
 
 	// Write the updated template
-	// #nosec G306
-	if err := os.WriteFile(*outputFile, []byte(newContent), 0644); err != nil {
+	cleanPath := filepath.Clean(*outputFile)
+	if err := os.WriteFile(cleanPath, []byte(newContent), 0644); err != nil { // #nosec G306,G703 -- output path is from a CLI flag with a safe default
 		log.Fatalf("Error writing template file: %v", err)
 	}
 
