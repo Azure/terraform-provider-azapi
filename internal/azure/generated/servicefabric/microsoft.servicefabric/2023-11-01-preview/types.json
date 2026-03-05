@@ -49,33 +49,33 @@
         "flags": 0,
         "description": "The cluster resource properties"
       },
-      "location": {
+      "etag": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 1,
-        "description": "Azure resource location."
+        "flags": 2,
+        "description": "\"If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.\")"
       },
       "tags": {
         "type": {
           "$ref": "#/122"
         },
         "flags": 0,
-        "description": "Azure resource tags."
+        "description": "Resource tags."
       },
-      "etag": {
+      "location": {
         "type": {
           "$ref": "#/0"
         },
-        "flags": 2,
-        "description": "Azure resource etag."
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
       },
       "systemData": {
         "type": {
           "$ref": "#/123"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -158,7 +158,7 @@
           "$ref": "#/54"
         },
         "flags": 2,
-        "description": "The current state of the cluster.\n\n  - WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric VM extension to boot up and report to it.\n  - Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this state until the cluster boots up and system services are up.\n  - BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically initiated when the cluster boots up for the first time.\n  - UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.\n  - UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.\n  - UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version. This happens only when the **upgradeMode** is set to 'Automatic'.\n  - EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded to the expected version.\n  - UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider. Clusters in this state cannot be managed by the Resource Provider.\n  - AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.\n  - Ready - Indicates that the cluster is in a stable state."
+        "description": "The current state of the cluster.\n\n- WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric VM extension to boot up and report to it.\n- Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this state until the cluster boots up and system services are up.\n- BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically initiated when the cluster boots up for the first time.\n- UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.\n- UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.\n- UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version. This happens only when the **upgradeMode** is set to 'Automatic'.\n- EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded to the expected version.\n- UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider. Clusters in this state cannot be managed by the Resource Provider.\n- AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.\n- Ready - Indicates that the cluster is in a stable state."
       },
       "diagnosticsStorageAccountConfig": {
         "type": {
@@ -207,7 +207,7 @@
           "$ref": "#/81"
         },
         "flags": 0,
-        "description": "The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).\n\n  - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.\n  - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.\n  - Silver - Run the System services with a target replica set count of 5.\n  - Gold - Run the System services with a target replica set count of 7.\n  - Platinum - Run the System services with a target replica set count of 9."
+        "description": "The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).\n\n- None - Run the System services with a target replica set count of 1. This should only be used for test clusters.\n- Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.\n- Silver - Run the System services with a target replica set count of 5.\n- Gold - Run the System services with a target replica set count of 7.\n- Platinum - Run the System services with a target replica set count of 9."
       },
       "reverseProxyCertificate": {
         "type": {
@@ -925,7 +925,7 @@
           "$ref": "#/67"
         },
         "flags": 0,
-        "description": "The durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).\n\n  - Bronze - No privileges. This is the default.\n  - Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.\n  - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM skus like D15_V2, G5 etc."
+        "description": "The durability level of the node type. Learn about [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).\n\n- Bronze - No privileges. This is the default.\n- Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.\n- Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM skus like D15_V2, G5 etc."
       },
       "applicationPorts": {
         "type": {
@@ -1279,7 +1279,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceTypeHealthPolicyMap",
+    "name": "ApplicationHealthPolicyServiceTypeHealthPolicies",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/86"
@@ -1287,7 +1287,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationHealthPolicyMap",
+    "name": "ClusterHealthPolicyApplicationHealthPolicies",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/85"
@@ -1362,7 +1362,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ServiceTypeDeltaHealthPolicyMap",
+    "name": "ApplicationDeltaHealthPolicyServiceTypeDeltaHealthPolicies",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/91"
@@ -1370,7 +1370,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationDeltaHealthPolicyMap",
+    "name": "ClusterUpgradeDeltaHealthPolicyApplicationDeltaHealthPolicies",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/90"
@@ -1621,7 +1621,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ResourceTags",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1640,7 +1640,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -1661,7 +1661,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/0"
+          "$ref": "#/133"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -1671,18 +1671,90 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The timestamp of resource last modification (UTC)."
+        "description": "The timestamp of resource last modification (UTC)"
       }
     }
   },
   {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/124"
+      },
+      {
+        "$ref": "#/125"
+      },
+      {
+        "$ref": "#/126"
+      },
+      {
+        "$ref": "#/127"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/129"
+      },
+      {
+        "$ref": "#/130"
+      },
+      {
+        "$ref": "#/131"
+      },
+      {
+        "$ref": "#/132"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.ServiceFabric/clusters@2023-11-01-preview",
-    "scopeType": 8,
     "body": {
       "$ref": "#/3"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1712,52 +1784,52 @@
       },
       "type": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/135"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/126"
+          "$ref": "#/136"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/128"
+          "$ref": "#/138"
         },
         "flags": 0,
         "description": "The application type name properties"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/139"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "It will be deprecated in New API, resource location depends on the parent resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/129"
-        },
-        "flags": 0,
-        "description": "Azure resource tags."
+        "description": "The geo-location where the resource lives"
       },
       "etag": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Azure resource etag."
+        "description": "\"If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.\")"
       },
       "systemData": {
         "type": {
           "$ref": "#/123"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1776,7 +1848,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ProxyResourceTags",
+    "name": "ApplicationTypeResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1785,11 +1857,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.ServiceFabric/clusters/applicationTypes@2023-11-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/127"
+      "$ref": "#/137"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1819,52 +1891,52 @@
       },
       "type": {
         "type": {
-          "$ref": "#/131"
+          "$ref": "#/141"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/132"
+          "$ref": "#/142"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/134"
+          "$ref": "#/144"
         },
         "flags": 0,
         "description": "The properties of the application type version resource."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/146"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "It will be deprecated in New API, resource location depends on the parent resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/136"
-        },
-        "flags": 0,
-        "description": "Azure resource tags."
+        "description": "The geo-location where the resource lives"
       },
       "etag": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Azure resource etag."
+        "description": "\"If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.\")"
       },
       "systemData": {
         "type": {
           "$ref": "#/123"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1888,7 +1960,7 @@
       },
       "defaultParameterList": {
         "type": {
-          "$ref": "#/135"
+          "$ref": "#/145"
         },
         "flags": 2,
         "description": "List of application type parameters that can be overridden when creating or updating the application."
@@ -1897,7 +1969,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationTypeParameterList",
+    "name": "ApplicationTypeVersionResourcePropertiesDefaultParameterList",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1905,7 +1977,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ProxyResourceTags",
+    "name": "ApplicationTypeVersionResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -1914,11 +1986,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.ServiceFabric/clusters/applicationTypes/versions@2023-11-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/133"
+      "$ref": "#/143"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1948,155 +2020,60 @@
       },
       "type": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/148"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/149"
         },
         "flags": 10,
         "description": "The resource api version"
       },
-      "identity": {
-        "type": {
-          "$ref": "#/141"
-        },
-        "flags": 0,
-        "description": "Describes the managed identities for an Azure resource."
-      },
       "properties": {
         "type": {
-          "$ref": "#/149"
+          "$ref": "#/151"
         },
         "flags": 0,
         "description": "The application resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/170"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "It will be deprecated in New API, resource location depends on the parent resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/168"
-        },
-        "flags": 0,
-        "description": "Azure resource tags."
+        "description": "The geo-location where the resource lives"
       },
       "etag": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Azure resource etag."
+        "description": "\"If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.\")"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/171"
+        },
+        "flags": 0,
+        "description": "The managed service identities assigned to this resource."
       },
       "systemData": {
         "type": {
           "$ref": "#/123"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The principal id of the managed identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The tenant id of the managed identity. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/146"
-        },
-        "flags": 0,
-        "description": "The type of managed identity for the resource."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/148"
-        },
-        "flags": 0,
-        "description": "The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:\n'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned, UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/142"
-      },
-      {
-        "$ref": "#/143"
-      },
-      {
-        "$ref": "#/144"
-      },
-      {
-        "$ref": "#/145"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The principal id of user assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The client id of user assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentityMap",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/147"
     }
   },
   {
@@ -2126,14 +2103,14 @@
       },
       "parameters": {
         "type": {
-          "$ref": "#/150"
+          "$ref": "#/152"
         },
         "flags": 0,
         "description": "List of application parameters with overridden values from their default values specified in the application manifest."
       },
       "upgradePolicy": {
         "type": {
-          "$ref": "#/151"
+          "$ref": "#/153"
         },
         "flags": 0,
         "description": "Describes the policy for a monitored application upgrade."
@@ -2161,14 +2138,14 @@
       },
       "metrics": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/167"
         },
         "flags": 0,
         "description": "List of application capacity metric description."
       },
       "managedIdentities": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/169"
         },
         "flags": 0,
         "description": "List of user assigned identities for the application, each mapped to a friendly name."
@@ -2177,7 +2154,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ApplicationParameterList",
+    "name": "ApplicationResourceUpdatePropertiesParameters",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -2203,21 +2180,21 @@
       },
       "rollingUpgradeMonitoringPolicy": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "The policy used for monitoring the application upgrade"
       },
       "applicationHealthPolicy": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/158"
         },
         "flags": 0,
         "description": "Defines a health policy used to evaluate the health of an application or one of its children entities."
       },
       "upgradeMode": {
         "type": {
-          "$ref": "#/163"
+          "$ref": "#/165"
         },
         "flags": 0,
         "description": "The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and Monitored."
@@ -2237,7 +2214,7 @@
     "properties": {
       "failureAction": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/157"
         },
         "flags": 0,
         "description": "The activation Mode of the service package"
@@ -2247,35 +2224,35 @@
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds."
+        "description": "The amount of time to wait after completing an upgrade domain before applying health policies. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
       },
       "healthCheckStableDuration": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds."
+        "description": "The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
       },
       "healthCheckRetryTimeout": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds."
+        "description": "The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
       },
       "upgradeTimeout": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The amount of time the overall upgrade has to complete before FailureAction is executed. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds."
+        "description": "The amount of time the overall upgrade has to complete before FailureAction is executed. Cannot be larger than 12 hours. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
       },
       "upgradeDomainTimeout": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "The amount of time each upgrade domain has to complete before FailureAction is executed. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds."
+        "description": "The amount of time each upgrade domain has to complete before FailureAction is executed. Cannot be larger than 12 hours. It is interpreted as a string representing an ISO 8601 duration with following format \"hh:mm:ss.fff\"."
       }
     }
   },
@@ -2291,10 +2268,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/153"
+        "$ref": "#/155"
       },
       {
-        "$ref": "#/154"
+        "$ref": "#/156"
       },
       {
         "$ref": "#/0"
@@ -2321,14 +2298,14 @@
       },
       "defaultServiceTypeHealthPolicy": {
         "type": {
-          "$ref": "#/157"
+          "$ref": "#/159"
         },
         "flags": 0,
         "description": "The health policy used by default to evaluate the health of a service type."
       },
       "serviceTypeHealthPolicyMap": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/160"
         },
         "flags": 0,
         "description": "The map with service type health policy per service type name. The map is empty by default."
@@ -2364,10 +2341,10 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ArmServiceTypeHealthPolicyMap",
+    "name": "ArmApplicationHealthPolicyServiceTypeHealthPolicyMap",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/157"
+      "$ref": "#/159"
     }
   },
   {
@@ -2390,16 +2367,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/159"
-      },
-      {
-        "$ref": "#/160"
-      },
-      {
         "$ref": "#/161"
       },
       {
         "$ref": "#/162"
+      },
+      {
+        "$ref": "#/163"
+      },
+      {
+        "$ref": "#/164"
       },
       {
         "$ref": "#/0"
@@ -2443,7 +2420,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/164"
+      "$ref": "#/166"
     }
   },
   {
@@ -2469,25 +2446,129 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/166"
+      "$ref": "#/168"
     }
   },
   {
     "$type": "ObjectType",
-    "name": "ProxyResourceTags",
+    "name": "ApplicationResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
     }
   },
   {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/177"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/179"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/173"
+      },
+      {
+        "$ref": "#/174"
+      },
+      {
+        "$ref": "#/175"
+      },
+      {
+        "$ref": "#/176"
+      },
+      {
+        "$ref": "#/0"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/172"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/178"
+    }
+  },
+  {
     "$type": "ResourceType",
     "name": "Microsoft.ServiceFabric/clusters/applications@2023-11-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/140"
+      "$ref": "#/150"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -2517,52 +2598,52 @@
       },
       "type": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/181"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/171"
+          "$ref": "#/182"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/173"
+          "$ref": "#/184"
         },
         "flags": 0,
         "description": "The service resource properties."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/224"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 0,
-        "description": "It will be deprecated in New API, resource location depends on the parent resource."
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
-        "type": {
-          "$ref": "#/213"
-        },
-        "flags": 0,
-        "description": "Azure resource tags."
-      },
-      "etag": {
+      "eTag": {
         "type": {
           "$ref": "#/0"
         },
         "flags": 2,
-        "description": "Azure resource etag."
+        "description": "If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
       },
       "systemData": {
         "type": {
           "$ref": "#/123"
         },
         "flags": 2,
-        "description": "Metadata pertaining to creation and last modification of the resource."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2587,14 +2668,14 @@
       },
       "partitionDescription": {
         "type": {
-          "$ref": "#/174"
+          "$ref": "#/185"
         },
         "flags": 0,
         "description": "Describes how the service is partitioned."
       },
       "servicePackageActivationMode": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/195"
         },
         "flags": 0,
         "description": "The activation Mode of the service package"
@@ -2615,28 +2696,28 @@
       },
       "correlationScheme": {
         "type": {
-          "$ref": "#/191"
+          "$ref": "#/202"
         },
         "flags": 0,
         "description": "A list that describes the correlation of the service with other services."
       },
       "serviceLoadMetrics": {
         "type": {
-          "$ref": "#/198"
+          "$ref": "#/209"
         },
         "flags": 0,
         "description": "The service load metrics is given as an array of ServiceLoadMetricDescription objects."
       },
       "servicePlacementPolicies": {
         "type": {
-          "$ref": "#/200"
+          "$ref": "#/211"
         },
         "flags": 0,
         "description": "A list that describes the correlation of the service with other services."
       },
       "defaultMoveCost": {
         "type": {
-          "$ref": "#/205"
+          "$ref": "#/216"
         },
         "flags": 0,
         "description": "Specifies the move cost for the service."
@@ -2644,10 +2725,10 @@
     },
     "elements": {
       "Stateful": {
-        "$ref": "#/206"
+        "$ref": "#/217"
       },
       "Stateless": {
-        "$ref": "#/209"
+        "$ref": "#/220"
       }
     }
   },
@@ -2658,13 +2739,13 @@
     "baseProperties": {},
     "elements": {
       "Named": {
-        "$ref": "#/175"
+        "$ref": "#/186"
       },
       "Singleton": {
-        "$ref": "#/178"
+        "$ref": "#/189"
       },
       "UniformInt64Range": {
-        "$ref": "#/180"
+        "$ref": "#/191"
       }
     }
   },
@@ -2681,14 +2762,14 @@
       },
       "names": {
         "type": {
-          "$ref": "#/176"
+          "$ref": "#/187"
         },
         "flags": 1,
         "description": "Array of size specified by the ‘count’ parameter, for the names of the partitions."
       },
       "partitionScheme": {
         "type": {
-          "$ref": "#/177"
+          "$ref": "#/188"
         },
         "flags": 1,
         "description": "Specifies how the service is partitioned."
@@ -2711,7 +2792,7 @@
     "properties": {
       "partitionScheme": {
         "type": {
-          "$ref": "#/179"
+          "$ref": "#/190"
         },
         "flags": 1,
         "description": "Specifies how the service is partitioned."
@@ -2749,7 +2830,7 @@
       },
       "partitionScheme": {
         "type": {
-          "$ref": "#/181"
+          "$ref": "#/192"
         },
         "flags": 1,
         "description": "Specifies how the service is partitioned."
@@ -2772,10 +2853,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/182"
+        "$ref": "#/193"
       },
       {
-        "$ref": "#/183"
+        "$ref": "#/194"
       },
       {
         "$ref": "#/0"
@@ -2788,7 +2869,7 @@
     "properties": {
       "scheme": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/201"
         },
         "flags": 1,
         "description": "The ServiceCorrelationScheme which describes the relationship between this service and the service specified via ServiceName."
@@ -2822,16 +2903,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/186"
+        "$ref": "#/197"
       },
       {
-        "$ref": "#/187"
+        "$ref": "#/198"
       },
       {
-        "$ref": "#/188"
+        "$ref": "#/199"
       },
       {
-        "$ref": "#/189"
+        "$ref": "#/200"
       },
       {
         "$ref": "#/0"
@@ -2841,7 +2922,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/185"
+      "$ref": "#/196"
     }
   },
   {
@@ -2857,7 +2938,7 @@
       },
       "weight": {
         "type": {
-          "$ref": "#/197"
+          "$ref": "#/208"
         },
         "flags": 0,
         "description": "The service load metric relative weight, compared to other metrics configured for this service, as a number."
@@ -2905,16 +2986,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/193"
+        "$ref": "#/204"
       },
       {
-        "$ref": "#/194"
+        "$ref": "#/205"
       },
       {
-        "$ref": "#/195"
+        "$ref": "#/206"
       },
       {
-        "$ref": "#/196"
+        "$ref": "#/207"
       },
       {
         "$ref": "#/0"
@@ -2924,7 +3005,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/192"
+      "$ref": "#/203"
     }
   },
   {
@@ -2937,7 +3018,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/199"
+      "$ref": "#/210"
     }
   },
   {
@@ -2960,16 +3041,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/201"
+        "$ref": "#/212"
       },
       {
-        "$ref": "#/202"
+        "$ref": "#/213"
       },
       {
-        "$ref": "#/203"
+        "$ref": "#/214"
       },
       {
-        "$ref": "#/204"
+        "$ref": "#/215"
       },
       {
         "$ref": "#/0"
@@ -2989,14 +3070,14 @@
       },
       "targetReplicaSetSize": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/218"
         },
         "flags": 0,
         "description": "The target replica set size as a number."
       },
       "minReplicaSetSize": {
         "type": {
-          "$ref": "#/207"
+          "$ref": "#/218"
         },
         "flags": 0,
         "description": "The minimum replica set size as a number."
@@ -3024,7 +3105,7 @@
       },
       "serviceKind": {
         "type": {
-          "$ref": "#/208"
+          "$ref": "#/219"
         },
         "flags": 1,
         "description": "The kind of service (Stateless or Stateful)."
@@ -3045,7 +3126,7 @@
     "properties": {
       "instanceCount": {
         "type": {
-          "$ref": "#/210"
+          "$ref": "#/221"
         },
         "flags": 0,
         "description": "The instance count."
@@ -3066,14 +3147,14 @@
       },
       "minInstancePercentage": {
         "type": {
-          "$ref": "#/211"
+          "$ref": "#/222"
         },
         "flags": 0,
         "description": "MinInstancePercentage is the minimum percentage of InstanceCount that must be up to meet the EnsureAvailability safety check during operations like upgrade or deactivate node. The actual number that is used is max( MinInstanceCount, ceil( MinInstancePercentage/100.0 * InstanceCount) ). Note, if InstanceCount is set to -1, during MinInstancePercentage computation, -1 is first converted into the number of nodes on which the instances are allowed to be placed according to the placement constraints on the service."
       },
       "serviceKind": {
         "type": {
-          "$ref": "#/212"
+          "$ref": "#/223"
         },
         "flags": 1,
         "description": "The kind of service (Stateless or Stateful)."
@@ -3093,7 +3174,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ProxyResourceTags",
+    "name": "ServiceResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/0"
@@ -3102,11 +3183,89 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.ServiceFabric/clusters/applications/services@2023-11-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/172"
+      "$ref": "#/183"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.ServiceFabric/locations/unsupportedVmSizes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2023-11-01-preview"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.ServiceFabric/locations/unsupportedVmSizes",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/226"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/227"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/229"
+        },
+        "flags": 2,
+        "description": "VM Size properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/123"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "VMSize",
+    "properties": {
+      "size": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 2,
+        "description": "VM Size name."
+      }
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.ServiceFabric/locations/unsupportedVmSizes@2023-11-01-preview",
+    "body": {
+      "$ref": "#/228"
+    },
+    "readableScopes": 4,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -3127,9 +3286,10 @@
     "properties": {
       "supportedPath": {
         "type": {
-          "$ref": "#/217"
+          "$ref": "#/233"
         },
-        "flags": 0
+        "flags": 0,
+        "description": "The list of intermediate cluster code versions for an upgrade or downgrade."
       }
     }
   },
@@ -3145,10 +3305,10 @@
     "resourceType": "Microsoft.ServiceFabric/clusters",
     "apiVersion": "2023-11-01-preview",
     "output": {
-      "$ref": "#/216"
+      "$ref": "#/232"
     },
     "input": {
-      "$ref": "#/215"
+      "$ref": "#/231"
     }
   }
 ]

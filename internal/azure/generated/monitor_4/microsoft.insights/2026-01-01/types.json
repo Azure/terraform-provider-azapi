@@ -1,0 +1,306 @@
+[
+  {
+    "$type": "StringType",
+    "pattern": "^[-\\w\\._\\(\\)]+$"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Insights/activityLogAlerts"
+  },
+  {
+    "$type": "StringType"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2026-01-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Insights/activityLogAlerts",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/1"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/3"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The Activity Log Alert rule properties of the resource."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location of the resource. Azure Activity Log Alert rules are supported on Global, West Europe and North Europe regions."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/20"
+        },
+        "flags": 0,
+        "description": "The tags of the resource."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertRuleProperties",
+    "properties": {
+      "tenantScope": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The tenant GUID. Must be provided for tenant-level and management group events rules."
+      },
+      "scopes": {
+        "type": {
+          "$ref": "#/6"
+        },
+        "flags": 0,
+        "description": "A list of resource IDs that will be used as prefixes. The alert will only apply to Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one item."
+      },
+      "condition": {
+        "type": {
+          "$ref": "#/7"
+        },
+        "flags": 1,
+        "description": "The condition that will cause this alert to activate."
+      },
+      "actions": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 1,
+        "description": "The actions that will activate when the condition is met."
+      },
+      "enabled": {
+        "type": {
+          "$ref": "#/19"
+        },
+        "flags": 0,
+        "description": "Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its actions will be activated."
+      },
+      "description": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "A description of this Activity Log Alert rule."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertRuleAllOfCondition",
+    "properties": {
+      "allOf": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 1,
+        "description": "The list of Activity Log Alert rule conditions."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertRuleAnyOfOrLeafCondition",
+    "properties": {
+      "anyOf": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 0,
+        "description": "An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met."
+      },
+      "field": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the Activity Log event's field that this condition will examine.\nThe possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'."
+      },
+      "equals": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met."
+      },
+      "containsAny": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition is met."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AlertRuleLeafCondition",
+    "properties": {
+      "field": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the Activity Log event's field that this condition will examine.\nThe possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'."
+      },
+      "equals": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met."
+      },
+      "containsAny": {
+        "type": {
+          "$ref": "#/10"
+        },
+        "flags": 0,
+        "description": "The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition is met."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/9"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/8"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionList",
+    "properties": {
+      "actionGroups": {
+        "type": {
+          "$ref": "#/18"
+        },
+        "flags": 0,
+        "description": "The list of the Action Groups."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionGroup",
+    "properties": {
+      "actionGroupId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The resource ID of the Action Group. This cannot be null or empty."
+      },
+      "webhookProperties": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 0,
+        "description": "the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload."
+      },
+      "actionProperties": {
+        "type": {
+          "$ref": "#/17"
+        },
+        "flags": 0,
+        "description": "Predefined list of properties and configuration items for the action group."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionGroupWebhookProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ActionGroupActionProperties",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/15"
+    }
+  },
+  {
+    "$type": "BooleanType"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AzureResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Insights/activityLogAlerts@2026-01-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  }
+]

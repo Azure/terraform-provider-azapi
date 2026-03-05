@@ -47,33 +47,33 @@
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
+      "properties": {
         "type": {
           "$ref": "#/5"
+        },
+        "flags": 0,
+        "description": "The map account properties."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/55"
         },
         "flags": 1,
         "description": "The SKU of this account."
       },
       "kind": {
         "type": {
-          "$ref": "#/9"
+          "$ref": "#/59"
         },
         "flags": 0,
         "description": "Get or Set Kind property."
       },
       "identity": {
         "type": {
-          "$ref": "#/10"
+          "$ref": "#/60"
         },
         "flags": 0,
-        "description": "Managed service identity (system assigned and/or user assigned identities)"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/19"
-        },
-        "flags": 0,
-        "description": "The map account properties."
+        "description": "The managed service identities assigned to this resource."
       },
       "tags": {
         "type": {
@@ -91,165 +91,11 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Sku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/7"
-        },
-        "flags": 1,
-        "description": "The name of the SKU, in standard format (such as G2)."
-      },
-      "tier": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "Gets the sku tier. This is based on the SKU name."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "G2"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Gen2"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedServiceIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 2,
-        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "tenantId": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 2,
-        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
-      },
-      "type": {
-        "type": {
-          "$ref": "#/16"
-        },
-        "flags": 1,
-        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
-      },
-      "userAssignedIdentities": {
-        "type": {
-          "$ref": "#/18"
-        },
-        "flags": 0,
-        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
-      }
-    }
-  },
-  {
-    "$type": "StringType",
-    "minLength": 36,
-    "maxLength": 36,
-    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "UserAssigned"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "SystemAssigned,UserAssigned"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/12"
-      },
-      {
-        "$ref": "#/13"
-      },
-      {
-        "$ref": "#/14"
-      },
-      {
-        "$ref": "#/15"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "UserAssignedIdentity",
-    "properties": {
-      "principalId": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 2,
-        "description": "The principal ID of the assigned identity."
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/11"
-        },
-        "flags": 2,
-        "description": "The client ID of the assigned identity."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ManagedServiceIdentityUserAssignedIdentities",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/17"
     }
   },
   {
@@ -265,7 +111,7 @@
       },
       "disableLocalAuth": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/6"
         },
         "flags": 0,
         "description": "Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any usage."
@@ -279,42 +125,42 @@
       },
       "linkedResources": {
         "type": {
-          "$ref": "#/22"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "The array of associated resources to the Maps account. Linked resource in the array cannot individually update, you must update all linked resources in the array together. These resources may be used on operations on the Azure Maps REST API. Access is controlled by the Maps Account Managed Identity(s) permissions to those resource(s)."
       },
       "cors": {
         "type": {
-          "$ref": "#/23"
+          "$ref": "#/9"
         },
         "flags": 0,
         "description": "Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service."
       },
       "encryption": {
         "type": {
-          "$ref": "#/27"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "All encryption configuration for a resource."
       },
       "locations": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/25"
         },
         "flags": 0,
         "description": "List of additional data processing regions for the Maps Account, which may result in requests being processed in another geography. Some features or results may be restricted to specific regions. By default, Maps REST APIs process requests according to the account location or the [geographic scope](https://learn.microsoft.com/azure/azure-maps/geographic-scope)."
       },
       "privateEndpointConnections": {
         "type": {
-          "$ref": "#/64"
+          "$ref": "#/51"
         },
         "flags": 2,
         "description": "List of private endpoint connections associated with the Maps Account."
       },
       "publicNetworkAccess": {
         "type": {
-          "$ref": "#/67"
+          "$ref": "#/54"
         },
         "flags": 0,
         "description": "Property to specify whether the Maps Account will accept traffic from public internet. If set to 'disabled' all traffic except private endpoint traffic and that that originates from trusted services will be blocked."
@@ -347,7 +193,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/21"
+      "$ref": "#/7"
     },
     "maxLength": 10
   },
@@ -357,7 +203,7 @@
     "properties": {
       "corsRules": {
         "type": {
-          "$ref": "#/26"
+          "$ref": "#/12"
         },
         "flags": 0,
         "description": "The list of CORS rules. You can include up to five CorsRule elements in the request."
@@ -370,7 +216,7 @@
     "properties": {
       "allowedOrigins": {
         "type": {
-          "$ref": "#/25"
+          "$ref": "#/11"
         },
         "flags": 1,
         "description": "Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or \"*\" to allow all domains"
@@ -386,7 +232,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/24"
+      "$ref": "#/10"
     },
     "maxLength": 5
   },
@@ -396,14 +242,14 @@
     "properties": {
       "infrastructureEncryption": {
         "type": {
-          "$ref": "#/30"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "(Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled."
       },
       "customerManagedKeyEncryption": {
         "type": {
-          "$ref": "#/31"
+          "$ref": "#/17"
         },
         "flags": 0,
         "description": "All Customer-managed key encryption properties for the resource."
@@ -422,10 +268,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/28"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/29"
+        "$ref": "#/15"
       },
       {
         "$ref": "#/2"
@@ -438,7 +284,7 @@
     "properties": {
       "keyEncryptionKeyIdentity": {
         "type": {
-          "$ref": "#/32"
+          "$ref": "#/18"
         },
         "flags": 0,
         "description": "All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault."
@@ -458,7 +304,7 @@
     "properties": {
       "identityType": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity."
@@ -472,14 +318,14 @@
       },
       "federatedClientId": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "application client identity to use for accessing key encryption key Url in a different tenant. Ex: f83c6b1b-4d34-47e4-bb34-9d83df58b540"
       },
       "delegatedIdentityClientId": {
         "type": {
-          "$ref": "#/11"
+          "$ref": "#/23"
         },
         "flags": 0,
         "description": "delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only."
@@ -502,18 +348,24 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/33"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/34"
+        "$ref": "#/20"
       },
       {
-        "$ref": "#/35"
+        "$ref": "#/21"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "StringType",
+    "minLength": 36,
+    "maxLength": 36,
+    "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
   },
   {
     "$type": "ObjectType",
@@ -531,7 +383,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/37"
+      "$ref": "#/24"
     }
   },
   {
@@ -540,7 +392,7 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "Resource properties."
@@ -568,7 +420,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -581,28 +433,28 @@
     "properties": {
       "groupIds": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/28"
         },
         "flags": 2,
         "description": "The group ids for the private endpoint resource."
       },
       "privateEndpoint": {
         "type": {
-          "$ref": "#/42"
+          "$ref": "#/29"
         },
         "flags": 0,
         "description": "The private endpoint resource."
       },
       "privateLinkServiceConnectionState": {
         "type": {
-          "$ref": "#/43"
+          "$ref": "#/30"
         },
         "flags": 1,
         "description": "A collection of information about the state of the connection between service consumer and provider."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/39"
         },
         "flags": 2,
         "description": "The provisioning state of the private endpoint connection resource."
@@ -634,7 +486,7 @@
     "properties": {
       "status": {
         "type": {
-          "$ref": "#/47"
+          "$ref": "#/34"
         },
         "flags": 0,
         "description": "Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service."
@@ -671,13 +523,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/44"
+        "$ref": "#/31"
       },
       {
-        "$ref": "#/45"
+        "$ref": "#/32"
       },
       {
-        "$ref": "#/46"
+        "$ref": "#/33"
       },
       {
         "$ref": "#/2"
@@ -704,16 +556,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/48"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/49"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/50"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/38"
       },
       {
         "$ref": "#/2"
@@ -733,7 +585,7 @@
       },
       "createdByType": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/45"
         },
         "flags": 0,
         "description": "The type of identity that created the resource."
@@ -754,7 +606,7 @@
       },
       "lastModifiedByType": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/50"
         },
         "flags": 0,
         "description": "The type of identity that last modified the resource."
@@ -788,16 +640,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/54"
+        "$ref": "#/41"
       },
       {
-        "$ref": "#/55"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/56"
+        "$ref": "#/43"
       },
       {
-        "$ref": "#/57"
+        "$ref": "#/44"
       },
       {
         "$ref": "#/2"
@@ -824,16 +676,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/59"
+        "$ref": "#/46"
       },
       {
-        "$ref": "#/60"
+        "$ref": "#/47"
       },
       {
-        "$ref": "#/61"
+        "$ref": "#/48"
       },
       {
-        "$ref": "#/62"
+        "$ref": "#/49"
       },
       {
         "$ref": "#/2"
@@ -843,7 +695,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/39"
+      "$ref": "#/26"
     }
   },
   {
@@ -858,15 +710,163 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/65"
+        "$ref": "#/52"
       },
       {
-        "$ref": "#/66"
+        "$ref": "#/53"
       },
       {
         "$ref": "#/2"
       }
     ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Sku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/57"
+        },
+        "flags": 1,
+        "description": "The name of the SKU, in standard format (such as G2)."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "Gets the sku tier. This is based on the SKU name."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "G2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/56"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Gen2"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/58"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "tenantId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity."
+      },
+      "type": {
+        "type": {
+          "$ref": "#/65"
+        },
+        "flags": 1,
+        "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
+      },
+      "userAssignedIdentities": {
+        "type": {
+          "$ref": "#/67"
+        },
+        "flags": 0,
+        "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "UserAssigned"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "SystemAssigned,UserAssigned"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/61"
+      },
+      {
+        "$ref": "#/62"
+      },
+      {
+        "$ref": "#/63"
+      },
+      {
+        "$ref": "#/64"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "UserAssignedIdentity",
+    "properties": {
+      "principalId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The principal ID of the assigned identity."
+      },
+      "clientId": {
+        "type": {
+          "$ref": "#/23"
+        },
+        "flags": 2,
+        "description": "The client ID of the assigned identity."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedServiceIdentityUserAssignedIdentities",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/66"
+    }
   },
   {
     "$type": "ObjectType",
@@ -879,11 +879,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Maps/accounts@2025-10-01-preview",
-    "scopeType": 8,
     "body": {
       "$ref": "#/4"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -948,7 +948,7 @@
       },
       "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1008,17 +1008,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Maps/accounts/creators@2025-10-01-preview",
-    "scopeType": 8,
     "body": {
       "$ref": "#/72"
     },
-    "flags": 0
-  },
-  {
-    "$type": "StringType",
-    "minLength": 3,
-    "maxLength": 98,
-    "pattern": "^[^%&:\\\\/#?]+$"
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1041,35 +1035,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/78"
+          "$ref": "#/2"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/79"
+          "$ref": "#/78"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/80"
+          "$ref": "#/79"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/40"
+          "$ref": "#/27"
         },
         "flags": 0,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1079,11 +1073,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Maps/accounts/privateEndpointConnections@2025-10-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/81"
+      "$ref": "#/80"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
@@ -1110,35 +1104,35 @@
       },
       "name": {
         "type": {
-          "$ref": "#/83"
+          "$ref": "#/82"
         },
         "flags": 9,
         "description": "The resource name"
       },
       "type": {
         "type": {
-          "$ref": "#/84"
+          "$ref": "#/83"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/85"
+          "$ref": "#/84"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/86"
         },
         "flags": 2,
         "description": "Resource properties."
       },
       "systemData": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/40"
         },
         "flags": 2,
         "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
@@ -1158,14 +1152,14 @@
       },
       "requiredMembers": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/87"
         },
         "flags": 2,
         "description": "The private link resource required member names."
       },
       "requiredZoneNames": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "The private link resource private link DNS zone name."
@@ -1187,124 +1181,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Maps/accounts/privateLinkResources@2025-10-01-preview",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/86"
+      "$ref": "#/85"
     },
-    "flags": 1
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AccountSasParameters",
-    "properties": {
-      "signingKey": {
-        "type": {
-          "$ref": "#/95"
-        },
-        "flags": 1,
-        "description": "The Maps account key to use for signing. Picking `primaryKey` or `secondaryKey` will use the Maps account Shared Keys, and using `managedIdentity` will use the auto-renewed private key to sign the SAS."
-      },
-      "principalId": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Maps Account. To assign a Managed Identity of the account, use operation Create or Update an assign a User Assigned Identity resource Id."
-      },
-      "regions": {
-        "type": {
-          "$ref": "#/96"
-        },
-        "flags": 0,
-        "description": "Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS token. Example: \"eastus\", \"westus2\". Omitting this parameter will allow all region locations to be accessible."
-      },
-      "maxRatePerSecond": {
-        "type": {
-          "$ref": "#/97"
-        },
-        "flags": 1,
-        "description": "Required parameter which represents the desired maximum request per second to allowed for the given SAS token. This does not guarantee perfect accuracy in measurements but provides application safe guards of abuse with eventual enforcement."
-      },
-      "start": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The date time offset of when the token validity begins. For example \"2017-05-24T10:42:03.1567373Z\". Maximum duration allowed is 24 hours between `start` and `expiry`."
-      },
-      "expiry": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 1,
-        "description": "The date time offset of when the token validity expires. For example \"2017-05-24T10:42:03.1567373Z\". Maximum duration allowed is 24 hours between `start` and `expiry`."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "primaryKey"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "secondaryKey"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "managedIdentity"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/92"
-      },
-      {
-        "$ref": "#/93"
-      },
-      {
-        "$ref": "#/94"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
-    }
-  },
-  {
-    "$type": "IntegerType",
-    "minValue": 1,
-    "maxValue": 500
-  },
-  {
-    "$type": "ObjectType",
-    "name": "MapsAccountSasToken",
-    "properties": {
-      "accountSasToken": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The shared access signature access token."
-      }
-    }
-  },
-  {
-    "$type": "ResourceFunctionType",
-    "name": "listSas",
-    "resourceType": "Microsoft.Maps/accounts",
-    "apiVersion": "2025-10-01-preview",
-    "output": {
-      "$ref": "#/98"
-    },
-    "input": {
-      "$ref": "#/91"
-    }
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "ObjectType",
@@ -1346,7 +1227,120 @@
     "resourceType": "Microsoft.Maps/accounts",
     "apiVersion": "2025-10-01-preview",
     "output": {
-      "$ref": "#/100"
+      "$ref": "#/90"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "AccountSasParameters",
+    "properties": {
+      "signingKey": {
+        "type": {
+          "$ref": "#/96"
+        },
+        "flags": 1,
+        "description": "The Maps account key to use for signing. Picking `primaryKey` or `secondaryKey` will use the Maps account Shared Keys, and using `managedIdentity` will use the auto-renewed private key to sign the SAS."
+      },
+      "principalId": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Maps Account. To assign a Managed Identity of the account, use operation Create or Update an assign a User Assigned Identity resource Id."
+      },
+      "regions": {
+        "type": {
+          "$ref": "#/97"
+        },
+        "flags": 0,
+        "description": "Optional, allows control of which region locations are permitted access to Azure Maps REST APIs with the SAS token. Example: \"eastus\", \"westus2\". Omitting this parameter will allow all region locations to be accessible."
+      },
+      "maxRatePerSecond": {
+        "type": {
+          "$ref": "#/98"
+        },
+        "flags": 1,
+        "description": "Required parameter which represents the desired maximum request per second to allowed for the given SAS token. This does not guarantee perfect accuracy in measurements but provides application safe guards of abuse with eventual enforcement."
+      },
+      "start": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The date time offset of when the token validity begins. For example \"2017-05-24T10:42:03.1567373Z\". Maximum duration allowed is 24 hours between `start` and `expiry`."
+      },
+      "expiry": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The date time offset of when the token validity expires. For example \"2017-05-24T10:42:03.1567373Z\". Maximum duration allowed is 24 hours between `start` and `expiry`."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "primaryKey"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "secondaryKey"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "managedIdentity"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/93"
+      },
+      {
+        "$ref": "#/94"
+      },
+      {
+        "$ref": "#/95"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "IntegerType",
+    "minValue": 0,
+    "maxValue": 500
+  },
+  {
+    "$type": "ObjectType",
+    "name": "MapsAccountSasToken",
+    "properties": {
+      "accountSasToken": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The shared access signature access token."
+      }
+    }
+  },
+  {
+    "$type": "ResourceFunctionType",
+    "name": "listSas",
+    "resourceType": "Microsoft.Maps/accounts",
+    "apiVersion": "2025-10-01-preview",
+    "output": {
+      "$ref": "#/99"
+    },
+    "input": {
+      "$ref": "#/92"
     }
   },
   {
@@ -1355,7 +1349,7 @@
     "properties": {
       "keyType": {
         "type": {
-          "$ref": "#/105"
+          "$ref": "#/104"
         },
         "flags": 1,
         "description": "Whether the operation refers to the primary or secondary key."
@@ -1374,10 +1368,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/103"
+        "$ref": "#/102"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/103"
       },
       {
         "$ref": "#/2"
@@ -1390,10 +1384,10 @@
     "resourceType": "Microsoft.Maps/accounts",
     "apiVersion": "2025-10-01-preview",
     "output": {
-      "$ref": "#/100"
+      "$ref": "#/90"
     },
     "input": {
-      "$ref": "#/102"
+      "$ref": "#/101"
     }
   }
 ]

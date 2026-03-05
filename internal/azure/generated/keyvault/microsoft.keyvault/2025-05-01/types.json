@@ -49,12 +49,19 @@
         "flags": 0,
         "description": "Properties of the managed HSM"
       },
-      "tags": {
+      "sku": {
         "type": {
           "$ref": "#/71"
         },
         "flags": 0,
-        "description": "Resource tags."
+        "description": "SKU details"
+      },
+      "identity": {
+        "type": {
+          "$ref": "#/81"
+        },
+        "flags": 0,
+        "description": "Managed service identity"
       },
       "location": {
         "type": {
@@ -63,19 +70,12 @@
         "flags": 0,
         "description": "The geo-location where the resource lives"
       },
-      "sku": {
+      "tags": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/89"
         },
         "flags": 0,
-        "description": "SKU details"
-      },
-      "identity": {
-        "type": {
-          "$ref": "#/82"
-        },
-        "flags": 0,
-        "description": "Managed service identity"
+        "description": "Resource tags."
       },
       "systemData": {
         "type": {
@@ -804,26 +804,18 @@
   },
   {
     "$type": "ObjectType",
-    "name": "ManagedHsmTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/0"
-    }
-  },
-  {
-    "$type": "ObjectType",
     "name": "ManagedHsmSku",
     "properties": {
       "family": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/74"
         },
         "flags": 1,
         "description": "SKU Family of the managed HSM Pool"
       },
       "name": {
         "type": {
-          "$ref": "#/81"
+          "$ref": "#/80"
         },
         "flags": 1,
         "description": "SKU of the managed HSM Pool"
@@ -842,10 +834,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/73"
+        "$ref": "#/72"
       },
       {
-        "$ref": "#/74"
+        "$ref": "#/73"
       },
       {
         "$ref": "#/0"
@@ -876,6 +868,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/75"
+      },
+      {
         "$ref": "#/76"
       },
       {
@@ -886,9 +881,6 @@
       },
       {
         "$ref": "#/79"
-      },
-      {
-        "$ref": "#/80"
       }
     ]
   },
@@ -912,14 +904,14 @@
       },
       "type": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/86"
         },
         "flags": 1,
         "description": "Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed)."
       },
       "userAssignedIdentities": {
         "type": {
-          "$ref": "#/89"
+          "$ref": "#/88"
         },
         "flags": 0,
         "description": "The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests."
@@ -946,6 +938,9 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/82"
+      },
+      {
         "$ref": "#/83"
       },
       {
@@ -953,9 +948,6 @@
       },
       {
         "$ref": "#/85"
-      },
-      {
-        "$ref": "#/86"
       },
       {
         "$ref": "#/0"
@@ -987,7 +979,15 @@
     "name": "UserAssignedIdentities",
     "properties": {},
     "additionalProperties": {
-      "$ref": "#/88"
+      "$ref": "#/87"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "ManagedHsmTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/0"
     }
   },
   {
@@ -1113,11 +1113,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/managedHSMs@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/3"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -2308,11 +2308,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/104"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -2418,11 +2418,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/accessPolicies@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/229"
     },
-    "flags": 0
+    "readableScopes": 0,
+    "writableScopes": 8
   },
   {
     "$type": "StringType",
@@ -2948,11 +2948,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/managedHSMs/keys@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/236"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -3001,30 +3001,16 @@
         "flags": 0,
         "description": "Resource properties."
       },
-      "tags": {
-        "type": {
-          "$ref": "#/279"
-        },
-        "flags": 0,
-        "description": "Resource tags."
-      },
-      "location": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The geo-location where the resource lives"
-      },
       "sku": {
         "type": {
-          "$ref": "#/72"
+          "$ref": "#/71"
         },
         "flags": 0,
         "description": "SKU details"
       },
       "identity": {
         "type": {
-          "$ref": "#/82"
+          "$ref": "#/81"
         },
         "flags": 0,
         "description": "Managed service identity"
@@ -3035,6 +3021,20 @@
         },
         "flags": 0,
         "description": "Modified whenever there is a change in the state of private endpoint connection."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 0,
+        "description": "The geo-location where the resource lives"
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/279"
+        },
+        "flags": 0,
+        "description": "Resource tags."
       },
       "systemData": {
         "type": {
@@ -3056,11 +3056,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/managedHSMs/privateEndpointConnections@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/278"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -3589,11 +3589,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/keys@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/283"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -3683,11 +3683,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnections@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/325"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -3852,11 +3852,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/secrets@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/330"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -3973,11 +3973,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/locations/deletedManagedHSMs@2025-05-01",
-    "scopeType": 4,
     "body": {
       "$ref": "#/337"
     },
-    "flags": 1
+    "readableScopes": 4,
+    "writableScopes": 0
   },
   {
     "$type": "StringLiteralType",
@@ -4094,11 +4094,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/locations/deletedVaults@2025-05-01",
-    "scopeType": 4,
     "body": {
       "$ref": "#/343"
     },
-    "flags": 1
+    "readableScopes": 4,
+    "writableScopes": 0
   },
   {
     "$type": "StringType",
@@ -4178,11 +4178,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/managedHSMs/keys/versions@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/350"
     },
-    "flags": 1
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "StringLiteralType",
@@ -4265,11 +4265,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.KeyVault/vaults/keys/versions@2025-05-01",
-    "scopeType": 8,
     "body": {
       "$ref": "#/355"
     },
-    "flags": 1
+    "readableScopes": 8,
+    "writableScopes": 0
   },
   {
     "$type": "ResourceFunctionType",
