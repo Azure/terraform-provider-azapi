@@ -92,6 +92,8 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Body                          types.Dynamic       `tfsdk:"body"`
 				When                          types.String        `tfsdk:"when"`
 				Locks                         types.List          `tfsdk:"locks"`
+				IgnoreNotFound                types.Bool          `tfsdk:"ignore_not_found"`
+				Exist                         types.Bool          `tfsdk:"exist"`
 				ResponseExportValues          types.Dynamic       `tfsdk:"response_export_values"`
 				SensitiveResponseExportValues types.Dynamic       `tfsdk:"sensitive_response_export_values"`
 				Output                        types.Dynamic       `tfsdk:"output"`
@@ -133,6 +135,8 @@ func AzapiResourceActionMigrationV1ToV2(ctx context.Context) resource.StateUpgra
 				Body:                          bodyVal,
 				When:                          oldState.When,
 				Locks:                         oldState.Locks,
+				IgnoreNotFound:                types.BoolValue(false),
+				Exist:                         types.BoolValue(true),
 				ResponseExportValues:          responseExportValues,
 				SensitiveResponseExportValues: types.DynamicNull(),
 				Output:                        outputVal,

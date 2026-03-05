@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -208,7 +209,10 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.ResponseExportValues(),
 			},
 			"exist": schema.BoolAttribute{
-				Computed:            true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
 				MarkdownDescription: "Indicates whether the resource action was successfully performed.",
 			},
 
@@ -312,6 +316,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		model.ID = basetypes.NewStringValue(resourceId)
 		model.Output = basetypes.NewDynamicNull()
 		model.SensitiveOutput = basetypes.NewDynamicNull()
+		model.Exist = basetypes.NewBoolNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }

@@ -96,6 +96,7 @@ func TestAccGenericResource_unknownDiscriminatorValidation(t *testing.T) {
 variable "datastore_type" {
   description = "Datastore backend type."
   type        = string
+  default     = "AzureBlob"
 }
 
 resource "azapi_resource" "test" {
@@ -105,6 +106,9 @@ resource "azapi_resource" "test" {
   body = {
     properties = {
       datastoreType = var.datastore_type
+      credentials = {
+        credentialsType = "None"
+      }
     }
   }
 
@@ -360,7 +364,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 			Config: r.defaultNaming(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("name").HasValue("acctestdefaultNaming"),
+				check.That(data.ResourceName).Key("name").HasValue(fmt.Sprintf("acctestdefault%s", data.RandomString)),
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
@@ -368,7 +372,7 @@ func TestAccGenericResource_defaultsNaming(t *testing.T) {
 			Config: r.defaultNamingOverrideInHcl(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(r),
-				check.That(data.ResourceName).Key("name").HasValue("hclNaming"),
+				check.That(data.ResourceName).Key("name").HasValue(fmt.Sprintf("hclNaming%s", data.RandomString)),
 			),
 		},
 		data.ImportStepWithImportStateIdFunc(r.ImportIdFunc, defaultIgnores()...),
@@ -1675,7 +1679,7 @@ func (r GenericResource) defaultNaming(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 provider "azapi" {
-  default_name = "acctestdefaultNaming"
+  default_name = "acctestdefault%[2]s"
 }
 
 resource "azapi_resource" "test" {
@@ -1690,19 +1694,19 @@ resource "azapi_resource" "test" {
     }
   }
 }
-`, r.template(data))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultNamingOverrideInHcl(data acceptance.TestData) string {
 	return fmt.Sprintf(`
 %s
 provider "azapi" {
-  default_name = "acctestdefaultNaming"
+  default_name = "acctestdefault%[2]s"
 }
 
 resource "azapi_resource" "test" {
   type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = "hclNaming"
+  name      = "hclNaming%[2]s"
   parent_id = azapi_resource.resourceGroup.id
   location  = azapi_resource.resourceGroup.location
   body = {
@@ -1713,7 +1717,7 @@ resource "azapi_resource" "test" {
     }
   }
 }
-`, r.template(data))
+`, r.template(data), data.RandomString)
 }
 
 func (r GenericResource) defaultsNotApplicable(data acceptance.TestData) string {
