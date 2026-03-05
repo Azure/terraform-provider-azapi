@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -22,6 +23,33 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 		},
 		{
 			Config: r.keyVaultKeyUpdate(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
+			),
+		},
+	})
+}
+
+func TestAccDataPlaneResource_aiFoundryAssistant(t *testing.T) {
+	host := os.Getenv("ARM_TEST_AIFOUNDRY_HOST")
+	projectName := os.Getenv("ARM_TEST_AIFOUNDRY_PROJECT_NAME")
+	modelName := os.Getenv("ARM_TEST_AIFOUNDRY_MODEL")
+	if host == "" || projectName == "" || modelName == "" {
+		t.Skip("Skipping as ARM_TEST_AIFOUNDRY_HOST, ARM_TEST_AIFOUNDRY_PROJECT_NAME and ARM_TEST_AIFOUNDRY_MODEL must be specified")
+	}
+
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.aiFoundryAssistant(data, host, projectName, modelName),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
+			),
+		},
+		{
+			Config: r.aiFoundryAssistantUpdate(data, host, projectName, modelName),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
@@ -131,4 +159,34 @@ resource "azapi_resource_action" "add_accesspolicy" {
 
 
 `, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) aiFoundryAssistant(data acceptance.TestData, host, projectName, modelName string) string {
+	return fmt.Sprintf(`
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AIFoundry/agents/assistants@v1"
+  parent_id = "%s/api/projects/%s"
+
+  body = {
+    model        = "%s"
+    name         = "acctest-%s"
+    instructions = "You are an acceptance test assistant"
+  }
+}
+`, host, projectName, modelName, data.RandomString)
+}
+
+func (r DataPlaneResource) aiFoundryAssistantUpdate(data acceptance.TestData, host, projectName, modelName string) string {
+	return fmt.Sprintf(`
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.AIFoundry/agents/assistants@v1"
+  parent_id = "%s/api/projects/%s"
+
+  body = {
+    model        = "%s"
+    name         = "acctest-%s"
+    instructions = "You are an updated acceptance test assistant"
+  }
+}
+`, host, projectName, modelName, data.RandomString)
 }

@@ -7,11 +7,6 @@ terraform {
 }
 
 provider "azapi" {
-  endpoint = [{
-    # Project endpoint base (no protocol) for AI Foundry Agents data plane
-    resource_manager_endpoint = var.ai_foundry_host
-    resource_manager_audience = "https://ai.azure.com"
-  }]
 }
 
 variable "ai_foundry_host" {
@@ -27,8 +22,9 @@ variable "project_name" {
 resource "azapi_data_plane_resource" "assistant" {
   type      = "Microsoft.AIFoundry/agents/assistants@v1"
   parent_id = "${var.ai_foundry_host}/api/projects/${var.project_name}"
+  name      = null
 
-  # name is server-generated on create (e.g. asst_...), so it is omitted.
+  # name is server-generated on create (e.g. asst_...), so keep it null.
   body = {
     model        = "gpt-4o"
     instructions = "You are a helpful assistant created via Terraform"
