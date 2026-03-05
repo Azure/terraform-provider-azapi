@@ -188,6 +188,20 @@ Optional:
 - `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.
 - `update` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
 
+## Import
+
+`azapi_data_plane_resource` supports import using the format:
+
+```shell
+terraform import <resource_address> '<resource-id>|<type@api-version>'
+```
+
+Example:
+
+```shell
+terraform import azapi_data_plane_resource.agent 'kpaifaifndengwus301.services.ai.azure.com/api/projects/kpaifpplaygroundengwus3/agents/terraform-poc-agent|Microsoft.Foundry/agents@v1'
+```
+
 ## Available Resources
 
 | Resource Type | URL | Parent ID Example                                                                           |

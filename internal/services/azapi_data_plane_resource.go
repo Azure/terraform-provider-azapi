@@ -68,6 +68,11 @@ type DataPlaneResourceModel struct {
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
+type DataPlaneResourceIdentityModel struct {
+	ID   types.String `tfsdk:"id"`
+	Type types.String `tfsdk:"type"`
+}
+
 type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
@@ -76,6 +81,7 @@ var _ resource.Resource = &DataPlaneResource{}
 var _ resource.ResourceWithConfigure = &DataPlaneResource{}
 var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
 var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
+var _ resource.ResourceWithImportState = &DataPlaneResource{}
 
 func (r *DataPlaneResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	tflog.Debug(ctx, "Configuring azapi_data_plane_resource")
@@ -726,6 +732,67 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	model.Type = basetypes.NewStringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
 
 	response.Diagnostics.Append(response.State.Set(ctx, model)...)
+}
+
+func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
+	resourceID := request.ID
+	resourceType := ""
+
+	if request.Identity != nil && !request.Identity.Raw.IsNull() {
+		var identityData DataPlaneResourceIdentityModel
+		diags := request.Identity.Get(ctx, &identityData)
+		response.Diagnostics.Append(diags...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+
+		if !identityData.ID.IsNull() && identityData.ID.ValueString() != "" {
+			resourceID = identityData.ID.ValueString()
+		}
+		if !identityData.Type.IsNull() {
+			resourceType = identityData.Type.ValueString()
+		}
+	}
+
+	if resourceType == "" {
+		parsedID, parsedType, err := parseDataPlaneImportID(resourceID)
+		if err != nil {
+			response.Diagnostics.AddError("Invalid import ID", err.Error())
+			return
+		}
+		resourceID = parsedID
+		resourceType = parsedType
+	}
+
+	id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid import ID", fmt.Errorf("parsing data plane resource ID %q with type %q: %+v", resourceID, resourceType, err).Error())
+		return
+	}
+
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("id"), id.ID())...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("name"), id.Name)...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("parent_id"), id.ParentId)...)
+	response.Diagnostics.Append(response.State.SetAttribute(ctx, path.Root("type"), fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))...)
+}
+
+func parseDataPlaneImportID(input string) (string, string, error) {
+	parts := strings.SplitN(input, "|", 2)
+	if len(parts) != 2 {
+		return "", "", fmt.Errorf("data plane import ID must be in format '<resource-id>|<type@api-version>', for example 'host/api/projects/myproject/agents/myagent|Microsoft.Foundry/agents@v1'")
+	}
+
+	resourceID := strings.TrimSpace(parts[0])
+	resourceType := strings.TrimSpace(parts[1])
+	if resourceID == "" || resourceType == "" {
+		return "", "", fmt.Errorf("data plane import ID must include both resource ID and type@api-version")
+	}
+
+	if _, _, err := utils.GetAzureResourceTypeApiVersion(resourceType); err != nil {
+		return "", "", fmt.Errorf("invalid resource type in import ID: %s", err)
+	}
+
+	return resourceID, resourceType, nil
 }
 
 func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
