@@ -87,6 +87,10 @@ The following arguments are supported:
 * `type` - (Required) The type of the resource. This should be set to `Microsoft.Authorization/roleAssignments@api-version`. The available api-versions for this resource are: [`2015-07-01`, `2017-10-01-preview`, `2018-01-01-preview`, `2018-09-01-preview`, `2020-03-01-preview`, `2020-04-01-preview`, `2020-08-01-preview`, `2020-10-01-preview`, `2022-04-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
+  `/`  
+  `/providers/Microsoft.Management/managementGroups/{managementGroupId}`  
+  `/subscriptions/{subscriptionId}`  
+  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`  
   `{any azure resource id}`
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
@@ -99,8 +103,8 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Authorization/roleAssignments/{resourceName}
+ terraform import azapi_resource.example //providers/Microsoft.Authorization/roleAssignments/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Authorization/roleAssignments/{resourceName}?api-version=2022-04-01
+ terraform import azapi_resource.example //providers/Microsoft.Authorization/roleAssignments/{resourceName}?api-version=2022-04-01
  ```
