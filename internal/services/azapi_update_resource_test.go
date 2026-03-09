@@ -357,7 +357,7 @@ resource "azapi_resource" "serverfarm" {
       zoneRedundant  = false
     }
     sku = {
-      name = "S1"
+      name = "P1v3"
     }
   }
 }
