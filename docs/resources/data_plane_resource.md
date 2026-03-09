@@ -193,6 +193,7 @@ Optional:
 | Resource Type | URL | Parent ID Example                                                                           |
 | --- | --- |---------------------------------------------------------------------------------------------|
 | Microsoft.AppConfiguration/configurationStores/keyValues | /kv/{key} | {storeName}.azconfig.io                                                                     |
+| Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers | /contentunderstanding/analyzers/{analyzerId} | {accountName}.cognitiveservices.azure.com                                                   |
 | Microsoft.DeviceUpdate/accounts/groups | /deviceupdate/{instanceId}/management/groups/{groupId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |
 | Microsoft.DeviceUpdate/accounts/groups/deployments | /deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}/management/groups/{groupId} |
 | Microsoft.DeviceUpdate/accounts/v2/deployments | /deviceupdate/{instanceId}/v2/management/deployments/{deploymentId} | {accountName}.api.adu.microsoft.com/deviceupdate/{instanceName}                             |

@@ -283,6 +283,20 @@ func TestAccDataPlaneResource_sensitiveBody(t *testing.T) {
 	})
 }
 
+func TestAccDataPlaneResource_contentUnderstandingAnalyzer(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
+	r := DataPlaneResource{}
+
+	data.ResourceTest(t, r, []resource.TestStep{
+		{
+			Config: r.contentUnderstandingAnalyzer(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).ExistsInAzure(r),
+			),
+		},
+	})
+}
+
 func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, state *terraform.InstanceState) (*bool, error) {
 	resourceType := state.Attributes["type"]
 	id, err := parse.DataPlaneResourceIDWithResourceType(state.ID, resourceType)
@@ -1315,6 +1329,177 @@ resource "azapi_data_plane_resource" "test" {
 
   depends_on = [
     azapi_resource.roleAssignment,
+  ]
+}
+`, data.LocationPrimary, data.RandomString)
+}
+
+func (r DataPlaneResource) contentUnderstandingAnalyzer(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[2]s"
+  location = "%[1]s"
+}
+
+resource "azapi_resource" "cognitiveAccount" {
+  type      = "Microsoft.CognitiveServices/accounts@2024-10-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "acctest%[2]s"
+  location  = azapi_resource.resourceGroup.location
+  identity {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+  body = {
+    kind = "AIServices"
+    properties = {
+      publicNetworkAccess = "Enabled"
+      customSubDomainName = "acctest%[2]s"
+    }
+    sku = {
+      name = "S0"
+    }
+  }
+  response_export_values = ["properties.endpoint"]
+}
+
+data "azapi_client_config" "current" {}
+
+data "azapi_resource_list" "roleDefinitions" {
+  type      = "Microsoft.Authorization/roleDefinitions@2022-04-01"
+  parent_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}"
+  response_export_values = {
+    cognitiveServicesUserRoleId = "value[?properties.roleName == 'Cognitive Services Contributor'].id | [0]"
+    azureAIUserRoleId           = "value[?properties.roleName == 'Azure AI User'].id | [0]"
+  }
+}
+
+resource "azapi_resource" "roleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.cognitiveServicesUserRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "aiUserRoleAssignment" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = uuid()
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      roleDefinitionId = data.azapi_resource_list.roleDefinitions.output.azureAIUserRoleId
+    }
+  }
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
+resource "azapi_resource" "gpt41Deployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = "gpt-4.1"
+  body = {
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "gpt-4.1"
+        version = "2025-04-14"
+      }
+      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
+    }
+    sku = {
+      name     = "Standard"
+      capacity = 1
+    }
+  }
+}
+
+resource "azapi_resource" "textEmbedding3LargeDeployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
+  parent_id = azapi_resource.cognitiveAccount.id
+  name      = "text-embedding-3-large"
+  body = {
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "text-embedding-3-large"
+        version = "1"
+      }
+      versionUpgradeOption = "OnceNewDefaultVersionAvailable"
+    }
+    sku = {
+      name     = "Standard"
+      capacity = 1
+    }
+  }
+  depends_on = [azapi_resource.gpt41Deployment]
+}
+
+# Set Content Understanding defaults via data plane PATCH API
+resource "terraform_data" "contentUnderstandingDefaults" {
+  triggers_replace = [
+    azapi_resource.cognitiveAccount.id,
+    azapi_resource.aiUserRoleAssignment,
+    azapi_resource.gpt41Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+
+  provisioner "local-exec" {
+    interpreter = ["pwsh", "-Command"]
+    command     = <<-EOT
+      $token = (az account get-access-token --resource https://cognitiveservices.azure.com --query accessToken -o tsv)
+      $headers = @{
+        "Authorization" = "Bearer $token"
+        "Content-Type"  = "application/merge-patch+json"
+      }
+      $body = @{
+        modelDeployments = @{
+          "gpt-4.1"                = "gpt-4.1"
+          "text-embedding-3-large" = "text-embedding-3-large"
+        }
+      } | ConvertTo-Json
+
+      $endpoint = "${azapi_resource.cognitiveAccount.output.properties.endpoint}contentunderstanding/defaults?api-version=2025-11-01"
+      Invoke-RestMethod -Uri $endpoint -Method Patch -Headers $headers -Body $body
+    EOT
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_resource.aiUserRoleAssignment,
+    azapi_resource.gpt41Deployment,
+    azapi_resource.textEmbedding3LargeDeployment,
+  ]
+}
+
+resource "azapi_data_plane_resource" "test" {
+  type      = "Microsoft.CognitiveServices/accounts/ContentUnderstanding/analyzers@2025-11-01"
+  parent_id = "${azapi_resource.cognitiveAccount.body.properties.customSubDomainName}.cognitiveservices.azure.com"
+  name      = "acctest%[2]s"
+  body = {
+    description    = "My test analyzer"
+    baseAnalyzerId = "prebuilt-document",
+    models : {
+      completion : "gpt-4.1",
+      embedding : "text-embedding-3-large"
+    }
+  }
+
+  depends_on = [
+    azapi_resource.roleAssignment,
+    azapi_resource.aiUserRoleAssignment,
+    terraform_data.contentUnderstandingDefaults,
   ]
 }
 `, data.LocationPrimary, data.RandomString)
