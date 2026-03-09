@@ -288,7 +288,7 @@ resource "azurerm_service_plan" "test" {
   resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
   os_type             = "Windows"
-  sku_name            = "Y1"
+  sku_name            = "P1v3"
 }
 
 resource "azurerm_windows_function_app" "test" {
