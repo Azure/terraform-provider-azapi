@@ -2,7 +2,6 @@ package services_test
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
@@ -31,25 +30,18 @@ func TestAccDataPlaneResource_keyVaultKey(t *testing.T) {
 }
 
 func TestAccDataPlaneResource_foundryAgent(t *testing.T) {
-	host := os.Getenv("ARM_TEST_FOUNDRY_HOST")
-	projectName := os.Getenv("ARM_TEST_FOUNDRY_PROJECT_NAME")
-	modelName := os.Getenv("ARM_TEST_FOUNDRY_MODEL")
-	if host == "" || projectName == "" || modelName == "" {
-		t.Skip("Skipping as Foundry env vars ARM_TEST_FOUNDRY_HOST, ARM_TEST_FOUNDRY_PROJECT_NAME and ARM_TEST_FOUNDRY_MODEL must be specified")
-	}
-
 	data := acceptance.BuildTestData(t, "azapi_data_plane_resource", "test")
 	r := DataPlaneResource{}
 
 	data.ResourceTest(t, r, []resource.TestStep{
 		{
-			Config: r.foundryAgent(data, host, projectName, modelName),
+			Config: r.foundryAgent(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
 		},
 		{
-			Config: r.foundryAgentUpdate(data, host, projectName, modelName),
+			Config: r.foundryAgentUpdate(data),
 			Check: resource.ComposeTestCheckFunc(
 				check.That(data.ResourceName).ExistsInAzure(DataPlaneResource{}),
 			),
@@ -161,39 +153,174 @@ resource "azapi_resource_action" "add_accesspolicy" {
 `, data.LocationPrimary, data.RandomString)
 }
 
-func (r DataPlaneResource) foundryAgent(data acceptance.TestData, host, projectName, modelName string) string {
+func (r DataPlaneResource) foundryAgent(data acceptance.TestData) string {
 	return fmt.Sprintf(`
+%s
+
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Foundry/agents@v1"
-  parent_id = "%s/api/projects/%s"
+  parent_id = "acctest%s.services.ai.azure.com/api/projects/project%s"
   name      = "acctest-%s"
+
+  depends_on = [
+    azapi_resource.foundry_deployment,
+    azapi_resource.foundry_project_user,
+  ]
+
+  retry = {
+    error_message_regex = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
+    interval_seconds    = 30
+    max_interval_seconds = 180
+  }
 
   body = {
     name         = "acctest-%s"
     definition = {
       kind         = "prompt"
-      model        = "%s"
+      model        = "gpt-4o"
       instructions = "You are an acceptance test agent"
     }
   }
 }
-`, host, projectName, data.RandomString, data.RandomString, modelName)
+`, r.foundryAgentTemplate(data), data.RandomString, data.RandomString, data.RandomString, data.RandomString)
 }
 
-func (r DataPlaneResource) foundryAgentUpdate(data acceptance.TestData, host, projectName, modelName string) string {
+func (r DataPlaneResource) foundryAgentUpdate(data acceptance.TestData) string {
 	return fmt.Sprintf(`
+%s
+
 resource "azapi_data_plane_resource" "test" {
   type      = "Microsoft.Foundry/agents@v1"
-  parent_id = "%s/api/projects/%s"
+  parent_id = "acctest%s.services.ai.azure.com/api/projects/project%s"
   name      = "acctest-%s"
+
+  depends_on = [
+    azapi_resource.foundry_deployment,
+    azapi_resource.foundry_project_user,
+  ]
+
+  retry = {
+    error_message_regex = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
+    interval_seconds    = 30
+    max_interval_seconds = 180
+  }
 
   body = {
     definition = {
       kind         = "prompt"
-      model        = "%s"
+      model        = "gpt-4o"
       instructions = "You are an updated acceptance test agent"
     }
   }
 }
-`, host, projectName, data.RandomString, modelName)
+`, r.foundryAgentTemplate(data), data.RandomString, data.RandomString, data.RandomString)
+}
+
+func (r DataPlaneResource) foundryAgentTemplate(data acceptance.TestData) string {
+	location := data.LocationPrimary
+	if location == "" {
+		location = "westus3"
+	}
+
+	return fmt.Sprintf(`
+data "azapi_client_config" "current" {}
+
+locals {
+  foundry_project_user_role_definition_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/53ca6127-db72-4b80-b1b0-d745d6d5456d"
+  foundry_project_user_role_assignment_id = format("%%s-%%s-%%s-%%s-%%s",
+    substr(md5("foundry-project-user-%[1]s"), 0, 8),
+    substr(md5("foundry-project-user-%[1]s"), 8, 4),
+    substr(md5("foundry-project-user-%[1]s"), 12, 4),
+    substr(md5("foundry-project-user-%[1]s"), 16, 4),
+    substr(md5("foundry-project-user-%[1]s"), 20, 12)
+  )
+}
+
+resource "azapi_resource" "resource_group" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "acctest%[1]s"
+  location = "%[2]s"
+}
+
+resource "azapi_resource" "foundry" {
+  type                      = "Microsoft.CognitiveServices/accounts@2025-06-01"
+  name                      = "acctest%[1]s"
+  parent_id                 = azapi_resource.resource_group.id
+  location                  = azapi_resource.resource_group.location
+  schema_validation_enabled = false
+
+  body = {
+    kind = "AIServices"
+    sku = {
+      name = "S0"
+    }
+    identity = {
+      type = "SystemAssigned"
+    }
+    properties = {
+      disableLocalAuth       = false
+      allowProjectManagement = true
+      customSubDomainName    = "acctest%[1]s"
+    }
+  }
+}
+
+resource "azapi_resource" "foundry_deployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2023-05-01"
+  name      = "gpt-5-mini"
+  parent_id = azapi_resource.foundry.id
+
+  body = {
+    sku = {
+      name     = "DataZoneStandard"
+      capacity = 1
+    }
+    properties = {
+      model = {
+        format  = "OpenAI"
+        name    = "gpt-5-mini"
+        version = "2025-08-07"
+      }
+    }
+  }
+}
+
+resource "azapi_resource" "foundry_project" {
+  type                      = "Microsoft.CognitiveServices/accounts/projects@2025-06-01"
+  name                      = "project%[1]s"
+  parent_id                 = azapi_resource.foundry.id
+  location                  = azapi_resource.foundry.location
+  schema_validation_enabled = false
+
+  body = {
+    sku = {
+      name = "S0"
+    }
+    identity = {
+      type = "SystemAssigned"
+    }
+    properties = {
+      displayName = "project"
+      description = "Foundry project for acceptance test"
+    }
+  }
+}
+
+resource "azapi_resource" "foundry_project_user" {
+  type      = "Microsoft.Authorization/roleAssignments@2022-04-01"
+  name      = local.foundry_project_user_role_assignment_id
+  parent_id = azapi_resource.foundry_project.id
+
+  body = {
+    properties = {
+      principalId      = data.azapi_client_config.current.object_id
+      principalType    = "User"
+      roleDefinitionId = local.foundry_project_user_role_definition_id
+    }
+  }
+}
+`,
+		data.RandomString,
+		location,
+	)
 }
