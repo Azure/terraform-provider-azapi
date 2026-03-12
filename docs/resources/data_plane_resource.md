@@ -70,7 +70,6 @@ resource "azapi_data_plane_resource" "dataset" {
 
 ### Required
 
-- `name` (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 - `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 
@@ -86,6 +85,7 @@ resource "azapi_data_plane_resource" "dataset" {
 - `ignore_casing` (Boolean) A dynamic attribute that contains the request body.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
+- `name` (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 - `read_headers` (Map of String) A mapping of headers to be sent with the read request.
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
@@ -188,20 +188,6 @@ Optional:
 - `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.
 - `update` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
 
-## Import
-
-`azapi_data_plane_resource` supports import using the format:
-
-```shell
-terraform import <resource_address> '<resource-id>|<type@api-version>'
-```
-
-Example:
-
-```shell
-terraform import azapi_data_plane_resource.agent 'kpaifaifndengwus301.services.ai.azure.com/api/projects/kpaifpplaygroundengwus3/agents/terraform-poc-agent|Microsoft.Foundry/agents@v1'
-```
-
 ## Available Resources
 
 | Resource Type | URL | Parent ID Example                                                                           |
@@ -215,6 +201,7 @@ terraform import azapi_data_plane_resource.agent 'kpaifaifndengwus301.services.a
 | Microsoft.DigitalTwins/digitalTwinsInstances/digitaltwins/relationships | /digitaltwins/{id}/relationships/{relationshipId} | {instanceName}.api.weu.digitaltwins.azure.net/digitaltwins/{digitalTwinId}                  |
 | Microsoft.DigitalTwins/digitalTwinsInstances/eventroutes | /eventroutes/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.DigitalTwins/digitalTwinsInstances/jobs/imports | /jobs/imports/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
+| Microsoft.Foundry/agents | /agents/{agentName} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
 | Microsoft.IoTCentral/IoTApps/organizations | /organizations/{organizationId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/scheduledJobs | /scheduledJobs/{scheduledJobId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/users | /users/{userId} | {appSubdomain}.azureiotcentral.com                                                          |
@@ -344,6 +331,54 @@ resource "azapi_data_plane_resource" "example" {
   depends_on = [
     azapi_resource.roleAssignment,
   ]
+}
+```
+
+### Microsoft.Foundry/agents
+
+```terraform
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+variable "foundry_host" {
+  type        = string
+  description = "Foundry host name, e.g. <aiservices-id>.services.ai.azure.com"
+}
+
+variable "project_name" {
+  type        = string
+  description = "Foundry project name"
+}
+
+resource "azapi_data_plane_resource" "agent" {
+  type      = "Microsoft.Foundry/agents@v1"
+  parent_id = "${var.foundry_host}/api/projects/${var.project_name}"
+  name      = "terraform-poc-agent"
+
+  body = {
+    name = "terraform-poc-agent"
+    definition = {
+      kind         = "prompt"
+      model        = "gpt-4o"
+      instructions = "You are a helpful agent created via Terraform"
+    }
+  }
+}
+
+output "agent_name" {
+  value = azapi_data_plane_resource.agent.name
+}
+
+output "agent_resource_id" {
+  value = azapi_data_plane_resource.agent.id
 }
 ```
 
