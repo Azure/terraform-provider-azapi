@@ -168,8 +168,8 @@ resource "azapi_data_plane_resource" "test" {
   ]
 
   retry = {
-    error_message_regex = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
-    interval_seconds    = 30
+    error_message_regex  = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
+    interval_seconds     = 30
     max_interval_seconds = 180
   }
 
@@ -200,8 +200,8 @@ resource "azapi_data_plane_resource" "test" {
   ]
 
   retry = {
-    error_message_regex = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
-    interval_seconds    = 30
+    error_message_regex  = ["PermissionDenied", "Unauthorized", "authorization", "context deadline exceeded"]
+    interval_seconds     = 30
     max_interval_seconds = 180
   }
 
