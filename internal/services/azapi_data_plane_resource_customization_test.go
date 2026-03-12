@@ -174,7 +174,7 @@ resource "azapi_data_plane_resource" "test" {
   }
 
   body = {
-    name         = "acctest-%s"
+    name = "acctest-%s"
     definition = {
       kind         = "prompt"
       model        = "gpt-4o"
