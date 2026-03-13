@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -71,8 +72,45 @@ type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
 
+func NewDefaultDataPlaneResourceModel() DataPlaneResourceModel {
+	return DataPlaneResourceModel{
+		ID:                            types.StringNull(),
+		Name:                          types.StringNull(),
+		ParentID:                      types.StringNull(),
+		Type:                          types.StringNull(),
+		Body:                          types.Dynamic{},
+		SensitiveBody:                 types.DynamicNull(),
+		SensitiveBodyVersion:          types.MapNull(types.StringType),
+		IgnoreCasing:                  types.BoolValue(false),
+		IgnoreMissingProperty:         types.BoolValue(true),
+		ReplaceTriggersExternalValues: types.DynamicNull(),
+		ReplaceTriggersRefs:           types.ListNull(types.StringType),
+		ResponseExportValues:          types.DynamicNull(),
+		Retry:                         retry.RetryValue{},
+		Locks:                         types.ListNull(types.StringType),
+		Output:                        types.DynamicNull(),
+		Timeouts: timeouts.Value{
+			Object: types.ObjectNull(map[string]attr.Type{
+				"create": types.StringType,
+				"update": types.StringType,
+				"read":   types.StringType,
+				"delete": types.StringType,
+			}),
+		},
+		CreateHeaders:         types.MapNull(types.StringType),
+		CreateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		UpdateHeaders:         types.MapNull(types.StringType),
+		UpdateQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		DeleteHeaders:         types.MapNull(types.StringType),
+		DeleteQueryParameters: types.MapNull(types.ListType{ElemType: types.StringType}),
+		ReadHeaders:           types.MapNull(types.StringType),
+		ReadQueryParameters:   types.MapNull(types.ListType{ElemType: types.StringType}),
+	}
+}
+
 var _ resource.Resource = &DataPlaneResource{}
 var _ resource.ResourceWithConfigure = &DataPlaneResource{}
+var _ resource.ResourceWithImportState = &DataPlaneResource{}
 var _ resource.ResourceWithModifyPlan = &DataPlaneResource{}
 var _ resource.ResourceWithUpgradeState = &DataPlaneResource{}
 
@@ -382,6 +420,81 @@ func (r *DataPlaneResource) ModifyPlan(ctx context.Context, request resource.Mod
 
 func (r *DataPlaneResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
 	r.CreateUpdate(ctx, request.Config, request.Plan, &response.State, &response.Diagnostics, response.Private)
+}
+
+func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
+	tflog.Debug(ctx, fmt.Sprintf("Importing DataPlane Resource - parsing %q", request.ID))
+
+	// The import ID format is: "<resource_type@api_version> <resource_id>"
+	// e.g. "Microsoft.Synapse/workspaces/databases@2021-04-01 my-synapse-workspace.dev.azuresynapse.net/databases/mylakedb"
+	idParts := strings.SplitN(request.ID, " ", 2)
+	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
+		response.Diagnostics.AddError(
+			"Invalid import ID",
+			fmt.Sprintf("The import ID must be in the format '<resource_type@api_version> <resource_id>', got: %q", request.ID),
+		)
+		return
+	}
+
+	resourceType := idParts[0]
+	resourceId := idParts[1]
+
+	id, err := parse.DataPlaneResourceIDWithResourceType(resourceId, resourceType)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid Resource ID", fmt.Errorf("parsing Resource ID %q with type %q: %+v", resourceId, resourceType, err).Error())
+		return
+	}
+
+	client := r.ProviderData.DataPlaneClient
+
+	state := NewDefaultDataPlaneResourceModel()
+	state.ID = types.StringValue(id.ID())
+	state.Name = types.StringValue(id.Name)
+	state.ParentID = types.StringValue(id.ParentId)
+	state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+
+	requestOptions := clients.RequestOptions{}
+
+	var responseBody interface{}
+	if customizedResource := customization.GetCustomization(state.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
+		responseBody, err = (*customizedResource).ReadFunc()(ctx, *r.ProviderData, id, requestOptions)
+	} else {
+		responseBody, err = client.Get(ctx, id, requestOptions)
+	}
+
+	if err != nil {
+		if utils.ResponseErrorWasNotFound(err) {
+			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
+			response.State.RemoveResource(ctx)
+			return
+		}
+		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
+		return
+	}
+
+	tflog.Info(ctx, fmt.Sprintf("resource %q is imported", id.ID()))
+
+	data, err := json.Marshal(responseBody)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid body", err.Error())
+		return
+	}
+
+	payload, err := dynamic.FromJSONImplied(data)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid payload", err.Error())
+		return
+	}
+	state.Body = payload
+
+	output, err := buildOutputFromBody(responseBody, state.ResponseExportValues, nil)
+	if err != nil {
+		response.Diagnostics.AddError("Failed to build output", err.Error())
+		return
+	}
+	state.Output = output
+
+	response.Diagnostics.Append(response.State.Set(ctx, state)...)
 }
 
 func (r *DataPlaneResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
