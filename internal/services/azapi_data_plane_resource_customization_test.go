@@ -314,7 +314,6 @@ resource "azapi_resource" "foundry_project_user" {
   body = {
     properties = {
       principalId      = data.azapi_client_config.current.object_id
-      principalType    = "User"
       roleDefinitionId = local.foundry_project_user_role_definition_id
     }
   }
