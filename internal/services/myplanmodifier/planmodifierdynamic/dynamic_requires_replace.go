@@ -23,17 +23,21 @@ func RequiresReplace() planmodifier.Dynamic {
 
 // RequiresReplaceIfNotNull is a plan modifier that sets RequiresReplace
 // on the attribute if the planned value is different from the state value.
-// It will not trigger replacement when either the planned or state value is null.
+// It will not trigger replacement when either the planned or state value is effectively null.
+// A Dynamic attribute can be null in two ways:
+//  1. The outer Dynamic wrapper is null (e.g., types.DynamicNull())
+//  2. The outer Dynamic is "known" but wraps a null underlying value
+//     (e.g., types.DynamicValue(TupleNull())) — this happens when HCL evaluates
+//     a conditional like `condition ? [...] : null` for a DynamicAttribute.
+//
 // When this function is called, the equality of the planned and state values
 // has already been checked by the PlanModifyDynamic method, so we can assume they are different values.
 func RequiresReplaceIfNotNull() planmodifier.Dynamic {
 	return RequiresReplaceIf(
 		func(_ context.Context, req planmodifier.DynamicRequest, resp *RequiresReplaceIfFuncResponse) {
-			if req.PlanValue.IsNull() || req.StateValue.IsNull() {
-				resp.RequiresReplace = false
-				return
-			}
-			resp.RequiresReplace = true
+			planNull := req.PlanValue.IsNull() || req.PlanValue.UnderlyingValue().IsNull()
+			stateNull := req.StateValue.IsNull() || req.StateValue.UnderlyingValue().IsNull()
+			resp.RequiresReplace = !planNull && !stateNull
 		},
 		"If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.",
 		"If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.",
