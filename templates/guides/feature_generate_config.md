@@ -146,17 +146,17 @@ resource "azapi_resource" "mystorageaccount" {
   parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
   name      = "mystorageaccount"
   location  = "eastus"
-  
+
   body = {
     kind = "StorageV2"
     sku = {
       name = "Standard_LRS"
     }
     properties = {
-      accessTier                   = "Hot"
-      allowBlobPublicAccess        = false
-      minimumTlsVersion            = "TLS1_2"
-      supportsHttpsTrafficOnly     = true
+      accessTier               = "Hot"
+      allowBlobPublicAccess    = false
+      minimumTlsVersion        = "TLS1_2"
+      supportsHttpsTrafficOnly = true
       // ... other properties
     }
   }

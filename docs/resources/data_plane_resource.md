@@ -76,6 +76,8 @@ resource "azapi_data_plane_resource" "dataset" {
 
 ### Optional
 
+> **NOTE**: [Write-only arguments](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments) are supported in Terraform 1.11 and later.
+
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 - `create_headers` (Map of String) A mapping of headers to be sent with the create request.
 - `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
@@ -138,6 +140,8 @@ resource "azapi_data_plane_resource" "example" {
 
 To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Attributes) The retry object supports the following attributes: (see [below for nested schema](#nestedatt--retry))
+- `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+- `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `update_headers` (Map of String) A mapping of headers to be sent with the update request.
 - `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.

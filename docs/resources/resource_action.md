@@ -77,6 +77,7 @@ This resource allows you to perform an action on an existing Azure resource. It 
 - `action` (String) The name of the resource action. It's also possible to make HTTP requests towards the resource ID if leave this field empty.
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 - `headers` (Map of String) A map of headers to include in the request
+- `ignore_not_found` (Boolean) If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 - `method` (String) Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
 - `query_parameters` (Map of List of String) A map of query parameters to include in the request
@@ -140,6 +141,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 ### Read-Only
 
+- `exist` (Boolean) Indicates whether the resource action was successfully performed.
 - `id` (String) The ID of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 

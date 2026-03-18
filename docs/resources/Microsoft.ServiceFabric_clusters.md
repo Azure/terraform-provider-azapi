@@ -90,7 +90,7 @@ resource "azapi_resource" "cluster" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.ServiceFabric/clusters@api-version`. The available api-versions for this resource are: [`2016-09-01`, `2017-07-01-preview`, `2018-02-01`, `2019-03-01`, `2019-03-01-preview`, `2019-06-01-preview`, `2019-11-01-preview`, `2020-03-01`, `2020-12-01-preview`, `2021-06-01`, `2023-11-01-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.ServiceFabric/clusters@api-version`. The available api-versions for this resource are: [`2016-09-01`, `2017-07-01-preview`, `2018-02-01`, `2019-03-01`, `2019-03-01-preview`, `2019-06-01-preview`, `2019-11-01-preview`, `2020-03-01`, `2020-12-01-preview`, `2021-06-01`, `2023-11-01-preview`, `2026-03-01-preview`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -108,5 +108,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{resourceName}?api-version=2023-11-01-preview
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{resourceName}?api-version=2026-03-01-preview
  ```

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
@@ -18,12 +19,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/internal/skip"
+	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -42,6 +45,8 @@ type ActionResourceModel struct {
 	Body                          types.Dynamic    `tfsdk:"body"`
 	When                          types.String     `tfsdk:"when"`
 	Locks                         types.List       `tfsdk:"locks"`
+	IgnoreNotFound                types.Bool       `tfsdk:"ignore_not_found"`
+	Exist                         types.Bool       `tfsdk:"exist"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	SensitiveResponseExportValues types.Dynamic    `tfsdk:"sensitive_response_export_values"`
 	Output                        types.Dynamic    `tfsdk:"output"`
@@ -96,7 +101,29 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myvalidator.StringIsResourceType(),
 				},
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIf(func(ctx context.Context, request planmodifier.StringRequest, response *stringplanmodifier.RequiresReplaceIfFuncResponse) {
+						if request.PlanValue.IsUnknown() {
+							response.RequiresReplace = true
+							return
+						}
+
+						aResourceType, _, err := utils.GetAzureResourceTypeApiVersion(request.PlanValue.ValueString())
+						if err != nil {
+							tflog.Warn(ctx, "unable to parse resource type for RequiresReplaceIf check", map[string]interface{}{
+								"resource_type": request.PlanValue.ValueString(),
+							})
+							return
+						}
+						bResourceType, _, err := utils.GetAzureResourceTypeApiVersion(request.StateValue.ValueString())
+						if err != nil {
+							tflog.Warn(ctx, "unable to parse resource type for RequiresReplaceIf check", map[string]interface{}{
+								"resource_type": request.StateValue.ValueString(),
+							})
+							return
+						}
+
+						response.RequiresReplace = !strings.EqualFold(aResourceType, bResourceType)
+					}, "resource type changed", "resource type changed"),
 				},
 				MarkdownDescription: docstrings.Type(),
 			},
@@ -161,6 +188,11 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				MarkdownDescription: docstrings.Locks(),
 			},
 
+			"ignore_not_found": schema.BoolAttribute{
+				Optional:            true,
+				MarkdownDescription: "If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.",
+			},
+
 			"response_export_values": schema.DynamicAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Dynamic{
@@ -175,6 +207,13 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 					myplanmodifier.DynamicUseStateWhen(dynamic.SemanticallyEqual),
 				},
 				MarkdownDescription: docstrings.ResponseExportValues(),
+			},
+			"exist": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
+				MarkdownDescription: "Indicates whether the resource action was successfully performed.",
 			},
 
 			"output": schema.DynamicAttribute{
@@ -277,6 +316,7 @@ func (r *ActionResource) Create(ctx context.Context, request resource.CreateRequ
 		model.ID = basetypes.NewStringValue(resourceId)
 		model.Output = basetypes.NewDynamicNull()
 		model.SensitiveOutput = basetypes.NewDynamicNull()
+		model.Exist = basetypes.NewBoolNull()
 		response.Diagnostics.Append(response.State.Set(ctx, model)...)
 	}
 }
@@ -307,6 +347,8 @@ func (r *ActionResource) Update(ctx context.Context, request resource.UpdateRequ
 
 	if plan.When.ValueString() == "apply" {
 		r.Action(ctx, plan, &response.State, &response.Diagnostics)
+	} else {
+		response.Diagnostics.Append(response.State.Set(ctx, plan)...)
 	}
 }
 
@@ -373,9 +415,15 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 
 	client := r.ProviderData.ResourceClient
 	responseBody, err := client.Action(ctx, id.AzureResourceId, model.Action.ValueString(), id.ApiVersion, model.Method.ValueString(), requestBody, requestOptions)
+	model.Exist = basetypes.NewBoolValue(true)
 	if err != nil {
-		diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
-		return
+		if utils.ResponseErrorWasNotFound(err) && model.IgnoreNotFound.ValueBool() {
+			model.Exist = basetypes.NewBoolValue(false)
+			tflog.Info(ctx, fmt.Sprintf("The resource %q was not found, but the ignore_not_found option is set to true so the error is being ignored.", id.ID()))
+		} else {
+			diagnostics.AddError("Failed to perform action", fmt.Errorf("performing action %s of %q: %+v", model.Action.ValueString(), id, err).Error())
+			return
+		}
 	}
 
 	resourceId := id.ID()

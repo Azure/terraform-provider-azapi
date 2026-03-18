@@ -39,28 +39,156 @@ variable "location" {
 }
 
 resource "azapi_resource" "resourceGroup" {
-  type     = "Microsoft.Resources/resourceGroups@2020-06-01"
+  type     = "Microsoft.Resources/resourceGroups@2024-11-01"
   name     = var.resource_name
   location = var.location
 }
 
-resource "azapi_resource" "natGateway" {
-  type      = "Microsoft.Network/natGateways@2022-07-01"
+resource "azapi_resource" "publicIPPrefix" {
+  type      = "Microsoft.Network/publicIPPrefixes@2025-01-01"
   parent_id = azapi_resource.resourceGroup.id
   name      = var.resource_name
   location  = var.location
   body = {
     properties = {
-      idleTimeoutInMinutes = 10
+      prefixLength           = 30
+      publicIPAddressVersion = "IPv4"
     }
     sku = {
-      name = "Standard"
+      name = "StandardV2"
     }
   }
   schema_validation_enabled = false
   response_export_values    = ["*"]
 }
 
+resource "azapi_resource" "publicIPPrefixV6" {
+  type      = "Microsoft.Network/publicIPPrefixes@2025-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "${var.resource_name}V6"
+  location  = var.location
+  body = {
+    properties = {
+      prefixLength           = 125
+      publicIPAddressVersion = "IPv6"
+    }
+    sku = {
+      name = "StandardV2"
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+
+resource "azapi_resource" "publicIPAddress" {
+  type      = "Microsoft.Network/publicIPAddresses@2025-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
+  body = {
+    properties = {
+      ddosSettings = {
+        protectionMode = "VirtualNetworkInherited"
+      }
+      idleTimeoutInMinutes     = 4
+      publicIPAddressVersion   = "IPv4"
+      publicIPAllocationMethod = "Static"
+    }
+    sku = {
+      name = "StandardV2"
+      tier = "Regional"
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+
+resource "azapi_resource" "publicIPAddressV6" {
+  type      = "Microsoft.Network/publicIPAddresses@2025-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "${var.resource_name}V6"
+  location  = var.location
+  body = {
+    properties = {
+      ddosSettings = {
+        protectionMode = "VirtualNetworkInherited"
+      }
+      idleTimeoutInMinutes     = 4
+      publicIPAddressVersion   = "IPv6"
+      publicIPAllocationMethod = "Static"
+    }
+    sku = {
+      name = "StandardV2"
+      tier = "Regional"
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+}
+
+resource "azapi_resource" "virtualNetwork" {
+  type      = "Microsoft.Network/virtualNetworks@2025-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
+  body = {
+    properties = {
+      addressSpace = {
+        addressPrefixes = [
+          "10.0.0.0/16",
+        ]
+      }
+      dhcpOptions = {
+        dnsServers = [
+        ]
+      }
+      subnets = [
+      ]
+    }
+  }
+  schema_validation_enabled = false
+  response_export_values    = ["*"]
+  lifecycle {
+    ignore_changes = [body.properties.subnets]
+  }
+}
+
+resource "azapi_resource" "natGateway" {
+  type      = "Microsoft.Network/natGateways@2025-01-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = var.resource_name
+  location  = var.location
+  body = {
+    properties = {
+      publicIpAddresses = [
+        {
+          id = azapi_resource.publicIPAddress.id,
+        },
+      ]
+      publicIpAddressesV6 = [
+        {
+          id = azapi_resource.publicIPAddressV6.id,
+        },
+      ]
+      publicIpPrefixes = [
+        {
+          id = azapi_resource.publicIPPrefix.id,
+        },
+      ]
+      publicIpPrefixesV6 = [
+        {
+          id = azapi_resource.publicIPPrefixV6.id,
+        },
+      ]
+    }
+    sku = {
+      name = "StandardV2"
+    }
+  }
+  schema_validation_enabled = false
+  ignore_casing             = false
+  ignore_missing_property   = false
+}
 
 ```
 
@@ -70,7 +198,7 @@ resource "azapi_resource" "natGateway" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/natGateways@api-version`. The available api-versions for this resource are: [`2019-02-01`, `2019-04-01`, `2019-06-01`, `2019-07-01`, `2019-08-01`, `2019-09-01`, `2019-11-01`, `2019-12-01`, `2020-03-01`, `2020-04-01`, `2020-05-01`, `2020-06-01`, `2020-07-01`, `2020-08-01`, `2020-11-01`, `2021-02-01`, `2021-03-01`, `2021-05-01`, `2021-08-01`, `2022-01-01`, `2022-05-01`, `2022-07-01`, `2022-09-01`, `2022-11-01`, `2023-02-01`, `2023-04-01`, `2023-05-01`, `2023-06-01`, `2023-09-01`, `2023-11-01`, `2024-01-01`, `2024-03-01`, `2024-05-01`, `2024-07-01`, `2024-10-01`, `2025-01-01`, `2025-03-01`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Network/natGateways@api-version`. The available api-versions for this resource are: [`2019-02-01`, `2019-04-01`, `2019-06-01`, `2019-07-01`, `2019-08-01`, `2019-09-01`, `2019-11-01`, `2019-12-01`, `2020-03-01`, `2020-04-01`, `2020-05-01`, `2020-06-01`, `2020-07-01`, `2020-08-01`, `2020-11-01`, `2021-02-01`, `2021-03-01`, `2021-05-01`, `2021-08-01`, `2022-01-01`, `2022-05-01`, `2022-07-01`, `2022-09-01`, `2022-11-01`, `2023-02-01`, `2023-04-01`, `2023-05-01`, `2023-06-01`, `2023-09-01`, `2023-11-01`, `2024-01-01`, `2024-03-01`, `2024-05-01`, `2024-07-01`, `2024-10-01`, `2025-01-01`, `2025-03-01`, `2025-05-01`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
   `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`
@@ -88,5 +216,5 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
  terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{resourceName}?api-version=2025-03-01
+ terraform import azapi_resource.example /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{resourceName}?api-version=2025-05-01
  ```

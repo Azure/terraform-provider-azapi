@@ -36,6 +36,7 @@ type Option struct {
 	CustomCorrelationRequestID  string
 	SubscriptionId              string
 	TenantId                    string
+	AuxiliaryTenants            []string
 	MaxGoSdkRetries             int32
 }
 
@@ -106,6 +107,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 			PerRetryPolicies: perRetryPolicies,
 			Retry:            policy.RetryOptions{MaxRetries: o.MaxGoSdkRetries},
 		},
+		AuxiliaryTenants:      o.AuxiliaryTenants,
 		DisableRPRegistration: o.SkipProviderRegistration,
 	})
 	if err != nil {
@@ -129,6 +131,7 @@ func (client *Client) Build(ctx context.Context, o *Option) error {
 			PerRetryPolicies: perRetryPolicies,
 			Retry:            policy.RetryOptions{MaxRetries: o.MaxGoSdkRetries},
 		},
+		AuxiliaryTenants:      o.AuxiliaryTenants,
 		DisableRPRegistration: o.SkipProviderRegistration,
 	})
 	if err != nil {

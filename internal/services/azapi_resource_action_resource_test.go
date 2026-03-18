@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/acceptance"
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
@@ -121,6 +122,18 @@ func TestAccActionResource_queryParameters(t *testing.T) {
 	})
 }
 
+func TestAccActionResource_ignoreNotFound(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.ignoreNotFound(),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
 func TestAccActionResource_sensitiveOutput(t *testing.T) {
 	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
 	r := ActionResource{}
@@ -128,6 +141,42 @@ func TestAccActionResource_sensitiveOutput(t *testing.T) {
 	data.DataSourceTest(t, []resource.TestStep{
 		{
 			Config: r.sensitiveOutput(data),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+	})
+}
+
+func TestAccActionResource_updateApiVersion(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.updateApiVersion(data, "2023-04-01"),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+		{
+			Config: r.updateApiVersion(data, "2024-03-01"),
+			ConfigPlanChecks: resource.ConfigPlanChecks{
+				PreApply: []plancheck.PlanCheck{
+					plancheck.ExpectResourceAction("azapi_resource_action.test", plancheck.ResourceActionUpdate),
+				},
+			},
+		},
+	})
+}
+
+func TestAccActionResource_updateQueryParametersWhenDestroy(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource_action", "test")
+	r := ActionResource{}
+
+	data.DataSourceTest(t, []resource.TestStep{
+		{
+			Config: r.updateQueryParametersWhenDestroy(data, true),
+			Check:  resource.ComposeTestCheckFunc(),
+		},
+		{
+			Config: r.updateQueryParametersWhenDestroy(data, false),
 			Check:  resource.ComposeTestCheckFunc(),
 		},
 	})
@@ -239,7 +288,7 @@ resource "azurerm_service_plan" "test" {
   resource_group_name = azurerm_resource_group.test.name
   location            = azurerm_resource_group.test.location
   os_type             = "Windows"
-  sku_name            = "Y1"
+  sku_name            = "P1v3"
 }
 
 resource "azurerm_windows_function_app" "test" {
@@ -391,4 +440,57 @@ resource "azapi_resource_action" "test" {
   sensitive_response_export_values = ["*"]
 }
 `, data.RandomString)
+}
+
+func (r ActionResource) updateApiVersion(data acceptance.TestData, apiVersion string) string {
+	return fmt.Sprintf(`
+
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Cache@%s"
+  resource_id = "/subscriptions/${data.azapi_client_config.current.subscription_id}/providers/Microsoft.Cache"
+  action      = "CheckNameAvailability"
+  body = {
+    type = "Microsoft.Cache/Redis"
+    name = "%s"
+  }
+}
+`, apiVersion, data.RandomString)
+}
+
+func (r ActionResource) updateQueryParametersWhenDestroy(data acceptance.TestData, includeQueryParam bool) string {
+	queryParams := ""
+	if includeQueryParam {
+		queryParams = `
+    query_parameters = {
+      "foo" = ["bar"]
+    }
+`
+	}
+	return fmt.Sprintf(`
+%[1]s
+
+resource "azapi_resource_action" "test" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = azapi_resource.test.id
+  action      = "listKeys"
+  when        = "destroy"
+  %[2]s
+  response_export_values = ["*"]
+}
+`, GenericResource{}.identityNone(data), queryParams)
+}
+
+func (r ActionResource) ignoreNotFound() string {
+	return `
+data "azapi_client_config" "current" {}
+
+resource "azapi_resource_action" "test" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = "/subscriptions/${data.azapi_client_config.current.subscription_id}/resourceGroups/notexist/providers/Microsoft.Automation/automationAccounts/notexit"
+  action                 = "listKeys"
+  ignore_not_found       = true
+  response_export_values = ["*"]
+}`
 }

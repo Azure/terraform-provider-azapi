@@ -4,7 +4,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Security/connectors"
+    "value": "Microsoft.Security/securityContacts"
   },
   {
     "$type": "StringLiteralType",
@@ -12,7 +12,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Security/connectors",
+    "name": "Microsoft.Security/securityContacts",
     "properties": {
       "id": {
         "type": {
@@ -47,503 +47,6 @@
           "$ref": "#/4"
         },
         "flags": 0,
-        "description": "Connector setting data"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ConnectorSettingProperties",
-    "properties": {
-      "hybridComputeSettings": {
-        "type": {
-          "$ref": "#/5"
-        },
-        "flags": 0,
-        "description": "Settings for hybrid compute management. These settings are relevant only for Arc autoProvision (Hybrid Compute)."
-      },
-      "authenticationDetails": {
-        "type": {
-          "$ref": "#/15"
-        },
-        "flags": 0,
-        "description": "Settings for authentication management, these settings are relevant only for the cloud connector."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "HybridComputeSettingsProperties",
-    "properties": {
-      "hybridComputeProvisioningState": {
-        "type": {
-          "$ref": "#/9"
-        },
-        "flags": 2,
-        "description": "State of the service principal and its secret"
-      },
-      "autoProvision": {
-        "type": {
-          "$ref": "#/12"
-        },
-        "flags": 1,
-        "description": "Whether or not to automatically install Azure Arc (hybrid compute) agents on machines"
-      },
-      "resourceGroupName": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The name of the resource group where Arc (Hybrid Compute) connectors are connected."
-      },
-      "region": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "The location where the metadata of machines will be stored"
-      },
-      "proxyServer": {
-        "type": {
-          "$ref": "#/13"
-        },
-        "flags": 0,
-        "description": "For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure machine can use."
-      },
-      "servicePrincipal": {
-        "type": {
-          "$ref": "#/14"
-        },
-        "flags": 0,
-        "description": "An object to access resources that are secured by an Azure AD tenant."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Valid"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Invalid"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Expired"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/6"
-      },
-      {
-        "$ref": "#/7"
-      },
-      {
-        "$ref": "#/8"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "On"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Off"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/10"
-      },
-      {
-        "$ref": "#/11"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ProxyServerProperties",
-    "properties": {
-      "ip": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Proxy server IP"
-      },
-      "port": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Proxy server port"
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "ServicePrincipalProperties",
-    "properties": {
-      "applicationId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "Application ID of service principal."
-      },
-      "secret": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 0,
-        "description": "A secret string that the application uses to prove its identity, also can be referred to as application password (write only)."
-      }
-    }
-  },
-  {
-    "$type": "DiscriminatedObjectType",
-    "name": "AuthenticationDetailsProperties",
-    "discriminator": "authenticationType",
-    "baseProperties": {
-      "authenticationProvisioningState": {
-        "type": {
-          "$ref": "#/20"
-        },
-        "flags": 2,
-        "description": "State of the multi-cloud connector"
-      },
-      "grantedPermissions": {
-        "type": {
-          "$ref": "#/26"
-        },
-        "flags": 2,
-        "description": "The permissions detected in the cloud account."
-      }
-    },
-    "elements": {
-      "awsAssumeRole": {
-        "$ref": "#/27"
-      },
-      "awsCreds": {
-        "$ref": "#/29"
-      },
-      "gcpCredentials": {
-        "$ref": "#/31"
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Valid"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Invalid"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Expired"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "IncorrectPolicy"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/16"
-      },
-      {
-        "$ref": "#/17"
-      },
-      {
-        "$ref": "#/18"
-      },
-      {
-        "$ref": "#/19"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AWS::AWSSecurityHubReadOnlyAccess"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AWS::SecurityAudit"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "AWS::AmazonSSMAutomationRole"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "GCP::Security Center Admin Viewer"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/21"
-      },
-      {
-        "$ref": "#/22"
-      },
-      {
-        "$ref": "#/23"
-      },
-      {
-        "$ref": "#/24"
-      },
-      {
-        "$ref": "#/0"
-      }
-    ]
-  },
-  {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/25"
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AwAssumeRoleAuthenticationDetailsProperties",
-    "properties": {
-      "accountId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The ID of the cloud account"
-      },
-      "awsAssumeRoleArn": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Assumed role ID is an identifier that you can use to create temporary security credentials."
-      },
-      "awsExternalId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "A unique identifier that is required when you assume a role in another account."
-      },
-      "authenticationType": {
-        "type": {
-          "$ref": "#/28"
-        },
-        "flags": 1,
-        "description": "Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "awsAssumeRole"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "AwsCredsAuthenticationDetailsProperties",
-    "properties": {
-      "accountId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 2,
-        "description": "The ID of the cloud account"
-      },
-      "awsAccessKeyId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Public key element of the AWS credential object (write only)"
-      },
-      "awsSecretAccessKey": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Secret key element of the AWS credential object (write only)"
-      },
-      "authenticationType": {
-        "type": {
-          "$ref": "#/30"
-        },
-        "flags": 1,
-        "description": "Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "awsCreds"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "GcpCredentialsDetailsProperties",
-    "properties": {
-      "organizationId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "The organization ID of the GCP cloud account"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Type field of the API key (write only)"
-      },
-      "projectId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Project ID field of the API key (write only)"
-      },
-      "privateKeyId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Private key ID field of the API key (write only)"
-      },
-      "privateKey": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Private key field of the API key (write only)"
-      },
-      "clientEmail": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Client email field of the API key (write only)"
-      },
-      "clientId": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Client ID field of the API key (write only)"
-      },
-      "authUri": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Auth URI field of the API key (write only)"
-      },
-      "tokenUri": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Token URI field of the API key (write only)"
-      },
-      "authProviderX509CertUrl": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Auth provider x509 certificate URL field of the API key (write only)"
-      },
-      "clientX509CertUrl": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 1,
-        "description": "Client x509 certificate URL field of the API key (write only)"
-      },
-      "authenticationType": {
-        "type": {
-          "$ref": "#/32"
-        },
-        "flags": 1,
-        "description": "Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "gcpCredentials"
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Security/connectors@2020-01-01-preview",
-    "scopeType": 4,
-    "body": {
-      "$ref": "#/3"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Security/securityContacts"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2020-01-01-preview"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Security/securityContacts",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/35"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/37"
-        },
-        "flags": 0,
         "description": "Security contact data"
       }
     }
@@ -568,14 +71,14 @@
       },
       "alertNotifications": {
         "type": {
-          "$ref": "#/38"
+          "$ref": "#/5"
         },
         "flags": 0,
         "description": "Defines whether to send email notifications about new security alerts"
       },
       "notificationsByRole": {
         "type": {
-          "$ref": "#/46"
+          "$ref": "#/13"
         },
         "flags": 0,
         "description": "Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription."
@@ -588,14 +91,14 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/41"
+          "$ref": "#/8"
         },
         "flags": 0,
         "description": "Defines if email notifications will be sent about new security alerts"
       },
       "minimalSeverity": {
         "type": {
-          "$ref": "#/45"
+          "$ref": "#/12"
         },
         "flags": 0,
         "description": "Defines the minimal alert severity which will be sent as email notifications"
@@ -614,10 +117,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/39"
+        "$ref": "#/6"
       },
       {
-        "$ref": "#/40"
+        "$ref": "#/7"
       },
       {
         "$ref": "#/0"
@@ -640,13 +143,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/42"
+        "$ref": "#/9"
       },
       {
-        "$ref": "#/43"
+        "$ref": "#/10"
       },
       {
-        "$ref": "#/44"
+        "$ref": "#/11"
       },
       {
         "$ref": "#/0"
@@ -659,14 +162,14 @@
     "properties": {
       "state": {
         "type": {
-          "$ref": "#/49"
+          "$ref": "#/16"
         },
         "flags": 0,
         "description": "Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the subscription."
       },
       "roles": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/22"
         },
         "flags": 0,
         "description": "Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles:"
@@ -685,10 +188,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/47"
+        "$ref": "#/14"
       },
       {
-        "$ref": "#/48"
+        "$ref": "#/15"
       },
       {
         "$ref": "#/0"
@@ -715,16 +218,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/50"
+        "$ref": "#/17"
       },
       {
-        "$ref": "#/51"
+        "$ref": "#/18"
       },
       {
-        "$ref": "#/52"
+        "$ref": "#/19"
       },
       {
-        "$ref": "#/53"
+        "$ref": "#/20"
       },
       {
         "$ref": "#/0"
@@ -734,17 +237,17 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/54"
+      "$ref": "#/21"
     }
   },
   {
     "$type": "ResourceType",
     "name": "Microsoft.Security/securityContacts@2020-01-01-preview",
-    "scopeType": 4,
     "body": {
-      "$ref": "#/36"
+      "$ref": "#/3"
     },
-    "flags": 0
+    "readableScopes": 4,
+    "writableScopes": 4
   },
   {
     "$type": "StringLiteralType",
@@ -774,21 +277,21 @@
       },
       "type": {
         "type": {
-          "$ref": "#/57"
+          "$ref": "#/24"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/58"
+          "$ref": "#/25"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/60"
+          "$ref": "#/27"
         },
         "flags": 2,
         "description": "Secure score item"
@@ -808,14 +311,14 @@
       },
       "score": {
         "type": {
-          "$ref": "#/61"
+          "$ref": "#/28"
         },
         "flags": 2,
         "description": "score object"
       },
       "weight": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/29"
         },
         "flags": 2,
         "description": "The relative weight for each subscription. Used when calculating an aggregated secure score for multiple subscriptions."
@@ -828,21 +331,21 @@
     "properties": {
       "max": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/29"
         },
         "flags": 2,
         "description": "Maximum score available"
       },
       "current": {
         "type": {
-          "$ref": "#/62"
+          "$ref": "#/29"
         },
         "flags": 2,
         "description": "Current score"
       },
       "percentage": {
         "type": {
-          "$ref": "#/63"
+          "$ref": "#/30"
         },
         "flags": 2,
         "description": "Ratio of the current score divided by the maximum. Rounded to 4 digits after the decimal point"
@@ -861,10 +364,10 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Security/secureScores@2020-01-01-preview",
-    "scopeType": 4,
     "body": {
-      "$ref": "#/59"
+      "$ref": "#/26"
     },
-    "flags": 1
+    "readableScopes": 4,
+    "writableScopes": 0
   }
 ]

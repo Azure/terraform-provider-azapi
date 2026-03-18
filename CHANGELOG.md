@@ -2,9 +2,20 @@
 
 ENHANCEMENTS:
 - `azapi_update_resource` resource: Support `replace_triggers_external_values` argument to trigger resource replacement based on external values.
+- `azapi_data_plane_resource` resource: Support `sensitive_body` and `sensitive_body_version` fields, which are used to specify the write-only properties in the request body.
+- `azapi_resource_action` resource: Support updating api-version without recreating the resource.
+- `azapi_resource_action`  Support `ignore_not_found` argument to optionally suppress 404 errors and expose resource existence.
+- `azapi_resource`, `azapi_update_resource` resources: Support `list_unique_id_property` and `ignore_other_items_in_list` fields, which are used to manage list properties with unique identifiers (GH-1033).
+- `azapi` provider: Add Azure Government support for KeyVault resource manager audience endpoint (GH-996).
+- Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/5c7a4c209d18ad4dec38724717449e07f616bec6
 
 BUG FIXES:
 - Fix `Missing Resource Identity After Update` error for Terraform versions below 1.12 (GH-1023).
+- `azapi_resource_action`: Fix inconsistent result error when updating `query_parameters` with `when = "destroy"` (GH-1028).
+- `azapi_resource` resource: Fix embedded schema validation failure when the discriminator property is unknown (GH-1038).
+- `azapi_data_plane_resource` resource: Fix a bug that 204 status code is not supported as a success response (GH-1055).
+- Fix inconsistent result after apply when `lastConnectivityTime` field changes between create/update and read (GH-1062).
+- Fix a bug that `auxiliary_tenant_ids` are not passed to ARM client options for cross-tenant authentication (GH-1046).
 
 ## v2.8.0
 

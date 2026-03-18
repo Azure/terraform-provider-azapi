@@ -47,6 +47,8 @@ type AzapiUpdateResourceModel struct {
 	SensitiveBodyVersion          types.Map        `tfsdk:"sensitive_body_version"`
 	IgnoreCasing                  types.Bool       `tfsdk:"ignore_casing"`
 	IgnoreMissingProperty         types.Bool       `tfsdk:"ignore_missing_property"`
+	ListUniqueIdProperty          types.Map        `tfsdk:"list_unique_id_property"`
+	IgnoreOtherItemsInList        types.List       `tfsdk:"ignore_other_items_in_list"`
 	ReplaceTriggersExternalValues types.Dynamic    `tfsdk:"replace_triggers_external_values"`
 	ResponseExportValues          types.Dynamic    `tfsdk:"response_export_values"`
 	Locks                         types.List       `tfsdk:"locks"`
@@ -213,6 +215,21 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Computed:            true,
 				Default:             defaults.BoolDefault(true),
 				MarkdownDescription: docstrings.IgnoreMissingProperty(),
+			},
+
+			"list_unique_id_property": schema.MapAttribute{
+				ElementType:         types.StringType,
+				Optional:            true,
+				MarkdownDescription: docstrings.ListUniqueIdProperty(),
+			},
+
+			"ignore_other_items_in_list": schema.ListAttribute{
+				ElementType: types.StringType,
+				Optional:    true,
+				Validators: []validator.List{
+					listvalidator.ValueStringsAre(myvalidator.StringIsNotEmpty()),
+				},
+				MarkdownDescription: docstrings.IgnoreOtherItemsInList(),
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -455,7 +472,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 	}
 
 	if requestBody != nil {
-		requestBody = utils.MergeObject(existing, requestBody)
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		requestBody = utils.MergeObjectWithOption(existing, requestBody, mergeOption)
 	} else {
 		requestBody = existing
 	}
@@ -470,7 +491,11 @@ func (r *AzapiUpdateResource) CreateUpdate(ctx context.Context, requestConfig tf
 		return
 	}
 	if sensitiveBody != nil {
-		requestBody = utils.MergeObject(requestBody, sensitiveBody)
+		mergeOption := utils.UpdateJsonOption{}
+		if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+			mergeOption.ListUniqueIdProperty = v
+		}
+		requestBody = utils.MergeObjectWithOption(requestBody, sensitiveBody, mergeOption)
 	}
 
 	if id.ResourceDef != nil {
@@ -594,6 +619,16 @@ func (r *AzapiUpdateResource) Read(ctx context.Context, request resource.ReadReq
 	option := utils.UpdateJsonOption{
 		IgnoreCasing:          model.IgnoreCasing.ValueBool(),
 		IgnoreMissingProperty: model.IgnoreMissingProperty.ValueBool(),
+	}
+	if v := common.AsMapOfString(model.ListUniqueIdProperty); len(v) != 0 {
+		option.ListUniqueIdProperty = v
+	}
+	if paths := common.AsStringList(model.IgnoreOtherItemsInList); len(paths) != 0 {
+		m := make(map[string]bool)
+		for _, p := range paths {
+			m[p] = true
+		}
+		option.IgnoreOtherItemsInList = m
 	}
 	body := utils.UpdateObject(requestBody, responseBody, option)
 

@@ -66,6 +66,7 @@ func volatileFieldList() []string {
 		"lastModifiedAt",
 		"lastModifiedBy",
 		"lastModifiedByType",
+		"lastConnectivityTime",
 		"freeTrialRemainingTime",
 		"trialDaysRemaining",
 		"daysTrialRemaining",

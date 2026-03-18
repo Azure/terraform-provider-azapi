@@ -236,9 +236,13 @@ resource "azapi_resource" "assessment" {
 
 The following arguments are supported:
 
-* `type` - (Required) The type of the resource. This should be set to `Microsoft.Security/assessments@api-version`. The available api-versions for this resource are: [`2019-01-01-preview`, `2020-01-01`, `2021-06-01`, `2025-05-04-preview`].
+* `type` - (Required) The type of the resource. This should be set to `Microsoft.Security/assessments@api-version`. The available api-versions for this resource are: [`2019-01-01-preview`, `2020-01-01`, `2021-06-01`, `2025-05-04`].
 
 * `parent_id` - (Required) The ID of the azure resource in which this resource is created. The allowed values are:  
+  `/`  
+  `/providers/Microsoft.Management/managementGroups/{managementGroupId}`  
+  `/subscriptions/{subscriptionId}`  
+  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`  
   `{any azure resource id}`
 
 * `name` - (Required) Specifies the name of the azure resource. Changing this forces a new resource to be created.
@@ -251,8 +255,8 @@ For other arguments, please refer to the [azapi_resource](https://registry.terra
 
  ```shell
  # Azure resource can be imported using the resource id, e.g.
- terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Security/assessments/{resourceName}
+ terraform import azapi_resource.example //providers/Microsoft.Security/assessments/{resourceName}
  
  # It also supports specifying API version by using the resource id with api-version as a query parameter, e.g.
- terraform import azapi_resource.example {any azure resource id}/providers/Microsoft.Security/assessments/{resourceName}?api-version=2025-05-04-preview
+ terraform import azapi_resource.example //providers/Microsoft.Security/assessments/{resourceName}?api-version=2025-05-04
  ```

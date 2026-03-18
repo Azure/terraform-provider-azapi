@@ -31,6 +31,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"name":                types.StringValue("vnet1"),
 					"parent_id":           types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"),
 					"resource_group_name": types.StringValue("rg1"),
+					"resource_group_id":   types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"),
 					"subscription_id":     types.StringValue("00000000-0000-0000-0000-000000000000"),
 					"provider_namespace":  types.StringValue("Microsoft.Network"),
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{
@@ -56,6 +57,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"name":                types.StringValue("ba1"),
 					"parent_id":           types.StringValue("/"),
 					"resource_group_name": types.StringValue(""),
+					"resource_group_id":   types.StringValue(""),
 					"subscription_id":     types.StringValue(""),
 					"provider_namespace":  types.StringValue("Microsoft.Billing"),
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{
@@ -79,6 +81,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"name":                types.StringValue("00000000-0000-0000-0000-000000000000"),
 					"parent_id":           types.StringValue("/"),
 					"resource_group_name": types.StringValue(""),
+					"resource_group_id":   types.StringValue(""),
 					"subscription_id":     types.StringValue("00000000-0000-0000-0000-000000000000"),
 					"provider_namespace":  types.StringValue("Microsoft.Resources"),
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{
@@ -101,6 +104,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"name":                types.StringValue("mg1"),
 					"parent_id":           types.StringValue("/"),
 					"resource_group_name": types.StringValue(""),
+					"resource_group_id":   types.StringValue(""),
 					"subscription_id":     types.StringValue(""),
 					"provider_namespace":  types.StringValue("Microsoft.Management"),
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{
@@ -124,6 +128,7 @@ func TestParseResourceIdFunction(t *testing.T) {
 					"name":                types.StringValue("mylock"),
 					"parent_id":           types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
 					"resource_group_name": types.StringValue("rg1"),
+					"resource_group_id":   types.StringValue("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"),
 					"subscription_id":     types.StringValue("00000000-0000-0000-0000-000000000000"),
 					"provider_namespace":  types.StringValue("Microsoft.Authorization"),
 					"parts": types.MapValueMust(types.StringType, map[string]attr.Value{

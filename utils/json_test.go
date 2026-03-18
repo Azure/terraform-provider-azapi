@@ -1035,9 +1035,10 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 			"enabled": true,
 			"source": "Completion"
 		}
-  ]
+	]
 }
 `
+
 	NewJson := `
 {
 	"contentFilters": [
@@ -1047,15 +1048,15 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 			"blocking": true,
 			"enabled": true,
 			"source": "Completion"
-			},
-			{
-				"name": "Hate",
-				"allowedContentLevel": "Medium",
-				"blocking": true,
-				"enabled": true,
-				"source": "Prompt"
-			}
-  ]
+		},
+		{
+			"name": "Hate",
+			"allowedContentLevel": "Medium",
+			"blocking": true,
+			"enabled": true,
+			"source": "Prompt"
+		}
+	]
 }
 `
 	var old, new, expected any
@@ -1071,6 +1072,357 @@ func Test_UpdateObjectDuplicateIdentifiersWithInconsistentOrdering(t *testing.T)
 		expectedJson, _ := json.MarshalIndent(expected, "", "  ")
 		gotJson, _ := json.MarshalIndent(got, "", "  ")
 		t.Fatalf("Expected:\n%s\n\n but got\n%s", expectedJson, gotJson)
+	}
+}
+
+func Test_UpdateObject_ListUniqueIdProperty_IgnoreOtherItemsInList(t *testing.T) {
+	testcases := []struct {
+		Name                   string
+		OldJson                string
+		NewJson                string
+		ExpectJson             string
+		ListUniqueIdProperty   map[string]string
+		IgnoreOtherItemsInList map[string]bool
+		IgnoreMissingProperty  bool
+	}{
+		{
+			Name: "IgnoreOtherItemsInList true - filters to only matched items",
+			OldJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web", "locations": ["eastus"] }
+    ]
+  }
+}`,
+			NewJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.KeyVault", "locations": ["westus"] },
+      { "service": "Microsoft.Web", "locations": ["westus2"] }
+    ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web", "locations": ["westus2"] }
+    ]
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"properties.serviceEndpoints": "service",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"properties.serviceEndpoints": true,
+			},
+		},
+		{
+			Name: "IgnoreOtherItemsInList false - appends unmatched items",
+			OldJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web" }
+    ]
+  }
+}`,
+			NewJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.KeyVault" },
+      { "service": "Microsoft.Web" }
+    ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web" },
+      { "service": "Microsoft.KeyVault" }
+    ]
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"properties.serviceEndpoints": "service",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"properties.serviceEndpoints": false,
+			},
+		},
+		{
+			Name: "IgnoreMissingProperty preserves fields not in new object",
+			OldJson: `{
+  "items": [
+    { "name": "item1", "secret": "xyz", "timeout": 30 }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "name": "item1", "timeout": 60 }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "name": "item1", "secret": "xyz", "timeout": 60 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "name",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+			IgnoreMissingProperty: true,
+		},
+		{
+			Name: "No match in new list - old item removed",
+			OldJson: `{
+  "items": [
+    { "id": "a", "value": 1 },
+    { "id": "b", "value": 2 }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "id": "a", "value": 10 }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "id": "a", "value": 10 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "id",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+		},
+		{
+			Name: "Fallback to name field when no ListUniqueIdProperty configured",
+			OldJson: `{
+  "items": [
+    { "name": "test", "data": 1 }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "name": "other", "data": 2 },
+    { "name": "test", "data": 3 }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "name": "test", "data": 3 }
+  ]
+}`,
+			ListUniqueIdProperty:   nil,
+			IgnoreOtherItemsInList: map[string]bool{"items": true},
+		},
+		{
+			Name: "Empty old list - accepts new list items",
+			OldJson: `{
+  "properties": {
+    "serviceEndpoints": []
+  }
+}`,
+			NewJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web" }
+    ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "serviceEndpoints": [
+      { "service": "Microsoft.Web" }
+    ]
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"properties.serviceEndpoints": "service",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"properties.serviceEndpoints": true,
+			},
+		},
+		{
+			Name: "Deeply nested list path",
+			OldJson: `{
+  "config": {
+    "rules": {
+      "items": [
+        { "id": "rule1", "action": "allow" }
+      ]
+    }
+  }
+}`,
+			NewJson: `{
+  "config": {
+    "rules": {
+      "items": [
+        { "id": "rule2", "action": "deny" },
+        { "id": "rule1", "action": "block" }
+      ]
+    }
+  }
+}`,
+			ExpectJson: `{
+  "config": {
+    "rules": {
+      "items": [
+        { "id": "rule1", "action": "block" }
+      ]
+    }
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"config.rules.items": "id",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"config.rules.items": true,
+			},
+		},
+		{
+			Name: "Root-level list",
+			OldJson: `[
+  { "id": "a", "val": 1 },
+  { "id": "b", "val": 2 }
+]`,
+			NewJson: `[
+  { "id": "b", "val": 20 },
+  { "id": "c", "val": 30 },
+  { "id": "a", "val": 10 }
+]`,
+			ExpectJson: `[
+  { "id": "a", "val": 10 },
+  { "id": "b", "val": 20 }
+]`,
+			ListUniqueIdProperty: map[string]string{
+				"": "id",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"": true,
+			},
+		},
+		{
+			Name: "Items without identifier key - position-based matching",
+			OldJson: `{
+  "values": [
+    { "x": 1 },
+    { "y": 2 }
+  ]
+}`,
+			NewJson: `{
+  "values": [
+    { "x": 10 },
+    { "y": 20 }
+  ]
+}`,
+			ExpectJson: `{
+  "values": [
+    { "x": 10 },
+    { "y": 20 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"values": "nonexistent_key",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"values": true,
+			},
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.Name, func(t *testing.T) {
+			var oldObj, newObj, expected interface{}
+			if err := json.Unmarshal([]byte(tc.OldJson), &oldObj); err != nil {
+				t.Fatalf("failed to unmarshal oldJson: %v", err)
+			}
+			if err := json.Unmarshal([]byte(tc.NewJson), &newObj); err != nil {
+				t.Fatalf("failed to unmarshal newJson: %v", err)
+			}
+			if err := json.Unmarshal([]byte(tc.ExpectJson), &expected); err != nil {
+				t.Fatalf("failed to unmarshal expectJson: %v", err)
+			}
+
+			got := utils.UpdateObject(oldObj, newObj, utils.UpdateJsonOption{
+				ListUniqueIdProperty:   tc.ListUniqueIdProperty,
+				IgnoreOtherItemsInList: tc.IgnoreOtherItemsInList,
+				IgnoreMissingProperty:  tc.IgnoreMissingProperty,
+			})
+
+			if !reflect.DeepEqual(got, expected) {
+				gotBytes, _ := json.MarshalIndent(got, "", "  ")
+				expBytes, _ := json.MarshalIndent(expected, "", "  ")
+				t.Fatalf("unexpected result:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
+			}
+		})
+	}
+}
+
+func Test_MergeObjectWithOption_ListUniqueIdProperty_AppendsNewItems(t *testing.T) {
+	oldJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.KeyVault",
+        "x": 1
+      }
+    ]
+  }
+}
+`
+	newJson := `
+{
+  "properties": {
+    "serviceEndpoints": [
+      {
+        "service": "Microsoft.Web"
+      },
+      {
+        "service": "Microsoft.KeyVault",
+        "x": 2
+      }
+    ]
+  }
+}
+`
+
+	var oldObj interface{}
+	var newObj interface{}
+	if err := json.Unmarshal([]byte(oldJson), &oldObj); err != nil {
+		t.Fatalf("failed to unmarshal oldJson: %v", err)
+	}
+	if err := json.Unmarshal([]byte(newJson), &newObj); err != nil {
+		t.Fatalf("failed to unmarshal newJson: %v", err)
+	}
+
+	got := utils.MergeObjectWithOption(oldObj, newObj, utils.UpdateJsonOption{
+		ListUniqueIdProperty: map[string]string{
+			"properties.serviceEndpoints": "service",
+		},
+	})
+
+	gotMap := got.(map[string]interface{})
+	props := gotMap["properties"].(map[string]interface{})
+	endpoints := props["serviceEndpoints"].([]interface{})
+	if len(endpoints) != 2 {
+		t.Fatalf("expected 2 endpoints, got %d", len(endpoints))
+	}
+	first := endpoints[0].(map[string]interface{})
+	second := endpoints[1].(map[string]interface{})
+	if first["service"] != "Microsoft.KeyVault" {
+		t.Fatalf("expected first endpoint to be Microsoft.KeyVault, got %v", first["service"])
+	}
+	if first["x"] != float64(2) {
+		t.Fatalf("expected KeyVault.x to be overwritten to 2, got %v", first["x"])
+	}
+	if second["service"] != "Microsoft.Web" {
+		t.Fatalf("expected second endpoint to be Microsoft.Web, got %v", second["service"])
 	}
 }
 
@@ -1215,5 +1567,230 @@ func Test_FilterFields(t *testing.T) {
 			resultJson, _ := json.Marshal(result)
 			t.Fatalf("Expected %s but got %s", expectedJson, resultJson)
 		}
+	}
+}
+
+// Test_UpdateObject_CompositeKeyIdentifier tests composite keys for list item matching.
+func Test_UpdateObject_CompositeKeyIdentifier(t *testing.T) {
+	testcases := []struct {
+		Name                   string
+		OldJson                string
+		NewJson                string
+		ExpectJson             string
+		ListUniqueIdProperty   map[string]string
+		IgnoreOtherItemsInList map[string]bool
+		IgnoreMissingProperty  bool
+	}{
+		{
+			Name: "Mutually exclusive fields - items use category OR categoryGroup",
+			OldJson: `{
+  "properties": {
+    "logs": [
+      { "category": "AuditEvent", "enabled": true },
+      { "categoryGroup": "allLogs", "enabled": true }
+    ]
+  }
+}`,
+			NewJson: `{
+  "properties": {
+    "logs": [
+      { "category": "Alert", "enabled": false },
+      { "categoryGroup": "allLogs", "enabled": false },
+      { "category": "AuditEvent", "enabled": false }
+    ]
+  }
+}`,
+			ExpectJson: `{
+  "properties": {
+    "logs": [
+      { "category": "AuditEvent", "enabled": false },
+      { "categoryGroup": "allLogs", "enabled": false }
+    ]
+  }
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"properties.logs": "category, categoryGroup",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"properties.logs": true,
+			},
+		},
+		{
+			Name: "Combined key - both fields present creates compound identifier",
+			OldJson: `{
+  "items": [
+    { "type": "A", "region": "us", "value": 1 },
+    { "type": "B", "region": "eu", "value": 2 }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "type": "A", "region": "eu", "value": 100 },
+    { "type": "B", "region": "eu", "value": 200 },
+    { "type": "A", "region": "us", "value": 300 }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "type": "A", "region": "us", "value": 300 },
+    { "type": "B", "region": "eu", "value": 200 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "type, region",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+		},
+		{
+			Name: "Composite key with IgnoreMissingProperty preserves old fields",
+			OldJson: `{
+  "items": [
+    { "type": "config", "env": "prod", "secret": "xyz", "timeout": 30 }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "type": "config", "env": "prod", "timeout": 60 }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "type": "config", "env": "prod", "secret": "xyz", "timeout": 60 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "type, env",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+			IgnoreMissingProperty: true,
+		},
+		{
+			Name: "Three-field composite key",
+			OldJson: `{
+  "rules": [
+    { "action": "allow", "protocol": "tcp", "port": "80", "priority": 100 }
+  ]
+}`,
+			NewJson: `{
+  "rules": [
+    { "action": "deny", "protocol": "udp", "port": "53", "priority": 50 },
+    { "action": "allow", "protocol": "tcp", "port": "80", "priority": 200 }
+  ]
+}`,
+			ExpectJson: `{
+  "rules": [
+    { "action": "allow", "protocol": "tcp", "port": "80", "priority": 200 }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"rules": "action, protocol, port",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"rules": true,
+			},
+		},
+		{
+			Name: "Composite key - no matching items returns empty list",
+			OldJson: `{
+  "items": [
+    { "key1": "a", "key2": "b", "data": "old" }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "key1": "x", "key2": "y", "data": "new" }
+  ]
+}`,
+			ExpectJson: `{
+  "items": []
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "key1, key2",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+		},
+		{
+			Name: "Composite key with null value in key field",
+			OldJson: `{
+  "items": [
+    { "key1": "a", "key2": null, "value": "old" }
+  ]
+}`,
+			NewJson: `{
+  "items": [
+    { "key1": "a", "value": "new" }
+  ]
+}`,
+			ExpectJson: `{
+  "items": [
+    { "key1": "a", "key2": null, "value": "new" }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"items": "key1, key2",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"items": true,
+			},
+		},
+		{
+			Name: "Composite key - IgnoreOtherItemsInList false appends unmatched",
+			OldJson: `{
+  "entries": [
+    { "source": "app", "level": "info", "msg": "old" }
+  ]
+}`,
+			NewJson: `{
+  "entries": [
+    { "source": "app", "level": "error", "msg": "new-error" },
+    { "source": "app", "level": "info", "msg": "new-info" }
+  ]
+}`,
+			ExpectJson: `{
+  "entries": [
+    { "source": "app", "level": "info", "msg": "new-info" },
+    { "source": "app", "level": "error", "msg": "new-error" }
+  ]
+}`,
+			ListUniqueIdProperty: map[string]string{
+				"entries": "source, level",
+			},
+			IgnoreOtherItemsInList: map[string]bool{
+				"entries": false,
+			},
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.Name, func(t *testing.T) {
+			var oldObj, newObj, expected interface{}
+			if err := json.Unmarshal([]byte(tc.OldJson), &oldObj); err != nil {
+				t.Fatalf("failed to unmarshal oldJson: %v", err)
+			}
+			if err := json.Unmarshal([]byte(tc.NewJson), &newObj); err != nil {
+				t.Fatalf("failed to unmarshal newJson: %v", err)
+			}
+			if err := json.Unmarshal([]byte(tc.ExpectJson), &expected); err != nil {
+				t.Fatalf("failed to unmarshal expectedJson: %v", err)
+			}
+
+			got := utils.UpdateObject(oldObj, newObj, utils.UpdateJsonOption{
+				ListUniqueIdProperty:   tc.ListUniqueIdProperty,
+				IgnoreOtherItemsInList: tc.IgnoreOtherItemsInList,
+				IgnoreMissingProperty:  tc.IgnoreMissingProperty,
+			})
+
+			if !reflect.DeepEqual(got, expected) {
+				gotBytes, _ := json.MarshalIndent(got, "", "  ")
+				expBytes, _ := json.MarshalIndent(expected, "", "  ")
+				t.Fatalf("composite key identifier failed:\n got: %s\nwant: %s", string(gotBytes), string(expBytes))
+			}
+		})
 	}
 }

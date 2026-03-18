@@ -23,6 +23,7 @@ var ParseResourceIdResultAttrTypes = map[string]attr.Type{
 	"name":                types.StringType,
 	"parent_id":           types.StringType,
 	"resource_group_name": types.StringType,
+	"resource_group_id":   types.StringType,
 	"subscription_id":     types.StringType,
 	"provider_namespace":  types.StringType,
 	"parts": types.MapType{
@@ -98,12 +99,18 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 		parts[components[i]] = basetypes.NewStringValue(components[i+1])
 	}
 
+	resourceGroupId := ""
+	if armId.ResourceGroupName != "" {
+		resourceGroupId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s", armId.SubscriptionID, armId.ResourceGroupName)
+	}
+
 	result := map[string]attr.Value{
 		"id":                  types.StringValue(id.ID()),
 		"type":                types.StringValue(id.AzureResourceType),
 		"name":                types.StringValue(id.Name),
 		"parent_id":           types.StringValue(id.ParentId),
 		"resource_group_name": types.StringValue(armId.ResourceGroupName),
+		"resource_group_id":   types.StringValue(resourceGroupId),
 		"subscription_id":     types.StringValue(armId.SubscriptionID),
 		"provider_namespace":  types.StringValue(armId.ResourceType.Namespace),
 		"parts":               types.MapValueMust(types.StringType, parts),

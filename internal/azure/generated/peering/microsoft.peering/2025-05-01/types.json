@@ -5,7 +5,7 @@
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Peering/peerAsns"
+    "value": "Microsoft.Peering/peeringServices"
   },
   {
     "$type": "StringType"
@@ -16,7 +16,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Peering/peerAsns",
+    "name": "Microsoft.Peering/peeringServices",
     "properties": {
       "id": {
         "type": {
@@ -51,7 +51,365 @@
           "$ref": "#/5"
         },
         "flags": 0,
+        "description": "The properties that define a peering service."
+      },
+      "sku": {
+        "type": {
+          "$ref": "#/14"
+        },
+        "flags": 0,
+        "description": "The SKU that defines the type of the peering service."
+      },
+      "tags": {
+        "type": {
+          "$ref": "#/15"
+        },
+        "flags": 0,
+        "description": "Resource tags."
+      },
+      "location": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 1,
+        "description": "The geo-location where the resource lives"
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PeeringServiceProperties",
+    "properties": {
+      "peeringServiceLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The location (state/province) of the customer."
+      },
+      "peeringServiceProvider": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the service provider."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/11"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      },
+      "providerPrimaryPeeringLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The primary peering (Microsoft/service provider) location to be used for customer traffic."
+      },
+      "providerBackupPeeringLocation": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The backup peering (Microsoft/service provider) location to be used for customer traffic."
+      },
+      "logAnalyticsWorkspaceProperties": {
+        "type": {
+          "$ref": "#/12"
+        },
+        "flags": 0,
+        "description": "The Log Analytics Workspace Properties"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/6"
+      },
+      {
+        "$ref": "#/7"
+      },
+      {
+        "$ref": "#/8"
+      },
+      {
+        "$ref": "#/9"
+      },
+      {
+        "$ref": "#/10"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "LogAnalyticsWorkspaceProperties",
+    "properties": {
+      "workspaceID": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Workspace ID."
+      },
+      "key": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The Workspace Key."
+      },
+      "connectedAgents": {
+        "type": {
+          "$ref": "#/13"
+        },
+        "flags": 2,
+        "description": "The list of connected agents."
+      }
+    }
+  },
+  {
+    "$type": "ArrayType",
+    "itemType": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "PeeringServiceSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the peering service SKU."
+      }
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
+    "properties": {},
+    "additionalProperties": {
+      "$ref": "#/2"
+    }
+  },
+  {
+    "$type": "ObjectType",
+    "name": "SystemData",
+    "properties": {
+      "createdBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that created the resource."
+      },
+      "createdByType": {
+        "type": {
+          "$ref": "#/21"
+        },
+        "flags": 0,
+        "description": "The type of identity that created the resource."
+      },
+      "createdAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource creation (UTC)."
+      },
+      "lastModifiedBy": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The identity that last modified the resource."
+      },
+      "lastModifiedByType": {
+        "type": {
+          "$ref": "#/26"
+        },
+        "flags": 0,
+        "description": "The type of identity that last modified the resource."
+      },
+      "lastModifiedAt": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The timestamp of resource last modification (UTC)"
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/17"
+      },
+      {
+        "$ref": "#/18"
+      },
+      {
+        "$ref": "#/19"
+      },
+      {
+        "$ref": "#/20"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "User"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Application"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "ManagedIdentity"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Key"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/22"
+      },
+      {
+        "$ref": "#/23"
+      },
+      {
+        "$ref": "#/24"
+      },
+      {
+        "$ref": "#/25"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ResourceType",
+    "name": "Microsoft.Peering/peeringServices@2025-05-01",
+    "body": {
+      "$ref": "#/4"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Peering/peerAsns"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01"
+  },
+  {
+    "$type": "ObjectType",
+    "name": "Microsoft.Peering/peerAsns",
+    "properties": {
+      "id": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 10,
+        "description": "The resource id"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/28"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/29"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/31"
+        },
+        "flags": 0,
         "description": "The properties that define a peer's ASN."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -61,14 +419,14 @@
     "properties": {
       "peerAsn": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The Autonomous System Number (ASN) of the peer."
       },
       "peerContactDetail": {
         "type": {
-          "$ref": "#/15"
+          "$ref": "#/41"
         },
         "flags": 0,
         "description": "The contact details of the peer."
@@ -82,7 +440,7 @@
       },
       "validationState": {
         "type": {
-          "$ref": "#/20"
+          "$ref": "#/46"
         },
         "flags": 2,
         "description": "The validation state of the ASN associated with the peer."
@@ -105,7 +463,7 @@
     "properties": {
       "role": {
         "type": {
-          "$ref": "#/14"
+          "$ref": "#/40"
         },
         "flags": 0,
         "description": "The role of the contact."
@@ -154,22 +512,22 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/8"
+        "$ref": "#/34"
       },
       {
-        "$ref": "#/9"
+        "$ref": "#/35"
       },
       {
-        "$ref": "#/10"
+        "$ref": "#/36"
       },
       {
-        "$ref": "#/11"
+        "$ref": "#/37"
       },
       {
-        "$ref": "#/12"
+        "$ref": "#/38"
       },
       {
-        "$ref": "#/13"
+        "$ref": "#/39"
       },
       {
         "$ref": "#/2"
@@ -179,7 +537,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/7"
+      "$ref": "#/33"
     }
   },
   {
@@ -202,16 +560,16 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/16"
+        "$ref": "#/42"
       },
       {
-        "$ref": "#/17"
+        "$ref": "#/43"
       },
       {
-        "$ref": "#/18"
+        "$ref": "#/44"
       },
       {
-        "$ref": "#/19"
+        "$ref": "#/45"
       },
       {
         "$ref": "#/2"
@@ -221,338 +579,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Peering/peerAsns@2025-05-01",
-    "scopeType": 4,
     "body": {
-      "$ref": "#/4"
+      "$ref": "#/30"
     },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Peering/peerings/registeredAsns"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Peering/peerings/registeredAsns",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/22"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/23"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/25"
-        },
-        "flags": 0,
-        "description": "The properties that define a registered ASN."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PeeringRegisteredAsnProperties",
-    "properties": {
-      "asn": {
-        "type": {
-          "$ref": "#/6"
-        },
-        "flags": 0,
-        "description": "The customer's ASN from which traffic originates."
-      },
-      "peeringServicePrefixKey": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The peering service prefix key that is to be shared with the customer."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/31"
-        },
-        "flags": 2,
-        "description": "The provisioning state of the resource."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Updating"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/26"
-      },
-      {
-        "$ref": "#/27"
-      },
-      {
-        "$ref": "#/28"
-      },
-      {
-        "$ref": "#/29"
-      },
-      {
-        "$ref": "#/30"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Peering/peerings/registeredAsns@2025-05-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/24"
-    },
-    "flags": 0
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Microsoft.Peering/peerings/registeredPrefixes"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "2025-05-01"
-  },
-  {
-    "$type": "ObjectType",
-    "name": "Microsoft.Peering/peerings/registeredPrefixes",
-    "properties": {
-      "id": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 10,
-        "description": "The resource id"
-      },
-      "name": {
-        "type": {
-          "$ref": "#/0"
-        },
-        "flags": 9,
-        "description": "The resource name"
-      },
-      "type": {
-        "type": {
-          "$ref": "#/33"
-        },
-        "flags": 10,
-        "description": "The resource type"
-      },
-      "apiVersion": {
-        "type": {
-          "$ref": "#/34"
-        },
-        "flags": 10,
-        "description": "The resource api version"
-      },
-      "properties": {
-        "type": {
-          "$ref": "#/36"
-        },
-        "flags": 0,
-        "description": "The properties that define a registered prefix."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PeeringRegisteredPrefixProperties",
-    "properties": {
-      "prefix": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The customer's prefix from which traffic originates."
-      },
-      "prefixValidationState": {
-        "type": {
-          "$ref": "#/44"
-        },
-        "flags": 2,
-        "description": "The prefix validation state."
-      },
-      "peeringServicePrefixKey": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The peering service prefix key that is to be shared with the customer."
-      },
-      "errorMessage": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The error message associated with the validation state, if any."
-      },
-      "provisioningState": {
-        "type": {
-          "$ref": "#/50"
-        },
-        "flags": 2,
-        "description": "The provisioning state of the resource."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "None"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Invalid"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Verified"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Pending"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Warning"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unknown"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/37"
-      },
-      {
-        "$ref": "#/38"
-      },
-      {
-        "$ref": "#/39"
-      },
-      {
-        "$ref": "#/40"
-      },
-      {
-        "$ref": "#/41"
-      },
-      {
-        "$ref": "#/42"
-      },
-      {
-        "$ref": "#/43"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Succeeded"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Updating"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Deleting"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Failed"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Canceled"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/45"
-      },
-      {
-        "$ref": "#/46"
-      },
-      {
-        "$ref": "#/47"
-      },
-      {
-        "$ref": "#/48"
-      },
-      {
-        "$ref": "#/49"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "ResourceType",
-    "name": "Microsoft.Peering/peerings/registeredPrefixes@2025-05-01",
-    "scopeType": 8,
-    "body": {
-      "$ref": "#/35"
-    },
-    "flags": 0
+    "readableScopes": 4,
+    "writableScopes": 4
   },
   {
     "$type": "StringLiteralType",
@@ -582,183 +613,61 @@
       },
       "type": {
         "type": {
-          "$ref": "#/52"
+          "$ref": "#/48"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/53"
+          "$ref": "#/49"
         },
         "flags": 10,
         "description": "The resource api version"
       },
+      "properties": {
+        "type": {
+          "$ref": "#/51"
+        },
+        "flags": 0,
+        "description": "The properties that define a peering."
+      },
       "sku": {
         "type": {
-          "$ref": "#/55"
+          "$ref": "#/135"
         },
         "flags": 1,
         "description": "The SKU that defines the tier and kind of the peering."
       },
       "kind": {
         "type": {
-          "$ref": "#/68"
+          "$ref": "#/148"
         },
         "flags": 1,
         "description": "The kind of the peering."
       },
-      "properties": {
+      "tags": {
         "type": {
-          "$ref": "#/69"
+          "$ref": "#/149"
         },
         "flags": 0,
-        "description": "The properties that define a peering."
+        "description": "Resource tags."
       },
       "location": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 1,
-        "description": "The location of the resource."
+        "description": "The geo-location where the resource lives"
       },
-      "tags": {
+      "systemData": {
         "type": {
-          "$ref": "#/153"
+          "$ref": "#/16"
         },
-        "flags": 0,
-        "description": "The resource tags."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PeeringSku",
-    "properties": {
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The name of the peering SKU."
-      },
-      "tier": {
-        "type": {
-          "$ref": "#/58"
-        },
-        "flags": 2,
-        "description": "The tier of the peering SKU."
-      },
-      "family": {
-        "type": {
-          "$ref": "#/61"
-        },
-        "flags": 2,
-        "description": "The family of the peering SKU."
-      },
-      "size": {
-        "type": {
-          "$ref": "#/65"
-        },
-        "flags": 2,
-        "description": "The size of the peering SKU."
-      }
-    }
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Basic"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Premium"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/56"
-      },
-      {
-        "$ref": "#/57"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Direct"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Exchange"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/59"
-      },
-      {
-        "$ref": "#/60"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Free"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Metered"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Unlimited"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/62"
-      },
-      {
-        "$ref": "#/63"
-      },
-      {
-        "$ref": "#/64"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Direct"
-  },
-  {
-    "$type": "StringLiteralType",
-    "value": "Exchange"
-  },
-  {
-    "$type": "UnionType",
-    "elements": [
-      {
-        "$ref": "#/66"
-      },
-      {
-        "$ref": "#/67"
-      },
-      {
-        "$ref": "#/2"
-      }
-    ]
   },
   {
     "$type": "ObjectType",
@@ -766,21 +675,21 @@
     "properties": {
       "direct": {
         "type": {
-          "$ref": "#/70"
+          "$ref": "#/52"
         },
         "flags": 0,
         "description": "The properties that define a direct peering."
       },
       "exchange": {
         "type": {
-          "$ref": "#/125"
+          "$ref": "#/107"
         },
         "flags": 0,
         "description": "The properties that define an exchange peering."
       },
       "connectivityProbes": {
         "type": {
-          "$ref": "#/146"
+          "$ref": "#/128"
         },
         "flags": 0,
         "description": "The connectivity probes associated with the peering."
@@ -794,7 +703,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/152"
+          "$ref": "#/134"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -807,28 +716,28 @@
     "properties": {
       "connections": {
         "type": {
-          "$ref": "#/113"
+          "$ref": "#/95"
         },
         "flags": 0,
         "description": "The set of connections that constitute a direct peering."
       },
       "useForPeeringService": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/57"
         },
         "flags": 2,
         "description": "The flag that indicates whether or not the peering is used for peering service."
       },
       "peerAsn": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "The reference of the peer ASN."
       },
       "directPeeringType": {
         "type": {
-          "$ref": "#/124"
+          "$ref": "#/106"
         },
         "flags": 0,
         "description": "The type of direct peering."
@@ -841,28 +750,28 @@
     "properties": {
       "bandwidthInMbps": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The bandwidth of the connection."
       },
       "provisionedBandwidthInMbps": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 2,
         "description": "The bandwidth that is actually provisioned."
       },
       "sessionAddressProvider": {
         "type": {
-          "$ref": "#/74"
+          "$ref": "#/56"
         },
         "flags": 0,
         "description": "The field indicating if Microsoft provides session ip addresses."
       },
       "useForPeeringService": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/57"
         },
         "flags": 0,
         "description": "The flag that indicates whether or not the connection is used for peering service."
@@ -876,21 +785,21 @@
       },
       "peeringDBFacilityId": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The PeeringDB.com ID of the facility at which the connection has to be set up."
       },
       "connectionState": {
         "type": {
-          "$ref": "#/87"
+          "$ref": "#/69"
         },
         "flags": 2,
         "description": "The state of the connection."
       },
       "bgpSession": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "The BGP session associated with the connection."
@@ -923,10 +832,10 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/72"
+        "$ref": "#/54"
       },
       {
-        "$ref": "#/73"
+        "$ref": "#/55"
       },
       {
         "$ref": "#/2"
@@ -984,37 +893,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/76"
+        "$ref": "#/58"
       },
       {
-        "$ref": "#/77"
+        "$ref": "#/59"
       },
       {
-        "$ref": "#/78"
+        "$ref": "#/60"
       },
       {
-        "$ref": "#/79"
+        "$ref": "#/61"
       },
       {
-        "$ref": "#/80"
+        "$ref": "#/62"
       },
       {
-        "$ref": "#/81"
+        "$ref": "#/63"
       },
       {
-        "$ref": "#/82"
+        "$ref": "#/64"
       },
       {
-        "$ref": "#/83"
+        "$ref": "#/65"
       },
       {
-        "$ref": "#/84"
+        "$ref": "#/66"
       },
       {
-        "$ref": "#/85"
+        "$ref": "#/67"
       },
       {
-        "$ref": "#/86"
+        "$ref": "#/68"
       },
       {
         "$ref": "#/2"
@@ -1069,28 +978,28 @@
       },
       "sessionStateV4": {
         "type": {
-          "$ref": "#/100"
+          "$ref": "#/82"
         },
         "flags": 2,
         "description": "The state of the IPv4 session."
       },
       "sessionStateV6": {
         "type": {
-          "$ref": "#/112"
+          "$ref": "#/94"
         },
         "flags": 2,
         "description": "The state of the IPv6 session."
       },
       "maxPrefixesAdvertisedV4": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The maximum number of prefixes advertised over the IPv4 session."
       },
       "maxPrefixesAdvertisedV6": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The maximum number of prefixes advertised over the IPv6 session."
@@ -1152,37 +1061,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/89"
+        "$ref": "#/71"
       },
       {
-        "$ref": "#/90"
+        "$ref": "#/72"
       },
       {
-        "$ref": "#/91"
+        "$ref": "#/73"
       },
       {
-        "$ref": "#/92"
+        "$ref": "#/74"
       },
       {
-        "$ref": "#/93"
+        "$ref": "#/75"
       },
       {
-        "$ref": "#/94"
+        "$ref": "#/76"
       },
       {
-        "$ref": "#/95"
+        "$ref": "#/77"
       },
       {
-        "$ref": "#/96"
+        "$ref": "#/78"
       },
       {
-        "$ref": "#/97"
+        "$ref": "#/79"
       },
       {
-        "$ref": "#/98"
+        "$ref": "#/80"
       },
       {
-        "$ref": "#/99"
+        "$ref": "#/81"
       },
       {
         "$ref": "#/2"
@@ -1237,37 +1146,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/101"
+        "$ref": "#/83"
       },
       {
-        "$ref": "#/102"
+        "$ref": "#/84"
       },
       {
-        "$ref": "#/103"
+        "$ref": "#/85"
       },
       {
-        "$ref": "#/104"
+        "$ref": "#/86"
       },
       {
-        "$ref": "#/105"
+        "$ref": "#/87"
       },
       {
-        "$ref": "#/106"
+        "$ref": "#/88"
       },
       {
-        "$ref": "#/107"
+        "$ref": "#/89"
       },
       {
-        "$ref": "#/108"
+        "$ref": "#/90"
       },
       {
-        "$ref": "#/109"
+        "$ref": "#/91"
       },
       {
-        "$ref": "#/110"
+        "$ref": "#/92"
       },
       {
-        "$ref": "#/111"
+        "$ref": "#/93"
       },
       {
         "$ref": "#/2"
@@ -1277,7 +1186,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/71"
+      "$ref": "#/53"
     }
   },
   {
@@ -1333,31 +1242,31 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/115"
+        "$ref": "#/97"
       },
       {
-        "$ref": "#/116"
+        "$ref": "#/98"
       },
       {
-        "$ref": "#/117"
+        "$ref": "#/99"
       },
       {
-        "$ref": "#/118"
+        "$ref": "#/100"
       },
       {
-        "$ref": "#/119"
+        "$ref": "#/101"
       },
       {
-        "$ref": "#/120"
+        "$ref": "#/102"
       },
       {
-        "$ref": "#/121"
+        "$ref": "#/103"
       },
       {
-        "$ref": "#/122"
+        "$ref": "#/104"
       },
       {
-        "$ref": "#/123"
+        "$ref": "#/105"
       },
       {
         "$ref": "#/2"
@@ -1370,14 +1279,14 @@
     "properties": {
       "connections": {
         "type": {
-          "$ref": "#/139"
+          "$ref": "#/121"
         },
         "flags": 0,
         "description": "The set of connections that constitute an exchange peering."
       },
       "peerAsn": {
         "type": {
-          "$ref": "#/114"
+          "$ref": "#/96"
         },
         "flags": 0,
         "description": "The reference of the peer ASN."
@@ -1390,21 +1299,21 @@
     "properties": {
       "peeringDBFacilityId": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The PeeringDB.com ID of the facility at which the connection has to be set up."
       },
       "connectionState": {
         "type": {
-          "$ref": "#/138"
+          "$ref": "#/120"
         },
         "flags": 2,
         "description": "The state of the connection."
       },
       "bgpSession": {
         "type": {
-          "$ref": "#/88"
+          "$ref": "#/70"
         },
         "flags": 0,
         "description": "The BGP session associated with the connection."
@@ -1473,37 +1382,37 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/127"
+        "$ref": "#/109"
       },
       {
-        "$ref": "#/128"
+        "$ref": "#/110"
       },
       {
-        "$ref": "#/129"
+        "$ref": "#/111"
       },
       {
-        "$ref": "#/130"
+        "$ref": "#/112"
       },
       {
-        "$ref": "#/131"
+        "$ref": "#/113"
       },
       {
-        "$ref": "#/132"
+        "$ref": "#/114"
       },
       {
-        "$ref": "#/133"
+        "$ref": "#/115"
       },
       {
-        "$ref": "#/134"
+        "$ref": "#/116"
       },
       {
-        "$ref": "#/135"
+        "$ref": "#/117"
       },
       {
-        "$ref": "#/136"
+        "$ref": "#/118"
       },
       {
-        "$ref": "#/137"
+        "$ref": "#/119"
       },
       {
         "$ref": "#/2"
@@ -1513,7 +1422,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/126"
+      "$ref": "#/108"
     }
   },
   {
@@ -1536,17 +1445,17 @@
       },
       "protocol": {
         "type": {
-          "$ref": "#/144"
+          "$ref": "#/126"
         },
         "flags": 0,
         "description": "The protocol of the traffic that will be sent for the connectivity probe."
       },
       "prefixesToAccesslist": {
         "type": {
-          "$ref": "#/145"
+          "$ref": "#/127"
         },
         "flags": 2,
-        "description": "Set to contain the prefixes that agents in Azure will send traffic from. For peers to allow into their\r\nnetwork the connectivity probe traffic can reach their endpoint for the connectivity probe."
+        "description": "Set to contain the prefixes that agents in Azure will send traffic from. For peers to allow into their\nnetwork the connectivity probe traffic can reach their endpoint for the connectivity probe."
       }
     }
   },
@@ -1566,13 +1475,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/141"
+        "$ref": "#/123"
       },
       {
-        "$ref": "#/142"
+        "$ref": "#/124"
       },
       {
-        "$ref": "#/143"
+        "$ref": "#/125"
       },
       {
         "$ref": "#/2"
@@ -1588,7 +1497,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/140"
+      "$ref": "#/122"
     }
   },
   {
@@ -1615,19 +1524,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/147"
+        "$ref": "#/129"
       },
       {
-        "$ref": "#/148"
+        "$ref": "#/130"
       },
       {
-        "$ref": "#/149"
+        "$ref": "#/131"
       },
       {
-        "$ref": "#/150"
+        "$ref": "#/132"
       },
       {
-        "$ref": "#/151"
+        "$ref": "#/133"
       },
       {
         "$ref": "#/2"
@@ -1636,7 +1545,136 @@
   },
   {
     "$type": "ObjectType",
-    "name": "PeeringTags",
+    "name": "PeeringSku",
+    "properties": {
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The name of the peering SKU."
+      },
+      "tier": {
+        "type": {
+          "$ref": "#/138"
+        },
+        "flags": 2,
+        "description": "The tier of the peering SKU."
+      },
+      "family": {
+        "type": {
+          "$ref": "#/141"
+        },
+        "flags": 2,
+        "description": "The family of the peering SKU."
+      },
+      "size": {
+        "type": {
+          "$ref": "#/145"
+        },
+        "flags": 2,
+        "description": "The size of the peering SKU."
+      }
+    }
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Basic"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Premium"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/136"
+      },
+      {
+        "$ref": "#/137"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Direct"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exchange"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/139"
+      },
+      {
+        "$ref": "#/140"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Free"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Metered"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unlimited"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/142"
+      },
+      {
+        "$ref": "#/143"
+      },
+      {
+        "$ref": "#/144"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Direct"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Exchange"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/146"
+      },
+      {
+        "$ref": "#/147"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "ObjectType",
+    "name": "TrackedResourceTags",
     "properties": {},
     "additionalProperties": {
       "$ref": "#/2"
@@ -1645,11 +1683,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Peering/peerings@2025-05-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/54"
+      "$ref": "#/50"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1679,24 +1717,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/155"
+          "$ref": "#/151"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/156"
+          "$ref": "#/152"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/158"
+          "$ref": "#/154"
         },
         "flags": 0,
         "description": "The properties that define a Connection Monitor Test."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1720,35 +1765,35 @@
       },
       "destinationPort": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The Connection Monitor test destination port"
       },
       "testFrequencyInSec": {
         "type": {
-          "$ref": "#/6"
+          "$ref": "#/32"
         },
         "flags": 0,
         "description": "The Connection Monitor test frequency in seconds"
       },
       "isTestSuccessful": {
         "type": {
-          "$ref": "#/75"
+          "$ref": "#/57"
         },
         "flags": 2,
         "description": "The flag that indicates if the Connection Monitor test is successful or not."
       },
       "path": {
         "type": {
-          "$ref": "#/159"
+          "$ref": "#/155"
         },
         "flags": 2,
         "description": "The path representing the Connection Monitor test."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/165"
+          "$ref": "#/161"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -1785,19 +1830,19 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/156"
+      },
+      {
+        "$ref": "#/157"
+      },
+      {
+        "$ref": "#/158"
+      },
+      {
+        "$ref": "#/159"
+      },
+      {
         "$ref": "#/160"
-      },
-      {
-        "$ref": "#/161"
-      },
-      {
-        "$ref": "#/162"
-      },
-      {
-        "$ref": "#/163"
-      },
-      {
-        "$ref": "#/164"
       },
       {
         "$ref": "#/2"
@@ -1807,11 +1852,11 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Peering/peeringServices/connectionMonitorTests@2025-05-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/157"
+      "$ref": "#/153"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
@@ -1841,24 +1886,31 @@
       },
       "type": {
         "type": {
-          "$ref": "#/167"
+          "$ref": "#/163"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/168"
+          "$ref": "#/164"
         },
         "flags": 10,
         "description": "The resource api version"
       },
       "properties": {
         "type": {
-          "$ref": "#/170"
+          "$ref": "#/166"
         },
         "flags": 0,
         "description": "Gets or sets the peering prefix properties."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -1875,14 +1927,14 @@
       },
       "prefixValidationState": {
         "type": {
-          "$ref": "#/178"
+          "$ref": "#/174"
         },
         "flags": 2,
         "description": "The prefix validation state"
       },
       "learnedType": {
         "type": {
-          "$ref": "#/182"
+          "$ref": "#/178"
         },
         "flags": 2,
         "description": "The prefix learned type"
@@ -1896,7 +1948,7 @@
       },
       "events": {
         "type": {
-          "$ref": "#/184"
+          "$ref": "#/180"
         },
         "flags": 2,
         "description": "The list of events for peering service prefix"
@@ -1910,7 +1962,7 @@
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/190"
+          "$ref": "#/186"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
@@ -1949,6 +2001,18 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/167"
+      },
+      {
+        "$ref": "#/168"
+      },
+      {
+        "$ref": "#/169"
+      },
+      {
+        "$ref": "#/170"
+      },
+      {
         "$ref": "#/171"
       },
       {
@@ -1956,18 +2020,6 @@
       },
       {
         "$ref": "#/173"
-      },
-      {
-        "$ref": "#/174"
-      },
-      {
-        "$ref": "#/175"
-      },
-      {
-        "$ref": "#/176"
-      },
-      {
-        "$ref": "#/177"
       },
       {
         "$ref": "#/2"
@@ -1990,13 +2042,13 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/179"
+        "$ref": "#/175"
       },
       {
-        "$ref": "#/180"
+        "$ref": "#/176"
       },
       {
-        "$ref": "#/181"
+        "$ref": "#/177"
       },
       {
         "$ref": "#/2"
@@ -2047,7 +2099,7 @@
   {
     "$type": "ArrayType",
     "itemType": {
-      "$ref": "#/183"
+      "$ref": "#/179"
     }
   },
   {
@@ -2074,19 +2126,19 @@
     "$type": "UnionType",
     "elements": [
       {
+        "$ref": "#/181"
+      },
+      {
+        "$ref": "#/182"
+      },
+      {
+        "$ref": "#/183"
+      },
+      {
+        "$ref": "#/184"
+      },
+      {
         "$ref": "#/185"
-      },
-      {
-        "$ref": "#/186"
-      },
-      {
-        "$ref": "#/187"
-      },
-      {
-        "$ref": "#/188"
-      },
-      {
-        "$ref": "#/189"
       },
       {
         "$ref": "#/2"
@@ -2096,15 +2148,15 @@
   {
     "$type": "ResourceType",
     "name": "Microsoft.Peering/peeringServices/prefixes@2025-05-01",
-    "scopeType": 8,
     "body": {
-      "$ref": "#/169"
+      "$ref": "#/165"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "StringLiteralType",
-    "value": "Microsoft.Peering/peeringServices"
+    "value": "Microsoft.Peering/peerings/registeredAsns"
   },
   {
     "$type": "StringLiteralType",
@@ -2112,7 +2164,7 @@
   },
   {
     "$type": "ObjectType",
-    "name": "Microsoft.Peering/peeringServices",
+    "name": "Microsoft.Peering/peerings/registeredAsns",
     "properties": {
       "id": {
         "type": {
@@ -2130,106 +2182,58 @@
       },
       "type": {
         "type": {
-          "$ref": "#/192"
+          "$ref": "#/188"
         },
         "flags": 10,
         "description": "The resource type"
       },
       "apiVersion": {
         "type": {
-          "$ref": "#/193"
+          "$ref": "#/189"
         },
         "flags": 10,
         "description": "The resource api version"
       },
-      "sku": {
-        "type": {
-          "$ref": "#/195"
-        },
-        "flags": 0,
-        "description": "The SKU that defines the type of the peering service."
-      },
       "properties": {
         "type": {
-          "$ref": "#/196"
+          "$ref": "#/191"
         },
         "flags": 0,
-        "description": "The properties that define a peering service."
+        "description": "The properties that define a registered ASN."
       },
-      "location": {
+      "systemData": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/16"
         },
-        "flags": 1,
-        "description": "The location of the resource."
-      },
-      "tags": {
-        "type": {
-          "$ref": "#/205"
-        },
-        "flags": 0,
-        "description": "The resource tags."
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
     "$type": "ObjectType",
-    "name": "PeeringServiceSku",
+    "name": "PeeringRegisteredAsnProperties",
     "properties": {
-      "name": {
+      "asn": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/32"
         },
         "flags": 0,
-        "description": "The name of the peering service SKU."
-      }
-    }
-  },
-  {
-    "$type": "ObjectType",
-    "name": "PeeringServiceProperties",
-    "properties": {
-      "peeringServiceLocation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The location (state/province) of the customer."
+        "description": "The customer's ASN from which traffic originates."
       },
-      "peeringServiceProvider": {
+      "peeringServicePrefixKey": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 0,
-        "description": "The name of the service provider."
+        "flags": 2,
+        "description": "The peering service prefix key that is to be shared with the customer."
       },
       "provisioningState": {
         "type": {
-          "$ref": "#/202"
+          "$ref": "#/197"
         },
         "flags": 2,
         "description": "The provisioning state of the resource."
-      },
-      "providerPrimaryPeeringLocation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The primary peering (Microsoft/service provider) location to be used for customer traffic."
-      },
-      "providerBackupPeeringLocation": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 0,
-        "description": "The backup peering (Microsoft/service provider) location to be used for customer traffic."
-      },
-      "logAnalyticsWorkspaceProperties": {
-        "type": {
-          "$ref": "#/203"
-        },
-        "flags": 0,
-        "description": "The Log Analytics Workspace Properties"
       }
     }
   },
@@ -2257,19 +2261,19 @@
     "$type": "UnionType",
     "elements": [
       {
-        "$ref": "#/197"
+        "$ref": "#/192"
       },
       {
-        "$ref": "#/198"
+        "$ref": "#/193"
       },
       {
-        "$ref": "#/199"
+        "$ref": "#/194"
       },
       {
-        "$ref": "#/200"
+        "$ref": "#/195"
       },
       {
-        "$ref": "#/201"
+        "$ref": "#/196"
       },
       {
         "$ref": "#/2"
@@ -2277,54 +2281,219 @@
     ]
   },
   {
+    "$type": "ResourceType",
+    "name": "Microsoft.Peering/peerings/registeredAsns@2025-05-01",
+    "body": {
+      "$ref": "#/190"
+    },
+    "readableScopes": 8,
+    "writableScopes": 8
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Microsoft.Peering/peerings/registeredPrefixes"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "2025-05-01"
+  },
+  {
     "$type": "ObjectType",
-    "name": "LogAnalyticsWorkspaceProperties",
+    "name": "Microsoft.Peering/peerings/registeredPrefixes",
     "properties": {
-      "workspaceID": {
+      "id": {
         "type": {
           "$ref": "#/2"
         },
-        "flags": 2,
-        "description": "The Workspace ID."
+        "flags": 10,
+        "description": "The resource id"
       },
-      "key": {
+      "name": {
         "type": {
-          "$ref": "#/2"
+          "$ref": "#/0"
+        },
+        "flags": 9,
+        "description": "The resource name"
+      },
+      "type": {
+        "type": {
+          "$ref": "#/199"
+        },
+        "flags": 10,
+        "description": "The resource type"
+      },
+      "apiVersion": {
+        "type": {
+          "$ref": "#/200"
+        },
+        "flags": 10,
+        "description": "The resource api version"
+      },
+      "properties": {
+        "type": {
+          "$ref": "#/202"
+        },
+        "flags": 0,
+        "description": "The properties that define a registered prefix."
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
         },
         "flags": 2,
-        "description": "The Workspace Key."
-      },
-      "connectedAgents": {
-        "type": {
-          "$ref": "#/204"
-        },
-        "flags": 2,
-        "description": "The list of connected agents."
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
   {
-    "$type": "ArrayType",
-    "itemType": {
-      "$ref": "#/2"
+    "$type": "ObjectType",
+    "name": "PeeringRegisteredPrefixProperties",
+    "properties": {
+      "prefix": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 0,
+        "description": "The customer's prefix from which traffic originates."
+      },
+      "prefixValidationState": {
+        "type": {
+          "$ref": "#/210"
+        },
+        "flags": 2,
+        "description": "The prefix validation state."
+      },
+      "peeringServicePrefixKey": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The peering service prefix key that is to be shared with the customer."
+      },
+      "errorMessage": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The error message associated with the validation state, if any."
+      },
+      "provisioningState": {
+        "type": {
+          "$ref": "#/216"
+        },
+        "flags": 2,
+        "description": "The provisioning state of the resource."
+      }
     }
   },
   {
-    "$type": "ObjectType",
-    "name": "PeeringServiceTags",
-    "properties": {},
-    "additionalProperties": {
-      "$ref": "#/2"
-    }
+    "$type": "StringLiteralType",
+    "value": "None"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Invalid"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Verified"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Pending"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Warning"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Unknown"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/203"
+      },
+      {
+        "$ref": "#/204"
+      },
+      {
+        "$ref": "#/205"
+      },
+      {
+        "$ref": "#/206"
+      },
+      {
+        "$ref": "#/207"
+      },
+      {
+        "$ref": "#/208"
+      },
+      {
+        "$ref": "#/209"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Succeeded"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Updating"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Deleting"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Failed"
+  },
+  {
+    "$type": "StringLiteralType",
+    "value": "Canceled"
+  },
+  {
+    "$type": "UnionType",
+    "elements": [
+      {
+        "$ref": "#/211"
+      },
+      {
+        "$ref": "#/212"
+      },
+      {
+        "$ref": "#/213"
+      },
+      {
+        "$ref": "#/214"
+      },
+      {
+        "$ref": "#/215"
+      },
+      {
+        "$ref": "#/2"
+      }
+    ]
   },
   {
     "$type": "ResourceType",
-    "name": "Microsoft.Peering/peeringServices@2025-05-01",
-    "scopeType": 8,
+    "name": "Microsoft.Peering/peerings/registeredPrefixes@2025-05-01",
     "body": {
-      "$ref": "#/194"
+      "$ref": "#/201"
     },
-    "flags": 0
+    "readableScopes": 8,
+    "writableScopes": 8
   },
   {
     "$type": "ObjectType",
@@ -2332,31 +2501,38 @@
     "properties": {
       "properties": {
         "type": {
-          "$ref": "#/36"
+          "$ref": "#/202"
         },
         "flags": 0,
         "description": "The properties that define a registered prefix."
-      },
-      "name": {
-        "type": {
-          "$ref": "#/2"
-        },
-        "flags": 2,
-        "description": "The name of the resource."
       },
       "id": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The ID of the resource."
+        "description": "Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+      },
+      "name": {
+        "type": {
+          "$ref": "#/2"
+        },
+        "flags": 2,
+        "description": "The name of the resource"
       },
       "type": {
         "type": {
           "$ref": "#/2"
         },
         "flags": 2,
-        "description": "The type of the resource."
+        "description": "The type of the resource. E.g. \"Microsoft.Compute/virtualMachines\" or \"Microsoft.Storage/storageAccounts\""
+      },
+      "systemData": {
+        "type": {
+          "$ref": "#/16"
+        },
+        "flags": 2,
+        "description": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
       }
     }
   },
@@ -2366,7 +2542,7 @@
     "resourceType": "Microsoft.Peering/peerings/registeredPrefixes",
     "apiVersion": "2025-05-01",
     "output": {
-      "$ref": "#/207"
+      "$ref": "#/218"
     }
   }
 ]

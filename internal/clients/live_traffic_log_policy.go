@@ -38,7 +38,8 @@ type liveResponse struct {
 func NewLiveTrafficLogPolicy() policy.Policy {
 	return &liveTrafficLogPolicy{
 		notAllowedHeaders: map[string]bool{
-			"authorization": true,
+			"authorization":                true,
+			"x-ms-authorization-auxiliary": true,
 		},
 	}
 }
