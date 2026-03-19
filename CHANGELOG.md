@@ -7,6 +7,9 @@ ENHANCEMENTS:
 - `azapi_resource_action`  Support `ignore_not_found` argument to optionally suppress 404 errors and expose resource existence.
 - `azapi_resource`, `azapi_update_resource` resources: Support `list_unique_id_property` and `ignore_other_items_in_list` fields, which are used to manage list properties with unique identifiers (GH-1033).
 - `azapi` provider: Add Azure Government support for KeyVault resource manager audience endpoint (GH-996).
+- `azapi_data_plane_resource` resource: Support importing existing data plane resources via `terraform import` (GH-1053).
+- `azapi_data_plane_resource` resource: Add support for `Microsoft.Foundry/agents` (AI Foundry assistants) with customization and resource management (GH-1053).
+- `parse_resource_id` function: Add `resource_group_id` to the function output (GH-1065).
 - Update bicep types to https://github.com/ms-henglu/bicep-types-az/commit/5c7a4c209d18ad4dec38724717449e07f616bec6
 
 BUG FIXES:
@@ -16,6 +19,8 @@ BUG FIXES:
 - `azapi_data_plane_resource` resource: Fix a bug that 204 status code is not supported as a success response (GH-1055).
 - Fix inconsistent result after apply when `lastConnectivityTime` field changes between create/update and read (GH-1062).
 - Fix a bug that `auxiliary_tenant_ids` are not passed to ARM client options for cross-tenant authentication (GH-1046).
+- Fix `azapi_update_resource` state migration missing `replace_triggers_external_values` field (GH-1071).
+- Fix `RequiresReplaceIfNotNull` plan modifier not handling typed null from HCL conditional expressions (GH-1070).
 
 ## v2.8.0
 
