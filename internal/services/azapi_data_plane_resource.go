@@ -68,11 +68,6 @@ type DataPlaneResourceModel struct {
 	ReadQueryParameters           types.Map        `tfsdk:"read_query_parameters" skip_on:"update"`
 }
 
-type DataPlaneResourceIdentityModel struct {
-	ID   types.String `tfsdk:"id"`
-	Type types.String `tfsdk:"type"`
-}
-
 type DataPlaneResource struct {
 	ProviderData *clients.Client
 }
@@ -735,33 +730,10 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 }
 
 func (r *DataPlaneResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
-	resourceID := request.ID
-	resourceType := ""
-
-	if request.Identity != nil && !request.Identity.Raw.IsNull() {
-		var identityData DataPlaneResourceIdentityModel
-		diags := request.Identity.Get(ctx, &identityData)
-		response.Diagnostics.Append(diags...)
-		if response.Diagnostics.HasError() {
-			return
-		}
-
-		if !identityData.ID.IsNull() && identityData.ID.ValueString() != "" {
-			resourceID = identityData.ID.ValueString()
-		}
-		if !identityData.Type.IsNull() {
-			resourceType = identityData.Type.ValueString()
-		}
-	}
-
-	if resourceType == "" {
-		parsedID, parsedType, err := parseDataPlaneImportID(resourceID)
-		if err != nil {
-			response.Diagnostics.AddError("Invalid import ID", err.Error())
-			return
-		}
-		resourceID = parsedID
-		resourceType = parsedType
+	resourceID, resourceType, err := parseDataPlaneImportID(request.ID)
+	if err != nil {
+		response.Diagnostics.AddError("Invalid import ID", err.Error())
+		return
 	}
 
 	id, err := parse.DataPlaneResourceIDWithResourceType(resourceID, resourceType)
