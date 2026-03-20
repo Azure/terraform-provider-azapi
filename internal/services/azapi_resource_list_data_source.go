@@ -140,8 +140,8 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.Headers),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.QueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	responseBody, err := client.List(ctx, listUrl, id.ApiVersion, requestOptions)
 	if err != nil {
 		response.Diagnostics.AddError("Failed to list resources", fmt.Sprintf("Failed to list resources, url: %s, error: %s", listUrl, err.Error()))

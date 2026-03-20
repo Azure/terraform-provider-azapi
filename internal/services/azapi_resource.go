@@ -879,8 +879,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.CreateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(plan.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 	if !isNewResource {
 		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
 		requestOptions.QueryParameters = clients.NewQueryParameters(common.AsMapOfLists(plan.UpdateQueryParameters))
@@ -894,8 +894,8 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 			requestOptions := clients.RequestOptions{
 				Headers:         common.AsMapOfString(plan.ReadHeaders),
 				QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-				RetryOptions:    clients.NewRetryOptions(plan.Retry),
 			}
+			requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 			if responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions); err == nil {
 				// generate the computed fields
 				plan.ID = types.StringValue(id.ID())
@@ -933,13 +933,14 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 	}
 
 	tflog.Debug(ctx, "azapi_resource.CreateUpdate get resource after creation")
+	readAfterCreateOpts, _ := clients.NewRetryOptionsForReadAfterCreate()
+	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
+	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-		RetryOptions: clients.CombineRetryOptions(
-			clients.NewRetryOptionsForReadAfterCreate(),
-			clients.NewRetryOptions(plan.Retry),
-		),
+		RetryOptions:    combinedRetryOpts,
+		LastRetryError:  combinedLastRetryErr,
 	}
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
@@ -1023,8 +1024,8 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil {
@@ -1191,8 +1192,8 @@ func (r *AzapiResource) Delete(ctx context.Context, request resource.DeleteReque
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.DeleteHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 	_, err = client.Delete(ctx, id.AzureResourceId, id.ApiVersion, requestOptions)
 	if err != nil && !utils.ResponseErrorWasNotFound(err) {
 		response.Diagnostics.AddError("Failed to delete resource", fmt.Errorf("deleting %s: %+v", id, err).Error())

@@ -528,8 +528,8 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.CreateHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.CreateQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(plan.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(plan.Retry)
 
 	if !isNewResource {
 		requestOptions.Headers = common.AsMapOfString(plan.UpdateHeaders)
@@ -556,15 +556,14 @@ func (r *DataPlaneResource) CreateUpdate(ctx context.Context, requestConfig tfsd
 		return
 	}
 
+	readAfterCreateOpts, _ := clients.NewRetryOptionsForReadAfterCreate()
+	userRetryOpts, _ := clients.NewRetryOptions(plan.Retry)
+	combinedRetryOpts, combinedLastRetryErr := clients.CombineRetryOptions(readAfterCreateOpts, userRetryOpts)
 	requestOptions = clients.RequestOptions{
 		Headers:         common.AsMapOfString(plan.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(plan.ReadQueryParameters)),
-		RetryOptions: clients.CombineRetryOptions(
-			// Create a new retry option to handle specific case of transient 403/404 after resource creation
-			// If a read after create retry is not specified, use the default.
-			clients.NewRetryOptionsForReadAfterCreate(),
-			clients.NewRetryOptions(plan.Retry),
-		),
+		RetryOptions:    combinedRetryOpts,
+		LastRetryError:  combinedLastRetryErr,
 	}
 
 	var responseBody interface{}
@@ -664,8 +663,8 @@ func (r *DataPlaneResource) Read(ctx context.Context, request resource.ReadReque
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.ReadHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.ReadQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	var responseBody interface{}
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).ReadFunc() != nil {
@@ -802,8 +801,8 @@ func (r *DataPlaneResource) Delete(ctx context.Context, request resource.DeleteR
 	requestOptions := clients.RequestOptions{
 		Headers:         common.AsMapOfString(model.DeleteHeaders),
 		QueryParameters: clients.NewQueryParameters(common.AsMapOfLists(model.DeleteQueryParameters)),
-		RetryOptions:    clients.NewRetryOptions(model.Retry),
 	}
+	requestOptions.RetryOptions, requestOptions.LastRetryError = clients.NewRetryOptions(model.Retry)
 
 	if customizedResource := customization.GetCustomization(model.Type.ValueString()); customizedResource != nil && (*customizedResource).DeleteFunc() != nil {
 		err = (*customizedResource).DeleteFunc()(ctx, *r.ProviderData, id, requestOptions)

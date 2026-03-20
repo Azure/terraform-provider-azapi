@@ -102,7 +102,7 @@ func (client *DataPlaneClient) CreateOrUpdateThenPoll(ctx context.Context, id pa
 	}
 	resp, err := pipeline.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
@@ -153,7 +153,7 @@ func (client *DataPlaneClient) Get(ctx context.Context, id parse.DataPlaneResour
 	}
 	resp, err := pipeline.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, runtime.NewResponseError(resp)
@@ -195,7 +195,7 @@ func (client *DataPlaneClient) DeleteThenPoll(ctx context.Context, id parse.Data
 	}
 	resp, err := pipeline.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(resp)
@@ -255,7 +255,7 @@ func (client *DataPlaneClient) Action(ctx context.Context, resourceID string, ac
 	}
 	resp, err := pipeline.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, WrapContextError(err, options.LastRetryError)
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)

@@ -29,12 +29,15 @@ type RequestOptions struct {
 	Headers         map[string]string
 	QueryParameters map[string]string
 	RetryOptions    *policy.RetryOptions
+	LastRetryError  *LastRetryError
 }
 
 // CombineRetryOptions combines multiple RequestOptions into a single policy.RetryOptions.
-func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
+// It returns a LastRetryError that captures the last retryable error seen by any of the
+// underlying ShouldRetry callbacks.
+func CombineRetryOptions(opts ...*policy.RetryOptions) (*policy.RetryOptions, *LastRetryError) {
 	if len(opts) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	statusCodeSet := make(map[int]bool)
@@ -76,12 +79,15 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 		}
 	}
 
+	lastRetryErr := &LastRetryError{}
+
 	shouldRetry := func(resp *http.Response, err error) bool {
 		for _, opt := range opts {
 			if opt == nil || opt.ShouldRetry == nil {
 				continue
 			}
 			if opt.ShouldRetry(resp, err) {
+				lastRetryErr.Set(resp, err)
 				return true
 			}
 		}
@@ -94,16 +100,19 @@ func CombineRetryOptions(opts ...*policy.RetryOptions) *policy.RetryOptions {
 		MaxRetryDelay: maxRetryDelay,
 		StatusCodes:   statusCodes,
 		ShouldRetry:   shouldRetry,
-	}
+	}, lastRetryErr
 }
 
 // NewRetryOptionsForReadAfterCreate creates a RetryOptions for read-after-create operations.
-func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
+func NewRetryOptionsForReadAfterCreate() (*policy.RetryOptions, *LastRetryError) {
 	log.Printf("[DEBUG] Using custom retry configuration for read after create")
 	statusCodes := make([]int, 0)
 	statusCodes = append(statusCodes, DefaultRetryableStatusCodes...)
 	// Add default read after create values for the default retry configuration.
 	statusCodes = append(statusCodes, DefaultRetryableReadAfterCreateStatusCodes...)
+
+	lastRetryErr := &LastRetryError{}
+
 	return &policy.RetryOptions{
 		// Set a very high max retries to make sure context deadline is respected.
 		MaxRetries:  math.MaxInt16,
@@ -114,20 +123,23 @@ func NewRetryOptionsForReadAfterCreate() *policy.RetryOptions {
 			if resp != nil {
 				for _, code := range statusCodes {
 					if resp.StatusCode == code {
+						lastRetryErr.Set(resp, err)
 						return true
 					}
 				}
 			}
 			return false
 		},
-	}
+	}, lastRetryErr
 }
 
 // NewRetryOptions creates a RetryOptions based on the provided retry.RetryValue.
-func NewRetryOptions(rtry retry.RetryValue) *policy.RetryOptions {
+func NewRetryOptions(rtry retry.RetryValue) (*policy.RetryOptions, *LastRetryError) {
 	if rtry.IsNull() || rtry.IsUnknown() {
-		return nil
+		return nil, nil
 	}
+
+	lastRetryErr := &LastRetryError{}
 
 	log.Printf("[DEBUG] Using custom retry configuration")
 	return &policy.RetryOptions{
@@ -141,17 +153,20 @@ func NewRetryOptions(rtry retry.RetryValue) *policy.RetryOptions {
 			if resp != nil {
 				for _, code := range DefaultRetryableStatusCodes {
 					if resp.StatusCode == code {
+						lastRetryErr.Set(resp, err)
 						return true
 					}
 				}
 			}
 
-			// Get the error message to check against regex patterns,
-			// If use the err.Error() string first, else get the response error from the HTTP response.
+			// Get the error message to check against regex patterns.
+			// Use err.Error() string first, else construct a ResponseError from the HTTP response
+			// only if the status code indicates an actual error (>= 400).
+			// Successful responses (2xx/3xx) should not be treated as errors.
 			var errorMsg string
 			if err != nil {
 				errorMsg = err.Error()
-			} else if resp != nil {
+			} else if resp != nil && resp.StatusCode >= 400 {
 				responseErr := runtime.NewResponseError(resp)
 				if responseErr != nil {
 					errorMsg = responseErr.Error()
@@ -164,12 +179,13 @@ func NewRetryOptions(rtry retry.RetryValue) *policy.RetryOptions {
 			for _, re := range rtry.GetErrorMessagesRegex() {
 				if re.MatchString(errorMsg) {
 					log.Printf("[DEBUG] Retrying request due to error: %s matches regex %s", errorMsg, re.String())
+					lastRetryErr.Set(resp, err)
 					return true
 				}
 			}
 			return false
 		},
-	}
+	}, lastRetryErr
 }
 
 func NewQueryParameters(queryParameters map[string][]string) map[string]string {
