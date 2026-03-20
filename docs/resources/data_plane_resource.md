@@ -994,10 +994,3 @@ resource "azapi_data_plane_resource" "example" {
   ]
 }
 ```
-
-## Import
-
- ```shell
- # Azure data plane resource can be imported using the resource type and resource id, e.g.
- terraform import azapi_data_plane_resource.example "Microsoft.AppConfiguration/configurationStores/keyValues@1.0 example.azconfig.io/kv/example"
- ```
