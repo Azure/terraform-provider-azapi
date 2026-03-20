@@ -46,6 +46,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -133,14 +134,16 @@ func NewDefaultAzapiResourceModel() AzapiResourceModel {
 	}
 }
 
-var _ resource.Resource = &AzapiResource{}
-var _ resource.ResourceWithConfigure = &AzapiResource{}
-var _ resource.ResourceWithModifyPlan = &AzapiResource{}
-var _ resource.ResourceWithValidateConfig = &AzapiResource{}
-var _ resource.ResourceWithImportState = &AzapiResource{}
-var _ resource.ResourceWithUpgradeState = &AzapiResource{}
-var _ resource.ResourceWithMoveState = &AzapiResource{}
-var _ resource.ResourceWithIdentity = &AzapiResource{}
+var (
+	_ resource.Resource                   = &AzapiResource{}
+	_ resource.ResourceWithConfigure      = &AzapiResource{}
+	_ resource.ResourceWithModifyPlan     = &AzapiResource{}
+	_ resource.ResourceWithValidateConfig = &AzapiResource{}
+	_ resource.ResourceWithImportState    = &AzapiResource{}
+	_ resource.ResourceWithUpgradeState   = &AzapiResource{}
+	_ resource.ResourceWithMoveState      = &AzapiResource{}
+	_ resource.ResourceWithIdentity       = &AzapiResource{}
+)
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -1030,6 +1033,7 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			response.Identity.Raw = nilResourceIdentity
 			response.State.RemoveResource(ctx)
 			return
 		}
@@ -1583,3 +1587,8 @@ func isManagementGroupScope(scope string) bool {
 		managementGroupScope,
 	)
 }
+
+var nilResourceIdentity tftypes.Value = tftypes.NewValue(tftypes.DynamicPseudoType, map[string]tftypes.Value{
+	"id":   tftypes.NewValue(tftypes.String, nil),
+	"type": tftypes.NewValue(tftypes.String, nil),
+})
