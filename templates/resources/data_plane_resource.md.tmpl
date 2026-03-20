@@ -28,6 +28,7 @@ description: |-
 | Microsoft.DigitalTwins/digitalTwinsInstances/digitaltwins/relationships | /digitaltwins/{id}/relationships/{relationshipId} | {instanceName}.api.weu.digitaltwins.azure.net/digitaltwins/{digitalTwinId}                  |
 | Microsoft.DigitalTwins/digitalTwinsInstances/eventroutes | /eventroutes/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
 | Microsoft.DigitalTwins/digitalTwinsInstances/jobs/imports | /jobs/imports/{id} | {instanceName}.api.weu.digitaltwins.azure.net                                               |
+| Microsoft.Foundry/agents | /agents/{agentName} | {aiServicesId}.services.ai.azure.com/api/projects/{projectName}                             |
 | Microsoft.IoTCentral/IoTApps/organizations | /organizations/{organizationId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/scheduledJobs | /scheduledJobs/{scheduledJobId} | {appSubdomain}.azureiotcentral.com                                                          |
 | Microsoft.IoTCentral/IoTApps/users | /users/{userId} | {appSubdomain}.azureiotcentral.com                                                          |
@@ -89,6 +90,10 @@ description: |-
 
 {{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.AppConfiguration_configurationStores_keyValues/main.tf"}}
 
+### Microsoft.Foundry/agents
+
+{{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Foundry_agents/main.tf"}}
+
 ### Microsoft.IoTCentral/IoTApps/users
 
 {{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.IoTCentral_IoTApps_users/main.tf"}}
@@ -121,9 +126,17 @@ description: |-
 
 {{ tffile "examples/resources/azapi_data_plane_resource/Microsoft.Search_searchServices_synonymmaps/main.tf"}}
 
-## Import
+{{ if .HasImport -}}## Import
 
- ```shell
- # Azure data plane resource can be imported using the resource type and resource id, e.g.
- terraform import azapi_data_plane_resource.example "Microsoft.AppConfiguration/configurationStores/keyValues@1.0 example.azconfig.io/kv/example"
- ```
+{{ codefile "shell" (printf .ImportFile) | trimspace | prefixlines " " }}{{ end }}
+{{ if .HasImportIDConfig -}}
+
+### Import using resource ID:
+
+{{ tffile (printf .ImportIDConfigFile) | trimspace | prefixlines " " }}{{ end }}
+
+{{ if .HasImportIdentityConfig -}}
+
+### Import using identity:
+
+{{ tffile (printf .ImportIdentityConfigFile) | trimspace | prefixlines " " }}{{ end }}

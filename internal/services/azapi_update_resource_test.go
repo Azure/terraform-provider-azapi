@@ -1081,6 +1081,10 @@ resource "azapi_resource" "apiManagementInstance" {
       publisherName      = "publisherName"
     }
   }
+
+  timeouts {
+    create = "60m"
+  }
 }
 
 resource "azapi_update_resource" "test" {

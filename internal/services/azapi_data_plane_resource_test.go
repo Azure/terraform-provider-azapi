@@ -324,7 +324,7 @@ func (DataPlaneResource) Exists(ctx context.Context, client *clients.Client, sta
 func (DataPlaneResource) ImportIdFunc(tfState *terraform.State) (string, error) {
 	state := tfState.RootModule().Resources["azapi_data_plane_resource.test"].Primary
 	resourceType := state.Attributes["type"]
-	return fmt.Sprintf("%s %s", resourceType, state.ID), nil
+	return fmt.Sprintf("%s|%s", state.ID, resourceType), nil
 }
 
 func (r DataPlaneResource) appConfigKeyValues(data acceptance.TestData) string {
