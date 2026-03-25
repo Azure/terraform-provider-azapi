@@ -58,10 +58,18 @@ stages:
               OS: darwin
               ARCH: arm64
         steps:
+          - bash: |
+              #!/usr/bin/env bash
+              set -euo pipefail
+              go_version="$(awk '/^go / { print $2; exit }' "$(Build.SourcesDirectory)/go.mod")"
+              echo "Using Go version ${go_version} from go.mod"
+              echo "##vso[task.setvariable variable=GO_VERSION]${go_version}"
+            displayName: "Read Go version from go.mod"
+
           - task: GoTool@0
             displayName: "Install Go"
             inputs:
-              version: 1.24.6
+              version: $(GO_VERSION)
           - script: |
               set -e
               mkdir build
