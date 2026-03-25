@@ -208,7 +208,7 @@ func updateObjectAtPath(old interface{}, new interface{}, option UpdateJsonOptio
 			if option.IgnoreCasing && strings.EqualFold(oldValue, newStr) {
 				return oldValue
 			}
-			if option.IgnoreMissingProperty && (regexp.MustCompile(`^\*+$`).MatchString(newStr) || "<redacted>" == newStr || "" == newStr) {
+			if option.IgnoreMissingProperty && (regexp.MustCompile(`^\*+$`).MatchString(newStr) || newStr == "<redacted>" || newStr == "") {
 				return oldValue
 			}
 		}
