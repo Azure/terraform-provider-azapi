@@ -14,10 +14,11 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
+          go-version-file: 'go.mod'
+          cache: true
       - run: bash scripts/gogetcookie.sh
       - run: make tools
       - run: GOARCH=386 GOOS=linux go build -o 32bitbuild .

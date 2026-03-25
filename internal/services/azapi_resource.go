@@ -819,7 +819,9 @@ func (r *AzapiResource) CreateUpdate(ctx context.Context, requestConfig tfsdk.Co
 		}
 
 		// 403 is returned if group (or child resource of group) does not exist, bug tracked at: https://github.com/Azure/azure-rest-api-specs/issues/9549
-		if !utils.ResponseErrorWasNotFound(err) && !(utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+		if utils.ResponseErrorWasNotFound(err) || (utils.ResponseWasForbidden(err) && isManagementGroupScope(id.ID())) {
+			// A 403 is returned for management groups that do not exist.
+		} else {
 			diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("checking for presence of existing %s: %+v", id, err).Error())
 			return
 		}

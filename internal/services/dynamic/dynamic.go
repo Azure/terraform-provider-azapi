@@ -97,7 +97,7 @@ func attrValueToJSON(val attr.Value, handler UnknownValueHandler) ([]byte, error
 		}
 		return json.Marshal(m)
 	default:
-		return nil, fmt.Errorf("Unhandled type: %T", value)
+		return nil, fmt.Errorf("unhandled type: %T", value)
 	}
 }
 
@@ -278,7 +278,7 @@ func attrValueFromJSON(b []byte, typ attr.Type) (attr.Value, error) {
 		_, vv, err := attrValueFromJSONImplied(b)
 		return vv, err
 	default:
-		return nil, fmt.Errorf("Unhandled type: %T", typ)
+		return nil, fmt.Errorf("unhandled type: %T", typ)
 	}
 }
 
@@ -363,7 +363,7 @@ func attrValueFromJSONImplied(b []byte) (attr.Type, attr.Value, error) {
 	case nil:
 		return types.DynamicType, types.DynamicNull(), nil
 	default:
-		return nil, nil, fmt.Errorf("Unhandled type: %T", v)
+		return nil, nil, fmt.Errorf("unhandled type: %T", v)
 	}
 }
 

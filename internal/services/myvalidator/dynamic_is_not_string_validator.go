@@ -17,7 +17,7 @@ func (v dynamicIsNotStringValidator) MarkdownDescription(ctx context.Context) st
 	return "validate the dynamic value is not a string"
 }
 
-func (_ dynamicIsNotStringValidator) ValidateDynamic(ctx context.Context, req validator.DynamicRequest, resp *validator.DynamicResponse) {
+func (dynamicIsNotStringValidator) ValidateDynamic(ctx context.Context, req validator.DynamicRequest, resp *validator.DynamicResponse) {
 	raw := req.ConfigValue
 
 	if raw.IsUnknown() || raw.IsNull() || raw.UnderlyingValue() == nil || raw.IsUnderlyingValueNull() || raw.IsUnderlyingValueUnknown() {

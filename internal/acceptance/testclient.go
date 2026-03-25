@@ -63,16 +63,19 @@ func BuildTestClient() (*clients.Client, error) {
 		}
 
 		if v := os.Getenv("ARM_TENANT_ID"); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_TENANT_ID", v)
+			if err := os.Setenv("AZURE_TENANT_ID", v); err != nil {
+				return nil, fmt.Errorf("setting AZURE_TENANT_ID: %w", err)
+			}
 		}
 		if v := os.Getenv("ARM_CLIENT_ID"); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_ID", v)
+			if err := os.Setenv("AZURE_CLIENT_ID", v); err != nil {
+				return nil, fmt.Errorf("setting AZURE_CLIENT_ID: %w", err)
+			}
 		}
 		if v := os.Getenv("ARM_CLIENT_SECRET"); len(v) != 0 {
-			// #nosec G104
-			os.Setenv("AZURE_CLIENT_SECRET", v)
+			if err := os.Setenv("AZURE_CLIENT_SECRET", v); err != nil {
+				return nil, fmt.Errorf("setting AZURE_CLIENT_SECRET: %w", err)
+			}
 		}
 
 		cred, err := azidentity.NewDefaultAzureCredential(
