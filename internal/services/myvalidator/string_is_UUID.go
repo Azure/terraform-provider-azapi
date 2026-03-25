@@ -18,7 +18,7 @@ func (v stringIsUUID) MarkdownDescription(ctx context.Context) string {
 	return "validate this in UUID format"
 }
 
-func (_ stringIsUUID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
+func (stringIsUUID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
 	str := req.ConfigValue
 
 	if str.IsUnknown() || str.IsNull() {

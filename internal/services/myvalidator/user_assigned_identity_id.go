@@ -17,7 +17,7 @@ func (v stringIsUserAssignedIdentityID) MarkdownDescription(ctx context.Context)
 	return "validate this in user assigned identity resource ID format"
 }
 
-func (_ stringIsUserAssignedIdentityID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
+func (stringIsUserAssignedIdentityID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
 	str := req.ConfigValue
 
 	if str.IsUnknown() || str.IsNull() {

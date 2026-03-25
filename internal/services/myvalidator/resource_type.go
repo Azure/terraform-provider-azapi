@@ -17,7 +17,7 @@ func (v stringIsResourceType) MarkdownDescription(ctx context.Context) string {
 	return "validate this in resource type format"
 }
 
-func (_ stringIsResourceType) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
+func (stringIsResourceType) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {
 	str := req.ConfigValue
 
 	if str.IsUnknown() || str.IsNull() {
