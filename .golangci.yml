@@ -1,24 +1,21 @@
+version: "2"
+
 run:
   timeout: 60m
-  go: "1.24"
+  go: "1.25"
   modules-download-mode: vendor
 
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
-  exclude-dirs:
-    - /sdk/ # Excluding sdk folders as these are externally generated
 
 linters:
-  disable-all: true
+  default: none
   enable:
     - asciicheck
     - bidichk
     - errcheck
     - gocritic
-    - gofmt
-    - goimports
-    - gosimple
     - govet
     - ineffassign
     #- nakedret
@@ -27,19 +24,26 @@ linters:
     #- nlreturn
     - reassign
     - staticcheck
-    - typecheck
     - unused
     - unconvert
     - unparam
-    - vet
-    - vetshadow
     # - wastedassign # disabled because of generics
     # - whitespace # Disabled for performance reasons - Ignores cache and takes 12+ minutes to run on the repo for _any_ change
+  settings:
+    misspell:
+      ignore-words:
+        - hdinsight
+        - exportfs
+    nakedret:
+      max-func-lines: 40
+  exclusions:
+    paths:
+      - /sdk/ # Excluding sdk folders as these are externally generated
 
-linters-settings:
-  misspell:
-    ignore-words:
-      - hdinsight
-      - exportfs
-  nakedret:
-    max-func-lines: 40
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    paths:
+      - /sdk/ # Excluding sdk folders as these are externally generated

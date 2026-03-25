@@ -23,7 +23,7 @@ jobs:
         
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -32,9 +32,10 @@ jobs:
         languages: ${{ matrix.language }}
 
     - name: Set up Go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v5
       with:
-        go-version: 1.24
+        go-version-file: 'go.mod'
+        cache: true
 
     - name: Build 
       run: |
