@@ -3,6 +3,7 @@ package services_test
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -595,4 +596,45 @@ func TestAccAzapiResourceUpgrade_basic_from_schema_v0(t *testing.T) {
 			Config: updatedConfig,
 		}),
 	})
+}
+
+// TestAccAzapiResourceUpgrade_missingResourceIdentityAfterRead reproduces issue #1077:
+// When upgrading from v2.7 to v2.8+, if the resource was deleted outside of Terraform,
+// the Read function encounters a 404 and calls RemoveResource but doesn't set
+// response.Identity, causing a "Missing Resource Identity After Read" error.
+func TestAccAzapiResourceUpgrade_missingResourceIdentityAfterRead(t *testing.T) {
+	data := acceptance.BuildTestData(t, "azapi_resource", "test")
+	r := GenericResource{}
+
+	data.UpgradeTest(t, r, []resource.TestStep{
+		// Step 1: Deploy with azapi v2.7.0 — creates a resource group and deletes it via resource action
+		data.UpgradeTestDeployStep(resource.TestStep{
+			Config: r.resourceGroupWithDelete(data),
+			Check: resource.ComposeTestCheckFunc(
+				check.That(data.ResourceName).Key("id").Exists(),
+			),
+			ExpectError: regexp.MustCompile(`ResourceGroupNotFound`),
+		}, "2.7.0"),
+		{
+			RefreshState:             true,
+			ExpectNonEmptyPlan:       true,
+			ProtoV6ProviderFactories: data.Providers(),
+		},
+	})
+}
+
+func (r GenericResource) resourceGroupWithDelete(data acceptance.TestData) string {
+	return fmt.Sprintf(`
+resource "azapi_resource" "test" {
+  type     = "Microsoft.Resources/resourceGroups@2023-07-01"
+  name     = "acctestRG-%[1]d"
+  location = "%[2]s"
+}
+
+resource "azapi_resource_action" "delete" {
+  type        = "Microsoft.Resources/resourceGroups@2023-07-01"
+  resource_id = azapi_resource.test.id
+  method      = "DELETE"
+}
+`, data.RandomInteger, data.LocationPrimary)
 }
