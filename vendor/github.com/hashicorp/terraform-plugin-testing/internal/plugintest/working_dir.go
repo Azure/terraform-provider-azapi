@@ -6,11 +6,12 @@ package plugintest
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-exec/tfexec"
-	tfjson "github.com/hashicorp/terraform-json"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/hashicorp/terraform-exec/tfexec"
+	tfjson "github.com/hashicorp/terraform-json"
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/internal/logging"

@@ -11,12 +11,13 @@ require (
 	github.com/hashicorp/terraform-plugin-docs v0.24.0
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1
-	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
+	github.com/hashicorp/terraform-plugin-framework-validators v0.19.0
 	github.com/hashicorp/terraform-plugin-go v0.31.0
 	github.com/hashicorp/terraform-plugin-log v0.10.0
-	github.com/hashicorp/terraform-plugin-testing v1.14.0-beta.1
+	github.com/hashicorp/terraform-plugin-testing v1.14.0-beta.1.0.20251029152858-203e6cc410a0
 	github.com/jmespath/go-jmespath v0.4.0
-	github.com/stretchr/testify v1.10.0
+	github.com/magodo/terraform-plugin-framework-docs v0.2.0
+	github.com/stretchr/testify v1.11.1
 	github.com/zclconf/go-cty v1.17.0
 )
 
@@ -78,7 +79,7 @@ require (
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
-	github.com/oklog/run v1.1.0 // indirect
+	github.com/oklog/run v1.2.0 // indirect
 	github.com/pjbgf/sha1cd v0.3.2 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -111,4 +112,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-go 1.25.8
+go 1.26.0
