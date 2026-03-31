@@ -24,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type AzapiResourceDataSourceModel struct {
@@ -52,6 +53,7 @@ type AzapiResourceDataSource struct {
 var _ datasource.DataSource = &AzapiResourceDataSource{}
 var _ datasource.DataSourceWithConfigure = &AzapiResourceDataSource{}
 var _ datasource.DataSourceWithValidateConfig = &AzapiResourceDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &AzapiResourceDataSource{}
 
 func (r *AzapiResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -329,4 +331,60 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	model.Exists = basetypes.NewBoolValue(true)
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *AzapiResourceDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_container_registry" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "Premium"
+  admin_enabled       = false
+}
+
+data "azapi_resource" "example" {
+  name      = "example"
+  parent_id = azurerm_resource_group.example.id
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = data.azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = data.azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}
+`,
+			},
+		},
+	}
 }
