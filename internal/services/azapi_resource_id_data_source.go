@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ResourceIdDataSourceModel struct {
@@ -36,6 +37,7 @@ type ResourceIdDataSource struct {
 
 var _ datasource.DataSource = &ResourceIdDataSource{}
 var _ datasource.DataSourceWithValidateConfig = &ResourceIdDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &ResourceIdDataSource{}
 
 func (r *ResourceIdDataSource) Metadata(ctx context.Context, request datasource.MetadataRequest, response *datasource.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_resource_id"
@@ -200,4 +202,64 @@ func (r *ResourceIdDataSource) Read(ctx context.Context, request datasource.Read
 	model.Parts = basetypes.NewMapValueMust(types.StringType, parts)
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *ResourceIdDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+data "azapi_resource_id" "account" {
+  type        = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Automation/automationAccounts/automationAccount1"
+}
+
+output "account_name" {
+  value = data.azapi_resource_id.account.name
+}
+
+output "account_resource_group" {
+  value = data.azapi_resource_id.account.resource_group_name
+}
+
+output "account_subscription" {
+  value = data.azapi_resource_id.account.subscription_id
+}
+
+output "account_parent_id" {
+  value = data.azapi_resource_id.account.parent_id
+}
+
+data "azapi_resource_id" "vnet" {
+  type      = "Microsoft.Network/virtualNetworks@2021-02-01"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"
+  name      = "vnet1"
+}
+
+output "vnet_id" {
+  value = data.azapi_resource_id.vnet.id
+}
+
+output "vnet_resource_group" {
+  value = data.azapi_resource_id.vnet.resource_group_name
+}
+
+output "vnet_subscription" {
+  value = data.azapi_resource_id.vnet.subscription_id
+}
+`,
+			},
+		},
+	}
 }
