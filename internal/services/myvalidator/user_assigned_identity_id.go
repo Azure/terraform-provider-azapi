@@ -10,11 +10,11 @@ import (
 type stringIsUserAssignedIdentityID struct{}
 
 func (v stringIsUserAssignedIdentityID) Description(ctx context.Context) string {
-	return "validate this in user assigned identity resource ID format"
+	return "ensure this in user assigned identity resource ID format"
 }
 
 func (v stringIsUserAssignedIdentityID) MarkdownDescription(ctx context.Context) string {
-	return "validate this in user assigned identity resource ID format"
+	return "ensure this in user assigned identity resource ID format"
 }
 
 func (stringIsUserAssignedIdentityID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {

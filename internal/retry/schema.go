@@ -32,8 +32,8 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 			"interval_seconds": schema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The base number of seconds to wait between retries. Default is `10`.",
-				MarkdownDescription: "The base number of seconds to wait between retries. Default is `10`.",
+				Description:         "The base number of seconds to wait between retries.",
+				MarkdownDescription: "The base number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(120),
@@ -43,8 +43,8 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 			"max_interval_seconds": schema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The maximum number of seconds to wait between retries. Default is `180`.",
-				MarkdownDescription: "The maximum number of seconds to wait between retries. Default is `180`.",
+				Description:         "The maximum number of seconds to wait between retries.",
+				MarkdownDescription: "The maximum number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(300),
@@ -55,16 +55,16 @@ func RetrySchema(ctx context.Context) schema.Attribute {
 				DeprecationMessage:  "The `multiplier` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The multiplier to apply to the interval between retries. Default is `1.5`.",
-				MarkdownDescription: "The multiplier to apply to the interval between retries. Default is `1.5`.",
+				Description:         "The multiplier to apply to the interval between retries.",
+				MarkdownDescription: "The multiplier to apply to the interval between retries.",
 				Default:             float64default.StaticFloat64(DefaultMultiplier),
 			},
 			"randomization_factor": schema.Float64Attribute{
 				DeprecationMessage:  "The `randomization_factor` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
-				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
+				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
+				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
 				Default:             float64default.StaticFloat64(DefaultRandomizationFactor),
 			},
 		},
@@ -97,8 +97,8 @@ func RetryDsSchema(ctx context.Context) dsschema.Attribute {
 			"interval_seconds": dsschema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The base number of seconds to wait between retries. Default is `10`.",
-				MarkdownDescription: "The base number of seconds to wait between retries. Default is `10`.",
+				Description:         "The base number of seconds to wait between retries.",
+				MarkdownDescription: "The base number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(120),
@@ -107,8 +107,8 @@ func RetryDsSchema(ctx context.Context) dsschema.Attribute {
 			"max_interval_seconds": dsschema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The maximum number of seconds to wait between retries. Default is `180`.",
-				MarkdownDescription: "The maximum number of seconds to wait between retries. Default is `180`.",
+				Description:         "The maximum number of seconds to wait between retries.",
+				MarkdownDescription: "The maximum number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(300),
@@ -118,15 +118,15 @@ func RetryDsSchema(ctx context.Context) dsschema.Attribute {
 				DeprecationMessage:  "The `multiplier` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The multiplier to apply to the interval between retries. Default is `1.5`.",
-				MarkdownDescription: "The multiplier to apply to the interval between retries. Default is `1.5`.",
+				Description:         "The multiplier to apply to the interval between retries.",
+				MarkdownDescription: "The multiplier to apply to the interval between retries.",
 			},
 			"randomization_factor": dsschema.Float64Attribute{
 				DeprecationMessage:  "The `randomization_factor` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
-				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
+				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
+				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
 			},
 		},
 		CustomType: RetryType{
@@ -158,8 +158,8 @@ func RetryEphemeralSchema(ctx context.Context) ephemeralschema.Attribute {
 			"interval_seconds": ephemeralschema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The base number of seconds to wait between retries. Default is `10`.",
-				MarkdownDescription: "The base number of seconds to wait between retries. Default is `10`.",
+				Description:         "The base number of seconds to wait between retries.",
+				MarkdownDescription: "The base number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(120),
@@ -168,8 +168,8 @@ func RetryEphemeralSchema(ctx context.Context) ephemeralschema.Attribute {
 			"max_interval_seconds": ephemeralschema.Int64Attribute{
 				Optional:            true,
 				Computed:            true,
-				Description:         "The maximum number of seconds to wait between retries. Default is `180`.",
-				MarkdownDescription: "The maximum number of seconds to wait between retries. Default is `180`.",
+				Description:         "The maximum number of seconds to wait between retries.",
+				MarkdownDescription: "The maximum number of seconds to wait between retries.",
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 					int64validator.AtMost(300),
@@ -179,15 +179,15 @@ func RetryEphemeralSchema(ctx context.Context) ephemeralschema.Attribute {
 				DeprecationMessage:  "The `multiplier` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The multiplier to apply to the interval between retries. Default is `1.5`.",
-				MarkdownDescription: "The multiplier to apply to the interval between retries. Default is `1.5`.",
+				Description:         "The multiplier to apply to the interval between retries.",
+				MarkdownDescription: "The multiplier to apply to the interval between retries.",
 			},
 			"randomization_factor": ephemeralschema.Float64Attribute{
 				DeprecationMessage:  "The `randomization_factor` attribute is deprecated and will be removed in a future version.",
 				Optional:            true,
 				Computed:            true,
-				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
-				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.",
+				Description:         "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
+				MarkdownDescription: "The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.",
 			},
 		},
 		CustomType: RetryType{

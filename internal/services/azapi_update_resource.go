@@ -207,7 +207,7 @@ func (r *AzapiUpdateResource) Schema(ctx context.Context, request resource.Schem
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
