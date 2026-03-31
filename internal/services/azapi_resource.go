@@ -1032,6 +1032,11 @@ func (r *AzapiResource) Read(ctx context.Context, request resource.ReadRequest, 
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
 			tflog.Info(ctx, fmt.Sprintf("Error reading %q - removing from state", id.ID()))
+			resourceIdentity := AzapiResourceIdentityModel{
+				ID:   model.ID,
+				Type: model.Type,
+			}
+			response.Diagnostics.Append(response.Identity.Set(ctx, resourceIdentity)...)
 			response.State.RemoveResource(ctx)
 			return
 		}
