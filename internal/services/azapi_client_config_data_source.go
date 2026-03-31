@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ClientConfigDataSourceModel struct {
@@ -27,6 +28,7 @@ type ClientConfigDataSource struct {
 
 var _ datasource.DataSource = &ClientConfigDataSource{}
 var _ datasource.DataSourceWithConfigure = &ClientConfigDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &ClientConfigDataSource{}
 
 func (r *ClientConfigDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -98,4 +100,32 @@ func (r *ClientConfigDataSource) Read(ctx context.Context, request datasource.Re
 	model.TenantID = types.StringValue(tenantId)
 	model.ObjectID = types.StringValue(objectId)
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *ClientConfigDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+provider "azapi" {
+}
+data "azapi_client_config" "current" {
+}
+output "subscription_id" {
+  value = data.azapi_client_config.current.subscription_id
+}
+output "tenant_id" {
+  value = data.azapi_client_config.current.tenant_id
+}
+`,
+			},
+		},
+	}
 }
