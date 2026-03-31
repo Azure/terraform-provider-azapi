@@ -34,6 +34,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ActionResourceModel struct {
@@ -65,6 +66,7 @@ var _ resource.Resource = &ActionResource{}
 var _ resource.ResourceWithConfigure = &ActionResource{}
 var _ resource.ResourceWithModifyPlan = &ActionResource{}
 var _ resource.ResourceWithUpgradeState = &ActionResource{}
+var _ tffwdocs.ResourceWithRenderOption = &ActionResource{}
 
 func (r *ActionResource) Configure(ctx context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -154,7 +156,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
 				},
-				MarkdownDescription: "Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.",
+				MarkdownDescription: "Specifies the HTTP method of the azure resource action.",
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
@@ -176,7 +178,7 @@ func (r *ActionResource) Schema(ctx context.Context, request resource.SchemaRequ
 				Validators: []validator.String{
 					stringvalidator.OneOf("apply", "destroy"),
 				},
-				MarkdownDescription: "When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.",
+				MarkdownDescription: "When to perform the action.",
 			},
 
 			"locks": schema.ListAttribute{
@@ -447,4 +449,65 @@ func (r *ActionResource) Action(ctx context.Context, model ActionResourceModel, 
 	model.SensitiveOutput = sensitiveOutput
 
 	diagnostics.Append(state.Set(ctx, model)...)
+}
+
+func (r *ActionResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+variable "enabled" {
+  type        = bool
+  default     = false
+  description = "whether start the spring service"
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_spring_cloud_service" "test" {
+  name                = "example-spring"
+  resource_group_name = azurerm_resource_group.test.name
+  location            = azurerm_resource_group.test.location
+  sku_name            = "S0"
+}
+
+resource "azapi_resource_action" "start" {
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "start"
+  response_export_values = ["*"]
+
+  count = var.enabled ? 1 : 0
+}
+
+resource "azapi_resource_action" "stop" {
+  type                   = "Microsoft.AppPlatform/Spring@2022-05-01-preview"
+  resource_id            = azurerm_spring_cloud_service.test.id
+  action                 = "stop"
+  response_export_values = ["*"]
+
+  count = var.enabled ? 0 : 1
+}
+`,
+			},
+		},
+	}
 }
