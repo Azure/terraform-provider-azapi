@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ResourceListDataSourceModel struct {
@@ -40,6 +41,7 @@ type ResourceListDataSource struct {
 
 var _ datasource.DataSource = &ResourceListDataSource{}
 var _ datasource.DataSourceWithConfigure = &ResourceListDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &ResourceListDataSource{}
 
 func (r *ResourceListDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -160,4 +162,48 @@ func (r *ResourceListDataSource) Read(ctx context.Context, request datasource.Re
 	model.Output = output
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *ResourceListDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+data "azapi_resource_list" "listBySubscription" {
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000"
+  response_export_values = {
+    "values" = "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}"
+    "names"  = "value[].name"
+  }
+}
+
+data "azapi_resource_list" "listByResourceGroup" {
+  type      = "Microsoft.Automation/automationAccounts@2021-06-22"
+  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1"
+  response_export_values = {
+    "names" = "value[].name"
+  }
+}
+
+data "azapi_resource_list" "listSubnetsByVnet" {
+  type                   = "Microsoft.Network/virtualNetworks/subnets@2021-02-01"
+  parent_id              = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"
+  response_export_values = ["*"]
+}
+`,
+			},
+		},
+	}
 }
