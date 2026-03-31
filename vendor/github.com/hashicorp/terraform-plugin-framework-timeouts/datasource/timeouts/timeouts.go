@@ -107,28 +107,10 @@ func (t Value) Type(ctx context.Context) attr.Type {
 	}
 }
 
-// Create attempts to retrieve the "create" attribute and parse it as time.Duration.
-// If any diagnostics are generated they are returned along with the supplied default timeout.
-func (t Value) Create(ctx context.Context, defaultTimeout time.Duration) (time.Duration, diag.Diagnostics) {
-	return t.getTimeout(ctx, attributeNameCreate, defaultTimeout)
-}
-
 // Read attempts to retrieve the "read" attribute and parse it as time.Duration.
 // If any diagnostics are generated they are returned along with the supplied default timeout.
 func (t Value) Read(ctx context.Context, defaultTimeout time.Duration) (time.Duration, diag.Diagnostics) {
 	return t.getTimeout(ctx, attributeNameRead, defaultTimeout)
-}
-
-// Update attempts to retrieve the "update" attribute and parse it as time.Duration.
-// If any diagnostics are generated they are returned along with the supplied default timeout.
-func (t Value) Update(ctx context.Context, defaultTimeout time.Duration) (time.Duration, diag.Diagnostics) {
-	return t.getTimeout(ctx, attributeNameUpdate, defaultTimeout)
-}
-
-// Delete attempts to retrieve the "delete" attribute and parse it as time.Duration.
-// If any diagnostics are generated they are returned along with the supplied default timeout.
-func (t Value) Delete(ctx context.Context, defaultTimeout time.Duration) (time.Duration, diag.Diagnostics) {
-	return t.getTimeout(ctx, attributeNameDelete, defaultTimeout)
 }
 
 func (t Value) getTimeout(ctx context.Context, timeoutName string, defaultTimeout time.Duration) (time.Duration, diag.Diagnostics) {

@@ -12,23 +12,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/magodo/terraform-plugin-framework-docs/fwdtypes"
 )
 
 type ParseResourceIdFunction struct {
 }
 
 var ParseResourceIdResultAttrTypes = map[string]attr.Type{
-	"id":                  types.StringType,
-	"type":                types.StringType,
-	"name":                types.StringType,
-	"parent_id":           types.StringType,
-	"resource_group_name": types.StringType,
-	"resource_group_id":   types.StringType,
-	"subscription_id":     types.StringType,
-	"provider_namespace":  types.StringType,
-	"parts": types.MapType{
-		ElemType: types.StringType,
-	},
+	"id":                  fwdtypes.NewStringType("The resource id of this resource."),
+	"type":                fwdtypes.NewStringType("The azure resource type."),
+	"name":                fwdtypes.NewStringType("The resource name."),
+	"parent_id":           fwdtypes.NewStringType("The resource id of the parent resource."),
+	"resource_group_name": fwdtypes.NewStringType("The name of the resource group this resource resides in."),
+	"resource_group_id":   fwdtypes.NewStringType("The id of the resource group this resource resides in."),
+	"subscription_id":     fwdtypes.NewStringType("The id of the subscription this resource resides in."),
+	"provider_namespace":  fwdtypes.NewStringType("The namespace of the resource provider."),
+	"parts":               fwdtypes.NewMapType("A map of the parts of the resource id.", types.StringType),
 }
 
 func (p *ParseResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {

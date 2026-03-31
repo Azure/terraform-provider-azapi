@@ -414,6 +414,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
+				MarkdownDescription: "The identity of this resource.",
 				NestedObject: schema.NestedBlockObject{
 					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/Azure/terraform-provider-azapi/internal/clients"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -43,7 +43,8 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 		MarkdownDescription: "This data source provides information about the current Azure client configuration, including the tenant ID, subscription ID, and object ID of the identity used by the provider.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				MarkdownDescription: "The id of this resource.",
+				Computed:            true,
 			},
 
 			"tenant_id": schema.StringAttribute{
@@ -68,9 +69,7 @@ func (r *ClientConfigDataSource) Schema(ctx context.Context, request datasource.
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }

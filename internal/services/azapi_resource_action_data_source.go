@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -100,6 +100,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.Dynamic{
 					myvalidator.DynamicIsNotStringValidator(),
 				},
+				MarkdownDescription: "The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object.",
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -123,7 +124,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				MarkdownDescription: docstrings.SensitiveOutput("data.azapi_resource_action"),
 			},
 
-			"retry": retry.RetrySchema(ctx),
+			"retry": retry.RetryDsSchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -141,9 +142,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/ephemeral/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -124,7 +124,7 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				MarkdownDescription: docstrings.Output("ephemeral.azapi_resource_action"),
 			},
 
-			"retry": retry.RetrySchema(ctx),
+			"retry": retry.RetryEphemeralSchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
@@ -142,9 +142,7 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }
@@ -155,7 +153,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		return
 	}
 
-	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	readTimeout, diags := model.Timeouts.Open(ctx, 5*time.Minute)
 	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
 		return
 	}
