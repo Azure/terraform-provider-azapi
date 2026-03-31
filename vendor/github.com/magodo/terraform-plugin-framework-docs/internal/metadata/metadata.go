@@ -2,6 +2,7 @@ package metadata
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -124,11 +125,13 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 	p.Schema(ctx, provider.SchemaRequest{}, &schemaResp)
 	diags.Append(schemaResp.Diagnostics...)
 	if diags.HasError() {
+		diags = WrapErrDiags(diags, "provider")
 		return
 	}
 	providerSchema, odiags := NewProviderSchema(ctx, schemaResp.Schema)
 	diags.Append(odiags...)
 	if diags.HasError() {
+		diags = WrapErrDiags(diags, "provider")
 		return
 	}
 
@@ -162,12 +165,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 		res.Schema(ctx, resource.SchemaRequest{}, &schemaResp)
 		diags.Append(schemaResp.Diagnostics...)
 		if diags.HasError() {
+			diags = WrapErrDiags(diags, fmt.Sprintf("resource %q", resourceType))
 			return
 		}
 
 		sch, odiags := NewResourceSchema(ctx, schemaResp.Schema)
 		diags.Append(odiags...)
 		if diags.HasError() {
+			diags = WrapErrDiags(diags, fmt.Sprintf("resource %q", resourceType))
 			return
 		}
 
@@ -184,12 +189,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 			resourceWithIdentity.IdentitySchema(ctx, resource.IdentitySchemaRequest{}, &schemaResp)
 			diags.Append(schemaResp.Diagnostics...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("resource identity %q", resourceType))
 				return
 			}
 
 			sch, odiags := NewResourceIdentitySchema(ctx, schemaResp.IdentitySchema)
 			diags.Append(odiags...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("resource identity %q", resourceType))
 				return
 			}
 
@@ -211,12 +218,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 		res.Schema(ctx, datasource.SchemaRequest{}, &schemaResp)
 		diags.Append(schemaResp.Diagnostics...)
 		if diags.HasError() {
+			diags = WrapErrDiags(diags, fmt.Sprintf("data source %q", resourceType))
 			return
 		}
 
 		sch, odiags := NewDataSourceSchema(ctx, schemaResp.Schema)
 		diags.Append(odiags...)
 		if diags.HasError() {
+			diags = WrapErrDiags(diags, fmt.Sprintf("data source %q", resourceType))
 			return
 		}
 
@@ -244,12 +253,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 			res.Schema(ctx, ephemeral.SchemaRequest{}, &schemaResp)
 			diags.Append(schemaResp.Diagnostics...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("ephemeral resource %q", resourceType))
 				return
 			}
 
 			sch, odiags := NewEphemeralSchema(ctx, schemaResp.Schema)
 			diags.Append(odiags...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("ephemeral resource %q", resourceType))
 				return
 			}
 
@@ -278,12 +289,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 			res.Schema(ctx, action.SchemaRequest{}, &schemaResp)
 			diags.Append(schemaResp.Diagnostics...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("action %q", resourceType))
 				return
 			}
 
 			sch, odiags := NewActionSchema(ctx, schemaResp.Schema)
 			diags.Append(odiags...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("action %q", resourceType))
 				return
 			}
 
@@ -312,12 +325,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 			res.ListResourceConfigSchema(ctx, list.ListResourceSchemaRequest{}, &schemaResp)
 			diags.Append(schemaResp.Diagnostics...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("list resource %q", resourceType))
 				return
 			}
 
 			sch, odiags := NewListSchema(ctx, schemaResp.Schema)
 			diags.Append(odiags...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("list resource %q", resourceType))
 				return
 			}
 
@@ -347,12 +362,14 @@ func GetMetadata(ctx context.Context, p provider.Provider) (metadata Metadata, d
 			fun.Definition(ctx, function.DefinitionRequest{}, &definitionResp)
 			diags.Append(schemaResp.Diagnostics...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("function %q", functionName))
 				return
 			}
 
 			sch, odiags := NewFunctionSchema(ctx, definitionResp.Definition)
 			diags.Append(odiags...)
 			if diags.HasError() {
+				diags = WrapErrDiags(diags, fmt.Sprintf("function %q", functionName))
 				return
 			}
 

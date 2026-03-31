@@ -169,7 +169,7 @@ func newResourceAttrFields(ctx context.Context, parents []string, attrs map[stri
 			field.isObject = true
 			objectNested, objectDiags = newResourceNestedAttrObjectFields(ctx, slices.Concat(parents, []string{name}), attr.GetNestedObject().(schema.NestedAttributeObject))
 		default:
-			diags.AddError("unknown schema type", fmt.Sprintf("%T", attr))
+			diags.AddError("unknown schema type", fmt.Sprintf("type=%T, addr=%s", attr, strings.Join(slices.Concat(parents, []string{name}), ".")))
 			return
 		}
 
@@ -230,7 +230,7 @@ func newResourceBlockFields(ctx context.Context, parents []string, blks map[stri
 			field.planModifiers = MapSlice(blk.PlanModifiers, func(v planmodifier.Set) string { return DescriptionCtxOf(ctx, v) })
 			field.validators = MapSlice(blk.Validators, func(v validator.Set) string { return DescriptionCtxOf(ctx, v) })
 		default:
-			diags.AddError("unknown schema type", fmt.Sprintf("%T", blk))
+			diags.AddError("unknown schema type", fmt.Sprintf("type=%T, addr=%s", blk, strings.Join(slices.Concat(parents, []string{name}), ".")))
 			return
 		}
 

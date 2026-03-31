@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"maps"
 	"slices"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -173,7 +174,7 @@ func newFunctionParameters(ctx context.Context, parents []string, params []funct
 			maps.Copy(nested, nestedObjects.ToFunctionObjects())
 
 		default:
-			diags.AddError("unknown schema type", fmt.Sprintf("%T", attr))
+			diags.AddError("unknown schema type", fmt.Sprintf("type=%T, addr=%s", attr, strings.Join(slices.Concat(parents, []string{attr.GetName()}), ".")))
 			return
 		}
 

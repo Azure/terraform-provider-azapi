@@ -2,8 +2,11 @@ package metadata
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"unicode"
+
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
 type DescriptionProvider interface {
@@ -138,4 +141,13 @@ func ensureStringEndsWithDot(s string) string {
 		return s
 	}
 	return strings.TrimRight(s, ".") + "."
+}
+
+func WrapErrDiags(diags diag.Diagnostics, context string) diag.Diagnostics {
+	return MapSlice(diags, func(d diag.Diagnostic) diag.Diagnostic {
+		if d.Severity() != diag.SeverityError {
+			return d
+		}
+		return diag.NewErrorDiagnostic(d.Summary(), fmt.Sprintf("%s: %s", context, d.Detail()))
+	})
 }

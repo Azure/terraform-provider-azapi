@@ -3,6 +3,7 @@ package metadata
 import (
 	"fmt"
 	"io"
+	"strings"
 )
 
 func renderHeader(w io.Writer, category Category, providerName, resourceType, subcategory, description string) error {
@@ -24,10 +25,20 @@ subcategory: "%s"
 			return err
 		}
 	}
+
+	// Indent description
+	indentedDescriptionLines := []string{}
+	for line := range strings.SplitSeq(description, "\n") {
+		if strings.TrimSpace(line) != "" {
+			line = "  " + line
+		}
+		indentedDescriptionLines = append(indentedDescriptionLines, line)
+	}
+
 	if _, err := fmt.Fprintf(w, `description: |-
-  %s
+%s
 ---
-`, description); err != nil {
+`, strings.Join(indentedDescriptionLines, "\n")); err != nil {
 		return err
 	}
 	return nil
