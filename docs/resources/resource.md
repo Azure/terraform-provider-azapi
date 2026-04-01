@@ -88,7 +88,7 @@ output "quarantine_policy" {
 
 ### Optional
 
-- `body` (Dynamic) A dynamic attribute that contains the request body. Return the default value.
+- `body` (Dynamic) A dynamic attribute that contains the request body. Defaults to `{}`.
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 

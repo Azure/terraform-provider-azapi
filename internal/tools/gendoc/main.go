@@ -22,4 +22,9 @@ func main() {
 	if err := gen.WriteAll(ctx, "./docs", nil); err != nil {
 		log.Fatal(err)
 	}
+
+	// Special handling of data plane resource
+	if err := genDataPlaneResource(ctx, gen); err != nil {
+		log.Fatal(err)
+	}
 }
