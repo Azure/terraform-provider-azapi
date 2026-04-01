@@ -22,16 +22,32 @@ type ParseResourceIdFunction struct {
 var _ function.Function = &ParseResourceIdFunction{}
 var _ tffwdocs.FunctionWithRenderOption = &ParseResourceIdFunction{}
 
-var ParseResourceIdResultAttrTypes = map[string]attr.Type{
-	"id":                  fwdtypes.NewStringType("The resource id of this resource."),
-	"type":                fwdtypes.NewStringType("The azure resource type."),
-	"name":                fwdtypes.NewStringType("The resource name."),
-	"parent_id":           fwdtypes.NewStringType("The resource id of the parent resource."),
-	"resource_group_name": fwdtypes.NewStringType("The name of the resource group this resource resides in."),
-	"resource_group_id":   fwdtypes.NewStringType("The id of the resource group this resource resides in."),
-	"subscription_id":     fwdtypes.NewStringType("The id of the subscription this resource resides in."),
-	"provider_namespace":  fwdtypes.NewStringType("The namespace of the resource provider."),
-	"parts":               fwdtypes.NewMapType("A map of the parts of the resource id.", types.StringType),
+func ParseResourceIdResultAttrTypes(withDoc bool) map[string]attr.Type {
+	if withDoc {
+		return map[string]attr.Type{
+			"id":                  fwdtypes.NewStringType("The resource id of this resource."),
+			"type":                fwdtypes.NewStringType("The azure resource type."),
+			"name":                fwdtypes.NewStringType("The resource name."),
+			"parent_id":           fwdtypes.NewStringType("The resource id of the parent resource."),
+			"resource_group_name": fwdtypes.NewStringType("The name of the resource group this resource resides in."),
+			"resource_group_id":   fwdtypes.NewStringType("The id of the resource group this resource resides in."),
+			"subscription_id":     fwdtypes.NewStringType("The id of the subscription this resource resides in."),
+			"provider_namespace":  fwdtypes.NewStringType("The namespace of the resource provider."),
+			"parts":               fwdtypes.NewMapType("A map of the parts of the resource id.", types.StringType),
+		}
+	} else {
+		return map[string]attr.Type{
+			"id":                  types.StringType,
+			"type":                types.StringType,
+			"name":                types.StringType,
+			"parent_id":           types.StringType,
+			"resource_group_name": types.StringType,
+			"resource_group_id":   types.StringType,
+			"subscription_id":     types.StringType,
+			"provider_namespace":  types.StringType,
+			"parts":               types.MapType{ElemType: types.StringType},
+		}
+	}
 }
 
 func (p *ParseResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
@@ -57,7 +73,7 @@ func (p *ParseResourceIdFunction) Definition(ctx context.Context, request functi
 			},
 		},
 		Return: function.ObjectReturn{
-			AttributeTypes: ParseResourceIdResultAttrTypes,
+			AttributeTypes: ParseResourceIdResultAttrTypes(true),
 		},
 		Summary:             "Parses an Azure resource ID into its components.",
 		Description:         "This function takes an Azure resource ID and a resource type and parses the ID into its individual components such as subscription ID, resource group name, provider namespace, and other parts.",
@@ -119,7 +135,7 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 		"parts":               types.MapValueMust(types.StringType, parts),
 	}
 
-	response.Error = response.Result.Set(ctx, types.ObjectValueMust(ParseResourceIdResultAttrTypes, result))
+	response.Error = response.Result.Set(ctx, types.ObjectValueMust(ParseResourceIdResultAttrTypes(false), result))
 }
 
 func (p *ParseResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
