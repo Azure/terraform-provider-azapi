@@ -12,11 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 	"github.com/magodo/terraform-plugin-framework-docs/fwdtypes"
 )
 
 type ParseResourceIdFunction struct {
 }
+
+var _ function.Function = &ParseResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &ParseResourceIdFunction{}
 
 var ParseResourceIdResultAttrTypes = map[string]attr.Type{
 	"id":                  fwdtypes.NewStringType("The resource id of this resource."),
@@ -118,4 +122,38 @@ func (p *ParseResourceIdFunction) Run(ctx context.Context, request function.RunR
 	response.Error = response.Result.Set(ctx, types.ObjectValueMust(ParseResourceIdResultAttrTypes, result))
 }
 
-var _ function.Function = &ParseResourceIdFunction{}
+func (p *ParseResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  resource_id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet"
+  resource_type = "Microsoft.Network/virtualNetworks"
+}
+
+// it will output below object
+# {
+#   "id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet"
+#   "name" = "myVNet"
+#   "parent_id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
+#   "parts" = tomap({
+#     "providers" = "Microsoft.Network"
+#     "resourceGroups" = "myResourceGroup"
+#     "subscriptions" = "00000000-0000-0000-0000-000000000000"
+#     "virtualNetworks" = "myVNet"
+#   })
+#   "provider_namespace" = "Microsoft.Network"
+#   "resource_group_id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup"
+#   "resource_group_name" = "myResourceGroup"
+#   "subscription_id" = "00000000-0000-0000-0000-000000000000"
+#   "type" = "Microsoft.Network/virtualNetworks"
+# }
+output "parsed_resource_id" {
+  value = provider::azapi::parse_resource_id(local.resource_type, local.resource_id)
+}
+`,
+			},
+		},
+	}
+}

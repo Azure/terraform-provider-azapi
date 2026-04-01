@@ -7,10 +7,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/utils"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // ManagementGroupResourceIdFunction builds resource IDs for management group scope
 type ManagementGroupResourceIdFunction struct{}
+
+var _ function.Function = &ManagementGroupResourceIdFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &ManagementGroupResourceIdFunction{}
 
 func (f *ManagementGroupResourceIdFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "management_group_resource_id"
@@ -69,4 +73,23 @@ func (f *ManagementGroupResourceIdFunction) Run(ctx context.Context, request fun
 	response.Error = response.Result.Set(ctx, types.StringValue(resourceID.AzureResourceId))
 }
 
-var _ function.Function = &ManagementGroupResourceIdFunction{}
+func (f *ManagementGroupResourceIdFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  management_group_name = "mg1"
+  resource_type         = "Microsoft.Billing/billingAccounts/billingProfiles"
+  resource_names        = ["ba1", "bp1"]
+}
+
+// it will output "/providers/Microsoft.Management/managementGroups/mg1/providers/Microsoft.Billing/billingAccounts/ba1/billingProfiles/bp1"
+output "management_group_resource_id" {
+  value = provider::azapi::management_group_resource_id(local.management_group_name, local.resource_type, local.resource_names)
+}
+`,
+			},
+		},
+	}
+}
