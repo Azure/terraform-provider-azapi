@@ -46,6 +46,7 @@ func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) error {
 		return err
 	}
 
+	// #nosec G302
 	f, err := os.OpenFile("./docs/resources/data_plane_resource.md", os.O_RDWR, 0644)
 	if err != nil {
 		return err
