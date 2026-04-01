@@ -48,17 +48,17 @@ func (b functionRenderBuilder) renderSignature(w io.Writer) error {
 	var params []string
 	for _, param := range schema.Parameters {
 		if param.isVariadic {
-			params = append(params, fmt.Sprintf("%s %s...", param.name, param.dataType))
+			params = append(params, fmt.Sprintf("%s %s...", param.name, strings.ToLower(param.dataType.String())))
 		} else {
-			params = append(params, fmt.Sprintf("%s %s", param.name, param.dataType))
+			params = append(params, fmt.Sprintf("%s %s", param.name, strings.ToLower(param.dataType.String())))
 		}
 	}
-	if _, err := io.WriteString(w, strings.Join(params, ",")); err != nil {
+	if _, err := io.WriteString(w, strings.Join(params, ", ")); err != nil {
 		return err
 	}
 	if _, err := fmt.Fprintf(w, `) %[1]s
 %[2]s%[2]s%[2]s
-`, schema.Return.dataType, "`"); err != nil {
+`, strings.ToLower(schema.Return.dataType.String()), "`"); err != nil {
 		return err
 	}
 
