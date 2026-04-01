@@ -20,7 +20,7 @@ type ApiPath struct {
 	ExamplePath     string `json:"ExamplePath"`
 }
 
-func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) error {
+func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) (err error) {
 	apiData, err := os.ReadFile("internal/services/parse/data_plane_resources.json")
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) error {
 	// Parse the JSON
 	var apiPaths []ApiPath
 	if err := json.Unmarshal(apiData, &apiPaths); err != nil {
-		return fmt.Errorf("Error parsing JSON: %v", err)
+		return fmt.Errorf("error parsing JSON: %v", err)
 	}
 
 	// Sort by ResourceType for consistent output
@@ -51,7 +51,9 @@ func genDataPlaneResource(ctx context.Context, gen *tffwdocs.Generator) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		err = f.Close()
+	}()
 
 	opt := &tffwdocs.ResourceRenderOption{
 		Examples: []tffwdocs.Example{
@@ -154,7 +156,7 @@ func generateMarkdownTable(apiPaths []ApiPath) string {
 		parentID := path.ParentIDExample
 
 		// Write the row
-		sb.WriteString(fmt.Sprintf("| %s | %s | %-91s |\n", resourceType, url, parentID))
+		fmt.Fprintf(&sb, "| %s | %s | %-91s |\n", resourceType, url, parentID)
 	}
 
 	return sb.String()
@@ -180,13 +182,13 @@ func generateExampleSections(apiPaths []ApiPath) (string, error) {
 	// Generate sections for each example
 	for _, path := range pathsWithExamples {
 		// Create a section header based on the resource type
-		sb.WriteString(fmt.Sprintf("\n### %s\n\n", path.ResourceType))
+		fmt.Fprintf(&sb, "\n### %s\n\n", path.ResourceType)
 
 		b, err := os.ReadFile(path.ExamplePath)
 		if err != nil {
 			return "", fmt.Errorf("failed to read %s: %v", path.ExamplePath, err)
 		}
-		sb.WriteString(fmt.Sprintf("```terraform\n%s```\n", string(b)))
+		fmt.Fprintf(&sb, "```terraform\n%s```\n", string(b))
 	}
 
 	return sb.String(), nil
