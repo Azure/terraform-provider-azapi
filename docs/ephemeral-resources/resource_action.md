@@ -72,14 +72,14 @@ ephemeral "azapi_resource_action" "listKeys" {
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of Strings) A map of headers to include in the request
-- `locks` (List of Strings) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
+- `headers` (Map of String) A map of headers to include in the request
+- `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
 - `method` (String) Specifies the HTTP method of the azure resource action. Defaults to `POST`.
 
 	-> Value must be one of: ["POST" "PATCH" "PUT" "DELETE" "GET" "HEAD"].
-- `query_parameters` (Map of Lists of Strings) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -134,7 +134,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 Required:
 
-- `error_message_regex` (List of Strings) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 	-> Element value must satisfy all validations: validates that the string compiles as a valid Go regular expression.
 

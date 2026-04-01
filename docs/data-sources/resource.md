@@ -70,7 +70,7 @@ output "quarantine_policy" {
 
 ### Optional
 
-- `headers` (Map of Strings) A map of headers to include in the request
+- `headers` (Map of String) A map of headers to include in the request
 - `ignore_not_found` (Boolean) If set to `true`, the data source will not fail when the specified resource is not found (HTTP 404). Identifier attributes (`id`, `name`, `parent_id`, `resource_id`) will still be populated based on inputs; other computed attributes (`output`, `location`, `identity`, `tags`) will be null/empty. Defaults to `false`.
 - `name` (String) Specifies the name of the Azure resource. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 
@@ -88,7 +88,7 @@ output "quarantine_policy" {
   For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 
 	-> Ensure this in resource ID format.
-- `query_parameters` (Map of Lists of Strings) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `resource_id` (String) The ID of the Azure resource to retrieve. Exactly one of the arguments `name` or `resource_id` must be set. It could be omitted if the `type` is `Microsoft.Resources/subscriptions`.
 
 	-> Ensure this in resource ID format.
@@ -127,7 +127,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `exists` (Boolean) Indicates whether the specified Azure resource exists. This will be `false` only when `ignore_not_found` is `true` and the resource isn't found.
 - `id` (String) The ID of the Azure resource.
-- `identity` (List of Objects) The identity of this resource. See [below for nested schema](#nested--identity).
+- `identity` (List of Object) The identity of this resource. See [below for nested schema](#nested--identity).
 - `location` (String) The location of the Azure resource.
 - `output` (Dynamic) The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.
 
@@ -143,14 +143,14 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	}
 	```
 
-- `tags` (Map of Strings) A mapping of tags which are assigned to the Azure resource.
+- `tags` (Map of String) A mapping of tags which are assigned to the Azure resource.
 
 <a id="nested--identity"></a>
 ### Nested Schema for `identity`
 
 Read-Only:
 
-- `identity_ids` (List of Strings) A list of User Managed Identity ID's which should be assigned to the azure resource.
+- `identity_ids` (List of String) A list of User Managed Identity ID's which should be assigned to the azure resource.
 - `principal_id` (String) The Principal ID for the Service Principal associated with the Managed Service Identity of this Azure resource.
 - `tenant_id` (String) The Tenant ID for the Service Principal associated with the Managed Service Identity of this Azure resource.
 - `type` (String) The Type of Identity which should be used for this azure resource.
@@ -159,7 +159,7 @@ Read-Only:
 
 Required:
 
-- `error_message_regex` (List of Strings) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 	-> Element value must satisfy all validations: validates that the string compiles as a valid Go regular expression.
 

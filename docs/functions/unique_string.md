@@ -27,9 +27,9 @@ output "unique_name" {
 ## Signature
 
 ```text
-unique_string(base_string List of Strings) String
+unique_string(base_string list of string) string
 ```
 
 ## Arguments
 
-1. `base_string` (List of Strings) The values used in the hash function to create a unique string.
+1. `base_string` (List of String) The values used in the hash function to create a unique string.

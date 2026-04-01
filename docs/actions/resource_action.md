@@ -140,11 +140,11 @@ action "azapi_resource_action" "power_on" {
 - `body` (Dynamic) A dynamic attribute that contains the request body.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of Strings) Headers to include in the request.
-- `locks` (List of Strings) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
+- `headers` (Map of String) Headers to include in the request.
+- `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
 - `method` (String) HTTP method for the action. Defaults to POST.
 
 	-> Value must be one of: ["POST" "PATCH" "PUT" "DELETE" "GET" "HEAD"].
-- `query_parameters` (Map of Lists of Strings) Query parameters to include in the request.
+- `query_parameters` (Map of List of String) Query parameters to include in the request.

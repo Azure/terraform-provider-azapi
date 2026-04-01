@@ -28,7 +28,7 @@ output "resource_id" {
 ## Signature
 
 ```text
-build_resource_id(parent_id String,resource_type String,name String) String
+build_resource_id(parent_id string, resource_type string, name string) string
 ```
 
 ## Arguments

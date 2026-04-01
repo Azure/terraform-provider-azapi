@@ -62,11 +62,11 @@ data "azapi_resource_action" "example" {
 - `body` (Dynamic) The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of Strings) A map of headers to include in the request
+- `headers` (Map of String) A map of headers to include in the request
 - `method` (String) The HTTP method to use when performing the action. Defaults to `POST`.
 
 	-> Value must be one of: ["POST" "GET"].
-- `query_parameters` (Map of Lists of Strings) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `resource_id` (String) The ID of the Azure resource to perform the action on.
 
 	-> Ensure this in resource ID format.
@@ -168,7 +168,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 Required:
 
-- `error_message_regex` (List of Strings) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 	-> Element value must satisfy all validations: validates that the string compiles as a valid Go regular expression.
 

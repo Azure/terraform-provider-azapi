@@ -93,22 +93,22 @@ output "quarantine_policy" {
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 
 	-> Ensure the dynamic value is not a string.
-- `create_headers` (Map of Strings) A mapping of headers to be sent with the create request.
-- `create_query_parameters` (Map of Lists of Strings) A mapping of query parameters to be sent with the create request.
-- `delete_headers` (Map of Strings) A mapping of headers to be sent with the delete request.
-- `delete_query_parameters` (Map of Lists of Strings) A mapping of query parameters to be sent with the delete request.
-- `identity` (List of Blocks) The identity of this resource. See [below for nested schema](#nested--identity).
+- `create_headers` (Map of String) A mapping of headers to be sent with the create request.
+- `create_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the create request.
+- `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
+- `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
+- `identity` (List of Block) The identity of this resource. See [below for nested schema](#nested--identity).
 - `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. Defaults to `true`.
 - `ignore_null_property` (Boolean) When set to `true`, the provider will ignore properties whose values are `null` in the `body`. These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
-- `ignore_other_items_in_list` (List of Strings) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+- `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
 
 	-> Element value must satisfy all validations: string length must be at least 1.
-- `list_unique_id_property` (Map of Strings) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+- `list_unique_id_property` (Map of String) A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
 - `location` (String) The location of the Azure resource.
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
-- `locks` (List of Strings) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
+- `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
 	-> Element value must satisfy all validations: string length must be at least 1.
 - `name` (String) Specifies the name of the azure resource.
@@ -129,8 +129,8 @@ output "quarantine_policy" {
 	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
 	-> Ensure this in resource ID format.
-- `read_headers` (Map of Strings) A mapping of headers to be sent with the read request.
-- `read_query_parameters` (Map of Lists of Strings) A mapping of query parameters to be sent with the read request.
+- `read_headers` (Map of String) A mapping of headers to be sent with the read request.
+- `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
 - `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
 If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. 
 Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
@@ -158,7 +158,7 @@ resource "azapi_resource" "example" {
 
 
 	~> If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.
-- `replace_triggers_refs` (List of Strings) A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.
+- `replace_triggers_refs` (List of String) A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -192,13 +192,13 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
-- `sensitive_body_version` (Map of Strings) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body. 
-- `tags` (Map of Strings) A mapping of tags which should be assigned to the Azure resource.
+- `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body. 
+- `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 
 	-> Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long.
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
-- `update_headers` (Map of Strings) A mapping of headers to be sent with the update request.
-- `update_query_parameters` (Map of Lists of Strings) A mapping of query parameters to be sent with the update request.
+- `update_headers` (Map of String) A mapping of headers to be sent with the update request.
+- `update_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the update request.
 
 ### Read-Only
 
@@ -233,7 +233,7 @@ Required:
 
 Optional:
 
-- `identity_ids` (List of Strings) A list of User Managed Identity ID's which should be assigned to the azure resource.
+- `identity_ids` (List of String) A list of User Managed Identity ID's which should be assigned to the azure resource.
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 
@@ -248,7 +248,7 @@ Read-Only:
 
 Required:
 
-- `error_message_regex` (List of Strings) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 	-> Element value must satisfy all validations: validates that the string compiles as a valid Go regular expression.
 

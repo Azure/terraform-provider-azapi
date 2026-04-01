@@ -42,7 +42,7 @@ output "unique_name" {
 ## Signature
 
 ```text
-snake2camel(input Dynamic) Dynamic
+snake2camel(input dynamic) dynamic
 ```
 
 ## Arguments

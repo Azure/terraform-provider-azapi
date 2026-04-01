@@ -42,8 +42,8 @@ list "azapi_resource" "example" {
 
 ### Optional
 
-- `headers` (Map of Strings) A map of headers to include in the request
-- `query_parameters` (Map of Lists of Strings) A map of query parameters to include in the request
+- `headers` (Map of String) A map of headers to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. When omitted, `parent_id` must be a resource group ID and all resources in the resource group will be listed.
 
 	-> Ensure this in resource type format: `<resource-type>@<api-version>`.

@@ -29,7 +29,7 @@ output "resource_group_resource_id" {
 ## Signature
 
 ```text
-resource_group_resource_id(subscription_id String,resource_group_name String,resource_type String,resource_names List of Strings) String
+resource_group_resource_id(subscription_id string, resource_group_name string, resource_type string, resource_names list of string) string
 ```
 
 ## Arguments
@@ -37,4 +37,4 @@ resource_group_resource_id(subscription_id String,resource_group_name String,res
 1. `subscription_id` (String) The subscription ID of the Azure resource.
 1. `resource_group_name` (String) The name of the resource group.
 1. `resource_type` (String) The resource type of the Azure resource.
-1. `resource_names` (List of Strings) The list of resource names to construct the resource ID.
+1. `resource_names` (List of String) The list of resource names to construct the resource ID.

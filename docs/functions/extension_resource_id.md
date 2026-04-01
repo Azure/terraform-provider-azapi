@@ -28,11 +28,11 @@ output "extension_resource_id" {
 ## Signature
 
 ```text
-extension_resource_id(base_resource_id String,resource_type String,resource_names List of Strings) String
+extension_resource_id(base_resource_id string, resource_type string, resource_names list of string) string
 ```
 
 ## Arguments
 
 1. `base_resource_id` (String) The base resource ID of the Azure resource.
 1. `resource_type` (String) The resource type of the Azure resource.
-1. `resource_names` (List of Strings) The list of resource names to construct the extension resource ID.
+1. `resource_names` (List of String) The list of resource names to construct the extension resource ID.

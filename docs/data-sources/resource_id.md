@@ -96,7 +96,7 @@ output "vnet_subscription" {
 ### Read-Only
 
 - `id` (String) The ID of the Azure resource.
-- `parts` (Map of Strings) A map of the resource ID parts, where the key is the part name and the value is the part value. e.g. `virtualNetworks=myVnet`.
+- `parts` (Map of String) A map of the resource ID parts, where the key is the part name and the value is the part value. e.g. `virtualNetworks=myVnet`.
 - `provider_namespace` (String) The Azure resource provider namespace of the Azure resource.
 - `resource_group_name` (String) The resource group name of the Azure resource.
 - `subscription_id` (String) The subscription ID of the Azure resource.

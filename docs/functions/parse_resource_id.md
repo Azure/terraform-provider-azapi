@@ -43,7 +43,7 @@ output "parsed_resource_id" {
 ## Signature
 
 ```text
-parse_resource_id(resource_type String,resource_id String) Object
+parse_resource_id(resource_type string, resource_id string) object
 ```
 
 ## Arguments
@@ -58,7 +58,7 @@ The `object` returned from `parse_resource_id` has the following attributes:
 - `id` (String) The resource id of this resource.
 - `name` (String) The resource name.
 - `parent_id` (String) The resource id of the parent resource.
-- `parts` (Map of Strings) A map of the parts of the resource id.
+- `parts` (Map of String) A map of the parts of the resource id.
 - `provider_namespace` (String) The namespace of the resource provider.
 - `resource_group_id` (String) The id of the resource group this resource resides in.
 - `resource_group_name` (String) The name of the resource group this resource resides in.

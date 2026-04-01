@@ -71,8 +71,8 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 ### Optional
 
-- `headers` (Map of Strings) A map of headers to include in the request
-- `query_parameters` (Map of Lists of Strings) A map of query parameters to include in the request
+- `headers` (Map of String) A map of headers to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
 - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["value"]`, it will set the following HCL object to the computed property output.
@@ -146,7 +146,7 @@ To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 Required:
 
-- `error_message_regex` (List of Strings) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
+- `error_message_regex` (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 
 	-> Element value must satisfy all validations: validates that the string compiles as a valid Go regular expression.
 

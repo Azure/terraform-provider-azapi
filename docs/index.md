@@ -51,7 +51,7 @@ provider "azapi" {
 
 ### Optional
 
-- `auxiliary_tenant_ids` (List of Strings) List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.
+- `auxiliary_tenant_ids` (List of String) List of auxiliary Tenant IDs required for multi-tenancy and cross-tenant scenarios. This can also be sourced from the `ARM_AUXILIARY_TENANT_IDS` Environment Variable.
 
 	-> List must contain at most 3 elements.
 - `client_certificate` (String) A base64-encoded PKCS#12 bundle to be used as the client certificate for authentication. This can also be sourced from the `ARM_CLIENT_CERTIFICATE` environment variable.
@@ -64,7 +64,7 @@ provider "azapi" {
 - `custom_correlation_request_id` (String) The value of the `x-ms-correlation-request-id` header, otherwise an auto-generated UUID will be used. This can also be sourced from the `ARM_CORRELATION_REQUEST_ID` environment variable.
 - `default_location` (String)  The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.
 - `default_name` (String) The default name to create the azure resource. The `name` in each resource block can override the `default_name`. Changing this forces new resources to be created.
-- `default_tags` (Map of Strings) A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.
+- `default_tags` (Map of String) A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.
 
 	-> Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long.
 - `disable_correlation_request_id` (Boolean) This will disable the x-ms-correlation-request-id header.
@@ -72,7 +72,7 @@ provider "azapi" {
 - `disable_instance_discovery` (Boolean) Disables Instance Discovery, which validates that the Authority is valid and known by the Microsoft Entra instance metadata service at `https://login.microsoft.com` before authenticating. This should only be enabled when the configured authority is known to be valid and trustworthy - such as when running against Azure Stack or when `environment` is set to `custom`. This can also be specified via the `ARM_DISABLE_INSTANCE_DISCOVERY` environment variable. Defaults to `false`.
 - `disable_terraform_partner_id` (Boolean) Disable sending the Terraform Partner ID if a custom `partner_id` isn't specified, which allows Microsoft to better understand the usage of Terraform. The Partner ID does not give HashiCorp any direct access to usage information. This can also be sourced from the `ARM_DISABLE_TERRAFORM_PARTNER_ID` environment variable. Defaults to `false`.
 - `enable_preflight` (Boolean) Enable Preflight Validation. The default is false. When set to true, the provider will use Preflight to do static validation before really deploying a new resource. When set to false, the provider will disable this validation. This can also be sourced from the `ARM_ENABLE_PREFLIGHT` Environment Variable.
-- `endpoint` (List of Objects) The Azure API Endpoint Configuration. See [below for nested schema](#nested--endpoint).
+- `endpoint` (List of Object) The Azure API Endpoint Configuration. See [below for nested schema](#nested--endpoint).
 
 	-> List must contain at most 1 elements.
 - `environment` (String) The Cloud Environment which should be used. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.

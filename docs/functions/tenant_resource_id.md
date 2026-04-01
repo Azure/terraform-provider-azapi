@@ -27,10 +27,10 @@ output "tenant_resource_id" {
 ## Signature
 
 ```text
-tenant_resource_id(resource_type String,resource_names List of Strings) String
+tenant_resource_id(resource_type string, resource_names list of string) string
 ```
 
 ## Arguments
 
 1. `resource_type` (String) The resource type of the Azure resource.
-1. `resource_names` (List of Strings) The list of resource names to construct the resource ID.
+1. `resource_names` (List of String) The list of resource names to construct the resource ID.
