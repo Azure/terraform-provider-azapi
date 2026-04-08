@@ -1254,9 +1254,54 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
 	if err != nil {
+		// If the auto-selected API version is not supported by Azure (e.g. a preview version
+		// that has been superseded by the GA release), try progressively older API versions
+		// from the embedded schema until one works.
+		if utils.ResponseErrorWasNoRegisteredProvider(err) {
+			tflog.Warn(ctx, fmt.Sprintf("API version %q is not registered for resource type %s, trying fallback versions", id.ApiVersion, id.AzureResourceType))
+
+			apiVersions := azure.GetApiVersions(id.AzureResourceType)
+			requestOptions := clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters))
+
+			for i := len(apiVersions) - 1; i >= 0; i-- {
+				fallbackVersion := apiVersions[i]
+				if fallbackVersion == id.ApiVersion {
+					continue
+				}
+
+				tflog.Debug(ctx, fmt.Sprintf("Trying fallback API version %q for %s", fallbackVersion, id.AzureResourceType))
+				fallbackBody, fallbackErr := client.Get(ctx, id.AzureResourceId, fallbackVersion, requestOptions)
+				if fallbackErr == nil {
+					tflog.Info(ctx, fmt.Sprintf("Successfully read %s using fallback API version %q (original %q was not registered)",
+						id.AzureResourceType, fallbackVersion, id.ApiVersion))
+
+					// Update the id and state to reflect the working API version
+					id.ApiVersion = fallbackVersion
+					resourceDef, defErr := azure.GetResourceDefinition(id.AzureResourceType, fallbackVersion)
+					if defErr == nil {
+						id.ResourceDef = resourceDef
+					}
+					state.Type = types.StringValue(fmt.Sprintf("%s@%s", id.AzureResourceType, id.ApiVersion))
+
+					responseBody = fallbackBody
+					err = nil
+					break
+				}
+
+				// If the fallback also gets NoRegisteredProviderFound, keep trying older versions
+				if !utils.ResponseErrorWasNoRegisteredProvider(fallbackErr) {
+					// Different error type — stop the fallback loop and report the original error
+					tflog.Debug(ctx, fmt.Sprintf("Fallback API version %q returned a different error, stopping fallback: %+v", fallbackVersion, fallbackErr))
+					break
+				}
+			}
+		}
+	}
+
+	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
-			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
-			response.State.RemoveResource(ctx)
+			response.Diagnostics.AddError("Resource not found",
+				fmt.Errorf("the resource %s was not found during import — it may not exist or may have been deleted: %+v", id, err).Error())
 			return
 		}
 		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
