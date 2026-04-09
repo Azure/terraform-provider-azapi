@@ -10,11 +10,11 @@ import (
 type dynamicIsNotStringValidator struct{}
 
 func (v dynamicIsNotStringValidator) Description(ctx context.Context) string {
-	return "validate the dynamic value is not a string"
+	return "ensure the dynamic value is not a string"
 }
 
 func (v dynamicIsNotStringValidator) MarkdownDescription(ctx context.Context) string {
-	return "validate the dynamic value is not a string"
+	return "ensure the dynamic value is not a string"
 }
 
 func (dynamicIsNotStringValidator) ValidateDynamic(ctx context.Context, req validator.DynamicRequest, resp *validator.DynamicResponse) {

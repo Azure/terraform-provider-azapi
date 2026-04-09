@@ -8,10 +8,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 // Snake2CamelFunction builds resource IDs for tenant scope
 type Snake2CamelFunction struct{}
+
+var _ function.Function = &Snake2CamelFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &Snake2CamelFunction{}
 
 func (f *Snake2CamelFunction) Metadata(ctx context.Context, request function.MetadataRequest, response *function.MetadataResponse) {
 	response.Name = "snake2camel"
@@ -53,8 +57,6 @@ func (f *Snake2CamelFunction) Run(ctx context.Context, request function.RunReque
 	result := dynamicSnake2Camel(ctx, inputObj)
 	response.Error = response.Result.Set(ctx, result)
 }
-
-var _ function.Function = &Snake2CamelFunction{}
 
 func dynamicSnake2Camel(ctx context.Context, input attr.Value) attr.Value {
 	switch t := input.(type) {
@@ -191,4 +193,39 @@ func snake2Camel(input string) string {
 		sb.WriteRune(unicode.ToLower(r))
 	}
 	return sb.String()
+}
+
+func (f *Snake2CamelFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  input = {
+    first_thing  = string
+    second_thing = string
+    nested_object = object({
+      nested_thing1 = string
+      nested_thing2 = string
+    })
+  }
+}
+
+# Will output:
+#
+# {
+#   firstThing = string
+#   secondThing = string
+#   nestedObject = {
+#     nestedThing1 = string
+#     nestedThing2 = string
+#   }
+# }
+output "unique_name" {
+  value = provider::azapi::snake2camel(local.input)
+}
+`,
+			},
+		},
+	}
 }

@@ -10,11 +10,11 @@ import (
 type stringIsResourceType struct{}
 
 func (v stringIsResourceType) Description(ctx context.Context) string {
-	return "validate this in resource type format"
+	return "ensure this in resource type format: `<resource-type>@<api-version>`"
 }
 
 func (v stringIsResourceType) MarkdownDescription(ctx context.Context) string {
-	return "validate this in resource type format"
+	return "ensure this in resource type format: `<resource-type>@<api-version>`"
 }
 
 func (stringIsResourceType) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {

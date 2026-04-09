@@ -47,6 +47,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 const FlagMoveState = "move_state"
@@ -141,6 +142,7 @@ var _ resource.ResourceWithImportState = &AzapiResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiResource{}
 var _ resource.ResourceWithMoveState = &AzapiResource{}
 var _ resource.ResourceWithIdentity = &AzapiResource{}
+var _ tffwdocs.ResourceWithRenderOption = &AzapiResource{}
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -181,7 +183,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name of the azure resource.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -283,7 +285,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -414,6 +416,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
+				MarkdownDescription: "The identity of this resource.",
 				NestedObject: schema.NestedBlockObject{
 					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{
@@ -1584,4 +1587,89 @@ func isManagementGroupScope(scope string) bool {
 		strings.ToLower(scope),
 		managementGroupScope,
 	)
+}
+
+func (r *AzapiResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_user_assigned_identity" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+}
+
+// manage a container registry resource
+resource "azapi_resource" "example" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  name      = "registry1"
+  parent_id = azurerm_resource_group.example.id
+
+  location = azurerm_resource_group.example.location
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.example.id]
+  }
+
+  body = {
+    sku = {
+      name = "Standard"
+    }
+    properties = {
+      adminUserEnabled = true
+    }
+  }
+
+  tags = {
+    "Key" = "Value"
+  }
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}`,
+			},
+		},
+		ImportId: &tffwdocs.ImportId{
+			Format:    "<resource_id>[?api-version=<api_version>]",
+			ExampleId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01",
+		},
+		IdentityExamples: []tffwdocs.Example{
+			{
+				HCL: `
+id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet"
+type = "Microsoft.Network/virtualNetworks@2023-11-01"
+`,
+			},
+		},
+	}
 }
