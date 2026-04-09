@@ -3,12 +3,12 @@
 page_title: "azapi_resource_action Action - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  Perform an action on an existing Azure resource (stateless)
+  Perform an action on an existing Azure resource (stateless).
 ---
 
 # azapi_resource_action (Action)
 
-Perform an action on an existing Azure resource (stateless)
+Perform an action on an existing Azure resource (stateless).
 
 ## Example Usage
 

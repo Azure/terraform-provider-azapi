@@ -28,22 +28,22 @@ list "azapi_resource" "example" {
 
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
-  - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
+	- resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
 	- management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by azurerm_management_group.
 	- extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
 	- subscription scope: `parent_id` should be like \x60/subscriptions/00000000-0000-0000-0000-000000000000\x60
 	- tenant scope: `parent_id` should be /
 
-  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+	For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
-  For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+	For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 
 	-> Ensure this in resource ID format.
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `headers` (Map of String) A map of headers to include in the request.
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. When omitted, `parent_id` must be a resource group ID and all resources in the resource group will be listed.
 
 	-> Ensure this in resource type format: `<resource-type>@<api-version>`.

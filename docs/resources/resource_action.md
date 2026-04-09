@@ -3,12 +3,12 @@
 page_title: "azapi_resource_action Resource - terraform-provider-azapi"
 subcategory: ""
 description: |-
-  This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the `when` argument is set to `destroy`. 
+  This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine. Please note that when deleting this resource, no action will be performed on the Azure resource unless the `when` argument is set to `destroy`.
 ---
 
 # azapi_resource_action (Resource)
 
-This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the `when` argument is set to `destroy`. 
+This resource allows you to perform an action on an existing Azure resource. It is useful for performing actions that modify the state of an Azure resource without managing its lifecycle in Terraform, e.g., starting or stopping an Azure Virtual Machine. Please note that when deleting this resource, no action will be performed on the Azure resource unless the `when` argument is set to `destroy`.
 
 ## Example Usage
 
@@ -90,7 +90,7 @@ resource "azapi_resource_action" "stop" {
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of String) A map of headers to include in the request
+- `headers` (Map of String) A map of headers to include in the request.
 - `ignore_not_found` (Boolean) If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
 - `locks` (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 
@@ -98,65 +98,65 @@ resource "azapi_resource_action" "stop" {
 - `method` (String) Specifies the HTTP method of the azure resource action. Defaults to `POST`.
 
 	-> Value must be one of: ["POST" "PATCH" "PUT" "DELETE" "GET" "HEAD"].
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `sensitive_response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.

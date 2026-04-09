@@ -55,7 +55,7 @@ func (a *AzapiResourceAction) Configure(ctx context.Context, req action.Configur
 
 func (a *AzapiResourceAction) Schema(ctx context.Context, req action.SchemaRequest, resp *action.SchemaResponse) {
 	resp.Schema = actionschema.Schema{
-		Description: "Perform an action on an existing Azure resource (stateless)",
+		Description: "Perform an action on an existing Azure resource (stateless).",
 		Attributes: map[string]actionschema.Attribute{
 			"type": actionschema.StringAttribute{
 				Required:            true,

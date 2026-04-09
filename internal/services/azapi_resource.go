@@ -246,30 +246,29 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
-					"```hcl\n" +
-					"resource \"azapi_resource\" \"example\" {\n" +
-					"  name      = var.name\n" +
-					"  type      = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
-					"  parent_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example\"\n" +
-					"  body = {\n" +
-					"    properties = {\n" +
-					"      sku   = var.sku\n" +
-					"      zones = var.zones\n" +
-					"    }\n" +
-					"  }\n" +
-					"\n" +
-					"  replace_triggers_external_values = [\n" +
-					"    var.sku,\n" +
-					"    var.zones,\n" +
-					"  ]\n" +
-					"}\n" +
-					"```\n",
+					"\te.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
+					"\t```hcl\n" +
+					"\tresource \"azapi_resource\" \"example\" {\n" +
+					"\t  name      = var.name\n" +
+					"\t  type      = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
+					"\t  parent_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example\"\n" +
+					"\t  body = {\n" +
+					"\t    properties = {\n" +
+					"\t      sku   = var.sku\n" +
+					"\t      zones = var.zones\n" +
+					"\t    }\n" +
+					"\t  }\n" +
+					"\t\n" +
+					"\t  replace_triggers_external_values = [\n" +
+					"\t    var.sku,\n" +
+					"\t    var.zones,\n" +
+					"\t  ]\n" +
+					"\t}\n" +
+					"\t```\n",
 				PlanModifiers: []planmodifier.Dynamic{
 					planmodifierdynamic.RequiresReplaceIfNotNull(),
 				},
@@ -473,11 +472,11 @@ func (r *AzapiResource) IdentitySchema(ctx context.Context, request resource.Ide
 		Attributes: map[string]identityschema.Attribute{
 			"id": identityschema.StringAttribute{
 				RequiredForImport: true,
-				Description:       "The Azure resource ID",
+				Description:       "The Azure resource ID.",
 			},
 			"type": identityschema.StringAttribute{
 				OptionalForImport: true,
-				Description:       "The Azure resource type",
+				Description:       "The Azure resource type.",
 			},
 		},
 		Version: 0,

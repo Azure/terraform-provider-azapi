@@ -54,15 +54,15 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
-  - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
+	- resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
 	- management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by azurerm_management_group.
 	- extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
 	- subscription scope: `parent_id` should be like \x60/subscriptions/00000000-0000-0000-0000-000000000000\x60
 	- tenant scope: `parent_id` should be /
 
-  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+	For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
-  For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+	For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 
 	-> Ensure this in resource ID format.
 - `type` (String) In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
@@ -71,54 +71,54 @@ data "azapi_resource_list" "listSubnetsByVnet" {
 
 ### Optional
 
-- `headers` (Map of String) A map of headers to include in the request
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `headers` (Map of String) A map of headers to include in the request.
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["value"]`, it will set the following HCL object to the computed property output.
-
-	```text
-	{
-	  "value" = [
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["value"]`, it will set the following HCL object to the computed property output.
+	
+		```text
 		{
-		  "id" = "/subscriptions/000000/resourceGroups/demo-rg/providers/Microsoft.Automation/automationAccounts/example"
-		  "location" = "eastus2"
-		  "name" = "example"
-		  "properties" = {
-			"creationTime" = "2024-10-11T08:18:38.737+00:00"
-			"disableLocalAuth" = false
-			"lastModifiedTime" = "2024-10-11T08:18:38.737+00:00"
-			"publicNetworkAccess" = true
-		  }
-		  "tags" = {}
-		  "type" = "Microsoft.Automation/AutomationAccounts"
-		}
-	  ]
-	}
-	```
-
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"values": "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}", "names": "value[].name"}`, it will set the following HCL object to the computed property output.
-
-	```text
-	{
-		"names" = [
-			"example",
-			"fredaccount01",
-		]
-		"values" = [
+		  "value" = [
 			{
+			  "id" = "/subscriptions/000000/resourceGroups/demo-rg/providers/Microsoft.Automation/automationAccounts/example"
+			  "location" = "eastus2"
 			  "name" = "example"
-			  "publicNetworkAccess" = true
-			},
-			{
-			  "name" = "fredaccount01"
-			  "publicNetworkAccess" = null
-			},
-		]
-	}
-	```
-
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+			  "properties" = {
+				"creationTime" = "2024-10-11T08:18:38.737+00:00"
+				"disableLocalAuth" = false
+				"lastModifiedTime" = "2024-10-11T08:18:38.737+00:00"
+				"publicNetworkAccess" = true
+			  }
+			  "tags" = {}
+			  "type" = "Microsoft.Automation/AutomationAccounts"
+			}
+		  ]
+		}
+		```
+	
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"values": "value[].{name: name, publicNetworkAccess: properties.publicNetworkAccess}", "names": "value[].name"}`, it will set the following HCL object to the computed property output.
+	
+		```text
+		{
+			"names" = [
+				"example",
+				"fredaccount01",
+			]
+			"values" = [
+				{
+				  "name" = "example"
+				  "publicNetworkAccess" = true
+				},
+				{
+				  "name" = "fredaccount01"
+				  "publicNetworkAccess" = null
+				},
+			]
+		}
+		```
+	
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).

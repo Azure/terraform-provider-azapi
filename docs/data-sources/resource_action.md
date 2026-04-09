@@ -62,70 +62,70 @@ data "azapi_resource_action" "example" {
 - `body` (Dynamic) The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object.
 
 	-> Ensure the dynamic value is not a string.
-- `headers` (Map of String) A map of headers to include in the request
+- `headers` (Map of String) A map of headers to include in the request.
 - `method` (String) The HTTP method to use when performing the action. Defaults to `POST`.
 
 	-> Value must be one of: ["POST" "GET"].
-- `query_parameters` (Map of List of String) A map of query parameters to include in the request
+- `query_parameters` (Map of List of String) A map of query parameters to include in the request.
 - `resource_id` (String) The ID of the Azure resource to perform the action on.
 
 	-> Ensure this in resource ID format.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `sensitive_response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property sensitive_output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property sensitive_output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property sensitive_output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property sensitive_output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 - `timeouts` (Block) See [below for nested schema](#nested--timeouts).
 

@@ -98,7 +98,7 @@ output "quarantine_policy" {
 - `delete_headers` (Map of String) A mapping of headers to be sent with the delete request.
 - `delete_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the delete request.
 - `identity` (List of Block) The identity of this resource. See [below for nested schema](#nested--identity).
-- `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body Defaults to `false`.
+- `ignore_casing` (Boolean) Whether ignore the casing of the property names in the response body. Defaults to `false`.
 - `ignore_missing_property` (Boolean) Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update. Defaults to `true`.
 - `ignore_null_property` (Boolean) When set to `true`, the provider will ignore properties whose values are `null` in the `body`. These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 - `ignore_other_items_in_list` (List of String) A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
@@ -116,83 +116,83 @@ output "quarantine_policy" {
 	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `parent_id` (String) The ID of the azure resource in which this resource is created. It supports different kinds of deployment scope for **top level** resources:
 
-  - resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
+	- resource group scope: `parent_id` should be the ID of a resource group, it's recommended to manage a resource group by azurerm_resource_group.
 	- management group scope: `parent_id` should be the ID of a management group, it's recommended to manage a management group by azurerm_management_group.
 	- extension scope: `parent_id` should be the ID of the resource you're adding the extension to.
 	- subscription scope: `parent_id` should be like \x60/subscriptions/00000000-0000-0000-0000-000000000000\x60
 	- tenant scope: `parent_id` should be /
 
-  For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
+	For child level resources, the `parent_id` should be the ID of its parent resource, for example, subnet resource's `parent_id` is the ID of the vnet.
 
-  For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
+	For type `Microsoft.Resources/resourceGroups`, the `parent_id` could be omitted, it defaults to subscription ID specified in provider or the default subscription (You could check the default subscription by azure cli command: `az account show`).
 
 	~> If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
 	-> Ensure this in resource ID format.
 - `read_headers` (Map of String) A mapping of headers to be sent with the read request.
 - `read_query_parameters` (Map of List of String) A mapping of query parameters to be sent with the read request.
-- `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect. 
-If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. 
+- `replace_triggers_external_values` (Dynamic) Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
+If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
 Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
 
-e.g. to replace a resource when either the SKU or os_type attributes change:
+	e.g. to replace a resource when either the SKU or os_type attributes change:
 
-```hcl
-resource "azapi_resource" "example" {
-  name      = var.name
-  type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
-  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
-  body = {
-    properties = {
-      sku   = var.sku
-      zones = var.zones
-    }
-  }
-
-  replace_triggers_external_values = [
-    var.sku,
-    var.zones,
-  ]
-}
-```
+	```hcl
+	resource "azapi_resource" "example" {
+	  name      = var.name
+	  type      = "Microsoft.Network/publicIPAddresses@2023-11-01"
+	  parent_id = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example"
+	  body = {
+	    properties = {
+	      sku   = var.sku
+	      zones = var.zones
+	    }
+	  }
+	
+	  replace_triggers_external_values = [
+	    var.sku,
+	    var.zones,
+	  ]
+	}
+	```
 
 
 	~> If the planned value is different from the state value, Terraform will destroy and recreate the resource unless either the planned or state value is null.
 - `replace_triggers_refs` (List of String) A list of paths in the current Terraform configuration. When the values at these paths change, the resource will be replaced.
 - `response_export_values` (Dynamic) The attribute can accept either a list or a map.
 
-- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
+	- **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		properties = {
-			loginServer = "registry1.azurecr.io"
-			policies = {
-				quarantinePolicy = {
-					status = "disabled"
+		```text
+		{
+			properties = {
+				loginServer = "registry1.azurecr.io"
+				policies = {
+					quarantinePolicy = {
+						status = "disabled"
+					}
 				}
 			}
 		}
-	}
-	```
+		```
 
-- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
+	- **Map**: A map where the key is the name for the result and the value is a JMESPath query string to filter the response. Here's an example. If it sets to `{"login_server": "properties.loginServer", "quarantine_status": "properties.policies.quarantinePolicy.status"}`, it will set the following HCL object to the computed property output.
 
-	```text
-	{
-		"login_server" = "registry1.azurecr.io"
-		"quarantine_status" = "disabled"
-	}
-	```
+		```text
+		{
+			"login_server" = "registry1.azurecr.io"
+			"quarantine_status" = "disabled"
+		}
+		```
 
-To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
+	To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 
 
 	~> Use the state value when new value is functionally equivalent to the old and thus no change is required.
 - `retry` (Object) The retry object supports the following attributes: See [below for nested schema](#nested--retry).
 - `schema_validation_enabled` (Boolean) Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 - `sensitive_body` (Dynamic, [Write-only](https://developer.hashicorp.com/terraform/language/resources/ephemeral#write-only-arguments)) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
-- `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body. 
+- `sensitive_body_version` (Map of String) A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 - `tags` (Map of String) A mapping of tags which should be assigned to the Azure resource.
 
 	-> Ensure this is a valid Azure tags map. Maximum of 50 tags can be applied. Each key is up to 512 characters long and each value is up to 256 characters long.
@@ -333,8 +333,8 @@ import {
 
 Required:
 
-- `id` (String) The Azure resource ID
+- `id` (String) The Azure resource ID.
 
 Optional:
 
-- `type` (String) The Azure resource type
+- `type` (String) The Azure resource type.

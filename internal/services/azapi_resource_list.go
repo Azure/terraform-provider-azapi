@@ -99,7 +99,7 @@ func (r *AzapiResourceList) ListResourceConfigValidators(_ context.Context) []li
 
 func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.ListResourceSchemaRequest, response *list.ListResourceSchemaResponse) {
 	response.Schema = schema.Schema{
-		Description:         "Configuration for listing Azure Resource Manager resources",
+		Description:         "Configuration for listing Azure Resource Manager resources.",
 		MarkdownDescription: "This list resource allows you to list Azure Resource Manager resources of a specific type under a given scope.",
 		Attributes: map[string]schema.Attribute{
 			"type": schema.StringAttribute{
@@ -121,7 +121,7 @@ func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.L
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -129,7 +129,7 @@ func (r *AzapiResourceList) ListResourceConfigSchema(_ context.Context, _ list.L
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 	}
