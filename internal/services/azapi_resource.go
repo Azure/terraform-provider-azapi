@@ -1254,11 +1254,10 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 
 	responseBody, err := client.Get(ctx, id.AzureResourceId, id.ApiVersion, clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters)))
 	if err != nil {
-		// If the auto-selected API version is not supported by Azure (e.g. a preview version
-		// that has been superseded by the GA release), try progressively older API versions
+		// If the auto-selected API version is not supported by Azure, try progressively older API versions
 		// from the embedded schema until one works.
 		if utils.ResponseErrorWasNoRegisteredProvider(err) {
-			tflog.Warn(ctx, fmt.Sprintf("API version %q is not registered for resource type %s, trying fallback versions", id.ApiVersion, id.AzureResourceType))
+			tflog.Debug(ctx, fmt.Sprintf("API version %q is not registered for resource type %s, trying fallback versions", id.ApiVersion, id.AzureResourceType))
 
 			apiVersions := azure.GetApiVersions(id.AzureResourceType)
 			requestOptions := clients.NewRequestOptions(common.AsMapOfString(state.ReadHeaders), common.AsMapOfLists(state.ReadQueryParameters))
@@ -1269,12 +1268,11 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 					continue
 				}
 
-				tflog.Debug(ctx, fmt.Sprintf("Trying fallback API version %q for %s", fallbackVersion, id.AzureResourceType))
+				tflog.Debug(ctx, fmt.Sprintf("Trying API version %q for %s", fallbackVersion, id.AzureResourceType))
 				fallbackBody, fallbackErr := client.Get(ctx, id.AzureResourceId, fallbackVersion, requestOptions)
 				if fallbackErr == nil {
-					tflog.Info(ctx, fmt.Sprintf("Successfully read %s using fallback API version %q (original %q was not registered)",
-						id.AzureResourceType, fallbackVersion, id.ApiVersion))
-
+					tflog.Info(ctx, fmt.Sprintf("Successfully read %s using API version %q.",
+						id.AzureResourceType, fallbackVersion))
 					// Update the id and state to reflect the working API version
 					id.ApiVersion = fallbackVersion
 					resourceDef, defErr := azure.GetResourceDefinition(id.AzureResourceType, fallbackVersion)
@@ -1300,8 +1298,8 @@ func (r *AzapiResource) ImportState(ctx context.Context, request resource.Import
 
 	if err != nil {
 		if utils.ResponseErrorWasNotFound(err) {
-			response.Diagnostics.AddError("Resource not found",
-				fmt.Errorf("the resource %s was not found during import — it may not exist or may have been deleted: %+v", id, err).Error())
+			tflog.Info(ctx, fmt.Sprintf("[INFO] Error reading %q - removing from state", id.ID()))
+			response.State.RemoveResource(ctx)
 			return
 		}
 		response.Diagnostics.AddError("Failed to retrieve resource", fmt.Errorf("reading %s: %+v", id, err).Error())
