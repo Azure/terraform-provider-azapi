@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ResourceActionDataSourceModel struct {
@@ -44,6 +45,7 @@ type ResourceActionDataSource struct {
 
 var _ datasource.DataSource = &ResourceActionDataSource{}
 var _ datasource.DataSourceWithConfigure = &ResourceActionDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &ResourceActionDataSource{}
 
 func (r *ResourceActionDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -91,7 +93,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "GET"),
 				},
-				MarkdownDescription: "The HTTP method to use when performing the action. Must be one of `POST`, `GET`. Defaults to `POST`.",
+				MarkdownDescription: "The HTTP method to use when performing the action. Defaults to `POST`.",
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
@@ -100,6 +102,7 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				Validators: []validator.Dynamic{
 					myvalidator.DynamicIsNotStringValidator(),
 				},
+				MarkdownDescription: "The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object.",
 			},
 
 			"response_export_values": schema.DynamicAttribute{
@@ -123,12 +126,12 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 				MarkdownDescription: docstrings.SensitiveOutput("data.azapi_resource_action"),
 			},
 
-			"retry": retry.RetrySchema(ctx),
+			"retry": retry.RetryDsSchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -136,14 +139,12 @@ func (r *ResourceActionDataSource) Schema(ctx context.Context, request datasourc
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }
@@ -211,4 +212,48 @@ func (r *ResourceActionDataSource) Read(ctx context.Context, request datasource.
 	model.SensitiveOutput = sensitiveOutput
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *ResourceActionDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_automation_account" "example" {
+  name                = "example-account"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku_name            = "Basic"
+}
+
+data "azapi_resource_action" "example" {
+  type                   = "Microsoft.Automation/automationAccounts@2021-06-22"
+  resource_id            = azurerm_automation_account.example.id
+  action                 = "listKeys"
+  response_export_values = ["*"]
+}
+`,
+			},
+		},
+	}
 }

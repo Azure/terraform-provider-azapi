@@ -11,11 +11,11 @@ import (
 type stringIsUUID struct{}
 
 func (v stringIsUUID) Description(ctx context.Context) string {
-	return "validate this in UUID format"
+	return "ensure this in UUID format"
 }
 
 func (v stringIsUUID) MarkdownDescription(ctx context.Context) string {
-	return "validate this in UUID format"
+	return "ensure this in UUID format"
 }
 
 func (stringIsUUID) ValidateString(ctx context.Context, req validator.StringRequest, resp *validator.StringResponse) {

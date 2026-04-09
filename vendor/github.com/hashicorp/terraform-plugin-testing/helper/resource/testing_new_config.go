@@ -451,6 +451,12 @@ func testStepNewConfig(ctx context.Context, t testing.T, c TestCase, wd *plugint
 		}
 	}
 
+	if step.PostApplyFunc != nil {
+		logging.HelperResourceDebug(ctx, "Calling TestCase PostApplyFunc")
+		step.PostApplyFunc()
+		logging.HelperResourceDebug(ctx, "Called TestCase PostApplyFunc")
+	}
+
 	if refreshAfterApply && !step.Destroy && !step.PlanOnly {
 		if len(c.Steps) > stepIndex+1 {
 			// If the next step is a refresh, then we have no need to refresh here

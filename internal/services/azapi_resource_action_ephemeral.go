@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/common"
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/ephemeral/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type ActionEphemeralModel struct {
@@ -46,6 +47,7 @@ type ActionEphemeral struct {
 
 var _ ephemeral.EphemeralResource = &ActionEphemeral{}
 var _ ephemeral.EphemeralResourceWithConfigure = &ActionEphemeral{}
+var _ tffwdocs.EphemeralResourceWithRenderOption = &ActionEphemeral{}
 
 func (r *ActionEphemeral) Metadata(ctx context.Context, request ephemeral.MetadataRequest, response *ephemeral.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_resource_action"
@@ -93,7 +95,7 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				Validators: []validator.String{
 					stringvalidator.OneOf("POST", "PATCH", "PUT", "DELETE", "GET", "HEAD"),
 				},
-				MarkdownDescription: "Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.",
+				MarkdownDescription: "Specifies the HTTP method of the azure resource action. Defaults to `POST`.",
 			},
 
 			// The body attribute is a dynamic attribute that only allows users to specify the resource body as an HCL object
@@ -124,12 +126,12 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 				MarkdownDescription: docstrings.Output("ephemeral.azapi_resource_action"),
 			},
 
-			"retry": retry.RetrySchema(ctx),
+			"retry": retry.RetryEphemeralSchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -137,14 +139,12 @@ func (r *ActionEphemeral) Schema(ctx context.Context, request ephemeral.SchemaRe
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }
@@ -155,7 +155,7 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 		return
 	}
 
-	readTimeout, diags := model.Timeouts.Read(ctx, 5*time.Minute)
+	readTimeout, diags := model.Timeouts.Open(ctx, 5*time.Minute)
 	if response.Diagnostics.Append(diags...); response.Diagnostics.HasError() {
 		return
 	}
@@ -215,4 +215,55 @@ func (r *ActionEphemeral) Open(ctx context.Context, request ephemeral.OpenReques
 	model.Output = output
 
 	response.Diagnostics.Append(response.Result.Set(ctx, model)...)
+}
+
+func (r *ActionEphemeral) RenderOption() tffwdocs.EphemeralResourceRenderOption {
+	return tffwdocs.EphemeralResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+resource "azapi_resource" "resourceGroup" {
+  type     = "Microsoft.Resources/resourceGroups@2021-04-01"
+  name     = "example-rg"
+  location = "westus"
+  body     = {}
+}
+
+resource "azapi_resource" "storageAccount" {
+  type      = "Microsoft.Storage/storageAccounts@2021-02-01"
+  parent_id = azapi_resource.resourceGroup.id
+  name      = "exampleaccount"
+  location  = "westus"
+  body = {
+    kind = "StorageV2"
+    sku = {
+      name = "Premium_LRS"
+    }
+  }
+}
+
+ephemeral "azapi_resource_action" "listKeys" {
+  type        = "Microsoft.Storage/storageAccounts@2023-05-01"
+  resource_id = azapi_resource.storageAccount.id
+  action      = "listKeys"
+  method      = "POST"
+  response_export_values = {
+    all = "@"
+  }
+}
+`,
+			},
+		},
+	}
 }

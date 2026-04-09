@@ -47,6 +47,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 const FlagMoveState = "move_state"
@@ -141,6 +142,7 @@ var _ resource.ResourceWithImportState = &AzapiResource{}
 var _ resource.ResourceWithUpgradeState = &AzapiResource{}
 var _ resource.ResourceWithMoveState = &AzapiResource{}
 var _ resource.ResourceWithIdentity = &AzapiResource{}
+var _ tffwdocs.ResourceWithRenderOption = &AzapiResource{}
 
 type AzapiResource struct {
 	ProviderData *clients.Client
@@ -181,7 +183,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				MarkdownDescription: "Specifies the name of the azure resource. Changing this forces a new resource to be created.",
+				MarkdownDescription: "Specifies the name of the azure resource.",
 			},
 
 			"parent_id": schema.StringAttribute{
@@ -244,30 +246,29 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 
 			"replace_triggers_external_values": schema.DynamicAttribute{
 				Optional: true,
-				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. " +
-					"The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect. \n" +
-					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object. \n" +
+				MarkdownDescription: "Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals." +
+					" The value is a `dynamic`, so practitioners can compose the input however they wish. For a \"break glass\" set the value to `null` to prevent the plan modifier taking effect.\n" +
+					"If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.\n" +
 					"Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.\n\n" +
-					"e.g. to replace a resource when either the SKU or os_type attributes change:\n" +
-					"\n" +
-					"```hcl\n" +
-					"resource \"azapi_resource\" \"example\" {\n" +
-					"  name      = var.name\n" +
-					"  type      = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
-					"  parent_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example\"\n" +
-					"  body = {\n" +
-					"    properties = {\n" +
-					"      sku   = var.sku\n" +
-					"      zones = var.zones\n" +
-					"    }\n" +
-					"  }\n" +
-					"\n" +
-					"  replace_triggers_external_values = [\n" +
-					"    var.sku,\n" +
-					"    var.zones,\n" +
-					"  ]\n" +
-					"}\n" +
-					"```\n",
+					"\te.g. to replace a resource when either the SKU or os_type attributes change:\n\n" +
+					"\t```hcl\n" +
+					"\tresource \"azapi_resource\" \"example\" {\n" +
+					"\t  name      = var.name\n" +
+					"\t  type      = \"Microsoft.Network/publicIPAddresses@2023-11-01\"\n" +
+					"\t  parent_id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example\"\n" +
+					"\t  body = {\n" +
+					"\t    properties = {\n" +
+					"\t      sku   = var.sku\n" +
+					"\t      zones = var.zones\n" +
+					"\t    }\n" +
+					"\t  }\n" +
+					"\t\n" +
+					"\t  replace_triggers_external_values = [\n" +
+					"\t    var.sku,\n" +
+					"\t    var.zones,\n" +
+					"\t  ]\n" +
+					"\t}\n" +
+					"\t```\n",
 				PlanModifiers: []planmodifier.Dynamic{
 					planmodifierdynamic.RequiresReplaceIfNotNull(),
 				},
@@ -283,7 +284,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 				Optional:            true,
 				Computed:            true,
 				Default:             defaults.BoolDefault(false),
-				MarkdownDescription: docstrings.IgnoreCasing(),
+				MarkdownDescription: docstrings.IgnoreCasingStr,
 			},
 
 			"ignore_missing_property": schema.BoolAttribute{
@@ -414,6 +415,7 @@ func (r *AzapiResource) Schema(ctx context.Context, _ resource.SchemaRequest, re
 		},
 		Blocks: map[string]schema.Block{
 			"identity": schema.ListNestedBlock{
+				MarkdownDescription: "The identity of this resource.",
 				NestedObject: schema.NestedBlockObject{
 					Validators: []validator.Object{myvalidator.IdentityValidator()},
 					Attributes: map[string]schema.Attribute{
@@ -470,11 +472,11 @@ func (r *AzapiResource) IdentitySchema(ctx context.Context, request resource.Ide
 		Attributes: map[string]identityschema.Attribute{
 			"id": identityschema.StringAttribute{
 				RequiredForImport: true,
-				Description:       "The Azure resource ID",
+				Description:       "The Azure resource ID.",
 			},
 			"type": identityschema.StringAttribute{
 				OptionalForImport: true,
-				Description:       "The Azure resource type",
+				Description:       "The Azure resource type.",
 			},
 		},
 		Version: 0,
@@ -1627,4 +1629,89 @@ func isManagementGroupScope(scope string) bool {
 		strings.ToLower(scope),
 		managementGroupScope,
 	)
+}
+
+func (r *AzapiResource) RenderOption() tffwdocs.ResourceRenderOption {
+	return tffwdocs.ResourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_user_assigned_identity" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+}
+
+// manage a container registry resource
+resource "azapi_resource" "example" {
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+  name      = "registry1"
+  parent_id = azurerm_resource_group.example.id
+
+  location = azurerm_resource_group.example.location
+  identity {
+    type         = "SystemAssigned, UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.example.id]
+  }
+
+  body = {
+    sku = {
+      name = "Standard"
+    }
+    properties = {
+      adminUserEnabled = true
+    }
+  }
+
+  tags = {
+    "Key" = "Value"
+  }
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}`,
+			},
+		},
+		ImportId: &tffwdocs.ImportId{
+			Format:    "<resource_id>[?api-version=<api_version>]",
+			ExampleId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet?api-version=2023-11-01",
+		},
+		IdentityExamples: []tffwdocs.Example{
+			{
+				HCL: `
+id   = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet"
+type = "Microsoft.Network/virtualNetworks@2023-11-01"
+`,
+			},
+		},
+	}
 }

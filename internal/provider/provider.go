@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"strings"
+	"text/template"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -34,6 +35,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 var _ provider.Provider = &Provider{}
@@ -41,6 +43,7 @@ var _ provider.ProviderWithFunctions = &Provider{}
 var _ provider.ProviderWithEphemeralResources = &Provider{}
 var _ provider.ProviderWithListResources = &Provider{}
 var _ provider.ProviderWithActions = &Provider{}
+var _ tffwdocs.ProviderWithRenderOption = &Provider{}
 
 func AzureProvider() provider.Provider {
 	return &Provider{}
@@ -98,7 +101,7 @@ func (p Provider) Metadata(ctx context.Context, request provider.MetadataRequest
 
 func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, response *provider.SchemaResponse) {
 	response.Schema = schema.Schema{
-		Description: "The Azure API Provider",
+		Description: "The Azure API Provider.",
 		Attributes: map[string]schema.Attribute{
 			"subscription_id": schema.StringAttribute{
 				Optional:            true,
@@ -156,7 +159,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.OneOfCaseInsensitive("public", "usgovernment", "china", "custom"),
 				},
-				MarkdownDescription: "The Cloud Environment which should be used. Possible values are `public`, `usgovernment`, `china` and `custom`. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.",
+				MarkdownDescription: "The Cloud Environment which should be used. Defaults to `public`. This can also be sourced from the `ARM_ENVIRONMENT` Environment Variable.",
 			},
 
 			// TODO@mgd: the metadata_host is used to retrieve metadata from Azure to identify current environment, this is used to eliminate Azure Stack usage, in which case the provider doesn't support.
@@ -291,7 +294,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 
 			"default_location": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: " The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
+				MarkdownDescription: "The default Azure Region where the azure resource should exist. The `location` in each resource block can override the `default_location`. Changing this forces new resources to be created.",
 			},
 
 			"default_tags": schema.MapAttribute{
@@ -300,7 +303,7 @@ func (p Provider) Schema(ctx context.Context, request provider.SchemaRequest, re
 				Validators: []validator.Map{
 					tags.Validator(),
 				},
-				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The`tags` in each resource block can override the `default_tags`.",
+				MarkdownDescription: "A mapping of tags which should be assigned to the azure resource as default tags. The `tags` in each resource block can override the `default_tags`.",
 			},
 
 			"enable_preflight": schema.BoolAttribute{
@@ -851,4 +854,63 @@ func buildChainedTokenCredential(model providerData, clientOpt azcore.ClientOpti
 	})
 
 	return cred, err
+}
+
+func (p *Provider) RenderOption() tffwdocs.ProviderRenderOption {
+	return tffwdocs.ProviderRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+# We strongly recommend using the required_providers block to set the
+# Azure Provider source and version being used
+terraform {
+  required_providers {
+    azapi = {
+      source = "azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}`,
+			},
+		},
+		Template: template.Must(template.New("provider").Parse(`---
+layout: "azapi"
+page_title: "Provider: Azure API"
+description: |-
+  The AzAPI Provider is used to interact with the many resources supported by Azure Resource Manager through its APIs.
+---
+
+# AzAPI Provider
+
+The AzAPI provider is a very thin layer on top of the [Azure ARM REST APIs](https://learn.microsoft.com/rest/api/azure). This provider complements the [AzureRM provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) by enabling the management of Azure resources that are not yet or may never be supported in the AzureRM provider such as private/public preview services and features.
+
+Documentation regarding the [Data Sources](/docs/configuration/data-sources.html) and [Resources](/docs/configuration/resources.html) supported by the AzAPI Provider can be found in the navigation to the left.
+
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the [changelog](https://github.com/Azure/terraform-provider-azapi/blob/main/CHANGELOG.md) for version information and release notes.
+
+For VS Code authoring, install the [Microsoft Terraform extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) which now contains the former AzAPI extension features (the standalone AzAPI extension has been deprecated).
+
+Also, there is a rich library of [examples](https://github.com/Azure/terraform-provider-azapi/tree/main/examples) to help you get started.
+
+## Authenticating to Azure
+
+Terraform supports a number of different methods for authenticating to Azure:
+
+* [Authenticating to Azure using the Azure CLI](guides/azure_cli.html)
+* [Authenticating to Azure using Managed Service Identity](guides/managed_service_identity.html)
+* [Authenticating to Azure using a Service Principal and a Client Certificate](guides/service_principal_client_certificate.html)
+* [Authenticating to Azure using a Service Principal and a Client Secret](guides/service_principal_client_secret.html)
+* [Authenticating to Azure using OpenID Connect](guides/service_principal_oidc.html)
+
+---
+
+We recommend using either a Service Principal or Managed Service Identity when running Terraform non-interactively (such as when running Terraform in a CI server) - and authenticating using the Azure CLI when running Terraform locally.
+
+{{- with .Example }}
+{{ . }}
+{{- end }}
+{{ .Schema }}`)),
+	}
 }

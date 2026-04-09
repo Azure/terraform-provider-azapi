@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type UniqueStringFunction struct{}
@@ -30,8 +31,8 @@ func (b *UniqueStringFunction) Definition(ctx context.Context, request function.
 		},
 		Return:              function.StringReturn{},
 		Summary:             "Creates a deterministic hash string based on the values provided as parameters.",
-		Description:         "This function constructs an Azure equivalent uniqueString value. It is useful for migrating existing resources based on th ARM uniqueString function.",
-		MarkdownDescription: "This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on th ARM `uniqueString` function.",
+		Description:         "This function constructs an Azure equivalent uniqueString value. It is useful for migrating existing resources based on the ARM uniqueString function.",
+		MarkdownDescription: "This function constructs an Azure equivalent `uniqueString` value. It is useful for migrating existing resources based on the ARM `uniqueString` function.",
 	}
 }
 
@@ -54,6 +55,7 @@ func (b *UniqueStringFunction) Run(ctx context.Context, request function.RunRequ
 }
 
 var _ function.Function = &UniqueStringFunction{}
+var _ tffwdocs.FunctionWithRenderOption = &UniqueStringFunction{}
 
 func uniqueString(values ...string) string {
 	value := strings.Join(values, "-")
@@ -181,4 +183,24 @@ func safeUInt64ToInt32(value uint64) int32 {
 		return math.MaxInt32
 	}
 	return int32(value)
+}
+
+func (b *UniqueStringFunction) RenderOption() tffwdocs.FunctionRenderOption {
+	return tffwdocs.FunctionRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+locals {
+  resource_group_id = "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/my-rg"
+  resource_type     = "Microsoft.Storage/storageAccounts"
+}
+
+// it will output "z22rah77jfqry"
+output "unique_name" {
+  value = provider::azapi::unique_string(local.resource_group_id, local.resource_type)
+}
+`,
+			},
+		},
+	}
 }

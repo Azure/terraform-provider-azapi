@@ -17,13 +17,14 @@ import (
 	"github.com/Azure/terraform-provider-azapi/internal/services/myvalidator"
 	"github.com/Azure/terraform-provider-azapi/internal/services/parse"
 	"github.com/Azure/terraform-provider-azapi/utils"
-	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	tffwdocs "github.com/magodo/terraform-plugin-framework-docs"
 )
 
 type AzapiResourceDataSourceModel struct {
@@ -52,6 +53,7 @@ type AzapiResourceDataSource struct {
 var _ datasource.DataSource = &AzapiResourceDataSource{}
 var _ datasource.DataSourceWithConfigure = &AzapiResourceDataSource{}
 var _ datasource.DataSourceWithValidateConfig = &AzapiResourceDataSource{}
+var _ tffwdocs.DataSourceWithRenderOption = &AzapiResourceDataSource{}
 
 func (r *AzapiResourceDataSource) Configure(ctx context.Context, request datasource.ConfigureRequest, response *datasource.ConfigureResponse) {
 	if v, ok := request.ProviderData.(*clients.Client); ok {
@@ -113,7 +115,8 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 			},
 
 			"identity": schema.ListNestedAttribute{
-				Computed: true,
+				MarkdownDescription: "The identity of this resource.",
+				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"type": schema.StringAttribute{
@@ -166,12 +169,12 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 				MarkdownDescription: "A mapping of tags which are assigned to the Azure resource.",
 			},
 
-			"retry": retry.RetrySchema(ctx),
+			"retry": retry.RetryDsSchema(ctx),
 
 			"headers": schema.MapAttribute{
 				ElementType:         types.StringType,
 				Optional:            true,
-				MarkdownDescription: "A map of headers to include in the request",
+				MarkdownDescription: "A map of headers to include in the request.",
 			},
 
 			"query_parameters": schema.MapAttribute{
@@ -179,14 +182,12 @@ func (r *AzapiResourceDataSource) Schema(ctx context.Context, request datasource
 					ElemType: types.StringType,
 				},
 				Optional:            true,
-				MarkdownDescription: "A map of query parameters to include in the request",
+				MarkdownDescription: "A map of query parameters to include in the request.",
 			},
 		},
 
 		Blocks: map[string]schema.Block{
-			"timeouts": timeouts.Block(ctx, timeouts.Opts{
-				Read: true,
-			}),
+			"timeouts": timeouts.Block(ctx),
 		},
 	}
 }
@@ -330,4 +331,60 @@ func (r *AzapiResourceDataSource) Read(ctx context.Context, request datasource.R
 	model.Exists = basetypes.NewBoolValue(true)
 
 	response.Diagnostics.Append(response.State.Set(ctx, &model)...)
+}
+
+func (r *AzapiResourceDataSource) RenderOption() tffwdocs.DataSourceRenderOption {
+	return tffwdocs.DataSourceRenderOption{
+		Examples: []tffwdocs.Example{
+			{
+				HCL: `
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
+provider "azapi" {
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-rg"
+  location = "west europe"
+}
+
+resource "azurerm_container_registry" "example" {
+  name                = "example"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  sku                 = "Premium"
+  admin_enabled       = false
+}
+
+data "azapi_resource" "example" {
+  name      = "example"
+  parent_id = azurerm_resource_group.example.id
+  type      = "Microsoft.ContainerRegistry/registries@2020-11-01-preview"
+
+  response_export_values = ["properties.loginServer", "properties.policies.quarantinePolicy.status"]
+}
+
+// it will output "registry1.azurecr.io"
+output "login_server" {
+  value = data.azapi_resource.example.output.properties.loginServer
+}
+
+// it will output "disabled"
+output "quarantine_policy" {
+  value = data.azapi_resource.example.output.properties.policies.quarantinePolicy.status
+}
+`,
+			},
+		},
+	}
 }
